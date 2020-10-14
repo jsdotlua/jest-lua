@@ -1,0 +1,15 @@
+{
+  "name": "TestEZ",
+  "tree": {
+    "$className": "Folder",
+    "Packages": {
+        "$className": "Folder",
+        "TestEZ": {
+            "$path": "src"
+        }
+    },
+    "Modules": {
+        "$path": "modules"
+    }
+  }
+}

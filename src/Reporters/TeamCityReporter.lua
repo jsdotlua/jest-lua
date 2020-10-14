@@ -51,6 +51,7 @@ local function reportNode(node, buffer, level)
 		end
 		table.insert(buffer, teamCityLeaveCase(node.planNode.phrase))
 	end
+	return buffer
 end
 
 local function reportRoot(node)
