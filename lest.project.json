@@ -9,7 +9,10 @@
         }
     },
     "Modules": {
-        "$path": "modules"
+      "$className": "Folder",
+      "JestGetType" :{
+        "$path": "modules/jest-get-type/src"
+      }
     }
   }
 }
