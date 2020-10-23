@@ -10,8 +10,14 @@
     },
     "Modules": {
       "$className": "Folder",
+      "JsPolyfill" : {
+        "$path": "modules/js-polyfill/src"
+      },
       "JestGetType" :{
         "$path": "modules/jest-get-type/src"
+      },
+      "DiffSequences" :{
+        "$path": "modules/diff-sequences/src"
       }
     }
   }
