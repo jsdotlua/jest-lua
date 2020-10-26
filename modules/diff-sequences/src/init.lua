@@ -328,7 +328,7 @@ local function extendOverlappablePathsF(
 			-- // Solve for iR of reverse path with (d - 1) changes in diagonal kF:
 			-- // kR = kF + baDeltaLength
 			-- // kR = (d - 1) - 2 * iR
-			local iR = math.floor((d - 1 - (kF + baDeltaLength)) / 2)
+			local iR = (d - 1 - (kF + baDeltaLength)) / 2
 
 			-- // If this forward path overlaps the reverse path in this diagonal,
 			-- // then this is the middle change of the index intervals.
@@ -465,7 +465,7 @@ local function extendOverlappablePathsR(
 			-- // Solve for iF of forward path with d changes in diagonal kR:
 			-- // kF = kR - baDeltaLength
 			-- // kF = 2 * iF - d
-			local iF = math.floor((d + (kR - baDeltaLength)) / 2)
+			local iF = (d + (kR - baDeltaLength)) / 2
 
 			-- // If this reverse path overlaps the forward path in this diagonal,
 			-- // then this is a middle change of the index intervals.
@@ -585,8 +585,8 @@ local function divide(nChange,
 	if baDeltaLength % 2 == 0 then
 		-- // The number of changes in paths is 2 * d if length difference is even.
 		-- deviation: lua treats 0 as a true value
-		local dMin = math.floor((nChange ~= 0 and nChange or baDeltaLength) / 2)
-		local dMax = math.floor((aLength + bLength) / 2)
+		local dMin = (nChange ~= 0 and nChange or baDeltaLength) / 2
+		local dMax = (aLength + bLength) / 2
 
 		for d = 1, dMax do
 			iMaxF = extendPathsF(d, aEnd, bEnd, bF, isCommon, aIndexesF, iMaxF)
@@ -612,8 +612,8 @@ local function divide(nChange,
 		end
 	else
 		-- // The number of changes in paths is 2 * d - 1 if length difference is odd.
-		local dMin = math.floor(((nChange ~= 0 and nChange or baDeltaLength) + 1) / 2)
-		local dMax = math.floor((aLength + bLength + 1) / 2)
+		local dMin = ((nChange ~= 0 and nChange or baDeltaLength) + 1) / 2
+		local dMax = (aLength + bLength + 1) / 2
 
 		-- // Unroll first half iteration so loop extends the relevant pairs of paths.
 		-- // Because of invariant that intervals have no common items at start or end,
