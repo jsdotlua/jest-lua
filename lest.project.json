@@ -10,14 +10,29 @@
     },
     "Modules": {
       "$className": "Folder",
-      "JsPolyfill" : {
+      "JsPolyfill": {
         "$path": "modules/js-polyfill/src"
       },
-      "JestGetType" :{
+      "JestGetType": {
         "$path": "modules/jest-get-type/src"
       },
-      "DiffSequences" :{
+      "DiffSequences": {
         "$path": "modules/diff-sequences/src"
+      },
+      "React": {
+        "$className": "Folder",
+        "Modules": {
+          "$className": "Folder",
+          "ReactIs": {
+            "$path": "modules/react/modules/react-is/src"
+          },
+          "RobloxJSPolyfill": {
+            "$path": "modules/react/modules/roblox-js-polyfill/src"
+          },
+          "Shared": {
+            "$path": "modules/react/modules/shared/src"
+          }
+        }
       }
     }
   }
