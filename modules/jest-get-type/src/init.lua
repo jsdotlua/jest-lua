@@ -1,3 +1,4 @@
+--!strict
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-get-type/src/index.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -8,7 +9,7 @@
 
 local JestGetType = {}
 
-function JestGetType.getType(value)
+function JestGetType.getType(value: any): string
 	-- deviation: code omitted because lua has no primitive undefined type
 	-- lua makes no distinction between null and undefined so we just return nil
 	if value == nil then
@@ -34,7 +35,7 @@ function JestGetType.getType(value)
 	error(string.format('value of unknown type: %s', tostring(value)))
 end
 
-function JestGetType.isPrimitive(value)
+function JestGetType.isPrimitive(value: any): boolean
 	-- deviation: explicitly define objects and functions as non primitives
 	return type(value) ~= 'table' and type(value) ~= 'function'
 end
