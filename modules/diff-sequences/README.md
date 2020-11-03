@@ -17,3 +17,10 @@ Version: v26.5.0
 * Uses of `NOT_YET_SET` are replaced with just a 0 since this is a JS-specific workaround.
 * Lua's `==` operator doesn't compare array values so we implement an `arrayEquals` to check array equality for tests.
 * Lua treats `0` as a true value so `nChange || baDeltaLength` needs to be written as `nChange ~= 0 and nChange or baDeltaLength`.
+
+### :x: Excluded
+```
+perf
+src/index.property.test.ts
+src/__tests__/__snapshots__
+```

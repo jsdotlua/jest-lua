@@ -13,3 +13,7 @@ Version: v26.3.0
 * Lua makes no distinction between `null` and `undefined` so we only return `nil`.
 * Lua lacks the following primitives: `bigint`, `symbol`.
 * Lua lacks the following built-in types: `RegExp`, `Map`, `Set`, `Date`.
+
+### :x: Excluded
+```
+```
