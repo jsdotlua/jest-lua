@@ -135,7 +135,14 @@ local function printComplexValue(
 	local hitMaxDepth = depth > config.maxDepth
 	local min = config.min
 
-	-- deviation: omitted, no object .toJSON method in lua
+	if config.callToJSON and
+		not hitMaxDepth and
+		val.toJSON and
+		typeof(val.toJSON) == 'function' and
+		not hasCalledToJSON
+	then
+		return printer(val.toJSON(), config, indentation, depth, refs, true)
+	end
 
 	-- deviation: rewrote this part since lua only has tables
 	if hitMaxDepth then
@@ -166,67 +173,70 @@ local function printComplexValue(
 		'}'
 end
 
--- TODO: implement plugins
--- function isNewPlugin(
--- 	plugin: PrettyFormat.Plugin,
--- ): plugin is PrettyFormat.NewPlugin {
--- 	return (plugin as PrettyFormat.NewPlugin).serialize != null;
--- }
+local function isNewPlugin(
+	pfPlugin
+)
+	return pfPlugin.serialize ~= nil
+end
 
--- function printPlugin(
--- 	plugin: PrettyFormat.Plugin,
--- 	val: any,
--- 	config: PrettyFormat.Config,
--- 	indentation: string,
--- 	depth: number,
--- 	refs: PrettyFormat.Refs,
--- ): string {
--- 	let printed;
+function printPlugin(
+	pfPlugin,
+	val: any,
+	config,
+	indentation: string,
+	depth: number,
+	refs
+): string
+	local printed
 
--- 	try {
--- 		printed = isNewPlugin(plugin)
--- 			? plugin.serialize(val, config, indentation, depth, refs, printer)
--- 			: plugin.print(
--- 					val,
--- 					valChild => printer(valChild, config, indentation, depth, refs),
--- 					str => {
--- 						const indentationNext = indentation + config.indent;
--- 						return (
--- 							indentationNext +
--- 							str.replace(NEWLINE_REGEXP, '\n' + indentationNext)
--- 						);
--- 					},
--- 					{
--- 						edgeSpacing: config.spacingOuter,
--- 						min: config.min,
--- 						spacing: config.spacingInner,
--- 					},
--- 					config.colors,
--- 				);
--- 	} catch (error) {
--- 		throw new PrettyFormatPluginError(error.message, error.stack);
--- 	}
--- 	if (typeof printed !== 'string') {
--- 		throw new Error(
--- 			`pretty-format: Plugin must return type "string" but instead returned "${typeof printed}".`,
--- 		);
--- 	}
--- 	return printed;
--- }
+	local ok, err = pcall(function()
+		if isNewPlugin(pfPlugin) then
+			printed = pfPlugin.serialize(val, config, indentation, depth, refs, printer)
+		else
+			printed = pfPlugin.print(
+				val,
+				function(valChild)
+					return printer(valChild, config, indentation, depth, refs)
+				end,
+				function(str)
+					local indentationNext = indentation + config.indent
+					return indentationNext ..
+						str:gsub('\n', '\n' .. indentationNext)
+				end,
+				{
+					edgeSpacing = config.spacingOuter,
+					min = config.min,
+					spacing = config.spacingInner,
+				},
+				config.colors
+			)
+		end
+	end)
+	if not ok then
+		error(string.format('PrettyFormatPluginError: %s', err))
+	end
 
--- local function findPlugin(plugins: PrettyFormat.Plugins, val: unknown) {
--- 	for (let p = 0; p < plugins.length; p++) {
--- 		try {
--- 			if (plugins[p].test(val)) {
--- 				return plugins[p];
--- 			}
--- 		} catch (error) {
--- 			throw new PrettyFormatPluginError(error.message, error.stack);
--- 		}
--- 	}
+	if typeof(printed) ~= 'string' then
+		error(string.format(
+			'pretty-format: Plugin must return type "string" but instead returned "%s".',
+			typeof(printed))
+		)
+	end
+	return printed
+end
 
--- 	return null;
--- }
+local function findPlugin(plugins, val)
+	for _, p in ipairs(plugins) do
+		local ok, ret = pcall(p.test, val)
+		if not ok then
+			error(string.format('PrettyFormatPluginError: %s', ret))
+		elseif ret then
+			return p
+		end
+	end
+
+	return nil
+end
 
 printer = function(
 	val: any,
@@ -236,12 +246,10 @@ printer = function(
 	refs,
 	hasCalledToJSON: boolean | nil
 ): string
-	-- TODO: implement plugins
-	-- deviation: renamed plugin because 'plugin' is a Roblox global
-	-- local pfPlugin = findPlugin(config.plugins, val)
-	-- if pfPlugin ~= nil then
-	-- 	return printPlugin(pfPlugin, val, config, indentation, depth, refs)
-	-- end
+	local pfPlugin = findPlugin(config.plugins, val)
+	if pfPlugin ~= nil then
+		return printPlugin(pfPlugin, val, config, indentation, depth, refs)
+	end
 
 	local basicResult = printBasicValue(
 		val,
@@ -336,7 +344,7 @@ local function getConfig(
 	options
 )
 	return {
-		callToJSON = getOption(options, 'callToJson'),
+		callToJSON = getOption(options, 'callToJSON'),
 		-- deviation: color formatting omitted
 		colors = nil,
 		escapeRegex = getOption(options, 'escapeRegex'),
@@ -367,14 +375,13 @@ function PrettyFormat.prettyFormat(
 ): string
 	if options then
 		validateOptions(options)
-		-- TODO: implement plugins
-		-- if options.plugins then
-		-- 	-- deviation: renamed plugin because 'plugin' is a Roblox global
-		-- 	local pfPlugin = findPlugin(options.plugins, val)
-		-- 	if pfPlugin ~= nil then
-		-- 		return printPlugin(pfPlugin, val, getConfig(options), '', 0, {})
-		-- 	end
-		-- end
+		if options.plugins then
+			-- deviation: renamed plugin because 'plugin' is a Roblox global
+			local pfPlugin = findPlugin(options.plugins, val)
+			if pfPlugin ~= nil then
+				return printPlugin(pfPlugin, val, getConfig(options), '', 0, {})
+			end
+		end
 	end
 
 	local basicResult = printBasicValue(

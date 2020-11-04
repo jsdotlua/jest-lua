@@ -180,7 +180,7 @@ return function()
 			expect(prettyFormat(val)).to.equal('"\\"\'\\\\"')
 		end)
 
-		it("doesn't escape string with {excapeString: false}", function()
+		it("doesn't escape string with {escapeString: false}", function()
 			local val = '"\'\\n'
 			expect(prettyFormat(val, {escapeString = false})).to.equal('""\'\\n"')
 		end)
@@ -193,6 +193,40 @@ return function()
 		it('prints a multiline string', function()
 			local val = table.concat({'line 1', 'line 2', 'line 3'}, '\n')
 			expect(prettyFormat(val)).to.equal('"' .. val .. '"')
+		end)
+
+		it('prints a multiline string as value of table', function()
+			local polyline = {
+				props = {
+					id = 'J',
+					points = table.concat({'0.5,0.460', '0.5,0.875', '0.25,0.875'}, '\n'),
+				},
+				type = 'polyline',
+			}
+			local val = {
+				props = {
+					children = polyline,
+				},
+				type = 'svg',
+			}
+			expect(prettyFormat(val)).to.equal(
+				table.concat({
+					'Table {',
+					'  "type": "svg",',
+					'  "props": Table {',
+					'    "children": Table {',
+					'      "type": "polyline",',
+					'      "props": Table {',
+					'        "id": "J",',
+					'        "points": "0.5,0.460',
+					'0.5,0.875',
+					'0.25,0.875",',
+					'      },',
+					'    },',
+					'  },',
+					'}',
+				}, '\n')
+			)
 		end)
 
 		-- deviation: omitted, no Symbol, undefined, WeakMap, WeakSet
@@ -291,12 +325,221 @@ return function()
 		it('throws on invalid options', function()
 			expect(function()
 				prettyFormat({}, {invalidOption = true})
-			end).to.throw();
+			end).to.throw()
 		end)
 
-		-- TODO: implement plugins
+		it('supports plugins', function()
+			local Foo = {
+				name = 'Foo'
+			}
 
-		-- deviation: omitted, no object .toJSON method in lua
+			expect(
+				prettyFormat(Foo, {
+					plugins = {
+						{
+							print = function() return 'class Foo' end,
+							test = function(object)
+								return object.name == 'Foo'
+							end,
+						},
+					}
+				})
+			).to.equal('class Foo')
+		end)
+
+		it('supports plugins that return empty string', function()
+			local val = {
+				payload = '',
+			}
+			local options = {
+				plugins = {
+					{
+						print = function(v)
+							return v.payload
+						end,
+						test = function(v)
+							return v and typeof(v.payload) == 'string'
+						end,
+					},
+				},
+			}
+			expect(prettyFormat(val, options)).to.equal('')
+		end)
+
+		it('throws if plugin does not return a string', function()
+			local val = 123
+			local options = {
+				plugins = {
+					{
+						print = function(v)
+							return v
+						end,
+						test = function(v)
+							return true
+						end,
+					},
+				},
+			}
+			expect(function()
+				prettyFormat(val, options)
+			end).to.throw()
+		end)
+
+		it('throws PrettyFormatPluginError if test throws an error', function()
+			local options = {
+				plugins = {
+					{
+						print = function() return '' end,
+						test = function()
+							error('Where is the error?')
+						end,
+					},
+				},
+			}
+
+			expect(function()
+				prettyFormat('', options)
+			end).to.throw('PrettyFormatPluginError')
+		end)
+
+		it('throws PrettyFormatPluginError if print throws an error', function()
+			local options = {
+				plugins = {
+					{
+						print = function()
+							error('Where is the error?')
+						end,
+						test = function() return true end,
+					},
+				},
+			}
+
+			expect(function()
+				prettyFormat('', options)
+			end).to.throw('PrettyFormatPluginError')
+		end)
+
+		it('throws PrettyFormatPluginError if serialize throws an error', function()
+			local options = {
+				plugins = {
+					{
+						serialize = function()
+							error('Where is the error?')
+						end,
+						test = function() return true end,
+					},
+				},
+			}
+
+			expect(function()
+				prettyFormat('', options)
+			end).to.throw('PrettyFormatPluginError')
+		end)
+
+		it('supports plugins with deeply nested arrays (#24)', function()
+			local val = {
+				{1, 2},
+				{3, 4},
+			}
+			expect(
+				prettyFormat(val, {
+					plugins = {
+						{
+							print = function(v, f)
+								local t = {}
+								for i, _ in ipairs(v) do
+									t[i] = f(v[i])
+								end
+								return table.concat(t, ' - ')
+							end,
+							test = function(v)
+								return typeof(v) == 'table'
+							end,
+						},
+					},
+				})
+			).to.equal('1 - 2 - 3 - 4')
+		end)
+
+		it('should call plugins on nested basic values', function()
+			local val = {prop = 42}
+			expect(
+				prettyFormat(val, {
+					plugins = {
+						{
+							print = function(_val, _print)
+								return '[called]'
+							end,
+							test = function(v)
+								return typeof(v) == 'string' or typeof(v) == 'number'
+							end,
+						},
+					},
+				})
+			).to.equal('Table {\n  [called]: [called],\n}')
+		end)
+
+		-- deviation: omitted, identical to empty table test
+
+		it('calls toJSON and prints its return value', function()
+			expect(
+				prettyFormat({
+					toJSON = function() return {value = false} end,
+					value = true,
+				})
+			).to.equal('Table {\n  "value": false,\n}')
+		end)
+
+		it('calls toJSON and prints an internal representation.', function()
+			expect(
+				prettyFormat({
+					toJSON = function() return '[Internal Object]' end,
+					value = true,
+				})
+			).to.equal('"[Internal Object]"')
+		end)
+
+		it('calls toJSON only on functions', function()
+			expect(
+				prettyFormat({
+					toJSON = false,
+					value = true,
+				})
+			).to.equal('Table {\n  "value": true,\n  "toJSON": false,\n}')
+		end)
+
+		it('does not call toJSON recursively', function()
+			expect(
+				prettyFormat({
+					toJSON = function()
+						return {toJSON = function() return {value = true} end}
+					end,
+					value = false,
+				})
+			).to.equal('Table {\n  "toJSON": [Function anonymous],\n}')
+		end)
+
+		-- deviation: modified to use table instead of set
+		it('calls toJSON on Tables', function()
+			local set = {}
+			set.toJSON = function() return 'map' end
+			expect(prettyFormat(set)).to.equal('"map"')
+		end)
+
+		it('disables toJSON calls through options', function()
+			local value = {apple = 'banana', toJSON = function() return '1' end}
+			local set = { [1] = value }
+			set['toJSON'] = function() return 'map' end
+			expect(
+				prettyFormat(set, {
+					callToJSON = false,
+				})
+			).to.equal(
+				'Table {\n  Table {\n    "apple": "banana",\n    "toJSON": [Function anonymous' ..
+					'],\n  },\n}'
+			)
+			-- deviation: omitted, no toBeCalled in TestEZ
+		end)
 
 		describe('min', function()
 			it('prints some basic values in min mode', function()
