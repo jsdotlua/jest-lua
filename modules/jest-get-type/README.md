@@ -17,3 +17,7 @@ Version: v26.3.0
 ### :x: Excluded
 ```
 ```
+
+### :package: [Dependencies](https://github.com/facebook/jest/blob/v26.5.3/packages/jest-get-type/package.json)
+| Package | Version | Status | Notes |
+| - | - | - | - |

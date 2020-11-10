@@ -24,3 +24,7 @@ perf
 src/index.property.test.ts
 src/__tests__/__snapshots__
 ```
+
+### :package: [Dependencies](https://github.com/facebook/jest/blob/v26.5.3/packages/diff-sequences/package.json)
+| Package | Version | Status | Notes |
+| - | - | - | - |

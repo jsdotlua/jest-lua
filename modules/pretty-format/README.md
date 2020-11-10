@@ -27,3 +27,11 @@ perf
 src/plugins/ConvertAnsi.ts
 src/__tests__/ConvertAnsi.test.ts
 ```
+
+### :package: [Dependencies](https://github.com/facebook/jest/blob/v26.5.3/packages/pretty-format/package.json)
+| Package | Version | Status | Notes |
+| - | - | - | - |
+| `@jest/types` | 26.5.2 | :x: Will not port | External type definitions are not a priority |
+| `ansi-regex` | 5.0.0 | :x: Will not port | Console output styling is not a priority |
+| `ansi-styles` | 4.0.0 | :x: Will not port | See above |
+| `react-is` | see roact-alignment | :heavy_check_mark: Ported | Imported from roact-alignment |

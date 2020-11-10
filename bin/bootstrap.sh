@@ -21,8 +21,12 @@ Version:
 ### :pencil2: Notes
 
 ### :x: Excluded
-```
-```
+\`\`\`
+\`\`\`
+
+### :package: [Dependencies]()
+| Package | Version | Status | Notes |
+| - | - | - | - |
 EOF
 cat > $mod_path/default.project.json << EOF
 {
