@@ -36,6 +36,9 @@
       },
       "PrettyFormat": {
         "$path": "modules/pretty-format/src"
+      },
+      "JestDiff": {
+        "$path": "modules/jest-diff/src"
       }
     }
   }

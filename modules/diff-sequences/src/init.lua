@@ -66,7 +66,7 @@ type FoundSubsequence = (
 	number, -- // caller can assume: 0 < nCommon
 	number, -- // caller can assume: 0 <= aCommon && aCommon < aLength
 	number -- // caller can assume: 0 <= bCommon && bCommon < bLength
-) -> nil;
+) -> ();
 
 -- deviation: omitted since Luau doesn't have mixed type arrays
 -- // Either original functions or wrapped to swap indexes if graph is transposed.
@@ -560,7 +560,7 @@ local function divide(nChange,
 	aIndexesF: Indexes,
 	aIndexesR: Indexes,
 	division: Division
-): nil
+): ()
 	local bF = bStart - aStart -- // bIndex = bF + aIndex - kF
 	local bR = bEnd - aEnd -- // bIndex = bR + aIndex - kR
 	local aLength = aEnd - aStart
@@ -658,7 +658,6 @@ local function divide(nChange,
 	end
 
 	error(string.format('%s: no overlap aStart=%i aEnd=%i bStart=%i bEnd=%i', pkg, aStart, aEnd, bStart, bEnd))
-	return nil
 end
 
 -- // Given index intervals and input function to compare items at indexes,
@@ -678,7 +677,7 @@ local function findSubsequences(nChange,
 	aIndexesF: Indexes,
 	aIndexesR: Indexes,
 	division: Division
-): nil
+): ()
 	if bEnd - bStart < aEnd - aStart then
 		-- // Transpose graph so it has portrait instead of landscape orientation.
 		-- // Always compare shorter to longer sequence for consistency and optimization.
@@ -771,11 +770,9 @@ local function findSubsequences(nChange,
 			division
 		)
 	end
-
-	return nil
 end
 
-local function validateLength(name: string, arg: any): nil
+local function validateLength(name: string, arg: any): ()
 	if typeof(arg) ~= 'number' then
 		error(string.format('%s: %s type %s is not a number', pkg, name, type(arg)))
 	end
@@ -785,15 +782,12 @@ local function validateLength(name: string, arg: any): nil
 	if arg < 0 then
 		error(string.format('%s: %s type %s is a negative integer', pkg, name, type(arg)))
 	end
-
-	return nil
 end
 
-local function validateCallback(name: string, arg: any): nil
+local function validateCallback(name: string, arg: any): ()
 	if typeof(arg) ~= 'function' then
 		error(string.format('%s: %s type %s is not a function', pkg, name, type(arg)))
 	end
-	return nil
 end
 
 -- // Compare items in two sequences to find a longest common subsequence.
@@ -805,7 +799,7 @@ return function(
 	bLength: number,
 	isCommon: IsCommon,
 	foundSubsequence: FoundSubsequence
-): nil
+): ()
 	validateLength('aLength', aLength)
 	validateLength('bLength', bLength)
 	validateCallback('isCommon', isCommon)
@@ -890,6 +884,4 @@ return function(
 			foundSubsequence(nCommonR, aEnd, bEnd)
 		end
 	end
-
-	return nil
 end

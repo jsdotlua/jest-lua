@@ -8,9 +8,25 @@
 --  */
 
 return function()
-	local diff = require(script.Parent.Parent)
-	local Number = require(script.Parent.Parent.Parent.JsPolyfill.Number)
-	local Object = require(script.Parent.Parent.Parent.JsPolyfill.Object)
+	local Workspace = script.Parent.Parent
+
+	local snapshots = require(script.Parent.__snapshots__['init.snap'])
+
+	local diff = require(Workspace)
+
+	local Number = require(Workspace.Parent.JsPolyfill.Number)
+	local Object = require(Workspace.Parent.JsPolyfill.Object)
+	local Array = require(Workspace.Parent.JsPolyfill.Array)
+
+	local function arrayEquals(a1, a2)
+		return #a1 == #a2 and
+			Array.every(
+				a1,
+				function(element, index)
+					return element == a2[index]
+				end
+			)
+	end
 
 	describe('invalid arg', function()
 		local isCommon = function() return false end
@@ -212,15 +228,6 @@ return function()
 		expect(aLength + bLength - 2 * #array).to.equal(nDifferences)
 
 		return array
-	end
-
-	-- deviation: lua's == operator does not compare array values
-	local function arrayEquals(t1, t2)
-		if #t1 ~= #t2 then return false end
-		for i = 1, #t1 do
-			if t1[i] ~= t2[i] then return false end
-		end
-		return true
 	end
 
 	-- deviation: lua does not allow string indexing, so we convert string inputs to arrays
@@ -743,44 +750,10 @@ return function()
 			-- // English translation and French quotation by Antoine de Saint Exupéry:
 			local a = "It seems that perfection is attained not when there is nothing more to add, but when there is nothing more to remove."
 			local b = "Il semble que la perfection soit atteinte non quand il n'y a plus rien à ajouter, mais quand il n'y a plus rien à retrancher."
-			local expected = table.concat({
-				"I",
-				" se",
-				"e",
-				" ",
-				"a",
-				" perfection ",
-				"i",
-				" att",
-				"in",
-				"e",
-				" no",
-				" ",
-				"n",
-				" i",
-				" n",
-				" ",
-				"a",
-				" ",
-				"u",
-				" ",
-				"en",
-				" ",
-				"t",
-				"er",
-				" ",
-				"is ",
-				"n",
-				"i",
-				"n",
-				" ",
-				"r",
-				"e",
-				" ",
-				" re",
-				"e",
-				"."
-			}, '')
+			local expected = table.concat(
+				snapshots['common substrings regression 1'],
+				''
+			)
 			expectCommonItems(a, b, expected)
 		end)
 		it('wrapping', function()
@@ -792,21 +765,10 @@ return function()
 				'When engineers have ready-to-use tools, they write more tests, which results in',
 				'more stable and healthy code bases.',
 			}, '\n')
-			local expected = table.concat({
-				"When engineers ",
-				"a",
-				"v",
-				"e",
-				" ",
-				"ready-to-use tools, they",
-				" writ",
-				" more",
-				"tests, which",
-				" results in",
-				"more stabl",
-				"e",
-				" code bases."
-			}, '')
+			local expected = table.concat(
+				snapshots['common substrings wrapping 1'],
+				''
+			)
 			expectCommonItems(a, b, expected)
 		end)
 	end)
