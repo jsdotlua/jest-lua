@@ -9,7 +9,7 @@
 return function()
 	local Workspace = script.Parent.Parent
 
-	local Array = require(Workspace.Parent.JsPolyfill.Array)
+	local Array = require(Workspace.Parent.Parent.Packages.LuauPolyfill).Array
 
 	local DIFF_DELETE = require(Workspace).DIFF_DELETE
 	local DIFF_EQUAL = require(Workspace).DIFF_EQUAL

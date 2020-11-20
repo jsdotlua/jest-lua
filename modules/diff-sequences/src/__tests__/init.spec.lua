@@ -14,9 +14,10 @@ return function()
 
 	local diff = require(Workspace)
 
-	local Number = require(Workspace.Parent.JsPolyfill.Number)
-	local Object = require(Workspace.Parent.JsPolyfill.Object)
-	local Array = require(Workspace.Parent.JsPolyfill.Array)
+	local LuauPolyfill = require(Workspace.Parent.Parent.Packages.LuauPolyfill)
+	local Number = LuauPolyfill.Number
+	local Object = LuauPolyfill.Object
+	local Array = LuauPolyfill.Array
 
 	local function arrayEquals(a1, a2)
 		return #a1 == #a2 and

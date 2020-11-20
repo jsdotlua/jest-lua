@@ -1,6 +1,6 @@
-local Root = script.Parent.TestEZ
+local Root = script.Parent.JestRoblox
 
-local TestEZ = require(Root.Packages.TestEZ)
+local TestEZ = require(Root.TestEZ)
 
 -- Run all tests, collect results, and report to stdout.
 TestEZ.TestBootstrap:run(

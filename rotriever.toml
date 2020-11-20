@@ -4,3 +4,6 @@ author = "Roblox"
 license = "Apache2"
 content_root = "src"
 version = "0.4.1"
+
+[dependencies]
+LuauPolyfill = { git = "https://github.com/roblox/luau-polyfill", rev = "main" }

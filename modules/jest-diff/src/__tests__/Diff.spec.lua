@@ -11,7 +11,7 @@ return function()
 
 	local snapshots = require(script.Parent.__snapshots__['Diff.snap'])
 
-	local Number = require(Workspace.Parent.JsPolyfill.Number)
+	local Number = require(Workspace.Parent.Parent.Packages.LuauPolyfill).Number
 
 	-- deviation: no require for chalk or stripAnsi because we don't support it
 
