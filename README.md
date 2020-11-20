@@ -21,7 +21,7 @@ We use Jest Roblox at Roblox for testing our apps, in-game core scripts, built-i
 ## Inspiration and Prior Work
 Jest Roblox is a Roblox port of the open source JavaScript testing framework [Jest](https://github.com/facebook/jest). Modules in the `modules` directory are  aligned to [v26.5.3](https://github.com/facebook/jest/tree/v26.5.3) of Jest, but the current public API is compatible with TestEZ [v0.4.0](https://github.com/Roblox/testez/tree/v0.4.0) while we complete our alignment.
 
-It is also an evolution of an older test framework used at Roblox, [TestEZ](https://github.com/Roblox/TestEZ). It is currently forked from [commit 4bee8e3](https://github.com/Roblox/testez/tree/4bee8e3922bfdb0314a1af753ab5abfceea4dc79) of TestEZ. As such, the `expect` syntax is based on Chai, a JavaScript assertion library commonly used with Mocha, but it will soon be modified to align to Jest's `expect` syntax.
+It is also an evolution of an older test framework used at Roblox, [TestEZ](https://github.com/Roblox/TestEZ). It is currently forked from [commit d983722](https://github.com/Roblox/testez/tree/d983722fb085141db3a7e80a37b30b03a69e6e55) of TestEZ. As such, the `expect` syntax is based on Chai, a JavaScript assertion library commonly used with Mocha, but it will soon be modified to align to Jest's `expect` syntax.
 
 ---
 
