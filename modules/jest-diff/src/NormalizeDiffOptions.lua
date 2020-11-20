@@ -7,7 +7,7 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local Number = require(script.Parent.Parent.JsPolyfill.Number)
+local Number = require(script.Parent.Parent.Parent.Packages.LuauPolyfill).Number
 
 -- deviation: omitted chalk import
 

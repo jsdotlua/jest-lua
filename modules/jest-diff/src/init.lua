@@ -8,7 +8,7 @@
 
 local Workspace = script
 
-local Object = require(Workspace.Parent.JsPolyfill.Object)
+local Object = require(Workspace.Parent.Parent.Packages.LuauPolyfill).Object
 
 local prettyFormat = require(Workspace.Parent.PrettyFormat).prettyFormat
 

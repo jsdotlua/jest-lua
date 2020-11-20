@@ -52,7 +52,7 @@
 -- // Find longest common subsequence: path with maximum number of diagonal edges
 -- // Find shortest edit script: path with minimum number of non-diagonal edges
 
-local Number = require(script.Parent.JsPolyfill.Number)
+local Number = require(script.Parent.Parent.Packages.LuauPolyfill).Number
 
 -- // Input callback function compares items at indexes in the sequences.
 type IsCommon = (

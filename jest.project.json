@@ -1,18 +1,15 @@
 {
-  "name": "TestEZ",
+  "name": "JestRoblox",
   "tree": {
     "$className": "Folder",
+    "TestEZ": {
+      "$path": "src"
+    },
     "Packages": {
-        "$className": "Folder",
-        "TestEZ": {
-            "$path": "src"
-        }
+      "$path": "Packages"
     },
     "Modules": {
       "$className": "Folder",
-      "JsPolyfill": {
-        "$path": "modules/external/js-polyfill/src"
-      },
       "JestGetType": {
         "$path": "modules/jest-get-type/src"
       },

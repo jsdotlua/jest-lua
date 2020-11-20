@@ -9,7 +9,7 @@
 
 local Workspace = script.Parent
 
-local Array = require(Workspace.Parent.JsPolyfill.Array)
+local Array = require(Workspace.Parent.Parent.Packages.LuauPolyfill).Array
 
 local DIFF_EQUAL = require(Workspace.CleanupSemantic).DIFF_EQUAL
 local cleanupSemantic = require(Workspace.CleanupSemantic).cleanupSemantic
