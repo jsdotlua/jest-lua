@@ -1,6 +1,7 @@
 # Rotriever files
 rotriever.lock
-Packages
+Packages/*
+!Packages/.robloxrc
 
 # Test places and build artifacts
 /*.rbxlx
@@ -16,3 +17,6 @@ Packages
 
 # Cargo build output
 /target
+
+# MacOS files
+**/.DS_Store

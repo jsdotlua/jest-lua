@@ -39,6 +39,9 @@
       },
       "JestDiff": {
         "$path": "modules/jest-diff/src"
+      },
+      "JestJasmine2": {
+        "$path": "modules/jest-jasmine2/src"
       }
     }
   }
