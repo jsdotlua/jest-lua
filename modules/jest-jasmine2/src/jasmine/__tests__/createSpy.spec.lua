@@ -30,7 +30,7 @@ return function()
 				expect(spy.bob).to.equal("test")
 			end)
 
-			-- deviation: test omitted because we don't implement the
+			-- deviation: test skipped because we don't implement the
 			-- env.createSpy function that would actually allow for this
 			itSKIP("should allow you to omit the name argument and only pass the originalFn argument", function()
 				--[[
@@ -58,10 +58,6 @@ return function()
 					createSpy("TestClass.prototype", TestClass.prototype.someFunction)
 				end).to.throw("Jasmine spies would overwrite the 'and', 'andAlso' and 'calls' properties on the object being spied upon")
 			end)
-
-			-- This test is not found in upstream but we add it to test
-			-- conflicts with the andAlso field we expose
-
 
 			it("adds a spyStrategy and callTracker to the spy", function()
 				local spy = createSpy("TestClass.prototype", TestClass.prototype.someFunction)

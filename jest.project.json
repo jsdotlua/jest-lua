@@ -34,6 +34,9 @@
       "PrettyFormat": {
         "$path": "modules/pretty-format/src"
       },
+      "JestMatcherUtils": {
+        "$path": "modules/jest-matcher-utils/src"
+      },
       "Expect": {
         "$path": "modules/expect/src"
       },

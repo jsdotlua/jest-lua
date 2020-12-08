@@ -16,18 +16,20 @@ function JestGetType.getType(value: any): string
 		return 'nil'
 	-- deviation: lua makes no distinction between tables, arrays, and objects
 	-- we always return table here and consumers are expected to perform the check
-	elseif type(value) == 'table' then
+	elseif typeof(value) == 'table' then
 		return 'table'
-	elseif type(value) == 'boolean' then
+	elseif typeof(value) == 'boolean' then
 		return 'boolean'
-	elseif type(value) == 'function' then
+	elseif typeof(value) == 'function' then
 		return 'function'
-	elseif type(value) == 'number' then
+	elseif typeof(value) == 'number' then
 		return 'number'
-	elseif type(value) == 'string' then
+	elseif typeof(value) == 'string' then
 		return 'string'
+	elseif typeof(value) == 'DateTime' then
+		return 'DateTime'
 	-- deviation: code omitted because lua has no primitive bigint type
-	-- deviation: code omitted because lua has no built-in RegExp, Map, Set or Date types
+	-- deviation: code omitted because lua has no built-in RegExp, Map, or Set types
 	-- deviation: code omitted because lua makes no distinction between tables, arrays, and objects
 	-- deviation: code omitted because lua has no primitive symbol type
 	end
@@ -37,7 +39,7 @@ end
 
 function JestGetType.isPrimitive(value: any): boolean
 	-- deviation: explicitly define objects and functions as non primitives
-	return type(value) ~= 'table' and type(value) ~= 'function'
+	return typeof(value) ~= 'table' and typeof(value) ~= 'function'
 end
 
 return JestGetType

@@ -38,8 +38,12 @@ return function()
 			expect(getType(true)).to.equal('boolean')
 		end)
 
+		it('DateTime', function()
+			expect(getType(DateTime.now())).to.equal('DateTime')
+		end)
+
 		-- deviation: test omitted because lua has no primitive symbol type
-		-- deviation: test omitted because lua has no built-in RegExp, Map, Set or Date types
+		-- deviation: test omitted because lua has no built-in RegExp, Map, or Set types
 		-- deviation: test omitted because lua has no primitive bigint type
 	end)
 end
