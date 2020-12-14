@@ -4,7 +4,7 @@ Status: :hammer: In Progress
 
 Source: https://github.com/facebook/jest/tree/v26.5.3/packages/jest-matcher-utils
 
-Version: v26.5.3
+Version: v26.5.2
 
 ---
 
@@ -14,4 +14,13 @@ Version: v26.5.3
 * Luau does not yet have functionality to use generics in function signatures and functions so those type annotations are left out
 
 ### :x: Excluded
+```
+```
 
+### :package: [Dependencies](https://github.com/facebook/jest/blob/v26.5.3/packages/jest-matcher-utils/package.json)
+| Package | Version | Status | Notes |
+| - | - | - | - |
+| chalk | 4.0.0 | :x: Will not port | Console output styling is not a priority |
+| jest-diff | 26.5.2 | :heavy_check_mark: Ported | |
+| jest-get-type | 26.3.0 | :heavy_check_mark: Ported | |
+| pretty-format | 26.5.2 | :heavy_check_mark: Ported | Mostly complete, need plugins |
