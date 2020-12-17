@@ -12,15 +12,22 @@ local PrettyFormat = {}
 -- deviation: ansi-styles not ported
 -- local Types = require(script.Types)
 
-local Collections = require(script.Collections)
+local Workspace = script
+local Packages = Workspace.Parent.Parent.Packages
+
+local isNaN = require(Packages.LuauPolyfill).Number.isNaN
+
+local Collections = require(Workspace.Collections)
 local printTableEntries = Collections.printTableEntries
 local printListItems = Collections.printListItems
+
+local AsymmetricMatcher = require(Workspace.plugins.AsymmetricMatcher)
 
 -- deviation: isToStringedArrayType omitted because lua has no typed arrays
 
 local function printNumber(val: number): string
 	-- explicitly check for nan because string representation is platform dependent
-	if val ~= val then
+	if isNaN(val) then
 		return 'nan'
 	end
 	return tostring(val)
@@ -167,20 +174,19 @@ local function printComplexValue(
 			indentation,
 			depth,
 			refs,
-			printer,
-			': '
+			printer
 		) ..
 		'}'
 end
 
 local function isNewPlugin(
-	pfPlugin
+	plugin_
 )
-	return pfPlugin.serialize ~= nil
+	return plugin_.serialize ~= nil
 end
 
 function printPlugin(
-	pfPlugin,
+	plugin_,
 	val: any,
 	config,
 	indentation: string,
@@ -190,10 +196,10 @@ function printPlugin(
 	local printed
 
 	local ok, err = pcall(function()
-		if isNewPlugin(pfPlugin) then
-			printed = pfPlugin.serialize(val, config, indentation, depth, refs, printer)
+		if isNewPlugin(plugin_) then
+			printed = plugin_.serialize(val, config, indentation, depth, refs, printer)
 		else
-			printed = pfPlugin.print(
+			printed = plugin_.print(
 				val,
 				function(valChild)
 					return printer(valChild, config, indentation, depth, refs)
@@ -246,9 +252,9 @@ printer = function(
 	refs,
 	hasCalledToJSON: boolean | nil
 ): string
-	local pfPlugin = findPlugin(config.plugins, val)
-	if pfPlugin ~= nil then
-		return printPlugin(pfPlugin, val, config, indentation, depth, refs)
+	local plugin_ = findPlugin(config.plugins, val)
+	if plugin_ ~= nil then
+		return printPlugin(plugin_, val, config, indentation, depth, refs)
 	end
 
 	local basicResult = printBasicValue(
@@ -376,10 +382,9 @@ function PrettyFormat.prettyFormat(
 	if options then
 		validateOptions(options)
 		if options.plugins then
-			-- deviation: renamed plugin because 'plugin' is a Roblox global
-			local pfPlugin = findPlugin(options.plugins, val)
-			if pfPlugin ~= nil then
-				return printPlugin(pfPlugin, val, getConfig(options), '', 0, {})
+			local plugin_ = findPlugin(options.plugins, val)
+			if plugin_ ~= nil then
+				return printPlugin(plugin_, val, getConfig(options), '', 0, {})
 			end
 		end
 	end
@@ -398,6 +403,8 @@ function PrettyFormat.prettyFormat(
 	return printComplexValue(val, getConfig(options), '', 0, {}, nil)
 end
 
-PrettyFormat.plugins = {}
+PrettyFormat.plugins = {
+	AsymmetricMatcher = AsymmetricMatcher
+}
 
 return PrettyFormat

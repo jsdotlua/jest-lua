@@ -48,13 +48,12 @@ function jasmineUtils.equals(
 	a: any,
 	b: any,
 	customTesters: Array<Tester>?,
-	strictCheck: boolean?): boolean
-
+	strictCheck: boolean?
+): boolean
 	customTesters = customTesters or {}
 	strictCheck = strictCheck or false
 	return eq(a, b, {}, {}, customTesters, strictCheck and hasKey or hasDefinedKey)
 end
-
 
 -- deviation: omitted functionToString since we don't use it
 
@@ -71,11 +70,11 @@ function asymmetricMatch(a: any, b: any)
 	end
 
 	if asymmetricA then
-		return a.asymmetricMatch(b)
+		return a:asymmetricMatch(b)
 	end
 
 	if asymmetricB then
-		return b.asymmetricMatch(a)
+		return b:asymmetricMatch(a)
 	end
 
 	return nil
@@ -83,15 +82,14 @@ end
 
 -- // Equality function lovingly adapted from isEqual in
 -- //   [Underscore](http://underscorejs.org)
-
 function eq(
 	a: any,
 	b: any,
 	aStack: Array<any>,
 	bStack: Array<any>,
 	customTesters: Array<Tester>,
-	_hasKey: any): boolean
-
+	_hasKey: any
+): boolean
 	local result = true
 
 	local asymmetricResult = asymmetricMatch(a, b)
@@ -223,8 +221,8 @@ end
 function keys(
 	obj: Table,
 	isArray: boolean,
-	hasKey: (Table, string) -> boolean)
-
+	hasKey: (Table, string) -> boolean
+)
 	local function getAllKeys(o)
 		local allKeys = {}
 		for key, value in pairs(o) do

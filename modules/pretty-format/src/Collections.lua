@@ -29,11 +29,7 @@ function Collections.printTableEntries(
 	indentation: string,
 	depth: number,
 	refs,
-	printer,
-	-- // Too bad, so sad that separator for ECMAScript Map has been ' => '
-	-- // What a distracting diff if you change a data structure to/from
-	-- // ECMAScript Object or Immutable.Map/OrderedMap which use the default.
-	separator: string
+	printer
 ): string
 	local result = ''
 
@@ -66,7 +62,7 @@ function Collections.printTableEntries(
 				refs
 			)
 
-			result = result .. indentationNext .. name .. separator .. value
+			result = result .. indentationNext .. name .. ': ' .. value
 
 			if i < #keys then
 				result = result .. ',' .. config.spacingInner

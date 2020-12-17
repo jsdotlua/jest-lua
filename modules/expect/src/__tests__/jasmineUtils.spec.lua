@@ -53,7 +53,7 @@ return function()
 			["asymmetric match test fail"] = {
 				'Eve',
 				{
-					asymmetricMatch = function(who)
+					asymmetricMatch = function(self, who)
 						return who == 'Alice' or who == 'Bob'
 					end
 				},
@@ -61,25 +61,25 @@ return function()
 			["nested table test"] = {
 				{
 					target = {
-						nodeType= 1,
-						value= 'a',
+						nodeType = 1,
+						value = 'a',
 					},
 				},
 				{
 					target = {
-						nodeType= 1,
-						value= 'b',
+						nodeType = 1,
+						value = 'b',
 					},
 				},
 			},
 			["nested table test 2"] = {
 				{
-					nodeName= 'div',
-					nodeType= 1,
+					nodeName = 'div',
+					nodeType = 1,
 				},
 				{
-					nodeName= 'p',
-					nodeType= 1,
+					nodeName = 'p',
+					nodeType = 1,
 				},
 			},
 			-- deviation: omitted test for built-in Symbol type
@@ -102,24 +102,24 @@ return function()
 			},
 			-- ROBLOXTODO: Implement upstream tests once we have Map, Set and List implementations
 			["{}, {}"] = {{}, {}},
-			["{{a= 99}, {a= 99}}"] = {{a= 99}, {a= 99}},
+			["{{a= 99}, {a= 99}}"] = {{a = 99}, {a = 99}},
 			["{{97, 98, 99}, {97, 98, 99}}"] = {{97, 98, 99}, {97, 98, 99}},
 			["asymmetric match test pass"] = {
 				'Alice',
 				{
-					asymmetricMatch= function(who)
-						return who == 'Alice' or who == 'Bob';
+					asymmetricMatch = function(self, who)
+						return who == 'Alice' or who == 'Bob'
 					end
 				},
 			},
 			["nested table test"] = {
 				{
-					nodeName= 'div',
-					nodeType= 1,
+					nodeName = 'div',
+					nodeType = 1,
 				},
 				{
-					nodeName= 'div',
-					nodeType= 1,
+					nodeName = 'div',
+					nodeType = 1,
 				},
 			},
 			-- omitted test for built-in Symbol type

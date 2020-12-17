@@ -1,0 +1,302 @@
+--!nonstrict
+-- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/__tests__/asymmetricMatchers.test.ts
+-- /**
+--  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
+--  *
+--  * This source code is licensed under the MIT license found in the
+--  * LICENSE file in the root directory of this source tree.
+--  *
+--  */
+
+return function()
+	local AsymmetricMatchers = require(script.Parent.Parent.asymmetricMatchers)
+	local any = AsymmetricMatchers.any
+	local anything = AsymmetricMatchers.anything
+	local arrayContaining = AsymmetricMatchers.arrayContaining
+	local arrayNotContaining = AsymmetricMatchers.arrayNotContaining
+	local objectContaining = AsymmetricMatchers.objectContaining
+	local objectNotContaining = AsymmetricMatchers.objectNotContaining
+	local stringContaining = AsymmetricMatchers.stringContaining
+	local stringNotContaining = AsymmetricMatchers.stringNotContaining
+	local stringMatching = AsymmetricMatchers.stringMatching
+	local stringNotMatching = AsymmetricMatchers.stringNotMatching
+
+	it("Any.asymmetricMatch()", function()
+		local Thing = {}
+		Thing.__index = Thing
+		function Thing.new(sample: any)
+			local self = {}
+			setmetatable(self, Thing)
+			return self
+		end
+
+		-- deviation: no primitive constructors in lua, we just supply a primitive
+		for _, test in ipairs(
+			{
+				any("string"):asymmetricMatch("jest"),
+				any(100):asymmetricMatch(1),
+				any(function() return 1 end):asymmetricMatch(function() end),
+				any(false):asymmetricMatch(true),
+				-- deviation: omitted BigInt and Symbol
+				any({x = 1}):asymmetricMatch({}),
+				any({x = 1}):asymmetricMatch(nil),
+				any({1, 2}):asymmetricMatch({}),
+				any(Thing):asymmetricMatch(Thing.new())
+			}
+		) do
+			expect(test).to.equal(true)
+		end
+	end)
+
+	it("Any.toAsymmetricMatcher()", function()
+		-- deviation: typeof(100) => "number"
+		expect(any(100):toAsymmetricMatcher()).to.equal("Any<number>")
+	end)
+
+	-- deviation: functions are anonymous in lua
+	it('Any.toAsymmetricMatcher() with function', function()
+		local fn = function() end
+		expect(any(fn):toAsymmetricMatcher()).to.equal('Any<function>')
+	end)
+
+	it("Any throws when called with empty constructor", function()
+		expect(function() any() end).to.throw()
+	end)
+
+	it("Anything matches any type", function()
+		for _, test in ipairs(
+			{
+				anything():asymmetricMatch("jest"),
+				anything():asymmetricMatch(1),
+				anything():asymmetricMatch(function() end),
+				anything():asymmetricMatch(true),
+				anything():asymmetricMatch({x = 1}),
+				anything():asymmetricMatch({1, 2}),
+			}
+		) do
+			expect(test).to.equal(true)
+		end
+	end)
+
+	-- deviation: no undefined
+	it("Anything does not match nil", function()
+		expect(anything():asymmetricMatch(nil)).to.equal(false)
+	end)
+
+	it("Anything.toAsymmetricMatcher()", function()
+		expect(anything():toAsymmetricMatcher()).to.equal("Anything")
+	end)
+
+	it("ArrayContaining matches", function()
+		for _, test in ipairs(
+			{
+				arrayContaining({}):asymmetricMatch("jest"),
+				arrayContaining({"foo"}):asymmetricMatch({"foo"}),
+				arrayContaining({"foo"}):asymmetricMatch({"foo", "bar"}),
+				arrayContaining({}):asymmetricMatch({}),
+			}
+		) do
+			expect(test).to.equal(true)
+		end
+	end)
+
+	it("ArrayContaining does not match", function()
+		expect(arrayContaining({"foo"}):asymmetricMatch({"bar"})).to.equal(false)
+	end)
+
+	it("ArrayContaining throws for non-arrays", function()
+		expect(function()
+			arrayContaining('foo'):asymmetricMatch({})
+		end).to.throw()
+		-- deviation: additional test for non-arraylike tables
+		expect(function()
+			arrayContaining({x = 1}):asymmetricMatch({})
+		end).to.throw()
+	end)
+
+	it("ArrayNotContaining matches", function()
+		expect(arrayNotContaining({"foo"}):asymmetricMatch({"bar"})).to.equal(true)
+	end)
+
+	it("ArrayNotContaining does not match", function()
+		for _, test in ipairs(
+			{
+				arrayNotContaining({}):asymmetricMatch("jest"),
+				arrayNotContaining({"foo"}):asymmetricMatch({"foo"}),
+				arrayNotContaining({"foo"}):asymmetricMatch({"foo", "bar"}),
+				arrayNotContaining({}):asymmetricMatch({}),
+			}
+		) do
+			expect(test).to.equal(false)
+		end
+	end)
+
+	it("ArrayNotContaining throws for non-arrays", function()
+		expect(function()
+			arrayNotContaining('foo'):asymmetricMatch({})
+		end).to.throw()
+		-- deviation: additional test for non-arraylike tables
+		expect(function()
+			arrayNotContaining({x = 1}):asymmetricMatch({})
+		end).to.throw()
+	end)
+
+	it("ObjectContaining matches", function()
+		for _, test in ipairs(
+			{
+				objectContaining({}):asymmetricMatch("jest"),
+				objectContaining({foo = "foo"}):asymmetricMatch({foo = "foo", jest = "jest"}),
+				-- deviation: can't have nil values in table
+				objectContaining({foo = "undefined"}):asymmetricMatch({foo = "undefined"}),
+				objectContaining({first = objectContaining({second = {}})}):asymmetricMatch({
+					first = {second = {}},
+				}),
+			}
+		) do
+			expect(test).to.equal(true)
+		end
+	end)
+
+	it("ObjectContaining does not match", function()
+		for _, test in ipairs(
+			{
+				objectContaining({foo = "foo"}):asymmetricMatch({bar = "bar"}),
+				objectContaining({foo = "foo"}):asymmetricMatch({foo = "foox"}),
+				-- deviation: can't have nil values in table
+				objectContaining({foo = "undefined"}):asymmetricMatch({}),
+			}
+		) do
+			expect(test).to.equal(false)
+		end
+	end)
+
+	it("ObjectContaining matches defined properties", function()
+		local definedPropertyObject = {}
+		definedPropertyObject.foo = "bar"
+		expect(
+			objectContaining({foo = "bar"}):asymmetricMatch(definedPropertyObject)
+		).to.equal(true)
+	end)
+
+	-- deviation: omitted prototype properties test, same as the others in Lua
+
+	it("ObjectContaining throws for non-objects", function()
+		expect(function()
+			objectContaining(1337):asymmetricMatch()
+		end).to.throw()
+	end)
+
+	it("ObjectNotContaining matches", function()
+		for _, test in ipairs(
+			{
+				objectNotContaining({foo = "foo"}):asymmetricMatch({bar = "bar"}),
+				objectNotContaining({foo = "foo"}):asymmetricMatch({foo = "foox"}),
+				-- deviation: can't have nil values in table
+				objectNotContaining({foo = "undefined"}):asymmetricMatch({}),
+			}
+		) do
+			expect(test).to.equal(true)
+		end
+	end)
+
+	it("ObjectNotContaining does not match", function()
+		for _, test in ipairs(
+			{
+				objectNotContaining({foo = "foo"}):asymmetricMatch({
+					foo = "foo",
+					jest = "jest"
+				}),
+				-- deviation: can't have nil values in table
+				objectNotContaining({foo = "undefined"}):asymmetricMatch({foo = "undefined"}),
+				objectNotContaining({
+					first = objectNotContaining({second = {}}),
+				}):asymmetricMatch({first = {second = {}}}),
+			}
+		) do
+			expect(test).to.equal(false)
+		end
+	end)
+
+	it("ObjectNotContaining throws for non-objects", function()
+		expect(function()
+			objectNotContaining(1337):asymmetricMatch()
+		end).to.throw()
+	end)
+
+	it("StringContaining matches string against string", function()
+		expect(stringContaining("en*"):asymmetricMatch("queen*")).to.equal(true)
+		expect(stringContaining("en"):asymmetricMatch("queue")).to.equal(false)
+	end)
+
+	it("StringContaining throws if expected value is not string", function()
+		expect(function()
+			stringContaining({1}):asymmetricMatch("queen")
+		end).to.throw()
+	end)
+
+	it("StringContaining returns false if received value is not string", function()
+		expect(stringContaining("en*"):asymmetricMatch(1)).to.equal(false)
+	end)
+
+	it("StringNotContaining matches string against string", function()
+		expect(stringNotContaining("en*"):asymmetricMatch("queen*")).to.equal(false)
+		expect(stringNotContaining("en"):asymmetricMatch("queue")).to.equal(true)
+	end)
+
+	it("StringNotContaining throws if expected value is not string", function()
+		expect(function()
+			stringNotContaining({1}):asymmetricMatch("queen")
+		end).to.throw()
+	end)
+
+	it("StringNotContaining returns true if received value is not string", function()
+		expect(stringNotContaining("en*"):asymmetricMatch(1)).to.equal(true)
+	end)
+
+	-- deviation: stringMatching tests changed to use string patterns instead of regex
+	-- deviation: regexp test modified
+	it("StringMatching matches string against pattern", function()
+		expect(stringMatching("e+"):asymmetricMatch("queen")).to.equal(true)
+		expect(stringMatching("%s"):asymmetricMatch("queue")).to.equal(false)
+	end)
+
+	it("StringMatching matches string against string", function()
+		expect(stringMatching("en"):asymmetricMatch("queen")).to.equal(true)
+		expect(stringMatching("en"):asymmetricMatch("queue")).to.equal(false)
+	end)
+
+	it("StringMatching throws if expected value is neither string nor regexp", function()
+		expect(function()
+			stringMatching({1}):asymmetricMatch("queen")
+		end).to.throw()
+	end)
+
+	it("StringMatching returns false if received value is not string", function()
+		expect(stringMatching("en"):asymmetricMatch(1)).to.equal(false)
+	end)
+
+	it("StringMatching returns false even if coerced non-string received value matches pattern", function()
+		expect(stringMatching("nil"):asymmetricMatch(nil)).to.equal(false)
+	end)
+
+	-- deviation: regexp test modified
+	it("StringNotMatching matches string against pattern", function()
+		expect(stringNotMatching("e+"):asymmetricMatch("queen")).to.equal(false)
+		expect(stringNotMatching("%s"):asymmetricMatch("queue")).to.equal(true)
+	end)
+
+	it("StringNotMatching matches string against string", function()
+		expect(stringNotMatching("en"):asymmetricMatch("queen")).to.equal(false)
+		expect(stringNotMatching("en"):asymmetricMatch("queue")).to.equal(true)
+	end)
+
+	it("StringNotMatching throws if expected value is neither string nor regexp", function()
+		expect(function()
+			stringNotMatching({1}):asymmetricMatch("queen")
+		end).to.throw()
+	end)
+
+	it("StringNotMatching returns true if received value is not string", function()
+		expect(stringNotMatching("en"):asymmetricMatch(1)).to.equal(true)
+	end)
+end
