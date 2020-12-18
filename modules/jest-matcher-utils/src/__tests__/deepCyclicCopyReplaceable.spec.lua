@@ -166,4 +166,12 @@ return function()
 			});
 		]]
 	end)
+
+	-- deviation: Test not present in upstream
+	it("should keep metatable on copied table", function()
+		local a = {}
+		setmetatable(a, {test = 1})
+
+		expect(getmetatable(deepCyclicCopyReplaceable(a))["test"]).to.equal(1)
+	end)
 end

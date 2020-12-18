@@ -23,6 +23,8 @@ local printListItems = Collections.printListItems
 
 local AsymmetricMatcher = require(Workspace.plugins.AsymmetricMatcher)
 
+local getType = require(Workspace.Parent.JestGetType).getType
+
 -- deviation: isToStringedArrayType omitted because lua has no typed arrays
 
 local function printNumber(val: number): string
@@ -43,7 +45,9 @@ local function printFunction(val: any, printFunctionName: boolean): string
 	return '[Function ' .. 'anonymous' .. ']'
 end
 
--- deviation: printSymbol omitted
+local function printSymbol(val): string
+	return tostring(val)
+end
 
 -- deviation: printError omitted
 
@@ -57,7 +61,7 @@ local function printBasicValue(
 	escapeRegex: boolean,
 	escapeString: boolean
 ): string | nil
-	local typeOf = typeof(val)
+	local typeOf = getType(val)
 
 	-- deviation: we check for boolean type since we can't do strict equality comparison
 	-- deviation: undefined is treated as nil in lua
@@ -80,7 +84,9 @@ local function printBasicValue(
 	if typeOf == 'function' then
 		return printFunction(val, printFunctionName)
 	end
-	-- deviation: printSymbol omitted
+	if typeOf == 'symbol' then
+		return printSymbol(val)
+	end
 
 	-- deviation: modified to use Roblox DateTime
 	if typeOf == 'DateTime' then

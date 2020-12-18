@@ -8,6 +8,7 @@
 --  */
 
 return function()
+	local Symbol = require(script.Parent.Parent.Parent.Parent.Packages.LuauPolyfill).Symbol
 	local getType = require(script.Parent.Parent).getType
 
 	describe(".getType()", function()
@@ -42,7 +43,13 @@ return function()
 			expect(getType(DateTime.now())).to.equal('DateTime')
 		end)
 
-		-- deviation: test omitted because lua has no primitive symbol type
+		it("Symbol", function()
+			expect(getType(Symbol("test"))).to.equal("symbol")
+			expect(getType(Symbol.for_("test"))).to.equal("symbol")
+			expect(getType(Symbol.for_("test2"))).to.equal("symbol")
+			expect(getType(Symbol())).to.equal("symbol")
+		end)
+
 		-- deviation: test omitted because lua has no built-in RegExp, Map, or Set types
 		-- deviation: test omitted because lua has no primitive bigint type
 	end)

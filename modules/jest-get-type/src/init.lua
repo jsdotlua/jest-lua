@@ -28,10 +28,11 @@ function JestGetType.getType(value: any): string
 		return 'string'
 	elseif typeof(value) == 'DateTime' then
 		return 'DateTime'
+	elseif typeof(value) == 'userdata' and tostring(value):match("Symbol%(.*%)") then
+		return 'symbol'
 	-- deviation: code omitted because lua has no primitive bigint type
 	-- deviation: code omitted because lua has no built-in RegExp, Map, or Set types
 	-- deviation: code omitted because lua makes no distinction between tables, arrays, and objects
-	-- deviation: code omitted because lua has no primitive symbol type
 	end
 
 	error(string.format('value of unknown type: %s', tostring(value)))

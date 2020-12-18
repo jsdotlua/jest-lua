@@ -32,7 +32,9 @@ function deepCyclicCopyReplaceable(value: any, cycles: anyTable)
 	elseif cycles[value] then
 		return cycles[value]
 	else
-		return deepCyclicCopyTable(value, cycles)
+		local t = deepCyclicCopyTable(value, cycles)
+		setmetatable(t, getmetatable(value))
+		return t
 	end
 end
 

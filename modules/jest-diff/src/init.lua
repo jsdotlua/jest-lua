@@ -8,7 +8,9 @@
 
 local Workspace = script
 
-local Object = require(Workspace.Parent.Parent.Packages.LuauPolyfill).Object
+local Polyfills = require(Workspace.Parent.Parent.Packages.LuauPolyfill)
+local Object = Polyfills.Object
+local Symbol = Polyfills.Symbol
 
 local prettyFormat = require(Workspace.Parent.PrettyFormat).prettyFormat
 
@@ -64,7 +66,8 @@ local function tableCopy(t)
 end
 
 -- local pfPlugins = prettyFormat.plugins
-local PLUGINS = {} -- TODO: implement prettyformat plugins
+local AsymmetricMatcher = require(Workspace.Parent.PrettyFormat).plugins.AsymmetricMatcher
+local PLUGINS = { AsymmetricMatcher } -- TODO: continue to implement prettyFormat plugins
 local FORMAT_OPTIONS = {
 	plugins = PLUGINS,
 }
@@ -94,21 +97,21 @@ function JestDiff.diff(a: any, b: any, options: any?): string | nil
 	local aType = getType(a)
 	local expectedType = aType
 	local omitDifference = false
-	-- TODO: asymmetric matchers not implemented yet
-	-- if aType === 'object' && typeof a.asymmetricMatch === 'function' then
-	-- 	if a.$$typeof ~= Symbol.for('jest.asymmetricMatcher') then
-	-- 		-- // Do not know expected type of user-defined asymmetric matcher.
-	-- 		return nil
-	-- 	end
-	-- 	if typeof(a.getExpectedType) ~= 'function' then
-	-- 		-- // For example, expect.anything() matches either null or undefined
-	-- 		return nil
-	-- 	end
-	-- 	expectedType = a.getExpectedType()
-	-- 	-- // Primitive types boolean and number omit difference below.
-	-- 	-- // For example, omit difference for expect.stringMatching(regexp)
-	-- 	omitDifference = expectedType == 'string'
-	-- end
+
+	if aType == "table" and getType(a.asymmetricMatch) == "function" then
+		if a["$$typeof"] ~= Symbol.for_("jest.asymmetricMatcher") then
+			-- // Do not know expected type of user-defined asymmetric matcher.
+			return nil
+		end
+		if typeof(a.getExpectedType) ~= 'function' then
+			-- // For example, expect.anything() matches either null or undefined
+			return nil
+		end
+		expectedType = a:getExpectedType()
+		-- // Primitive types boolean and number omit difference below.
+		-- // For example, omit difference for expect.stringMatching(regexp)
+		omitDifference = expectedType == 'string'
+	end
 
 	if expectedType ~= getType(b) then
 		-- deviation: omitted chalk
