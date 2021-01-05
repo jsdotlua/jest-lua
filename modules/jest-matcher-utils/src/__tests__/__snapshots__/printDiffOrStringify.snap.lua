@@ -44,10 +44,10 @@ snapshots["printDiffOrStringify asymmetricMatcher circular map 1"] = [[
 
   Table {
     "a": 1,
+    "b": Any<number>,
 -   "c": 3,
 +   "c": 2,
     "circular": [Circular],
-    "b": Any<number>,
   }]]
 
 snapshots["printDiffOrStringify asymmetricMatcher circular object 1"] = [[
@@ -56,9 +56,9 @@ snapshots["printDiffOrStringify asymmetricMatcher circular object 1"] = [[
 
   Table {
     "a": [Circular],
+    "b": Any<number>,
 -   "c": 3,
 +   "c": 2,
-    "b": Any<number>,
   }]]
 
 snapshots["printDiffOrStringify asymmetricMatcher custom asymmetricMatcher 1"] = [[
@@ -81,20 +81,20 @@ snapshots["printDiffOrStringify asymmetricMatcher jest asymmetricMatcher 1"] = [
 
   Table {
     "a": Any<number>,
-    "h": Table {
-      Symbol(h): Any<string>,
-    },
+    "b": Anything,
     "c": ArrayContaining [
       1,
       3,
     ],
-    "b": Anything,
-    "e": StringMatching "jest",
     "d": StringContaining "jest",
--   "g": true,
-+   "g": false,
+    "e": StringMatching "jest",
     "f": ObjectContaining {
       "a": Any<DateTime>,
+    },
+-   "g": true,
++   "g": false,
+    "h": Table {
+      Symbol(h): Any<string>,
     },
   }]]
 
@@ -104,9 +104,9 @@ snapshots["printDiffOrStringify asymmetricMatcher map 1"] = [[
 
   Table {
     "a": 1,
+    "b": Any<number>,
 -   "c": 3,
 +   "c": 2,
-    "b": Any<number>,
   }]]
 
 snapshots["printDiffOrStringify asymmetricMatcher minimal test 1"] = [[
@@ -125,12 +125,12 @@ snapshots["printDiffOrStringify asymmetricMatcher nested object 1"] = [[
 
   Table {
     "a": Any<number>,
--   "c": 2,
-+   "c": 1,
     "b": Table {
       "a": 1,
       "b": Any<number>,
     },
+-   "c": 2,
++   "c": 1,
   }]]
 
 snapshots["printDiffOrStringify asymmetricMatcher object in array 1"] = [[
@@ -155,8 +155,8 @@ snapshots["printDiffOrStringify asymmetricMatcher transitive circular 1"] = [[
 -   "a": 3,
 +   "a": 2,
     "nested": Table {
-      "parent": [Circular],
       "b": Any<number>,
+      "parent": [Circular],
     },
   }]]
 

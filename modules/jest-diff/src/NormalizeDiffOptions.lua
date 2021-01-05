@@ -11,9 +11,7 @@ local Number = require(script.Parent.Parent.Parent.Packages.LuauPolyfill).Number
 
 -- deviation: omitted chalk import
 
-local NormalizeDiffOptions = {}
-
-function NormalizeDiffOptions.noColor(s): string
+local function noColor(s): string
 	return s
 end
 
@@ -22,22 +20,22 @@ local DIFF_CONTEXT_DEFAULT = 5
 -- deviation: all color formatting is set to noColor
 local OPTIONS_DEFAULT = {
 	aAnnotation = 'Expected',
-	aColor = NormalizeDiffOptions.noColor,
+	aColor = noColor,
 	aIndicator = '-',
 	bAnnotation = 'Received',
-	bColor = NormalizeDiffOptions.noColor,
+	bColor = noColor,
 	bIndicator = '+',
-	changeColor = NormalizeDiffOptions.noColor,
-	changeLineTrailingSpaceColor = NormalizeDiffOptions.noColor,
-	commonColor = NormalizeDiffOptions.noColor,
+	changeColor = noColor,
+	changeLineTrailingSpaceColor = noColor,
+	commonColor = noColor,
 	commonIndicator = ' ',
-	commonLineTrailingSpaceColor = NormalizeDiffOptions.noColor,
+	commonLineTrailingSpaceColor = noColor,
 	contextLines = DIFF_CONTEXT_DEFAULT,
 	emptyFirstOrLastLinePlaceholder = '',
 	expand = true,
 	includeChangeCounts = false,
 	omitAnnotationLines = false,
-	patchColor = NormalizeDiffOptions.noColor,
+	patchColor = noColor,
 }
 
 -- omitting return type due to CLI-37948
@@ -53,7 +51,7 @@ local function getContextLines(contextLines: number?)
 end
 
 -- // Pure function returns options with all properties.
-function NormalizeDiffOptions.normalizeDiffOptions(options)
+local function normalizeDiffOptions(options)
 	local ret_options = {}
 	for key, value in pairs(OPTIONS_DEFAULT) do
 		ret_options[key] = value
@@ -67,4 +65,7 @@ function NormalizeDiffOptions.normalizeDiffOptions(options)
 	return ret_options
 end
 
-return NormalizeDiffOptions
+return {
+	noColor = noColor,
+	normalizeDiffOptions = normalizeDiffOptions,
+}

@@ -7,9 +7,7 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local JestGetType = {}
-
-function JestGetType.getType(value: any): string
+local function getType(value: any): string
 	-- deviation: code omitted because lua has no primitive undefined type
 	-- lua makes no distinction between null and undefined so we just return nil
 	if value == nil then
@@ -38,9 +36,12 @@ function JestGetType.getType(value: any): string
 	error(string.format('value of unknown type: %s', tostring(value)))
 end
 
-function JestGetType.isPrimitive(value: any): boolean
+local function isPrimitive(value: any): boolean
 	-- deviation: explicitly define objects and functions as non primitives
 	return typeof(value) ~= 'table' and typeof(value) ~= 'function'
 end
 
-return JestGetType
+return {
+	getType = getType,
+	isPrimitive = isPrimitive,
+}

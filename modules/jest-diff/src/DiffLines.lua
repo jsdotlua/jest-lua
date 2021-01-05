@@ -8,8 +8,9 @@
 --  */
 
 local Workspace = script.Parent
+local Modules = Workspace.Parent
 
-local diff = require(Workspace.Parent.DiffSequences)
+local diff = require(Modules.DiffSequences)
 
 local DIFF_DELETE = require(Workspace.CleanupSemantic).DIFF_DELETE
 local DIFF_EQUAL = require(Workspace.CleanupSemantic).DIFF_EQUAL
@@ -21,7 +22,7 @@ local joinAlignedDiffsNoExpand = require(Workspace.JoinAlignedDiffs).joinAligned
 
 local normalizeDiffOptions = require(Workspace.NormalizeDiffOptions).normalizeDiffOptions
 
-local DiffLines = {}
+local diffLinesRaw
 
 local function isEmptyString(lines: { [number]: string }): boolean
 	return #lines == 1 and #lines[1] == 0
@@ -89,7 +90,7 @@ local function printAnnotation(
 		'\n\n'
 end
 
-function DiffLines.printDiffLines(
+local function printDiffLines(
 	diffs: { [number]: any },
 	options
 ): string
@@ -100,7 +101,7 @@ function DiffLines.printDiffLines(
 end
 
 -- // Compare two arrays of strings line-by-line. Format as comparison lines.
-function DiffLines.diffLinesUnified(
+local function diffLinesUnified(
 	aLines: { [number]: string },
 	bLines: { [number]: string },
 	options: any?
@@ -112,8 +113,8 @@ function DiffLines.diffLinesUnified(
 		bLines = {}
 	end
 
-	return DiffLines.printDiffLines(
-		DiffLines.diffLinesRaw(
+	return printDiffLines(
+		diffLinesRaw(
 			aLines,
 			bLines
 		),
@@ -124,7 +125,7 @@ end
 -- // Given two pairs of arrays of strings:
 -- // Compare the pair of comparison arrays line-by-line.
 -- // Format the corresponding lines in the pair of displayable arrays.
-function DiffLines.diffLinesUnified2(
+local function diffLinesUnified2(
 	aLinesDisplay: { [number]: string },
 	bLinesDisplay: { [number]: string },
 	aLinesCompare: { [number]: string },
@@ -145,10 +146,10 @@ function DiffLines.diffLinesUnified2(
 		#bLinesDisplay ~= #bLinesCompare
 	then
 		-- // Fall back to diff of display lines.
-		return DiffLines.diffLinesUnified(aLinesDisplay, bLinesDisplay, options)
+		return diffLinesUnified(aLinesDisplay, bLinesDisplay, options)
 	end
 
-	local diffs = DiffLines.diffLinesRaw(aLinesCompare, bLinesCompare)
+	local diffs = diffLinesRaw(aLinesCompare, bLinesCompare)
 
 	-- // Replace comparison lines with displayable lines.
 	local aIndex = 0
@@ -168,11 +169,11 @@ function DiffLines.diffLinesUnified2(
 		end
 	end
 
-	return DiffLines.printDiffLines(diffs, normalizeDiffOptions(options))
+	return printDiffLines(diffs, normalizeDiffOptions(options))
 end
 
 -- // Compare two arrays of strings line-by-line.
-function DiffLines.diffLinesRaw(
+function diffLinesRaw(
 	aLines:{ [number]: string },
 	bLines:{ [number]: string }
 ): { [number]: any }
@@ -223,4 +224,9 @@ function DiffLines.diffLinesRaw(
 	return diffs
 end
 
-return DiffLines
+return {
+	printDiffLines = printDiffLines,
+	diffLinesUnified = diffLinesUnified,
+	diffLinesUnified2 = diffLinesUnified2,
+	diffLinesRaw = diffLinesRaw,
+}

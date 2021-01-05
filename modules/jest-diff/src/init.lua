@@ -1,3 +1,4 @@
+--!nonstrict
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-diff/src/index.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -7,16 +8,18 @@
 --  */
 
 local Workspace = script
+local Modules = Workspace.Parent
+local Packages = Modules.Parent.Packages
 
-local Polyfills = require(Workspace.Parent.Parent.Packages.LuauPolyfill)
+local Polyfills = require(Packages.LuauPolyfill)
 local Object = Polyfills.Object
 local Symbol = Polyfills.Symbol
 
-local prettyFormat = require(Workspace.Parent.PrettyFormat).prettyFormat
+local prettyFormat = require(Modules.PrettyFormat).prettyFormat
 
 -- deviation: omitted chalk import
 
-local getType = require(Workspace.Parent.JestGetType).getType
+local getType = require(Modules.JestGetType).getType
 
 local DIFF_DELETE = require(Workspace.CleanupSemantic).DIFF_DELETE
 local DIFF_EQUAL = require(Workspace.CleanupSemantic).DIFF_EQUAL
@@ -37,19 +40,7 @@ local SIMILAR_MESSAGE = require(Workspace.Constants).SIMILAR_MESSAGE
 
 -- TODO: add external types
 
-local JestDiff = {
-	diffLinesRaw = diffLinesRaw,
-	diffLinesUnified = diffLinesUnified,
-	diffLinesUnified2 = diffLinesUnified2,
-
-	diffStringsRaw = diffStringsRaw,
-	diffStringsUnified = diffStringsUnified,
-
-	DIFF_DELETE = DIFF_DELETE,
-	DIFF_EQUAL = DIFF_EQUAL,
-	DIFF_INSERT = DIFF_INSERT,
-	Diff = Diff,
-}
+local comparePrimitive, compareObjects
 
 local function getCommonMessage(message: string, options: any?)
 	local commonColor = normalizeDiffOptions(options)['commonColor']
@@ -81,15 +72,12 @@ local FALLBACK_FORMAT_OPTIONS = {
 local FALLBACK_FORMAT_OPTIONS_0 = tableCopy(FALLBACK_FORMAT_OPTIONS)
 FALLBACK_FORMAT_OPTIONS_0['indent'] = 0
 
--- deviation: forward declaring
-local comparePrimitive
 -- local sortTable
-local compareObjects
 
 -- // Generate a string that will highlight the difference between two values
 -- // with green and red. (similar to how github does code diffing)
 -- // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-function JestDiff.diff(a: any, b: any, options: any?): string | nil
+local function diff(a: any, b: any, options: any?): string | nil
 	if Object.is(a, b) then
 		return getCommonMessage(NO_DIFF_MESSAGE, options)
 	end
@@ -138,7 +126,7 @@ function JestDiff.diff(a: any, b: any, options: any?): string | nil
 	return compareObjects(a, b, options)
 end
 
-comparePrimitive = function(
+function comparePrimitive(
 	a: number | boolean,
 	b: number | boolean,
 	options: any?
@@ -153,7 +141,7 @@ end
 
 -- deviation: omitted, no ordered tables in lua
 
-compareObjects = function(
+function compareObjects(
 	a,
 	b,
 	options: any?
@@ -213,4 +201,18 @@ compareObjects = function(
 	return difference
 end
 
-return JestDiff
+return {
+	diffLinesRaw = diffLinesRaw,
+	diffLinesUnified = diffLinesUnified,
+	diffLinesUnified2 = diffLinesUnified2,
+
+	diffStringsRaw = diffStringsRaw,
+	diffStringsUnified = diffStringsUnified,
+
+	DIFF_DELETE = DIFF_DELETE,
+	DIFF_EQUAL = DIFF_EQUAL,
+	DIFF_INSERT = DIFF_INSERT,
+	Diff = Diff,
+
+	diff = diff,
+}

@@ -7,9 +7,9 @@
 --  */
 
 return function()
-	local diffStringsUnified = require(script.Parent.Parent.PrintDiffs).diffStringsUnified
-
 	local snapshots = require(script.Parent.__snapshots__['GetAlignedDiffs.snap'])
+
+	local diffStringsUnified = require(script.Parent.Parent.PrintDiffs).diffStringsUnified
 
 	-- // 1. Use options to omit line colors.
 	local identity = function(s) return s end

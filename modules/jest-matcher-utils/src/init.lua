@@ -32,8 +32,6 @@ local prettyFormat = require(Modules.PrettyFormat).prettyFormat
 local Replaceable = require(Workspace.Replaceable)
 local deepCyclicCopyReplaceable = require(Workspace.deepCyclicCopyReplaceable)
 
-local JestMatcherUtils = {}
-
 --[[
 	ROBLOX TODO: Add plugins to this array as they get added in prettyFormat
 
@@ -67,12 +65,11 @@ export type MatcherHintOptions = {
 -- deviation: omitted DiffOptions since it's not currently present in jest-diff
 
 -- deviation: all chalk constants treated as tostring for now
-JestMatcherUtils.EXPECTED_COLOR = tostring -- chalk.green
-JestMatcherUtils.RECEIVED_COLOR = tostring -- chalk.red
-JestMatcherUtils.INVERTED_COLOR = tostring -- chalk.inverse
-JestMatcherUtils.BOLD_WEIGHT = tostring -- chalk.bold
-JestMatcherUtils.DIM_COLOR = tostring -- chalk.dim
-
+local EXPECTED_COLOR = tostring -- chalk.green
+local RECEIVED_COLOR = tostring -- chalk.red
+local INVERTED_COLOR = tostring -- chalk.inverse
+local BOLD_WEIGHT = tostring -- chalk.bold
+local DIM_COLOR = tostring -- chalk.dim
 
 local MULTILINE_REGEXP = "\n"
 local SPACE_SYMBOL = utf8.char(183) -- middle dot
@@ -94,11 +91,12 @@ local NUMBERS = {
 	"thirteen"
 }
 
-JestMatcherUtils.SUGGEST_TO_CONTAIN_EQUAL = "Looks like you wanted to test for object/array equality with the stricter `toContain` matcher. You probably need to use `toContainEqual` instead."
+local SUGGEST_TO_CONTAIN_EQUAL = "Looks like you wanted to test for object/array equality with the stricter `toContain` matcher. You probably need to use `toContainEqual` instead."
 
 local replaceTrailingSpaces, getCommonAndChangedSubstrings, isLineDiffable, shouldPrintDiff, replaceMatchedToAsymmetricMatcher, isAsymmetricMatcher
+local matcherErrorMessage, matcherHint
 
-function JestMatcherUtils.stringify(object: any, maxDepth: number?): string
+local function stringify(object: any, maxDepth: number?): string
 	maxDepth = maxDepth or 10
 
 	local MAX_LENGTH = 10000
@@ -127,14 +125,14 @@ function JestMatcherUtils.stringify(object: any, maxDepth: number?): string
 			Luau cleanly
 		]]
 		if maxDepth then
-			return JestMatcherUtils.stringify(object, math.floor(maxDepth / 2))
+			return stringify(object, math.floor(maxDepth / 2))
 		end
 	end
 	return result
 end
 
-function JestMatcherUtils.highlightTrailingWhitespace(text: string): string
-	return text:gsub("%s+$", JestMatcherUtils.INVERTED_COLOR("%1"))
+local function highlightTrailingWhitespace(text: string): string
+	return text:gsub("%s+$", INVERTED_COLOR("%1"))
 end
 
 -- Replace common spaces with middle dot at the end of any line
@@ -145,15 +143,15 @@ function replaceTrailingSpaces(text: string): string
 	)
 end
 
-function JestMatcherUtils.printReceived(object: any): string
-	return JestMatcherUtils.RECEIVED_COLOR(replaceTrailingSpaces(JestMatcherUtils.stringify(object)))
+local function printReceived(object: any): string
+	return RECEIVED_COLOR(replaceTrailingSpaces(stringify(object)))
 end
 
-function JestMatcherUtils.printExpected(value: any): string
-	return JestMatcherUtils.EXPECTED_COLOR(replaceTrailingSpaces(JestMatcherUtils.stringify(value)))
+local function printExpected(value: any): string
+	return EXPECTED_COLOR(replaceTrailingSpaces(stringify(value)))
 end
 
-function JestMatcherUtils.printWithType(
+local function printWithType(
 	name: string, -- 'Expected' or 'Received'
 	value: any,
 	print_: (any) -> string -- printExpected or printReceived
@@ -170,7 +168,7 @@ function JestMatcherUtils.printWithType(
 	return hasType .. hasValue
 end
 
-function JestMatcherUtils.ensureNoExpected(
+local function ensureNoExpected(
 	expected: any,
 	matcherName: string,
 	options: MatcherHintOptions?
@@ -184,17 +182,17 @@ function JestMatcherUtils.ensureNoExpected(
 		end
 
 		error(
-			JestMatcherUtils.matcherErrorMessage(
-				JestMatcherUtils.matcherHint(matcherString, nil, "", options),
+			matcherErrorMessage(
+				matcherHint(matcherString, nil, "", options),
 				'this matcher must not have an expected argument',
-				JestMatcherUtils.printWithType("Expected", expected, JestMatcherUtils.printExpected)
+				printWithType("Expected", expected, printExpected)
 			)
 		)
 	end
 end
 
 -- Ensures that 'actual' is of type 'number'
-function JestMatcherUtils.ensureActualIsNumber(
+local function ensureActualIsNumber(
 	actual: any,
 	matcherName: string,
 	options: MatcherHintOptions?
@@ -209,17 +207,17 @@ function JestMatcherUtils.ensureActualIsNumber(
 		end
 
 		error(
-			JestMatcherUtils.matcherErrorMessage(
-				JestMatcherUtils.matcherHint(matcherString, nil, nil, options),
-				JestMatcherUtils.RECEIVED_COLOR("received") .. " value must be a number",
-				JestMatcherUtils.printWithType("Received", actual, JestMatcherUtils.printReceived)
+			matcherErrorMessage(
+				matcherHint(matcherString, nil, nil, options),
+				RECEIVED_COLOR("received") .. " value must be a number",
+				printWithType("Received", actual, printReceived)
 			)
 		)
 	end
 end
 
 -- Ensures that 'expected' is of type 'number'
-function JestMatcherUtils.ensureExpectedIsNumber(
+local function ensureExpectedIsNumber(
 	expected: any,
 	matcherName: string,
 	options: MatcherHintOptions?
@@ -234,27 +232,27 @@ function JestMatcherUtils.ensureExpectedIsNumber(
 		end
 
 		error(
-			JestMatcherUtils.matcherErrorMessage(
-				JestMatcherUtils.matcherHint(matcherString, nil, nil, options),
-				JestMatcherUtils.EXPECTED_COLOR("expected") .. " value must be a number",
-				JestMatcherUtils.printWithType("Expected", expected, JestMatcherUtils.printExpected)
+			matcherErrorMessage(
+				matcherHint(matcherString, nil, nil, options),
+				EXPECTED_COLOR("expected") .. " value must be a number",
+				printWithType("Expected", expected, printExpected)
 			)
 		)
 	end
 end
 
 -- Ensures that 'actual' & 'expected' are of type 'number'
-function JestMatcherUtils.ensureNumbers(
+local function ensureNumbers(
 	actual: any,
 	expected: any,
 	matcherName: string,
 	options: MatcherHintOptions?
 ): ()
-	JestMatcherUtils.ensureActualIsNumber(actual, matcherName, options)
-	JestMatcherUtils.ensureExpectedIsNumber(expected, matcherName, options)
+	ensureActualIsNumber(actual, matcherName, options)
+	ensureExpectedIsNumber(expected, matcherName, options)
 end
 
-function JestMatcherUtils.ensureExpectedIsNonNegativeInteger(
+local function ensureExpectedIsNonNegativeInteger(
 	expected: any,
 	matcherName: string,
 	options: MatcherHintOptions?
@@ -271,10 +269,10 @@ function JestMatcherUtils.ensureExpectedIsNonNegativeInteger(
 		end
 
 		error(
-			JestMatcherUtils.matcherErrorMessage(
-				JestMatcherUtils.matcherHint(matcherString, nil, nil, options),
-				JestMatcherUtils.EXPECTED_COLOR("expected") .. " value must be a non-negative integer",
-				JestMatcherUtils.printWithType("Expected", expected, JestMatcherUtils.printExpected)
+			matcherErrorMessage(
+				matcherHint(matcherString, nil, nil, options),
+				EXPECTED_COLOR("expected") .. " value must be a non-negative integer",
+				printWithType("Expected", expected, printExpected)
 			)
 		)
 	end
@@ -298,7 +296,7 @@ function getCommonAndChangedSubstrings(
 			elseif diff[1] ~= op then
 				return reduced
 			elseif hasCommonDiff then
-				return reduced .. JestMatcherUtils.INVERTED_COLOR(diff[2])
+				return reduced .. INVERTED_COLOR(diff[2])
 			else
 				return reduced .. diff[2]
 			end
@@ -352,7 +350,7 @@ end
 
 local MAX_DIFF_STRING_LENGTH = 20000
 
-function JestMatcherUtils.printDiffOrStringify(
+function printDiffOrStringify(
 	expected: any,
 	received: any,
 	expectedLabel: string,
@@ -386,16 +384,16 @@ function JestMatcherUtils.printDiffOrStringify(
 		local diffs = diffStringsRaw(expected, received, true)
 		local hasCommonDiff = Array.some(diffs, function(diff) return diff[1] == DIFF_EQUAL end)
 
-		local printLabel = JestMatcherUtils.getLabelPrinter(expectedLabel, receivedLabel)
+		local printLabel = getLabelPrinter(expectedLabel, receivedLabel)
 		local expectedLine =
 			printLabel(expectedLabel) ..
-			JestMatcherUtils.printExpected(
+			printExpected(
 				getCommonAndChangedSubstrings(diffs, DIFF_DELETE, hasCommonDiff)
 			)
 
 		local receivedLine =
 			printLabel(receivedLabel) ..
-			JestMatcherUtils.printReceived(
+			printReceived(
 				getCommonAndChangedSubstrings(diffs, DIFF_INSERT, hasCommonDiff)
 			)
 
@@ -428,13 +426,13 @@ function JestMatcherUtils.printDiffOrStringify(
 		end
 	end
 
-	local printLabel = JestMatcherUtils.getLabelPrinter(expectedLabel, receivedLabel)
-	local expectedLine = printLabel(expectedLabel) .. JestMatcherUtils.printExpected(expected)
+	local printLabel = getLabelPrinter(expectedLabel, receivedLabel)
+	local expectedLine = printLabel(expectedLabel) .. printExpected(expected)
 	local receivedLine
-	if JestMatcherUtils.stringify(expected) == JestMatcherUtils.stringify(received) then
+	if stringify(expected) == stringify(received) then
 		receivedLine = printLabel(receivedLabel) .. "serializes to the same string"
 	else
-		receivedLine = printLabel(receivedLabel) .. JestMatcherUtils.printReceived(received)
+		receivedLine = printLabel(receivedLabel) .. printReceived(received)
 	end
 
 	return expectedLine .. "\n" .. receivedLine
@@ -522,7 +520,7 @@ function isAsymmetricMatcher(data: any)
 	return type_ == "table" and typeof(data.asymmetricMatch) == "function"
 end
 
-function JestMatcherUtils.diff(
+local function diff(
 	a: any,
 	b: any,
 	options -- deviation: omitted type annotation since we don't have DiffOptions translated
@@ -530,7 +528,7 @@ function JestMatcherUtils.diff(
 	return shouldPrintDiff(a, b) and diffDefault(a, b, options) or nil
 end
 
-function JestMatcherUtils.pluralize(word: string, count: number): string
+function pluralize(word: string, count: number): string
 	if count == 1 then
 		return (NUMBERS[count + 1] or count) .. " " .. word
 	else
@@ -546,7 +544,7 @@ end
 type PrintLabel = (string) -> string;
 
 -- deviation: no annotation for "..." args
-function JestMatcherUtils.getLabelPrinter(...): PrintLabel
+function getLabelPrinter(...): PrintLabel
 	local strings: Array<string> = {...}
 
 	local maxLength = Array.reduce(
@@ -568,22 +566,22 @@ function JestMatcherUtils.getLabelPrinter(...): PrintLabel
 		end
 end
 
-function JestMatcherUtils.matcherErrorMessage(
+function matcherErrorMessage(
 	hint: string, -- assertion returned from call to matcherHint
 	generic: string, -- condition which correct value must fulfill
 	specific: string? -- incorrect value returned from call to printWithType
 ): string
 	if typeof(specific) == "string" then
-		return string.format("%s\n\n%s: %s%s\n", hint, JestMatcherUtils.BOLD_WEIGHT("Matcher error"), generic, "\n\n" .. specific)
+		return string.format("%s\n\n%s: %s%s\n", hint, BOLD_WEIGHT("Matcher error"), generic, "\n\n" .. specific)
 	else
-		return string.format("%s\n\n%s: %s%s\n", hint, JestMatcherUtils.BOLD_WEIGHT("Matcher error"), generic, "")
+		return string.format("%s\n\n%s: %s%s\n", hint, BOLD_WEIGHT("Matcher error"), generic, "")
 	end
 end
 
 -- Display assertion for the report when a test fails.
 -- New format: rejects/resolves, not, and matcher name have black color
 -- Old format: matcher name has dim color
-function JestMatcherUtils.matcherHint(
+function matcherHint(
 	matcherName: string,
 	received: string?,
 	expected: string?,
@@ -602,30 +600,30 @@ function JestMatcherUtils.matcherHint(
 		receivedColor, secondArgument, secondArgumentColor
 	if options then
 		comment = options.comment or ""
-		expectedColor = options.expectedColor or JestMatcherUtils.EXPECTED_COLOR
+		expectedColor = options.expectedColor or EXPECTED_COLOR
 		isDirectExpectCall = options.isDirectExpectCall or false
 		isNot = options.isNot or false
 		promise = options.promise or ""
-		receivedColor = options.receivedColor or JestMatcherUtils.RECEIVED_COLOR
+		receivedColor = options.receivedColor or RECEIVED_COLOR
 		secondArgument = options.secondArgument or ""
-		secondArgumentColor = options.secondArgumentColor or JestMatcherUtils.EXPECTED_COLOR
+		secondArgumentColor = options.secondArgumentColor or EXPECTED_COLOR
 	end
 
 	local hint = ""
 	local dimString = "expect" -- concatenate adjacent dim substrings
 
 	if not isDirectExpectCall and received ~= "" then
-		hint = hint .. JestMatcherUtils.DIM_COLOR(dimString .. "(") .. receivedColor(received)
+		hint = hint .. DIM_COLOR(dimString .. "(") .. receivedColor(received)
 		dimString = ")"
 	end
 
 	if promise ~= "" then
-		hint = hint .. JestMatcherUtils.DIM_COLOR(dimString .. ".") .. promise
+		hint = hint .. DIM_COLOR(dimString .. ".") .. promise
 		dimString = ""
 	end
 
 	if isNot then
-		hint = hint .. JestMatcherUtils.DIM_COLOR(dimString .. ".") .. "not"
+		hint = hint .. DIM_COLOR(dimString .. ".") .. "not"
 		dimString = ""
 	end
 
@@ -635,16 +633,16 @@ function JestMatcherUtils.matcherHint(
 		dimString = dimString .. matcherName
 	else
 		-- New format: omit period from matcherName arg
-		hint = hint .. JestMatcherUtils.DIM_COLOR(dimString .. ".") .. matcherName
+		hint = hint .. DIM_COLOR(dimString .. ".") .. matcherName
 		dimString = ""
 	end
 
 	if expected == "" then
 		dimString = dimString .. "()"
 	else
-		hint = hint .. JestMatcherUtils.DIM_COLOR(dimString .. "(") .. expectedColor(expected)
+		hint = hint .. DIM_COLOR(dimString .. "(") .. expectedColor(expected)
 		if secondArgument ~= "" then
-			hint = hint .. JestMatcherUtils.DIM_COLOR(", ") .. secondArgumentColor(secondArgument)
+			hint = hint .. DIM_COLOR(", ") .. secondArgumentColor(secondArgument)
 		end
 		dimString = ")"
 	end
@@ -654,9 +652,35 @@ function JestMatcherUtils.matcherHint(
 	end
 
 	if dimString ~= "" then
-		hint = hint .. JestMatcherUtils.DIM_COLOR(dimString)
+		hint = hint .. DIM_COLOR(dimString)
 	end
 
 	return hint
 end
-return JestMatcherUtils
+
+return {
+	EXPECTED_COLOR = EXPECTED_COLOR,
+	RECEIVED_COLOR = RECEIVED_COLOR,
+	INVERTED_COLOR = INVERTED_COLOR,
+	BOLD_WEIGHT = BOLD_WEIGHT,
+	DIM_COLOR = DIM_COLOR,
+
+	SUGGEST_TO_CONTAIN_EQUAL = SUGGEST_TO_CONTAIN_EQUAL,
+
+	stringify = stringify,
+	highlightTrailingWhitespace = highlightTrailingWhitespace,
+	printReceived = printReceived,
+	printExpected = printExpected,
+	printWithType = printWithType,
+	ensureNoExpected = ensureNoExpected,
+	ensureActualIsNumber = ensureActualIsNumber,
+	ensureExpectedIsNumber = ensureExpectedIsNumber,
+	ensureNumbers = ensureNumbers,
+	ensureExpectedIsNonNegativeInteger = ensureExpectedIsNonNegativeInteger,
+	printDiffOrStringify = printDiffOrStringify,
+	diff = diff,
+	pluralize = pluralize,
+	getLabelPrinter = getLabelPrinter,
+	matcherErrorMessage = matcherErrorMessage,
+	matcherHint = matcherHint,
+}

@@ -12,7 +12,9 @@ return function()
 	local Modules = Workspace.Parent
 
 	local Replaceable = require(Workspace.Replaceable)
+
 	local equals = require(Modules.Expect.jasmineUtils).equals
+
 	local createSpy = require(Modules.JestJasmine2.jasmine.createSpy)
 
 	describe("Replaceable", function ()

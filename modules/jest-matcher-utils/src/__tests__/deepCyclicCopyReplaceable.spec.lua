@@ -11,10 +11,12 @@
 return function()
 	local Workspace = script.Parent.Parent
 	local Modules = Workspace.Parent
-	local Packages = Workspace.Parent.Parent.Packages
+	local Packages = Modules.Parent.Packages
+
+	local Number = require(Packages.LuauPolyfill).Number
 
 	local deepCyclicCopyReplaceable = require(Workspace.deepCyclicCopyReplaceable)
-	local Number = require(Packages.LuauPolyfill).Number
+
 	local equals = require(Modules.Expect.jasmineUtils).equals
 
 	type anyTable = { [any]: any }

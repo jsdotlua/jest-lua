@@ -8,8 +8,6 @@
 --  *
 --  */
 
-local Collections = {}
-
 -- local Types = require(script.Types)
 
 -- deviation: deviates from upstream substantially since Lua only has tables
@@ -23,7 +21,7 @@ local Collections = {}
 --  * with spacing, indentation, and comma
 --  * without surrounding punctuation (for example, braces)
 --  */
-function Collections.printTableEntries(
+local function printTableEntries(
 	t: any,
 	config,
 	indentation: string,
@@ -38,6 +36,8 @@ function Collections.printTableEntries(
 	for k, _ in pairs(t) do
 		table.insert(keys, k)
 	end
+
+	table.sort(keys, function(a,b) return type(a) .. tostring(a) < type(b) .. tostring(b) end)
 
 	if #keys > 0 then
 		result = result .. config.spacingOuter
@@ -82,7 +82,7 @@ end
 --  * with spacing, indentation, and comma
 --  * without surrounding punctuation (for example, brackets)
 --  **/
-function Collections.printListItems(
+local function printListItems(
 	list: { [number]: any },
 	config,
 	indentation: string,
@@ -116,4 +116,7 @@ function Collections.printListItems(
 	return result
 end
 
-return Collections
+return {
+	printTableEntries = printTableEntries,
+	printListItems = printListItems,
+}

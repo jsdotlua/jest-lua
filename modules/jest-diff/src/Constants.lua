@@ -6,11 +6,12 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local Constants = {}
+local NO_DIFF_MESSAGE = 'Compared values have no visual difference.'
 
-Constants.NO_DIFF_MESSAGE = 'Compared values have no visual difference.'
-
-Constants.SIMILAR_MESSAGE = 'Compared values serialize to the same structure.\n' ..
+local SIMILAR_MESSAGE = 'Compared values serialize to the same structure.\n' ..
 	'Printing internal object structure without calling `toJSON` instead.'
 
-return Constants
+return {
+	NO_DIFF_MESSAGE = NO_DIFF_MESSAGE,
+	SIMILAR_MESSAGE = SIMILAR_MESSAGE,
+}

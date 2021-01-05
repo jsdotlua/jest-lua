@@ -8,8 +8,9 @@
 --  */
 
 local Workspace = script.Parent
+local Packages = Workspace.Parent.Parent.Packages
 
-local Array = require(Workspace.Parent.Parent.Packages.LuauPolyfill).Array
+local Array = require(Packages.LuauPolyfill).Array
 
 local DIFF_DELETE = require(Workspace.CleanupSemantic).DIFF_DELETE
 local DIFF_EQUAL = require(Workspace.CleanupSemantic).DIFF_EQUAL

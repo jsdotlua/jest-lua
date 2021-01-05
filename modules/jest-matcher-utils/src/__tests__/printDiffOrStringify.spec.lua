@@ -9,11 +9,13 @@
 
 
 return function()
-	local snapshots = require(script.Parent.__snapshots__["printDiffOrStringify.snap"])
-
 	local Workspace = script.Parent.Parent
 	local Modules = Workspace.Parent
 	local Packages = Modules.Parent.Packages
+
+	local snapshots = require(script.Parent.__snapshots__["printDiffOrStringify.snap"])
+
+	local Symbol = require(Packages.LuauPolyfill).Symbol
 
 	local printDiffOrStringify = require(Workspace).printDiffOrStringify
 	-- deviation: omitted INVERTED_COLOR import because it doesn't have an
@@ -21,7 +23,6 @@ return function()
 
 	-- deviation: omitted alignedAnsiStyleSerializer
 
-	local Symbol = require(Packages.LuauPolyfill).Symbol
 	local jestExpect = require(Modules.Expect)
 
 	type Array<T> = { T }

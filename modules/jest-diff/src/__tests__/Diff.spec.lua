@@ -8,10 +8,11 @@
 
 return function()
 	local Workspace = script.Parent.Parent
+	local Packages = Workspace.Parent.Parent.Packages
 
 	local snapshots = require(script.Parent.__snapshots__['Diff.snap'])
 
-	local Number = require(Workspace.Parent.Parent.Packages.LuauPolyfill).Number
+	local Number = require(Packages.LuauPolyfill).Number
 
 	-- deviation: no require for chalk or stripAnsi because we don't support it
 
@@ -408,6 +409,7 @@ Options:
 		describe('from less to more', function()
 			local expected = table.concat({
 				'  Table {',
+				'    "searching": "",',
 				-- deviation: no diff here because Object and Array are both Table
 				-- '-   "sorting": Object {',
 				-- '+   "sorting": Array [',
@@ -419,7 +421,6 @@ Options:
 				-- deviation: diff is on the inner Table
 				'+     },',
 				'    },',
-				'    "searching": "",',
 				'  }',
 			}, '\n')
 
@@ -434,6 +435,7 @@ Options:
 		describe('from more to less', function()
 			local expected = table.concat({
 				'  Table {',
+				'    "searching": "",',
 				-- deviation: no diff here because Object and Array are both Table
 				-- '-   "sorting": Array [',
 				-- '-     Object {',
@@ -445,7 +447,6 @@ Options:
 				'      "fieldKey": "what",',
 				'-     },',
 				'    },',
-				'    "searching": "",',
 				'  }',
 			}, '\n')
 

@@ -36,6 +36,8 @@
 --  * 5. Add exports
 --  */
 
+local _diff_cleanupSemanticLossless, _diff_cleanupMerge
+
 local strsub, strbyte = string.sub, string.byte
 local strmatch, strfind = string.match, string.find
 local max, min, floor = math.max, math.min, math.floor
@@ -180,10 +182,6 @@ local function _diff_commonOverlap(text1: string, text2: string): number
 	end
 	return best
 end
-
--- deviation: forward declaring diff_cleanupSemanticLossless and diff_cleanupMerge
-local _diff_cleanupSemanticLossless
-local _diff_cleanupMerge
 
 --[[
 * Reduce the number of edits by eliminating semantically trivial equalities.

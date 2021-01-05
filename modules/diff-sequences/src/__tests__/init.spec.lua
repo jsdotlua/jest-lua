@@ -10,15 +10,16 @@
 
 return function()
 	local Workspace = script.Parent.Parent
+	local Packages = Workspace.Parent.Parent.Packages
+
+	local Polyfills = require(Packages.LuauPolyfill)
+	local Number = Polyfills.Number
+	local Object = Polyfills.Object
+	local Array = Polyfills.Array
 
 	local snapshots = require(script.Parent.__snapshots__['init.snap'])
 
 	local diff = require(Workspace)
-
-	local LuauPolyfill = require(Workspace.Parent.Parent.Packages.LuauPolyfill)
-	local Number = LuauPolyfill.Number
-	local Object = LuauPolyfill.Object
-	local Array = LuauPolyfill.Array
 
 	local function arrayEquals(a1, a2)
 		return #a1 == #a2 and

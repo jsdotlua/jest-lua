@@ -161,9 +161,9 @@ snapshots['falls back to not call toJSON if it throws and then objects have diff
 + Received  + 1
 
   Table {
-    "toJSON": [Function anonymous],
 -   "line": 1,
 +   "line": 2,
+    "toJSON": [Function anonymous],
   }]]
 
 -- deviation: edited to say 'Table' and 'Function anonymous', ordering changed, unescaped backticks
@@ -175,9 +175,9 @@ Printing internal object structure without calling `toJSON` instead.
 + Received  + 1
 
   Table {
-    "toJSON": [Function anonymous],
 -   "line": 1,
 +   "line": 2,
+    "toJSON": [Function anonymous],
   }]]
 
 snapshots['oneline strings 1'] = [[

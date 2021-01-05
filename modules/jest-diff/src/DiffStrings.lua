@@ -8,8 +8,9 @@
 --  */
 
 local Workspace = script.Parent
+local Modules = Workspace.Parent
 
-local diffSequences = require(Workspace.Parent.DiffSequences)
+local diffSequences = require(Modules.DiffSequences)
 
 local DIFF_DELETE = require(Workspace.CleanupSemantic).DIFF_DELETE
 local DIFF_EQUAL = require(Workspace.CleanupSemantic).DIFF_EQUAL

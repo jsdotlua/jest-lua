@@ -7,16 +7,14 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local AsymmetricMatcher = {}
-
-local Workspace = script.Parent
-local Packages = Workspace.Parent.Parent.Parent.Packages
+local Workspace = script.Parent.Parent
+local Packages = Workspace.Parent.Parent.Packages
 
 local Symbol = require(Packages.LuauPolyfill).Symbol
 
 -- deviation: omitting external type definitions
 
-local Collections = require(Workspace.Parent.Collections)
+local Collections = require(Workspace.Collections)
 local printListItems = Collections.printListItems
 local printObjectProperties = Collections.printTableEntries
 
@@ -31,7 +29,7 @@ local function unescape(s: string): string
 	)
 end
 
-function AsymmetricMatcher.serialize(
+local function serialize(
 	val: any,
 	config,
 	indentation: string,
@@ -99,8 +97,11 @@ function AsymmetricMatcher.serialize(
 	return val:toAsymmetricMatcher()
 end
 
-function AsymmetricMatcher.test(val: any): boolean
+local function test(val: any): boolean
 	return typeof(val) == 'table' and val ~= nil and val['$$typeof'] == asymmetricMatcher
 end
 
-return AsymmetricMatcher
+return {
+	serialize = serialize,
+	test = test,
+}

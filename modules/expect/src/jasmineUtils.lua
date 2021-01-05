@@ -20,8 +20,6 @@
 -- WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -- */
 
-local jasmineUtils = {}
-
 local Workspace = script.Parent
 local Packages = Workspace.Parent.Parent.Packages
 
@@ -42,9 +40,9 @@ type Table = { any: any };
 
 type Tester = (any, any) -> any;
 
-local eq, hasKey, hasDefinedKey, keys, isAsymmetric, asymmetricMatch, getPrototype
+local isAsymmetric, asymmetricMatch, eq, keys, hasDefinedKey, hasKey, isA
 
-function jasmineUtils.equals(
+local function equals(
 	a: any,
 	b: any,
 	customTesters: Array<Tester>?,
@@ -58,7 +56,7 @@ end
 -- deviation: omitted functionToString since we don't use it
 
 function isAsymmetric(obj: any)
-	return toJSBoolean(obj) and typeof(obj) == "table" and jasmineUtils.isA('function', obj.asymmetricMatch)
+	return toJSBoolean(obj) and typeof(obj) == "table" and isA('function', obj.asymmetricMatch)
 end
 
 function asymmetricMatch(a: any, b: any)
@@ -259,7 +257,7 @@ function hasKey(obj: any, key: string)
 	return rawget(obj, key)
 end
 
-function jasmineUtils.isA(typeName: string, value: any)
+function isA(typeName: string, value: any)
 	return getType(value) == typeName
 end
 
@@ -275,7 +273,7 @@ end
 --]]
 
 -- deviation: Function annotation for func omitted
-function jasmineUtils.fnNameFor(func)
+local function fnNameFor(func)
 	-- Upstream code omitted for now but translated below:
 	--[[
 		if func.name then
@@ -283,17 +281,16 @@ function jasmineUtils.fnNameFor(func)
 		end
 	]]
 
-	-- deviation: In Lua, we can't get the same type of information about a
-	-- function's contents as in Javascript so we settle for returning
-	-- "[Function]"
+	-- ROBLOX TODO: (ADO-1258) Return more advanced function information, if
+	-- possible, by using traceback
 	return "[Function]"
 end
 
-function jasmineUtils.isUndefined(obj: any)
+local function isUndefined(obj: any)
 	return obj == nil
 end
 
-function getPrototype(obj)
+local function getPrototype(obj)
 	if getmetatable(obj) ~= nil then
 		return getmetatable(obj).__index
 	end
@@ -301,7 +298,7 @@ function getPrototype(obj)
 	return nil
 end
 
-function jasmineUtils.hasProperty(obj: any, property: string): boolean
+local function hasProperty(obj: any, property: string): boolean
 	if not obj then
 		return false
 	end
@@ -315,20 +312,11 @@ function jasmineUtils.hasProperty(obj: any, property: string): boolean
 	end
 end
 
-
--- // SENTINEL constants are from https://github.com/facebook/immutable-js
-local IS_KEYED_SENTINEL = '@@__IMMUTABLE_KEYED__@@'
-local IS_SET_SENTINEL = '@@__IMMUTABLE_SET__@@'
-local IS_ORDERED_SENTINEL = '@@__IMMUTABLE_ORDERED__@@'
-
-function jasmineUtils.isImmutableUnorderedKeyed(maybeKeyed: any)
-	-- Use the toJSBoolean function in place of the !! operator since
-	-- maybeKeyed can be any
-	return toJSBoolean(maybeKeyed) and toJSBoolean(maybeKeyed[IS_KEYED_SENTINEL]) and not toJSBoolean(maybeKeyed[IS_ORDERED_SENTINEL])
-end
-
-function jasmineUtils.isImmutableUnorderedSet(maybeSet: any)
-	return toJSBoolean(maybeSet) and toJSBoolean(maybeSet[IS_SET_SENTINEL]) and not toJSBoolean(maybeSet[IS_ORDERED_SENTINEL])
-end
-
-return jasmineUtils
+return {
+	equals = equals,
+	isA = isA,
+	fnNameFor = fnNameFor,
+	isUndefined = isUndefined,
+	getPrototype = getPrototype,
+	hasProperty = hasProperty
+}

@@ -12,6 +12,8 @@ return function()
 	local Modules = Workspace.Parent
 	local Packages = Workspace.Parent.Parent.Packages
 
+	local Symbol = require(Packages.LuauPolyfill).Symbol
+
 	local snapshots = require(script.Parent.__snapshots__["init.snap"])
 
 	local equals = require(Modules.Expect.jasmineUtils).equals
@@ -30,8 +32,6 @@ return function()
 	local matcherHint = JestMatcherUtils.matcherHint
 	local pluralize = JestMatcherUtils.pluralize
 	local stringify = JestMatcherUtils.stringify
-
-	local Symbol = require(Packages.LuauPolyfill).Symbol
 
 	describe("stringify()", function()
 		local fixtures = {

@@ -103,10 +103,10 @@ return function()
 			local expected = table.concat({
 				'Table {',
 				'  false: "boolean",',
+				'  0: "number",',
 				'  "0": "string",',
 				'  "false": "string",',
 				'  "nil": "string",',
-				'  0: "number",',
 				'}',
 			}, '\n')
 			expect(prettyFormat(val)).to.equal(expected)
@@ -212,18 +212,18 @@ return function()
 			expect(prettyFormat(val)).to.equal(
 				table.concat({
 					'Table {',
-					'  "type": "svg",',
 					'  "props": Table {',
 					'    "children": Table {',
-					'      "type": "polyline",',
 					'      "props": Table {',
 					'        "id": "J",',
 					'        "points": "0.5,0.460',
 					'0.5,0.875',
 					'0.25,0.875",',
 					'      },',
+					'      "type": "polyline",',
 					'    },',
 					'  },',
+					'  "type": "svg",',
 					'}',
 				}, '\n')
 			)
@@ -505,7 +505,7 @@ return function()
 					toJSON = false,
 					value = true,
 				})
-			).to.equal('Table {\n  "value": true,\n  "toJSON": false,\n}')
+			).to.equal('Table {\n  "toJSON": false,\n  "value": true,\n}')
 		end)
 
 		it('does not call toJSON recursively', function()
@@ -557,9 +557,9 @@ return function()
 				).to.equal(
 					'{' ..
 					table.concat({
-						'"number": {0, -0, 123, -123, inf, -inf, nan}',
-						'"nil": 0',
 						'"boolean": {false, true}',
+						'"nil": 0',
+						'"number": {0, -0, 123, -123, inf, -inf, nan}',
 						'"string": {"", "non-empty"}',
 					}, ', ') ..
 					'}'

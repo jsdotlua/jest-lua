@@ -8,11 +8,14 @@
 --  */
 
 return function()
-	local Module = require(script.Parent.Parent)
-	local prettyFormat = Module.prettyFormat
-	local AsymmetricMatcher = Module.plugins.AsymmetricMatcher
+	local Workspace = script.Parent.Parent
+	local Modules = Workspace.Parent
 
-	local jestExpect = require(script.Parent.Parent.Parent.Expect)
+	local PrettyFormat = require(Workspace)
+	local prettyFormat = PrettyFormat.prettyFormat
+	local AsymmetricMatcher = PrettyFormat.plugins.AsymmetricMatcher
+
+	local jestExpect = require(Modules.Expect)
 
 	-- deviation: don't need fnNameFor
 
@@ -156,10 +159,10 @@ return function()
 			'      "a": ArrayContaining [\n' ..
 			'        1,\n' ..
 			'      ],\n' ..
-			'      "c": Any<string>,\n' ..
 			'      "b": Anything,\n' ..
-			'      "e": StringMatching "jest",\n' ..
+			'      "c": Any<string>,\n' ..
 			'      "d": StringContaining "jest",\n' ..
+			'      "e": StringMatching "jest",\n' ..
 			'      "f": ObjectContaining {\n' ..
 			'        "test": "case",\n' ..
 			'      },\n' ..
@@ -189,10 +192,10 @@ return function()
 			'    "a": ArrayContaining [\n' ..
 			'      1,\n' ..
 			'    ],\n' ..
-			'    "c": Any<string>,\n' ..
 			'    "b": Anything,\n' ..
-			'    "e": StringMatching "jest",\n' ..
+			'    "c": Any<string>,\n' ..
 			'    "d": StringContaining "jest",\n' ..
+			'    "e": StringMatching "jest",\n' ..
 			'    "f": ObjectContaining {\n' ..
 			'      "composite": Table {\n' ..
 			'        "exact",\n' ..
@@ -289,8 +292,8 @@ return function()
 				'    [Table],\n' ..
 				'  ],\n' ..
 				'  ObjectContaining {\n' ..
-				'    "primitive": "printed",\n' ..
 				'    "array": [Table],\n' ..
+				'    "primitive": "printed",\n' ..
 				'  },\n' ..
 				'}'
 			)
@@ -319,10 +322,10 @@ return function()
 				'"test": {' ..
 					'"nested": ObjectContaining {' ..
 						'"a": ArrayContaining [1], ' ..
-						'"c": Any<string>, ' ..
 						'"b": Anything, '..
-						'"e": StringMatching "jest", ' ..
+						'"c": Any<string>, ' ..
 						'"d": StringContaining "jest", ' ..
+						'"e": StringMatching "jest", ' ..
 						'"f": ObjectContaining {"test": "case"}' ..
 					'}' ..
 				'}' ..

@@ -8,16 +8,15 @@
 --  */
 
 local Workspace = script.Parent
+local Packages = Workspace.Parent.Parent.Packages
 
-local Array = require(Workspace.Parent.Parent.Packages.LuauPolyfill).Array
+local Array = require(Packages.LuauPolyfill).Array
 
 local DIFF_DELETE = require(Workspace.CleanupSemantic).DIFF_DELETE
 local DIFF_EQUAL = require(Workspace.CleanupSemantic).DIFF_EQUAL
 local DIFF_INSERT = require(Workspace.CleanupSemantic).DIFF_INSERT
 
 -- TODO: add external types
-
-local JoinAlignedDiffs = {}
 
 local function formatTrailingSpaces(
 	line: string,
@@ -111,7 +110,7 @@ end
 -- //
 -- // Given array of aligned strings with inverse highlight formatting,
 -- // return joined lines with diff formatting (and patch marks, if needed).
-function JoinAlignedDiffs.joinAlignedDiffsNoExpand(
+local function joinAlignedDiffsNoExpand(
 	diffs: { [number]: any },
 	options
 ): string
@@ -301,7 +300,7 @@ end
 -- //
 -- // Given array of aligned strings with inverse highlight formatting,
 -- // return joined lines with diff formatting.
-function JoinAlignedDiffs.joinAlignedDiffsExpand(
+local function joinAlignedDiffsExpand(
 	diffs: { [number]: any },
 	options
 ): string
@@ -325,4 +324,7 @@ function JoinAlignedDiffs.joinAlignedDiffsExpand(
 	)
 end
 
-return JoinAlignedDiffs
+return {
+	joinAlignedDiffsNoExpand = joinAlignedDiffsNoExpand,
+	joinAlignedDiffsExpand = joinAlignedDiffsExpand,
+}

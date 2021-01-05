@@ -7,13 +7,12 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local PrettyFormat = {}
-
 -- deviation: ansi-styles not ported
 -- local Types = require(script.Types)
 
 local Workspace = script
-local Packages = Workspace.Parent.Parent.Packages
+local Modules = Workspace.Parent
+local Packages = Modules.Parent.Packages
 
 local isNaN = require(Packages.LuauPolyfill).Number.isNaN
 
@@ -23,9 +22,11 @@ local printListItems = Collections.printListItems
 
 local AsymmetricMatcher = require(Workspace.plugins.AsymmetricMatcher)
 
-local getType = require(Workspace.Parent.JestGetType).getType
+local getType = require(Modules.JestGetType).getType
 
 -- deviation: isToStringedArrayType omitted because lua has no typed arrays
+
+local printer, createIndent
 
 local function printNumber(val: number): string
 	-- explicitly check for nan because string representation is platform dependent
@@ -101,9 +102,6 @@ local function printBasicValue(
 
 	return nil
 end
-
--- deviation: declaring printer
-local printer
 
 -- deviation: function to check whether a table is an array
 -- https://stackoverflow.com/questions/7526223/how-do-i-know-if-a-table-is-an-array/52697380#52697380
@@ -250,7 +248,7 @@ local function findPlugin(plugins, val)
 	return nil
 end
 
-printer = function(
+function printer(
 	val: any,
 	config,
 	indentation: string,
@@ -323,9 +321,6 @@ local function getOption(options, opt)
 	return DEFAULT_OPTIONS[opt]
 end
 
--- deviation: declaring createIndent
-local createIndent
-
 local function getIndent(options)
 	if options and options.min then
 		return ''
@@ -371,7 +366,7 @@ local function getConfig(
 	}
 end
 
-createIndent = function(indent: number): string
+function createIndent(indent: number): string
 	-- deviation: used string repeat instead of a table join, also don't need the +1
 	return string.rep(' ', indent)
 end
@@ -381,7 +376,7 @@ end
 --  * @param val any potential JavaScript object
 --  * @param options Custom settings
 --  */
-function PrettyFormat.prettyFormat(
+local function prettyFormat(
 	val: any,
 	options
 ): string
@@ -409,8 +404,12 @@ function PrettyFormat.prettyFormat(
 	return printComplexValue(val, getConfig(options), '', 0, {}, nil)
 end
 
-PrettyFormat.plugins = {
+local plugins = {
 	AsymmetricMatcher = AsymmetricMatcher
 }
 
-return PrettyFormat
+return {
+	prettyFormat = prettyFormat,
+
+	plugins = plugins,
+}

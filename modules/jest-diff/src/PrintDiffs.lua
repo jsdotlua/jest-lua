@@ -8,8 +8,9 @@
 --  */
 
 local Workspace = script.Parent
+local Packages = Workspace.Parent.Parent.Packages
 
-local Array = require(Workspace.Parent.Parent.Packages.LuauPolyfill).Array
+local Array = require(Packages.LuauPolyfill).Array
 
 local DIFF_EQUAL = require(Workspace.CleanupSemantic).DIFF_EQUAL
 local cleanupSemantic = require(Workspace.CleanupSemantic).cleanupSemantic
@@ -25,7 +26,7 @@ local normalizeDiffOptions = require(Workspace.NormalizeDiffOptions).normalizeDi
 
 -- TODO: add external types
 
-local PrintDiffs = {}
+local diffStringsRaw
 
 local function hasCommonDiff(diffs: { [number]: any }, isMultiline: boolean): boolean
 	if isMultiline then
@@ -45,7 +46,7 @@ end
 
 -- // Compare two strings character-by-character.
 -- // Format as comparison lines in which changed substrings have inverse colors.
-function PrintDiffs.diffStringsUnified(
+local function diffStringsUnified(
 	a: string,
 	b: string,
 	options
@@ -54,7 +55,7 @@ function PrintDiffs.diffStringsUnified(
 		local isMultiline = a:find('\n') ~= nil or b:find('\n') ~= nil
 
 		-- // getAlignedDiffs assumes that a newline was appended to the strings.
-		local diffs = PrintDiffs.diffStringsRaw(
+		local diffs = diffStringsRaw(
 			isMultiline and a .. '\n' or a,
 			isMultiline and b .. '\n' or b,
 			true -- // cleanupSemantic
@@ -73,7 +74,7 @@ end
 
 -- // Compare two strings character-by-character.
 -- // Optionally clean up small common substrings, also known as chaff.
-function PrintDiffs.diffStringsRaw(
+function diffStringsRaw(
 	a: string,
 	b: string,
 	cleanup: boolean
@@ -87,4 +88,7 @@ function PrintDiffs.diffStringsRaw(
 	return diffs
 end
 
-return PrintDiffs
+return {
+	diffStringsUnified = diffStringsUnified,
+	diffStringsRaw = diffStringsRaw,
+}
