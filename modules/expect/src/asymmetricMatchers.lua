@@ -12,7 +12,6 @@ local Workspace = script.Parent
 local Packages = Workspace.Parent.Parent.Packages
 
 local Polyfill = require(Packages.LuauPolyfill)
-local Object = Polyfill.Object
 local Array = Polyfill.Array
 local Symbol = Polyfill.Symbol
 
@@ -24,11 +23,7 @@ local hasProperty = JasmineUtils.hasProperty
 local isA = JasmineUtils.isA
 local isUndefined = JasmineUtils.isUndefined
 
--- ROBLOX TODO: import from utils when implemented
--- local emptyObject = require(Workspace.Utils).emptyObject
-local emptyObject = function(obj: any): boolean
-	return typeof(obj) == "table" and #Object.keys(obj) == 0 or false
-end
+local emptyObject = require(Workspace.utils).emptyObject
 
 local AsymmetricMatcher = {}
 AsymmetricMatcher.__index = AsymmetricMatcher
