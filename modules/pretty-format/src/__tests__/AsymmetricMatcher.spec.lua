@@ -24,20 +24,20 @@ return function()
 	end)
 
 	-- deviation: modified to use our implementation of Any
-	for key, type_ in pairs(
+	for _, type_ in ipairs(
 		{
-			['number'] = 1,
-			['string'] = 'string',
-			['function'] = function() end,
-			['table'] = {},
+			'number',
+			'string',
+			'function',
+			'table',
 		}
 	) do
-		it(string.format('supports any(%s)', key), function()
+		it(string.format('supports any(%s)', type_), function()
 			local result = prettyFormat(jestExpect.any(type_), options)
-			expect(result).to.equal(string.format('Any<%s>', key))
+			expect(result).to.equal(string.format('Any<%s>', type_))
 		end)
 
-		it(string.format('supports nested any(%s)', key), function()
+		it(string.format('supports nested any(%s)', type_), function()
 			local result = prettyFormat(
 				{
 					test = {
@@ -49,7 +49,7 @@ return function()
 			expect(result).to.equal(
 				string.format(
 					'Table {\n  "test": Table {\n    "nested": Any<%s>,\n  },\n}',
-					key
+					type_
 				)
 			)
 		end)

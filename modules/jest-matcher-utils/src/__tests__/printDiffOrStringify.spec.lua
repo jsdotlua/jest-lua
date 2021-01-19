@@ -121,14 +121,14 @@ return function()
 		-- ROBLOX TODO: Implement these tests once we have asymmetricMatcher (ADO-1247)
 		describe("asymmetricMatcher", function()
 			it("minimal test", function()
-				local expected = {a = jestExpect.any(100), b = 2}
+				local expected = {a = jestExpect.any("number"), b = 2}
 				local received = {a = 1, b = 1}
 				expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify asymmetricMatcher minimal test 1"])
 			end)
 
 			it("jest asymmetricMatcher", function()
 				local expected = {
-					a = jestExpect.any(100),
+					a = jestExpect.any("number"),
 					b = jestExpect.anything(),
 					c = jestExpect.arrayContaining({1, 3}),
 					d = "jest is awesome",
@@ -150,7 +150,7 @@ return function()
 					d = jestExpect.stringContaining("jest"),
 					e = jestExpect.stringMatching("jest"),
 					f = jestExpect.objectContaining({
-						a = jestExpect.any(DateTime.now()),
+						a = jestExpect.any("DateTime"),
 					}),
 					g = false,
 				}
@@ -194,12 +194,12 @@ return function()
 					a = 1,
 					b = {
 						a = 1,
-						b = jestExpect.any(100),
+						b = jestExpect.any("number"),
 					},
 					c = 2,
 				}
 				local received = {
-					a = jestExpect.any(100),
+					a = jestExpect.any("number"),
 					b = {
 						a = 1,
 						b = 2,
@@ -210,13 +210,13 @@ return function()
 			end)
 
 			it("array", function()
-				local expected : Array<any> = {1, jestExpect.any(100), 3}
+				local expected : Array<any> = {1, jestExpect.any("number"), 3}
 				local received : Array<any> = {1, 2, 2}
 				expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify asymmetricMatcher array 1"])
 			end)
 
 			it("object in array", function()
-				local expected : Array<any> = {1, {a = 1, b = jestExpect.any(100)}, 3}
+				local expected : Array<any> = {1, {a = 1, b = jestExpect.any("number")}, 3}
 				local received : Array<any> = {1, {a = 1, b = 2}, 2}
 				expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify asymmetricMatcher object in array 1"])
 			end)
@@ -224,7 +224,7 @@ return function()
 			it("map", function()
 				local expected: Map<any, any> = {
 					a = 1,
-					b = jestExpect.any(100),
+					b = jestExpect.any("number"),
 					c = 3,
 				}
 				local received: Map<any, any> = {
@@ -237,7 +237,7 @@ return function()
 
 			it("circular object", function()
 				local expected: any = {
-					b = jestExpect.any(100),
+					b = jestExpect.any("number"),
 					c = 3,
 				}
 				expected.a = expected
@@ -253,7 +253,7 @@ return function()
 				local expected: any = {
 					a = 3,
 				}
-				expected.nested = {b = jestExpect.any(100), parent = expected}
+				expected.nested = {b = jestExpect.any("number"), parent = expected}
 				local received: any = {
 					a = 2,
 				}
@@ -262,7 +262,7 @@ return function()
 			end)
 
 			it("circular array", function()
-				local expected: Array<any> = {1, jestExpect.any(100), 3}
+				local expected: Array<any> = {1, jestExpect.any("number"), 3}
 				table.insert(expected, expected)
 				local received: Array<any> = {1, 2, 2}
 				table.insert(received, received)
@@ -272,7 +272,7 @@ return function()
 			it("circular map", function()
 				local expected: Map<any, any> = {
 					a = 1,
-					b = jestExpect.any(100),
+					b = jestExpect.any("number"),
 					c = 3,
 				}
 				expected["circular"] = expected

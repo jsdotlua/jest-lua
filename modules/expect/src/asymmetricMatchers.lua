@@ -36,13 +36,19 @@ function AsymmetricMatcher.new(sample: any)
 	return self
 end
 
+-- deviation: our implementation of any has significant deviations, check README for more info
+-- > any("number"):asymmetricMatch(1) -- true
+-- > any("number"):toAsymmetricMatcher() -- "Any<number>"
+-- > any(ClassA):asymmetricMatch(ClassA.new()) -- true
+-- > any(ClassA):asymmetricMatch(ClassB.new()) -- false
+-- > any(ClassA):asymmetricMatch(DerivedClassA.new()) -- true
 local Any = {}
 Any.__index = Any
 setmetatable(Any, AsymmetricMatcher)
 function Any.new(sample: any)
-	if sample == nil then
+	if typeof(sample) ~= "table" and typeof(sample) ~= "string" then
 		error(
-			"any() expects to be passed a constructor function. " ..
+			"any() expects to be passed a typename string or a prototype class. " ..
 			"Please pass one or use anything() to match any object."
 		)
 	end
@@ -55,14 +61,23 @@ function Any:asymmetricMatch(other: any): boolean
 	-- deviation: simplified since this covers all the cases in Lua
 	local selfType = getType(self.sample)
 	local otherType = getType(other)
-	if selfType == otherType then
-		return true
-	-- typeof(null) = "object"
-	elseif selfType == "table" and other == nil then
-		return true
-	elseif selfType == "table" and
-		otherType == "table" and
-		getmetatable(self.sample) == getmetatable(other)
+	-- compare metatable to check instance of Lua prototypical class
+	if 
+		selfType == "table" and
+		otherType == "table"
+	then
+		local mt = getmetatable(other)
+		while mt ~= nil do
+			if self.sample == mt then
+				return true
+			end
+			mt = getmetatable(mt)
+		end
+		return false
+	-- check type matches type provided by string
+	elseif
+		selfType == "string" and
+		self.sample == otherType
 	then
 		return true
 	end
@@ -75,18 +90,11 @@ end
 
 function Any:getExpectedType(): string
 	-- deviation: simplified since this already covers all the cases in Lua
-	return getType(self.sample)
+	return tostring(self.sample)
 end
 
 function Any:toAsymmetricMatcher(): string
-	-- deviation: the Any matcher is used to match "any" instance of a type i.e.
-	-- > any(Number):asymmetricMatch(1) => true
-	-- > any(Number):toAsymmetricMatcher() => "Any<Number>"
-	-- since we don't have constructors for primitive types, we go with the following interface
-	-- where it matches any thing of the same type
-	-- > any(100):asymmetricMatch(1) => true
-	-- > any(100):toAsymmetricMatcher() => "Any<number>"
-	return "Any<" .. getType(self.sample) .. ">"
+	return "Any<" .. tostring(self.sample) .. ">"
 end
 
 local Anything = {}

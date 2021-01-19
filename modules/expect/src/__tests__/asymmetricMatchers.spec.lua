@@ -22,41 +22,80 @@ return function()
 	local stringNotMatching = AsymmetricMatchers.stringNotMatching
 
 	it("Any.asymmetricMatch()", function()
-		local Thing = {}
-		Thing.__index = Thing
-		function Thing.new(sample: any)
-			local self = {}
-			setmetatable(self, Thing)
-			return self
-		end
-
 		-- deviation: no primitive constructors in lua, we just supply a primitive
 		for _, test in ipairs(
 			{
 				any("string"):asymmetricMatch("jest"),
-				any(100):asymmetricMatch(1),
-				any(function() return 1 end):asymmetricMatch(function() end),
-				any(false):asymmetricMatch(true),
+				any("number"):asymmetricMatch(1),
+				any("function"):asymmetricMatch(function() end),
+				any("boolean"):asymmetricMatch(true),
 				-- deviation: omitted BigInt and Symbol
-				any({x = 1}):asymmetricMatch({}),
-				any({x = 1}):asymmetricMatch(nil),
-				any({1, 2}):asymmetricMatch({}),
-				any(Thing):asymmetricMatch(Thing.new())
+				any("table"):asymmetricMatch({}),
+				-- deviation: typeof(nil) is nil in Lua, not object, so test below is omitted
+				-- any("table"):asymmetricMatch(nil),
 			}
 		) do
 			expect(test).to.equal(true)
 		end
 	end)
 
-	it("Any.toAsymmetricMatcher()", function()
-		-- deviation: typeof(100) => "number"
-		expect(any(100):toAsymmetricMatcher()).to.equal("Any<number>")
+	-- deviation: custom test for the Any matcher with Lua prototypes
+	it("Any.asymmetricMatch() with Lua prototypical classes", function()
+		local ThingOne = {}
+		ThingOne.__index = ThingOne
+		function ThingOne.new()
+			local self = {}
+			setmetatable(self, ThingOne)
+			return self
+		end
+
+		local ThingTwo = {}
+		ThingTwo.__index = ThingTwo
+		function ThingTwo.new()
+			local self = {}
+			setmetatable(self, ThingTwo)
+			return self
+		end
+
+		local ChildThingOne = {}
+		ChildThingOne.__index = ChildThingOne
+		setmetatable(ChildThingOne, ThingOne)
+		function ChildThingOne.new()
+			local self = {}
+			setmetatable(self, ChildThingOne)
+			return self
+		end
+
+		local GrandchildThingOne = {}
+		GrandchildThingOne.__index = GrandchildThingOne
+		setmetatable(GrandchildThingOne, ChildThingOne)
+		function GrandchildThingOne.new()
+			local self = {}
+			setmetatable(self, GrandchildThingOne)
+			return self
+		end
+
+		expect(any(ThingOne):asymmetricMatch(ThingOne.new())).to.equal(true)
+		expect(any(ThingOne):asymmetricMatch(ThingTwo.new())).to.equal(false)
+		expect(any(ThingTwo):asymmetricMatch(ThingOne.new())).to.equal(false)
+		expect(any(ThingTwo):asymmetricMatch(ThingTwo.new())).to.equal(true)
+
+		expect(any(ChildThingOne):asymmetricMatch(ChildThingOne.new())).to.equal(true)
+		expect(any(ThingOne):asymmetricMatch(ChildThingOne.new())).to.equal(true)
+		expect(any(ThingTwo):asymmetricMatch(ChildThingOne.new())).to.equal(false)
+		expect(any(GrandchildThingOne):asymmetricMatch(ChildThingOne.new())).to.equal(false)
+
+		expect(any(ThingOne):asymmetricMatch(GrandchildThingOne.new())).to.equal(true)
+		expect(any(ChildThingOne):asymmetricMatch(GrandchildThingOne.new())).to.equal(true)
+		expect(any(ThingTwo):asymmetricMatch(GrandchildThingOne.new())).to.equal(false)
 	end)
 
-	-- deviation: functions are anonymous in lua
+	it("Any.toAsymmetricMatcher()", function()
+		expect(any("number"):toAsymmetricMatcher()).to.equal("Any<number>")
+	end)
+
 	it('Any.toAsymmetricMatcher() with function', function()
-		local fn = function() end
-		expect(any(fn):toAsymmetricMatcher()).to.equal('Any<function>')
+		expect(any("function"):toAsymmetricMatcher()).to.equal('Any<function>')
 	end)
 
 	it("Any throws when called with empty constructor", function()
