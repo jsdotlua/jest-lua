@@ -17,7 +17,7 @@ return function()
 	local emptyObject = require(Workspace.utils).emptyObject
 	local getObjectSubset = require(Workspace.utils).getObjectSubset
 	local getPath = require(Workspace.utils).getPath
-	-- local iterableEquality = require(Workspace.utils).iterableEquality
+	local iterableEquality = require(Workspace.utils).iterableEquality
 	local subsetEquality = require(Workspace.utils).subsetEquality
 
 	local equals = require(Workspace.jasmineUtils).equals
@@ -416,5 +416,15 @@ return function()
 
 	-- ROBLOX TODO: (ADO-1217) implement tests once we have Map/Set functionality
 	describe("iterableEquality", function()
+		-- deviation: this test is not present in upstream
+		it('circularity defined on different property', function()
+			local a = {}
+			local b = {}
+			a.a = a
+			b.a = {}
+			b.a.a = a
+			expect(iterableEquality(a,b)).to.equal(false)
+			expect(iterableEquality(b,a)).to.equal(false)
+		end)
 	end)
 end

@@ -178,7 +178,7 @@ local function ensureNoExpected(
 		local matcherString = matcherName
 
 		if not options then
-			matcherString = "[.not]" .. matcherString
+			matcherString = "[.never]" .. matcherString
 		end
 
 		error(
@@ -203,7 +203,7 @@ local function ensureActualIsNumber(
 		local matcherString = matcherName
 
 		if not options then
-			matcherString = "[.not]" .. matcherString
+			matcherString = "[.never]" .. matcherString
 		end
 
 		error(
@@ -228,7 +228,7 @@ local function ensureExpectedIsNumber(
 		local matcherString = matcherName
 
 		if not options then
-			matcherString = "[.not]" .. matcherString
+			matcherString = "[.never]" .. matcherString
 		end
 
 		error(
@@ -265,7 +265,7 @@ local function ensureExpectedIsNonNegativeInteger(
 		local matcherString = matcherName
 
 		if not options then
-			matcherString = "[.not]" .. matcherString
+			matcherString = "[.never]" .. matcherString
 		end
 
 		error(
@@ -623,7 +623,7 @@ function matcherHint(
 	end
 
 	if isNot then
-		hint = hint .. DIM_COLOR(dimString .. ".") .. "not"
+		hint = hint .. DIM_COLOR(dimString .. ".") .. "never"
 		dimString = ""
 	end
 

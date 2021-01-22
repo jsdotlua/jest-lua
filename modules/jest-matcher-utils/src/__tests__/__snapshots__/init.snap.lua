@@ -15,7 +15,7 @@ local snapshots = {}
 	of 'null' and 'undefined'
 ]]
 snapshots["ensureNoExpected() throws error when expected is not undefined with matcherName 1"] = [[
-expect(received)[.not].toBeDefined()
+expect(received)[.never].toBeDefined()
 
 Matcher error: this matcher must not have an expected argument
 
@@ -24,7 +24,7 @@ Expected has value: {"a": 1}
 ]]
 
 snapshots["ensureNoExpected() throws error when expected is not undefined with matcherName and options 1"] = [[
-expect(received).not.toBeDefined()
+expect(received).never.toBeDefined()
 
 Matcher error: this matcher must not have an expected argument
 
@@ -33,7 +33,7 @@ Expected has value: {"a": 1}
 ]]
 
 snapshots["ensureNumbers() throws error when expected is not a number (backward compatibility) 1"] = [[
-expect(received)[.not].toBeCloseTo(expected)
+expect(received)[.never].toBeCloseTo(expected)
 
 Matcher error: expected value must be a number
 
@@ -41,7 +41,7 @@ Expected has type:  string
 Expected has value: "not_a_number"]]
 
 snapshots["ensureNumbers() throws error when received is not a number (backward compatibility) 1"] = [[
-expect(received)[.not].toBeCloseTo(expected)
+expect(received)[.never].toBeCloseTo(expected)
 
 Matcher error: received value must be a number
 
@@ -59,7 +59,7 @@ Received has value: ""
 ]]
 
 snapshots["ensureNumbers() with options promise empty isNot true expected 1"] = [[
-expect(received).not.toBeCloseTo(expected)
+expect(received).never.toBeCloseTo(expected)
 
 Matcher error: expected value must be a number
 
@@ -76,7 +76,7 @@ Expected has value: "0"
 ]]
 
 snapshots["ensureNumbers() with options promise rejects isNot true received 1"] = [[
-expect(received).rejects.not.toBeCloseTo(expected)
+expect(received).rejects.never.toBeCloseTo(expected)
 
 Matcher error: received value must be a number
 
@@ -94,7 +94,7 @@ Received has value: false
 ]]
 
 snapshots["ensureNumbers() with options promise resolves isNot true expected 1"] = [[
-expect(received).resolves.not.toBeCloseTo(expected)
+expect(received).resolves.never.toBeCloseTo(expected)
 
 Matcher error: expected value must be a number
 

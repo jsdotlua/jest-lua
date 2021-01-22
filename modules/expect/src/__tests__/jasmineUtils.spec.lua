@@ -18,7 +18,9 @@ return function()
 	local Workspace = script.Parent.Parent
 	local Packages = Workspace.Parent.Parent.Packages
 
-	local Number = require(Packages.LuauPolyfill).Number
+	local Polyfill = require(Packages.LuauPolyfill)
+	local Number = Polyfill.Number
+	local Symbol = Polyfill.Symbol
 
 	local jasmineUtils = require(Workspace.jasmineUtils)
 	local equals = jasmineUtils.equals
@@ -176,6 +178,21 @@ return function()
 			expect(equals(c, d)).to.equal(false)
 			expect(equals(d, c)).to.equal(false)
 		end)
+
+		it("tests equality between symbols", function()
+			local a = Symbol.for_("foo")
+			local b = Symbol.for_("foo")
+
+			expect(equals(a,b)).to.equal(true)
+
+			local c = {}
+			local d = {}
+
+			c[a] = 5
+			d[b] = 5
+
+			expect(equals(c,d)).to.equal(true)
+		end)
 	end)
 
 	-- deviation: these tests do not correlate to any upstream tests
@@ -215,7 +232,6 @@ return function()
 			expect(function() jasmineUtils.hasProperty(objC, "prop1") end).never.to.throw()
 			expect(function() jasmineUtils.hasProperty(objC, "prop2") end).to.throw()
 		end)
-
 	end)
 
 end

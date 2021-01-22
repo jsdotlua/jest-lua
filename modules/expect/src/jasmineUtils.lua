@@ -127,7 +127,8 @@ function eq(
 
 	if className == "boolean" or
 		className == "string" or
-		className == "number"
+		className == "number" or
+		className == "userdata"
 	then
 		return Object.is(a,b)
 	elseif className == "DateTime" then

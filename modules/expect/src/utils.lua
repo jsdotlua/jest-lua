@@ -54,32 +54,20 @@ local function getPath(
 	propertyPath
 ): GetPath
 	if not Array.isArray(propertyPath) then
-		local newPropertyPath = {}
-
-		for item in propertyPath:gmatch("[^%.]+") do
-			table.insert(newPropertyPath, item)
-		end
-
-		-- case where we have a trailing "." character
-		if string.sub(propertyPath, #propertyPath, #propertyPath) == "." then
-		 	newPropertyPath:insert("")
-		 end
-
-		--case where propertyPath doesn't have a "." character so we do
-		-- what propertyPath.split() does: return [propertyPath]
-		if #newPropertyPath == 0 then
-			table.insert(newPropertyPath, propertyPath)
-		end
-
-		propertyPath = newPropertyPath
+		propertyPath = propertyPath:split('.')
 	end
 
 	if #propertyPath > 0 then
 		local lastProp = #propertyPath == 1
 		local prop = propertyPath[1]
-		local newObject = object[prop]
 
-		if not lastProp and newObject == nil then
+		-- We need this code block in Lua since attempting object[prop] on a non-table
+		-- will throw an error
+		local ok, res = pcall(function() return object[prop] end)
+
+		local newObject = res
+
+		if not ok or (not lastProp and newObject == nil) then
 			-- This is not the last prop in the chain. If we keep recursing
 			-- we will get a nil access error. At this point we know that the
 			-- chain has broken and we can return right away.
@@ -202,7 +190,7 @@ local function iterableEquality(
 		return nil
 	end
 
-	-- deviation omitting constructor check
+	-- deviation: omitting constructor check
 
 	local length = #aStack
 	while length > 0 do
@@ -213,8 +201,15 @@ local function iterableEquality(
 		if aStack[length] == a then
 			return bStack[length] == b
 		end
+
+		-- deviation: this if check is not included in upstream
+		if bStack[length] == b then
+			return aStack[length] == a
+		end
+
 		length -= 1
 	end
+
 	table.insert(aStack, a)
 	table.insert(bStack, b)
 
@@ -307,7 +302,7 @@ function subsetEquality(
 
 								return equals(localObject[key], localSubset[key], {iterableEquality})
 							]]
-							return equals(localObject[key], localSubset[key])
+							return equals(localObject[key], localSubset[key], {iterableEquality})
 						end
 						seenReferences[localSubset[key]] = true
 					end
@@ -425,7 +420,7 @@ end
 return {
 	getPath = getPath,
 	getObjectSubset = getObjectSubset,
-	--iterableEquality = iterableEquality,
+	iterableEquality = iterableEquality,
 	subsetEquality = subsetEquality,
 	typeEquality = typeEquality,
 	sparseArrayEquality = sparseArrayEquality,
