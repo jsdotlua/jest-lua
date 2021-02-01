@@ -2,49 +2,37 @@
   "name": "JestRoblox",
   "tree": {
     "$className": "Folder",
-    "TestEZ": {
-      "$path": "src"
-    },
-    "Packages": {
-      "$path": "Packages"
-    },
-    "Modules": {
-      "$className": "Folder",
-      "JestGetType": {
-        "$path": "modules/jest-get-type/src"
-      },
-      "DiffSequences": {
-        "$path": "modules/diff-sequences/src"
-      },
-      "React": {
+    "Root": {
+      "$path": "Packages",
+      "src": {
         "$className": "Folder",
+        "TestEZ": {
+          "$path": "src/TestEZ"
+        },
         "Modules": {
           "$className": "Folder",
-          "ReactIs": {
-            "$path": "modules/external/react/modules/react-is/src"
+          "JestGetType": {
+            "$path": "src/modules/jest-get-type/src"
           },
-          "RobloxJSPolyfill": {
-            "$path": "modules/external/react/modules/roblox-js-polyfill/src"
+          "DiffSequences": {
+            "$path": "src/modules/diff-sequences/src"
           },
-          "Shared": {
-            "$path": "modules/external/react/modules/shared/src"
+          "PrettyFormat": {
+            "$path": "src/modules/pretty-format/src"
+          },
+          "JestMatcherUtils": {
+            "$path": "src/modules/jest-matcher-utils/src"
+          },
+          "Expect": {
+            "$path": "src/modules/expect/src"
+          },
+          "JestDiff": {
+            "$path": "src/modules/jest-diff/src"
+          },
+          "JestJasmine2": {
+            "$path": "src/modules/jest-jasmine2/src"
           }
         }
-      },
-      "PrettyFormat": {
-        "$path": "modules/pretty-format/src"
-      },
-      "JestMatcherUtils": {
-        "$path": "modules/jest-matcher-utils/src"
-      },
-      "Expect": {
-        "$path": "modules/expect/src"
-      },
-      "JestDiff": {
-        "$path": "modules/jest-diff/src"
-      },
-      "JestJasmine2": {
-        "$path": "modules/jest-jasmine2/src"
       }
     }
   }

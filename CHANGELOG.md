@@ -1,6 +1,53 @@
-# TestEZ Changelog
+# Jest Roblox Changelog
 
-## Unreleased Changes
+## 0.5.0 (2021-01-29)
+* Initial release of Jest Roblox. TestEZ has been rebranded as of this release.
+* Added `expect` aligned to [Jest's expect (26.5.3)](https://jestjs.io/docs/en/26.5/expect). 
+  * Requires an explicit `require` from [`JestRoblox.Globals`](https://jestjs.io/docs/en/26.5/api) to use.
+  * Refer to the Jest documentation on expect for usage documentation. Refer to the `README.md` in `src/Modules/expect` for details on deviations from upstream.
+  * `expect` matchers added:
+  ```
+  expect().toBe()
+  expect().toBeCloseTo()
+  expect().toBeDefined()
+  expect().toBeFalsy()
+  expect().toBeGreaterThan()
+  expect().toBeGreaterThanOrEqual()
+  expect().toBeInstanceOf()
+  expect().toBeLessThan()
+  expect().toBeLessThanOrEqual()
+  expect().toBeNan() (aliased as toBeNaN)
+  expect().toBeNil() (aliased as toBeNull)
+  expect().toBeTruthy()
+  expect().toBeUndefined()
+  expect().toContain()
+  expect().toContainEqual()
+  expect().toEqual()
+  expect().toHaveLength()
+  expect().toHaveProperty()
+  expect().toMatch()
+  expect().toMatchObject()
+  ```
+  * `asymmetricMatchers` added:
+  ```
+  expect.any()
+  expect.anything()
+  expect.arrayContaining()
+  expect.arrayNotContaining()
+  expect.objectContaining()
+  expect.objectNotContaining()
+  expect.stringContaining()
+  expect.stringNotContaining()
+  expect.stringMatching()
+  expect.stringNotMatching()
+  ```
+  * Custom `asymmetricMatchers` for any objects with a `asymmetricMatch(self, other)` method.
+  * Negative variants of all the above matchers with the keyword `never`, i.e. `expect().never.toBe()` or `expect.never.stringContaining()`.
+  * TestEZ `expect` will be removed soon.
+
+---
+
+## TestEZ Changelog
 
 ## 0.4.1 (2020-10-30)
 * `afterEach` blocks now run their code after `it` blocks fail or error

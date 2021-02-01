@@ -1,9 +1,9 @@
 [package]
-name = "roblox/testez"
+name = "roblox/jest-roblox"
 author = "Roblox"
 license = "Apache2"
 content_root = "src"
-version = "0.4.1"
+version = "0.5.0"
 
 [dependencies]
 LuauPolyfill = { git = "https://github.com/roblox/luau-polyfill", rev = "main" }

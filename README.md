@@ -18,56 +18,27 @@ Jest Roblox can run within Roblox itself, as well as inside roblox-cli for testi
 
 We use Jest Roblox at Roblox for testing our apps, in-game core scripts, built-in Roblox Studio plugins, as well as libraries like [Roact](https://github.com/Roblox/roact) and [Rodux](https://github.com/Roblox/rodux).
 
+For now, refer to the [Jest Documentation](https://jestjs.io/docs/en/26.5/getting-started.html) for documentation on the new expect functionality and the [TestEZ Documentation](https://roblox.github.io/testez) for everything else.
+
+---
+
+Add this package to your `dev_dependencies` in your `rotriever.toml`, for example:
+```
+JestRoblox = "github.com/roblox/jest-roblox@0.5.0"
+```
+
+Then, require anything you need from `JestRoblox.Globals`:
+```
+local JestRoblox = require(Packages.JestRoblox)
+local expect = JestRoblox.Globals.expect
+```
+
+---
+
 ## Inspiration and Prior Work
 Jest Roblox is a Roblox port of the open source JavaScript testing framework [Jest](https://github.com/facebook/jest). Modules in the `modules` directory are  aligned to [v26.5.3](https://github.com/facebook/jest/tree/v26.5.3) of Jest, but the current public API is compatible with TestEZ [v0.4.0](https://github.com/Roblox/testez/tree/v0.4.0) while we complete our alignment.
 
 It is also an evolution of an older test framework used at Roblox, [TestEZ](https://github.com/Roblox/TestEZ). It is currently forked from [commit d983722](https://github.com/Roblox/testez/tree/d983722fb085141db3a7e80a37b30b03a69e6e55) of TestEZ. As such, the `expect` syntax is based on Chai, a JavaScript assertion library commonly used with Mocha, but it will soon be modified to align to Jest's `expect` syntax.
-
----
-
-## Running Jest Roblox tests
-You need to create a GitHub Access Token:
-* GitHub.com -> Settings -> Developer Settings -> Personal Access Tokens
-* On that same page, you then need to click Enable SSO
-* BE SURE TO COPY THE ACCESS TOKEN SOMEWHERE 
-
-```
-npm login --registry=https://npm.pkg.github.com/ --scope=@roblox
-```
-For your password here, you will enter the GitHub Access Token from the instructions above.
-
-```
-npm install --global @roblox/rbx-aged-cli
-```
-
-Before you can use rbx-aged-cli, you need to be logged into the VPN so the Artifactory repository is accessible.
-
-```
-mkdir ~/bin
-rbx-aged-cli download roblox-cli --dst ~/bin
-export PATH=$PATH:~/bin
-roblox-cli --help
-git clone git@github.com:Roblox/jest-roblox.git
-cd jest-roblox
-```
-
-Foreman uses Rust, so you'll have to install Rust first.
-
-```
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-export PATH=$PATH:$HOME/.cargo/bin
-cargo install foreman
-foreman github-auth  # your auth token should be in your ~/.npmrc
-foreman install
-export PATH=$PATH:~/.foreman/bin/
-```
-
-Now you can run the tests, edit code, and contribute!
-
-```
-rotrieve install
-bin/ci.sh
-```
 
 ---
 
