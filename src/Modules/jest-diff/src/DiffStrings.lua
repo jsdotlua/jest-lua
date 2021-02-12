@@ -1,4 +1,3 @@
---!nonstrict
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-diff/src/diffStrings.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.

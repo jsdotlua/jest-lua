@@ -1,4 +1,3 @@
---!strict
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-matcher-utils/src/__tests__/__snapshots__/index.test.ts.snap
 local snapshots = {}
 

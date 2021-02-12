@@ -1,4 +1,3 @@
---!nonstrict
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-diff/src/cleanupSemantic.ts
 -- implementation adapted from:
 -- https://github.com/google/diff-match-patch/blob/858b3812cc02e7d48da4beebb21d4d80dc1d3062/lua/diff_match_patch.lua

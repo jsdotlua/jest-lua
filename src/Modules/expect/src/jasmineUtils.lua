@@ -1,4 +1,3 @@
---!nonstrict
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/jasmineUtils.ts
 -- /*
 -- Copyright (c) 2008-2016 Pivotal Labs
