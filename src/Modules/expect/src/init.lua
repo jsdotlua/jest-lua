@@ -28,6 +28,8 @@ local Object = Polyfill.Object
 local matcherUtils = require(Modules.JestMatcherUtils)
 
 local matchers = require(Workspace.matchers)
+local toThrowMatchers = require(Workspace.toThrowMatchers).matchers
+
 local JasmineUtils = require(Workspace.jasmineUtils)
 local equals = JasmineUtils.equals
 
@@ -82,13 +84,15 @@ local function getMessage(message: any?)
 	end
 end
 
+-- deviation: matcher does not have RawMatcherFn type annotation and the
+-- the function return is not annotated with ThrowingMatcherFn
 function makeThrowingMatcher(
-	matcher,--: RawMatcherFn
+	matcher,
 	isNot: boolean,
 	promise: string,
 	actual: any,
 	err: any?
-) --: ThrowingMatcherFn
+)
 	return function(...)
 		local args = {...}
 		local throws = true
@@ -200,6 +204,7 @@ Expect.stringMatching = stringMatching
 
 -- // add default jest matchers
 setMatchers(matchers, true, Expect)
+setMatchers(toThrowMatchers, true, Expect)
 
 setmetatable(Expect, {__call = expect_})
 return Expect

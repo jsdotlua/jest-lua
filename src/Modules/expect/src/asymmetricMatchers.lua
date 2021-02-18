@@ -14,6 +14,7 @@ local Packages = Modules.Parent.Parent
 local Polyfills = require(Packages.LuauPolyfill)
 local Array = Polyfills.Array
 local Symbol = Polyfills.Symbol
+local instanceof = Polyfills.instanceof
 
 local getType = require(Workspace.Parent.JestGetType).getType
 
@@ -66,14 +67,7 @@ function Any:asymmetricMatch(other: any): boolean
 		selfType == "table" and
 		otherType == "table"
 	then
-		local mt = getmetatable(other)
-		while mt ~= nil do
-			if self.sample == mt then
-				return true
-			end
-			mt = getmetatable(mt)
-		end
-		return false
+		return instanceof(other, self.sample)
 	-- check type matches type provided by string
 	elseif
 		selfType == "string" and
@@ -231,14 +225,6 @@ function ObjectContaining:getExpectedType(): string
 	return "object"
 end
 
--- deviation: stringContaining shouldn't accept string patterns so we escape special characters
-local function escape(s: string): string
-	return s:gsub(
-		"([%$%%%^%*%(%)%.%[%]%+%-%?])",
-		"%%%1"
-	)
-end
-
 local StringContaining = {}
 StringContaining.__index = StringContaining
 setmetatable(StringContaining, AsymmetricMatcher)
@@ -246,7 +232,6 @@ function StringContaining.new(sample: string, inverse: boolean?)
 	if not isA("string", sample) then
 		error("Expected is not a String")
 	end
-	sample = escape(sample)
 	local self = AsymmetricMatcher.new(sample)
 	self.inverse = inverse or false
 	setmetatable(self, StringContaining)
@@ -254,7 +239,7 @@ function StringContaining.new(sample: string, inverse: boolean?)
 end
 
 function StringContaining:asymmetricMatch(other: string): boolean
-	local result = isA('string', other) and other:find(self.sample)
+	local result = isA('string', other) and other:find(self.sample, 1, true)
 
 	if self.inverse then
 		return not result

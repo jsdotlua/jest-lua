@@ -15,6 +15,7 @@ local Polyfills = require(Packages.LuauPolyfill)
 local Array = Polyfills.Array
 local Number = Polyfills.Number
 local Object = Polyfills.Object
+local instanceof = Polyfills.instanceof
 
 local getType = require(Modules.JestGetType).getType
 
@@ -339,18 +340,31 @@ local function toBeInstanceOf(this: MatcherState, received: any, expected: any)
 		)
 	end
 
-	local pass = false
-	local mt = getmetatable(received)
-	while mt ~= nil do
-		if mt == expected then
-			pass = true
-			break
+	local pass = instanceof(received, expected)
+
+	local mt
+	if getmetatable(received) then
+		mt = getmetatable(received).__index
+		while mt ~= nil do
+			if mt == expected then
+				break
+			end
+			mt = getmetatable(mt)
+			if mt then
+				mt = mt.__index
+			end
 		end
-		mt = getmetatable(mt)
+
+		if mt == nil then
+			mt = getmetatable(received)
+			if mt then
+				mt = mt.__index
+			end
+		end
+	else
+		mt = nil
 	end
-	if mt == nil then
-		mt = getmetatable(received)
-	end
+
 
 	local message = function()
 		return matcherHint(matcherName, nil, nil, options) ..
@@ -513,16 +527,7 @@ local function toContain(
 	end
 
 	if typeof(received) == 'string' then
-		-- toContain is supposed to explicitly match strings not patterns
-		-- so we escape all special characters
-		local function escape(s: string): string
-			return s:gsub(
-				"([%$%%%^%*%(%)%.%[%]%+%-%?])",
-				"%%%1"
-			)
-		end
-
-		local index = received:find(escape(tostring(expected)))
+		local index = received:find(tostring(expected), 1, true)
 		local pass = index ~= nil
 
 		local message = function()

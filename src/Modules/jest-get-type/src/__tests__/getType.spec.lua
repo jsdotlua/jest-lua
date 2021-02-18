@@ -13,6 +13,7 @@ return function()
 	local Packages = Modules.Parent.Parent
 
 	local Symbol = require(Packages.LuauPolyfill).Symbol
+	local RegExp = require(Packages.LuauPolyfill).RegExp
 	local getType = require(Workspace).getType
 
 	describe(".getType()", function()
@@ -47,14 +48,18 @@ return function()
 			expect(getType(DateTime.now())).to.equal('DateTime')
 		end)
 
-		it("Symbol", function()
+		it("symbol", function()
 			expect(getType(Symbol("test"))).to.equal("symbol")
 			expect(getType(Symbol.for_("test"))).to.equal("symbol")
 			expect(getType(Symbol.for_("test2"))).to.equal("symbol")
 			expect(getType(Symbol())).to.equal("symbol")
 		end)
 
-		-- deviation: test omitted because lua has no built-in RegExp, Map, or Set types
+		it("regexp", function()
+			expect(getType(RegExp("abc"))).to.equal("regexp")
+		end)
+
+		-- deviation: test omitted because lua has no built-in Map, or Set types
 		-- deviation: test omitted because lua has no primitive bigint type
 	end)
 end

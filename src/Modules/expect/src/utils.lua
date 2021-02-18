@@ -223,9 +223,7 @@ local function iterableEquality(
 	else
 		local allFound = true
 		for aKey, aValue in pairs(a) do
-			if
-				b[aKey] == nil or
-				not equals(aValue, b[aKey], {iterableEqualityWithStack}) then
+			if b[aKey] == nil or not equals(aValue, b[aKey], {iterableEqualityWithStack}) then
 				local has = false
 				for bKey, bValue in pairs(b) do
 					local matchedKey = equals(aKey, bKey, {iterableEqualityWithStack})

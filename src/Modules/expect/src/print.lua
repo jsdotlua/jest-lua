@@ -1,3 +1,4 @@
+--!nonstrict
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/print.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -49,15 +50,15 @@ local function printReceivedStringContainExpectedResult(
 	received: string,
 	result
 ): string
-	if result then
+	-- result passed in should be the result of making a call to RegExp:exec
+	if result == nil then
+		return printReceived(received)
+	else
 		return printReceivedStringContainExpectedSubstring(
 			received,
 			result.index,
-			result[1].length)
-	else
-		return printReceived(received)
+			#result[1])
 	end
-
 end
 
 -- // The serialized array is compatible with pretty-format package min option.
@@ -70,7 +71,7 @@ local function printReceivedArrayContainExpectedItem(
 	local receivedMap = {}
 	for i, item in ipairs(received) do
 		local stringified = stringify(item)
-		if i == item then
+		if i == index then
 			receivedMap[i] = INVERTED_COLOR(stringified)
 		else
 			receivedMap[i] = stringified
@@ -93,7 +94,6 @@ local function printCloseTo(
 		receivedDiffString = receivedDiffString:gsub("%+0", "+")
 		receivedDiffString = receivedDiffString:gsub("%-0", "-")
 
-		-- the following two lines serve as a translation of expected.toExponential(0)
 		expectedDiffString = Number.toExponential(expectedDiff, 0)
 	else
 		if 0 <= precision and precision < 20 then
@@ -125,62 +125,159 @@ local function printCloseTo(
 	end
 end
 
--- deviation: omitting the printConstructorName functions since they're useless for us
--- local function printExpectedConstructorName(
--- 	label: string,
--- 	expected-- : Function
--- ): string
--- 	return printConstructorName(label, expected, false, true) .. "\n"
--- end
+local function printExpectedConstructorName(
+	label: string,
+	expected
+): string
+	return printConstructorName(label, expected, false, true) .. "\n"
+end
 
--- local function printExpectedConstructorNameNot(
--- 	label: string,
--- 	expected--: Function
--- ): string
--- 	return printConstructorName(label, expected, true, true) .. "\n"
--- end
+local function printExpectedConstructorNameNot(
+	label: string,
+	expected
+): string
+	return printConstructorName(label, expected, true, true) .. "\n"
+end
 
--- local function printReceivedConstructorName(
--- 	label: string,
--- 	received--: Function
--- ): string
--- 	return printConstructorName(label, received, false, false) .. "\n"
--- end
+local function printReceivedConstructorName(
+	label: string,
+	received
+): string
+	return printConstructorName(label, received, false, false) .. "\n"
+end
 
 -- ROBLOX TODO: (ADO-1258) Add in more advanced cases for this function when
 -- we can provide more detailed function name information
 -- // Do not call function if received is equal to expected.
--- local function printReceivedConstructorNameNot(
--- 	label: string,
--- 	received,--: Function
--- 	expected--: Function
--- ): string
--- 	return printConstructorName(label, received, false, false) .. "\n"
--- end
+local function printReceivedConstructorNameNot(
+	label: string,
+	received,
+	expected
+): string
+	return printConstructorName(label, received, true, false) .. "\n"
+end
 
 -- ROBLOX TODO: (ADO-1258) Add in more advanced cases for this function when
 -- we can provide more detailed function name information
--- function printConstructorName(
--- 	label: string,
--- 	constructor,--: Function
--- 	isNot: boolean,
--- 	isExpected: boolean
--- ): string
--- 	return string.format("%s name is an empty string", label)
--- end
+
+
+--[[
+	deviation: upstream would print stuff like
+		"YourClass name is not a string"
+		"YourClass name is an empty string"
+	but we omit the "name" in the result since we don't have a name property
+
+	deviation: constructor does not have Function type annotation
+]]
+function printConstructorName(
+	label: string,
+	constructor,
+	isNot: boolean,
+	isExpected: boolean
+): string
+	-- Function that determines if an object is printable i.e. if the object
+	-- doesn't have tostring output that is its memory address
+	local function printable(obj)
+		if typeof(obj) == "table" then
+			return tostring(obj):find("table: 0x") == nil
+		elseif typeof(obj) == "function" then
+			return tostring(obj):find("function: 0x") == nil
+		elseif typeof(obj) == "userdata" then
+			return tostring(obj):find("userdata: 0x") == nil
+		elseif typeof(obj) == "thread" then
+			return tostring(obj):find("thread: 0x") == nil
+		end
+
+		return true
+	end
+
+	-- if the tostring() method was overridden to return a non-string we error
+	if typeof(tostring(constructor)) ~= "string" then
+		return string.format("%s name is not a string", label)
+	end
+
+	local retval = label .. ": "
+	if not isNot then
+		retval = retval .. ""
+	else
+		if isExpected then
+			retval = retval .. "never "
+		else
+			retval = retval .. "      "
+		end
+	end
+
+	if printable(constructor) then
+		if #tostring(constructor) == 0 then
+			return string.format("%s name is an empty string", label)
+		end
+
+		if isExpected then
+			retval = retval .. EXPECTED_COLOR(tostring(constructor))
+		else
+			retval = retval .. RECEIVED_COLOR(tostring(constructor))
+		end
+
+		return retval
+	else
+		local newretval = retval .. "{ "
+
+		local finished = true
+		local started = false
+
+		for key, value in pairs(constructor) do
+			-- if we find that we can't print the first few key value pairs
+			-- because they aren't nicely printable, we default to
+			-- printing the table address with the original retval
+			-- the only exception we make is if the key is a __ metamethod
+
+			local str = nil
+			if printable(key) and printable(value) then
+				str = string.format("%s: %s,", stringify(key), stringify(value))
+			-- We don't print key values for metamethods since they don't
+			-- provide us with any additional information
+			elseif printable(key) and key:find("__") ~= 1 then
+				str = string.format("%s,", stringify(key))
+			end
+
+			if str then
+				if #newretval + #str > 64 then
+					finished = false
+					break
+				end
+
+				started = true
+				newretval = newretval .. str
+			end
+		end
+
+		-- if we were never able to actually create a newretval with the
+		-- content of the table because the first #kv_pair was too big,
+		-- we default to printing the table address with original retval
+		if started == false then
+			return retval .. tostring(constructor)
+		end
+
+		-- get rid of trailing comma
+		newretval = newretval:sub(1, -2)
+
+		if finished then
+			newretval = newretval .. " }"
+		else
+			newretval = newretval .. " ... }"
+		end
+
+		return newretval
+	end
+end
 
 return {
 	printReceivedStringContainExpectedSubstring = printReceivedStringContainExpectedSubstring,
 	printReceivedStringContainExpectedResult = printReceivedStringContainExpectedResult,
 	printReceivedArrayContainExpectedItem = printReceivedArrayContainExpectedItem,
 	printCloseTo = printCloseTo,
-	-- deviation: omitting the printConstructorName functions since they're useless for us
-	-- printExpectedConstructorName = printExpectedConstructorName,
-	-- printExpectedConstructorNameNot = printExpectedConstructorNameNot,
-	-- printReceivedConstructorName = printReceivedConstructorName,
-	-- printReceivedConstructorNameNot = printReceivedConstructorNameNot,
-	printExpectedConstructorName = function() error("printExpectedConstructorName omitted") end,
-	printExpectedConstructorNameNot = function() error("printExpectedConstructorNameNot omitted") end,
-	printReceivedConstructorName = function() error("printReceivedConstructorName omitted") end,
-	printReceivedConstructorNameNot = function() error("printReceivedConstructorNameNot omitted") end,
+	printExpectedConstructorName = printExpectedConstructorName,
+	printExpectedConstructorNameNot = printExpectedConstructorNameNot,
+	printReceivedConstructorName = printReceivedConstructorName,
+	printReceivedConstructorNameNot = printReceivedConstructorNameNot
 }

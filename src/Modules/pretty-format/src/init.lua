@@ -97,6 +97,15 @@ local function printBasicValue(
 			'Z'
 	end
 
+	if typeOf == 'regexp' then
+		val = tostring(val)
+		if escapeRegex then
+			val = val:gsub('[\\%^%$%*%+%?%.%(%)|%[%]{}]', '\\%1')
+			return val
+		end
+		return val
+	end
+
 	-- deviation: omitted all the JS types
 
 	return nil

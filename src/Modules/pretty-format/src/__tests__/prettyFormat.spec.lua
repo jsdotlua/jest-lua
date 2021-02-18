@@ -7,7 +7,13 @@
 --  */
 
 return function()
-	local prettyFormat = require(script.Parent.Parent).prettyFormat
+
+	local Workspace = script.Parent.Parent
+	local Packages = Workspace.Parent.Parent.Parent
+
+	local prettyFormat = require(Workspace).prettyFormat
+
+	local RegExp = require(Packages.LuauPolyfill).RegExp
 
 	describe('prettyFormat()', function()
 		-- deviation: omitted, no Argument type in lua
@@ -168,7 +174,33 @@ return function()
 
 		-- deviation: omitted, Roblox DateTime throws an error with an invalid constructor
 
-		-- deviation: omitted, no Object, RegExp, Set type in lua
+		-- deviation: omitted, no Object, Set type in lua
+
+		it('prints regular expressions from constructors', function()
+			local val = RegExp('regexp')
+
+			expect(prettyFormat(val)).to.equal('/regexp/')
+		end)
+
+		it('prints regular expressions from literals', function()
+			-- deviation: we also use the RegExp polyfill here since we don't
+			-- have regex literals. The 'g' flag is not supported so we just
+			-- include the 'i' flag
+			local val = RegExp('regexp', 'i')
+
+			expect(prettyFormat(val)).to.equal('/regexp/i')
+		end)
+
+		it('prints regular expressions {escapeRegex: false}', function()
+			local val = RegExp([[regexp\d]], 'i')
+
+			expect(prettyFormat(val)).to.equal('/regexp\\d/i')
+		end)
+
+		it('prints regular expressions {escapeRegex: true}', function()
+			local val = RegExp([[regexp\d]], 'i')
+			expect(prettyFormat(val, {escapeRegex = true})).to.equal('/regexp\\\\d/i')
+		end)
 
 		it('prints a string', function()
 			local val = 'string'

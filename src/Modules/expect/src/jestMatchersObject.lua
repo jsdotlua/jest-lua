@@ -52,10 +52,12 @@ local function getMatchers()
 	return _G[JEST_MATCHERS_OBJECT].matchers
 end
 
+-- deviation: matchers does not have MatchersObject type annotation and expect
+-- does not have Expect type annotation
 local function setMatchers(
-	matchers,--: MatchersObject
+	matchers,
 	isInternal: boolean,
-	expect--: Expect
+	expect
 ): ()
 	-- ROBLOX TODO: Implement the non-internal matcher case
 	if not isInternal then

@@ -23,6 +23,9 @@
           "JestMatcherUtils": {
             "$path": "src/modules/jest-matcher-utils/src"
           },
+          "JestMessageUtil": {
+            "$path": "src/modules/jest-message-util/src"
+          },
           "Expect": {
             "$path": "src/modules/expect/src"
           },

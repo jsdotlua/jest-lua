@@ -6,15 +6,15 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
+local Polyfill = require(script.Parent.Parent.Parent.LuauPolyfill)
+local RegExp = Polyfill.RegExp
+local instanceof = Polyfill.instanceof
+
 local function getType(value: any): string
 	-- deviation: code omitted because lua has no primitive undefined type
 	-- lua makes no distinction between null and undefined so we just return nil
 	if value == nil then
 		return 'nil'
-	-- deviation: lua makes no distinction between tables, arrays, and objects
-	-- we always return table here and consumers are expected to perform the check
-	elseif typeof(value) == 'table' then
-		return 'table'
 	elseif typeof(value) == 'boolean' then
 		return 'boolean'
 	elseif typeof(value) == 'function' then
@@ -27,8 +27,14 @@ local function getType(value: any): string
 		return 'DateTime'
 	elseif typeof(value) == 'userdata' and tostring(value):match("Symbol%(.*%)") then
 		return 'symbol'
+	elseif instanceof(value, RegExp) then
+		return 'regexp'
+	-- deviation: lua makes no distinction between tables, arrays, and objects
+	-- we always return table here and consumers are expected to perform the check
+	elseif typeof(value) == 'table' then
+		return 'table'
 	-- deviation: code omitted because lua has no primitive bigint type
-	-- deviation: code omitted because lua has no built-in RegExp, Map, or Set types
+	-- deviation: code omitted because lua has no built-in Map, or Set types
 	-- deviation: code omitted because lua makes no distinction between tables, arrays, and objects
 	end
 

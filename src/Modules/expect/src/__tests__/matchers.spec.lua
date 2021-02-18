@@ -153,7 +153,6 @@ return function()
 			{{a = 1}, {a = 2}},
 			{{a = 5}, {b = 6}},
 			{Object.freeze({foo = {bar = 1}}), {foo = {}}},
-			-- deviation:
 			{'banana', 'apple'},
 			{'1\u{00A0}234,57\u{00A0}$', '1 234,57 $'},
 			{
@@ -503,6 +502,17 @@ return function()
 				"Received has type:  number\n" ..
 				"Received has value: 1"
 			)
+		end)
+
+		it('does not throw if received does not have metatable', function ()
+			expect(function()
+				jestExpect({}).toBeInstanceOf(A)
+			end).to.throw("expect(received).toBeInstanceOf(expected)\n\n" ..
+				string.format("Expected prototype: %s\n", tostring(A)) ..
+				string.format("Received prototype: nil"))
+
+			jestExpect({}).never.toBeInstanceOf(A)
+
 		end)
 
 		it("passing A.new() and A", function()

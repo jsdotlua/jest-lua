@@ -12,6 +12,7 @@ return function()
 	local Packages = Modules.Parent.Parent
 
 	local Symbol = require(Packages.LuauPolyfill).Symbol
+	local RegExp = require(Packages.LuauPolyfill).RegExp
 
 	local snapshots = require(script.Parent.__snapshots__["init.snap"])
 
@@ -42,7 +43,8 @@ return function()
 			{"abc", "\"abc\""},
 			{0/0, "nan"},
 			{math.huge, "inf"},
-			{-math.huge, "-inf"}
+			{-math.huge, "-inf"},
+			{RegExp("ab\\.c", "i"), "/ab\\.c/i"}
 		}
 
 		for key, value in ipairs(fixtures) do
