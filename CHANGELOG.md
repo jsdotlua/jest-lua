@@ -1,5 +1,8 @@
 # Jest Roblox Changelog
 
+## 0.6.0 (2021-02-22)
+* Added `expect().toThrow()`
+
 ## 0.5.0 (2021-01-29)
 * Initial release of Jest Roblox. TestEZ has been rebranded as of this release.
 * Added `expect` aligned to [Jest's expect (26.5.3)](https://jestjs.io/docs/en/26.5/expect). 

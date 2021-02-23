@@ -32,9 +32,8 @@ Version: v26.5.3
     ```
     * `StringMatching` accepts Lua string patterns instead of a `RegExp`
     * :warning: Although Jest has use cases where `toHaveProperty` is used to detect the existence of a property as `undefined`, we should never try to use `toHaveProperty` with `nil` as the property to check for
-* Currently the testing file `jasmineUtils.spec.lua` does not actually mirror upstream but instead just takes the logic for some tests and runs them (since we don't have the matchers code translated yet)
 * :warning: isError returns `true` for string and table types since we don't have a designated error type in Lua and these two types are what can be used to trigger an error
-* The throwing matchers (e.g. toThrow()) will print out stack traces for ALL types (except nil) that are thrown whereas in Javascript the stack trace is only printed if you error with an Error type. In other words, executing a toThrow matcher on something like throw '' in Javascript will not end up printing the stack trace but doing so with error("") will print the stack trace for our Lua equivalent.
+* The throwing matchers (e.g. `toThrow()`) will print out stack traces for ALL types (except `nil`) that are thrown whereas in Javascript the stack trace is only printed if you error with an Error type. In other words, executing a `toThrow` matcher on something like `throw ''` in Javascript will not end up printing the stack trace but doing so with `error("")` will print the stack trace for our Lua equivalent.
 
 ### :x: Excluded
 ```
