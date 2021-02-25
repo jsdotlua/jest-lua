@@ -100,19 +100,6 @@ Matcher error: expected value must be a number
 Expected has value: nil
 ]]
 
-snapshots["stringify() toJSON errors when comparing two objects 1"] = [[
-expect(received).toEqual(expected) // deep equality
-
-- Expected  - 1
-+ Received  + 1
-
-  Object {
--   "b": 1,
-+   "a": 1,
-    "toJSON": [Function anonymous],
-  }
-]]
-
 -- Additional snapshots NOT in upstream so that we can run the jest-diff tests
 -- We don't have mocking capabilities so we compare with the actual output of
 -- jest-diff

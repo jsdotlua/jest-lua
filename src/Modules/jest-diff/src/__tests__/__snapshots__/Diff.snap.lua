@@ -17,21 +17,6 @@ snapshots['collapses big diffs to patch format 1'] = [[
     },
   }]]
 
-snapshots['color of text (expanded) 1'] = [[
-- Expected
-+ Received
-
-  Object {
-    "searching": "",
--   "sorting": Object {
-+   "sorting": Array [
-+     Object {
-        "descending": false,
-        "fieldKey": "what",
-      },
-+   ],
-  }]]
-
 -- deviation: all context number of lines tests use } instead of }
 snapshots['context number of lines: -1 (5 default) 1'] = [[
 - Expected  - 1

@@ -26,14 +26,6 @@ Received message: "apple"
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
-snapshots['toThrow asymmetric anything fail isNot false 1'] = [=[
-expect(received).toThrow(expected)
-
-Expected asymmetric matcher: Anything
-
-Thrown value: nil
-]=]
-
 snapshots['toThrow asymmetric anything fail isNot true 1'] = [=[
 expect(received).never.toThrow(expected)
 
@@ -188,29 +180,6 @@ Matcher error: expected value must be a string or regular expression or class or
 Expected has type:  number
 Expected has value: 111]=]
 
-snapshots['toThrow promise/async throws if Error-like object is returned did not throw at all 1'] = [=[
-expect(received).rejects.toThrow()
-
-Received function never threw]=]
-
-snapshots['toThrow promise/async throws if Error-like object is returned threw, but class did not match 1'] = [=[
-expect(received).rejects.toThrow(expected)
-
-Expected constructor: Err2
-Received constructor: Err
-
-Received message: "async apple"
-
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
-
-snapshots['toThrow promise/async throws if Error-like object is returned threw, but should not have 1'] = [=[
-expect(received).rejects.not.toThrow()
-
-Error name:    "Error"
-Error message: "async apple"
-
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
-
 snapshots['toThrow regexp did not throw at all 1'] = [=[
 expect(received).toThrow(expected)
 
@@ -306,14 +275,6 @@ Received name:    "Error"
 Received message: "apple"
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
-
-snapshots['toThrowError asymmetric anything fail isNot false 1'] = [=[
-expect(received).toThrowError(expected)
-
-Expected asymmetric matcher: Anything
-
-Thrown value: nil
-]=]
 
 snapshots['toThrowError asymmetric anything fail isNot true 1'] = [=[
 expect(received).never.toThrowError(expected)
@@ -468,29 +429,6 @@ Matcher error: expected value must be a string or regular expression or class or
 
 Expected has type:  number
 Expected has value: 111]=]
-
-snapshots['toThrowError promise/async throws if Error-like object is returned did not throw at all 1'] = [=[
-expect(received).rejects.toThrowError()
-
-Received function never threw]=]
-
-snapshots['toThrowError promise/async throws if Error-like object is returned threw, but class did not match 1'] = [=[
-expect(received).rejects.toThrowError(expected)
-
-Expected constructor: Err2
-Received constructor: Err
-
-Received message: "async apple"
-
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
-
-snapshots['toThrowError promise/async throws if Error-like object is returned threw, but should not have 1'] = [=[
-expect(received).rejects.not.toThrowError()
-
-Error name:    "Error"
-Error message: "async apple"
-
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrowError regexp did not throw at all 1'] = [=[
 expect(received).toThrowError(expected)

@@ -984,7 +984,7 @@ return function()
 				local received = 0.1
 				-- expected is undefined
 				expect(function() jestExpect(received).never.toBeCloseTo() end).to.throw(snapshots[
-					".toBeCloseTo throws: Matcher error promise empty isNot true received 1"])
+					".toBeCloseTo throws: Matcher error promise empty isNot true expected 1"])
 			end)
 
 			-- deviation: omitted promise rejects and resolve tests
