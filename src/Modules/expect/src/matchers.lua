@@ -15,6 +15,7 @@ local Polyfills = require(Packages.LuauPolyfill)
 local Array = Polyfills.Array
 local Number = Polyfills.Number
 local Object = Polyfills.Object
+local RegExp = Polyfills.RegExp
 local instanceof = Polyfills.instanceof
 
 local getType = require(Modules.JestGetType).getType
@@ -912,8 +913,8 @@ local function toHaveProperty(
 	return {message = message, pass = pass}
 end
 
--- deviation: toMatch accepts Lua string patterns instead of a RegExp
-local function toMatch(this: MatcherState, received: string, expected: string)
+-- deviation: toMatch accepts Lua string patterns or RegExp polyfill but not simple substring
+local function toMatch(this: MatcherState, received: string, expected: string | RegExp)
 	local matcherName = 'toMatch'
 	local options = {
 		isNot = this.isNot,
@@ -930,7 +931,8 @@ local function toMatch(this: MatcherState, received: string, expected: string)
 		)
 	end
 
-	if typeof(expected) ~= 'string' then
+	if typeof(expected) ~= 'string' and
+		getType(expected) ~= 'regexp' then
 		error(
 			matcherErrorMessage(
 				matcherHint(matcherName, nil, nil, options),
@@ -940,15 +942,29 @@ local function toMatch(this: MatcherState, received: string, expected: string)
 		)
 	end
 
-	local pass = received:find(expected) ~= nil
+	local pass
+	if typeof(expected) == 'string' then
+		pass = received:find(expected) ~= nil
+	else
+		pass = expected:test(received)
+	end
 
+
+	-- deviation: We print "expected pattern" in both cases because this function
+	-- treats strings as Lua patterns
 	local message
 	if pass then
 		message = function()
-			return matcherHint(matcherName, nil, nil, options) ..
+			local retval = matcherHint(matcherName, nil, nil, options) ..
 				'\n\n' ..
-				string.format('Expected pattern: never %s\n', printExpected(expected)) ..
-				string.format('Received string:        %s', printReceivedStringContainExpectedResult(received, nil))
+				string.format('Expected pattern: never %s\n', printExpected(expected))
+			if getType(expected) == 'regexp' then
+				retval = retval .. string.format('Received string:        %s', printReceivedStringContainExpectedResult(received, nil))
+			else
+				retval = retval .. string.format('Received string:        %s', printReceivedStringContainExpectedResult(received, expected:exec(received)))
+			end
+
+			return retval
 		end
 	else
 		message = function()

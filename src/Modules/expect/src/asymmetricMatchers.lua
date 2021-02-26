@@ -262,9 +262,9 @@ end
 local StringMatching = {}
 StringMatching.__index = StringMatching
 setmetatable(StringMatching, AsymmetricMatcher)
-function StringMatching.new(sample: string, inverse: boolean?)
-	-- deviation: no RegExp type, so we accept matches against a Lua string pattern instead
-	if not isA("string", sample) then
+function StringMatching.new(sample: string | RegExp, inverse: boolean?)
+	-- deviation: we accept matches against a Lua string pattern or RegExp polyfill
+	if not isA("string", sample) and not isA("regexp", sample) then
 		error("Expected is not a String")
 	end
 	local self = AsymmetricMatcher.new(sample)
@@ -274,7 +274,18 @@ function StringMatching.new(sample: string, inverse: boolean?)
 end
 
 function StringMatching:asymmetricMatch(other: string): boolean
-	local result = isA('string', other) and other:find(self.sample)
+	local result
+
+	local result = false
+	if isA('string', other) then
+		-- Lua pattern case
+		if isA('string', self.sample) then
+			result = other:find(self.sample)
+		-- Regex case
+		else
+			result = self.sample:test(other)
+		end
+	end
 
 	if self.inverse then
 		return not result
@@ -303,6 +314,6 @@ return {
 	objectNotContaining = function(sample: any) return ObjectContaining.new(sample, true) end,
 	stringContaining = function(expected: string) return StringContaining.new(expected) end,
 	stringNotContaining = function(expected: string) return StringContaining.new(expected, true) end,
-	stringMatching = function(expected: string) return StringMatching.new(expected) end,
+	stringMatching = function(expected: string | RegExp) return StringMatching.new(expected) end,
 	stringNotMatching = function(expected: string) return StringMatching.new(expected, true) end,
 }

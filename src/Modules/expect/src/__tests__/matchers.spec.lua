@@ -18,6 +18,7 @@ return function()
 	local Symbol = Polyfill.Symbol
 	local Number = Polyfill.Number
 	local Object = Polyfill.Object
+	local RegExp = Polyfill.RegExp
 
 	local stringify = require(Modules.JestMatcherUtils).stringify
 
@@ -995,22 +996,24 @@ return function()
 		for _, testCase in ipairs({
 			{'foo', 'foo'},
 			{'Foo bar', '[fF][oO][oO]'}, -- case insensitive match
+			{'Foo bar', RegExp('^Foo', 'i')} -- ROBLOX TODO: change to ^foo when "i" flag is working
 		}) do
 			local n1 = testCase[1]
 			local n2 = testCase[2]
-			it(string.format("{pass: true} expect(%s).toMatch(%s)", n1, n2), function()
+			it(string.format("{pass: true} expect(%s).toMatch(%s)", n1, tostring(n2)), function()
 				jestExpect(n1).toMatch(n2)
 			end)
 		end
 
 		for _, testCase in ipairs({
 			{'bar', 'foo'},
+			{'bar', RegExp('foo')}
 		}) do
 			local n1 = testCase[1]
 			local n2 = testCase[2]
-			it(string.format("throws: [%s %s]", n1, n2), function()
+			it(string.format("throws: [%s %s]", n1, tostring(n2)), function()
 				expect(function() jestExpect(n1).toMatch(n2) end).to.throw(snapshots[string.format(
-					".toMatch() throws: [%s, %s] 1", n1, n2)])
+					".toMatch() throws: [%s, %s] 1", n1, tostring(n2))])
 			end)
 		end
 
@@ -1018,6 +1021,7 @@ return function()
 			{1, 'foo'},
 			{{}, 'foo'},
 			{true, 'foo'},
+			{RegExp('foo', 'i'), 'foo'},
 			{function() end, 'foo'},
 			{nil, 'foo'}
 		}) do
@@ -1050,8 +1054,8 @@ return function()
 			jestExpect('this?: throws').toContain('this?: throws')
 		end)
 
-		it('does not maintain RegExp state between calls', function()
-			local regex = "[fF]%d+"
+		it('does not maintain RegExp state between calls (lua)', function()
+			local regex = RegExp("[fF]\\d+", 'i') -- ROBLOX TODO: change to [f] when "i" flag is working
 
 			jestExpect('f123').toMatch(regex)
 			jestExpect('F456').toMatch(regex)

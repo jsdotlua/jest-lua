@@ -8,6 +8,13 @@
 --  */
 
 return function()
+	local Workspace = script.Parent.Parent
+	local Modules = Workspace.Parent
+	local Packages = Modules.Parent.Parent
+
+	local Polyfills = require(Packages.LuauPolyfill)
+	local RegExp = Polyfills.RegExp
+
 	local AsymmetricMatchers = require(script.Parent.Parent.asymmetricMatchers)
 	local any = AsymmetricMatchers.any
 	local anything = AsymmetricMatchers.anything
@@ -291,8 +298,12 @@ return function()
 		expect(stringNotContaining("en*"):asymmetricMatch(1)).to.equal(true)
 	end)
 
-	-- deviation: stringMatching tests changed to use string patterns instead of regex
-	-- deviation: regexp test modified
+	it('StringMatching matches string against regexp', function()
+		expect(stringMatching(RegExp("en")):asymmetricMatch('queen')).to.equal(true)
+		expect(stringMatching(RegExp("en")):asymmetricMatch('queue')).to.equal(false)
+	end)
+
+	-- deviation: Lua pattern test not included in upstream
 	it("StringMatching matches string against pattern", function()
 		expect(stringMatching("e+"):asymmetricMatch("queen")).to.equal(true)
 		expect(stringMatching("%s"):asymmetricMatch("queue")).to.equal(false)
@@ -317,7 +328,12 @@ return function()
 		expect(stringMatching("nil"):asymmetricMatch(nil)).to.equal(false)
 	end)
 
-	-- deviation: regexp test modified
+	it('StringNotMatching matches string against regexp', function()
+		expect(stringNotMatching(RegExp("en")):asymmetricMatch('queen')).to.equal(false)
+		expect(stringNotMatching(RegExp("en")):asymmetricMatch('queue')).to.equal(true)
+	end)
+
+	-- deviation: Lua pattern test not included in upstream
 	it("StringNotMatching matches string against pattern", function()
 		expect(stringNotMatching("e+"):asymmetricMatch("queen")).to.equal(false)
 		expect(stringNotMatching("%s"):asymmetricMatch("queue")).to.equal(true)
