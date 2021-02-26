@@ -96,8 +96,7 @@ function makeThrowingMatcher(
 	return function(...)
 		local args = {...}
 		local throws = true
-		-- FIXME: empty utils for now
-		local utils = {}
+		local utils = Object.assign({}, matcherUtils, iterableEquality, subsetEquality)
 
 		local matcherContext = {
 			-- // When throws is disabled, the matcher will not throw errors during test
@@ -185,6 +184,10 @@ function _validateResult(result: any)
 end
 
 local Expect = {}
+
+Expect.extend = function(matchers): ()
+	setMatchers(matchers, false, Expect)
+end
 
 Expect.anything = anything
 Expect.any = any

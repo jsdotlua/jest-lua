@@ -21,6 +21,7 @@ return function()
 	local Polyfill = require(Packages.LuauPolyfill)
 	local Number = Polyfill.Number
 	local Symbol = Polyfill.Symbol
+	local RegExp = Polyfill.RegExp
 
 	local jasmineUtils = require(Workspace.jasmineUtils)
 	local equals = jasmineUtils.equals
@@ -86,6 +87,28 @@ return function()
 			d[b] = 5
 
 			expect(equals(c,d)).to.equal(true)
+		end)
+
+		it('tests circularity defined on different property', function()
+			local a = {}
+			local b = {}
+			a.a = a
+			b.a = {}
+			b.a.a = a
+			expect(equals(a,b)).to.equal(false)
+			expect(equals(b,a)).to.equal(false)
+		end)
+	end)
+
+	describe("equality edge cases", function()
+		it('tests keys with false value', function()
+			expect(equals({{a = false, b = 2}, {b = 2}})).to.equal(false)
+		end)
+
+		it('tests equality of regex', function()
+			expect(equals(RegExp("abc"), RegExp("abd"))).to.equal(false)
+			expect(equals(RegExp("abc", "m"), RegExp("abc", "m"))).to.equal(true)
+			expect(equals(RegExp("abc", "m"), RegExp("abc"))).to.equal(false)
 		end)
 	end)
 

@@ -169,6 +169,10 @@ local function hasIterator(object: any): boolean
 	return typeof(object) == "table" or typeof(object) == "string"
 end
 
+-- deviation: We currently have no need for this and we can use the native
+-- equals function in its place to avoid complications. A rough translation
+-- is included and commented out in the case that we will need to support this
+-- in the future
 local function iterableEquality(
 	a: any,
 	b: any,
@@ -178,80 +182,81 @@ local function iterableEquality(
 	aStack = aStack or {}
 	bStack = bStack or {}
 
-	if (
-		typeof(a) ~= "table" or
-		typeof(b) ~= "table" or
-		Array.isArray(a) or
-		Array.isArray(b) or
-		not hasIterator(a) or
-		not hasIterator(b)
-	) then
-		return nil
-	end
+	return nil
+	-- if (
+	-- 	typeof(a) ~= "table" or
+	-- 	typeof(b) ~= "table" or
+	-- 	Array.isArray(a) or
+	-- 	Array.isArray(b) or
+	-- 	not hasIterator(a) or
+	-- 	not hasIterator(b)
+	-- ) then
+	-- 	return nil
+	-- end
 
-	-- deviation: omitting constructor check
+	-- -- deviation: omitting constructor check
 
-	local length = #aStack
-	while length > 0 do
-		-- Linear search. Performance is inversely proportional to the number of
-		-- unique nested structures.
-		-- circular references at same depth are equal
-		-- circular reference is not equal to non-circular one
-		if aStack[length] == a then
-			return bStack[length] == b
-		end
+	-- local length = #aStack
+	-- while length > 0 do
+	-- 	-- Linear search. Performance is inversely proportional to the number of
+	-- 	-- unique nested structures.
+	-- 	-- circular references at same depth are equal
+	-- 	-- circular reference is not equal to non-circular one
+	-- 	if aStack[length] == a then
+	-- 		return bStack[length] == b
+	-- 	end
 
-		-- deviation: this if check is not included in upstream
-		if bStack[length] == b then
-			return aStack[length] == a
-		end
+	-- 	-- deviation: this if check is not included in upstream
+	-- 	if bStack[length] == b then
+	-- 		return aStack[length] == a
+	-- 	end
 
-		length -= 1
-	end
+	-- 	length -= 1
+	-- end
 
-	table.insert(aStack, a)
-	table.insert(bStack, b)
+	-- table.insert(aStack, a)
+	-- table.insert(bStack, b)
 
-	local function iterableEqualityWithStack(localA: any, localB: any)
-		return iterableEquality(localA, localB, {unpack(aStack)}, {unpack(bStack)})
-	end
+	-- local function iterableEqualityWithStack(localA: any, localB: any)
+	-- 	return iterableEquality(localA, localB, {unpack(aStack)}, {unpack(bStack)})
+	-- end
 
-	-- ROBLOX TODO: (ADO-1217) Once we have Set and Map functionality, we can expand this
-	-- to actually mirror the distinct cases in upstream
-	if #Object.keys(a) ~= #Object.keys(b) then
-		return false
-	else
-		local allFound = true
-		for aKey, aValue in pairs(a) do
-			if b[aKey] == nil or not equals(aValue, b[aKey], {iterableEqualityWithStack}) then
-				local has = false
-				for bKey, bValue in pairs(b) do
-					local matchedKey = equals(aKey, bKey, {iterableEqualityWithStack})
+	-- -- ROBLOX TODO: (ADO-1217) Once we have Set and Map functionality, we can expand this
+	-- -- to actually mirror the distinct cases in upstream
+	-- if #Object.keys(a) ~= #Object.keys(b) then
+	-- 	return false
+	-- else
+	-- 	local allFound = true
+	-- 	for aKey, aValue in pairs(a) do
+	-- 		if b[aKey] == nil or not equals(aValue, b[aKey], {iterableEqualityWithStack}) then
+	-- 			local has = false
+	-- 			for bKey, bValue in pairs(b) do
+	-- 				local matchedKey = equals(aKey, bKey, {iterableEqualityWithStack})
 
-					local matchedValue = false
-					if matchedKey == true then
-						matchedValue = equals(aValue, bValue, {iterableEqualityWithStack})
-					end
-					if matchedValue == true then
-						has = true
-					end
+	-- 				local matchedValue = false
+	-- 				if matchedKey == true then
+	-- 					matchedValue = equals(aValue, bValue, {iterableEqualityWithStack})
+	-- 				end
+	-- 				if matchedValue == true then
+	-- 					has = true
+	-- 				end
 
-				end
+	-- 			end
 
-				if has == false then
-					allFound = false
-					break
-				end
-			end
-		end
-		-- Remove the first value from the stack of traversed values
-		table.remove(aStack)
-		table.remove(bStack)
-		return allFound
-	end
+	-- 			if has == false then
+	-- 				allFound = false
+	-- 				break
+	-- 			end
+	-- 		end
+	-- 	end
+	-- 	-- Remove the first value from the stack of traversed values
+	-- 	table.remove(aStack)
+	-- 	table.remove(bStack)
+	-- 	return allFound
+	-- end
 
-	-- deviation: omitted section of code for handling the case of a different
-	-- kind of iterable not covered by the above table case
+	-- -- deviation: omitted section of code for handling the case of a different
+	-- -- kind of iterable not covered by the above table case
 end
 
 function isObject(a: any)

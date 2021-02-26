@@ -74,8 +74,6 @@ function asymmetricMatch(a: any, b: any)
 	if asymmetricB then
 		return b:asymmetricMatch(a)
 	end
-
-	return nil
 end
 
 -- // Equality function lovingly adapted from isEqual in
@@ -115,8 +113,8 @@ function eq(
 
 	-- deviation: as part of the upstream className check, a type difference of
 	-- array/non-array would be detected so we add this in manually
-	local className = typeof(a)
-	if className ~= typeof(b) then
+	local className = getType(a)
+	if className ~= getType(b) then
 		return false
 	elseif Array.isArray(a) ~= Array.isArray(b) then
 		return false
@@ -133,6 +131,8 @@ function eq(
 		return Object.is(a,b)
 	elseif className == "DateTime" then
 		return a == b
+	elseif className == "regexp" then
+		return tostring(a) == tostring(b)
 	end
 
 	if typeof(a) ~= "table" or typeof(b) ~= "table" then
@@ -225,7 +225,7 @@ function keys(
 	local function getAllKeys(o)
 		local allKeys = {}
 		for key, value in pairs(o) do
-			if o[key] then
+			if o[key] ~= nil then
 				table.insert(allKeys, key)
 			end
 		end
@@ -248,14 +248,13 @@ function keys(
 	return {}
 end
 
--- make a comment in the review about how the obj[key] ~= nil doesn't add anything but is copied for
--- sake of consistency with upstream != undefined check
+-- deviation: we have no concept of undefined so hasDefinedKey is the same as hasKey
 function hasDefinedKey(obj: any, key: string)
-	return hasKey(obj, key) and obj[key] ~= nil
+	return hasKey(obj, key)
 end
 
 function hasKey(obj: any, key: string)
-	return rawget(obj, key)
+	return rawget(obj, key) ~= nil
 end
 
 function isA(typeName: string, value: any)

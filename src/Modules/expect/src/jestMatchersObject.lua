@@ -14,7 +14,7 @@ local Polyfill = require(Packages.LuauPolyfill)
 local Symbol = Polyfill.Symbol
 local Object = Polyfill.Object
 
---local AsymmetricMatchers = require(Workspace.asymmetricMatchers)
+local AsymmetricMatcher = require(Workspace.asymmetricMatchers).AsymmetricMatcher
 
 -- deviation: omitted external type definitions
 
@@ -59,14 +59,72 @@ local function setMatchers(
 	isInternal: boolean,
 	expect
 ): ()
-	-- ROBLOX TODO: Implement the non-internal matcher case
-	if not isInternal then
-		error("Non-internal matchers are not yet implemented")
+	for key, matcher in pairs(matchers) do
+		-- ROBLOX TODO: assign INTERNAL_MATCHER_FLAG to matchers
+		if not isInternal then
+			local CustomMatcher = {}
+			CustomMatcher.__index = CustomMatcher
+			setmetatable(CustomMatcher, AsymmetricMatcher)
+
+			CustomMatcher.new = function(inverse: boolean, ...)
+				local self = AsymmetricMatcher.new({...})
+				self.inverse = inverse
+				setmetatable(self, CustomMatcher)
+				return self
+			end
+
+			CustomMatcher.asymmetricMatch = function(self, other: any)
+				local result
+				-- deviation: first argument is nil, no need to pass on matcherContext in asymmetricMatch
+				result = matcher(nil, other, unpack(self.sample))
+
+				if self.inverse then
+					return not result.pass
+				end
+				return result.pass
+			end
+
+			CustomMatcher.toString = function(self)
+				if self.inverse then
+					return string.format("never.%s", key)
+				end
+				return tostring(key)
+			end
+
+			CustomMatcher.getExpectedType = function(self)
+				return "any"
+			end
+
+			CustomMatcher.toAsymmetricMatcher = function(self)
+				local sample = self.sample
+				local i = 1
+				local printval = ''
+				while i < #sample do
+					printval = printval .. tostring(sample[i]) .. ', '
+					i += 1
+				end
+				printval = printval .. tostring(sample[i])
+				return string.format(
+					"%s<%s>",
+					self:toString(),
+					printval
+				)
+			end
+
+			expect[key] = function(...)
+				return CustomMatcher.new(false, ...)
+			end
+			if not expect.never then
+				expect.never = {}
+			end
+			expect.never[key] = function(...)
+				return CustomMatcher.new(true, ...)
+			end
+		end
 	end
 
 	Object.assign(_G[JEST_MATCHERS_OBJECT].matchers, matchers)
 end
-
 
 return {
 	INTERNAL_MATCHER_FLAG = INTERNAL_MATCHER_FLAG,
@@ -75,5 +133,3 @@ return {
 	getMatchers = getMatchers,
 	setMatchers = setMatchers
 }
-
-

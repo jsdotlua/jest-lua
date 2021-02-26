@@ -33,6 +33,7 @@ function AsymmetricMatcher.new(sample: any)
 		sample = sample,
 		["$$typeof"] = Symbol.for_("jest.asymmetricMatcher"),
 	}
+
 	setmetatable(self, AsymmetricMatcher)
 	return self
 end
@@ -293,6 +294,7 @@ function StringMatching:getExpectedType(): string
 end
 
 return {
+	AsymmetricMatcher = AsymmetricMatcher,
 	any = function(expectedObject: any) return Any.new(expectedObject) end,
 	anything = function() return Anything.new() end,
 	arrayContaining = function(sample: { any }) return ArrayContaining.new(sample) end,
