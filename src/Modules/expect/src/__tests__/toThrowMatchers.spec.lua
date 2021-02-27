@@ -172,7 +172,7 @@ return function()
 						'  at jestExpect' ..
 						' (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)'
 				end)
-				local SubSubErr = extends(Err, "SubSubErr", function(self, message)
+				local SubSubErr = extends(SubErr, "SubSubErr", function(self, message)
 					self.message = message
 					self.name = "SubSubErr"
 					self.stack = 'Error\n' ..

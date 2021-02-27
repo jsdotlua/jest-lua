@@ -103,23 +103,21 @@ Expected constructor: Err2
 Received value: "nil"
 ]=]
 
--- deviation: changed from SubErr extends Err to SubErr
 snapshots['toThrow error class threw, but class should not match (error subclass) 1'] = [=[
 expect(received).never.toThrow(expected)
 
 Expected constructor: never Err
-Received constructor:       SubErr
+Received constructor:       SubErr extends Err
 
 Received message: "apple"
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
--- deviation: changed from SubErr extends .. extends Err to SubErr
 snapshots['toThrow error class threw, but class should not match (error subsubclass) 1'] = [=[
 expect(received).never.toThrow(expected)
 
 Expected constructor: never Err
-Received constructor:       SubSubErr
+Received constructor:       SubSubErr extends … extends Err
 
 Received message: "apple"
 
@@ -353,23 +351,21 @@ Expected constructor: Err2
 Received value: "nil"
 ]=]
 
--- deviation: changed from SubErr extends Err to SubErr
 snapshots['toThrowError error class threw, but class should not match (error subclass) 1'] = [=[
 expect(received).never.toThrowError(expected)
 
 Expected constructor: never Err
-Received constructor:       SubErr
+Received constructor:       SubErr extends Err
 
 Received message: "apple"
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
--- deviation: changed from SubErr extends .. extends Err to SubErr
 snapshots['toThrowError error class threw, but class should not match (error subsubclass) 1'] = [=[
 expect(received).never.toThrowError(expected)
 
 Expected constructor: never Err
-Received constructor:       SubSubErr
+Received constructor:       SubSubErr extends … extends Err
 
 Received message: "apple"
 

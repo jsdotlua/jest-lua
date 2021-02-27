@@ -18,7 +18,9 @@ local Object = Polyfills.Object
 local RegExp = Polyfills.RegExp
 local instanceof = Polyfills.instanceof
 
-local getType = require(Modules.JestGetType).getType
+local JestGetType = require(Modules.JestGetType)
+local getType = JestGetType.getType
+local isPrimitive = JestGetType.isPrimitive
 
 local JestMatcherUtils = require(Modules.JestMatcherUtils)
 local DIM_COLOR = JestMatcherUtils.DIM_COLOR
@@ -43,11 +45,11 @@ type MatcherState = any;
 
 local Print = require(Workspace.print)
 local printCloseTo = Print.printCloseTo
--- local printExpectedConstructorName = Print.printExpectedConstructorName
--- local printExpectedConstructorNameNot = Print.printExpectedConstructorNameNot
+local printExpectedConstructorName = Print.printExpectedConstructorName
+local printExpectedConstructorNameNot = Print.printExpectedConstructorNameNot
 local printReceivedArrayContainExpectedItem = Print.printReceivedArrayContainExpectedItem
--- local printReceivedConstructorName = Print.printReceivedConstructorName
--- local printReceivedConstructorNameNot = Print.printReceivedConstructorNameNot
+local printReceivedConstructorName = Print.printReceivedConstructorName
+local printReceivedConstructorNameNot = Print.printReceivedConstructorNameNot
 local printReceivedStringContainExpectedResult = Print.printReceivedStringContainExpectedResult
 local printReceivedStringContainExpectedSubstring = Print.printReceivedStringContainExpectedSubstring
 
@@ -322,15 +324,6 @@ local function toBeInstanceOf(this: MatcherState, received: any, expected: any)
 		promise = this.promise,
 	}
 
-	if typeof(received) ~= 'table' then
-		error(
-			matcherErrorMessage(
-				matcherHint(matcherName, nil, nil, options),
-				string.format('%s value must be an instance of a prototype class', RECEIVED_COLOR('received')),
-				printWithType('Received', received, printReceived)
-			)
-		)
-	end
 	if typeof(expected) ~= 'table' then
 		error(
 			matcherErrorMessage(
@@ -342,36 +335,37 @@ local function toBeInstanceOf(this: MatcherState, received: any, expected: any)
 	end
 
 	local pass = instanceof(received, expected)
-
-	local mt
-	if getmetatable(received) then
-		mt = getmetatable(received).__index
-		while mt ~= nil do
-			if mt == expected then
-				break
-			end
-			mt = getmetatable(mt)
-			if mt then
-				mt = mt.__index
-			end
-		end
-
-		if mt == nil then
-			mt = getmetatable(received)
-			if mt then
-				mt = mt.__index
-			end
-		end
-	else
-		mt = nil
+	local receivedPrototype = nil
+	if typeof(getmetatable(received)) == "table" and typeof(getmetatable(received).__index) == 'table' then
+		receivedPrototype = getmetatable(received).__index
 	end
 
+	local message
+	if pass then
+		message = function()
+			local retval = matcherHint(matcherName, nil, nil, options) ..
+				'\n\n' ..
+				printExpectedConstructorNameNot('Expected constructor', expected)
 
-	local message = function()
-		return matcherHint(matcherName, nil, nil, options) ..
-			'\n\n' ..
-			string.format('Expected prototype:%s%s\n', isNot and ' never ' or ' ', tostring(expected)) ..
-			string.format('Received prototype:%s%s\n', isNot and '       ' or ' ', tostring(mt))
+			if receivedPrototype and receivedPrototype ~= expected then
+				retval = retval .. printReceivedConstructorNameNot('Received constructor', receivedPrototype, expected)
+			end
+
+			return retval
+		end
+	else
+		message = function()
+			local retval = matcherHint(matcherName, nil, nil, options) ..
+				'\n\n' ..
+				printExpectedConstructorName('Expected constructor', expected)
+			if isPrimitive(received) or receivedPrototype == nil then
+				retval = retval .. string.format('\nReceived value has no prototype\nReceived value: %s', printReceived(received))
+			else
+				retval = retval ..printReceivedConstructorName('Received constructor', receivedPrototype)
+			end
+
+			return retval
+		end
 	end
 
 	return {message = message, pass = pass}

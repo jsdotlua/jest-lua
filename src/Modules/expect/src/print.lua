@@ -145,20 +145,54 @@ local function printReceivedConstructorName(
 	return printConstructorName(label, received, false, false) .. "\n"
 end
 
--- ROBLOX TODO: (ADO-1258) Add in more advanced cases for this function when
--- we can provide more detailed function name information
+--[[
+	deviation: printable function not present in upstream
+	Function that determines if an object is printable i.e. if the object
+	doesn't have tostring output that is its memory address
+]]
+local function printable(obj)
+	if typeof(obj) == "table" then
+		return tostring(obj):find("table: 0x") == nil
+	elseif typeof(obj) == "function" then
+		return tostring(obj):find("function: 0x") == nil
+	elseif typeof(obj) == "userdata" then
+		return tostring(obj):find("userdata: 0x") == nil
+	elseif typeof(obj) == "thread" then
+		return tostring(obj):find("thread: 0x") == nil
+	end
+
+	return true
+end
+
 -- // Do not call function if received is equal to expected.
 local function printReceivedConstructorNameNot(
 	label: string,
 	received,
 	expected
 ): string
-	return printConstructorName(label, received, true, false) .. "\n"
+	local retval
+	if typeof(tostring(expected)) == "string" and
+		#tostring(expected) ~= 0 and
+		typeof(tostring(received)) == "string" and
+		#tostring(received) ~= 0 then
+			if printable(expected) and printable(received) then
+				retval = printConstructorName(label, received, true, false)
+
+				if getmetatable(received) and getmetatable(received).__index == expected then
+					retval = retval .. ' extends '
+				else
+					retval = retval .. ' extends … extends '
+				end
+				retval = retval .. EXPECTED_COLOR(tostring(expected)) ..
+					'\n'
+				return retval
+			else
+				return printConstructorName(label, received, true, false) .. '\n'
+			end
+	else
+		return printConstructorName(label, received, false, false) .. '\n'
+	end
 end
-
--- ROBLOX TODO: (ADO-1258) Add in more advanced cases for this function when
--- we can provide more detailed function name information
-
 
 --[[
 	deviation: upstream would print stuff like
@@ -174,22 +208,6 @@ function printConstructorName(
 	isNot: boolean,
 	isExpected: boolean
 ): string
-	-- Function that determines if an object is printable i.e. if the object
-	-- doesn't have tostring output that is its memory address
-	local function printable(obj)
-		if typeof(obj) == "table" then
-			return tostring(obj):find("table: 0x") == nil
-		elseif typeof(obj) == "function" then
-			return tostring(obj):find("function: 0x") == nil
-		elseif typeof(obj) == "userdata" then
-			return tostring(obj):find("userdata: 0x") == nil
-		elseif typeof(obj) == "thread" then
-			return tostring(obj):find("thread: 0x") == nil
-		end
-
-		return true
-	end
-
 	-- if the tostring() method was overridden to return a non-string we error
 	if typeof(tostring(constructor)) ~= "string" then
 		return string.format("%s name is not a string", label)
@@ -257,10 +275,9 @@ function printConstructorName(
 			return retval .. tostring(constructor)
 		end
 
-		-- get rid of trailing comma
-		newretval = newretval:sub(1, -2)
-
 		if finished then
+			-- get rid of trailing comma
+			newretval = newretval:sub(1, -2)
 			newretval = newretval .. " }"
 		else
 			newretval = newretval .. " ... }"

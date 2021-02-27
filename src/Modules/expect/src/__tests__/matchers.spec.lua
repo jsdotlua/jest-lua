@@ -18,6 +18,7 @@ return function()
 	local Symbol = Polyfill.Symbol
 	local Number = Polyfill.Number
 	local Object = Polyfill.Object
+	local extends = Polyfill.extends
 	local RegExp = Polyfill.RegExp
 
 	local stringify = require(Modules.JestMatcherUtils).stringify
@@ -441,6 +442,9 @@ return function()
 	describe(".toBeInstanceOf()", function()
 		local A = {}
 		A.__index = A
+		setmetatable(A, {
+			__tostring = function(self) return "A" end
+		})
 		function A.new()
 			local self = {}
 			setmetatable(self, A)
@@ -449,6 +453,9 @@ return function()
 
 		local B = {}
 		B.__index = B
+		setmetatable(B, {
+			__tostring = function(self) return "B" end
+		})
 		function B.new()
 			local self = {}
 			setmetatable(self, B)
@@ -456,34 +463,13 @@ return function()
 		end
 
 		-- C extends B
-		local C = {}
-		C.__index = C
-		setmetatable(C, B)
-		function C.new()
-			local self = {}
-			setmetatable(self, C)
-			return self
-		end
+		local C = extends(B, "C", function(self) end)
 
 		-- D extends C
-		local D = {}
-		D.__index = D
-		setmetatable(D, C)
-		function D.new()
-			local self = {}
-			setmetatable(self, D)
-			return self
-		end
+		local D = extends(C, "D", function(self) end)
 
 		-- E extends D
-		local E = {}
-		E.__index = E
-		setmetatable(E, D)
-		function E.new()
-			local self = {}
-			setmetatable(self, E)
-			return self
-		end
+		local E = extends(D, "E", function(self) end)
 
 		it('throws if expected is not a table', function()
 			expect(function()
@@ -495,13 +481,14 @@ return function()
 			)
 		end)
 
-		it('throws if received is not a table', function()
+		it('does not throw if received is not a table', function()
 			expect(function()
 				jestExpect(1).toBeInstanceOf(A)
 			end).to.throw(
-				"Matcher error: received value must be an instance of a prototype class\n\n" ..
-				"Received has type:  number\n" ..
-				"Received has value: 1"
+				"expect(received).toBeInstanceOf(expected)\n\n" ..
+				"Expected constructor: A\n\n" ..
+				"Received value has no prototype\n" ..
+				"Received value: 1"
 			)
 		end)
 
@@ -509,8 +496,10 @@ return function()
 			expect(function()
 				jestExpect({}).toBeInstanceOf(A)
 			end).to.throw("expect(received).toBeInstanceOf(expected)\n\n" ..
-				string.format("Expected prototype: %s\n", tostring(A)) ..
-				string.format("Received prototype: nil"))
+				"Expected constructor: A\n\n" ..
+				"Received value has no prototype\n" ..
+				"Received value: {}"
+			)
 
 			jestExpect({}).never.toBeInstanceOf(A)
 
@@ -521,8 +510,7 @@ return function()
 				jestExpect(A.new()).never.toBeInstanceOf(A)
 			end).to.throw(
 				"expect(received).never.toBeInstanceOf(expected)\n\n" ..
-				string.format("Expected prototype: never %s\n", tostring(A)) ..
-				string.format("Received prototype:       %s", tostring(A))
+				"Expected constructor: never A\n"
 			)
 
 			jestExpect(A.new()).toBeInstanceOf(A)
@@ -533,8 +521,8 @@ return function()
 				jestExpect(C.new()).never.toBeInstanceOf(B)
 			end).to.throw(
 				"expect(received).never.toBeInstanceOf(expected)\n\n" ..
-				string.format("Expected prototype: never %s\n", tostring(B)) ..
-				string.format("Received prototype:       %s", tostring(B))
+				"Expected constructor: never B\n" ..
+				"Received constructor:       C extends B"
 			)
 
 			jestExpect(C.new()).toBeInstanceOf(B)
@@ -545,8 +533,8 @@ return function()
 				jestExpect(E.new()).never.toBeInstanceOf(B)
 			end).to.throw(
 				"expect(received).never.toBeInstanceOf(expected)\n\n" ..
-				string.format("Expected prototype: never %s\n", tostring(B)) ..
-				string.format("Received prototype:       %s", tostring(B))
+				"Expected constructor: never B\n" ..
+				"Received constructor:       E extends … extends B"
 			)
 
 			jestExpect(E.new()).toBeInstanceOf(B)
@@ -557,8 +545,8 @@ return function()
 				jestExpect(A.new()).toBeInstanceOf(B)
 			end).to.throw(
 				"expect(received).toBeInstanceOf(expected)\n\n" ..
-				string.format("Expected prototype: %s\n", tostring(B)) ..
-				string.format("Received prototype: %s", tostring(A))
+				"Expected constructor: B\n" ..
+				"Received constructor: A"
 			)
 
 			jestExpect(A.new()).never.toBeInstanceOf(B)
