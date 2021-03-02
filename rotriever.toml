@@ -3,10 +3,10 @@ name = "roblox/jest-roblox"
 author = "Roblox"
 license = "Apache2"
 content_root = "src"
-version = "0.6.0"
+version = "0.7.0"
 
 [dependencies]
-LuauPolyfill = "github.com/roblox/luau-polyfill@0.1.2"
+LuauPolyfill = "github.com/roblox/luau-polyfill@0.1.4"
 
 [dev_dependencies]
 Promise = "github.com/evaera/roblox-lua-promise@3.0.1"

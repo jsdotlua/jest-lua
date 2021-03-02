@@ -1,5 +1,10 @@
 # Jest Roblox Changelog
 
+## 0.7.0 (2021-03-02)
+* Added `expect.extend()`
+* Added `RegExp` support to matchers
+* Added prototype information to matchers
+
 ## 0.6.0 (2021-02-22)
 * Added `expect().toThrow()`
 

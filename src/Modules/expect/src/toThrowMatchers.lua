@@ -161,7 +161,7 @@ local function createMatcher(
 
 				local compareStack
 				local ok, e = xpcall(function()
-					compareStack = debug.traceback("", 2)
+					compareStack = debug.traceback(nil, 2)
 					received()
 				end, function(error_)
 					local currentStack = debug.traceback()
@@ -175,7 +175,11 @@ local function createMatcher(
 					elseif instanceof(error_, Error) or (typeof(error_) == "table" and error_.message) then
 						-- Set the stack if it has not been given a value by the user
 						if error_.stack == nil then
-					 		error_.stack = stack
+					 		error_.stack = diffStack(compareStack, debug.traceback())
+					 	else
+					 		if not error_.stack:find("ThrowMatchers%-test%.js") then
+				 				error_.stack = diffStack(compareStack, error_.stack)
+					 		end
 					 	end
 					 	return error_
 					elseif typeof(error_) == "string" then
@@ -190,7 +194,7 @@ local function createMatcher(
 					end
 
 					local errorObject = Error(error_)
-					errorObject.stack = stack
+					errorObject.stack = diffStack(compareStack, errorObject.stack)
 					errorObject["$$robloxInternalJestError"] = true
 
 					return errorObject
@@ -577,7 +581,7 @@ function toThrow(
 				"\n\n"
 
 			if thrown ~= nil and thrown.hasMessage and not thrown.value["$$robloxInternalJestError"] then
-				retval = retval ..				
+				retval = retval ..
 					formatReceived("Error name:    ", thrown, "name") ..
 					formatReceived("Error message: ", thrown, "message") ..
 					formatStack(thrown)
@@ -669,16 +673,7 @@ function formatStack(thrown: Thrown)
 	if thrown == nil or not thrown.isError then
 		return ""
 	else
-		return formatStackTrace(
-			separateMessageFromStack(thrown.value.stack).stack,
-			{
-				rootDir = "don't know how to get actual cwd :(",
-				testMatch = {}
-			},
-			{
-				noStackTrace = false
-			}
-		)
+		return formatStackTrace(thrown.value.stack)
 	end
 end
 

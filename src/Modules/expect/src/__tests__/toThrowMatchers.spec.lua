@@ -24,8 +24,7 @@ return function()
 	local CustomError = extends(Error, "CustomError", function(self, message)
 		self.message = message
 		self.name = 'Error'
-		self.stack = 'Error\n' ..
-			'  at jestExpect' ..
+		self.stack = '  at jestExpect' ..
 			' (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)'
 	end)
 
@@ -36,15 +35,13 @@ return function()
 			local Err = extends(CustomError, "Err", function(self, message)
 				self.name = "Error"
 				self.message = message
-				self.stack = 'Error\n' ..
-					'  at jestExpect' ..
+				self.stack = '  at jestExpect' ..
 					' (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)'
 			end)
 			local Err2 = extends(CustomError, "Err2", function(self, message)
 				self.name = "Error"
 				self.message = message
-				self.stack = 'Error\n' ..
-					'  at jestExpect' ..
+				self.stack = '  at jestExpect' ..
 					' (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)'
 			end)
 
@@ -168,15 +165,13 @@ return function()
 				local SubErr = extends(Err, "SubErr", function(self, message)
 					self.message = message
 					self.name = "SubErr"
-					self.stack = 'Error\n' ..
-						'  at jestExpect' ..
+					self.stack = '  at jestExpect' ..
 						' (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)'
 				end)
 				local SubSubErr = extends(SubErr, "SubSubErr", function(self, message)
 					self.message = message
 					self.name = "SubSubErr"
-					self.stack = 'Error\n' ..
-						'  at jestExpect' ..
+					self.stack = '  at jestExpect' ..
 						' (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)'
 				end)
 
