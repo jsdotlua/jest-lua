@@ -14,6 +14,8 @@ local Polyfills = require(Packages.LuauPolyfill)
 local Number = Polyfills.Number
 local Array = Polyfills.Array
 
+local chalk = require(Packages.ChalkLua)
+
 local JestDiff = require(Modules.JestDiff)
 local diffDefault = JestDiff.diff
 local DIFF_DELETE = JestDiff.DIFF_DELETE
@@ -63,12 +65,11 @@ export type MatcherHintOptions = {
 
 -- deviation: omitted DiffOptions since it's not currently present in jest-diff
 
--- deviation: all chalk constants treated as tostring for now
-local EXPECTED_COLOR = tostring -- chalk.green
-local RECEIVED_COLOR = tostring -- chalk.red
-local INVERTED_COLOR = tostring -- chalk.inverse
-local BOLD_WEIGHT = tostring -- chalk.bold
-local DIM_COLOR = tostring -- chalk.dim
+local EXPECTED_COLOR = chalk.green
+local RECEIVED_COLOR = chalk.red
+local INVERTED_COLOR = chalk.inverse
+local BOLD_WEIGHT = chalk.bold
+local DIM_COLOR = chalk.dim
 
 local MULTILINE_REGEXP = "\n"
 local SPACE_SYMBOL = utf8.char(183) -- middle dot
@@ -131,7 +132,7 @@ local function stringify(object: any, maxDepth: number?): string
 end
 
 local function highlightTrailingWhitespace(text: string): string
-	return text:gsub("%s+$", INVERTED_COLOR("%1"))
+	return text:gsub("%s+$", function(s) return INVERTED_COLOR(s) end)
 end
 
 -- Replace common spaces with middle dot at the end of any line
@@ -372,8 +373,8 @@ function printDiffOrStringify(
 			return diffStringsUnified(expected, received, {
 				aAnnotation = expectedLabel,
 				bAnnotation = receivedLabel,
-				changeLineTrailingSpaceColor = tostring, -- chalk.bgYellow
-				commonLineTrailingSpaceColor = tostring, -- chalk.bgYellow
+				changeLineTrailingSpaceColor = chalk.bgYellow,
+				commonLineTrailingSpaceColor = chalk.bgYellow,
 				emptyFirstOrLastLinePlaceholder = utf8.char(8629),
 				expand = expand,
 				includeChangeCounts = true
@@ -647,7 +648,7 @@ function matcherHint(
 	end
 
 	if comment ~= "" then
-		dimString = dimString .. " // " .. comment
+		dimString = dimString .. " -- " .. comment
 	end
 
 	if dimString ~= "" then

@@ -87,7 +87,7 @@ end
 local function toBe(this: MatcherState, received: any, expected: any)
 	local matcherName = 'toBe'
 	local options = {
-		comment = 'Object.is equality',
+		comment = 'shallow equality',
 		isNot = this.isNot,
 		promise = this.promise,
 	}
@@ -506,7 +506,7 @@ local function toContain(
 	local matcherName = 'toContain'
 	local isNot = this.isNot
 	local options = {
-		comment = 'indexOf',
+		comment = 'string.find or table.find',
 		isNot = isNot,
 		promise = this.promise,
 	}
@@ -891,9 +891,9 @@ local function toHaveProperty(
 			retval = retval .. 'Received path: '
 
 			if expectedPathType == 'table' or #receivedPath == 0 then
-				retval = retval .. string.format('%s\n\n', stringify(receivedPath))
+				retval = retval .. string.format('%s\n\n', printReceived(receivedPath))
 			else
-				retval = retval .. string.format('%s\n\n', stringify(table.concat(receivedPath, '.')))
+				retval = retval .. string.format('%s\n\n', printReceived(table.concat(receivedPath, '.')))
 			end
 
 			if hasValue then

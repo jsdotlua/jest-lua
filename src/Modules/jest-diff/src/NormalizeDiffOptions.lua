@@ -12,7 +12,7 @@ local Packages = Modules.Parent.Parent
 
 local Number = require(Packages.LuauPolyfill).Number
 
--- deviation: omitted chalk import
+local chalk = require(Packages.ChalkLua)
 
 local function noColor(s): string
 	return s
@@ -20,17 +20,16 @@ end
 
 local DIFF_CONTEXT_DEFAULT = 5
 
--- deviation: all color formatting is set to noColor
 local OPTIONS_DEFAULT = {
 	aAnnotation = 'Expected',
-	aColor = noColor,
+	aColor = chalk.green,
 	aIndicator = '-',
 	bAnnotation = 'Received',
-	bColor = noColor,
+	bColor = chalk.red,
 	bIndicator = '+',
-	changeColor = noColor,
+	changeColor = chalk.inverse,
 	changeLineTrailingSpaceColor = noColor,
-	commonColor = noColor,
+	commonColor = chalk.dim,
 	commonIndicator = ' ',
 	commonLineTrailingSpaceColor = noColor,
 	contextLines = DIFF_CONTEXT_DEFAULT,
@@ -38,7 +37,7 @@ local OPTIONS_DEFAULT = {
 	expand = true,
 	includeChangeCounts = false,
 	omitAnnotationLines = false,
-	patchColor = noColor,
+	patchColor = chalk.yellow,
 }
 
 -- omitting return type due to CLI-37948

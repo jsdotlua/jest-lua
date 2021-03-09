@@ -22,7 +22,7 @@ Version: v26.5.2
 ### :package: [Dependencies](https://github.com/facebook/jest/blob/v26.5.3/packages/jest-matcher-utils/package.json)
 | Package | Version | Status | Notes |
 | - | - | - | - |
-| chalk | 4.0.0 | :x: Will not port | Console output styling is not a priority |
+| chalk | 4.0.0 | :heavy_check_mark: Ported | [Lua-Chalk](https://github.com/Roblox/lua-chalk) |
 | jest-diff | 26.5.2 | :heavy_check_mark: Ported | |
 | jest-get-type | 26.3.0 | :heavy_check_mark: Ported | |
 | pretty-format | 26.5.2 | :heavy_check_mark: Ported | Mostly complete, need plugins |

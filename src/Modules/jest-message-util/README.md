@@ -20,7 +20,7 @@
  | @babel/code-frame | 7.0.0 | :x: Will not port | Babel is not needed |
  | @jest/types | 26.5.2 | :x: Will not port | External typedefs not a priority |
  | @types/stack-utils | 2.0.0 | :x: Will not port | External typedefs not a priority |
- | chalk | 4.0.0 | :x: Will not port | Console output styling not a priority |
+ | chalk | 4.0.0 | :heavy_check_mark: Ported | [Lua-Chalk](https://github.com/Roblox/lua-chalk) |
  | graceful-fs | 4.2.4 | :x: Will not port | No need to interact with the filesystem |
  | micromatch | 4.0.1 | :x: Will not port | Deals with file paths |
  | slash | 3.0.0 | :x: Will not port | Deals with file paths |

@@ -23,8 +23,6 @@ local stringify = JestMatcherUtils.stringify
 
 type Array<T> = { T }
 
--- local printConstructorName
-
 -- // Format substring but do not enclose in double quote marks.
 -- // The replacement is compatible with pretty-format package.
 local function printSubstring(val: string): string
@@ -39,9 +37,9 @@ local function printReceivedStringContainExpectedSubstring(
 	length: number -- // not end
 ): string
 	return RECEIVED_COLOR('"' ..
-		printSubstring(received:sub(1, start))) ..
-		INVERTED_COLOR(printSubstring(received:sub(start + 1, start + 1 + length))) ..
-		printSubstring(received:sub(start + 1 + length + 1, #received)) ..
+		printSubstring(received:sub(0, start - 1))) ..
+		INVERTED_COLOR(printSubstring(received:sub(start, start + length - 1))) ..
+		RECEIVED_COLOR(printSubstring(received:sub(start + length, #received))) ..
 		'"'
 end
 
@@ -73,11 +71,11 @@ local function printReceivedArrayContainExpectedItem(
 		if i == index then
 			receivedMap[i] = INVERTED_COLOR(stringified)
 		else
-			receivedMap[i] = stringified
+			receivedMap[i] = RECEIVED_COLOR(stringified)
 		end
 	end
 
-	return "{" .. table.concat(receivedMap, ", ") .. "}"
+	return RECEIVED_COLOR("{") .. table.concat(receivedMap, RECEIVED_COLOR(", ")) .. RECEIVED_COLOR("}")
 end
 
 local function printCloseTo(
@@ -237,7 +235,7 @@ function printConstructorName(
 
 		return retval
 	else
-		local newretval = retval .. "{ "
+		local obj = "{ "
 
 		local finished = true
 		local started = false
@@ -248,42 +246,49 @@ function printConstructorName(
 			-- printing the table address with the original retval
 			-- the only exception we make is if the key is a __ metamethod
 
-			local str = nil
+			local kv_pair = nil
 			if printable(key) and printable(value) then
-				str = string.format("%s: %s,", stringify(key), stringify(value))
+				kv_pair = string.format("%s: %s, ", stringify(key), stringify(value))
 			-- We don't print key values for metamethods since they don't
 			-- provide us with any additional information
 			elseif printable(key) and key:find("__") ~= 1 then
-				str = string.format("%s,", stringify(key))
+				kv_pair = string.format("%s, ", stringify(key))
 			end
 
-			if str then
-				if #newretval + #str > 64 then
+			-- stop printing key value pairs and append an ellipsis if it exceeds a specific length
+			if kv_pair then
+				if #obj + #kv_pair > 64 then
 					finished = false
 					break
 				end
 
 				started = true
-				newretval = newretval .. str
+				obj = obj .. kv_pair
 			end
 		end
 
-		-- if we were never able to actually create a newretval with the
+		-- if we were never able to actually create an obj with the
 		-- content of the table because the first #kv_pair was too big,
 		-- we default to printing the table address with original retval
 		if started == false then
-			return retval .. tostring(constructor)
+			if isExpected then
+				return retval .. EXPECTED_COLOR(tostring(constructor))
+			end
+			return retval .. RECEIVED_COLOR(tostring(constructor))
 		end
 
 		if finished then
 			-- get rid of trailing comma
-			newretval = newretval:sub(1, -2)
-			newretval = newretval .. " }"
+			obj = obj:sub(1, -3)
+			obj = obj .. " }"
 		else
-			newretval = newretval .. " ... }"
+			obj = obj .. "... }"
 		end
 
-		return newretval
+		if isExpected then
+			return retval .. EXPECTED_COLOR(obj)
+		end
+		return retval .. RECEIVED_COLOR(obj)
 	end
 end
 

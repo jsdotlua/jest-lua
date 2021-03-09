@@ -7,515 +7,525 @@
 local snapshots = {}
 
 snapshots['toThrow asymmetric any-Class fail isNot false 1'] = [=[
-expect(received).toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected asymmetric matcher: Any<Err2>
+Expected asymmetric matcher: [32mAny<Err2>[39m
 
-Received name:    "Error"
-Received message: "apple"
+Received name:    [31m"Error"[39m
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrow asymmetric any-Class fail isNot true 1'] = [=[
-expect(received).never.toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected asymmetric matcher: never Any<Err>
+Expected asymmetric matcher: never [32mAny<Err>[39m
 
-Received name:    "Error"
-Received message: "apple"
+Received name:    [31m"Error"[39m
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrow asymmetric anything fail isNot true 1'] = [=[
-expect(received).never.toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected asymmetric matcher: never Anything
+Expected asymmetric matcher: never [32mAnything[39m
 
-Received name:    "Error"
-Received message: "apple"
+Received name:    [31m"Error"[39m
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 -- deviation: output has anonymous instead of asymmetricMatch
 snapshots['toThrow asymmetric no-symbol fail isNot false 1'] = [=[
-expect(received).toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected asymmetric matcher: {"asymmetricMatch": [Function anonymous]}
+Expected asymmetric matcher: [32m{"asymmetricMatch": [Function anonymous]}[39m
 
-Received name:    "Error"
-Received message: "apple"
+Received name:    [31m"Error"[39m
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 -- deviation: output has anonymous instead of asymmetricMatch
 snapshots['toThrow asymmetric no-symbol fail isNot true 1'] = [=[
-expect(received).never.toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected asymmetric matcher: never {"asymmetricMatch": [Function anonymous]}
+Expected asymmetric matcher: never [32m{"asymmetricMatch": [Function anonymous]}[39m
 
-Received name:    "Error"
-Received message: "apple"
+Received name:    [31m"Error"[39m
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrow asymmetric objectContaining fail isNot false 1'] = [=[
-expect(received).toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected asymmetric matcher: ObjectContaining {"name": "NotError"}
+Expected asymmetric matcher: [32mObjectContaining {"name": "NotError"}[39m
 
-Received name:    "Error"
-Received message: "apple"
+Received name:    [31m"Error"[39m
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrow asymmetric objectContaining fail isNot true 1'] = [=[
-expect(received).never.toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected asymmetric matcher: never ObjectContaining {"name": "Error"}
+Expected asymmetric matcher: never [32mObjectContaining {"name": "Error"}[39m
 
-Received name:    "Error"
-Received message: "apple"
+Received name:    [31m"Error"[39m
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrow error class did not throw at all 1'] = [=[
-expect(received).toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected constructor: Err
+Expected constructor: [32mErr[39m
 
 Received function never threw]=]
 
 snapshots['toThrow error class threw, but class did not match (error) 1'] = [=[
-expect(received).toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected constructor: Err2
-Received constructor: Err
+Expected constructor: [32mErr2[39m
+Received constructor: [31mErr[39m
 
-Received message: "apple"
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrow error class threw, but class did not match (non-error falsey) 1'] = [=[
-expect(received).toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected constructor: Err2
+Expected constructor: [32mErr2[39m
 
-Received value: "nil"
-]=]
+Received value: [31m"nil"[39m
+
+      LoadedCode.JestRoblox.Root.src.Modules.Expect.toThrowMatchers:196
+      LoadedCode.JestRoblox.Root.src.Modules.Expect.__tests__.toThrowMatchers.spec:209]=]
 
 snapshots['toThrow error class threw, but class should not match (error subclass) 1'] = [=[
-expect(received).never.toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected constructor: never Err
-Received constructor:       SubErr extends Err
+Expected constructor: never [32mErr[39m
+Received constructor:       [31mSubErr[39m extends [32mErr[39m
 
-Received message: "apple"
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrow error class threw, but class should not match (error subsubclass) 1'] = [=[
-expect(received).never.toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected constructor: never Err
-Received constructor:       SubSubErr extends … extends Err
+Expected constructor: never [32mErr[39m
+Received constructor:       [31mSubSubErr[39m extends … extends [32mErr[39m
 
-Received message: "apple"
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrow error class threw, but class should not match (error) 1'] = [=[
-expect(received).never.toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected constructor: never Err
+Expected constructor: never [32mErr[39m
 
-Received message: "apple"
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrow error-message fail isNot false 1'] = [=[
-expect(received).toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected message: "apple"
-Received message: "banana"
-]=]
+Expected message: [32m"apple"[39m
+Received message: [31m"banana"[39m]=]
 
 snapshots['toThrow error-message fail isNot true 1'] = [=[
-expect(received).never.toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected message: never "Invalid array length"
-]=]
+Expected message: never [32m"Invalid array length"[39m]=]
 
 snapshots['toThrow error-message fail multiline diff highlight incorrect expected space 1'] = [=[
-expect(received).toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected message  - 1
-+ Received message  + 1
+[32m- Expected message  - 1[39m
+[31m+ Received message  + 1[39m
 
-- There is no route defined for key Settings. 
-+ There is no route defined for key Settings.
-  Must be one of: 'Home'
-]=]
+[32m- There is no route defined for key Settings.[7m [27m[39m
+[31m+ There is no route defined for key Settings.[39m
+[2m  Must be one of: 'Home'[22m]=]
 
 snapshots['toThrow expected is undefined threw, but should not have (non-error falsey) 1'] = [=[
-expect(received).never.toThrow()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m()[22m
 
-Thrown value: "nil"
-]=]
+Thrown value: [31m"nil"[39m
+
+      LoadedCode.JestRoblox.Root.src.Modules.Expect.toThrowMatchers:196
+      LoadedCode.JestRoblox.Root.src.Modules.Expect.__tests__.toThrowMatchers.spec:478]=]
 
 snapshots['toThrow invalid actual 1'] = [=[
-expect(received).toThrow()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrow[2m()[22m
 
-Matcher error: received value must be a function
+[1mMatcher error[22m: [31mreceived[39m value must be a function
 
 Received has type:  string
-Received has value: "a string"]=]
+Received has value: [31m"a string"[39m]=]
 
 snapshots['toThrow invalid arguments 1'] = [=[
-expect(received).never.toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a string or regular expression or class or error
+[1mMatcher error[22m: [32mexpected[39m value must be a string or regular expression or class or error
 
 Expected has type:  number
-Expected has value: 111]=]
+Expected has value: [32m111[39m]=]
 
 snapshots['toThrow regexp did not throw at all 1'] = [=[
-expect(received).toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected pattern: /apple/
+Expected pattern: [32m/apple/[39m
 
 Received function never threw]=]
 
 snapshots['toThrow regexp threw, but message did not match (error) 1'] = [=[
-expect(received).toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected pattern: /banana/
-Received message: "apple"
+Expected pattern: [32m/banana/[39m
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 -- deviation: we print "0" instead of 0
 snapshots['toThrow regexp threw, but message did not match (non-error falsey) 1'] = [=[
-expect(received).toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected pattern: /^[123456789]\d*/
-Received value:   "0"
+Expected pattern: [32m/^[123456789]\d*/[39m
+Received value:   [31m"0"[39m
 ]=]
 
 snapshots['toThrow regexp threw, but message should not match (error) 1'] = [=[
-expect(received).never.toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected pattern: never / array /
-Received message:       "Invalid array length"
+Expected pattern: never [32m/ array /[39m
+Received message:       [31m"Invalid[39m[7m array [27m[31mlength[39m"
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 -- deviation: we print "404" instead of 404
 snapshots['toThrow regexp threw, but message should not match (non-error truthy) 1'] = [=[
-expect(received).never.toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected pattern: never /^[123456789]\d*/
-Received value:         "404"
+Expected pattern: never [32m/^[123456789]\d*/[39m
+Received value:         [31m"404"[39m
 ]=]
 
 snapshots['toThrow substring did not throw at all 1'] = [=[
-expect(received).toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected substring: "apple"
+Expected substring: [32m"apple"[39m
 
 Received function never threw]=]
 
 snapshots['toThrow substring threw, but message did not match (error) 1'] = [=[
-expect(received).toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected substring: "banana"
-Received message:   "apple"
+Expected substring: [32m"banana"[39m
+Received message:   [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrow substring threw, but message did not match (non-error falsey) 1'] = [=[
-expect(received).toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected substring: "Server Error"
-Received value:     ""
-]=]
+Expected substring: [32m"Server Error"[39m
+Received value:     [31m""[39m
+
+      LoadedCode.JestRoblox.Root.src.Modules.Expect.toThrowMatchers:196
+      LoadedCode.JestRoblox.Root.src.Modules.Expect.__tests__.toThrowMatchers.spec:80]=]
 
 snapshots['toThrow substring threw, but message should not match (error) 1'] = [=[
-expect(received).never.toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected substring: never "array"
-Received message:         "Invalid array length"
+Expected substring: never [32m"array"[39m
+Received message:         [31m"Invalid [39m[7marray[27m[31m length[39m"
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrow substring threw, but message should not match (non-error truthy) 1'] = [=[
-expect(received).never.toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected substring: never "Server Error"
-Received value:           "Internal Server Error"
-]=]
+Expected substring: never [32m"Server Error"[39m
+Received value:           [31m"Internal Server Error"[39m
+
+      LoadedCode.JestRoblox.Root.src.Modules.Expect.toThrowMatchers:196
+      LoadedCode.JestRoblox.Root.src.Modules.Expect.__tests__.toThrowMatchers.spec:102]=]
 
 snapshots['toThrowError asymmetric any-Class fail isNot false 1'] = [=[
-expect(received).toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected asymmetric matcher: Any<Err2>
+Expected asymmetric matcher: [32mAny<Err2>[39m
 
-Received name:    "Error"
-Received message: "apple"
+Received name:    [31m"Error"[39m
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrowError asymmetric any-Class fail isNot true 1'] = [=[
-expect(received).never.toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected asymmetric matcher: never Any<Err>
+Expected asymmetric matcher: never [32mAny<Err>[39m
 
-Received name:    "Error"
-Received message: "apple"
+Received name:    [31m"Error"[39m
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrowError asymmetric anything fail isNot true 1'] = [=[
-expect(received).never.toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected asymmetric matcher: never Anything
+Expected asymmetric matcher: never [32mAnything[39m
 
-Received name:    "Error"
-Received message: "apple"
+Received name:    [31m"Error"[39m
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 -- deviation: output has anonymous instead of asymmetricMatch
 snapshots['toThrowError asymmetric no-symbol fail isNot false 1'] = [=[
-expect(received).toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected asymmetric matcher: {"asymmetricMatch": [Function anonymous]}
+Expected asymmetric matcher: [32m{"asymmetricMatch": [Function anonymous]}[39m
 
-Received name:    "Error"
-Received message: "apple"
+Received name:    [31m"Error"[39m
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 -- deviation: output has anonymous instead of asymmetricMatch
 snapshots['toThrowError asymmetric no-symbol fail isNot true 1'] = [=[
-expect(received).never.toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected asymmetric matcher: never {"asymmetricMatch": [Function anonymous]}
+Expected asymmetric matcher: never [32m{"asymmetricMatch": [Function anonymous]}[39m
 
-Received name:    "Error"
-Received message: "apple"
+Received name:    [31m"Error"[39m
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrowError asymmetric objectContaining fail isNot false 1'] = [=[
-expect(received).toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected asymmetric matcher: ObjectContaining {"name": "NotError"}
+Expected asymmetric matcher: [32mObjectContaining {"name": "NotError"}[39m
 
-Received name:    "Error"
-Received message: "apple"
+Received name:    [31m"Error"[39m
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrowError asymmetric objectContaining fail isNot true 1'] = [=[
-expect(received).never.toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected asymmetric matcher: never ObjectContaining {"name": "Error"}
+Expected asymmetric matcher: never [32mObjectContaining {"name": "Error"}[39m
 
-Received name:    "Error"
-Received message: "apple"
+Received name:    [31m"Error"[39m
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrowError error class did not throw at all 1'] = [=[
-expect(received).toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected constructor: Err
+Expected constructor: [32mErr[39m
 
 Received function never threw]=]
 
 snapshots['toThrowError error class threw, but class did not match (error) 1'] = [=[
-expect(received).toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected constructor: Err2
-Received constructor: Err
+Expected constructor: [32mErr2[39m
+Received constructor: [31mErr[39m
 
-Received message: "apple"
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrowError error class threw, but class did not match (non-error falsey) 1'] = [=[
-expect(received).toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected constructor: Err2
+Expected constructor: [32mErr2[39m
 
-Received value: "nil"
-]=]
+Received value: [31m"nil"[39m
+
+      LoadedCode.JestRoblox.Root.src.Modules.Expect.toThrowMatchers:196
+      LoadedCode.JestRoblox.Root.src.Modules.Expect.__tests__.toThrowMatchers.spec:209]=]
 
 snapshots['toThrowError error class threw, but class should not match (error subclass) 1'] = [=[
-expect(received).never.toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected constructor: never Err
-Received constructor:       SubErr extends Err
+Expected constructor: never [32mErr[39m
+Received constructor:       [31mSubErr[39m extends [32mErr[39m
 
-Received message: "apple"
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrowError error class threw, but class should not match (error subsubclass) 1'] = [=[
-expect(received).never.toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected constructor: never Err
-Received constructor:       SubSubErr extends … extends Err
+Expected constructor: never [32mErr[39m
+Received constructor:       [31mSubSubErr[39m extends … extends [32mErr[39m
 
-Received message: "apple"
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrowError error class threw, but class should not match (error) 1'] = [=[
-expect(received).never.toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected constructor: never Err
+Expected constructor: never [32mErr[39m
 
-Received message: "apple"
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrowError error-message fail isNot false 1'] = [=[
-expect(received).toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected message: "apple"
-Received message: "banana"
-]=]
+Expected message: [32m"apple"[39m
+Received message: [31m"banana"[39m]=]
 
 snapshots['toThrowError error-message fail isNot true 1'] = [=[
-expect(received).never.toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected message: never "Invalid array length"
-]=]
+Expected message: never [32m"Invalid array length"[39m]=]
 
 snapshots['toThrowError error-message fail multiline diff highlight incorrect expected space 1'] = [=[
-expect(received).toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected message  - 1
-+ Received message  + 1
+[32m- Expected message  - 1[39m
+[31m+ Received message  + 1[39m
 
-- There is no route defined for key Settings. 
-+ There is no route defined for key Settings.
-  Must be one of: 'Home'
-]=]
+[32m- There is no route defined for key Settings.[7m [27m[39m
+[31m+ There is no route defined for key Settings.[39m
+[2m  Must be one of: 'Home'[22m]=]
 
 snapshots['toThrowError expected is undefined threw, but should not have (non-error falsey) 1'] = [=[
-expect(received).never.toThrowError()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrowError[2m()[22m
 
-Thrown value: "nil"
-]=]
+Thrown value: [31m"nil"[39m
+
+      LoadedCode.JestRoblox.Root.src.Modules.Expect.toThrowMatchers:196
+      LoadedCode.JestRoblox.Root.src.Modules.Expect.__tests__.toThrowMatchers.spec:478]=]
 
 snapshots['toThrowError invalid actual 1'] = [=[
-expect(received).toThrowError()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrowError[2m()[22m
 
-Matcher error: received value must be a function
+[1mMatcher error[22m: [31mreceived[39m value must be a function
 
 Received has type:  string
-Received has value: "a string"]=]
+Received has value: [31m"a string"[39m]=]
 
 snapshots['toThrowError invalid arguments 1'] = [=[
-expect(received).never.toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a string or regular expression or class or error
+[1mMatcher error[22m: [32mexpected[39m value must be a string or regular expression or class or error
 
 Expected has type:  number
-Expected has value: 111]=]
+Expected has value: [32m111[39m]=]
 
 snapshots['toThrowError regexp did not throw at all 1'] = [=[
-expect(received).toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected pattern: /apple/
+Expected pattern: [32m/apple/[39m
 
 Received function never threw]=]
 
 snapshots['toThrowError regexp threw, but message did not match (error) 1'] = [=[
-expect(received).toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected pattern: /banana/
-Received message: "apple"
+Expected pattern: [32m/banana/[39m
+Received message: [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 -- deviation: we print "0" instead of 0
 snapshots['toThrowError regexp threw, but message did not match (non-error falsey) 1'] = [=[
-expect(received).toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected pattern: /^[123456789]\d*/
-Received value:   "0"
+Expected pattern: [32m/^[123456789]\d*/[39m
+Received value:   [31m"0"[39m
 ]=]
 
 snapshots['toThrowError regexp threw, but message should not match (error) 1'] = [=[
-expect(received).never.toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected pattern: never / array /
-Received message:       "Invalid array length"
+Expected pattern: never [32m/ array /[39m
+Received message:       [31m"Invalid[39m[7m array [27m[31mlength[39m"
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 -- deviation: we print "404" instead of 404
 snapshots['toThrowError regexp threw, but message should not match (non-error truthy) 1'] = [=[
-expect(received).never.toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected pattern: never /^[123456789]\d*/
-Received value:         "404"
+Expected pattern: never [32m/^[123456789]\d*/[39m
+Received value:         [31m"404"[39m
 ]=]
 
 snapshots['toThrowError substring did not throw at all 1'] = [=[
-expect(received).toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected substring: "apple"
+Expected substring: [32m"apple"[39m
 
 Received function never threw]=]
 
 snapshots['toThrowError substring threw, but message did not match (error) 1'] = [=[
-expect(received).toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected substring: "banana"
-Received message:   "apple"
+Expected substring: [32m"banana"[39m
+Received message:   [31m"apple"[39m
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrowError substring threw, but message did not match (non-error falsey) 1'] = [=[
-expect(received).toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected substring: "Server Error"
-Received value:     ""
-]=]
+Expected substring: [32m"Server Error"[39m
+Received value:     [31m""[39m
+
+      LoadedCode.JestRoblox.Root.src.Modules.Expect.toThrowMatchers:196
+      LoadedCode.JestRoblox.Root.src.Modules.Expect.__tests__.toThrowMatchers.spec:80]=]
 
 snapshots['toThrowError substring threw, but message should not match (error) 1'] = [=[
-expect(received).never.toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected substring: never "array"
-Received message:         "Invalid array length"
+Expected substring: never [32m"array"[39m
+Received message:         [31m"Invalid [39m[7marray[27m[31m length[39m"
 
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)]=]
 
 snapshots['toThrowError substring threw, but message should not match (non-error truthy) 1'] = [=[
-expect(received).never.toThrowError(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
-Expected substring: never "Server Error"
-Received value:           "Internal Server Error"
-]=]
+Expected substring: never [32m"Server Error"[39m
+Received value:           [31m"Internal Server Error"[39m
+
+      LoadedCode.JestRoblox.Root.src.Modules.Expect.toThrowMatchers:196
+      LoadedCode.JestRoblox.Root.src.Modules.Expect.__tests__.toThrowMatchers.spec:102]=]
 
 snapshots['Lua tests correctly prints the stack trace for Lua Error error 1'] = [=[
-expect(received).never.toThrow()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m()[22m
 
-Error name:    "Error"
-Error message: ""]=]
+Error name:    [31m"Error"[39m
+Error message: [31m""[39m]=]
 
 snapshots['Lua tests correctly prints the stack trace for Lua string error 1'] = [=[
-expect(received).never.toThrow()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m()[22m
 
-Thrown value: ""]=]
+Thrown value: [31m""[39m]=]
 
 snapshots['Lua tests correctly prints the stack trace for Lua string error 2'] = [=[
-expect(received).toThrow(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
-Expected substring: "wrong information"
-Received value:     ""]=]
+Expected substring: [32m"wrong information"[39m
+Received value:     [31m""[39m]=]
 return snapshots

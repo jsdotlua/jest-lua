@@ -16,7 +16,7 @@ local Symbol = Polyfills.Symbol
 
 local prettyFormat = require(Modules.PrettyFormat).prettyFormat
 
--- deviation: omitted chalk import
+local chalk = require(Packages.ChalkLua)
 
 local getType = require(Modules.JestGetType).getType
 
@@ -101,12 +101,11 @@ local function diff(a: any, b: any, options: any?): string | nil
 	end
 
 	if expectedType ~= getType(b) then
-		-- deviation: omitted chalk
 		return string.format(
 			'  Comparing two different types of values.' ..
 			' Expected %s but ' ..
 			'received %s.',
-			expectedType, getType(b)
+			chalk.green(expectedType), chalk.red(getType(b))
 		)
 	end
 

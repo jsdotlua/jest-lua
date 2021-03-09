@@ -3,8 +3,13 @@
 
 return function()
 	local Workspace = script.Parent.Parent
+	local Modules = Workspace.Parent
 
 	local Print = require(Workspace.print)
+
+	local JestMatcherUtils = require(Modules.JestMatcherUtils)
+	local EXPECTED_COLOR = JestMatcherUtils.EXPECTED_COLOR
+
 	local jestExpect = require(Workspace)
 
 	describe("printing constructor", function()
@@ -22,11 +27,15 @@ return function()
 		end)
 
 		it("prints constructor name", function()
-			jestExpect(Print.printExpectedConstructorName("Expected", Dog)).toEqual("Expected: Dog\n")
+			jestExpect(Print.printExpectedConstructorName("Expected", Dog)).toEqual(
+				string.format("Expected: %s\n", EXPECTED_COLOR("Dog"))
+			)
 		end)
 
 		it("prints constructor name (not)", function()
-			jestExpect(Print.printExpectedConstructorNameNot("Expected", Dog)).toEqual("Expected: never Dog\n")
+			jestExpect(Print.printExpectedConstructorNameNot("Expected", Dog)).toEqual(
+				string.format("Expected: never %s\n", EXPECTED_COLOR("Dog"))
+			)
 		end)
 
 		it("reports that tostring returns non-string", function()
@@ -55,7 +64,7 @@ return function()
 			Dog.goodboy = true
 
 			local result = Print.printReceivedConstructorName("Received", Dog)
-			jestExpect(result).toContain("Received: {")
+			jestExpect(result).toContain("Received: [31m{")
 			jestExpect(result).toContain('"fur": "brown"')
 			jestExpect(result).toContain('"goodboy": true')
 			jestExpect(result).toContain(" }")
@@ -69,7 +78,7 @@ return function()
 			Dog.charisma = "friendly"
 
 			local result = Print.printReceivedConstructorName("Received", Dog)
-			jestExpect(result).toContain("Received: {")
+			jestExpect(result).toContain("Received: [31m{")
 			jestExpect(result).toContain('"leash": "blue"')
 			jestExpect(result).toContain('"weight": 80')
 			jestExpect(result).toContain('"height": 48')
@@ -82,7 +91,7 @@ return function()
 			Dog.furotherwiseknownasapersonallyidentifyingattributeofamammal = "brown"
 
 			local result = Print.printExpectedConstructorName("Expected", Dog)
-			jestExpect(result).toContain("Expected: table: 0x")
+			jestExpect(result).toContain("Expected: [32mtable: 0x")
 		end)
 
 		it("prints function names only", function()
@@ -92,7 +101,7 @@ return function()
 			Dog.wagTail = function() end
 
 			local result = Print.printExpectedConstructorName("Received", Dog)
-			jestExpect(result).toContain("Received: {")
+			jestExpect(result).toContain("Received: [32m{")
 			jestExpect(result).toContain('"walk"')
 			jestExpect(result).toContain('"wagTail"')
 			jestExpect(result).toContain('"talk')
@@ -134,7 +143,7 @@ return function()
 				setmetatable(Dog, {})
 
 				local result = Print.printExpectedConstructorNameNot("Received", Dog, {})
-				jestExpect(result).toContain("Received: never table: 0x")
+				jestExpect(result).toContain("Received: never [32mtable: 0x")
 
 			end)
 
@@ -145,7 +154,7 @@ return function()
 				Dog.height = 50
 				Dog.goodboy = true
 				local result = Print.printExpectedConstructorNameNot("Received", Dog, {})
-				jestExpect(result).toContain("Received: never {")
+				jestExpect(result).toContain("Received: never [32m{")
 				jestExpect(result).toContain('"height": 50')
 				jestExpect(result).toContain('"goodboy": true')
 				jestExpect(result).toContain(" }")

@@ -27,8 +27,7 @@ return function()
 
 	local jestExpect = require(Workspace)
 
-	-- deviation: omitted chalkEnabled variable declaration
-	-- deviation: omitted beforeAll and afterAll code blocks enabling chalk
+	-- deviation: chalk enabled by default
 
 	-- deviation: omitted isBigIntDefined variable declaration
 
@@ -66,7 +65,6 @@ return function()
 				{a = jestExpect.any("function"), b = 2}
 			},
 			{{a = false, b = 2}, {b = 2}},
-
 			{DateTime.fromUniversalTime(2020, 2, 21), DateTime.fromUniversalTime(2020, 2, 20)},
 			{"received", "expected"},
 			{Symbol.for_("received"), Symbol.for_("expected")},
@@ -475,9 +473,9 @@ return function()
 			expect(function()
 				jestExpect(A.new()).toBeInstanceOf(1)
 			end).to.throw(
-				"Matcher error: expected value must be a prototype class\n\n" ..
+				"[1mMatcher error[22m: [32mexpected[39m value must be a prototype class\n\n" ..
 				"Expected has type:  number\n" ..
-				"Expected has value: 1"
+				"Expected has value: [32m1[39m"
 			)
 		end)
 
@@ -485,20 +483,21 @@ return function()
 			expect(function()
 				jestExpect(1).toBeInstanceOf(A)
 			end).to.throw(
-				"expect(received).toBeInstanceOf(expected)\n\n" ..
-				"Expected constructor: A\n\n" ..
+				"[2mexpect([22m[31mreceived[39m[2m).[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n" ..
+				"Expected constructor: [32mA[39m\n\n" ..
 				"Received value has no prototype\n" ..
-				"Received value: 1"
+				"Received value: [31m1[39m"
 			)
 		end)
 
 		it('does not throw if received does not have metatable', function ()
 			expect(function()
 				jestExpect({}).toBeInstanceOf(A)
-			end).to.throw("expect(received).toBeInstanceOf(expected)\n\n" ..
-				"Expected constructor: A\n\n" ..
+			end).to.throw(
+				"[2mexpect([22m[31mreceived[39m[2m).[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n" ..
+				"Expected constructor: [32mA[39m\n\n" ..
 				"Received value has no prototype\n" ..
-				"Received value: {}"
+				"Received value: [31m{}[39m"
 			)
 
 			jestExpect({}).never.toBeInstanceOf(A)
@@ -509,8 +508,8 @@ return function()
 			expect(function()
 				jestExpect(A.new()).never.toBeInstanceOf(A)
 			end).to.throw(
-				"expect(received).never.toBeInstanceOf(expected)\n\n" ..
-				"Expected constructor: never A\n"
+				"[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n" ..
+				"Expected constructor: never [32mA[39m\n"
 			)
 
 			jestExpect(A.new()).toBeInstanceOf(A)
@@ -520,9 +519,9 @@ return function()
 			expect(function()
 				jestExpect(C.new()).never.toBeInstanceOf(B)
 			end).to.throw(
-				"expect(received).never.toBeInstanceOf(expected)\n\n" ..
-				"Expected constructor: never B\n" ..
-				"Received constructor:       C extends B"
+				"[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n" ..
+				"Expected constructor: never [32mB[39m\n" ..
+				"Received constructor:       [31mC[39m extends [32mB[39m"
 			)
 
 			jestExpect(C.new()).toBeInstanceOf(B)
@@ -532,9 +531,9 @@ return function()
 			expect(function()
 				jestExpect(E.new()).never.toBeInstanceOf(B)
 			end).to.throw(
-				"expect(received).never.toBeInstanceOf(expected)\n\n" ..
-				"Expected constructor: never B\n" ..
-				"Received constructor:       E extends … extends B"
+				"[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n" ..
+				"Expected constructor: never [32mB[39m\n" ..
+				"Received constructor:       [31mE[39m extends … extends [32mB[39m"
 			)
 
 			jestExpect(E.new()).toBeInstanceOf(B)
@@ -544,9 +543,9 @@ return function()
 			expect(function()
 				jestExpect(A.new()).toBeInstanceOf(B)
 			end).to.throw(
-				"expect(received).toBeInstanceOf(expected)\n\n" ..
-				"Expected constructor: B\n" ..
-				"Received constructor: A"
+				"[2mexpect([22m[31mreceived[39m[2m).[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n" ..
+				"Expected constructor: [32mB[39m\n" ..
+				"Received constructor: [31mA[39m"
 			)
 
 			jestExpect(A.new()).never.toBeInstanceOf(B)
@@ -814,7 +813,7 @@ return function()
 				end).to.throw(snapshots[string.format(".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [%s, %s] 2", n1, n2)])
 			end)
 		end
-	end) 
+	end)
 
 	describe(".toContain(), .toContainEqual()", function()
 		--local typedArray = {0, 1}

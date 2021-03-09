@@ -14,116 +14,107 @@ local snapshots = {}
 	of 'null' and 'undefined'
 ]]
 snapshots["ensureNoExpected() throws error when expected is not undefined with matcherName 1"] = [[
-expect(received)[.never].toBeDefined()
+[2mexpect([22m[31mreceived[39m[2m)[.never].toBeDefined()[22m
 
-Matcher error: this matcher must not have an expected argument
+[1mMatcher error[22m: this matcher must not have an expected argument
 
 Expected has type:  table
-Expected has value: {"a": 1}
-]]
+Expected has value: [32m{"a": 1}[39m]]
 
 snapshots["ensureNoExpected() throws error when expected is not undefined with matcherName and options 1"] = [[
-expect(received).never.toBeDefined()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeDefined[2m()[22m
 
-Matcher error: this matcher must not have an expected argument
+[1mMatcher error[22m: this matcher must not have an expected argument
 
 Expected has type:  table
-Expected has value: {"a": 1}
-]]
+Expected has value: [32m{"a": 1}[39m]]
 
 snapshots["ensureNumbers() throws error when expected is not a number (backward compatibility) 1"] = [[
-expect(received)[.never].toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m)[.never].toBeCloseTo([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a number
+[1mMatcher error[22m: [32mexpected[39m value must be a number
 
 Expected has type:  string
-Expected has value: "not_a_number"]]
+Expected has value: [32m"not_a_number"[39m]]
 
 snapshots["ensureNumbers() throws error when received is not a number (backward compatibility) 1"] = [[
-expect(received)[.never].toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m)[.never].toBeCloseTo([22m[32mexpected[39m[2m)[22m
 
-Matcher error: received value must be a number
+[1mMatcher error[22m: [31mreceived[39m value must be a number
 
 Received has type:  string
-Received has value: "not_a_number"
-]]
+Received has value: [31m"not_a_number"[39m]]
 
 snapshots["ensureNumbers() with options promise empty isNot false received 1"] = [[
-expect(received).toBeCloseTo(expected, precision)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m, [22m[32mprecision[39m[2m)[22m
 
-Matcher error: received value must be a number
+[1mMatcher error[22m: [31mreceived[39m value must be a number
 
 Received has type:  string
-Received has value: ""
-]]
+Received has value: [31m""[39m]]
 
 snapshots["ensureNumbers() with options promise empty isNot true expected 1"] = [[
-expect(received).never.toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a number
+[1mMatcher error[22m: [32mexpected[39m value must be a number
 
-Expected has value: nil
-]]
+Expected has value: [32mnil[39m]]
 
 snapshots["ensureNumbers() with options promise rejects isNot false expected 1"] = [[
-expect(received).rejects.toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mrejects[2m.[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a number
+[1mMatcher error[22m: [32mexpected[39m value must be a number
 
 Expected has type:  string
-Expected has value: "0"
-]]
+Expected has value: [32m"0"[39m]]
 
 snapshots["ensureNumbers() with options promise rejects isNot true received 1"] = [[
-expect(received).rejects.never.toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mrejects[2m.[22mnever[2m.[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: received value must be a number
+[1mMatcher error[22m: [31mreceived[39m value must be a number
 
 Received has type:  symbol
-Received has value: Symbol(0.1)
-]]
+Received has value: [31mSymbol(0.1)[39m]]
 
 snapshots["ensureNumbers() with options promise resolves isNot false received 1"] = [[
-expect(received).resolves.toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mresolves[2m.[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: received value must be a number
+[1mMatcher error[22m: [31mreceived[39m value must be a number
 
 Received has type:  boolean
-Received has value: false
-]]
+Received has value: [31mfalse[39m]]
 
 snapshots["ensureNumbers() with options promise resolves isNot true expected 1"] = [[
-expect(received).resolves.never.toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mresolves[2m.[22mnever[2m.[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a number
+[1mMatcher error[22m: [32mexpected[39m value must be a number
 
-Expected has value: nil
-]]
+Expected has value: [32mnil[39m]]
 
 -- Additional snapshots NOT in upstream so that we can run the jest-diff tests
 -- We don't have mocking capabilities so we compare with the actual output of
 -- jest-diff
 
 snapshots["diff forwards to jest-diff 1"] = [[
-- Expected
-+ Received
+[32m- Expected[39m
+[31m+ Received[39m
 
-- a
-+ b]]
+[32m- a[39m
+[31m+ b[39m]]
 
 snapshots["diff forwards to jest-diff 2"] = [[
-  Comparing two different types of values. Expected string but received table.]]
+  Comparing two different types of values. Expected [32mstring[39m but received [31mtable[39m.]]
 
 snapshots["diff forwards to jest-diff 3"] = [[
-  Comparing two different types of values. Expected string but received nil.]]
+  Comparing two different types of values. Expected [32mstring[39m but received [31mnil[39m.]]
 
 snapshots["diff forwards to jest-diff 4"] = [[
-  Comparing two different types of values. Expected string but received number.]]
+  Comparing two different types of values. Expected [32mstring[39m but received [31mnumber[39m.]]
 
 snapshots["diff forwards to jest-diff 5"] = [[
-  Comparing two different types of values. Expected string but received boolean.]]
+  Comparing two different types of values. Expected [32mstring[39m but received [31mboolean[39m.]]
 
 snapshots["diff forwards to jest-diff 6"] = [[
-  Comparing two different types of values. Expected number but received boolean.]]
+  Comparing two different types of values. Expected [32mnumber[39m but received [31mboolean[39m.]]
 
 return snapshots

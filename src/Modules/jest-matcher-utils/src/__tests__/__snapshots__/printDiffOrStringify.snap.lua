@@ -10,27 +10,27 @@
 local snapshots = {}
 
 snapshots["printDiffOrStringify asymmetricMatcher array 1"] = [[
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
-    1,
-    Any<number>,
--   3,
-+   2,
-  }]]
+[2m  Table {[22m
+[2m    1,[22m
+[2m    Any<number>,[22m
+[32m-   3,[39m
+[31m+   2,[39m
+[2m  }[22m]]
 
 snapshots["printDiffOrStringify asymmetricMatcher circular array 1"] = [[
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
-    1,
-    Any<number>,
--   3,
-+   2,
-    [Circular],
-  }]]
+[2m  Table {[22m
+[2m    1,[22m
+[2m    Any<number>,[22m
+[32m-   3,[39m
+[31m+   2,[39m
+[2m    [Circular],[22m
+[2m  }[22m]]
 
 -- deviation: The original snapshot had another level of information for the
 -- "circular" reference rather than immediately saying it was Circular:
@@ -38,27 +38,27 @@ snapshots["printDiffOrStringify asymmetricMatcher circular array 1"] = [[
 -- However, in our implementation Maps and Objects are treated identically so
 -- circular would be printed at the surface level in both cases
 snapshots["printDiffOrStringify asymmetricMatcher circular map 1"] = [[
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
-    "a": 1,
-    "b": Any<number>,
--   "c": 3,
-+   "c": 2,
-    "circular": [Circular],
-  }]]
+[2m  Table {[22m
+[2m    "a": 1,[22m
+[2m    "b": Any<number>,[22m
+[32m-   "c": 3,[39m
+[31m+   "c": 2,[39m
+[2m    "circular": [Circular],[22m
+[2m  }[22m]]
 
 snapshots["printDiffOrStringify asymmetricMatcher circular object 1"] = [[
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
-    "a": [Circular],
-    "b": Any<number>,
--   "c": 3,
-+   "c": 2,
-  }]]
+[2m  Table {[22m
+[2m    "a": [Circular],[22m
+[2m    "b": Any<number>,[22m
+[32m-   "c": 3,[39m
+[31m+   "c": 2,[39m
+[2m  }[22m]]
 
 snapshots["printDiffOrStringify asymmetricMatcher custom asymmetricMatcher 1"] = [[
 - Expected  - 1
@@ -75,135 +75,135 @@ snapshots["printDiffOrStringify asymmetricMatcher custom asymmetricMatcher 1"] =
 -- key, with "h" mapping to a table which in turn holds the original symbol.
 -- This was done to prevent indeterministic output order in Lua
 snapshots["printDiffOrStringify asymmetricMatcher jest asymmetricMatcher 1"] = [[
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
-    "a": Any<number>,
-    "b": Anything,
-    "c": ArrayContaining [
-      1,
-      3,
-    ],
-    "d": StringContaining "jest",
-    "e": StringMatching "jest",
-    "f": ObjectContaining {
-      "a": Any<DateTime>,
-    },
--   "g": true,
-+   "g": false,
-    "h": Table {
-      Symbol(h): Any<string>,
-    },
-  }]]
+[2m  Table {[22m
+[2m    "a": Any<number>,[22m
+[2m    "b": Anything,[22m
+[2m    "c": ArrayContaining [[22m
+[2m      1,[22m
+[2m      3,[22m
+[2m    ],[22m
+[2m    "d": StringContaining "jest",[22m
+[2m    "e": StringMatching "jest",[22m
+[2m    "f": ObjectContaining {[22m
+[2m      "a": Any<DateTime>,[22m
+[2m    },[22m
+[32m-   "g": true,[39m
+[31m+   "g": false,[39m
+[2m    "h": Table {[22m
+[2m      Symbol(h): Any<string>,[22m
+[2m    },[22m
+[2m  }[22m]]
 
 snapshots["printDiffOrStringify asymmetricMatcher map 1"] = [[
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
-    "a": 1,
-    "b": Any<number>,
--   "c": 3,
-+   "c": 2,
-  }]]
+[2m  Table {[22m
+[2m    "a": 1,[22m
+[2m    "b": Any<number>,[22m
+[32m-   "c": 3,[39m
+[31m+   "c": 2,[39m
+[2m  }[22m]]
 
 snapshots["printDiffOrStringify asymmetricMatcher minimal test 1"] = [[
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
-    "a": Any<number>,
--   "b": 2,
-+   "b": 1,
-  }]]
+[2m  Table {[22m
+[2m    "a": Any<number>,[22m
+[32m-   "b": 2,[39m
+[31m+   "b": 1,[39m
+[2m  }[22m]]
 
 snapshots["printDiffOrStringify asymmetricMatcher nested object 1"] = [[
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
-    "a": Any<number>,
-    "b": Table {
-      "a": 1,
-      "b": Any<number>,
-    },
--   "c": 2,
-+   "c": 1,
-  }]]
+[2m  Table {[22m
+[2m    "a": Any<number>,[22m
+[2m    "b": Table {[22m
+[2m      "a": 1,[22m
+[2m      "b": Any<number>,[22m
+[2m    },[22m
+[32m-   "c": 2,[39m
+[31m+   "c": 1,[39m
+[2m  }[22m]]
 
 snapshots["printDiffOrStringify asymmetricMatcher object in array 1"] = [[
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
-    1,
-    Table {
-      "a": 1,
-      "b": Any<number>,
-    },
--   3,
-+   2,
-  }]]
+[2m  Table {[22m
+[2m    1,[22m
+[2m    Table {[22m
+[2m      "a": 1,[22m
+[2m      "b": Any<number>,[22m
+[2m    },[22m
+[32m-   3,[39m
+[31m+   2,[39m
+[2m  }[22m]]
 
 snapshots["printDiffOrStringify asymmetricMatcher transitive circular 1"] = [[
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
--   "a": 3,
-+   "a": 2,
-    "nested": Table {
-      "b": Any<number>,
-      "parent": [Circular],
-    },
-  }]]
+[2m  Table {[22m
+[32m-   "a": 3,[39m
+[31m+   "a": 2,[39m
+[2m    "nested": Table {[22m
+[2m      "b": Any<number>,[22m
+[2m      "parent": [Circular],[22m
+[2m    },[22m
+[2m  }[22m]]
 
 snapshots["printDiffOrStringify expected and received are multi line with trailing spaces 1"] = [[
-- Expected  - 3
-+ Received  + 3
+[32m- Expected  - 3[39m
+[31m+ Received  + 3[39m
 
-- delete 
-+ insert 
-- common expected common
-+ common received common
-- prev 
-+ next ]]
+[32m- [7mdelete[27m[43m [49m[39m
+[31m+ [7minsert[27m[43m [49m[39m
+[32m- common [7mexpect[27med common[39m
+[31m+ common [7mreceiv[27med common[39m
+[32m- [7mprev[27m[43m [49m[39m
+[31m+ [7mnext[27m[43m [49m[39m]]
 
 snapshots["printDiffOrStringify expected and received are single line with multiple changes 1"] = [[
-Expected: "delete common expected common prev"
-Received: "insert common received common next"]]
+Expected: [32m"[7mdelete[27m common [7mexpect[27med common [7mprev[27m"[39m
+Received: [31m"[7minsert[27m common [7mreceiv[27med common [7mnext[27m"[39m]]
 
 snapshots["printDiffOrStringify expected is empty and received is single line 1"] = [[
-Expected: ""
-Received: "single line"]]
+Expected: [32m""[39m
+Received: [31m"single line"[39m]]
 
 snapshots["printDiffOrStringify expected is multi line and received is empty 1"] = [[
-Expected: "multi
-line"
-Received: ""]]
+Expected: [32m"multi
+line"[39m
+Received: [31m""[39m]]
 
 snapshots["printDiffOrStringify has no common after clean up chaff multiline 1"] = [[
-- Expected  - 2
-+ Received  + 2
+[32m- Expected  - 2[39m
+[31m+ Received  + 2[39m
 
-- delete
-- two
-+ insert
-+ 2]]
+[32m- delete[39m
+[32m- two[39m
+[31m+ insert[39m
+[31m+ 2[39m]]
 
 snapshots["printDiffOrStringify has no common after clean up chaff one-line 1"] = [[
-Expected: "delete"
-Received: "insert"]]
+Expected: [32m"delete"[39m
+Received: [31m"insert"[39m]]
 
 snapshots["printDiffOrStringify object contain readonly symbol key object 1"] = [[
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
-    "a": Symbol(key),
--   "b": 2,
-+   "b": 1,
-  }]]
+[2m  Table {[22m
+[2m    "a": Symbol(key),[22m
+[32m-   "b": 2,[39m
+[31m+   "b": 1,[39m
+[2m  }[22m]]
 
 return snapshots

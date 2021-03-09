@@ -13,9 +13,11 @@ return function()
 
 	local snapshots = require(script.Parent.__snapshots__['Diff.snap'])
 
+	local chalk = require(Packages.ChalkLua)
+
 	local Number = require(Packages.LuauPolyfill).Number
 
-	-- deviation: no require for chalk or stripAnsi because we don't support it
+	local chalk = require(Packages.ChalkLua)
 
 	local diff = require(Workspace).diff
 	local diffLinesUnified = require(Workspace.DiffLines).diffLinesUnified
@@ -32,7 +34,8 @@ return function()
 	}
 
 	local stripped = function(a: any, b: any)
-		return diff(a, b) or ''
+		local retval = diff(a, b) or ''
+		return string.gsub(retval, string.char(27) .. '%[%d+m', '')
 	end
 
 	-- deviation: added a table copy method to set options
@@ -460,7 +463,30 @@ Options:
 		end)
 	end)
 
-	-- deviation: omitted color
+	describe('color of text', function()
+		local searching = ''
+		local object = {
+			descending = false,
+			fieldKey = 'what',
+		}
+		local a = {
+			searching = searching,
+			sorting = object,
+		}
+		local b = {
+			searching = searching,
+			sorting = {object}
+		}
+		local received = diff(a, b, expanded)
+
+		it('(expanded)', function()
+			expect(received).to.equal(snapshots['color of text (expanded) 1'])
+		end)
+		it('(unexpanded)', function()
+			-- // Expect same result, unless diff is long enough to require patch marks.
+			expect(diff(a, b, unexpanded)).to.equal(received)
+		end)
+	end)
 
 	-- TODO: react elements
 
@@ -524,10 +550,9 @@ Options:
 				options['contextLines'] = contextLines
 				options['expand'] = false
 
-				-- deviation: omitted coloring
-				-- if not validContextLines then
-				-- 	options.patchColor = chalk.dim
-				-- end
+				if not validContextLines then
+					options.patchColor = chalk.dim
+				end
 
 				local result = diff(
 					{test = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}},
@@ -754,22 +779,17 @@ Options:
 		end)
 	end)
 
-	-- local changeColor = function(s) return '<i>' .. s .. '</i>' end
 	describe('options 7980', function()
 		local a =
 			'`${Ti.App.name} ${Ti.App.version} ${Ti.Platform.name} ${Ti.Platform.version}`'
 		local b =
 			'`${Ti.App.getName()} ${Ti.App.getVersion()} ${Ti.Platform.getName()} ${Ti.Platform.getVersion()}`'
 
-		-- deviation: omitted color
 		local options = {
 			aAnnotation = 'Original',
-			aColor = noColor,
+			aColor = chalk.red,
 			bAnnotation = 'Modified',
-			bColor = noColor,
-			-- deviation: default changeColor is noColor instead of chalk.inverse,
-			-- changed here for testing diffStringsUnified
-			changeColor = function(s) return '<i>' .. s .. '</i>' end,
+			bColor = chalk.green
 		}
 
 		it('diff', function()
@@ -805,7 +825,27 @@ Options:
 			end)
 		end)
 
-		-- deviation: omitted change color
+		describe('change color', function()
+			local options = {
+				changeColor = chalk.bold,
+				commonColor = chalk.yellow,
+			}
+		
+			it('diffStringsUnified', function()
+				local aChanged = table.concat(a, '\n'):gsub('change', 'changed')
+				local bChanged = table.concat(b, '\n'):gsub('change', 'changed')
+				expect(diffStringsUnified(aChanged, bChanged, options)).to.equal(
+					snapshots['options change color diffStringsUnified 1']
+				)
+			end)
+			
+		
+			it('no diff', function()
+				expect(diff(a, a, options)).to.equal(
+					snapshots['options change color no diff 1']
+				)
+			end)
+		end)
 
 		describe('common', function()
 			local options = {
@@ -826,10 +866,7 @@ Options:
 
 		describe('includeChangeCounts false', function()
 			local options = {
-				includeChangeCounts = false,
-				-- deviation: default changeColor is noColor instead of chalk.inverse,
-				-- changed here for testing diffStringsUnified
-				changeColor = function(s) return '<i>' .. s .. '</i>' end,
+				includeChangeCounts = false
 			}
 
 			it('diffLinesUnified', function()
@@ -849,10 +886,7 @@ Options:
 			local options = {
 				aAnnotation = 'Before',
 				bAnnotation = 'After',
-				includeChangeCounts = true,
-				-- deviation: default changeColor is noColor instead of chalk.inverse,
-				-- changed here for testing diffStringsUnified
-				changeColor = function(s) return '<i>' .. s .. '</i>' end,
+				includeChangeCounts = true
 			}
 
 			it('diffLinesUnified a has 2 digits', function()
@@ -880,10 +914,7 @@ Options:
 
 		describe('omitAnnotationLines true', function()
 			local options = {
-				omitAnnotationLines = true,
-				-- deviation: default changeColor is noColor instead of chalk.inverse,
-				-- changed here for testing diffStringsUnified
-				changeColor = function(s) return '<i>' .. s .. '</i>' end,
+				omitAnnotationLines = true
 			}
 
 			it('diff', function()
@@ -940,8 +971,7 @@ Options:
 
 			it('diffDefault yellowish common', function()
 				local options = {
-					-- deviation: no chalk, imitation of chalk.bgYellow
-					commonLineTrailingSpaceColor = function(s) return '<Y>' .. s .. '</>' end,
+					commonLineTrailingSpaceColor = chalk.bgYellow
 				}
 
 				expect(diff(aTrailingSpaces, bTrailingSpaces, options)).to.equal(

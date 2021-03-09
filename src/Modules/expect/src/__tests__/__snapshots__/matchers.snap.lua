@@ -9,2566 +9,2564 @@
 local snapshots = {}
 
 snapshots['.toBe() does not crash on circular references 1'] = [=[
-expect(received).toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-- Expected  - 1
-+ Received  + 3
+[32m- Expected  - 1[39m
+[31m+ Received  + 3[39m
 
-- Table {}
-+ Table {
-+   "circular": [Circular],
-+ }]=]
+[32m- Table {}[39m
+[31m+ Table {[39m
+[31m+   "circular": [Circular],[39m
+[31m+ }[39m]=]
 
 snapshots['.toBe() fails for "a" with .never 1'] = [=[
-expect(received).never.toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-Expected: never "a"]=]
+Expected: never [32m"a"[39m]=]
 
 snapshots['.toBe() fails for {} with .never 1'] = [=[
-expect(received).never.toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-Expected: never {}]=]
+Expected: never [32m{}[39m]=]
 
 snapshots['.toBe() fails for 1 with .never 1'] = [=[
-expect(received).never.toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-Expected: never 1]=]
+Expected: never [32m1[39m]=]
 
 snapshots['.toBe() fails for false with .never 1'] = [=[
-expect(received).never.toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-Expected: never false]=]
+Expected: never [32mfalse[39m]=]
 
 snapshots['.toBe() fails for nil with .never 1'] = [=[
-expect(received).never.toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-Expected: never nil]=]
+Expected: never [32mnil[39m]=]
 
 snapshots['.toBe() fails for: "" and "compare one-line string to empty string" 1'] = [=[
-expect(received).toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-Expected: "compare one-line string to empty string"
-Received: ""]=]
+Expected: [32m"compare one-line string to empty string"[39m
+Received: [31m""[39m]=]
 
 snapshots['.toBe() fails for: "abc" and "cde" 1'] = [=[
-expect(received).toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-Expected: "cde"
-Received: "abc"]=]
+Expected: [32m"cde"[39m
+Received: [31m"abc"[39m]=]
 
 snapshots['.toBe() fails for: "four\n4\nline\nstring" and "3\nline\nstring" 1'] = [=[
-expect(received).toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-- Expected  - 1
-+ Received  + 2
+[32m- Expected  - 1[39m
+[31m+ Received  + 2[39m
 
-- 3
-+ four
-+ 4
-  line
-  string]=]
+[32m- 3[39m
+[31m+ four[39m
+[31m+ 4[39m
+[2m  line[22m
+[2m  string[22m]=]
 
 snapshots['.toBe() fails for: "painless JavaScript testing" and "delightful JavaScript testing" 1'] = [=[
-expect(received).toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-Expected: "delightful JavaScript testing"
-Received: "painless JavaScript testing"]=]
+Expected: [32m"[7mdelightful[27m JavaScript testing"[39m
+Received: [31m"[7mpainless[27m JavaScript testing"[39m]=]
 
 snapshots['.toBe() fails for: "with \ntrailing space" and "without trailing space" 1'] = [=[
-expect(received).toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-- Expected  - 1
-+ Received  + 2
+[32m- Expected  - 1[39m
+[31m+ Received  + 2[39m
 
-- without trailing space
-+ with 
-+ trailing space]=]
+[32m- with[7mout[27m trailing space[39m
+[31m+ with[43m [49m[39m
+[31m+ trailing space[39m]=]
 
 -- deviation: changed from regex to string
 snapshots['.toBe() fails for: "received" and "expected" 1'] = [=[
-expect(received).toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-Expected: "expected"
-Received: "received"]=]
+Expected: [32m"[7mexpect[27med"[39m
+Received: [31m"[7mreceiv[27med"[39m]=]
 
 snapshots['.toBe() fails for: [Function anonymous] and [Function anonymous] 1'] = [=[
-expect(received).toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-Expected: [Function anonymous]
+Expected: [32m[Function anonymous][39m
 Received: serializes to the same string]=]
 
 --deviation: changed from a to anonymous
 snapshots['.toBe() fails for: {"a": [Function anonymous], "b": 2} and {"a": Any<function>, "b": 2} 1'] = [=[
-expect(received).toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-If it should pass with deep equality, replace "toBe" with "toEqual"
+[2mIf it should pass with deep equality, replace "toBe" with "toEqual"[22m
 
-Expected: {"a": Any<function>, "b": 2}
-Received: {"a": [Function anonymous], "b": 2}]=]
+Expected: [32m{"a": Any<function>, "b": 2}[39m
+Received: [31m{"a": [Function anonymous], "b": 2}[39m]=]
 
 snapshots['.toBe() fails for: {"a": 1} and {"a": 1} 1'] = [=[
-expect(received).toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-If it should pass with deep equality, replace "toBe" with "toEqual"
+[2mIf it should pass with deep equality, replace "toBe" with "toEqual"[22m
 
-Expected: {"a": 1}
+Expected: [32m{"a": 1}[39m
 Received: serializes to the same string]=]
 
 snapshots['.toBe() fails for: {"a": 1} and {"a": 5} 1'] = [=[
-expect(received).toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
--   "a": 5,
-+   "a": 1,
-  }]=]
+[2m  Table {[22m
+[32m-   "a": 5,[39m
+[31m+   "a": 1,[39m
+[2m  }[22m]=]
 
 -- deviation: changed from nil to false and therefore removed the line about
 -- replacing toBe with toEqual
 snapshots['.toBe() fails for: {"a": false, "b": 2} and {"b": 2} 1'] = [=[
-expect(received).toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-- Expected  - 0
-+ Received  + 1
+[32m- Expected  - 0[39m
+[31m+ Received  + 1[39m
 
-  Table {
-+   "a": false,
-    "b": 2,
-  }]=]
+[2m  Table {[22m
+[31m+   "a": false,[39m
+[2m    "b": 2,[22m
+[2m  }[22m]=]
 
 snapshots['.toBe() fails for: {} and {} 1'] = [=[
-expect(received).toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-If it should pass with deep equality, replace "toBe" with "toEqual"
+[2mIf it should pass with deep equality, replace "toBe" with "toEqual"[22m
 
-Expected: {}
+Expected: [32m{}[39m
 Received: serializes to the same string]=]
 
 -- deviation: changed from -0 and 0 to -inf and inf
 snapshots['.toBe() fails for: -inf and inf 1'] = [=[
-expect(received).toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-Expected: inf
-Received: -inf]=]
+Expected: [32minf[39m
+Received: [31m-inf[39m]=]
 
 snapshots['.toBe() fails for: 1 and 2 1'] = [=[
-expect(received).toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-Expected: 2
-Received: 1]=]
+Expected: [32m2[39m
+Received: [31m1[39m]=]
 
 snapshots['.toBe() fails for: 2020-02-21T00:00:00.000Z and 2020-02-20T00:00:00.000Z 1'] = [=[
-expect(received).toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-Expected: 2020-02-20T00:00:00.000Z
-Received: 2020-02-21T00:00:00.000Z]=]
+Expected: [32m2020-02-20T00:00:00.000Z[39m
+Received: [31m2020-02-21T00:00:00.000Z[39m]=]
 
 snapshots['.toBe() fails for: Symbol(received) and Symbol(expected) 1'] = [=[
-expect(received).toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-Expected: Symbol(expected)
-Received: Symbol(received)]=]
+Expected: [32mSymbol(expected)[39m
+Received: [31mSymbol(received)[39m]=]
 
 snapshots['.toBe() fails for: true and false 1'] = [=[
-expect(received).toBe(expected) // Object.is equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) -- shallow equality[22m
 
-Expected: false
-Received: true]=]
+Expected: [32mfalse[39m
+Received: [31mtrue[39m]=]
 
 snapshots['.toBeCloseTo {pass: false} expect(-inf).toBeCloseTo(-1.23) 1'] = [=[
-expect(received).toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: -1.23
-Received: -inf
+Expected: [32m-1.23[39m
+Received: [31m-inf[39m
 
 Expected precision:    2
-Expected difference: < 0.005
-Received difference:   inf]=]
+Expected difference: < [32m0.005[39m
+Received difference:   [31minf[39m]=]
 
 snapshots['.toBeCloseTo {pass: false} expect(0).toBeCloseTo(0.01) 1'] = [=[
-expect(received).toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: 0.01
-Received: 0
+Expected: [32m0.01[39m
+Received: [31m0[39m
 
 Expected precision:    2
-Expected difference: < 0.005
-Received difference:   0.01]=]
+Expected difference: < [32m0.005[39m
+Received difference:   [31m0.01[39m]=]
 
 snapshots['.toBeCloseTo {pass: false} expect(1).toBeCloseTo(1.23) 1'] = [=[
-expect(received).toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: 1.23
-Received: 1
+Expected: [32m1.23[39m
+Received: [31m1[39m
 
 Expected precision:    2
-Expected difference: < 0.005
-Received difference:   0.23]=]
+Expected difference: < [32m0.005[39m
+Received difference:   [31m0.23[39m]=]
 
 snapshots['.toBeCloseTo {pass: false} expect(1.23).toBeCloseTo(1.2249999) 1'] = [=[
-expect(received).toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: 1.2249999
-Received: 1.23
+Expected: [32m1.2249999[39m
+Received: [31m1.23[39m
 
 Expected precision:    2
-Expected difference: < 0.005
-Received difference:   0.0050001]=]
+Expected difference: < [32m0.005[39m
+Received difference:   [31m0.0050001[39m]=]
 
 snapshots['.toBeCloseTo {pass: false} expect(inf).toBeCloseTo(-inf) 1'] = [=[
-expect(received).toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: -inf
-Received: inf
+Expected: [32m-inf[39m
+Received: [31minf[39m
 
 Expected precision:    2
-Expected difference: < 0.005
-Received difference:   inf]=]
+Expected difference: < [32m0.005[39m
+Received difference:   [31minf[39m]=]
 
 snapshots['.toBeCloseTo {pass: false} expect(inf).toBeCloseTo(1.23) 1'] = [=[
-expect(received).toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: 1.23
-Received: inf
+Expected: [32m1.23[39m
+Received: [31minf[39m
 
 Expected precision:    2
-Expected difference: < 0.005
-Received difference:   inf]=]
+Expected difference: < [32m0.005[39m
+Received difference:   [31minf[39m]=]
 
 snapshots['.toBeCloseTo {pass: true} expect(-inf).toBeCloseTo(-inf) 1'] = [=[
-expect(received).never.toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never -inf
-]=]
+Expected: never [32m-inf[39m]=]
 
 snapshots['.toBeCloseTo {pass: true} expect(0).toBeCloseTo(0) 1'] = [=[
-expect(received).never.toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never 0
-]=]
+Expected: never [32m0[39m]=]
 
 -- deviation: upstream's printing of the expected value is 0.000004 but Lua
 -- prints such a value in exponential format by default so we follow the convention
 snapshots['.toBeCloseTo {pass: true} expect(0).toBeCloseTo(4e-06, 5) 1'] = [=[
-expect(received).never.toBeCloseTo(expected, precision)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m, [22mprecision[2m)[22m
 
-Expected: never 4e-06
-Received:       0
+Expected: never [32m4e-06[39m
+Received:       [31m0[39m
 
 Expected precision:          5
-Expected difference: never < 5e-6
-Received difference:         4e-6]=]
+Expected difference: never < [32m5e-6[39m
+Received difference:         [31m4e-6[39m]=]
 
 snapshots['.toBeCloseTo {pass: true} expect(0).toBeCloseTo(0.0001, 3) 1'] = [=[
-expect(received).never.toBeCloseTo(expected, precision)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m, [22mprecision[2m)[22m
 
-Expected: never 0.0001
-Received:       0
+Expected: never [32m0.0001[39m
+Received:       [31m0[39m
 
 Expected precision:          3
-Expected difference: never < 0.0005
-Received difference:         0.0001]=]
+Expected difference: never < [32m0.0005[39m
+Received difference:         [31m0.0001[39m]=]
 
 snapshots['.toBeCloseTo {pass: true} expect(0).toBeCloseTo(0.001) 1'] = [=[
-expect(received).never.toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never 0.001
-Received:       0
+Expected: never [32m0.001[39m
+Received:       [31m0[39m
 
 Expected precision:          2
-Expected difference: never < 0.005
-Received difference:         0.001]=]
+Expected difference: never < [32m0.005[39m
+Received difference:         [31m0.001[39m]=]
 
 snapshots['.toBeCloseTo {pass: true} expect(0).toBeCloseTo(0.1, 0) 1'] = [=[
-expect(received).never.toBeCloseTo(expected, precision)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m, [22mprecision[2m)[22m
 
-Expected: never 0.1
-Received:       0
+Expected: never [32m0.1[39m
+Received:       [31m0[39m
 
 Expected precision:          0
-Expected difference: never < 0.5
-Received difference:         0.1]=]
+Expected difference: never < [32m0.5[39m
+Received difference:         [31m0.1[39m]=]
 
 snapshots['.toBeCloseTo {pass: true} expect(1.23).toBeCloseTo(1.225) 1'] = [=[
-expect(received).never.toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never 1.225
-Received:       1.23
+Expected: never [32m1.225[39m
+Received:       [31m1.23[39m
 
 Expected precision:          2
-Expected difference: never < 0.005
-Received difference:         0.0049999999999999]=]
+Expected difference: never < [32m0.005[39m
+Received difference:         [31m0.0049999999999999[39m]=]
 
 snapshots['.toBeCloseTo {pass: true} expect(1.23).toBeCloseTo(1.226) 1'] = [=[
-expect(received).never.toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never 1.226
-Received:       1.23
+Expected: never [32m1.226[39m
+Received:       [31m1.23[39m
 
 Expected precision:          2
-Expected difference: never < 0.005
-Received difference:         0.004]=]
+Expected difference: never < [32m0.005[39m
+Received difference:         [31m0.004[39m]=]
 
 snapshots['.toBeCloseTo {pass: true} expect(1.23).toBeCloseTo(1.229) 1'] = [=[
-expect(received).never.toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never 1.229
-Received:       1.23
+Expected: never [32m1.229[39m
+Received:       [31m1.23[39m
 
 Expected precision:          2
-Expected difference: never < 0.005
-Received difference:         0.00099999999999989]=]
+Expected difference: never < [32m0.005[39m
+Received difference:         [31m0.00099999999999989[39m]=]
 
 snapshots['.toBeCloseTo {pass: true} expect(1.23).toBeCloseTo(1.234) 1'] = [=[
-expect(received).never.toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never 1.234
-Received:       1.23
+Expected: never [32m1.234[39m
+Received:       [31m1.23[39m
 
 Expected precision:          2
-Expected difference: never < 0.005
-Received difference:         0.004]=]
+Expected difference: never < [32m0.005[39m
+Received difference:         [31m0.004[39m]=]
 
 snapshots['.toBeCloseTo {pass: true} expect(2.0000002).toBeCloseTo(2, 5) 1'] = [=[
-expect(received).never.toBeCloseTo(expected, precision)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m, [22mprecision[2m)[22m
 
-Expected: never 2
-Received:       2.0000002
+Expected: never [32m2[39m
+Received:       [31m2.0000002[39m
 
 Expected precision:          5
-Expected difference: never < 5e-6
-Received difference:         2.0000000011677e-7]=]
+Expected difference: never < [32m5e-6[39m
+Received difference:         [31m2.0000000011677e-7[39m]=]
 
 snapshots['.toBeCloseTo {pass: true} expect(inf).toBeCloseTo(inf) 1'] = [=[
-expect(received).never.toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never inf
-]=]
+Expected: never [32minf[39m]=]
 
 snapshots['.toBeCloseTo throws: Matcher error promise empty isNot false received 1'] = [=[
-expect(received).toBeCloseTo(expected, precision)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m, [22mprecision[2m)[22m
 
-Matcher error: received value must be a number
+[1mMatcher error[22m: [31mreceived[39m value must be a number
 
 Received has type:  string
-Received has value: ""]=]
+Received has value: [31m""[39m]=]
 
 snapshots['.toBeCloseTo throws: Matcher error promise empty isNot true expected 1'] = [=[
-expect(received).never.toBeCloseTo(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a number
+[1mMatcher error[22m: [32mexpected[39m value must be a number
 
-Expected has value: nil]=]
+Expected has value: [32mnil[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [-inf, -inf] 1'] = [=[
-expect(received).never.toBeGreaterThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never >= -inf
-Received:          -inf]=]
+Expected: never >= [32m-inf[39m
+Received:          [31m-inf[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [-inf, -inf] 2'] = [=[
-expect(received).never.toBeLessThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never <= -inf
-Received:          -inf]=]
+Expected: never <= [32m-inf[39m
+Received:          [31m-inf[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [1, 1] 1'] = [=[
-expect(received).never.toBeGreaterThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never >= 1
-Received:          1]=]
+Expected: never >= [32m1[39m
+Received:          [31m1[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [1, 1] 2'] = [=[
-expect(received).never.toBeLessThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never <= 1
-Received:          1]=]
+Expected: never <= [32m1[39m
+Received:          [31m1[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [9.007199254741e+15, 9.007199254741e+15] 1'] = [=[
-expect(received).never.toBeGreaterThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never >= 9.007199254741e+15
-Received:          9.007199254741e+15]=]
+Expected: never >= [32m9.007199254741e+15[39m
+Received:          [31m9.007199254741e+15[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [9.007199254741e+15, 9.007199254741e+15] 2'] = [=[
-expect(received).never.toBeLessThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never <= 9.007199254741e+15
-Received:          9.007199254741e+15]=]
+Expected: never <= [32m9.007199254741e+15[39m
+Received:          [31m9.007199254741e+15[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [-9.007199254741e+15, -9.007199254741e+15] 1'] = [=[
-expect(received).never.toBeGreaterThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never >= -9.007199254741e+15
-Received:          -9.007199254741e+15]=]
+Expected: never >= [32m-9.007199254741e+15[39m
+Received:          [31m-9.007199254741e+15[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [-9.007199254741e+15, -9.007199254741e+15] 2'] = [=[
-expect(received).never.toBeLessThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never <= -9.007199254741e+15
-Received:          -9.007199254741e+15]=]
+Expected: never <= [32m-9.007199254741e+15[39m
+Received:          [31m-9.007199254741e+15[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [inf, inf] 1'] = [=[
-expect(received).never.toBeGreaterThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never >= inf
-Received:          inf]=]
+Expected: never >= [32minf[39m
+Received:          [31minf[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [inf, inf] 2'] = [=[
-expect(received).never.toBeLessThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never <= inf
-Received:          inf]=]
+Expected: never <= [32minf[39m
+Received:          [31minf[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-inf, inf] 1'] = [=[
-expect(received).toBeGreaterThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: > inf
-Received:   -inf]=]
+Expected: > [32minf[39m
+Received:   [31m-inf[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-inf, inf] 2'] = [=[
-expect(received).never.toBeLessThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never < inf
-Received:         -inf]=]
+Expected: never < [32minf[39m
+Received:         [31m-inf[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-inf, inf] 3'] = [=[
-expect(received).never.toBeGreaterThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never > -inf
-Received:         inf]=]
+Expected: never > [32m-inf[39m
+Received:         [31minf[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-inf, inf] 4'] = [=[
-expect(received).toBeLessThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: < -inf
-Received:   inf]=]
+Expected: < [32m-inf[39m
+Received:   [31minf[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-inf, inf] 5'] = [=[
-expect(received).toBeGreaterThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: >= inf
-Received:    -inf]=]
+Expected: >= [32minf[39m
+Received:    [31m-inf[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-inf, inf] 6'] = [=[
-expect(received).never.toBeLessThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never <= inf
-Received:          -inf]=]
+Expected: never <= [32minf[39m
+Received:          [31m-inf[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-inf, inf] 7'] = [=[
-expect(received).never.toBeGreaterThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never >= -inf
-Received:          inf]=]
+Expected: never >= [32m-inf[39m
+Received:          [31minf[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-inf, inf] 8'] = [=[
-expect(received).toBeLessThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: <= -inf
-Received:    inf]=]
+Expected: <= [32m-inf[39m
+Received:    [31minf[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [0.1, 0.2] 1'] = [=[
-expect(received).toBeGreaterThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: > 0.2
-Received:   0.1]=]
+Expected: > [32m0.2[39m
+Received:   [31m0.1[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [0.1, 0.2] 2'] = [=[
-expect(received).never.toBeLessThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never < 0.2
-Received:         0.1]=]
+Expected: never < [32m0.2[39m
+Received:         [31m0.1[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [0.1, 0.2] 3'] = [=[
-expect(received).never.toBeGreaterThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never > 0.1
-Received:         0.2]=]
+Expected: never > [32m0.1[39m
+Received:         [31m0.2[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [0.1, 0.2] 4'] = [=[
-expect(received).toBeLessThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: < 0.1
-Received:   0.2]=]
+Expected: < [32m0.1[39m
+Received:   [31m0.2[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [0.1, 0.2] 5'] = [=[
-expect(received).toBeGreaterThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: >= 0.2
-Received:    0.1]=]
+Expected: >= [32m0.2[39m
+Received:    [31m0.1[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [0.1, 0.2] 6'] = [=[
-expect(received).never.toBeLessThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never <= 0.2
-Received:          0.1]=]
+Expected: never <= [32m0.2[39m
+Received:          [31m0.1[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [0.1, 0.2] 7'] = [=[
-expect(received).never.toBeGreaterThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never >= 0.1
-Received:          0.2]=]
+Expected: never >= [32m0.1[39m
+Received:          [31m0.2[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [0.1, 0.2] 8'] = [=[
-expect(received).toBeLessThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: <= 0.1
-Received:    0.2]=]
+Expected: <= [32m0.1[39m
+Received:    [31m0.2[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [1, 2] 1'] = [=[
-expect(received).toBeGreaterThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: > 2
-Received:   1]=]
+Expected: > [32m2[39m
+Received:   [31m1[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [1, 2] 2'] = [=[
-expect(received).never.toBeLessThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never < 2
-Received:         1]=]
+Expected: never < [32m2[39m
+Received:         [31m1[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [1, 2] 3'] = [=[
-expect(received).never.toBeGreaterThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never > 1
-Received:         2]=]
+Expected: never > [32m1[39m
+Received:         [31m2[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [1, 2] 4'] = [=[
-expect(received).toBeLessThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: < 1
-Received:   2]=]
+Expected: < [32m1[39m
+Received:   [31m2[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [1, 2] 5'] = [=[
-expect(received).toBeGreaterThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: >= 2
-Received:    1]=]
+Expected: >= [32m2[39m
+Received:    [31m1[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [1, 2] 6'] = [=[
-expect(received).never.toBeLessThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never <= 2
-Received:          1]=]
+Expected: never <= [32m2[39m
+Received:          [31m1[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [1, 2] 7'] = [=[
-expect(received).never.toBeGreaterThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never >= 1
-Received:          2]=]
+Expected: never >= [32m1[39m
+Received:          [31m2[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [1, 2] 8'] = [=[
-expect(received).toBeLessThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: <= 1
-Received:    2]=]
+Expected: <= [32m1[39m
+Received:    [31m2[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [3, 7] 1'] = [=[
-expect(received).toBeGreaterThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: > 7
-Received:   3]=]
+Expected: > [32m7[39m
+Received:   [31m3[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [3, 7] 2'] = [=[
-expect(received).never.toBeLessThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never < 7
-Received:         3]=]
+Expected: never < [32m7[39m
+Received:         [31m3[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [3, 7] 3'] = [=[
-expect(received).never.toBeGreaterThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never > 3
-Received:         7]=]
+Expected: never > [32m3[39m
+Received:         [31m7[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [3, 7] 4'] = [=[
-expect(received).toBeLessThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: < 3
-Received:   7]=]
+Expected: < [32m3[39m
+Received:   [31m7[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [3, 7] 5'] = [=[
-expect(received).toBeGreaterThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: >= 7
-Received:    3]=]
+Expected: >= [32m7[39m
+Received:    [31m3[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [3, 7] 6'] = [=[
-expect(received).never.toBeLessThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never <= 7
-Received:          3]=]
+Expected: never <= [32m7[39m
+Received:          [31m3[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [3, 7] 7'] = [=[
-expect(received).never.toBeGreaterThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never >= 3
-Received:          7]=]
+Expected: never >= [32m3[39m
+Received:          [31m7[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [3, 7] 8'] = [=[
-expect(received).toBeLessThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: <= 3
-Received:    7]=]
+Expected: <= [32m3[39m
+Received:    [31m7[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9.007199254741e+15, 9.007199254741e+15] 1'] = [=[
-expect(received).toBeGreaterThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: > 9.007199254741e+15
-Received:   -9.007199254741e+15]=]
+Expected: > [32m9.007199254741e+15[39m
+Received:   [31m-9.007199254741e+15[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9.007199254741e+15, 9.007199254741e+15] 2'] = [=[
-expect(received).never.toBeLessThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never < 9.007199254741e+15
-Received:         -9.007199254741e+15]=]
+Expected: never < [32m9.007199254741e+15[39m
+Received:         [31m-9.007199254741e+15[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9.007199254741e+15, 9.007199254741e+15] 3'] = [=[
-expect(received).never.toBeGreaterThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never > -9.007199254741e+15
-Received:         9.007199254741e+15]=]
+Expected: never > [32m-9.007199254741e+15[39m
+Received:         [31m9.007199254741e+15[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9.007199254741e+15, 9.007199254741e+15] 4'] = [=[
-expect(received).toBeLessThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: < -9.007199254741e+15
-Received:   9.007199254741e+15]=]
+Expected: < [32m-9.007199254741e+15[39m
+Received:   [31m9.007199254741e+15[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9.007199254741e+15, 9.007199254741e+15] 5'] = [=[
-expect(received).toBeGreaterThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: >= 9.007199254741e+15
-Received:    -9.007199254741e+15]=]
+Expected: >= [32m9.007199254741e+15[39m
+Received:    [31m-9.007199254741e+15[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9.007199254741e+15, 9.007199254741e+15] 6'] = [=[
-expect(received).never.toBeLessThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never <= 9.007199254741e+15
-Received:          -9.007199254741e+15]=]
+Expected: never <= [32m9.007199254741e+15[39m
+Received:          [31m-9.007199254741e+15[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9.007199254741e+15, 9.007199254741e+15] 7'] = [=[
-expect(received).never.toBeGreaterThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never >= -9.007199254741e+15
-Received:          9.007199254741e+15]=]
+Expected: never >= [32m-9.007199254741e+15[39m
+Received:          [31m9.007199254741e+15[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9.007199254741e+15, 9.007199254741e+15] 8'] = [=[
-expect(received).toBeLessThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: <= -9.007199254741e+15
-Received:    9.007199254741e+15]=]
+Expected: <= [32m-9.007199254741e+15[39m
+Received:    [31m9.007199254741e+15[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [9, 18] 1'] = [=[
-expect(received).toBeGreaterThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: > 18
-Received:   9]=]
+Expected: > [32m18[39m
+Received:   [31m9[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [9, 18] 2'] = [=[
-expect(received).never.toBeLessThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never < 18
-Received:         9]=]
+Expected: never < [32m18[39m
+Received:         [31m9[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [9, 18] 3'] = [=[
-expect(received).never.toBeGreaterThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never > 9
-Received:         18]=]
+Expected: never > [32m9[39m
+Received:         [31m18[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [9, 18] 4'] = [=[
-expect(received).toBeLessThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: < 9
-Received:   18]=]
+Expected: < [32m9[39m
+Received:   [31m18[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [9, 18] 5'] = [=[
-expect(received).toBeGreaterThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: >= 18
-Received:    9]=]
+Expected: >= [32m18[39m
+Received:    [31m9[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [9, 18] 6'] = [=[
-expect(received).never.toBeLessThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never <= 18
-Received:          9]=]
+Expected: never <= [32m18[39m
+Received:          [31m9[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [9, 18] 7'] = [=[
-expect(received).never.toBeGreaterThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never >= 9
-Received:          18]=]
+Expected: never >= [32m9[39m
+Received:          [31m18[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [9, 18] 8'] = [=[
-expect(received).toBeLessThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: <= 9
-Received:    18]=]
+Expected: <= [32m9[39m
+Received:    [31m18[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [17, 34] 1'] = [=[
-expect(received).toBeGreaterThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: > 34
-Received:   17]=]
+Expected: > [32m34[39m
+Received:   [31m17[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [17, 34] 2'] = [=[
-expect(received).never.toBeLessThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never < 34
-Received:         17]=]
+Expected: never < [32m34[39m
+Received:         [31m17[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [17, 34] 3'] = [=[
-expect(received).never.toBeGreaterThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never > 17
-Received:         34]=]
+Expected: never > [32m17[39m
+Received:         [31m34[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [17, 34] 4'] = [=[
-expect(received).toBeLessThan(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: < 17
-Received:   34]=]
+Expected: < [32m17[39m
+Received:   [31m34[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [17, 34] 5'] = [=[
-expect(received).toBeGreaterThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: >= 34
-Received:    17]=]
+Expected: >= [32m34[39m
+Received:    [31m17[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [17, 34] 6'] = [=[
-expect(received).never.toBeLessThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never <= 34
-Received:          17]=]
+Expected: never <= [32m34[39m
+Received:          [31m17[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [17, 34] 7'] = [=[
-expect(received).never.toBeGreaterThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never >= 17
-Received:          34]=]
+Expected: never >= [32m17[39m
+Received:          [31m34[39m]=]
 
 snapshots['.toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [17, 34] 8'] = [=[
-expect(received).toBeLessThanOrEqual(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: <= 17
-Received:    34]=]
+Expected: <= [32m17[39m
+Received:    [31m34[39m]=]
 
 snapshots['.toBeNan() {pass: true} expect(nan).toBeNan() 1'] = [=[
-expect(received).never.toBeNan()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeNan[2m()[22m
 
-Received: nan]=]
+Received: [31mnan[39m]=]
 
 snapshots['.toBeNan() {pass: true} expect(nan).toBeNan() 2'] = [=[
-expect(received).never.toBeNan()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeNan[2m()[22m
 
-Received: nan]=]
+Received: [31mnan[39m]=]
 
 snapshots['.toBeNan() {pass: true} expect(nan).toBeNan() 3'] = [=[
-expect(received).never.toBeNan()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeNan[2m()[22m
 
-Received: nan]=]
+Received: [31mnan[39m]=]
 
 snapshots['.toBeNan() throws 1'] = [=[
-expect(received).toBeNan()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeNan[2m()[22m
 
-Received: 1]=]
+Received: [31m1[39m]=]
 
 snapshots['.toBeNan() throws 2'] = [=[
-expect(received).toBeNan()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeNan[2m()[22m
 
-Received: ""]=]
+Received: [31m""[39m]=]
 
 snapshots['.toBeNan() throws 3'] = [=[
-expect(received).toBeNan()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeNan[2m()[22m
 
-Received: {}]=]
+Received: [31m{}[39m]=]
 
 snapshots['.toBeNan() throws 4'] = [=[
-expect(received).toBeNan()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeNan[2m()[22m
 
-Received: 0.2]=]
+Received: [31m0.2[39m]=]
 
 snapshots['.toBeNan() throws 5'] = [=[
-expect(received).toBeNan()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeNan[2m()[22m
 
-Received: 0]=]
+Received: [31m0[39m]=]
 
 snapshots['.toBeNan() throws 6'] = [=[
-expect(received).toBeNan()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeNan[2m()[22m
 
-Received: inf]=]
+Received: [31minf[39m]=]
 
 snapshots['.toBeNan() throws 7'] = [=[
-expect(received).toBeNan()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeNan[2m()[22m
 
-Received: -inf]=]
+Received: [31m-inf[39m]=]
 
 snapshots['.toBeNil() fails for "a" 1'] = [=[
-expect(received).toBeNil()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeNil[2m()[22m
 
-Received: "a"]=]
+Received: [31m"a"[39m]=]
 
 snapshots['.toBeNil() fails for [Function anonymous] 1'] = [=[
-expect(received).toBeNil()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeNil[2m()[22m
 
-Received: [Function anonymous]]=]
+Received: [31m[Function anonymous][39m]=]
 
 snapshots['.toBeNil() fails for {} 1'] = [=[
-expect(received).toBeNil()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeNil[2m()[22m
 
-Received: {}]=]
+Received: [31m{}[39m]=]
 
 snapshots['.toBeNil() fails for 0.5 1'] = [=[
-expect(received).toBeNil()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeNil[2m()[22m
 
-Received: 0.5]=]
+Received: [31m0.5[39m]=]
 
 snapshots['.toBeNil() fails for 1 1'] = [=[
-expect(received).toBeNil()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeNil[2m()[22m
 
-Received: 1]=]
+Received: [31m1[39m]=]
 
 snapshots['.toBeNil() fails for inf 1'] = [=[
-expect(received).toBeNil()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeNil[2m()[22m
 
-Received: inf]=]
+Received: [31minf[39m]=]
 
 snapshots['.toBeNil() fails for true 1'] = [=[
-expect(received).toBeNil()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeNil[2m()[22m
 
-Received: true]=]
+Received: [31mtrue[39m]=]
 
 snapshots['.toBeNil() fails for nil with .never 1'] = [=[
-expect(received).never.toBeNil()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeNil[2m()[22m
 
-Received: nil]=]
+Received: [31mnil[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() "" is truthy 1'] = [=[
-expect(received).never.toBeTruthy()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeTruthy[2m()[22m
 
-Received: ""]=]
+Received: [31m""[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() "" is truthy 2'] = [=[
-expect(received).toBeFalsy()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeFalsy[2m()[22m
 
-Received: ""]=]
+Received: [31m""[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() "a" is truthy 1'] = [=[
-expect(received).never.toBeTruthy()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeTruthy[2m()[22m
 
-Received: "a"]=]
+Received: [31m"a"[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() "a" is truthy 2'] = [=[
-expect(received).toBeFalsy()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeFalsy[2m()[22m
 
-Received: "a"]=]
+Received: [31m"a"[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() [Function anonymous] is truthy 1'] = [=[
-expect(received).never.toBeTruthy()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeTruthy[2m()[22m
 
-Received: [Function anonymous]]=]
+Received: [31m[Function anonymous][39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() [Function anonymous] is truthy 2'] = [=[
-expect(received).toBeFalsy()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeFalsy[2m()[22m
 
-Received: [Function anonymous]]=]
+Received: [31m[Function anonymous][39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() {} is truthy 1'] = [=[
-expect(received).never.toBeTruthy()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeTruthy[2m()[22m
 
-Received: {}]=]
+Received: [31m{}[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() {} is truthy 2'] = [=[
-expect(received).toBeFalsy()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeFalsy[2m()[22m
 
-Received: {}]=]
+Received: [31m{}[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() 0 is truthy 1'] = [=[
-expect(received).never.toBeTruthy()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeTruthy[2m()[22m
 
-Received: 0]=]
+Received: [31m0[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() 0 is truthy 2'] = [=[
-expect(received).toBeFalsy()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeFalsy[2m()[22m
 
-Received: 0]=]
+Received: [31m0[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() 0.5 is truthy 1'] = [=[
-expect(received).never.toBeTruthy()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeTruthy[2m()[22m
 
-Received: 0.5]=]
+Received: [31m0.5[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() 0.5 is truthy 2'] = [=[
-expect(received).toBeFalsy()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeFalsy[2m()[22m
 
-Received: 0.5]=]
+Received: [31m0.5[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() 1 is truthy 1'] = [=[
-expect(received).never.toBeTruthy()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeTruthy[2m()[22m
 
-Received: 1]=]
+Received: [31m1[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() 1 is truthy 2'] = [=[
-expect(received).toBeFalsy()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeFalsy[2m()[22m
 
-Received: 1]=]
+Received: [31m1[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() inf is truthy 1'] = [=[
-expect(received).never.toBeTruthy()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeTruthy[2m()[22m
 
-Received: inf]=]
+Received: [31minf[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() inf is truthy 2'] = [=[
-expect(received).toBeFalsy()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeFalsy[2m()[22m
 
-Received: inf]=]
+Received: [31minf[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() nan is truthy 1'] = [=[
-expect(received).never.toBeTruthy()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeTruthy[2m()[22m
 
-Received: nan]=]
+Received: [31mnan[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() nan is truthy 2'] = [=[
-expect(received).toBeFalsy()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeFalsy[2m()[22m
 
-Received: nan]=]
+Received: [31mnan[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() false is falsy 1'] = [=[
-expect(received).toBeTruthy()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
 
-Received: false]=]
+Received: [31mfalse[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() false is falsy 2'] = [=[
-expect(received).never.toBeFalsy()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeFalsy[2m()[22m
 
-Received: false]=]
+Received: [31mfalse[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() true is truthy 1'] = [=[
-expect(received).never.toBeTruthy()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeTruthy[2m()[22m
 
-Received: true]=]
+Received: [31mtrue[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() true is truthy 2'] = [=[
-expect(received).toBeFalsy()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeFalsy[2m()[22m
 
-Received: true]=]
+Received: [31mtrue[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() nil is falsy 1'] = [=[
-expect(received).toBeTruthy()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
 
-Received: nil]=]
+Received: [31mnil[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() nil is falsy 2'] = [=[
-expect(received).never.toBeFalsy()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeFalsy[2m()[22m
 
-Received: nil]=]
+Received: [31mnil[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() does not accept arguments 1'] = [=[
-expect(received).toBeTruthy()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
 
-Matcher error: this matcher must not have an expected argument
+[1mMatcher error[22m: this matcher must not have an expected argument
 
 Expected has type:  number
-Expected has value: 1]=]
+Expected has value: [32m1[39m]=]
 
 snapshots['.toBeTruthy(), .toBeFalsy() does not accept arguments 2'] = [=[
-expect(received).never.toBeFalsy()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeFalsy[2m()[22m
 
-Matcher error: this matcher must not have an expected argument
+[1mMatcher error[22m: this matcher must not have an expected argument
 
 Expected has type:  number
-Expected has value: 1]=]
+Expected has value: [32m1[39m]=]
 
 snapshots['.toContain(), .toContainEqual() "11112111" contains "2" 1'] = [=[
-expect(received).never.toContain(expected) // indexOf
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoContain[2m([22m[32mexpected[39m[2m) -- string.find or table.find[22m
 
-Expected substring: never "2"
-Received string:          "11112111"]=]
+Expected substring: never [32m"2"[39m
+Received string:          [31m"1111[39m[7m2[27m[31m111[39m"]=]
 
 snapshots['.toContain(), .toContainEqual() "abcdef" contains "abc" 1'] = [=[
-expect(received).never.toContain(expected) // indexOf
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoContain[2m([22m[32mexpected[39m[2m) -- string.find or table.find[22m
 
-Expected substring: never "abc"
-Received string:          "abcdef"]=]
+Expected substring: never [32m"abc"[39m
+Received string:          [31m"[39m[7mabc[27m[31mdef[39m"]=]
 
 snapshots['.toContain(), .toContainEqual() {"a", "b", "c", "d"} contains "a" 1'] = [=[
-expect(received).never.toContain(expected) // indexOf
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoContain[2m([22m[32mexpected[39m[2m) -- string.find or table.find[22m
 
-Expected value: never "a"
-Received table:       {"a", "b", "c", "d"}]=]
+Expected value: never [32m"a"[39m
+Received table:       [31m{[39m[7m"a"[27m[31m, [39m[31m"b"[39m[31m, [39m[31m"c"[39m[31m, [39m[31m"d"[39m[31m}[39m]=]
 
 snapshots['.toContain(), .toContainEqual() {"a", "b", "c", "d"} contains a value equal to "a" 1'] = [=[
-expect(received).never.toContainEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoContainEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected value: never "a"
-Received table:       {"a", "b", "c", "d"}]=]
+Expected value: never [32m"a"[39m
+Received table:       [31m{[39m[7m"a"[27m[31m, [39m[31m"b"[39m[31m, [39m[31m"c"[39m[31m, [39m[31m"d"[39m[31m}[39m]=]
 
 snapshots['.toContain(), .toContainEqual() {{"a": "b"}, {"a": "c"}} contains a value equal to {"a": "b"} 1'] = [=[
-expect(received).never.toContainEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoContainEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected value: never {"a": "b"}
-Received table:       {{"a": "b"}, {"a": "c"}}]=]
+Expected value: never [32m{"a": "b"}[39m
+Received table:       [31m{[39m[7m{"a": "b"}[27m[31m, [39m[31m{"a": "c"}[39m[31m}[39m]=]
 
 snapshots['.toContain(), .toContainEqual() {{"a": "b"}, {"a": "c"}} does not contain a value equal to {"a": "d"} 1'] = [=[
-expect(received).toContainEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoContainEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected value: {"a": "d"}
-Received table: {{"a": "b"}, {"a": "c"}}]=]
+Expected value: [32m{"a": "d"}[39m
+Received table: [31m{{"a": "b"}, {"a": "c"}}[39m]=]
 
 snapshots['.toContain(), .toContainEqual() {{}, {}} does not contain {} 1'] = [=[
-expect(received).toContain(expected) // indexOf
+[2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) -- string.find or table.find[22m
 
-Expected value: {}
-Received table: {{}, {}}
+Expected value: [32m{}[39m
+Received table: [31m{{}, {}}[39m
 
 Looks like you wanted to test for object/array equality with the stricter `toContain` matcher. You probably need to use `toContainEqual` instead.]=]
 
 snapshots['.toContain(), .toContainEqual() {0, 1} contains 1 1'] = [=[
-expect(received).never.toContain(expected) // indexOf
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoContain[2m([22m[32mexpected[39m[2m) -- string.find or table.find[22m
 
-Expected value: never 1
-Received table:       {0, 1}]=]
+Expected value: never [32m1[39m
+Received table:       [31m{[39m[31m0[39m[31m, [39m[7m1[27m[31m}[39m]=]
 
 snapshots['.toContain(), .toContainEqual() {0, 1} contains a value equal to 1 1'] = [=[
-expect(received).never.toContainEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoContainEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected value: never 1
-Received table:       {0, 1}]=]
+Expected value: never [32m1[39m
+Received table:       [31m{[39m[31m0[39m[31m, [39m[7m1[27m[31m}[39m]=]
 
 snapshots['.toContain(), .toContainEqual() {1, 2, 3, 4} contains 1 1'] = [=[
-expect(received).never.toContain(expected) // indexOf
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoContain[2m([22m[32mexpected[39m[2m) -- string.find or table.find[22m
 
-Expected value: never 1
-Received table:       {1, 2, 3, 4}]=]
+Expected value: never [32m1[39m
+Received table:       [31m{[39m[7m1[27m[31m, [39m[31m2[39m[31m, [39m[31m3[39m[31m, [39m[31m4[39m[31m}[39m]=]
 
 snapshots['.toContain(), .toContainEqual() {1, 2, 3, 4} contains a value equal to 1 1'] = [=[
-expect(received).never.toContainEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoContainEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected value: never 1
-Received table:       {1, 2, 3, 4}]=]
+Expected value: never [32m1[39m
+Received table:       [31m{[39m[7m1[27m[31m, [39m[31m2[39m[31m, [39m[31m3[39m[31m, [39m[31m4[39m[31m}[39m]=]
 
 snapshots['.toContain(), .toContainEqual() {{1, 2}, {3, 4}} contains a value equal to {3, 4} 1'] = [=[
-expect(received).never.toContainEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoContainEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected value: never {3, 4}
-Received table:       {{1, 2}, {3, 4}}]=]
+Expected value: never [32m{3, 4}[39m
+Received table:       [31m{[39m[31m{1, 2}[39m[31m, [39m[7m{3, 4}[27m[31m}[39m]=]
 
 snapshots['.toContain(), .toContainEqual() {1, 2, 3} does not contain 4 1'] = [=[
-expect(received).toContain(expected) // indexOf
+[2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) -- string.find or table.find[22m
 
-Expected value: 4
-Received table: {1, 2, 3}]=]
+Expected value: [32m4[39m
+Received table: [31m{1, 2, 3}[39m]=]
 
 snapshots['.toContain(), .toContainEqual() {Symbol(a)} contains Symbol(a) 1'] = [=[
-expect(received).never.toContain(expected) // indexOf
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoContain[2m([22m[32mexpected[39m[2m) -- string.find or table.find[22m
 
-Expected value: never Symbol(a)
-Received table:       {Symbol(a)}]=]
+Expected value: never [32mSymbol(a)[39m
+Received table:       [31m{[39m[7mSymbol(a)[27m[31m}[39m]=]
 
 snapshots['.toContain(), .toContainEqual() {Symbol(a)} contains a value equal to Symbol(a) 1'] = [=[
-expect(received).never.toContainEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoContainEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected value: never Symbol(a)
-Received table:       {Symbol(a)}]=]
+Expected value: never [32mSymbol(a)[39m
+Received table:       [31m{[39m[7mSymbol(a)[27m[31m}[39m]=]
 
 snapshots['.toContain(), .toContainEqual() error cases 1'] = [=[
-expect(received).toContain(expected) // indexOf
+[2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) -- string.find or table.find[22m
 
-Matcher error: received value must not be nil
+[1mMatcher error[22m: [31mreceived[39m value must not be nil
 
-Received has value: nil]=]
+Received has value: [31mnil[39m]=]
 
 snapshots['.toContain(), .toContainEqual() error cases for toContainEqual 1'] = [=[
-expect(received).toContainEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoContainEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Matcher error: received value must not be nil
+[1mMatcher error[22m: [31mreceived[39m value must not be nil
 
-Received has value: nil]=]
+Received has value: [31mnil[39m]=]
 
 snapshots['.toEqual() {pass: false} expect("1 234,57 $").toEqual("1 234,57 $") 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: "1 234,57 $"
-Received: "1 234,57 $"]=]
+Expected: [32m"1[7m [27m234,57[7m [27m$"[39m
+Received: [31m"1[7m [27m234,57[7m [27m$"[39m]=]
 
 snapshots['.toEqual() {pass: false} expect("Eve").toEqual({"asymmetricMatch": [Function anonymous]}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: {"asymmetricMatch": [Function anonymous]}
-Received: "Eve"]=]
+Expected: [32m{"asymmetricMatch": [Function anonymous]}[39m
+Received: [31m"Eve"[39m]=]
 
 snapshots['.toEqual() {pass: false} expect("abd").toEqual(StringContaining "bc") 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: StringContaining "bc"
-Received: "abd"]=]
+Expected: [32mStringContaining "bc"[39m
+Received: [31m"abd"[39m]=]
 
 snapshots['.toEqual() {pass: false} expect("abd").toEqual(StringMatching "bc") 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: StringMatching "bc"
-Received: "abd"]=]
+Expected: [32mStringMatching "bc"[39m
+Received: [31m"abd"[39m]=]
 
 snapshots['.toEqual() {pass: false} expect("banana").toEqual("apple") 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: "apple"
-Received: "banana"]=]
+Expected: [32m"apple"[39m
+Received: [31m"banana"[39m]=]
 
 snapshots['.toEqual() {pass: false} expect("type TypeName<T> = T extends Function ? \\"function\\" : \\"object\\";").toEqual("type TypeName<T> = T extends Function\n? \\"function\\"\n: \\"object\\";") 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 3
-+ Received  + 1
+[32m- Expected  - 3[39m
+[31m+ Received  + 1[39m
 
-- type TypeName<T> = T extends Function
-- ? "function"
-- : "object";
-+ type TypeName<T> = T extends Function ? "function" : "object";]=]
+[32m- type TypeName<T> = T extends Function[39m
+[32m- ? "function"[39m
+[32m- : "object";[39m
+[31m+ type TypeName<T> = T extends Function[7m [27m? "function"[7m [27m: "object";[39m]=]
 
 snapshots['.toEqual() {pass: false} expect({1, 3}).toEqual(ArrayContaining [1, 2]) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: ArrayContaining [1, 2]
-Received: {1, 3}]=]
+Expected: [32mArrayContaining [1, 2][39m
+Received: [31m{1, 3}[39m]=]
 
 snapshots['.toEqual() {pass: false} expect({1}).toEqual({2}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
--   2,
-+   1,
-  }]=]
+[2m  Table {[22m
+[32m-   2,[39m
+[31m+   1,[39m
+[2m  }[22m]=]
 
 snapshots['.toEqual() {pass: false} expect({97, 98, 99}).toEqual({97, 98, 100}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
-    97,
-    98,
--   100,
-+   99,
-  }]=]
+[2m  Table {[22m
+[2m    97,[22m
+[2m    98,[22m
+[32m-   100,[39m
+[31m+   99,[39m
+[2m  }[22m]=]
 
 snapshots['.toEqual() {pass: false} expect({"a": 1, "b": 2}).toEqual(ObjectContaining {"a": 2}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: ObjectContaining {"a": 2}
-Received: {"a": 1, "b": 2}]=]
+Expected: [32mObjectContaining {"a": 2}[39m
+Received: [31m{"a": 1, "b": 2}[39m]=]
 
 snapshots['.toEqual() {pass: false} expect({"a": 1}).toEqual({"a": 2}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
--   "a": 2,
-+   "a": 1,
-  }]=]
+[2m  Table {[22m
+[32m-   "a": 2,[39m
+[31m+   "a": 1,[39m
+[2m  }[22m]=]
 
 snapshots['.toEqual() {pass: false} expect({"a": 5}).toEqual({"b": 6}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
--   "b": 6,
-+   "a": 5,
-  }]=]
+[2m  Table {[22m
+[32m-   "b": 6,[39m
+[31m+   "a": 5,[39m
+[2m  }[22m]=]
 
 snapshots['.toEqual() {pass: false} expect({"foo": {"bar": 1}}).toEqual({"foo": {}}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 1
-+ Received  + 3
+[32m- Expected  - 1[39m
+[31m+ Received  + 3[39m
 
-  Table {
--   "foo": Table {},
-+   "foo": Table {
-+     "bar": 1,
-+   },
-  }]=]
+[2m  Table {[22m
+[32m-   "foo": Table {},[39m
+[31m+   "foo": Table {[39m
+[31m+     "bar": 1,[39m
+[31m+   },[39m
+[2m  }[22m]=]
 
 snapshots['.toEqual() {pass: false} expect({"nodeName": "div", "nodeType": 1}).toEqual({"nodeName": "p", "nodeType": 1}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
--   "nodeName": "p",
-+   "nodeName": "div",
-    "nodeType": 1,
-  }]=]
+[2m  Table {[22m
+[32m-   "nodeName": "p",[39m
+[31m+   "nodeName": "div",[39m
+[2m    "nodeType": 1,[22m
+[2m  }[22m]=]
 
 snapshots['.toEqual() {pass: false} expect({"target": {"nodeType": 1, "value": "a"}}).toEqual({"target": {"nodeType": 1, "value": "b"}}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
-    "target": Table {
-      "nodeType": 1,
--     "value": "b",
-+     "value": "a",
-    },
-  }]=]
+[2m  Table {[22m
+[2m    "target": Table {[22m
+[2m      "nodeType": 1,[22m
+[32m-     "value": "b",[39m
+[31m+     "value": "a",[39m
+[2m    },[22m
+[2m  }[22m]=]
 
 snapshots['.toEqual() {pass: false} expect({Symbol(bar): 2, Symbol(foo): 1}).toEqual({Symbol(bar): 1, Symbol(foo): Any<number>}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
--   Symbol(bar): 1,
-+   Symbol(bar): 2,
-    Symbol(foo): Any<number>,
-  }]=]
+[2m  Table {[22m
+[32m-   Symbol(bar): 1,[39m
+[31m+   Symbol(bar): 2,[39m
+[2m    Symbol(foo): Any<number>,[22m
+[2m  }[22m]=]
 
 snapshots['.toEqual() {pass: false} expect(0).toEqual(1) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: 1
-Received: 0]=]
+Expected: [32m1[39m
+Received: [31m0[39m]=]
 
 snapshots['.toEqual() {pass: false} expect(0).toEqual(-9.007199254741e+15) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: -9.007199254741e+15
-Received: 0]=]
+Expected: [32m-9.007199254741e+15[39m
+Received: [31m0[39m]=]
 
 snapshots['.toEqual() {pass: false} expect(1).toEqual(2) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: 2
-Received: 1]=]
+Expected: [32m2[39m
+Received: [31m1[39m]=]
 
 snapshots['.toEqual() {pass: false} expect(1).toEqual(ArrayContaining [1, 2]) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: ArrayContaining [1, 2]
-Received: 1]=]
+Expected: [32mArrayContaining [1, 2][39m
+Received: [31m1[39m]=]
 
 snapshots['.toEqual() {pass: false} expect(-9.007199254741e+15).toEqual(0) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: 0
-Received: -9.007199254741e+15]=]
+Expected: [32m0[39m
+Received: [31m-9.007199254741e+15[39m]=]
 
 snapshots['.toEqual() {pass: false} expect({"1": {"2": {"a": 99}}}).toEqual({"1": {"2": {"a": 11}}}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
-    "1": Table {
-      "2": Table {
--       "a": 11,
-+       "a": 99,
-      },
-    },
-  }]=]
+[2m  Table {[22m
+[2m    "1": Table {[22m
+[2m      "2": Table {[22m
+[32m-       "a": 11,[39m
+[31m+       "a": 99,[39m
+[2m      },[22m
+[2m    },[22m
+[2m  }[22m]=]
 
 snapshots['.toEqual() {pass: false} expect({"a": 0}).toEqual({"b": 0}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
--   "b": 0,
-+   "a": 0,
-  }]=]
+[2m  Table {[22m
+[32m-   "b": 0,[39m
+[31m+   "a": 0,[39m
+[2m  }[22m]=]
 
 snapshots['.toEqual() {pass: false} expect({1, 2}).toEqual({2, 1}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
--   2,
-    1,
-+   2,
-  }]=]
+[2m  Table {[22m
+[32m-   2,[39m
+[2m    1,[22m
+[31m+   2,[39m
+[2m  }[22m]=]
 
 snapshots['.toEqual() {pass: false} expect({1, 2}).toEqual({}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 1
-+ Received  + 4
+[32m- Expected  - 1[39m
+[31m+ Received  + 4[39m
 
-- Table {}
-+ Table {
-+   1,
-+   2,
-+ }]=]
+[32m- Table {}[39m
+[31m+ Table {[39m
+[31m+   1,[39m
+[31m+   2,[39m
+[31m+ }[39m]=]
 
 snapshots['.toEqual() {pass: false} expect({"v": 1}).toEqual({"v": 2}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
--   "v": 2,
-+   "v": 1,
-  }]=]
+[2m  Table {[22m
+[32m-   "v": 2,[39m
+[31m+   "v": 1,[39m
+[2m  }[22m]=]
 
 snapshots['.toEqual() {pass: false} expect({{"v"}: 1}).toEqual({{"v"}: 2}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
-    Table {
-      "v",
--   }: 2,
-+   }: 1,
-  }]=]
+[2m  Table {[22m
+[2m    Table {[22m
+[2m      "v",[22m
+[32m-   }: 2,[39m
+[31m+   }: 1,[39m
+[2m  }[22m]=]
 
 snapshots['.toEqual() {pass: false} expect({{1}: {{1}: "one"}}).toEqual({{1}: {{1}: "two"}}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-@@ -2,8 +2,8 @@
-    Table {
-      1,
-    }: Table {
-      Table {
-        1,
--     }: "two",
-+     }: "one",
-    },
-  }]=]
+[33m@@ -2,8 +2,8 @@[39m
+[2m    Table {[22m
+[2m      1,[22m
+[2m    }: Table {[22m
+[2m      Table {[22m
+[2m        1,[22m
+[32m-     }: "two",[39m
+[31m+     }: "one",[39m
+[2m    },[22m
+[2m  }[22m]=]
 
 snapshots['.toEqual() {pass: false} expect({"one", "two"}).toEqual({"one"}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 0
-+ Received  + 1
+[32m- Expected  - 0[39m
+[31m+ Received  + 1[39m
 
-  Table {
-    "one",
-+   "two",
-  }]=]
+[2m  Table {[22m
+[2m    "one",[22m
+[31m+   "two",[39m
+[2m  }[22m]=]
 
 snapshots['.toEqual() {pass: false} expect({{1}, {2}}).toEqual({{1}, {2}, {2}}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 3
-+ Received  + 0
+[32m- Expected  - 3[39m
+[31m+ Received  + 0[39m
 
-@@ -3,9 +3,6 @@
-      1,
-    },
-    Table {
-      2,
-    },
--   Table {
--     2,
--   },
-  }]=]
+[33m@@ -3,9 +3,6 @@[39m
+[2m      1,[22m
+[2m    },[22m
+[2m    Table {[22m
+[2m      2,[22m
+[2m    },[22m
+[32m-   Table {[39m
+[32m-     2,[39m
+[32m-   },[39m
+[2m  }[22m]=]
 
 snapshots['.toEqual() {pass: false} expect({{1}, {2}}).toEqual({{1}, {2}, {3}}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 3
-+ Received  + 0
+[32m- Expected  - 3[39m
+[31m+ Received  + 0[39m
 
-@@ -3,9 +3,6 @@
-      1,
-    },
-    Table {
-      2,
-    },
--   Table {
--     3,
--   },
-  }]=]
+[33m@@ -3,9 +3,6 @@[39m
+[2m      1,[22m
+[2m    },[22m
+[2m    Table {[22m
+[2m      2,[22m
+[2m    },[22m
+[32m-   Table {[39m
+[32m-     3,[39m
+[32m-   },[39m
+[2m  }[22m]=]
 
 snapshots['.toEqual() {pass: false} expect({1, 2}).toEqual({1, 2, 3}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 1
-+ Received  + 0
+[32m- Expected  - 1[39m
+[31m+ Received  + 0[39m
 
-  Table {
-    1,
-    2,
--   3,
-  }]=]
+[2m  Table {[22m
+[2m    1,[22m
+[2m    2,[22m
+[32m-   3,[39m
+[2m  }[22m]=]
 
 snapshots['.toEqual() {pass: false} expect({{1}, {2}}).toEqual({{1}, {3}}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
-    Table {
-      1,
-    },
-    Table {
--     3,
-+     2,
-    },
-  }]=]
+[2m  Table {[22m
+[2m    Table {[22m
+[2m      1,[22m
+[2m    },[22m
+[2m    Table {[22m
+[32m-     3,[39m
+[31m+     2,[39m
+[2m    },[22m
+[2m  }[22m]=]
 
 snapshots['.toEqual() {pass: false} expect(false).toEqual(ObjectContaining {"a": 2}) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: ObjectContaining {"a": 2}
-Received: false]=]
+Expected: [32mObjectContaining {"a": 2}[39m
+Received: [31mfalse[39m]=]
 
 snapshots['.toEqual() {pass: false} expect(true).toEqual(false) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: false
-Received: true]=]
+Expected: [32mfalse[39m
+Received: [31mtrue[39m]=]
 
 snapshots['.toEqual() {pass: false} expect(nil).toEqual(Any<function>) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: Any<function>
-Received: nil]=]
+Expected: [32mAny<function>[39m
+Received: [31mnil[39m]=]
 
 snapshots['.toEqual() {pass: false} expect(nil).toEqual(Anything) 1'] = [=[
-expect(received).toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: Anything
-Received: nil]=]
+Expected: [32mAnything[39m
+Received: [31mnil[39m]=]
 
 snapshots['.toEqual() {pass: true} expect("Alice").never.toEqual({"asymmetricMatch": [Function anonymous]}) 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never {"asymmetricMatch": [Function anonymous]}
-Received:       "Alice"]=]
+Expected: never [32m{"asymmetricMatch": [Function anonymous]}[39m
+Received:       [31m"Alice"[39m]=]
 
 snapshots['.toEqual() {pass: true} expect("abc").never.toEqual("abc") 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never "abc"
+Expected: never [32m"abc"[39m
 ]=]
 
 snapshots['.toEqual() {pass: true} expect("abcd").never.toEqual(StringContaining "bc") 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never StringContaining "bc"
-Received:       "abcd"]=]
+Expected: never [32mStringContaining "bc"[39m
+Received:       [31m"abcd"[39m]=]
 
 snapshots['.toEqual() {pass: true} expect("abcd").never.toEqual(StringMatching "bc") 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never StringMatching "bc"
-Received:       "abcd"]=]
+Expected: never [32mStringMatching "bc"[39m
+Received:       [31m"abcd"[39m]=]
 
 snapshots['.toEqual() {pass: true} expect({1, 2, 3}).never.toEqual(ArrayContaining [2, 3]) 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never ArrayContaining [2, 3]
-Received:       {1, 2, 3}]=]
+Expected: never [32mArrayContaining [2, 3][39m
+Received:       [31m{1, 2, 3}[39m]=]
 
 snapshots['.toEqual() {pass: true} expect({1}).never.toEqual({1}) 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never {1}
+Expected: never [32m{1}[39m
 ]=]
 
 snapshots['.toEqual() {pass: true} expect({97, 98, 99}).never.toEqual({97, 98, 99}) 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never {97, 98, 99}
+Expected: never [32m{97, 98, 99}[39m
 ]=]
 
 snapshots['.toEqual() {pass: true} expect([Function anonymous]).never.toEqual(Any<function>) 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never Any<function>
-Received:       [Function anonymous]]=]
+Expected: never [32mAny<function>[39m
+Received:       [31m[Function anonymous][39m]=]
 
 snapshots['.toEqual() {pass: true} expect({"a": 1, "b": [Function anonymous], "c": true}).never.toEqual({"a": 1, "b": Any<function>, "c": Anything}) 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never {"a": 1, "b": Any<function>, "c": Anything}
-Received:       {"a": 1, "b": [Function anonymous], "c": true}]=]
+Expected: never [32m{"a": 1, "b": Any<function>, "c": Anything}[39m
+Received:       [31m{"a": 1, "b": [Function anonymous], "c": true}[39m]=]
 
 snapshots['.toEqual() {pass: true} expect({"a": 1, "b": 2}).never.toEqual(ObjectContaining {"a": 1}) 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never ObjectContaining {"a": 1}
-Received:       {"a": 1, "b": 2}]=]
+Expected: never [32mObjectContaining {"a": 1}[39m
+Received:       [31m{"a": 1, "b": 2}[39m]=]
 
 snapshots['.toEqual() {pass: true} expect({"a": 99}).never.toEqual({"a": 99}) 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never {"a": 99}
+Expected: never [32m{"a": 99}[39m
 ]=]
 
 snapshots['.toEqual() {pass: true} expect({"nodeName": "div", "nodeType": 1}).never.toEqual({"nodeName": "div", "nodeType": 1}) 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never {"nodeName": "div", "nodeType": 1}
+Expected: never [32m{"nodeName": "div", "nodeType": 1}[39m
 ]=]
 
 snapshots['.toEqual() {pass: true} expect({}).never.toEqual({}) 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never {}
+Expected: never [32m{}[39m
 ]=]
 
 snapshots['.toEqual() {pass: true} expect(0).never.toEqual(0) 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never 0
+Expected: never [32m0[39m
 ]=]
 
 snapshots['.toEqual() {pass: true} expect(1).never.toEqual(1) 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never 1
+Expected: never [32m1[39m
 ]=]
 
 snapshots['.toEqual() {pass: true} expect({{2: {"a": 99}}}).never.toEqual({{2: {"a": 99}}}) 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never {{2: {"a": 99}}}
+Expected: never [32m{{2: {"a": 99}}}[39m
 ]=]
 
 snapshots['.toEqual() {pass: true} expect({"one", "two"}).never.toEqual({"one", "two"}) 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never {"one", "two"}
+Expected: never [32m{"one", "two"}[39m
 ]=]
 
 snapshots['.toEqual() {pass: true} expect({1, 2}).never.toEqual({1, 2}) 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never {1, 2}
+Expected: never [32m{1, 2}[39m
 ]=]
 
 snapshots['.toEqual() {pass: true} expect({{"one"}, {"two"}}).never.toEqual({{"one"}, {"two"}}) 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never {{"one"}, {"two"}}
+Expected: never [32m{{"one"}, {"two"}}[39m
 ]=]
 snapshots['.toEqual() {pass: true} expect(nan).never.toEqual(nan) 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never nan
+Expected: never [32mnan[39m
 ]=]
 
 snapshots['.toEqual() {pass: true} expect(true).never.toEqual(Anything) 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never Anything
-Received:       true]=]
+Expected: never [32mAnything[39m
+Received:       [31mtrue[39m]=]
 
 snapshots['.toEqual() {pass: true} expect(true).never.toEqual(true) 1'] = [=[
-expect(received).never.toEqual(expected) // deep equality
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
 
-Expected: never true
+Expected: never [32mtrue[39m
 ]=]
 
 snapshots['.toHaveLength {pass: false} expect("").toHaveLength(1) 1'] = [=[
-expect(received).toHaveLength(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
 
-Expected length: 1
-Received length: 0
-Received string: ""]=]
+Expected length: [32m1[39m
+Received length: [31m0[39m
+Received string: [31m""[39m]=]
 
 snapshots['.toHaveLength {pass: false} expect("abc").toHaveLength(66) 1'] = [=[
-expect(received).toHaveLength(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
 
-Expected length: 66
-Received length: 3
-Received string: "abc"]=]
+Expected length: [32m66[39m
+Received length: [31m3[39m
+Received string: [31m"abc"[39m]=]
 
 snapshots['.toHaveLength {pass: false} expect({"a", "b"}).toHaveLength(99) 1'] = [=[
-expect(received).toHaveLength(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
 
-Expected length: 99
-Received length: 2
-Received table:  {"a", "b"}]=]
+Expected length: [32m99[39m
+Received length: [31m2[39m
+Received table:  [31m{"a", "b"}[39m]=]
 
 snapshots['.toHaveLength {pass: false} expect({}).toHaveLength(1) 1'] = [=[
-expect(received).toHaveLength(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
 
-Expected length: 1
-Received length: 0
-Received table:  {}]=]
+Expected length: [32m1[39m
+Received length: [31m0[39m
+Received table:  [31m{}[39m]=]
 
 snapshots['.toHaveLength {pass: false} expect({1, 2}).toHaveLength(3) 1'] = [=[
-expect(received).toHaveLength(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
 
-Expected length: 3
-Received length: 2
-Received table:  {1, 2}]=]
+Expected length: [32m3[39m
+Received length: [31m2[39m
+Received table:  [31m{1, 2}[39m]=]
 
 snapshots['.toHaveLength {pass: true} expect("").toHaveLength(0) 1'] = [=[
-expect(received).never.toHaveLength(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
 
-Expected length: never 0
-Received string:       ""]=]
+Expected length: never [32m0[39m
+Received string:       [31m""[39m]=]
 
 snapshots['.toHaveLength {pass: true} expect({"a", "b"}).toHaveLength(2) 1'] = [=[
-expect(received).never.toHaveLength(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
 
-Expected length: never 2
-Received table:        {"a", "b"}]=]
+Expected length: never [32m2[39m
+Received table:        [31m{"a", "b"}[39m]=]
 
 snapshots['.toHaveLength {pass: true} expect({}).toHaveLength(0) 1'] = [=[
-expect(received).never.toHaveLength(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
 
-Expected length: never 0
-Received table:        {}]=]
+Expected length: never [32m0[39m
+Received table:        [31m{}[39m]=]
 
 snapshots['.toHaveLength {pass: true} expect({1, 2}).toHaveLength(2) 1'] = [=[
-expect(received).never.toHaveLength(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
 
-Expected length: never 2
-Received table:        {1, 2}]=]
+Expected length: never [32m2[39m
+Received table:        [31m{1, 2}[39m]=]
 
 snapshots['.toHaveLength error cases 1'] = [=[
-expect(received).toHaveLength(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: received value must have a length property whose value must be a number
+[1mMatcher error[22m: [31mreceived[39m value must have a length property whose value must be a number
 
 Received has type:  table
-Received has value: {"a": 9}]=]
+Received has value: [31m{"a": 9}[39m]=]
 
 snapshots['.toHaveLength error cases 2'] = [=[
-expect(received).toHaveLength(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: received value must have a length property whose value must be a number
+[1mMatcher error[22m: [31mreceived[39m value must have a length property whose value must be a number
 
 Received has type:  number
-Received has value: 0]=]
+Received has value: [31m0[39m]=]
 
 snapshots['.toHaveLength error cases 3'] = [=[
-expect(received).never.toHaveLength(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: received value must have a length property whose value must be a number
+[1mMatcher error[22m: [31mreceived[39m value must have a length property whose value must be a number
 
-Received has value: nil]=]
+Received has value: [31mnil[39m]=]
 
 snapshots['.toHaveLength matcher error expected length not number 1'] = [=[
-expect(received).never.toHaveLength(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a non-negative integer
+[1mMatcher error[22m: [32mexpected[39m value must be a non-negative integer
 
 Expected has type:  string
-Expected has value: "3"]=]
+Expected has value: [32m"3"[39m]=]
 
 snapshots['.toHaveLength matcher error expected length number inf 1'] = [=[
-expect(received).toHaveLength(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a non-negative integer
+[1mMatcher error[22m: [32mexpected[39m value must be a non-negative integer
 
 Expected has type:  number
-Expected has value: inf]=]
+Expected has value: [32minf[39m]=]
 
 snapshots['.toHaveLength matcher error expected length number nan 1'] = [=[
-expect(received).never.toHaveLength(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a non-negative integer
+[1mMatcher error[22m: [32mexpected[39m value must be a non-negative integer
 
 Expected has type:  number
-Expected has value: nan]=]
+Expected has value: [32mnan[39m]=]
 
 snapshots['.toHaveLength matcher error expected length number float 1'] = [=[
-expect(received).toHaveLength(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a non-negative integer
+[1mMatcher error[22m: [32mexpected[39m value must be a non-negative integer
 
 Expected has type:  number
-Expected has value: 0.5]=]
+Expected has value: [32m0.5[39m]=]
 
 snapshots['.toHaveLength matcher error expected length number negative integer 1'] = [=[
-expect(received).never.toHaveLength(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a non-negative integer
+[1mMatcher error[22m: [32mexpected[39m value must be a non-negative integer
 
 Expected has type:  number
-Expected has value: -3]=]
+Expected has value: [32m-3[39m]=]
 
 snapshots['.toHaveProperty() {error} expect({"a": {"b": {}}}).toHaveProperty(1) 1'] = [=[
-expect(received).toHaveProperty(path)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m)[22m
 
-Matcher error: expected path must be a string or array
+[1mMatcher error[22m: [32mexpected[39m path must be a string or array
 
 Expected has type:  number
-Expected has value: 1]=]
+Expected has value: [32m1[39m]=]
 
 snapshots['.toHaveProperty() {error} expect({"a": {"b": {}}}).toHaveProperty(nil) 1'] = [=[
-expect(received).toHaveProperty(path)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m)[22m
 
-Matcher error: expected path must be a string or array
+[1mMatcher error[22m: [32mexpected[39m path must be a string or array
 
-Expected has value: nil]=]
+Expected has value: [32mnil[39m]=]
 
 snapshots['.toHaveProperty() {error} expect({}).toHaveProperty({}) 1'] = [=[
-expect(received).toHaveProperty(path)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m)[22m
 
-Matcher error: expected path must not be an empty array
+[1mMatcher error[22m: [32mexpected[39m path must not be an empty array
 
 Expected has type:  table
-Expected has value: {}]=]
+Expected has value: [32m{}[39m]=]
 
 snapshots['.toHaveProperty() {error} expect(nil).toHaveProperty("a.b") 1'] = [=[
-expect(received).toHaveProperty(path)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m)[22m
 
-Matcher error: received value must not be nil
+[1mMatcher error[22m: [31mreceived[39m value must not be nil
 
-Received has value: nil]=]
+Received has value: [31mnil[39m]=]
 
 snapshots['.toHaveProperty() {error} expect(nil).toHaveProperty("a") 1'] = [=[
-expect(received).toHaveProperty(path)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m)[22m
 
-Matcher error: received value must not be nil
+[1mMatcher error[22m: [31mreceived[39m value must not be nil
 
-Received has value: nil]=]
+Received has value: [31mnil[39m]=]
 
 snapshots['.toHaveProperty() {pass: false} expect("abc").toHaveProperty("a.b.c", {"a": 5}) 1'] = [=[
-expect(received).toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: "a.b.c"
-Received path: {}
+Expected path: [32m"a.b.c"[39m
+Received path: [31m{}[39m
 
-Expected value: {"a": 5}
-Received value: "abc"]=]
+Expected value: [32m{"a": 5}[39m
+Received value: [31m"abc"[39m]=]
 
 snapshots['.toHaveProperty() {pass: false} expect({"a": {"b": {"c": {"d": 1}}}}).toHaveProperty({"a", "b", "c", "d"}, 2) 1'] = [=[
-expect(received).toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: {"a", "b", "c", "d"}
+Expected path: [32m{"a", "b", "c", "d"}[39m
 
-Expected value: 2
-Received value: 1]=]
+Expected value: [32m2[39m
+Received value: [31m1[39m]=]
 
 snapshots['.toHaveProperty() {pass: false} expect({"a": {"b": {"c": {"d": 1}}}}).toHaveProperty("a.b.c.d", 2) 1'] = [=[
-expect(received).toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: "a.b.c.d"
+Expected path: [32m"a.b.c.d"[39m
 
-Expected value: 2
-Received value: 1]=]
+Expected value: [32m2[39m
+Received value: [31m1[39m]=]
 
 snapshots['.toHaveProperty() {pass: false} expect({"a": {"b": {"c": {"d": 1}}}}).toHaveProperty("a.b.ttt.d", 1) 1'] = [=[
-expect(received).toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: "a.b.ttt.d"
-Received path: "a.b"
+Expected path: [32m"a.b.ttt.d"[39m
+Received path: [31m"a.b"[39m
 
-Expected value: 1
-Received value: {"c": {"d": 1}}]=]
+Expected value: [32m1[39m
+Received value: [31m{"c": {"d": 1}}[39m]=]
 
 snapshots['.toHaveProperty() {pass: false} expect({"a": {"b": {"c": {}}}}).toHaveProperty("a.b.c.d", 1) 1'] = [=[
-expect(received).toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: "a.b.c.d"
-Received path: "a.b.c"
+Expected path: [32m"a.b.c.d"[39m
+Received path: [31m"a.b.c"[39m
 
-Expected value: 1
-Received value: {}]=]
+Expected value: [32m1[39m
+Received value: [31m{}[39m]=]
 
 snapshots['.toHaveProperty() {pass: false} expect({"a": {"b": {"c": 5}}}).toHaveProperty("a.b", {"c": 4}) 1'] = [=[
-expect(received).toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: "a.b"
+Expected path: [32m"a.b"[39m
 
-- Expected value  - 1
-+ Received value  + 1
+[32m- Expected value  - 1[39m
+[31m+ Received value  + 1[39m
 
-  Table {
--   "c": 4,
-+   "c": 5,
-  }]=]
+[2m  Table {[22m
+[32m-   "c": 4,[39m
+[31m+   "c": 5,[39m
+[2m  }[22m]=]
 
 snapshots['.toHaveProperty() {pass: false} expect({"a": 1}).toHaveProperty("a.b.c.d", 5) 1'] = [=[
-expect(received).toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: "a.b.c.d"
-Received path: "a"
+Expected path: [32m"a.b.c.d"[39m
+Received path: [31m"a"[39m
 
-Expected value: 5
-Received value: 1]=]
+Expected value: [32m5[39m
+Received value: [31m1[39m]=]
 
 snapshots['.toHaveProperty() {pass: false} expect({"a.b.c.d": 1}).toHaveProperty("a.b.c.d", 2) 1'] = [=[
-expect(received).toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: "a.b.c.d"
-Received path: {}
+Expected path: [32m"a.b.c.d"[39m
+Received path: [31m{}[39m
 
-Expected value: 2
-Received value: {"a.b.c.d": 1}]=]
+Expected value: [32m2[39m
+Received value: [31m{"a.b.c.d": 1}[39m]=]
 
 snapshots['.toHaveProperty() {pass: false} expect({"a.b.c.d": 1}).toHaveProperty({"a.b.c.d"}, 2) 1'] = [=[
-expect(received).toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: {"a.b.c.d"}
+Expected path: [32m{"a.b.c.d"}[39m
 
-Expected value: 2
-Received value: 1]=]
+Expected value: [32m2[39m
+Received value: [31m1[39m]=]
 
 snapshots['.toHaveProperty() {pass: false} expect({"children": {"\\"That cartoon\\""}, "type": "p"}).toHaveProperty({"children", 1}, "\\"That cat cartoon\\"") 1'] = [=[
-expect(received).toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: {"children", 1}
+Expected path: [32m{"children", 1}[39m
 
-Expected value: "\"That cat cartoon\""
-Received value: "\"That cartoon\""]=]
+Expected value: [32m"\"That [7mcat [27mcartoon\""[39m
+Received value: [31m"\"That cartoon\""[39m]=]
 
 snapshots['.toHaveProperty() {pass: false} expect({"children": {"Roses are red.\nViolets are blue.\nTesting with Jest is good for you."}, "type": "pre"}).toHaveProperty({"children", 1}, "Roses are red, violets are blue.\nTesting with Jest\nIs good for you.") 1'] = [=[
-expect(received).toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: {"children", 1}
+Expected path: [32m{"children", 1}[39m
 
-- Expected value  - 3
-+ Received value  + 3
+[32m- Expected value  - 3[39m
+[31m+ Received value  + 3[39m
 
-- Roses are red, violets are blue.
-+ Roses are red.
-+ Violets are blue.
-- Testing with Jest
-- Is good for you.
-+ Testing with Jest is good for you.]=]
+[32m- Roses are red[7m, v[27miolets are blue.[39m
+[31m+ Roses are red[7m.[27m[39m
+[31m+ [7mV[27miolets are blue.[39m
+[32m- Testing with Jest[39m
+[32m- [7mI[27ms good for you.[39m
+[31m+ Testing with Jest[7m i[27ms good for you.[39m]=]
 
 snapshots['.toHaveProperty() {pass: false} expect({}).toHaveProperty("a", "test") 1'] = [=[
-expect(received).toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: "a"
-Received path: {}
+Expected path: [32m"a"[39m
+Received path: [31m{}[39m
 
-Expected value: "test"
-Received value: {}]=]
+Expected value: [32m"test"[39m
+Received value: [31m{}[39m]=]
 
 snapshots['.toHaveProperty() {pass: false} expect(1).toHaveProperty("a.b.c", "test") 1'] = [=[
-expect(received).toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: "a.b.c"
-Received path: {}
+Expected path: [32m"a.b.c"[39m
+Received path: [31m{}[39m
 
-Expected value: "test"
-Received value: 1]=]
+Expected value: [32m"test"[39m
+Received value: [31m1[39m]=]
 
 snapshots['.toHaveProperty() {pass: true} expect("").toHaveProperty("len", Any<function>) 1'] = [=[
-expect(received).never.toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: "len"
+Expected path: [32m"len"[39m
 
-Expected value: never Any<function>]=]
+Expected value: never [32mAny<function>[39m
+Received value:       [31m[Function anonymous][39m]=]
 
 snapshots['.toHaveProperty() {pass: true} expect({"a": {"b": {1, 2, 3}}}).toHaveProperty({"a", "b", 2}) 1'] = [=[
-expect(received).never.toHaveProperty(path)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveProperty[2m([22m[32mpath[39m[2m)[22m
 
-Expected path: never {"a", "b", 2}
+Expected path: never [32m{"a", "b", 2}[39m
 
-Received value: 2]=]
+Received value: [31m2[39m]=]
 
 snapshots['.toHaveProperty() {pass: true} expect({"a": {"b": {1, 2, 3}}}).toHaveProperty({"a", "b", 2}, 2) 1'] = [=[
-expect(received).never.toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: {"a", "b", 2}
+Expected path: [32m{"a", "b", 2}[39m
 
-Expected value: never 2]=]
+Expected value: never [32m2[39m]=]
 
 snapshots['.toHaveProperty() {pass: true} expect({"a": {"b": {1, 2, 3}}}).toHaveProperty({"a", "b", 2}, Any<number>) 1'] = [=[
-expect(received).never.toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: {"a", "b", 2}
+Expected path: [32m{"a", "b", 2}[39m
 
-Expected value: never Any<number>
-Received value:       2]=]
+Expected value: never [32mAny<number>[39m
+Received value:       [31m2[39m]=]
 
 snapshots['.toHaveProperty() {pass: true} expect({"a": {"b": {"c": {"d": 1}}}}).toHaveProperty({"a", "b", "c", "d"}) 1'] = [=[
-expect(received).never.toHaveProperty(path)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveProperty[2m([22m[32mpath[39m[2m)[22m
 
-Expected path: never {"a", "b", "c", "d"}
+Expected path: never [32m{"a", "b", "c", "d"}[39m
 
-Received value: 1]=]
+Received value: [31m1[39m]=]
 
 snapshots['.toHaveProperty() {pass: true} expect({"a": {"b": {"c": {"d": 1}}}}).toHaveProperty({"a", "b", "c", "d"}, 1) 1'] = [=[
-expect(received).never.toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: {"a", "b", "c", "d"}
+Expected path: [32m{"a", "b", "c", "d"}[39m
 
-Expected value: never 1]=]
+Expected value: never [32m1[39m]=]
 
 snapshots['.toHaveProperty() {pass: true} expect({"a": {"b": {"c": {"d": 1}}}}).toHaveProperty("a.b.c.d") 1'] = [=[
-expect(received).never.toHaveProperty(path)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveProperty[2m([22m[32mpath[39m[2m)[22m
 
-Expected path: never "a.b.c.d"
+Expected path: never [32m"a.b.c.d"[39m
 
-Received value: 1]=]
+Received value: [31m1[39m]=]
 
 snapshots['.toHaveProperty() {pass: true} expect({"a": {"b": {"c": {"d": 1}}}}).toHaveProperty("a.b.c.d", 1) 1'] = [=[
-expect(received).never.toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: "a.b.c.d"
+Expected path: [32m"a.b.c.d"[39m
 
-Expected value: never 1]=]
+Expected value: never [32m1[39m]=]
 
 snapshots['.toHaveProperty() {pass: true} expect({"a": {"b": {"c": 5}}}).toHaveProperty("a.b", {"c": 5}) 1'] = [=[
-expect(received).never.toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: "a.b"
+Expected path: [32m"a.b"[39m
 
-Expected value: never {"c": 5}]=]
+Expected value: never [32m{"c": 5}[39m]=]
 
 snapshots['.toHaveProperty() {pass: true} expect({"a": {"b": false}}).toHaveProperty("a.b") 1'] = [=[
-expect(received).never.toHaveProperty(path)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveProperty[2m([22m[32mpath[39m[2m)[22m
 
-Expected path: never "a.b"
+Expected path: never [32m"a.b"[39m
 
-Received value: false]=]
+Received value: [31mfalse[39m]=]
 
 snapshots['.toHaveProperty() {pass: true} expect({"a": {"b": false}}).toHaveProperty("a.b", false) 1'] = [=[
-expect(received).never.toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: "a.b"
+Expected path: [32m"a.b"[39m
 
-Expected value: never false]=]
+Expected value: never [32mfalse[39m]=]
 
 snapshots['.toHaveProperty() {pass: true} expect({"a": 0}).toHaveProperty("a") 1'] = [=[
-expect(received).never.toHaveProperty(path)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveProperty[2m([22m[32mpath[39m[2m)[22m
 
-Expected path: never "a"
+Expected path: never [32m"a"[39m
 
-Received value: 0]=]
+Received value: [31m0[39m]=]
 
 snapshots['.toHaveProperty() {pass: true} expect({"a": 0}).toHaveProperty("a", 0) 1'] = [=[
-expect(received).never.toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: "a"
+Expected path: [32m"a"[39m
 
-Expected value: never 0]=]
+Expected value: never [32m0[39m]=]
 
 snapshots['.toHaveProperty() {pass: true} expect({"a.b.c.d": 1}).toHaveProperty({"a.b.c.d"}) 1'] = [=[
-expect(received).never.toHaveProperty(path)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveProperty[2m([22m[32mpath[39m[2m)[22m
 
-Expected path: never {"a.b.c.d"}
+Expected path: never [32m{"a.b.c.d"}[39m
 
-Received value: 1]=]
+Received value: [31m1[39m]=]
 
 snapshots['.toHaveProperty() {pass: true} expect({"a.b.c.d": 1}).toHaveProperty({"a.b.c.d"}, 1) 1'] = [=[
-expect(received).never.toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: {"a.b.c.d"}
+Expected path: [32m{"a.b.c.d"}[39m
 
-Expected value: never 1]=]
+Expected value: never [32m1[39m]=]
 
 snapshots['.toHaveProperty() {pass: true} expect({"property": 1}).toHaveProperty("property", 1) 1'] = [=[
-expect(received).never.toHaveProperty(path, value)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveProperty[2m([22m[32mpath[39m[2m, [22m[32mvalue[39m[2m)[22m
 
-Expected path: "property"
+Expected path: [32m"property"[39m
 
-Expected value: never 1]=]
+Expected value: never [32m1[39m]=]
 
 snapshots['.toMatch() throws if non String actual value passed: [[Function anonymous], "foo"] 1'] = [=[
-expect(received).toMatch(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatch[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: received value must be a string
+[1mMatcher error[22m: [31mreceived[39m value must be a string
 
 Received has type:  function
-Received has value: [Function anonymous]]=]
+Received has value: [31m[Function anonymous][39m]=]
 
 snapshots['.toMatch() throws if non String actual value passed: [{}, "foo"] 1'] = [=[
-expect(received).toMatch(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatch[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: received value must be a string
+[1mMatcher error[22m: [31mreceived[39m value must be a string
 
 Received has type:  table
-Received has value: {}]=]
+Received has value: [31m{}[39m]=]
 
 snapshots['.toMatch() throws if non String actual value passed: [1, "foo"] 1'] = [=[
-expect(received).toMatch(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatch[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: received value must be a string
+[1mMatcher error[22m: [31mreceived[39m value must be a string
 
 Received has type:  number
-Received has value: 1]=]
+Received has value: [31m1[39m]=]
 
 snapshots['.toMatch() throws if non String actual value passed: [true, "foo"] 1'] = [=[
-expect(received).toMatch(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatch[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: received value must be a string
+[1mMatcher error[22m: [31mreceived[39m value must be a string
 
 Received has type:  boolean
-Received has value: true]=]
+Received has value: [31mtrue[39m]=]
 
 snapshots['.toMatch() throws if non String actual value passed: [nil, "foo"] 1'] = [=[
-expect(received).toMatch(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatch[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: received value must be a string
+[1mMatcher error[22m: [31mreceived[39m value must be a string
 
-Received has value: nil]=]
+Received has value: [31mnil[39m]=]
 
 snapshots['.toMatch() throws if non String/RegExp expected value passed: ["foo", [Function anonymous]] 1'] = [=[
-expect(received).toMatch(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatch[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a string or regular expression
+[1mMatcher error[22m: [32mexpected[39m value must be a string or regular expression
 
 Expected has type:  function
-Expected has value: [Function anonymous]]=]
+Expected has value: [32m[Function anonymous][39m]=]
 
 snapshots['.toMatch() throws if non String/RegExp expected value passed: ["foo", {}] 1'] = [=[
-expect(received).toMatch(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatch[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a string or regular expression
+[1mMatcher error[22m: [32mexpected[39m value must be a string or regular expression
 
 Expected has type:  table
-Expected has value: {}]=]
+Expected has value: [32m{}[39m]=]
 
 snapshots['.toMatch() throws if non String/RegExp expected value passed: ["foo", 1] 1'] = [=[
-expect(received).toMatch(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatch[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a string or regular expression
+[1mMatcher error[22m: [32mexpected[39m value must be a string or regular expression
 
 Expected has type:  number
-Expected has value: 1]=]
+Expected has value: [32m1[39m]=]
 
 snapshots['.toMatch() throws if non String/RegExp expected value passed: ["foo", true] 1'] = [=[
-expect(received).toMatch(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatch[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a string or regular expression
+[1mMatcher error[22m: [32mexpected[39m value must be a string or regular expression
 
 Expected has type:  boolean
-Expected has value: true]=]
+Expected has value: [32mtrue[39m]=]
 
 snapshots['.toMatch() throws if non String/RegExp expected value passed: ["foo", nil] 1'] = [=[
-expect(received).toMatch(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatch[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a string or regular expression
+[1mMatcher error[22m: [32mexpected[39m value must be a string or regular expression
 
-Expected has value: nil]=]
+Expected has value: [32mnil[39m]=]
 
 snapshots['.toMatch() throws: [bar, foo] 1'] = [=[
-expect(received).toMatch(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatch[2m([22m[32mexpected[39m[2m)[22m
 
-Expected pattern: "foo"
-Received string:  "bar"]=]
+Expected pattern: [32m"foo"[39m
+Received string:  [31m"bar"[39m]=]
 
 snapshots['toMatchObject() {pass: false} expect({0}).toMatchObject({-0}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
--   -0,
-+   0,
-  }]=]
+[2m  Table {[22m
+[32m-   -0,[39m
+[31m+   0,[39m
+[2m  }[22m]=]
 
 snapshots['toMatchObject() {pass: false} expect({1, 2}).toMatchObject({1, 3}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
-    1,
--   3,
-+   2,
-  }]=]
+[2m  Table {[22m
+[2m    1,[22m
+[32m-   3,[39m
+[31m+   2,[39m
+[2m  }[22m]=]
 
 snapshots['toMatchObject() {pass: false} expect({"a": "a", "c": "d"}).toMatchObject({"a": Any<number>}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
--   "a": Any<number>,
-+   "a": "a",
-  }]=]
+[2m  Table {[22m
+[32m-   "a": Any<number>,[39m
+[31m+   "a": "a",[39m
+[2m  }[22m]=]
 
 snapshots['toMatchObject() {pass: false} expect({"a": "b", "c": "d"}).toMatchObject({"a": "b!", "c": "d"}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
--   "a": "b!",
-+   "a": "b",
-    "c": "d",
-  }]=]
+[2m  Table {[22m
+[32m-   "a": "b!",[39m
+[31m+   "a": "b",[39m
+[2m    "c": "d",[22m
+[2m  }[22m]=]
 
 snapshots['toMatchObject() {pass: false} expect({"a": "b", "c": "d"}).toMatchObject({"e": "b"}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected  - 1
-+ Received  + 2
+[32m- Expected  - 1[39m
+[31m+ Received  + 2[39m
 
-  Table {
--   "e": "b",
-+   "a": "b",
-+   "c": "d",
-  }]=]
+[2m  Table {[22m
+[32m-   "e": "b",[39m
+[31m+   "a": "b",[39m
+[31m+   "c": "d",[39m
+[2m  }[22m]=]
 
 snapshots['toMatchObject() {pass: false} expect({"a": "b", "t": {"x": {"r": "r"}, "z": "z"}}).toMatchObject({"a": "b", "t": {"z": {3}}}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected  - 3
-+ Received  + 1
+[32m- Expected  - 3[39m
+[31m+ Received  + 1[39m
 
-  Table {
-    "a": "b",
-    "t": Table {
--     "z": Table {
--       3,
--     },
-+     "z": "z",
-    },
-  }]=]
+[2m  Table {[22m
+[2m    "a": "b",[22m
+[2m    "t": Table {[22m
+[32m-     "z": Table {[39m
+[32m-       3,[39m
+[32m-     },[39m
+[31m+     "z": "z",[39m
+[2m    },[22m
+[2m  }[22m]=]
 
 snapshots['toMatchObject() {pass: false} expect({"a": "b", "t": {"x": {"r": "r"}, "z": "z"}}).toMatchObject({"t": {"l": {"r": "r"}}}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected  - 1
-+ Received  + 2
+[32m- Expected  - 1[39m
+[31m+ Received  + 2[39m
 
-  Table {
-    "t": Table {
--     "l": Table {
-+     "x": Table {
-        "r": "r",
-      },
-+     "z": "z",
-    },
-  }]=]
+[2m  Table {[22m
+[2m    "t": Table {[22m
+[32m-     "l": Table {[39m
+[31m+     "x": Table {[39m
+[2m        "r": "r",[22m
+[2m      },[22m
+[31m+     "z": "z",[39m
+[2m    },[22m
+[2m  }[22m]=]
 
 snapshots['toMatchObject() {pass: false} expect({"a": {3, 4, "v"}, "b": "b"}).toMatchObject({"a": {"v"}}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected  - 0
-+ Received  + 2
+[32m- Expected  - 0[39m
+[31m+ Received  + 2[39m
 
-  Table {
-    "a": Table {
-+     3,
-+     4,
-      "v",
-    },
-  }]=]
+[2m  Table {[22m
+[2m    "a": Table {[22m
+[31m+     3,[39m
+[31m+     4,[39m
+[2m      "v",[22m
+[2m    },[22m
+[2m  }[22m]=]
 
 snapshots['toMatchObject() {pass: false} expect({"a": {3, 4, 5}, "b": "b"}).toMatchObject({"a": {3, 4, 5, 6}}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected  - 1
-+ Received  + 0
+[32m- Expected  - 1[39m
+[31m+ Received  + 0[39m
 
-  Table {
-    "a": Table {
-      3,
-      4,
-      5,
--     6,
-    },
-  }]=]
+[2m  Table {[22m
+[2m    "a": Table {[22m
+[2m      3,[22m
+[2m      4,[22m
+[2m      5,[22m
+[32m-     6,[39m
+[2m    },[22m
+[2m  }[22m]=]
 
 snapshots['toMatchObject() {pass: false} expect({"a": {3, 4, 5}, "b": "b"}).toMatchObject({"a": {3, 4}}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected  - 0
-+ Received  + 1
+[32m- Expected  - 0[39m
+[31m+ Received  + 1[39m
 
-  Table {
-    "a": Table {
-      3,
-      4,
-+     5,
-    },
-  }]=]
+[2m  Table {[22m
+[2m    "a": Table {[22m
+[2m      3,[22m
+[2m      4,[22m
+[31m+     5,[39m
+[2m    },[22m
+[2m  }[22m]=]
 
 snapshots['toMatchObject() {pass: false} expect({"a": {3, 4, 5}, "b": "b"}).toMatchObject({"a": {"b": 4}}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected  - 1
-+ Received  + 3
+[32m- Expected  - 1[39m
+[31m+ Received  + 3[39m
 
-  Table {
-    "a": Table {
--     "b": 4,
-+     3,
-+     4,
-+     5,
-    },
-  }]=]
+[2m  Table {[22m
+[2m    "a": Table {[22m
+[32m-     "b": 4,[39m
+[31m+     3,[39m
+[31m+     4,[39m
+[31m+     5,[39m
+[2m    },[22m
+[2m  }[22m]=]
 
 -- deviation: snapshot changed since we don't have a difference as Objet and Array as in upstream
 snapshots['toMatchObject() {pass: false} expect({"a": {3, 4, 5}, "b": "b"}).toMatchObject({"a": {"b": Any<string>}}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected  - 1
-+ Received  + 3
+[32m- Expected  - 1[39m
+[31m+ Received  + 3[39m
 
-  Table {
-    "a": Table {
--     "b": Any<string>,
-+     3,
-+     4,
-+     5,
-    },
-  }]=]
+[2m  Table {[22m
+[2m    "a": Table {[22m
+[32m-     "b": Any<string>,[39m
+[31m+     3,[39m
+[31m+     4,[39m
+[31m+     5,[39m
+[2m    },[22m
+[2m  }[22m]=]
 
 snapshots['toMatchObject() {pass: true} expect({}).toMatchObject({}) 1'] = [=[
-expect(received).never.toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never {}]=]
+Expected: never [32m{}[39m]=]
 
 snapshots['toMatchObject() {pass: true} expect({1, 2}).toMatchObject({1, 2}) 1'] = [=[
-expect(received).never.toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never {1, 2}]=]
+Expected: never [32m{1, 2}[39m]=]
 
 snapshots['toMatchObject() {pass: true} expect({"a": "b", "c": "d", Symbol(jest): "jest"}).toMatchObject({"a": "b", "c": "d", Symbol(jest): "jest"}) 1'] = [=[
-expect(received).never.toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never {"a": "b", "c": "d", Symbol(jest): "jest"}]=]
+Expected: never [32m{"a": "b", "c": "d", Symbol(jest): "jest"}[39m]=]
 
 snapshots['toMatchObject() {pass: true} expect({"a": "b", "c": "d", Symbol(jest): "jest"}).toMatchObject({"a": "b", Symbol(jest): "jest"}) 1'] = [=[
-expect(received).never.toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never {"a": "b", Symbol(jest): "jest"}
-Received:       {"a": "b", "c": "d", Symbol(jest): "jest"}]=]
+Expected: never [32m{"a": "b", Symbol(jest): "jest"}[39m
+Received:       [31m{"a": "b", "c": "d", Symbol(jest): "jest"}[39m]=]
 
 snapshots['toMatchObject() {pass: true} expect({"a": "b", "c": "d"}).toMatchObject({"a": "b", "c": "d"}) 1'] = [=[
-expect(received).never.toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never {"a": "b", "c": "d"}]=]
+Expected: never [32m{"a": "b", "c": "d"}[39m]=]
 
 snapshots['toMatchObject() {pass: true} expect({"a": "b", "c": "d"}).toMatchObject({"a": "b"}) 1'] = [=[
-expect(received).never.toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never {"a": "b"}
-Received:       {"a": "b", "c": "d"}]=]
+Expected: never [32m{"a": "b"}[39m
+Received:       [31m{"a": "b", "c": "d"}[39m]=]
 
 snapshots['toMatchObject() {pass: true} expect({"a": "b", "t": {"x": {"r": "r"}, "z": "z"}}).toMatchObject({"a": "b", "t": {"z": "z"}}) 1'] = [=[
-expect(received).never.toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never {"a": "b", "t": {"z": "z"}}
-Received:       {"a": "b", "t": {"x": {"r": "r"}, "z": "z"}}]=]
+Expected: never [32m{"a": "b", "t": {"z": "z"}}[39m
+Received:       [31m{"a": "b", "t": {"x": {"r": "r"}, "z": "z"}}[39m]=]
 
 snapshots['toMatchObject() {pass: true} expect({"a": "b", "t": {"x": {"r": "r"}, "z": "z"}}).toMatchObject({"t": {"x": {"r": "r"}}}) 1'] = [=[
-expect(received).never.toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never {"t": {"x": {"r": "r"}}}
-Received:       {"a": "b", "t": {"x": {"r": "r"}, "z": "z"}}]=]
+Expected: never [32m{"t": {"x": {"r": "r"}}}[39m
+Received:       [31m{"a": "b", "t": {"x": {"r": "r"}, "z": "z"}}[39m]=]
 
 snapshots['toMatchObject() {pass: true} expect({"a": {{"a": "a", "b": "b"}}}).toMatchObject({"a": {{"a": "a"}}}) 1'] = [=[
-expect(received).never.toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never {"a": {{"a": "a"}}}
-Received:       {"a": {{"a": "a", "b": "b"}}}]=]
+Expected: never [32m{"a": {{"a": "a"}}}[39m
+Received:       [31m{"a": {{"a": "a", "b": "b"}}}[39m]=]
 
 snapshots['toMatchObject() {pass: true} expect({"a": {3, 4, 5, "v"}, "b": "b"}).toMatchObject({"a": {3, 4, 5, "v"}}) 1'] = [=[
-expect(received).never.toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never {"a": {3, 4, 5, "v"}}
-Received:       {"a": {3, 4, 5, "v"}, "b": "b"}]=]
+Expected: never [32m{"a": {3, 4, 5, "v"}}[39m
+Received:       [31m{"a": {3, 4, 5, "v"}, "b": "b"}[39m]=]
 
 snapshots['toMatchObject() {pass: true} expect({"a": {3, 4, 5}, "b": "b"}).toMatchObject({"a": {3, 4, 5}}) 1'] = [=[
-expect(received).never.toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never {"a": {3, 4, 5}}
-Received:       {"a": {3, 4, 5}, "b": "b"}]=]
+Expected: never [32m{"a": {3, 4, 5}}[39m
+Received:       [31m{"a": {3, 4, 5}, "b": "b"}[39m]=]
 
 snapshots['toMatchObject() {pass: true} expect({"a": {"x": "x", "y": "y"}}).toMatchObject({"a": {"x": Any<string>}}) 1'] = [=[
-expect(received).never.toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never {"a": {"x": Any<string>}}
-Received:       {"a": {"x": "x", "y": "y"}}]=]
+Expected: never [32m{"a": {"x": Any<string>}}[39m
+Received:       [31m{"a": {"x": "x", "y": "y"}}[39m]=]
 
 snapshots['toMatchObject() {pass: true} expect({"a": 1, "c": 2}).toMatchObject({"a": Any<number>}) 1'] = [=[
-expect(received).never.toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never {"a": Any<number>}
-Received:       {"a": 1, "c": 2}]=]
+Expected: never [32m{"a": Any<number>}[39m
+Received:       [31m{"a": 1, "c": 2}[39m]=]
 
 snapshots['toMatchObject() {pass: true} expect({"a": 2015-11-30T00:00:00.000Z, "b": "b"}).toMatchObject({"a": 2015-11-30T00:00:00.000Z}) 1'] = [=[
-expect(received).never.toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never {"a": 2015-11-30T00:00:00.000Z}
-Received:       {"a": 2015-11-30T00:00:00.000Z, "b": "b"}]=]
+Expected: never [32m{"a": 2015-11-30T00:00:00.000Z}[39m
+Received:       [31m{"a": 2015-11-30T00:00:00.000Z, "b": "b"}[39m]=]
 
 snapshots['toMatchObject() {pass: true} expect({"a": "undefined", "b": "b"}).toMatchObject({"a": "undefined"}) 1'] = [=[
-expect(received).never.toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never {"a": "undefined"}
-Received:       {"a": "undefined", "b": "b"}]=]
+Expected: never [32m{"a": "undefined"}[39m
+Received:       [31m{"a": "undefined", "b": "b"}[39m]=]
 
 snapshots['toMatchObject() circular references simple circular references {pass: false} expect({"a": "hello", "ref": [Circular]}).toMatchObject({"a": "world", "ref": [Circular]}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
--   "a": "world",
-+   "a": "hello",
-    "ref": [Circular],
-  }]=]
+[2m  Table {[22m
+[32m-   "a": "world",[39m
+[31m+   "a": "hello",[39m
+[2m    "ref": [Circular],[22m
+[2m  }[22m]=]
 
 snapshots['toMatchObject() circular references simple circular references {pass: false} expect({"ref": "not a ref"}).toMatchObject({"a": "hello", "ref": [Circular]}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected  - 2
-+ Received  + 1
+[32m- Expected  - 2[39m
+[31m+ Received  + 1[39m
 
-  Table {
--   "a": "hello",
--   "ref": [Circular],
-+   "ref": "not a ref",
-  }]=]
+[2m  Table {[22m
+[32m-   "a": "hello",[39m
+[32m-   "ref": [Circular],[39m
+[31m+   "ref": "not a ref",[39m
+[2m  }[22m]=]
 
 snapshots['toMatchObject() circular references simple circular references {pass: false} expect({}).toMatchObject({"a": "hello", "ref": [Circular]}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected  - 4
-+ Received  + 1
+[32m- Expected  - 4[39m
+[31m+ Received  + 1[39m
 
-- Table {
--   "a": "hello",
--   "ref": [Circular],
-- }
-+ Table {}]=]
+[32m- Table {[39m
+[32m-   "a": "hello",[39m
+[32m-   "ref": [Circular],[39m
+[32m- }[39m
+[31m+ Table {}[39m]=]
 
 snapshots['toMatchObject() circular references simple circular references {pass: true} expect({"a": "hello", "ref": [Circular]}).toMatchObject({"a": "hello", "ref": [Circular]}) 1'] = [=[
-expect(received).never.toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never {"a": "hello", "ref": [Circular]}]=]
+Expected: never [32m{"a": "hello", "ref": [Circular]}[39m]=]
 
 snapshots['toMatchObject() circular references simple circular references {pass: true} expect({"a": "hello", "ref": [Circular]}).toMatchObject({}) 1'] = [=[
-expect(received).never.toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never {}
-Received:       {"a": "hello", "ref": [Circular]}]=]
+Expected: never [32m{}[39m
+Received:       [31m{"a": "hello", "ref": [Circular]}[39m]=]
 
 snapshots['toMatchObject() circular references transitive circular references {pass: false} expect({"a": "world", "nestedObj": {"parentObj": [Circular]}}).toMatchObject({"a": "hello", "nestedObj": {"parentObj": [Circular]}}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected  - 1
-+ Received  + 1
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
 
-  Table {
--   "a": "hello",
-+   "a": "world",
-    "nestedObj": Table {
-      "parentObj": [Circular],
-    },
-  }]=]
+[2m  Table {[22m
+[32m-   "a": "hello",[39m
+[31m+   "a": "world",[39m
+[2m    "nestedObj": Table {[22m
+[2m      "parentObj": [Circular],[22m
+[2m    },[22m
+[2m  }[22m]=]
 
 snapshots['toMatchObject() circular references transitive circular references {pass: false} expect({"nestedObj": {"parentObj": "not the parent ref"}}).toMatchObject({"a": "hello", "nestedObj": {"parentObj": [Circular]}}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected  - 2
-+ Received  + 1
+[32m- Expected  - 2[39m
+[31m+ Received  + 1[39m
 
-  Table {
--   "a": "hello",
-    "nestedObj": Table {
--     "parentObj": [Circular],
-+     "parentObj": "not the parent ref",
-    },
-  }]=]
+[2m  Table {[22m
+[32m-   "a": "hello",[39m
+[2m    "nestedObj": Table {[22m
+[32m-     "parentObj": [Circular],[39m
+[31m+     "parentObj": "not the parent ref",[39m
+[2m    },[22m
+[2m  }[22m]=]
 
 snapshots['toMatchObject() circular references transitive circular references {pass: false} expect({}).toMatchObject({"a": "hello", "nestedObj": {"parentObj": [Circular]}}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected  - 6
-+ Received  + 1
+[32m- Expected  - 6[39m
+[31m+ Received  + 1[39m
 
-- Table {
--   "a": "hello",
--   "nestedObj": Table {
--     "parentObj": [Circular],
--   },
-- }
-+ Table {}]=]
+[32m- Table {[39m
+[32m-   "a": "hello",[39m
+[32m-   "nestedObj": Table {[39m
+[32m-     "parentObj": [Circular],[39m
+[32m-   },[39m
+[32m- }[39m
+[31m+ Table {}[39m]=]
 
 snapshots['toMatchObject() circular references transitive circular references {pass: true} expect({"a": "hello", "nestedObj": {"parentObj": [Circular]}}).toMatchObject({"a": "hello", "nestedObj": {"parentObj": [Circular]}}) 1'] = [=[
-expect(received).never.toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never {"a": "hello", "nestedObj": {"parentObj": [Circular]}}]=]
+Expected: never [32m{"a": "hello", "nestedObj": {"parentObj": [Circular]}}[39m]=]
 
 snapshots['toMatchObject() circular references transitive circular references {pass: true} expect({"a": "hello", "nestedObj": {"parentObj": [Circular]}}).toMatchObject({}) 1'] = [=[
-expect(received).never.toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Expected: never {}
-Received:       {"a": "hello", "nestedObj": {"parentObj": [Circular]}}]=]
+Expected: never [32m{}[39m
+Received:       [31m{"a": "hello", "nestedObj": {"parentObj": [Circular]}}[39m]=]
 
 snapshots['toMatchObject() does not match properties up in the prototype chain 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-- Expected  - 1
-+ Received  + 0
+[32m- Expected  - 1[39m
+[31m+ Received  + 0[39m
 
-  Table {
-    "other": "child",
--   "ref": [Circular],
-  }]=]
+[2m  Table {[22m
+[2m    "other": "child",[22m
+[32m-   "ref": [Circular],[39m
+[2m  }[22m]=]
 
 snapshots['toMatchObject() throws expect("44").toMatchObject({}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: received value must be a non-nil object
+[1mMatcher error[22m: [31mreceived[39m value must be a non-nil object
 
 Received has type:  string
-Received has value: "44"]=]
+Received has value: [31m"44"[39m]=]
 
 snapshots['toMatchObject() throws expect({}).toMatchObject("some string") 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a non-nil object
+[1mMatcher error[22m: [32mexpected[39m value must be a non-nil object
 
 Expected has type:  string
-Expected has value: "some string"]=]
+Expected has value: [32m"some string"[39m]=]
 
 snapshots['toMatchObject() throws expect({}).toMatchObject(4) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a non-nil object
+[1mMatcher error[22m: [32mexpected[39m value must be a non-nil object
 
 Expected has type:  number
-Expected has value: 4]=]
+Expected has value: [32m4[39m]=]
 
 snapshots['toMatchObject() throws expect({}).toMatchObject(true) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a non-nil object
+[1mMatcher error[22m: [32mexpected[39m value must be a non-nil object
 
 Expected has type:  boolean
-Expected has value: true]=]
+Expected has value: [32mtrue[39m]=]
 
 snapshots['toMatchObject() throws expect({}).toMatchObject(nil) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: expected value must be a non-nil object
+[1mMatcher error[22m: [32mexpected[39m value must be a non-nil object
 
-Expected has value: nil]=]
+Expected has value: [32mnil[39m]=]
 
 snapshots['toMatchObject() throws expect(4).toMatchObject({}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: received value must be a non-nil object
+[1mMatcher error[22m: [31mreceived[39m value must be a non-nil object
 
 Received has type:  number
-Received has value: 4]=]
+Received has value: [31m4[39m]=]
 
 snapshots['toMatchObject() throws expect(true).toMatchObject({}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: received value must be a non-nil object
+[1mMatcher error[22m: [31mreceived[39m value must be a non-nil object
 
 Received has type:  boolean
-Received has value: true]=]
+Received has value: [31mtrue[39m]=]
 
 snapshots['toMatchObject() throws expect(nil).toMatchObject({}) 1'] = [=[
-expect(received).toMatchObject(expected)
+[2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 
-Matcher error: received value must be a non-nil object
+[1mMatcher error[22m: [31mreceived[39m value must be a non-nil object
 
-Received has value: nil]=]
+Received has value: [31mnil[39m]=]
 
 snapshots['.toBeDefined() .toBeUndefined() "a" is defined 1'] = [=[
-expect(received).never.toBeDefined()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeDefined[2m()[22m
 
-Received: "a"]=]
+Received: [31m"a"[39m]=]
 
 snapshots['.toBeDefined() .toBeUndefined() [Function anonymous] is defined 1'] = [=[
-expect(received).never.toBeDefined()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeDefined[2m()[22m
 
-Received: [Function anonymous]]=]
+Received: [31m[Function anonymous][39m]=]
 
 snapshots['.toBeDefined() .toBeUndefined() {} is defined 1'] = [=[
-expect(received).never.toBeDefined()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeDefined[2m()[22m
 
-Received: {}]=]
+Received: [31m{}[39m]=]
 
 snapshots['.toBeDefined() .toBeUndefined() 0.5 is defined 1'] = [=[
-expect(received).never.toBeDefined()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeDefined[2m()[22m
 
-Received: 0.5]=]
+Received: [31m0.5[39m]=]
 
 snapshots['.toBeDefined() .toBeUndefined() 1 is defined 1'] = [=[
-expect(received).never.toBeDefined()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeDefined[2m()[22m
 
-Received: 1]=]
+Received: [31m1[39m]=]
 
 snapshots['.toBeDefined() .toBeUndefined() inf is defined 1'] = [=[
-expect(received).never.toBeDefined()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeDefined[2m()[22m
 
-Received: inf]=]
+Received: [31minf[39m]=]
 
 snapshots['.toBeDefined() .toBeUndefined() true is defined 1'] = [=[
-expect(received).never.toBeDefined()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeDefined[2m()[22m
 
-Received: true]=]
+Received: [31mtrue[39m]=]
 
 snapshots['.toBeDefined() .toBeUndefined() "a" is defined 2'] = [=[
-expect(received).toBeUndefined()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeUndefined[2m()[22m
 
-Received: "a"]=]
+Received: [31m"a"[39m]=]
 
 snapshots['.toBeDefined() .toBeUndefined() [Function anonymous] is defined 2'] = [=[
-expect(received).toBeUndefined()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeUndefined[2m()[22m
 
-Received: [Function anonymous]]=]
+Received: [31m[Function anonymous][39m]=]
 
 snapshots['.toBeDefined() .toBeUndefined() {} is defined 2'] = [=[
-expect(received).toBeUndefined()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeUndefined[2m()[22m
 
-Received: {}]=]
+Received: [31m{}[39m]=]
 
 snapshots['.toBeDefined() .toBeUndefined() 0.5 is defined 2'] = [=[
-expect(received).toBeUndefined()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeUndefined[2m()[22m
 
-Received: 0.5]=]
+Received: [31m0.5[39m]=]
 
 snapshots['.toBeDefined() .toBeUndefined() 1 is defined 2'] = [=[
-expect(received).toBeUndefined()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeUndefined[2m()[22m
 
-Received: 1]=]
+Received: [31m1[39m]=]
 
 snapshots['.toBeDefined() .toBeUndefined() inf is defined 2'] = [=[
-expect(received).toBeUndefined()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeUndefined[2m()[22m
 
-Received: inf]=]
+Received: [31minf[39m]=]
 
 snapshots['.toBeDefined() .toBeUndefined() true is defined 2'] = [=[
-expect(received).toBeUndefined()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeUndefined[2m()[22m
 
-Received: true]=]
+Received: [31mtrue[39m]=]
 
 snapshots['.toBeDefined() .toBeUndefined() nil is undefined 1'] = [=[
-expect(received).toBeDefined()
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBeDefined[2m()[22m
 
-Received: nil]=]
+Received: [31mnil[39m]=]
 
 snapshots['.toBeDefined() .toBeUndefined() nil is undefined 2'] = [=[
-expect(received).never.toBeUndefined()
+[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeUndefined[2m()[22m
 
-Received: nil]=]
+Received: [31mnil[39m]=]
 
 return snapshots

@@ -22,7 +22,7 @@ local function formatTrailingSpaces(
 	line: string,
 	trailingSpaceFormatter
 ): string
-	return string.gsub(line, '%s+$', trailingSpaceFormatter)
+	return line:gsub('%s+$', function(s) return trailingSpaceFormatter(s) end)
 end
 
 local function printDiffLine(

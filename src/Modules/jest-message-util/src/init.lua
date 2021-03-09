@@ -15,6 +15,8 @@ local String = Polyfills.String
 local Boolean = Polyfills.Boolean.toJSBoolean
 local RegExp = Polyfills.RegExp
 
+-- local chalk = require(Packages.ChalkLua)
+
 -- deviation: forward declarations
 local formatStackTrace, getStackTraceLines, separateMessageFromStack
 
@@ -34,13 +36,12 @@ local ANONYMOUS_PROMISE_IGNORE = '^%s+at Promise %(<anonymous>%).*$'
 local ANONYMOUS_NEW_PROMISE_IGNORE = '^%s+at new Promise %(<anonymous>%).*$'
 local ANONYMOUS_GENERATOR_IGNORE = '^%s+at Generator.next %(<anonymous>%).*$'
 local NATIVE_NEXT_IGNORE = '^%s+at next %(native%).*$'
-local TITLE_INDENT = '  '
-local MESSAGE_INDENT = '    '
+-- local TITLE_INDENT = '  '
+-- local MESSAGE_INDENT = '    '
 local STACK_INDENT = '      '
-local ANCESTRY_SEPARATOR = ' › '
--- deviation: removed use of chalk
-local TITLE_BULLET = '● '
-local STACK_TRACE_COLOR = function(s) return s end
+-- local ANCESTRY_SEPARATOR = ' › '
+-- local TITLE_BULLET = chalk.bold('● ')
+-- local STACK_TRACE_COLOR = chalk.dim
 local STACK_PATH_REGEXP = '%s*at.*%(?:%d*:%d*%)?'
 local STACK_PATH_REGEXP_NATIVE = '%s*at.*%(?native%)?'
 local EXEC_ERROR_MESSAGE = 'Test suite failed to run'
