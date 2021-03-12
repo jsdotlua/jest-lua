@@ -56,7 +56,13 @@ end
 -- deviation: omitted functionToString since we don't use it
 
 function isAsymmetric(obj: any)
-	return toJSBoolean(obj) and typeof(obj) == "table" and isA('function', obj.asymmetricMatch)
+	if toJSBoolean(obj) and typeof(obj) == "table" then
+		local ok, val = pcall(function() return obj.asymmetricMatch end)
+		if ok and isA('function', val) then
+			return true
+		end
+	end
+	return false
 end
 
 function asymmetricMatch(a: any, b: any)

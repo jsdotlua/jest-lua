@@ -33,6 +33,11 @@ local function getType(value: any): string
 	-- we always return table here and consumers are expected to perform the check
 	elseif typeof(value) == 'table' then
 		return 'table'
+	-- deviation: added luau types for userdata and thread
+	elseif typeof(value) == 'userdata' then
+		return 'userdata'
+	elseif typeof(value) == 'thread' then
+		return 'thread'
 	-- deviation: code omitted because lua has no primitive bigint type
 	-- deviation: code omitted because lua has no built-in Map, or Set types
 	-- deviation: code omitted because lua makes no distinction between tables, arrays, and objects
