@@ -1,5 +1,10 @@
 # Jest Roblox Changelog
 
+## 0.7.1 (2021-03-12)
+* Added chalk-enabled error output
+* Fix for checking for an `asymmetricMatch` method for objects that override `__index` metamethod ([#39](https://github.com/Roblox/jest-roblox/pull/39))
+* Added `userdata` and `thread` Luau types to `jestGetType`
+
 ## 0.7.0 (2021-03-02)
 * Added `expect.extend()`
 * Added `RegExp` support to matchers
