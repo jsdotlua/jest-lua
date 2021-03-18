@@ -1048,6 +1048,13 @@ return function()
 			jestExpect('F456').toMatch(regex)
 			-- deviation: omitted expect call for RegExp state
 		end)
+
+		it('tests regex logic', function()
+			jestExpect("Cristopher").never.toMatch("Stop")
+			jestExpect("Cristopher").toMatch("stop")
+			jestExpect("Cristopher").never.toMatch(RegExp("Stop"))
+			jestExpect("Cristopher").toMatch(RegExp("stop"))
+		end)
 	end)
 
 	describe(".toHaveLength", function()

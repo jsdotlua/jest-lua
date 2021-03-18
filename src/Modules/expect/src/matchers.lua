@@ -952,8 +952,8 @@ local function toMatch(this: MatcherState, received: string, expected: string | 
 			local retval = matcherHint(matcherName, nil, nil, options) ..
 				'\n\n' ..
 				string.format('Expected pattern: never %s\n', printExpected(expected))
-			if getType(expected) == 'regexp' then
-				retval = retval .. string.format('Received string:        %s', printReceivedStringContainExpectedResult(received, nil))
+			if getType(expected) == 'string' then
+				retval = retval .. string.format('Received string:        %s', printReceivedStringContainExpectedSubstring(received, received:find(expected), #expected))
 			else
 				retval = retval .. string.format('Received string:        %s', printReceivedStringContainExpectedResult(received, expected:exec(received)))
 			end
