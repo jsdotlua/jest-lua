@@ -17,7 +17,7 @@ Version: v26.5.3
     * `toHaveLength` checks using the Lua length operator by default, but instead checks for a `length` property if the object has one
         * :warning: Length is only well defined for (non-sparse) array-like tables since the Lua `#` operator returns 0 for tables with key-value pairs
     * `toHaveLength` does not accept functions, can't get the argument count of a function in Lua
-    * `toMatch` matches Lua string patterns instead of a `RegExp` whereas `toContain` matches exact substrings
+    * `toMatch` matches Lua string patterns or a LuauPolyfill `RegExp` whereas `toContain` matches exact substrings
     * `toStrictEqual` is omitted, there is no strict equality in Lua
     * The `Any` matcher is used to match *any* instance of a type or object given a constructor function. Lua doesn't have constructors for primitive types. Our deviation for this matcher therefore accepts either a typename string (e.g. "number", "boolean") or a table representing a prototype class, and will error otherwise.
         * If a typename string is passed in, the type is compared against the string.
@@ -30,7 +30,7 @@ Version: v26.5.3
     any(ClassA):asymmetricMatch(ClassB.new()) -- false
     any(ClassA):asymmetricMatch(ChildOfClassA.new()) -- true
     ```
-    * `StringMatching` accepts Lua string patterns instead of a `RegExp`
+    * `StringMatching` accepts Lua string patterns or a LuauPolyfill `RegExp`
     * :warning: Although Jest has use cases where `toHaveProperty` is used to detect the existence of a property as `undefined`, we should never try to use `toHaveProperty` with `nil` as the property to check for
 * :warning: isError returns `true` for string and table types since we don't have a designated error type in Lua and these two types are what can be used to trigger an error
 * The throwing matchers (e.g. `toThrow()`) will print out stack traces for ALL types (except `nil`) that are thrown whereas in Javascript the stack trace is only printed if you error with an Error type. In other words, executing a `toThrow` matcher on something like `throw ''` in Javascript will not end up printing the stack trace but doing so with `error("")` will print the stack trace for our Lua equivalent.

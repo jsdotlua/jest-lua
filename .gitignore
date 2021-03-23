@@ -20,3 +20,9 @@ Packages/*
 
 # MacOS files
 **/.DS_Store
+
+# Docusaurus files
+/docs/.docusaurus
+/docs/build
+/docs/node_modules
+/docs/yarn.lock
