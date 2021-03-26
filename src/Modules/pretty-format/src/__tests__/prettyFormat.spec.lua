@@ -9,42 +9,49 @@
 return function()
 
 	local Workspace = script.Parent.Parent
+	local Modules = Workspace.Parent
 	local Packages = Workspace.Parent.Parent.Parent
 
-	local prettyFormat = require(Workspace).prettyFormat
+	local Polyfill = require(Packages.LuauPolyfill)
+	local RegExp = Polyfill.RegExp
+	local Set = Polyfill.Set
 
-	local RegExp = require(Packages.LuauPolyfill).RegExp
+	local jestExpect = require(Modules.Expect)
+
+	local prettyFormat = require(Workspace).prettyFormat
+	local mock = require(Modules.JestMock)
+
 
 	describe('prettyFormat()', function()
 		-- deviation: omitted, no Argument type in lua
 
 		it('prints an empty array', function()
 			local val = {}
-			expect(prettyFormat(val)).to.equal('Table {}')
+			jestExpect(prettyFormat(val)).toEqual('Table {}')
 		end)
 
 		it('prints an array with items', function()
 			local val = {1, 2, 3}
-			expect(prettyFormat(val)).to.equal('Table {\n  1,\n  2,\n  3,\n}')
+			jestExpect(prettyFormat(val)).toEqual('Table {\n  1,\n  2,\n  3,\n}')
 		end)
 
 		-- deviation: omitted, no typed arrays in lua
 
 		it('prints a nested array', function()
 			local val = {{1, 2, 3}}
-			expect(prettyFormat(val)).to.equal(
+			jestExpect(prettyFormat(val)).toEqual(
 				'Table {\n  Table {\n    1,\n    2,\n    3,\n  },\n}'
 			)
 		end)
 
 		it('prints true', function()
 			local val = true
-			expect(prettyFormat(val)).to.equal('true')
+			jestExpect(prettyFormat(val)).toEqual('true')
 		end)
 
 		it('prints false', function()
 			local val = false
-			expect(prettyFormat(val)).to.equal('false')
+			jestExpect(prettyFormat(val)).toEqual('false')
 		end)
 
 		-- deviation: omitted, no Error type in lua
@@ -57,33 +64,33 @@ return function()
 			  val = cb
 			end
 			f(function() end)
-			expect(prettyFormat(val)).to.equal('[Function anonymous]')
+			jestExpect(prettyFormat(val)).toEqual('[Function anonymous]')
 		end)
 
 		it('prints an anonymous assigned function', function()
 			local val = function() end
-			expect(prettyFormat(val)).to.equal('[Function anonymous]')
+			jestExpect(prettyFormat(val)).toEqual('[Function anonymous]')
 		end)
 
 		-- deviation: omitted, no named functions in lua
 
 		it('can customize function names', function()
 			local val = function() end
-			expect(
+			jestExpect(
 				prettyFormat(val, {
 					printFunctionName = false,
 			})
-			).to.equal('[Function]')
+			).toEqual('[Function]')
 		end)
 
 		it('prints inf', function()
 			local val = math.huge
-			expect(prettyFormat(val)).to.equal('inf')
+			jestExpect(prettyFormat(val)).toEqual('inf')
 		end)
 
 		it('prints -inf', function()
 			local val = -math.huge
-			expect(prettyFormat(val)).to.equal('-inf')
+			jestExpect(prettyFormat(val)).toEqual('-inf')
 		end)
 
 		-- deviation: omitted, identical to 'prints an empty array' test
@@ -93,7 +100,7 @@ return function()
 				prop1 = 'value1',
 				prop2 = 'value2'
 			}
-			expect(prettyFormat(val)).to.equal(
+			jestExpect(prettyFormat(val)).toEqual(
 				'Table {\n  "prop1": "value1",\n  "prop2": "value2",\n}'
 			)
 		end)
@@ -115,7 +122,7 @@ return function()
 				'  "nil": "string",',
 				'}',
 			}, '\n')
-			expect(prettyFormat(val)).to.equal(expected)
+			jestExpect(prettyFormat(val)).toEqual(expected)
 		end)
 
 		-- deviation: separate test case for table keys because table ordering is non-deterministic
@@ -131,37 +138,37 @@ return function()
 				'  }: "array",',
 				'}',
 			}, '\n')
-			expect(prettyFormat(val)).to.equal(expected)
+			jestExpect(prettyFormat(val)).toEqual(expected)
 		end)
 
 		it('prints nan', function()
 			local val = 0/0
-			expect(prettyFormat(val)).to.equal('nan')
+			jestExpect(prettyFormat(val)).toEqual('nan')
 		end)
 
 		it('prints nil', function()
 			local val = nil
-			expect(prettyFormat(val)).to.equal('nil')
+			jestExpect(prettyFormat(val)).toEqual('nil')
 		end)
 
 		it('prints a positive number', function()
 			local val = 123
-			expect(prettyFormat(val)).to.equal('123')
+			jestExpect(prettyFormat(val)).toEqual('123')
 		end)
 
 		it('prints a negative number', function()
 			local val = -123
-			expect(prettyFormat(val)).to.equal('-123')
+			jestExpect(prettyFormat(val)).toEqual('-123')
 		end)
 
 		it('prints zero', function()
 			local val = 0
-			expect(prettyFormat(val)).to.equal('0')
+			jestExpect(prettyFormat(val)).toEqual('0')
 		end)
 
 		it('prints negative zero', function()
 			local val = -0
-			expect(prettyFormat(val)).to.equal('-0')
+			jestExpect(prettyFormat(val)).toEqual('-0')
 		end)
 
 		-- deviation: omitted, no BigInt type in lua
@@ -169,7 +176,7 @@ return function()
 		-- deviation: Date modified to use Roblox DateTime
 		it('prints a date', function()
 			local val = DateTime.fromUnixTimestampMillis(10e11)
-			expect(prettyFormat(val)).to.equal('2001-09-09T01:46:40.000Z')
+			jestExpect(prettyFormat(val)).toEqual('2001-09-09T01:46:40.000Z')
 		end)
 
 		-- deviation: omitted, Roblox DateTime throws an error with an invalid constructor
@@ -179,7 +186,7 @@ return function()
 		it('prints regular expressions from constructors', function()
 			local val = RegExp('regexp')
 
-			expect(prettyFormat(val)).to.equal('/regexp/')
+			jestExpect(prettyFormat(val)).toEqual('/regexp/')
 		end)
 
 		it('prints regular expressions from literals', function()
@@ -188,43 +195,62 @@ return function()
 			-- include the 'i' flag
 			local val = RegExp('regexp', 'i')
 
-			expect(prettyFormat(val)).to.equal('/regexp/i')
+			jestExpect(prettyFormat(val)).toEqual('/regexp/i')
 		end)
 
 		it('prints regular expressions {escapeRegex: false}', function()
 			local val = RegExp([[regexp\d]], 'i')
 
-			expect(prettyFormat(val)).to.equal('/regexp\\d/i')
+			jestExpect(prettyFormat(val)).toEqual('/regexp\\d/i')
 		end)
 
 		it('prints regular expressions {escapeRegex: true}', function()
 			local val = RegExp([[regexp\d]], 'i')
-			expect(prettyFormat(val, {escapeRegex = true})).to.equal('/regexp\\\\d/i')
+			jestExpect(prettyFormat(val, {escapeRegex = true})).toEqual('/regexp\\\\d/i')
+		end)
+
+		it('escapes regular expressions nested inside object', function()
+			local obj = {test = RegExp('regexp\\d', 'i')}
+
+			jestExpect(prettyFormat(obj, {escapeRegex = true})).toEqual(
+				'Table {\n  "test": /regexp\\\\d/i,\n}')
+		end)
+
+		it('prints an empty set', function()
+			local val = Set.new()
+			jestExpect(prettyFormat(val)).toEqual('Set {}')
+		end)
+
+		it('prints a set with values', function()
+			local val = Set.new()
+			val:add('value1')
+			val:add('value2')
+			jestExpect(prettyFormat(val)).toEqual('Set {\n  "value1",\n  "value2",\n}')
 		end)
 
 		it('prints a string', function()
 			local val = 'string'
-			expect(prettyFormat(val)).to.equal('"string"')
+			jestExpect(prettyFormat(val)).toEqual('"string"')
 		end)
 
 		it('prints and escape a string', function()
 			local val = '"\'\\'
-			expect(prettyFormat(val)).to.equal('"\\"\'\\\\"')
+			jestExpect(prettyFormat(val)).toEqual('"\\"\'\\\\"')
 		end)
 
 		it("doesn't escape string with {escapeString: false}", function()
 			local val = '"\'\\n'
-			expect(prettyFormat(val, {escapeString = false})).to.equal('""\'\\n"')
+			jestExpect(prettyFormat(val, {escapeString = false})).toEqual('""\'\\n"')
 		end)
 
 		it('prints a string with escapes', function()
-			expect(prettyFormat('"-"')).to.equal('"\\"-\\""')
-			expect(prettyFormat('\\ \\\\')).to.equal('"\\\\ \\\\\\\\"')
+			jestExpect(prettyFormat('"-"')).toEqual('"\\"-\\""')
+			jestExpect(prettyFormat('\\ \\\\')).toEqual('"\\\\ \\\\\\\\"')
 		end)
 
 		it('prints a multiline string', function()
 			local val = table.concat({'line 1', 'line 2', 'line 3'}, '\n')
-			expect(prettyFormat(val)).to.equal('"' .. val .. '"')
+			jestExpect(prettyFormat(val)).toEqual('"' .. val .. '"')
 		end)
 
 		it('prints a multiline string as value of table', function()
@@ -241,7 +267,7 @@ return function()
 				},
 				type = 'svg',
 			}
-			expect(prettyFormat(val)).to.equal(
+			jestExpect(prettyFormat(val)).toEqual(
 				table.concat({
 					'Table {',
 					'  "props": Table {',
@@ -266,7 +292,7 @@ return function()
 		-- deviation: converted these tests to use tables
 		it('prints deeply nested tables', function()
 			local val = {prop = {prop = {prop = 'value'}}}
-			expect(prettyFormat(val)).to.equal(
+			jestExpect(prettyFormat(val)).toEqual(
 				'Table {\n  "prop": Table {\n    "prop": Table {\n      "prop": "value",\n    },\n  },\n}'
 			)
 		end)
@@ -274,13 +300,13 @@ return function()
 		it('prints circular references', function()
 			local val = {}
 			val['prop'] = val
-			expect(prettyFormat(val)).to.equal('Table {\n  "prop": [Circular],\n}')
+			jestExpect(prettyFormat(val)).toEqual('Table {\n  "prop": [Circular],\n}')
 		end)
 
 		it('prints parallel references', function()
 			local inner = {}
 			local val = {prop1 = inner, prop2 = inner}
-			expect(prettyFormat(val)).to.equal(
+			jestExpect(prettyFormat(val)).toEqual(
 				'Table {\n  "prop1": Table {},\n  "prop2": Table {},\n}'
 			)
 		end)
@@ -311,20 +337,20 @@ return function()
 				'}',
 			}, '\n')
 			it('default implicit: 2 spaces', function()
-				expect(prettyFormat(val)).to.equal(expected)
+				jestExpect(prettyFormat(val)).toEqual(expected)
 			end)
 			it('default explicit: 2 spaces', function()
-				expect(prettyFormat(val, {indent = 2})).to.equal(expected)
+				jestExpect(prettyFormat(val, {indent = 2})).toEqual(expected)
 			end)
 
 			-- // Tests assume that no strings in val contain multiple adjacent spaces!
 			it('non-default: 0 spaces', function()
-				expect(prettyFormat(val, {indent = 0})).to.equal(
+				jestExpect(prettyFormat(val, {indent = 0})).toEqual(
 					expected:gsub('  ', '')
 				)
 			end)
 			it('non-default: 4 spaces', function()
-				expect(prettyFormat(val, {indent = 4})).to.equal(
+				jestExpect(prettyFormat(val, {indent = 4})).toEqual(
 					expected:gsub('  ', '    ')
 				)
 			end)
@@ -338,14 +364,19 @@ return function()
 					['array literal non-empty'] = {'item'},
 					['table nested'] = { name = { name = 'value' } },
 					['table non-empty'] = { name = 'value' },
+					['set empty'] = Set.new(),
+					['set non-empty'] = Set.new({'value'})
 				},
 			}
-			expect(prettyFormat(val, {maxDepth = 2})).to.equal(
+			jestExpect(prettyFormat(val, {maxDepth = 2})).toEqual(
 				table.concat({
+					-- deviation: output re-ordered because we print keys alphabetically
 					'Table {',
 					'  Table {',
 					'    "array literal empty": [Table],',
 					'    "array literal non-empty": [Table],',
+					'    "set empty": [Set],',
+					'    "set non-empty": [Set],',
 					'    "table nested": [Table],',
 					'    "table non-empty": [Table],',
 					'  },',
@@ -355,9 +386,9 @@ return function()
 		end)
 
 		it('throws on invalid options', function()
-			expect(function()
+			jestExpect(function()
 				prettyFormat({}, {invalidOption = true})
-			end).to.throw()
+			end).toThrow()
 		end)
 
 		it('supports plugins', function()
@@ -365,7 +396,7 @@ return function()
 				name = 'Foo'
 			}
 
-			expect(
+			jestExpect(
 				prettyFormat(Foo, {
 					plugins = {
 						{
@@ -376,7 +407,7 @@ return function()
 						},
 					}
 				})
-			).to.equal('class Foo')
+			).toEqual('class Foo')
 		end)
 
 		it('supports plugins that return empty string', function()
@@ -395,7 +426,7 @@ return function()
 					},
 				},
 			}
-			expect(prettyFormat(val, options)).to.equal('')
+			jestExpect(prettyFormat(val, options)).toEqual('')
 		end)
 
 		it('throws if plugin does not return a string', function()
@@ -412,9 +443,9 @@ return function()
 					},
 				},
 			}
-			expect(function()
+			jestExpect(function()
 				prettyFormat(val, options)
-			end).to.throw()
+			end).toThrow()
 		end)
 
 		it('throws PrettyFormatPluginError if test throws an error', function()
@@ -429,9 +460,9 @@ return function()
 				},
 			}
 
-			expect(function()
+			jestExpect(function()
 				prettyFormat('', options)
-			end).to.throw('PrettyFormatPluginError')
+			end).toThrow('PrettyFormatPluginError')
 		end)
 
 		it('throws PrettyFormatPluginError if print throws an error', function()
@@ -446,9 +477,9 @@ return function()
 				},
 			}
 
-			expect(function()
+			jestExpect(function()
 				prettyFormat('', options)
-			end).to.throw('PrettyFormatPluginError')
+			end).toThrow('PrettyFormatPluginError')
 		end)
 
 		it('throws PrettyFormatPluginError if serialize throws an error', function()
@@ -463,9 +494,9 @@ return function()
 				},
 			}
 
-			expect(function()
+			jestExpect(function()
 				prettyFormat('', options)
-			end).to.throw('PrettyFormatPluginError')
+			end).toThrow('PrettyFormatPluginError')
 		end)
 
 		it('supports plugins with deeply nested arrays (#24)', function()
@@ -473,7 +504,7 @@ return function()
 				{1, 2},
 				{3, 4},
 			}
-			expect(
+			jestExpect(
 				prettyFormat(val, {
 					plugins = {
 						{
@@ -490,12 +521,12 @@ return function()
 						},
 					},
 				})
-			).to.equal('1 - 2 - 3 - 4')
+			).toEqual('1 - 2 - 3 - 4')
 		end)
 
 		it('should call plugins on nested basic values', function()
 			local val = {prop = 42}
-			expect(
+			jestExpect(
 				prettyFormat(val, {
 					plugins = {
 						{
@@ -508,69 +539,107 @@ return function()
 						},
 					},
 				})
-			).to.equal('Table {\n  [called]: [called],\n}')
+			).toEqual('Table {\n  [called]: [called],\n}')
 		end)
 
 		-- deviation: omitted, identical to empty table test
 
 		it('calls toJSON and prints its return value', function()
-			expect(
+			jestExpect(
 				prettyFormat({
 					toJSON = function() return {value = false} end,
 					value = true,
 				})
-			).to.equal('Table {\n  "value": false,\n}')
+			).toEqual('Table {\n  "value": false,\n}')
 		end)
 
 		it('calls toJSON and prints an internal representation.', function()
-			expect(
+			jestExpect(
 				prettyFormat({
 					toJSON = function() return '[Internal Object]' end,
 					value = true,
 				})
-			).to.equal('"[Internal Object]"')
+			).toEqual('"[Internal Object]"')
 		end)
 
 		it('calls toJSON only on functions', function()
-			expect(
+			jestExpect(
 				prettyFormat({
 					toJSON = false,
 					value = true,
 				})
-			).to.equal('Table {\n  "toJSON": false,\n  "value": true,\n}')
+			).toEqual('Table {\n  "toJSON": false,\n  "value": true,\n}')
 		end)
 
 		it('does not call toJSON recursively', function()
-			expect(
+			jestExpect(
 				prettyFormat({
 					toJSON = function()
 						return {toJSON = function() return {value = true} end}
 					end,
 					value = false,
 				})
-			).to.equal('Table {\n  "toJSON": [Function anonymous],\n}')
+			).toEqual('Table {\n  "toJSON": [Function anonymous],\n}')
 		end)
 
-		-- deviation: modified to use table instead of set
+		it('calls toJSON on Sets', function()
+			local set = Set.new()
+			set.toJSON = function() return 'map' end
+			jestExpect(prettyFormat(set)).toEqual('"map"')
+		end)
+
+		-- deviation: test not included in upstream
 		it('calls toJSON on Tables', function()
 			local set = {}
 			set.toJSON = function() return 'map' end
-			expect(prettyFormat(set)).to.equal('"map"')
+			jestExpect(prettyFormat(set)).toEqual('"map"')
 		end)
 
 		it('disables toJSON calls through options', function()
+			local value = { apple = 'banana', toJSON = function() return '1' end }
+			local set = Set.new({value})
+			set.toJSON = function() return 'map' end
+			jestExpect(
+				prettyFormat(set, {
+					callToJSON = false
+				})
+			).toEqual(
+				'Set {\n  Table {\n    "apple": "banana",\n    "toJSON": [Function anonymous' ..
+					'],\n  },\n}'
+			)
+
+			-- deviation: as of right now, calling prettyFormat on an object
+			-- that has toJSON as a mocked function won't print the expected
+			-- [Function anonymous] but rather it will print out the entire
+			-- table of a mock (i.e. _isMockFunction, getMockImplementation, etc.)
+			-- since our implementation of mocks are as tables with __call
+			-- metafunctions. Therefore, we don't call an expectation on
+			-- prettyFormat in the following code but rather just evaluate the
+			-- toBeCalled expectations
+			local jest = mock.new()
+			value = { apple = 'banana', toJSON = jest:fn(function() return '1' end) }
+			set = Set.new({value})
+			set.toJSON = jest:fn(function() return 'map' end)
+			prettyFormat(set, {
+				callToJSON = false
+			})
+			jestExpect(set.toJSON).never.toBeCalled()
+			jestExpect(value.toJSON).never.toBeCalled()
+		end)
+
+		-- deviation: test not included in upstream
+		it('disables toJSON calls through options Lua', function()
 			local value = {apple = 'banana', toJSON = function() return '1' end}
 			local set = { [1] = value }
 			set['toJSON'] = function() return 'map' end
-			expect(
+			jestExpect(
 				prettyFormat(set, {
 					callToJSON = false,
 				})
-			).to.equal(
+			).toEqual(
 				'Table {\n  Table {\n    "apple": "banana",\n    "toJSON": [Function anonymous' ..
 					'],\n  },\n}'
 			)
-			-- deviation: omitted, no toBeCalled in TestEZ
 		end)
 
 		describe('min', function()
@@ -582,11 +651,11 @@ return function()
 					['number'] = {0, -0, 123, -123, math.huge, -math.huge, 0/0},
 					['string'] = {'', 'non-empty'},
 				}
-				expect(
+				jestExpect(
 					prettyFormat(val, {
 						min = true
 					})
-				).to.equal(
+				).toEqual(
 					'{' ..
 					table.concat({
 						'"boolean": {false, true}',
@@ -604,16 +673,21 @@ return function()
 					['array literal empty'] = {},
 					['array literal non-empty'] = {'item'},
 					['table non-empty'] = {name = 'value'},
+					['set empty'] = Set.new(),
+					['set non-empty'] = Set.new({'value'})
 				}
-				expect(
+				jestExpect(
 					prettyFormat(val, {
 						min = true
 					})
-				).to.equal(
+				).toEqual(
+					-- deviation: output re-ordered because we print keys alphabetically
 					'{' ..
 					table.concat({
 						'"array literal empty": {}',
 						'"array literal non-empty": {"item"}',
+						'"set empty": Set {}',
+						'"set non-empty": Set {"value"}',
 						'"table non-empty": {"name": "value"}',
 					}, ', ') ..
 					'}'
@@ -621,9 +695,9 @@ return function()
 			end)
 
 			it('does not allow indent !== 0 in min mode', function()
-				expect(function()
+				jestExpect(function()
 					prettyFormat(1, {indent = 1, min = true})
-				end).to.throw()
+				end).toThrow()
 			end)
 		end)
 	end)

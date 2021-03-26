@@ -28,6 +28,7 @@ local Object = Polyfill.Object
 local matcherUtils = require(Modules.JestMatcherUtils)
 
 local matchers = require(Workspace.matchers)
+local spyMatchers = require(Workspace.spyMatchers)
 local toThrowMatchers = require(Workspace.toThrowMatchers).matchers
 
 local JasmineUtils = require(Workspace.jasmineUtils)
@@ -207,6 +208,7 @@ Expect.stringMatching = stringMatching
 
 -- // add default jest matchers
 setMatchers(matchers, true, Expect)
+setMatchers(spyMatchers, true, Expect)
 setMatchers(toThrowMatchers, true, Expect)
 
 setmetatable(Expect, {__call = expect_})

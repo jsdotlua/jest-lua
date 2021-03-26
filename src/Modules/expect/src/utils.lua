@@ -112,7 +112,6 @@ local function getObjectSubset(
 	seenReferences--: { [any]: boolean }?
 ): any
 	seenReferences = seenReferences or {}
-	setmetatable(seenReferences, {__mode = "k"})
 
 	if Array.isArray(object) then
 		if Array.isArray(subset) and #subset == #object then
@@ -287,7 +286,6 @@ function subsetEquality(
 
 		return function(localObject, localSubset): boolean | nil
 			seenReferences = seenReferences or {}
-			setmetatable(seenReferences, {__mode = "k"})
 
 			if not isObjectWithKeys(localSubset) then
 				return nil

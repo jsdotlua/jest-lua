@@ -165,7 +165,11 @@ local function printComplexValue(
 
 	-- deviation: rewrote this part since lua only has tables
 	if hitMaxDepth then
-		return '[Table]'
+		if getType(val) == 'set' then
+			return '[Set]'
+		else
+			return '[Table]'
+		end
 	end
 	local retval = ''
 	if not min then
@@ -177,6 +181,23 @@ local function printComplexValue(
 			'{' ..
 			printListItems(val, config, indentation, depth, refs, printer) ..
 			'}'
+	end
+
+	if getType(val) == 'set' then
+		if hitMaxDepth then
+			return '[Set]'
+		else
+			return 'Set {' ..
+				printListItems(
+					val._array,
+					config,
+					indentation,
+					depth,
+					refs,
+					printer
+				) ..
+			'}'
+		end
 	end
 
 	return retval ..

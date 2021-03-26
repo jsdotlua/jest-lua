@@ -1,5 +1,28 @@
 # Jest Roblox Changelog
 
+## Unreleased
+* Added spyMatchers
+```
+expect().lastCalledWith() also aliased as expect().toHaveBeenLastCalledWith()
+expect().lastReturnedWith() also aliased as expect().toHaveLastReturnedWith()
+expect().nthCalledWith() also aliased as expect().toHaveBeenNthCalledWith()
+expect().nthReturnedWith() also aliased as expect().toHaveNthReturnedWith()
+expect().toBeCalled() also aliased as expect().toHaveBeenCalled()
+expect().toBeCalledTimes() also aliased as expect().toHaveBeenCalledTimes()
+expect().toBeCalledWith() also aliased as expect().toHaveBeenCalledWith()
+expect().toReturn() also aliased as expect().toHaveReturned()
+expect().toReturnTimes() also aliased as expect().toHaveReturnedTimes()
+expect().toReturnWith() also aliased as expect().toHaveReturnedWith()
+```
+
+* Added basic jest-mock functionality
+    * Can create an instance of the ModuleMockerClass using `.new()` on the imported `jest-mock` module
+    * And on that previously created instance, we can call
+        * `:fn()`
+        * `clearAllMocks()`
+        * `resetAllMocks()`
+        * `restoreAllMocks()`
+
 ## 0.7.1 (2021-03-12)
 * Added chalk-enabled error output
 * Fix for checking for an `asymmetricMatch` method for objects that override `__index` metamethod ([#39](https://github.com/Roblox/jest-roblox/pull/39))
@@ -15,7 +38,7 @@
 
 ## 0.5.0 (2021-01-29)
 * Initial release of Jest Roblox. TestEZ has been rebranded as of this release.
-* Added `expect` aligned to [Jest's expect (26.5.3)](https://jestjs.io/docs/en/26.5/expect). 
+* Added `expect` aligned to [Jest's expect (26.5.3)](https://jestjs.io/docs/en/26.5/expect).
   * Requires an explicit `require` from [`JestRoblox.Globals`](https://jestjs.io/docs/en/26.5/api) to use.
   * Refer to the Jest documentation on expect for usage documentation. Refer to the `README.md` in `src/Modules/expect` for details on deviations from upstream.
   * `expect` matchers added:

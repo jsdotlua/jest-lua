@@ -24,7 +24,6 @@ local separateMessageFromStack = JestMessageUtil.separateMessageFromStack
 
 local JestMatcherUtils = require(Modules.JestMatcherUtils)
 local EXPECTED_COLOR = JestMatcherUtils.EXPECTED_COLOR
--- deviation: omitted external type definition MatcherHintOptions
 local RECEIVED_COLOR = JestMatcherUtils.RECEIVED_COLOR
 local matcherErrorMessage = JestMatcherUtils.matcherErrorMessage
 local matcherHint = JestMatcherUtils.matcherHint
@@ -186,8 +185,38 @@ local function createMatcher(
 					 	end
 					 	return error_
 					elseif typeof(error_) == "string" then
-						-- Extracting error message from line
-						local errorRegex = RegExp("(?:.*\\.)+.*:[0-9]+:\\s([\\d\\D]*)")
+						-- This regex strips out the first part of the error message which typically
+						-- looks like LoadedCode....:line_number
+						-- The reason we do this is because that information is already reported
+						-- as part of the stack trace for a failing error
+
+						-- Important note:
+						--[[
+							If we had code where we do
+
+								error("Error1")
+
+							but this error is later handled in a typical lua way of using a pcall
+							that sets ok, err such as
+
+								if not ok then
+									error(string.format('Error2: %s', err))
+								end
+
+							then we would have a resulting error message that is something like
+
+								LoadedCode...:line_number1: Error2: LoadedCode...:line_number2: Error1
+
+							in this case, the purpose of the regex is simply to strip out the outermost
+							LoadedCode...:line_number string and leave
+
+								Error2: LoadedCode...:line_number2: Error1
+
+							The reason we leave this in is because that LoadedCode...line_number2 string
+							is not reported as part of the stack trace anywhere since it was captured and
+							re-errored
+						]]
+						local errorRegex = RegExp("(?:[^\\s]*\\.)+[^\\s]*:[0-9]+:\\s([\\d\\D]*)")
 						local result = errorRegex:exec(error_)
 						if result[2] ~= nil then
 							error_ = result[2]

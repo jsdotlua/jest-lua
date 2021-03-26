@@ -7,8 +7,9 @@
 --  */
 
 local Polyfill = require(script.Parent.Parent.Parent.LuauPolyfill)
-local RegExp = Polyfill.RegExp
 local instanceof = Polyfill.instanceof
+local RegExp = Polyfill.RegExp
+local Set = Polyfill.Set
 
 local function getType(value: any): string
 	-- deviation: code omitted because lua has no primitive undefined type
@@ -29,6 +30,8 @@ local function getType(value: any): string
 		return 'symbol'
 	elseif instanceof(value, RegExp) then
 		return 'regexp'
+	elseif instanceof(value, Set) then
+		return 'set'
 	-- deviation: lua makes no distinction between tables, arrays, and objects
 	-- we always return table here and consumers are expected to perform the check
 	elseif typeof(value) == 'table' then
@@ -39,7 +42,7 @@ local function getType(value: any): string
 	elseif typeof(value) == 'thread' then
 		return 'thread'
 	-- deviation: code omitted because lua has no primitive bigint type
-	-- deviation: code omitted because lua has no built-in Map, or Set types
+	-- deviation: code omitted because lua has no built-in Map types
 	-- deviation: code omitted because lua makes no distinction between tables, arrays, and objects
 	end
 

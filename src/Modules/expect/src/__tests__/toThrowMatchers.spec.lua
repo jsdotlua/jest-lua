@@ -602,7 +602,7 @@ return function()
 		end)
 
 		-- deviation: sanity check test case
-		itFOCUS("cleans stack trace and prints correct files", function()
+		it("cleans stack trace and prints correct files", function()
 			local function func2()
 				-- this line should error
 				return nil + 1

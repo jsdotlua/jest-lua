@@ -34,6 +34,9 @@
           },
           "JestJasmine2": {
             "$path": "src/modules/jest-jasmine2/src"
+          },
+          "JestMock": {
+            "$path": "src/Modules/jest-mock/src"
           }
         }
       }
