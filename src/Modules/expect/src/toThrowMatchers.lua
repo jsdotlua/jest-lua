@@ -226,7 +226,7 @@ local function createMatcher(
 					end
 
 					local errorObject = Error(error_)
-					start, end_ = string.find(errorObject.stack, getTopStackEntry(errorObject.stack))
+					start, end_ = string.find(errorObject.stack, getTopStackEntry(errorObject.stack), 1, true)
 					errorObject.stack = string.sub(errorObject.stack, end_ + 1 + string.len('\n'))
 					errorObject.stack = diffStack(compareStack, errorObject.stack)
 					errorObject["$$robloxInternalJestError"] = true
