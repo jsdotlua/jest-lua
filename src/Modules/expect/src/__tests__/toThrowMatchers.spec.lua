@@ -543,7 +543,7 @@ return function()
 
 			The first test is commented with some more information
 		]]
-		it("correctly prints the stack trace for Lua Error error", function()
+		it("prints the stack trace for Lua Error error", function()
 			-- Checking the snapshot
 			jestExpect(function()
 				jestExpect(function() test1() end).never.toThrow()
@@ -561,7 +561,7 @@ return function()
 			end).toThrow(RegExp("Expect.__tests__.toThrowMatchers.spec:[\\d]+ function test1"))
 		end)
 
-		it("correctly prints the stack trace for Lua string error", function()
+		it("prints the stack trace for Lua string error", function()
 			jestExpect(function()
 				jestExpect(function() test2() end).never.toThrow()
 			end).toThrow(snapshots['Lua tests correctly prints the stack trace for Lua string error 1'])
@@ -575,7 +575,7 @@ return function()
 			end).toThrow(RegExp("Expect.__tests__.toThrowMatchers.spec:[\\d]+ function test2"))
 		end)
 
-		it("correctly prints the stack trace for Lua string error 2", function()
+		it("prints the stack trace for Lua string error 2", function()
 			jestExpect(function()
 				jestExpect(function() test2() end).toThrow("wrong information")
 			end).toThrow(snapshots['Lua tests correctly prints the stack trace for Lua string error 2'])
@@ -587,6 +587,35 @@ return function()
 			jestExpect(function()
 				jestExpect(function() test2() end).never.toThrow()
 			end).toThrow(RegExp("Expect.__tests__.toThrowMatchers.spec:[\\d]+ function test2"))
+		end)
+
+		it("matches Error", function()
+			jestExpect(function() error(Error("error msg")) end).toThrow(Error("error msg"))
+			jestExpect(function() error(CustomError("error msg")) end).toThrow(CustomError("error msg"))
+			jestExpect(function() error(CustomError("error msg")) end).toThrow(Error("error msg"))
+			-- this would match in upstream Jest even though it is somewhat nonsensical
+			jestExpect(function() error(Error("error msg")) end).toThrow(CustomError("error msg"))
+		end)
+
+		it("matches empty Error", function()
+			jestExpect(function() error(Error()) end).toThrow(Error())
+		end)
+
+		-- deviation: sanity check test case
+		itFOCUS("cleans stack trace and prints correct files", function()
+			local function func2()
+				-- this line should error
+				return nil + 1
+			end
+
+			jestExpect(function()
+				jestExpect(function() func2() end).never.toThrow()
+			end).toThrow(RegExp("toThrowMatchers.spec:[\\d]+ function func2"))
+
+			-- 2 lines in stack trace
+			jestExpect(function()
+				jestExpect(function() func2() end).never.toThrow()
+			end).toThrow(RegExp("LoadedCode.[^\n]+\n[^\n]+$"))
 		end)
 	end)
 end

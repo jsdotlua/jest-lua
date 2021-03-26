@@ -100,10 +100,7 @@ snapshots['toThrow error class threw, but class did not match (non-error falsey)
 
 Expected constructor: [32mErr2[39m
 
-Received value: [31m"nil"[39m
-
-      LoadedCode.JestRoblox.Root.src.Modules.Expect.toThrowMatchers:196
-      LoadedCode.JestRoblox.Root.src.Modules.Expect.__tests__.toThrowMatchers.spec:209]=]
+Received value: [31m"nil"[39m]=]
 
 snapshots['toThrow error class threw, but class should not match (error subclass) 1'] = [=[
 [2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
@@ -158,10 +155,7 @@ snapshots['toThrow error-message fail multiline diff highlight incorrect expecte
 snapshots['toThrow expected is undefined threw, but should not have (non-error falsey) 1'] = [=[
 [2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m()[22m
 
-Thrown value: [31m"nil"[39m
-
-      LoadedCode.JestRoblox.Root.src.Modules.Expect.toThrowMatchers:196
-      LoadedCode.JestRoblox.Root.src.Modules.Expect.__tests__.toThrowMatchers.spec:478]=]
+Thrown value: [31m"nil"[39m]=]
 
 snapshots['toThrow invalid actual 1'] = [=[
 [2mexpect([22m[31mreceived[39m[2m).[22mtoThrow[2m()[22m
@@ -237,10 +231,7 @@ snapshots['toThrow substring threw, but message did not match (non-error falsey)
 [2mexpect([22m[31mreceived[39m[2m).[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
 Expected substring: [32m"Server Error"[39m
-Received value:     [31m""[39m
-
-      LoadedCode.JestRoblox.Root.src.Modules.Expect.toThrowMatchers:196
-      LoadedCode.JestRoblox.Root.src.Modules.Expect.__tests__.toThrowMatchers.spec:80]=]
+Received value:     [31m""[39m]=]
 
 snapshots['toThrow substring threw, but message should not match (error) 1'] = [=[
 [2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
@@ -254,10 +245,7 @@ snapshots['toThrow substring threw, but message should not match (non-error trut
 [2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m([22m[32mexpected[39m[2m)[22m
 
 Expected substring: never [32m"Server Error"[39m
-Received value:           [31m"Internal Server Error"[39m
-
-      LoadedCode.JestRoblox.Root.src.Modules.Expect.toThrowMatchers:196
-      LoadedCode.JestRoblox.Root.src.Modules.Expect.__tests__.toThrowMatchers.spec:102]=]
+Received value:           [31m"Internal Server Error"[39m]=]
 
 snapshots['toThrowError asymmetric any-Class fail isNot false 1'] = [=[
 [2mexpect([22m[31mreceived[39m[2m).[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
@@ -353,10 +341,7 @@ snapshots['toThrowError error class threw, but class did not match (non-error fa
 
 Expected constructor: [32mErr2[39m
 
-Received value: [31m"nil"[39m
-
-      LoadedCode.JestRoblox.Root.src.Modules.Expect.toThrowMatchers:196
-      LoadedCode.JestRoblox.Root.src.Modules.Expect.__tests__.toThrowMatchers.spec:209]=]
+Received value: [31m"nil"[39m]=]
 
 snapshots['toThrowError error class threw, but class should not match (error subclass) 1'] = [=[
 [2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
@@ -411,10 +396,7 @@ snapshots['toThrowError error-message fail multiline diff highlight incorrect ex
 snapshots['toThrowError expected is undefined threw, but should not have (non-error falsey) 1'] = [=[
 [2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrowError[2m()[22m
 
-Thrown value: [31m"nil"[39m
-
-      LoadedCode.JestRoblox.Root.src.Modules.Expect.toThrowMatchers:196
-      LoadedCode.JestRoblox.Root.src.Modules.Expect.__tests__.toThrowMatchers.spec:478]=]
+Thrown value: [31m"nil"[39m]=]
 
 snapshots['toThrowError invalid actual 1'] = [=[
 [2mexpect([22m[31mreceived[39m[2m).[22mtoThrowError[2m()[22m
@@ -490,10 +472,7 @@ snapshots['toThrowError substring threw, but message did not match (non-error fa
 [2mexpect([22m[31mreceived[39m[2m).[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
 Expected substring: [32m"Server Error"[39m
-Received value:     [31m""[39m
-
-      LoadedCode.JestRoblox.Root.src.Modules.Expect.toThrowMatchers:196
-      LoadedCode.JestRoblox.Root.src.Modules.Expect.__tests__.toThrowMatchers.spec:80]=]
+Received value:     [31m""[39m]=]
 
 snapshots['toThrowError substring threw, but message should not match (error) 1'] = [=[
 [2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
@@ -507,10 +486,7 @@ snapshots['toThrowError substring threw, but message should not match (non-error
 [2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrowError[2m([22m[32mexpected[39m[2m)[22m
 
 Expected substring: never [32m"Server Error"[39m
-Received value:           [31m"Internal Server Error"[39m
-
-      LoadedCode.JestRoblox.Root.src.Modules.Expect.toThrowMatchers:196
-      LoadedCode.JestRoblox.Root.src.Modules.Expect.__tests__.toThrowMatchers.spec:102]=]
+Received value:           [31m"Internal Server Error"[39m]=]
 
 snapshots['Lua tests correctly prints the stack trace for Lua Error error 1'] = [=[
 [2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoThrow[2m()[22m

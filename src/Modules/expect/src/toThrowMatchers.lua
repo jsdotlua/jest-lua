@@ -140,13 +140,16 @@ local function createMatcher(
 					stack trace information for such a case
 				]]
 
+				local function getTopStackEntry(stack)
+					return string.match(stack, "[^\n]+")
+				end
 				-- Function used to compare stack traces and cut out unnecessary
 				-- information of function calls that are internal to the testing
 				-- framework
 				local function diffStack(compareStack, currentStack)
 					local relevantStack = ""
 					local lastRelevantStack = ""
-					topCompareStackLine = string.match(compareStack, "[^\n]+")
+					topCompareStackLine = getTopStackEntry(compareStack)
 					for line in string.gmatch(currentStack, "[^\n]+") do
 						if line == topCompareStackLine then
 							-- we need to exclude the last thing in Stack since
@@ -194,6 +197,8 @@ local function createMatcher(
 					end
 
 					local errorObject = Error(error_)
+					start, end_ = string.find(errorObject.stack, getTopStackEntry(errorObject.stack))
+					errorObject.stack = string.sub(errorObject.stack, end_ + 1 + string.len('\n'))
 					errorObject.stack = diffStack(compareStack, errorObject.stack)
 					errorObject["$$robloxInternalJestError"] = true
 
@@ -210,13 +215,13 @@ local function createMatcher(
 			return toThrow(matcherName, options, thrown)
 		elseif typeof(expected) == "table" and typeof(expected.asymmetricMatch) == "function" then
 			return toThrowExpectedAsymmetric(matcherName, options, thrown, expected)
-		-- deviation: we have different logic for determining if expected is a class
-		elseif typeof(expected) == "table" and typeof(expected.new) == "function" then
-			return toThrowExpectedClass(matcherName, options, thrown, expected)
 		elseif typeof(expected) == "string" then
 			return toThrowExpectedString(matcherName, options, thrown, expected)
 		elseif instanceof(expected, RegExp) then
 			return toThrowExpectedRegExp(matcherName, options, thrown, expected)
+		-- deviation: we have different logic for determining if expected is an Error class
+		elseif typeof(expected) == "table" and not expected.message then
+			return toThrowExpectedClass(matcherName, options, thrown, expected)
 		elseif typeof(expected) == "table" then
 			return toThrowExpectedObject(matcherName, options, thrown, expected)
 		else
