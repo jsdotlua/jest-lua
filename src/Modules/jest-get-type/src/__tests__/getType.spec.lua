@@ -13,6 +13,7 @@ return function()
 	local Packages = Modules.Parent.Parent
 
 	local Polyfill = require(Packages.LuauPolyfill)
+	local Error = require(Packages.LuauPolyfill).Error
 	local RegExp = Polyfill.RegExp
 	local Set = Polyfill.Set
 	local Symbol = Polyfill.Symbol
@@ -60,6 +61,10 @@ return function()
 
 		it("regexp", function()
 			expect(getType(RegExp("abc"))).to.equal("regexp")
+		end)
+
+		it("error", function()
+			expect(getType(Error("abc"))).to.equal("error")
 		end)
 
 		it("set", function()

@@ -13,7 +13,6 @@ local Packages = Modules.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
-local instanceof = LuauPolyfill.instanceof
 local Number = LuauPolyfill.Number
 local String = LuauPolyfill.String
 
@@ -377,11 +376,7 @@ function isLineDiffableArg(expected: any, received: any): boolean
 		return false
 	end
 
-	if expectedType == 'date' or expectedType == 'function' or expectedType == 'regexp' then
-		return false
-	end
-
-	if instanceof(expected, Error) and instanceof(received, Error) then
+	if expectedType == 'date' or expectedType == 'function' or expectedType == 'regexp' or expectedType == 'error' then
 		return false
 	end
 

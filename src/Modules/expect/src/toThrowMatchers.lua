@@ -174,7 +174,7 @@ local function createMatcher(
 					-- if they specify a table with a message field we treat
 					-- that as something they wanted to use to compare their error
 					-- message against
-					elseif instanceof(error_, Error) or (typeof(error_) == "table" and error_.message) then
+					elseif getType(error_) == "error" or (typeof(error_) == "table" and error_.message) then
 						-- Set the stack if it has not been given a value by the user
 						if error_.stack == nil then
 					 		error_.stack = diffStack(compareStack, debug.traceback())

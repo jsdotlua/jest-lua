@@ -64,9 +64,9 @@ function Any:asymmetricMatch(other: any): boolean
 	local selfType = getType(self.sample)
 	local otherType = getType(other)
 	-- compare metatable to check instance of Lua prototypical class
-	if 
-		selfType == "table" and
-		otherType == "table"
+	if
+		(selfType == "table" and otherType == "table") or
+		(selfType == "error" and otherType == "error")
 	then
 		return instanceof(other, self.sample)
 	-- check type matches type provided by string

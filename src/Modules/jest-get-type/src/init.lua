@@ -7,6 +7,7 @@
 --  */
 
 local Polyfill = require(script.Parent.Parent.Parent.LuauPolyfill)
+local Error = Polyfill.Error
 local instanceof = Polyfill.instanceof
 local RegExp = Polyfill.RegExp
 local Set = Polyfill.Set
@@ -30,6 +31,8 @@ local function getType(value: any): string
 		return 'symbol'
 	elseif instanceof(value, RegExp) then
 		return 'regexp'
+	elseif instanceof(value, Error) then
+		return 'error'
 	elseif instanceof(value, Set) then
 		return 'set'
 	-- deviation: lua makes no distinction between tables, arrays, and objects
