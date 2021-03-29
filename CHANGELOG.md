@@ -16,12 +16,11 @@ expect().toReturnWith() also aliased as expect().toHaveReturnedWith()
 ```
 
 * Added basic jest-mock functionality
-    * Can create an instance of the ModuleMockerClass using `.new()` on the imported `jest-mock` module
-    * And on that previously created instance, we can call
-        * `:fn()`
-        * `clearAllMocks()`
-        * `resetAllMocks()`
-        * `restoreAllMocks()`
+  * The `jest` object can be imported from `Globals` and has the following methods:
+    * `:fn()`
+    * `:clearAllMocks()`
+    * `:resetAllMocks()`
+    * `:restoreAllMocks()`
 
 ## 0.7.1 (2021-03-12)
 * Added chalk-enabled error output
