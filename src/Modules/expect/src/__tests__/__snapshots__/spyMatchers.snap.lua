@@ -26,28 +26,28 @@ Received has type:  function
 Received has value: [31m[Function anonymous][39m]=]
 
 snapshots['lastCalledWith works when not called 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m, [32m"bar"[39m
 
 Number of calls: [31m0[39m]=]
 
 snapshots['lastCalledWith works with Immutable.js objects 1'] = [=[
-expect(jest.fn()).never.lastCalledWith(...expected)
+expect(jest:fn()).never.lastCalledWith(...expected)
 
 Expected: never Immutable.Map {"a": {"b": "c"}}, Immutable.Map {"a": {"b": "c"}}
 
 Number of calls: 1]=]
 
 snapshots['lastCalledWith works with Map 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: never [32m{{1, 2}, {2, 1}}[39m
 
 Number of calls: [31m1[39m]=]
 
 snapshots['lastCalledWith works with Map 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 [32m- Expected[39m
 [31m+ Received[39m
@@ -70,14 +70,14 @@ snapshots['lastCalledWith works with Map 2'] = [=[
 Number of calls: [31m1[39m]=]
 
 snapshots['lastCalledWith works with Set 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: never [32mSet {1, 2}[39m
 
 Number of calls: [31m1[39m]=]
 
 snapshots['lastCalledWith works with Set 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 [32m- Expected[39m
 [31m+ Received[39m
@@ -92,7 +92,7 @@ snapshots['lastCalledWith works with Set 2'] = [=[
 Number of calls: [31m1[39m]=]
 
 snapshots['lastCalledWith works with arguments that don\'t match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m, [32m"bar"[39m
 Received: [2m"foo"[22m, [31m"bar1"[39m
@@ -100,14 +100,14 @@ Received: [2m"foo"[22m, [31m"bar1"[39m
 Number of calls: [31m1[39m]=]
 
 snapshots['lastCalledWith works with arguments that match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: never [32m"foo"[39m, [32m"bar"[39m
 
 Number of calls: [31m1[39m]=]
 
 snapshots['lastCalledWith works with many arguments 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: never [32m"foo"[39m, [32m"bar"[39m
 Received
@@ -117,7 +117,7 @@ Received
 Number of calls: [31m3[39m]=]
 
 snapshots['lastCalledWith works with many arguments that don\'t match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m, [32m"bar"[39m
 Received
@@ -128,7 +128,7 @@ Number of calls: [31m3[39m]=]
 
 -- deviation: changed undefined to false
 snapshots['lastCalledWith works with trailing undefined arguments 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m
 Received: [31m"foo"[39m, [31mfalse[39m
@@ -136,7 +136,7 @@ Received: [31m"foo"[39m, [31mfalse[39m
 Number of calls: [31m1[39m]=]
 
 snapshots['lastReturnedWith a call that throws is not considered to have returned 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32mnil[39m
 Received: function call threw an error
@@ -145,7 +145,7 @@ Number of returns: [31m0[39m
 Number of calls:   [31m1[39m]=]
 
 snapshots['lastReturnedWith a call that throws undefined is not considered to have returned 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32mnil[39m
 Received: function call threw an error
@@ -161,7 +161,7 @@ Expected: "foo"
 Number of returns: 0]=]
 
 snapshots['lastReturnedWith lastReturnedWith incomplete recursive calls are handled properly 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32m0[39m
 Received
@@ -172,7 +172,7 @@ Number of returns: [31m0[39m
 Number of calls:   [31m4[39m]=]
 
 snapshots['lastReturnedWith lastReturnedWith works with three calls 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: never [32m"foo3"[39m
 Received
@@ -190,35 +190,35 @@ Received has type:  function
 Received has value: [31m[Function anonymous][39m]=]
 
 snapshots['lastReturnedWith works when not called 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32m"foo"[39m
 
 Number of returns: [31m0[39m]=]
 
 snapshots['lastReturnedWith works with Immutable.js objects directly created 1'] = [=[
-expect(jest.fn()).never.lastReturnedWith(expected)
+expect(jest:fn()).never.lastReturnedWith(expected)
 
 Expected: never Immutable.Map {"a": {"b": "c"}}
 
 Number of returns: 1]=]
 
 snapshots['lastReturnedWith works with Immutable.js objects indirectly created 1'] = [=[
-expect(jest.fn()).never.lastReturnedWith(expected)
+expect(jest:fn()).never.lastReturnedWith(expected)
 
 Expected: never Immutable.Map {"a": {"b": "c"}}
 
 Number of returns: 1]=]
 
 snapshots['lastReturnedWith works with Map 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: never [32m{{1, 2}, {2, 1}}[39m
 
 Number of returns: [31m1[39m]=]
 
 snapshots['lastReturnedWith works with Map 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32m{{"a", "b"}, {"b", "a"}}[39m
 Received: [31m{{1, 2}, {2, 1}}[39m
@@ -226,14 +226,14 @@ Received: [31m{{1, 2}, {2, 1}}[39m
 Number of returns: [31m1[39m]=]
 
 snapshots['lastReturnedWith works with Set 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: never [32mSet {1, 2}[39m
 
 Number of returns: [31m1[39m]=]
 
 snapshots['lastReturnedWith works with Set 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32mSet {3, 4}[39m
 Received: [31mSet {1, 2}[39m
@@ -241,14 +241,14 @@ Received: [31mSet {1, 2}[39m
 Number of returns: [31m1[39m]=]
 
 snapshots['lastReturnedWith works with argument that does match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: never [32m"foo"[39m
 
 Number of returns: [31m1[39m]=]
 
 snapshots['lastReturnedWith works with argument that does not match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32m"bar"[39m
 Received: [31m"foo"[39m
@@ -256,7 +256,7 @@ Received: [31m"foo"[39m
 Number of returns: [31m1[39m]=]
 
 snapshots['lastReturnedWith works with undefined 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mlastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: never [32mnil[39m
 
@@ -311,7 +311,7 @@ Expected: [32m"foo"[39m, [32m"bar"[39m
 Number of calls: [31m0[39m]=]
 
 snapshots['nthCalledWith works with Immutable.js objects 1'] = [=[
-expect(jest.fn()).never.nthCalledWith(n, ...expected)
+expect(jest:fn()).never.nthCalledWith(n, ...expected)
 
 n: 1
 Expected: never Immutable.Map {"a": {"b": "c"}}, Immutable.Map {"a": {"b": "c"}}
@@ -319,7 +319,7 @@ Expected: never Immutable.Map {"a": {"b": "c"}}, Immutable.Map {"a": {"b": "c"}}
 Number of calls: 1]=]
 
 snapshots['nthCalledWith works with Map 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mnthCalledWith[2m([22mn[2m, [22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mnthCalledWith[2m([22mn[2m, [22m[32m...expected[39m[2m)[22m
 
 n: 1
 Expected: never [32m{{1, 2}, {2, 1}}[39m
@@ -327,7 +327,7 @@ Expected: never [32m{{1, 2}, {2, 1}}[39m
 Number of calls: [31m1[39m]=]
 
 snapshots['nthCalledWith works with Map 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnthCalledWith[2m([22mn[2m, [22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnthCalledWith[2m([22mn[2m, [22m[32m...expected[39m[2m)[22m
 
 n: 1
 [32m- Expected[39m
@@ -359,7 +359,7 @@ Expected: never [32mSet {1, 2}[39m
 Number of calls: [31m1[39m]=]
 
 snapshots['nthCalledWith works with Set 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnthCalledWith[2m([22mn[2m, [22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnthCalledWith[2m([22mn[2m, [22m[32m...expected[39m[2m)[22m
 
 n: 1
 [32m- Expected[39m
@@ -441,7 +441,7 @@ Expected: "foo"
 Number of returns: 0]=]
 
 snapshots['nthReturnedWith nthReturnedWith incomplete recursive calls are handled properly 1'] = [=[
-expect(jest.fn()).nthReturnedWith(n, expected)
+expect(jest:fn()).nthReturnedWith(n, expected)
 
 n: 1
 Expected: 6
@@ -453,7 +453,7 @@ Number of returns: 2
 Number of calls:   4]=]
 
 snapshots['nthReturnedWith nthReturnedWith incomplete recursive calls are handled properly 2'] = [=[
-expect(jest.fn()).nthReturnedWith(n, expected)
+expect(jest:fn()).nthReturnedWith(n, expected)
 
 n: 2
 Expected: 3
@@ -466,7 +466,7 @@ Number of returns: 2
 Number of calls:   4]=]
 
 snapshots['nthReturnedWith nthReturnedWith incomplete recursive calls are handled properly 3'] = [=[
-expect(jest.fn()).never.nthReturnedWith(n, expected)
+expect(jest:fn()).never.nthReturnedWith(n, expected)
 
 n: 3
 Expected: never 1
@@ -479,7 +479,7 @@ Number of returns: 2
 Number of calls:   4]=]
 
 snapshots['nthReturnedWith nthReturnedWith incomplete recursive calls are handled properly 4'] = [=[
-expect(jest.fn()).never.nthReturnedWith(n, expected)
+expect(jest:fn()).never.nthReturnedWith(n, expected)
 
 n: 4
 Expected: never 0
@@ -573,7 +573,7 @@ Expected: [32m"foo"[39m
 Number of returns: [31m0[39m]=]
 
 snapshots['nthReturnedWith works with Immutable.js objects directly created 1'] = [=[
-expect(jest.fn()).never.nthReturnedWith(n, expected)
+expect(jest:fn()).never.nthReturnedWith(n, expected)
 
 n: 1
 Expected: never Immutable.Map {"a": {"b": "c"}}
@@ -581,7 +581,7 @@ Expected: never Immutable.Map {"a": {"b": "c"}}
 Number of returns: 1]=]
 
 snapshots['nthReturnedWith works with Immutable.js objects indirectly created 1'] = [=[
-expect(jest.fn()).never.nthReturnedWith(n, expected)
+expect(jest:fn()).never.nthReturnedWith(n, expected)
 
 n: 1
 Expected: never Immutable.Map {"a": {"b": "c"}}
@@ -589,7 +589,7 @@ Expected: never Immutable.Map {"a": {"b": "c"}}
 Number of returns: 1]=]
 
 snapshots['nthReturnedWith works with Map 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mnthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mnthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
 
 n: 1
 Expected: never [32m{{1, 2}, {2, 1}}[39m
@@ -597,7 +597,7 @@ Expected: never [32m{{1, 2}, {2, 1}}[39m
 Number of returns: [31m1[39m]=]
 
 snapshots['nthReturnedWith works with Map 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
 
 n: 1
 Expected: [32m{{"a", "b"}, {"b", "a"}}[39m
@@ -614,7 +614,7 @@ Expected: never [32mSet {1, 2}[39m
 Number of returns: [31m1[39m]=]
 
 snapshots['nthReturnedWith works with Set 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
 
 n: 1
 Expected: [32mSet {3, 4}[39m
@@ -678,7 +678,7 @@ Received number of calls: [31m1[39m
 1: called with 0 arguments]=]
 
 snapshots['toBeCalled passes when called 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoBeCalled[2m()[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoBeCalled[2m()[22m
 
 Expected number of calls: [32m0[39m
 Received number of calls: [31m1[39m
@@ -742,13 +742,13 @@ Expected has type:  function
 Expected has value: [32m[Function anonymous][39m]=]
 
 snapshots['toBeCalledTimes .not passes if function called less than expected times 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoBeCalledTimes[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoBeCalledTimes[2m([22m[32mexpected[39m[2m)[22m
 
 Expected number of calls: [32m2[39m
 Received number of calls: [31m1[39m]=]
 
 snapshots['toBeCalledTimes .not passes if function called more than expected times 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoBeCalledTimes[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoBeCalledTimes[2m([22m[32mexpected[39m[2m)[22m
 
 Expected number of calls: [32m2[39m
 Received number of calls: [31m3[39m]=]
@@ -836,28 +836,28 @@ Received has type:  function
 Received has value: [31m[Function anonymous][39m]=]
 
 snapshots['toBeCalledWith works when not called 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m, [32m"bar"[39m
 
 Number of calls: [31m0[39m]=]
 
 snapshots['toBeCalledWith works with Immutable.js objects 1'] = [=[
-expect(jest.fn()).never.toBeCalledWith(...expected)
+expect(jest:fn()).never.toBeCalledWith(...expected)
 
 Expected: never Immutable.Map {"a": {"b": "c"}}, Immutable.Map {"a": {"b": "c"}}
 
 Number of calls: 1]=]
 
 snapshots['toBeCalledWith works with Map 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: never [32m{{1, 2}, {2, 1}}[39m
 
 Number of calls: [31m1[39m]=]
 
 snapshots['toBeCalledWith works with Map 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 [32m- Expected[39m
 [31m+ Received[39m
@@ -880,14 +880,14 @@ snapshots['toBeCalledWith works with Map 2'] = [=[
 Number of calls: [31m1[39m]=]
 
 snapshots['toBeCalledWith works with Set 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: never [32mSet {1, 2}[39m
 
 Number of calls: [31m1[39m]=]
 
 snapshots['toBeCalledWith works with Set 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 [32m- Expected[39m
 [31m+ Received[39m
@@ -902,7 +902,7 @@ snapshots['toBeCalledWith works with Set 2'] = [=[
 Number of calls: [31m1[39m]=]
 
 snapshots['toBeCalledWith works with arguments that don\'t match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m, [32m"bar"[39m
 Received: [2m"foo"[22m, [31m"bar1"[39m
@@ -910,14 +910,14 @@ Received: [2m"foo"[22m, [31m"bar1"[39m
 Number of calls: [31m1[39m]=]
 
 snapshots['toBeCalledWith works with arguments that match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: never [32m"foo"[39m, [32m"bar"[39m
 
 Number of calls: [31m1[39m]=]
 
 snapshots['toBeCalledWith works with many arguments 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: never [32m"foo"[39m, [32m"bar"[39m
 Received
@@ -926,7 +926,7 @@ Received
 Number of calls: [31m3[39m]=]
 
 snapshots['toBeCalledWith works with many arguments that don\'t match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m, [32m"bar"[39m
 Received
@@ -938,7 +938,7 @@ Number of calls: [31m3[39m]=]
 
 -- deviation: changed undefined to false
 snapshots['toBeCalledWith works with trailing undefined arguments 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m
 Received: [31m"foo"[39m, [31mfalse[39m
@@ -976,7 +976,7 @@ Received number of calls: [31m1[39m
 1: called with 0 arguments]=]
 
 snapshots['toHaveBeenCalled passes when called 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenCalled[2m()[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenCalled[2m()[22m
 
 Expected number of calls: [32m0[39m
 Received number of calls: [31m1[39m
@@ -1040,13 +1040,13 @@ Expected has type:  function
 Expected has value: [32m[Function anonymous][39m]=]
 
 snapshots['toHaveBeenCalledTimes .not passes if function called less than expected times 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveBeenCalledTimes[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveBeenCalledTimes[2m([22m[32mexpected[39m[2m)[22m
 
 Expected number of calls: [32m2[39m
 Received number of calls: [31m1[39m]=]
 
 snapshots['toHaveBeenCalledTimes .not passes if function called more than expected times 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveBeenCalledTimes[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveBeenCalledTimes[2m([22m[32mexpected[39m[2m)[22m
 
 Expected number of calls: [32m2[39m
 Received number of calls: [31m3[39m]=]
@@ -1134,28 +1134,28 @@ Received has type:  function
 Received has value: [31m[Function anonymous][39m]=]
 
 snapshots['toHaveBeenCalledWith works when not called 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m, [32m"bar"[39m
 
 Number of calls: [31m0[39m]=]
 
 snapshots['toHaveBeenCalledWith works with Immutable.js objects 1'] = [=[
-expect(jest.fn()).never.toHaveBeenCalledWith(...expected)
+expect(jest:fn()).never.toHaveBeenCalledWith(...expected)
 
 Expected: never Immutable.Map {"a": {"b": "c"}}, Immutable.Map {"a": {"b": "c"}}
 
 Number of calls: 1]=]
 
 snapshots['toHaveBeenCalledWith works with Map 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: never [32m{{1, 2}, {2, 1}}[39m
 
 Number of calls: [31m1[39m]=]
 
 snapshots['toHaveBeenCalledWith works with Map 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 [32m- Expected[39m
 [31m+ Received[39m
@@ -1178,14 +1178,14 @@ snapshots['toHaveBeenCalledWith works with Map 2'] = [=[
 Number of calls: [31m1[39m]=]
 
 snapshots['toHaveBeenCalledWith works with Set 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: never [32mSet {1, 2}[39m
 
 Number of calls: [31m1[39m]=]
 
 snapshots['toHaveBeenCalledWith works with Set 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 [32m- Expected[39m
 [31m+ Received[39m
@@ -1200,7 +1200,7 @@ snapshots['toHaveBeenCalledWith works with Set 2'] = [=[
 Number of calls: [31m1[39m]=]
 
 snapshots['toHaveBeenCalledWith works with arguments that don\'t match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m, [32m"bar"[39m
 Received: [2m"foo"[22m, [31m"bar1"[39m
@@ -1208,14 +1208,14 @@ Received: [2m"foo"[22m, [31m"bar1"[39m
 Number of calls: [31m1[39m]=]
 
 snapshots['toHaveBeenCalledWith works with arguments that match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: never [32m"foo"[39m, [32m"bar"[39m
 
 Number of calls: [31m1[39m]=]
 
 snapshots['toHaveBeenCalledWith works with many arguments 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: never [32m"foo"[39m, [32m"bar"[39m
 Received
@@ -1224,7 +1224,7 @@ Received
 Number of calls: [31m3[39m]=]
 
 snapshots['toHaveBeenCalledWith works with many arguments that don\'t match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m, [32m"bar"[39m
 Received
@@ -1236,7 +1236,7 @@ Number of calls: [31m3[39m]=]
 
 -- deviation: changed undefined to false
 snapshots['toHaveBeenCalledWith works with trailing undefined arguments 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m
 Received: [31m"foo"[39m, [31mfalse[39m
@@ -1259,28 +1259,28 @@ Received has type:  function
 Received has value: [31m[Function anonymous][39m]=]
 
 snapshots['toHaveBeenLastCalledWith works when not called 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m, [32m"bar"[39m
 
 Number of calls: [31m0[39m]=]
 
 snapshots['toHaveBeenLastCalledWith works with Immutable.js objects 1'] = [=[
-expect(jest.fn()).never.toHaveBeenLastCalledWith(...expected)
+expect(jest:fn()).never.toHaveBeenLastCalledWith(...expected)
 
 Expected: never Immutable.Map {"a": {"b": "c"}}, Immutable.Map {"a": {"b": "c"}}
 
 Number of calls: 1]=]
 
 snapshots['toHaveBeenLastCalledWith works with Map 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: never [32m{{1, 2}, {2, 1}}[39m
 
 Number of calls: [31m1[39m]=]
 
 snapshots['toHaveBeenLastCalledWith works with Map 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 [32m- Expected[39m
 [31m+ Received[39m
@@ -1303,14 +1303,14 @@ snapshots['toHaveBeenLastCalledWith works with Map 2'] = [=[
 Number of calls: [31m1[39m]=]
 
 snapshots['toHaveBeenLastCalledWith works with Set 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: never [32mSet {1, 2}[39m
 
 Number of calls: [31m1[39m]=]
 
 snapshots['toHaveBeenLastCalledWith works with Set 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 [32m- Expected[39m
 [31m+ Received[39m
@@ -1325,7 +1325,7 @@ snapshots['toHaveBeenLastCalledWith works with Set 2'] = [=[
 Number of calls: [31m1[39m]=]
 
 snapshots['toHaveBeenLastCalledWith works with arguments that don\'t match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m, [32m"bar"[39m
 Received: [2m"foo"[22m, [31m"bar1"[39m
@@ -1333,14 +1333,14 @@ Received: [2m"foo"[22m, [31m"bar1"[39m
 Number of calls: [31m1[39m]=]
 
 snapshots['toHaveBeenLastCalledWith works with arguments that match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: never [32m"foo"[39m, [32m"bar"[39m
 
 Number of calls: [31m1[39m]=]
 
 snapshots['toHaveBeenLastCalledWith works with many arguments 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: never [32m"foo"[39m, [32m"bar"[39m
 Received
@@ -1350,7 +1350,7 @@ Received
 Number of calls: [31m3[39m]=]
 
 snapshots['toHaveBeenLastCalledWith works with many arguments that don\'t match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m, [32m"bar"[39m
 Received
@@ -1361,7 +1361,7 @@ Number of calls: [31m3[39m]=]
 
 -- deviation: changed undefined to false
 snapshots['toHaveBeenLastCalledWith works with trailing undefined arguments 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m
 Received: [31m"foo"[39m, [31mfalse[39m
@@ -1417,7 +1417,7 @@ Expected: [32m"foo"[39m, [32m"bar"[39m
 Number of calls: [31m0[39m]=]
 
 snapshots['toHaveBeenNthCalledWith works with Immutable.js objects 1'] = [=[
-expect(jest.fn()).never.toHaveBeenNthCalledWith(n, ...expected)
+expect(jest:fn()).never.toHaveBeenNthCalledWith(n, ...expected)
 
 n: 1
 Expected: never Immutable.Map {"a": {"b": "c"}}, Immutable.Map {"a": {"b": "c"}}
@@ -1425,7 +1425,7 @@ Expected: never Immutable.Map {"a": {"b": "c"}}, Immutable.Map {"a": {"b": "c"}}
 Number of calls: 1]=]
 
 snapshots['toHaveBeenNthCalledWith works with Map 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenNthCalledWith[2m([22mn[2m, [22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveBeenNthCalledWith[2m([22mn[2m, [22m[32m...expected[39m[2m)[22m
 
 n: 1
 Expected: never [32m{{1, 2}, {2, 1}}[39m
@@ -1433,7 +1433,7 @@ Expected: never [32m{{1, 2}, {2, 1}}[39m
 Number of calls: [31m1[39m]=]
 
 snapshots['toHaveBeenNthCalledWith works with Map 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveBeenNthCalledWith[2m([22mn[2m, [22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveBeenNthCalledWith[2m([22mn[2m, [22m[32m...expected[39m[2m)[22m
 
 n: 1
 [32m- Expected[39m
@@ -1465,7 +1465,7 @@ Expected: never [32mSet {1, 2}[39m
 Number of calls: [31m1[39m]=]
 
 snapshots['toHaveBeenNthCalledWith works with Set 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveBeenNthCalledWith[2m([22mn[2m, [22m[32m...expected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveBeenNthCalledWith[2m([22mn[2m, [22m[32m...expected[39m[2m)[22m
 
 n: 1
 [32m- Expected[39m
@@ -1519,7 +1519,7 @@ Received: [31m"foo"[39m, [31mfalse[39m
 Number of calls: [31m1[39m]=]
 
 snapshots['toHaveLastReturnedWith a call that throws is not considered to have returned 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32mnil[39m
 Received: function call threw an error
@@ -1528,7 +1528,7 @@ Number of returns: [31m0[39m
 Number of calls:   [31m1[39m]=]
 
 snapshots['toHaveLastReturnedWith a call that throws undefined is not considered to have returned 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32mnil[39m
 Received: function call threw an error
@@ -1544,7 +1544,7 @@ Expected: "foo"
 Number of returns: 0]=]
 
 snapshots['toHaveLastReturnedWith lastReturnedWith incomplete recursive calls are handled properly 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32m0[39m
 Received
@@ -1555,7 +1555,7 @@ Number of returns: [31m0[39m
 Number of calls:   [31m4[39m]=]
 
 snapshots['toHaveLastReturnedWith lastReturnedWith works with three calls 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: never [32m"foo3"[39m
 Received
@@ -1573,35 +1573,35 @@ Received has type:  function
 Received has value: [31m[Function anonymous][39m]=]
 
 snapshots['toHaveLastReturnedWith works when not called 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32m"foo"[39m
 
 Number of returns: [31m0[39m]=]
 
 snapshots['toHaveLastReturnedWith works with Immutable.js objects directly created 1'] = [=[
-expect(jest.fn()).never.toHaveLastReturnedWith(expected)
+expect(jest:fn()).never.toHaveLastReturnedWith(expected)
 
 Expected: never Immutable.Map {"a": {"b": "c"}}
 
 Number of returns: 1]=]
 
 snapshots['toHaveLastReturnedWith works with Immutable.js objects indirectly created 1'] = [=[
-expect(jest.fn()).never.toHaveLastReturnedWith(expected)
+expect(jest:fn()).never.toHaveLastReturnedWith(expected)
 
 Expected: never Immutable.Map {"a": {"b": "c"}}
 
 Number of returns: 1]=]
 
 snapshots['toHaveLastReturnedWith works with Map 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: never [32m{{1, 2}, {2, 1}}[39m
 
 Number of returns: [31m1[39m]=]
 
 snapshots['toHaveLastReturnedWith works with Map 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32m{{"a", "b"}, {"b", "a"}}[39m
 Received: [31m{{1, 2}, {2, 1}}[39m
@@ -1609,14 +1609,14 @@ Received: [31m{{1, 2}, {2, 1}}[39m
 Number of returns: [31m1[39m]=]
 
 snapshots['toHaveLastReturnedWith works with Set 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: never [32mSet {1, 2}[39m
 
 Number of returns: [31m1[39m]=]
 
 snapshots['toHaveLastReturnedWith works with Set 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32mSet {3, 4}[39m
 Received: [31mSet {1, 2}[39m
@@ -1624,14 +1624,14 @@ Received: [31mSet {1, 2}[39m
 Number of returns: [31m1[39m]=]
 
 snapshots['toHaveLastReturnedWith works with argument that does match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: never [32m"foo"[39m
 
 Number of returns: [31m1[39m]=]
 
 snapshots['toHaveLastReturnedWith works with argument that does not match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32m"bar"[39m
 Received: [31m"foo"[39m
@@ -1639,7 +1639,7 @@ Received: [31m"foo"[39m
 Number of returns: [31m1[39m]=]
 
 snapshots['toHaveLastReturnedWith works with undefined 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveLastReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: never [32mnil[39m
 
@@ -1674,7 +1674,7 @@ Expected: "foo"
 Number of returns: 0]=]
 
 snapshots['toHaveNthReturnedWith nthReturnedWith incomplete recursive calls are handled properly 1'] = [=[
-expect(jest.fn()).toHaveNthReturnedWith(n, expected)
+expect(jest:fn()).toHaveNthReturnedWith(n, expected)
 
 n: 1
 Expected: 6
@@ -1686,7 +1686,7 @@ Number of returns: 2
 Number of calls:   4]=]
 
 snapshots['toHaveNthReturnedWith nthReturnedWith incomplete recursive calls are handled properly 2'] = [=[
-expect(jest.fn()).toHaveNthReturnedWith(n, expected)
+expect(jest:fn()).toHaveNthReturnedWith(n, expected)
 
 n: 2
 Expected: 3
@@ -1699,7 +1699,7 @@ Number of returns: 2
 Number of calls:   4]=]
 
 snapshots['toHaveNthReturnedWith nthReturnedWith incomplete recursive calls are handled properly 3'] = [=[
-expect(jest.fn()).never.toHaveNthReturnedWith(n, expected)
+expect(jest:fn()).never.toHaveNthReturnedWith(n, expected)
 
 n: 3
 Expected: never 1
@@ -1712,7 +1712,7 @@ Number of returns: 2
 Number of calls:   4]=]
 
 snapshots['toHaveNthReturnedWith nthReturnedWith incomplete recursive calls are handled properly 4'] = [=[
-expect(jest.fn()).never.toHaveNthReturnedWith(n, expected)
+expect(jest:fn()).never.toHaveNthReturnedWith(n, expected)
 
 n: 4
 Expected: never 0
@@ -1806,7 +1806,7 @@ Expected: [32m"foo"[39m
 Number of returns: [31m0[39m]=]
 
 snapshots['toHaveNthReturnedWith works with Immutable.js objects directly created 1'] = [=[
-expect(jest.fn()).never.toHaveNthReturnedWith(n, expected)
+expect(jest:fn()).never.toHaveNthReturnedWith(n, expected)
 
 n: 1
 Expected: never Immutable.Map {"a": {"b": "c"}}
@@ -1814,7 +1814,7 @@ Expected: never Immutable.Map {"a": {"b": "c"}}
 Number of returns: 1]=]
 
 snapshots['toHaveNthReturnedWith works with Immutable.js objects indirectly created 1'] = [=[
-expect(jest.fn()).never.toHaveNthReturnedWith(n, expected)
+expect(jest:fn()).never.toHaveNthReturnedWith(n, expected)
 
 n: 1
 Expected: never Immutable.Map {"a": {"b": "c"}}
@@ -1822,7 +1822,7 @@ Expected: never Immutable.Map {"a": {"b": "c"}}
 Number of returns: 1]=]
 
 snapshots['toHaveNthReturnedWith works with Map 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveNthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveNthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
 
 n: 1
 Expected: never [32m{{1, 2}, {2, 1}}[39m
@@ -1830,7 +1830,7 @@ Expected: never [32m{{1, 2}, {2, 1}}[39m
 Number of returns: [31m1[39m]=]
 
 snapshots['toHaveNthReturnedWith works with Map 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveNthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveNthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
 
 n: 1
 Expected: [32m{{"a", "b"}, {"b", "a"}}[39m
@@ -1847,7 +1847,7 @@ Expected: never [32mSet {1, 2}[39m
 Number of returns: [31m1[39m]=]
 
 snapshots['toHaveNthReturnedWith works with Set 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveNthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveNthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
 
 n: 1
 Expected: [32mSet {3, 4}[39m
@@ -1889,21 +1889,21 @@ Expected has type:  number
 Expected has value: [32m555[39m]=]
 
 snapshots['toHaveReturned .not passes when a call throws undefined 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveReturned[2m()[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveReturned[2m()[22m
 
 Expected number of returns: >= [32m1[39m
 Received number of returns:    [31m0[39m
 Received number of calls:      [31m1[39m]=]
 
 snapshots['toHaveReturned .not passes when all calls throw 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveReturned[2m()[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveReturned[2m()[22m
 
 Expected number of returns: >= [32m1[39m
 Received number of returns:    [31m0[39m
 Received number of calls:      [31m2[39m]=]
 
 snapshots['toHaveReturned .not passes when not returned 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveReturned[2m()[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveReturned[2m()[22m
 
 Expected number of returns: >= [32m1[39m
 Received number of returns:    [31m0[39m]=]
@@ -1933,14 +1933,14 @@ Received number of returns: [31m1[39m
 1: [31m42[39m]=]
 
 snapshots['toHaveReturned incomplete recursive calls are handled properly 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveReturned[2m()[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveReturned[2m()[22m
 
 Expected number of returns: >= [32m1[39m
 Received number of returns:    [31m0[39m
 Received number of calls:      [31m4[39m]=]
 
 snapshots['toHaveReturned passes when at least one call does not throw 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveReturned[2m()[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveReturned[2m()[22m
 
 Expected number of returns: [32m0[39m
 Received number of returns: [31m2[39m
@@ -1951,7 +1951,7 @@ Received number of returns: [31m2[39m
 Received number of calls:   [31m3[39m]=]
 
 snapshots['toHaveReturned passes when returned 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveReturned[2m()[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveReturned[2m()[22m
 
 Expected number of returns: [32m0[39m
 Received number of returns: [31m1[39m
@@ -1959,7 +1959,7 @@ Received number of returns: [31m1[39m
 1: [31m42[39m]=]
 
 snapshots['toHaveReturned passes when undefined is returned 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveReturned[2m()[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveReturned[2m()[22m
 
 Expected number of returns: [32m0[39m
 Received number of returns: [31m1[39m
@@ -2025,31 +2025,31 @@ Expected has type:  function
 Expected has value: [32m[Function anonymous][39m]=]
 
 snapshots['toHaveReturnedTimes .not passes if function called less than expected times 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveReturnedTimes[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveReturnedTimes[2m([22m[32mexpected[39m[2m)[22m
 
 Expected number of returns: [32m2[39m
 Received number of returns: [31m1[39m]=]
 
 snapshots['toHaveReturnedTimes .not passes if function returned more than expected times 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveReturnedTimes[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveReturnedTimes[2m([22m[32mexpected[39m[2m)[22m
 
 Expected number of returns: [32m2[39m
 Received number of returns: [31m3[39m]=]
 
 snapshots['toHaveReturnedTimes calls that return undefined are counted as returns 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveReturnedTimes[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveReturnedTimes[2m([22m[32mexpected[39m[2m)[22m
 
 Expected number of returns: never [32m2[39m]=]
 
 snapshots['toHaveReturnedTimes calls that throw are not counted 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveReturnedTimes[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveReturnedTimes[2m([22m[32mexpected[39m[2m)[22m
 
 Expected number of returns: [32m3[39m
 Received number of returns: [31m2[39m
 Received number of calls:   [31m3[39m]=]
 
 snapshots['toHaveReturnedTimes calls that throw undefined are not counted 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveReturnedTimes[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveReturnedTimes[2m([22m[32mexpected[39m[2m)[22m
 
 Expected number of returns: never [32m2[39m
 
@@ -2062,7 +2062,7 @@ Expected number of returns: [32m1[39m
 Received number of returns: [31m2[39m]=]
 
 snapshots['toHaveReturnedTimes incomplete recursive calls are handled properly 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveReturnedTimes[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveReturnedTimes[2m([22m[32mexpected[39m[2m)[22m
 
 Expected number of returns: never [32m2[39m
 
@@ -2117,7 +2117,7 @@ Expected has type:  function
 Expected has value: [32m[Function anonymous][39m]=]
 
 snapshots['toHaveReturnedTimes passes if function returned equal to expected times 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveReturnedTimes[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveReturnedTimes[2m([22m[32mexpected[39m[2m)[22m
 
 Expected number of returns: never [32m2[39m]=]
 
@@ -2131,7 +2131,7 @@ Received has type:  table
 Received has value: [31m{"calls": {"all": [Function anonymous], "count": [Function anonymous]}}[39m]=]
 
 snapshots['toHaveReturnedWith a call that throws is not considered to have returned 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32mnil[39m
 Received: function call threw an error
@@ -2140,7 +2140,7 @@ Number of returns: [31m0[39m
 Number of calls:   [31m1[39m]=]
 
 snapshots['toHaveReturnedWith a call that throws undefined is not considered to have returned 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32mnil[39m
 Received: function call threw an error
@@ -2156,7 +2156,7 @@ Expected: "foo"
 Number of returns: 0]=]
 
 snapshots['toHaveReturnedWith returnedWith incomplete recursive calls are handled properly 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32mnil[39m
 Received
@@ -2168,7 +2168,7 @@ Number of returns: [31m0[39m
 Number of calls:   [31m4[39m]=]
 
 snapshots['toHaveReturnedWith returnedWith works with more calls than the limit 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32m"bar"[39m
 Received
@@ -2187,35 +2187,35 @@ Received has type:  function
 Received has value: [31m[Function anonymous][39m]=]
 
 snapshots['toHaveReturnedWith works when not called 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32m"foo"[39m
 
 Number of returns: [31m0[39m]=]
 
 snapshots['toHaveReturnedWith works with Immutable.js objects directly created 1'] = [=[
-expect(jest.fn()).never.toHaveReturnedWith(expected)
+expect(jest:fn()).never.toHaveReturnedWith(expected)
 
 Expected: never Immutable.Map {"a": {"b": "c"}}
 
 Number of returns: 1]=]
 
 snapshots['toHaveReturnedWith works with Immutable.js objects indirectly created 1'] = [=[
-expect(jest.fn()).never.toHaveReturnedWith(expected)
+expect(jest:fn()).never.toHaveReturnedWith(expected)
 
 Expected: never Immutable.Map {"a": {"b": "c"}}
 
 Number of returns: 1]=]
 
 snapshots['toHaveReturnedWith works with Map 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: never [32m{{1, 2}, {2, 1}}[39m
 
 Number of returns: [31m1[39m]=]
 
 snapshots['toHaveReturnedWith works with Map 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32m{{"a", "b"}, {"b", "a"}}[39m
 Received: [31m{{1, 2}, {2, 1}}[39m
@@ -2223,14 +2223,14 @@ Received: [31m{{1, 2}, {2, 1}}[39m
 Number of returns: [31m1[39m]=]
 
 snapshots['toHaveReturnedWith works with Set 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: never [32mSet {1, 2}[39m
 
 Number of returns: [31m1[39m]=]
 
 snapshots['toHaveReturnedWith works with Set 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32mSet {3, 4}[39m
 Received: [31mSet {1, 2}[39m
@@ -2238,14 +2238,14 @@ Received: [31mSet {1, 2}[39m
 Number of returns: [31m1[39m]=]
 
 snapshots['toHaveReturnedWith works with argument that does match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: never [32m"foo"[39m
 
 Number of returns: [31m1[39m]=]
 
 snapshots['toHaveReturnedWith works with argument that does not match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32m"bar"[39m
 Received: [31m"foo"[39m
@@ -2253,7 +2253,7 @@ Received: [31m"foo"[39m
 Number of returns: [31m1[39m]=]
 
 snapshots['toHaveReturnedWith works with undefined 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveReturnedWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: never [32mnil[39m
 
@@ -2268,21 +2268,21 @@ Expected has type:  number
 Expected has value: [32m555[39m]=]
 
 snapshots['toReturn .not passes when a call throws undefined 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoReturn[2m()[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoReturn[2m()[22m
 
 Expected number of returns: >= [32m1[39m
 Received number of returns:    [31m0[39m
 Received number of calls:      [31m1[39m]=]
 
 snapshots['toReturn .not passes when all calls throw 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoReturn[2m()[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoReturn[2m()[22m
 
 Expected number of returns: >= [32m1[39m
 Received number of returns:    [31m0[39m
 Received number of calls:      [31m2[39m]=]
 
 snapshots['toReturn .not passes when not returned 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoReturn[2m()[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoReturn[2m()[22m
 
 Expected number of returns: >= [32m1[39m
 Received number of returns:    [31m0[39m]=]
@@ -2312,14 +2312,14 @@ Received number of returns: [31m1[39m
 1: [31m42[39m]=]
 
 snapshots['toReturn incomplete recursive calls are handled properly 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoReturn[2m()[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoReturn[2m()[22m
 
 Expected number of returns: >= [32m1[39m
 Received number of returns:    [31m0[39m
 Received number of calls:      [31m4[39m]=]
 
 snapshots['toReturn passes when at least one call does not throw 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoReturn[2m()[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoReturn[2m()[22m
 
 Expected number of returns: [32m0[39m
 Received number of returns: [31m2[39m
@@ -2330,7 +2330,7 @@ Received number of returns: [31m2[39m
 Received number of calls:   [31m3[39m]=]
 
 snapshots['toReturn passes when returned 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoReturn[2m()[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoReturn[2m()[22m
 
 Expected number of returns: [32m0[39m
 Received number of returns: [31m1[39m
@@ -2338,7 +2338,7 @@ Received number of returns: [31m1[39m
 1: [31m42[39m]=]
 
 snapshots['toReturn passes when undefined is returned 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoReturn[2m()[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoReturn[2m()[22m
 
 Expected number of returns: [32m0[39m
 Received number of returns: [31m1[39m
@@ -2403,31 +2403,31 @@ Expected has type:  function
 Expected has value: [32m[Function anonymous][39m]=]
 
 snapshots['toReturnTimes .not passes if function called less than expected times 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoReturnTimes[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoReturnTimes[2m([22m[32mexpected[39m[2m)[22m
 
 Expected number of returns: [32m2[39m
 Received number of returns: [31m1[39m]=]
 
 snapshots['toReturnTimes .not passes if function returned more than expected times 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoReturnTimes[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoReturnTimes[2m([22m[32mexpected[39m[2m)[22m
 
 Expected number of returns: [32m2[39m
 Received number of returns: [31m3[39m]=]
 
 snapshots['toReturnTimes calls that return undefined are counted as returns 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoReturnTimes[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoReturnTimes[2m([22m[32mexpected[39m[2m)[22m
 
 Expected number of returns: never [32m2[39m]=]
 
 snapshots['toReturnTimes calls that throw are not counted 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoReturnTimes[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoReturnTimes[2m([22m[32mexpected[39m[2m)[22m
 
 Expected number of returns: [32m3[39m
 Received number of returns: [31m2[39m
 Received number of calls:   [31m3[39m]=]
 
 snapshots['toReturnTimes calls that throw undefined are not counted 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoReturnTimes[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoReturnTimes[2m([22m[32mexpected[39m[2m)[22m
 
 Expected number of returns: never [32m2[39m
 
@@ -2440,7 +2440,7 @@ Expected number of returns: [32m1[39m
 Received number of returns: [31m2[39m]=]
 
 snapshots['toReturnTimes incomplete recursive calls are handled properly 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoReturnTimes[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoReturnTimes[2m([22m[32mexpected[39m[2m)[22m
 
 Expected number of returns: never [32m2[39m
 
@@ -2495,7 +2495,7 @@ Expected has type:  function
 Expected has value: [32m[Function anonymous][39m]=]
 
 snapshots['toReturnTimes passes if function returned equal to expected times 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoReturnTimes[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoReturnTimes[2m([22m[32mexpected[39m[2m)[22m
 
 Expected number of returns: never [32m2[39m]=]
 
@@ -2509,7 +2509,7 @@ Received has type:  table
 Received has value: [31m{"calls": {"all": [Function anonymous], "count": [Function anonymous]}}[39m]=]
 
 snapshots['toReturnWith a call that throws is not considered to have returned 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32mnil[39m
 Received: function call threw an error
@@ -2518,7 +2518,7 @@ Number of returns: [31m0[39m
 Number of calls:   [31m1[39m]=]
 
 snapshots['toReturnWith a call that throws undefined is not considered to have returned 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32mnil[39m
 Received: function call threw an error
@@ -2534,7 +2534,7 @@ Expected: "foo"
 Number of returns: 0]=]
 
 snapshots['toReturnWith returnedWith incomplete recursive calls are handled properly 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32mnil[39m
 Received
@@ -2546,7 +2546,7 @@ Number of returns: [31m0[39m
 Number of calls:   [31m4[39m]=]
 
 snapshots['toReturnWith returnedWith works with more calls than the limit 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32m"bar"[39m
 Received
@@ -2565,49 +2565,49 @@ Received has type:  function
 Received has value: [31m[Function anonymous][39m]=]
 
 snapshots['toReturnWith works when not called 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32m"foo"[39m
 
 Number of returns: [31m0[39m]=]
 
 snapshots['toReturnWith works with Immutable.js objects directly created 1'] = [=[
-expect(jest.fn()).never.toReturnWith(expected)
+expect(jest:fn()).never.toReturnWith(expected)
 
 Expected: never Immutable.Map {"a": {"b": "c"}}
 
 Number of returns: 1]=]
 
 snapshots['toReturnWith works with Immutable.js objects indirectly created 1'] = [=[
-expect(jest.fn()).never.toReturnWith(expected)
+expect(jest:fn()).never.toReturnWith(expected)
 
 Expected: never Immutable.Map {"a": {"b": "c"}}
 
 Number of returns: 1]=]
 
 snapshots['toReturnWith works with Map 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: never [32m{{1, 2}, {2, 1}}[39m
 
 Number of returns: [31m1[39m]=]
 
 snapshots['toReturnWith works with Map 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32m{{"a", "b"}, {"b", "a"}}[39m
 Received: [31m{{1, 2}, {2, 1}}[39m
 
 Number of returns: [31m1[39m]=]
 snapshots['toReturnWith works with Set 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: never [32mSet {1, 2}[39m
 
 Number of returns: [31m1[39m]=]
 
 snapshots['toReturnWith works with Set 2'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32mSet {3, 4}[39m
 Received: [31mSet {1, 2}[39m
@@ -2615,14 +2615,14 @@ Received: [31mSet {1, 2}[39m
 Number of returns: [31m1[39m]=]
 
 snapshots['toReturnWith works with argument that does match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: never [32m"foo"[39m
 
 Number of returns: [31m1[39m]=]
 
 snapshots['toReturnWith works with argument that does not match 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: [32m"bar"[39m
 Received: [31m"foo"[39m
@@ -2630,7 +2630,7 @@ Received: [31m"foo"[39m
 Number of returns: [31m1[39m]=]
 
 snapshots['toReturnWith works with undefined 1'] = [=[
-[2mexpect([22m[31mjest.fn()[39m[2m).[22mnever[2m.[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoReturnWith[2m([22m[32mexpected[39m[2m)[22m
 
 Expected: never [32mnil[39m
 

@@ -106,7 +106,7 @@ end
 function ModuleMockerClass:_defaultMockConfig(): MockFunctionConfig
 	return {
 		mockImpl = nil,
-		mockName = 'jest.fn()',
+		mockName = 'jest:fn()',
 		specificMockImpls = {},
 		specificReturnValues = {}
 	}
@@ -258,18 +258,18 @@ function ModuleMockerClass:_makeComponent(
 
 		f.mockReturnValueOnce = function(value)
 			-- // next function call will return this value or default return value
-			f.mockImplementationOnce(function() return value end)
+			return f.mockImplementationOnce(function() return value end)
 		end
 
 		-- deviation: omitted mockResolvedValueOnce and mockRejectedValueOnce
 
 		f.mockReturnValue = function(value)
 			-- // next function call will return specified return value or this one
-			f.mockImplementation(function() return value end)
+			return f.mockImplementation(function() return value end)
 		end
 
 		f.mockReturnThis = function()
-			f.mockImplementation(function(this)
+			return f.mockImplementation(function(this)
 				return f
 			end)
 		end
@@ -284,7 +284,7 @@ function ModuleMockerClass:_makeComponent(
 
 		f.getMockName = function()
 			local mockConfig = self:_ensureMockConfig(f)
-			return mockConfig.mockName or 'jest.fn()'
+			return mockConfig.mockName or 'jest:fn()'
 		end
 
 		if metadata.mockImpl then

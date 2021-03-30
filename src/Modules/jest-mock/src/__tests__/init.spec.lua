@@ -224,5 +224,23 @@ return function()
 				end)
 			end)
 		end)
+
+		describe("jest roblox tests", function()
+			it("mock return chaining", function()
+				local myMock = moduleMocker:fn()
+				jestExpect(myMock()).toBeNil()
+
+				myMock.mockReturnValueOnce(10).mockReturnValueOnce('x').mockReturnValue(true)
+				jestExpect(myMock()).toBe(10)
+				jestExpect(myMock()).toBe('x')
+				jestExpect(myMock()).toBe(true)
+				jestExpect(myMock()).toBe(true)
+			end)
+
+			it("default mock function name is jest:fn()", function()
+				local myMock = moduleMocker:fn()
+				jestExpect(myMock.getMockName()).toBe("jest:fn()")
+			end)
+		end)
 	end)
 end
