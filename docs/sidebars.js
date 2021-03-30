@@ -7,15 +7,18 @@ module.exports = {
         'getting-started',
         'using-matchers',
         'setup-teardown',
+        'mock-functions',
       ],
     },
     'deviations',
     'migration-guide',
   ],
   api: [
-    "api",
-    "expect",
-    "testez",
-    "cli",
+    'api',
+    'expect',
+    'testez',
+    'mock-function-api',
+    'jest-object',
+    'cli',
   ]
 };

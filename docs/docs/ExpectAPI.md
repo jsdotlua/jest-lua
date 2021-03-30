@@ -17,6 +17,28 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local RegExp = LuauPolyfill.RegExp
 ```
 
+### Error
+LuaPolyfill also provides an extensible `Error` class that can be used with throwing matchers.
+
+```lua
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Error = LuauPolyfill.Error
+```
+
+To create a custom `Error`, require `extends` from LuauPolyfill and call it on the `Error` class.
+```lua
+local extends = LuauPolyfill.extends
+
+local OhNoError = extends(Error, 'OhNoError', function(self, message)
+	self.message = message
+	self.name = 'OhNoError'
+end)
+
+local function thisFunctionErrors()
+	error(OhNoError('oh no'))
+end
+```
+
 ## Methods
 
 import TOCInline from "@theme/TOCInline";
@@ -162,33 +184,33 @@ When an assertion fails, the error message should give as much signal as necessa
 
 ### `expect.anything()`
 
-`expect.anything()` matches anything but `nil`. You can use it inside `toEqual` instead of a literal value. For example:
+`expect.anything()` matches anything but `nil`. You can use it inside `toEqual` or `toBeCalledWith` instead of a literal value. For example, if you want to check that a mock function is called with a non-nil argument:
 
 ```lua
-it('received table has non-nil values a and b', function()
-	local received = {a = 10, b = 'foo'}
-	expect(received).toEqual({
-		a = expect.anything(),
-		b = expect.anything()
-	})
+it('mock calls its argument with a non-nil argument', function()
+	local mock = jest:fn()
+	mock('a')
+	expect(mock).toBeCalledWith(expect.anything())
 end)
 ```
 
 ### `expect.any(typename | prototype)`
 
-`expect.any(typename)` matches anything that has the given type. `expect.any(prototype)` matches anything that is an instance (or a derived instance) of the given prototype class. You can use it inside `toEqual` instead of a literal value. For example:
+`expect.any(typename)` matches anything that has the given type. `expect.any(prototype)` matches anything that is an instance (or a derived instance) of the given prototype class. You can use it inside `toEqual` or `toBeCalledWith` instead of a literal value. For example:
 
 ```lua
-it('received table has number a and CustomClass b', function()
-	local received = {a = 10, b = CustomClass.new()}
-	expect(received).toEqual({
-		a = expect.any('number'),
-		b = expect.any(CustomClass)
-	})
+local function identity(a)
+	return a
+end
+
+it('identity calls its callback with CustomClass', function()
+	local mock = jest:fn()
+	identity(CustomClass.new())
+	expect(mock).toBeCalledWith(expect.any(CustomClass))
 end)
 ```
 
-It also supports Roblox types like [`DateTime`](https://developer.roblox.com/en-us/api-reference/datatype/DateTime), Luau types like `thread` and and LuauPolyfill types like `Symbol` and `RegExp`.
+In addition to Lua prototype classes, it also supports Roblox types like [`DateTime`](https://developer.roblox.com/en-us/api-reference/datatype/DateTime), Luau types like `thread` and LuauPolyfill types like `Symbol`, `RegExp`, `Set`, `Error` etc.
 
 ### `expect.arrayContaining(array)`
 
@@ -388,6 +410,200 @@ Although the `.toBe` matcher **checks** referential identity, it **reports** a d
 - rewrite `expect(received).toBe(expected)` as `expect(received == expected).toBe(true)`
 - rewrite `expect(received).never.toBe(expected)` as `expect(received == expected).toBe(false)`
 
+### `.toHaveBeenCalled()`
+
+Also under the alias: `.toBeCalled()`
+
+Use `.toHaveBeenCalled` to ensure that a mock function got called.
+
+For example, let's say you have a `drinkAllExceptOctopus(drink, flavour)` function that takes a `drink` function and applies it to all available beverages. You might want to check that `drink` gets called for `'lemon'`, but not for `'octopus'`, because `'octopus'` flavour is really weird and why would anything be octopus-flavoured? You can do that with this test suite:
+
+```lua
+local function drinkAllExceptOctopus(callback, flavour)
+	if flavour ~= 'octopus' then
+		callback(flavour)
+	end
+end
+
+describe('drinkAllExceptOctopus', function()
+	it('drinks something lemon-flavoured', function()
+		local drink = jest:fn()
+		drinkAllExceptOctopus(drink, 'lemon')
+		expect(drink).toHaveBeenCalled()
+	end)
+
+	it('does not drink something octopus-flavoured', function()
+		local drink = jest:fn()
+		drinkAllExceptOctopus(drink, 'octopus')
+		expect(drink).never.toHaveBeenCalled()
+	end)
+end)
+```
+
+### `.toHaveBeenCalledTimes(number)`
+
+Also under the alias: `.toBeCalledTimes(number)`
+
+Use `.toHaveBeenCalledTimes` to ensure that a mock function got called exact number of times.
+
+For example, let's say you have a `drinkEach(drink, table)` function that takes a `drink` function and applies it to array of passed beverages. You might want to check that drink function was called exact number of times. You can do that with this test suite:
+
+```lua
+it('drinkEach drinks each drink', function()
+	local drink = jest:fn()
+	drinkEach(drink, {'lemon', 'octopus'})
+	expect(drink).toHaveBeenCalledTimes(2)
+end)
+```
+
+### `.toHaveBeenCalledWith(arg1, arg2, ...)`
+
+Also under the alias: `.toBeCalledWith()`
+
+Use `.toHaveBeenCalledWith` to ensure that a mock function was called with specific arguments.
+
+For example, let's say that you can register a beverage with a `register` function, and `applyToAll(f)` should apply the function `f` to all registered beverages. To make sure this works, you could write:
+
+```lua
+it('registration applies correctly to orange La Croix', function()
+	local beverage = LaCroix.new('orange')
+	register(beverage)
+	local f = jest:fn()
+	applyToAll(f)
+	expect(f).toHaveBeenCalledWith(beverage)
+end)
+```
+
+### `.toHaveBeenLastCalledWith(arg1, arg2, ...)`
+
+Also under the alias: `.lastCalledWith(arg1, arg2, ...)`
+
+If you have a mock function, you can use `.toHaveBeenLastCalledWith` to test what arguments it was most recently called with. For example, let's say you have a `applyToAllFlavors(f)` function that applies `f` to a bunch of flavors, and you want to ensure that when you call it, the last flavor it operates on is `'mango'`. You can write:
+
+```lua
+it('applying to all flavors does mango last', function()
+	local drink = jest:fn()
+	applyToAllFlavors(drink)
+	expect(drink).toHaveBeenLastCalledWith('mango')
+end)
+```
+
+### `.toHaveBeenNthCalledWith(nthCall, arg1, arg2, ....)`
+
+Also under the alias: `.nthCalledWith(nthCall, arg1, arg2, ...)`
+
+If you have a mock function, you can use `.toHaveBeenNthCalledWith` to test what arguments it was nth called with. For example, let's say you have a `drinkEach(drink, Array<flavor>)` function that applies `f` to a bunch of flavors, and you want to ensure that when you call it, the first flavor it operates on is `'lemon'` and the second one is `'octopus'`. You can write:
+
+```lua
+it('drinkEach drinks each drink', function()
+	local drink = jest:fn()
+	drinkEach(drink, {'lemon', 'octopus'})
+	expect(drink).toHaveBeenNthCalledWith(1, 'lemon')
+	expect(drink).toHaveBeenNthCalledWith(2, 'octopus')
+end)
+```
+
+Note: the nth argument must be positive integer starting from 1.
+
+### `.toHaveReturned()`
+
+Also under the alias: `.toReturn()`
+
+If you have a mock function, you can use `.toHaveReturned` to test that the mock function successfully returned (i.e., did not throw an error) at least one time. For example, let's say you have a mock `drink` that returns `true`. You can write:
+
+```lua
+it('drinks returns', function()
+	local drink = jest:fn(function() return true end)
+
+	drink()
+
+	expect(drink).toHaveReturned()
+end
+```
+
+### `.toHaveReturnedTimes(number)`
+
+Also under the alias: `.toReturnTimes(number)`
+
+Use `.toHaveReturnedTimes` to ensure that a mock function returned successfully (i.e., did not throw an error) an exact number of times. Any calls to the mock function that throw an error are not counted toward the number of times the function returned.
+
+For example, let's say you have a mock `drink` that returns `true`. You can write:
+
+```lua
+it('drink returns twice', function()
+	local drink = jest:fn(function() return true end)
+
+	drink()
+	drink()
+
+	expect(drink).toHaveReturnedTimes(2)
+end
+```
+
+### `.toHaveReturnedWith(value)`
+
+Also under the alias: `.toReturnWith(value)`
+
+Use `.toHaveReturnedWith` to ensure that a mock function returned a specific value.
+
+For example, let's say you have a mock `drink` that returns the name of the beverage that was consumed. You can write:
+
+```lua
+it('drink returns La Croix', function()
+	local beverage = {name = 'La Croix'}
+	local drink = jest:fn(function(beverage) return beverage.name end)
+
+	drink(beverage)
+
+	expect(drink).toHaveReturnedWith('La Croix')
+end)
+```
+
+### `.toHaveLastReturnedWith(value)`
+
+Also under the alias: `.lastReturnedWith(value)`
+
+Use `.toHaveLastReturnedWith` to test the specific value that a mock function last returned. If the last call to the mock function threw an error, then this matcher will fail no matter what value you provided as the expected return value.
+
+For example, let's say you have a mock `drink` that returns the name of the beverage that was consumed. You can write:
+
+```lua
+it('drink returns La Croix (Orange) last', function()
+	local beverage1 = {name = 'La Croix (Lemon)'}
+	local beverage2 = {name = 'La Croix (Orange)'}
+	local drink = jest:fn(function(beverage) return beverage.name end)
+
+	drink(beverage1)
+	drink(beverage2)
+
+	expect(drink).toHaveLastReturnedWith('La Croix (Orange)')
+end)
+```
+
+### `.toHaveNthReturnedWith(nthCall, value)`
+
+Also under the alias: `.nthReturnedWith(nthCall, value)`
+
+Use `.toHaveNthReturnedWith` to test the specific value that a mock function returned for the nth call. If the nth call to the mock function threw an error, then this matcher will fail no matter what value you provided as the expected return value.
+
+For example, let's say you have a mock `drink` that returns the name of the beverage that was consumed. You can write:
+
+```lua
+it('drink returns expected nth calls', () => {
+	local beverage1 = {name = 'La Croix (Lemon)'}
+	local beverage2 = {name = 'La Croix (Orange)'}
+	local drink = jest:fn(function(beverage) return beverage.name end)
+
+	drink(beverage1)
+	drink(beverage2)
+
+	expect(drink).toHaveNthReturnedWith(1, 'La Croix (Lemon)')
+	expect(drink).toHaveNthReturnedWith(2, 'La Croix (Orange)')
+end
+```
+
+Note: the nth argument must be positive integer starting from 1.
+
 ### `.toHaveLength(number)`
 
 Use `.toHaveLength` to check that an (array-like) table or string has a certain length. It calls the `#` operator and since `#` is only well defined for non-sparse array-like tables and strings it will return 0 for tables with key-value pairs. It checks the `.length` property of the table instead if it has one.
@@ -445,7 +661,7 @@ it('this house has my desired features', function()
 		{'kitchen', 'amenities'},
 		{'oven', 'stove', 'washer'},
 	)
-	expect(houseForSale).toHaveProperty({'kitchen', 'amenities', 0}, 'oven')
+	expect(houseForSale).toHaveProperty({'kitchen', 'amenities', 1}, 'oven')
 	expect(houseForSale).toHaveProperty({'kitchen', 'nice.oven'})
 	expect(houseForSale).never.toHaveProperty({'kitchen', 'open'})
 
@@ -601,9 +817,9 @@ Also under the alias: `.toBeNull()`
 ```lua
 local function bloop()
 	return nil
+end
 
-
-it('bloop returns null', function()
+it('bloop returns nil', function()
 	expect(bloop()).toBeNil()
 end)
 ```
@@ -729,8 +945,8 @@ This matcher also accepts a [regular expression](#regexp).
 
 ```lua
 describe('an essay on the best flavor', function()
-	it('mentions grapefruit', function()
-		expect(essayOnTheBestFlavor()).toMatch(RegExp('grapefruit'))
+	it('mentions grapefruit or orange', function()
+		expect(essayOnTheBestFlavor()).toMatch(RegExp('grapefruit|orange'))
 	end)
 end)
 ```
@@ -804,8 +1020,8 @@ You can provide an optional argument to test that a specific error is thrown:
 
 `.toThrow` can also handle custom Error objects provided by LuauPolyfill:
 
-- error instance: error message is **equal to** the message property of the instance
-- error class: error object is **instance of** class
+- [error object](#error): error message is **equal to** the message property of the object
+- [error class](#error): error object is **instance of** class
 
 For example, let's say that `drinkFlavor` is coded like this:
 
@@ -840,7 +1056,7 @@ it('throws on octopus', function()
 
 	-- Test the exact error message
 	expect(drinkOctopus).toThrowError(RegExp('^yuck, octopus flavor$'))
-	expect(drinkOctopus).toThrowError(DisgustingFlavorError('yuck, octopus flavor'))
+	expect(drinkOctopus).toThrowError(Error('yuck, octopus flavor'))
 
 	-- Test that we get a DisgustingFlavorError
 	expect(drinkOctopus).toThrowError(DisgustingFlavorError)

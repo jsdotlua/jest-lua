@@ -14,8 +14,13 @@ Replace TestEZ with JestRoblox in your `rotriever.toml`.
 
 Unlike TestEZ, which is injected into the global environment, you will need to explicitly require anything you need from `JestRoblox.Globals`. For example, to use the new Jest Roblox assertion library, add this to the top of your test file.
 ```lua
-local JestRoblox = require(Packages.JestRoblox).Globals
-local expect = JestRoblox.expect
+local jest = require(Packages.JestRoblox).Globals
+local expect = jest.expect
+```
+
+If you were previously overwriting the Luau type for `expect` as a workaround for TestEZ custom expectations, you can remove it.
+```diff
+-local expect: any = expect
 ```
 
 Then, replace the TestEZ `expect` syntax with their equivalents in Jest Roblox. The equivalent matchers for each TestEZ matcher are listed below.
@@ -67,5 +72,7 @@ expect({a = 1}).toEqual({a = 1})  -- passes in Jest Roblox
 expect(function()
 	error("nope")
 - end).to.throw()
-+ end).toThrow()
++ end).toThrow("nope")
 ```
+
+A `.toThrow()` with no arguments will match against any exception, so it is recommended to match against a specific error message or use the [`Error`](expect#error) polyfill to throw and match against a specific exception. See the reference doc on [`.toThrow(error?)`](expect#tothrowerror).

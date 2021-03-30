@@ -50,7 +50,6 @@ The following are identical to the ones above but are provided for the sake of c
 - `toBeNull` is an alias of `toBeNil`
 - `toBeDefined` is identical to `never.toBeNil`
 
-
 For example:
 
 ```lua
@@ -112,11 +111,11 @@ it('but there is a "stop" in Christoph', function()
 end)
 ```
 
-You can also check strings against a regular expression using the [`RegExp` Luau polyfill](expect#regexp):
+You can also check strings against a regular expression using the [`RegExp` LuauPolyfill](expect#regexp):
 
 ```lua
-it('there is a "stop" in Christoph', function()
-	expect('Christoph').toMatch(RegExp('stop'))
+it('Christoph ends in "oph"', function()
+	expect('Christoph').toMatch(RegExp('oph$'))
 end)
 ```
 
@@ -129,7 +128,7 @@ end)
 
 ## Tables
 
-You can check if a table contains a particular item using `toContain` or that a string contains a particular substring:
+You can check if an array contains a particular item using `toContain` or that a string contains a particular substring:
 
 ```lua
 local shoppingList = {
@@ -145,6 +144,56 @@ it('the shopping list has beer on it', function()
 end)
 ```
 
+`toContain` performs a shallow equality so if you need to check that a specific table exists within the array, use `.toContainEqual`.
+```lua
+local shoppingList = {
+	{'milk', 4},
+	{'bananas', 10},
+	{'beer', 1},
+}
+
+it('the shopping list contains {"beer", 1}', function()
+	expect(shoppingList).toContainEqual({'beer', 1})
+end)
+```
+
+You can also check that a table is equal to another table by using `toEqual`. This recursively compares all properties of the tables.
+
+```lua
+local inventory = {
+	lacroix = {
+		pamplemousse = 3,
+		passionfruit = 10,
+	},
+	beer = {
+		budweiser = 3,
+	}
+}
+
+it('the inventory matches', function()
+	expect(inventory.lacroix).toEqual({
+		lacroix = {
+			pamplemousse = 3,
+			passionfruit = 10,
+		},
+		beer = {
+			budweiser = 3,
+		}
+	})
+end)
+```
+
+Lastly, you can check that a table has a property and value by using `.toHaveProperty`.
+```lua
+it('the inventory has 3 budweisers', function()
+	expect(inventory).toHaveProperty('beer.budweiser', 3)
+end)
+
+it('the inventory does not have guinness', function()
+	expect(inventory).never.toHaveProperty('beer.guinness')
+end)
+```
+
 ## Exceptions
 
 If you want to test whether a particular function throws an error when it's called, use `toThrow`.
@@ -155,11 +204,11 @@ function thisFunctionErrors()
 end
 
 it('the function errors', function()
-	expect(compileAndroidCode).toThrow()
+	expect(thisFunctionErrors).toThrow()
 
 	-- You can also use the exact error message or a RegExp using the RegExp polyfill
-	expect(compileAndroidCode).toThrow('oh no')
-	expect(compileAndroidCode).toThrow(RegExp('no'))
+	expect(thisFunctionErrors).toThrow('oh no')
+	expect(thisFunctionErrors).toThrow(RegExp('no'))
 end)
 ```
 

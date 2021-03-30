@@ -27,7 +27,7 @@ This command generates static content into the `build` directory and can be serv
 ## Deployment
 
 ```console
-GIT_USER=<GHE_USERNAME> GIT_PASS=<GHE_PERSONAL_ACCESS_TOKEN> GITHUB_HOST=<URL_TO_GHE> USE_SSH=true yarn deploy
+GIT_USER=<GH_USERNAME> GIT_PASS=<GH_PERSONAL_ACCESS_TOKEN> USE_SSH=true yarn deploy
 ```
 
 If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.

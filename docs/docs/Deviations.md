@@ -37,6 +37,9 @@ Lua doesn't have constructors for primitive types, so `expect.any` accepts eithe
 
 `.toHaveLength` **cannot** be used to check the argument count of a function.
 
+### `.toBeFalsy()`
+`.toBeFalsy()` checks for Lua falsy values, which are only `false` and `nil`. That means that unlike in Javscript, `expect(0).toBeFalsy()` **does not** pass. Consequently, `.toBeTruthy()` matches anything that isn't `false` or `nil`.
+
 ### `.toBeNil()`
 When doing `nil` checking, use of `.toBeNil()` and `.never.toBeNil()` is encouraged to maintain Lua syntax. The following methods are identical but provided for the sake of completeness:
 - `.toBeUndefined()` is identical to `.toBeNil()`

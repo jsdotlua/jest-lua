@@ -8,8 +8,8 @@ At the top of your test files, require `JestRoblox` from the `Packages` director
 Then, explicitly import any of the following methods from `Globals`:
 
 ```lua
-local JestRoblox = require(Packages.JestRoblox).Globals
-local expect = JestRoblox.expect
+local jest = require(Packages.JestRoblox).Globals
+local expect = jest.expect
 ```
 
 ## Methods
@@ -26,3 +26,6 @@ import TOCInline from "@theme/TOCInline";
 
 ### `expect(value)`
 The `expect` function is used every time you want to test a value. See the [`expect` API doc](expect).
+
+### `jest`
+Returns the [Jest Object](jest-object).
