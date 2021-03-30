@@ -5,9 +5,9 @@ const VERSION = '1.0.0';
 module.exports = {
   title: 'Jest Roblox',
   tagline: 'Lovely Luau Testing',
-  url: 'https://pages.github.rbx.com',
-  baseUrl: '/rng/jest-roblox/',
-  organizationName: 'rng',
+  url: 'https://roblox.github.io',
+  baseUrl: '/',
+  organizationName: 'roblox',
   projectName: 'jest-roblox',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',

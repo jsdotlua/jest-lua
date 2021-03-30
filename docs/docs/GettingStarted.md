@@ -4,7 +4,7 @@ title: Getting Started
 slug: /
 ---
 
-Jest Roblox is a work in progress! You may need to refer to the [TestEZ API doc](testez) or the actual [TestEZ documentation](https://roblox.github.io/testez). You may also want to refer to the [Jest documentation](https://jestjs.io/docs/en/26.5/getting-started.html).
+Jest Roblox is a work in progress! You may need to refer to the [TestEZ API doc](testez) or the actual [TestEZ documentation](https://roblox.github.io/testez). You may also want to refer to the [Jest documentation](https://jestjs.io/docs/getting-started).
 
 Jest Roblox requires `rojo` and `roblox-cli` to run from the command line.
 

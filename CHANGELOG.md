@@ -1,6 +1,6 @@
 # Jest Roblox Changelog
 
-## Unreleased
+## 1.0.0 (2021-03-30)
 * Added spyMatchers
 ```
 expect().lastCalledWith() also aliased as expect().toHaveBeenLastCalledWith()
@@ -21,6 +21,10 @@ expect().toReturnWith() also aliased as expect().toHaveReturnedWith()
     * `:clearAllMocks()`
     * `:resetAllMocks()`
     * `:restoreAllMocks()`
+
+* Added `Error` type to `jest-get-type`
+* :bug: Bugfix in `.toMatch` where strings go into the RegEx check
+* :bug: Bugfix for `.toThrow` not matching `Error` object with same message
 
 ## 0.7.1 (2021-03-12)
 * Added chalk-enabled error output

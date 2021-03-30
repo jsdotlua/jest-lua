@@ -3,28 +3,26 @@
 	<a href="https://github.com/Roblox/jest-roblox/actions?query=workflow%3ACI">
 		<img src="https://github.com/Roblox/jest-roblox/workflows/CI/badge.svg" alt="GitHub Actions Build Status" />
 	</a>
-	<a href="https://roblox.github.io/testez">
+	<a href="https://roblox.github.io/jest-roblox/">
 			<img src="https://img.shields.io/badge/docs-website-green.svg" alt="Documentation" />
 	</a>
 </div>
 
 <div align="center">
-	BDD-style Roblox Lua testing framework
+	Lovely Lua Testing
 </div>
 
 <div>&nbsp;</div>
 
 Jest Roblox can run within Roblox itself, as well as inside roblox-cli for testing on CI systems.
 
-We use Jest Roblox at Roblox for testing our apps, in-game core scripts, built-in Roblox Studio plugins, as well as libraries like [Roact](https://github.com/Roblox/roact) and [Rodux](https://github.com/Roblox/rodux).
-
-For now, refer to the [Jest Documentation](https://jestjs.io/docs/en/26.5/getting-started.html) for documentation on the new expect functionality and the [TestEZ Documentation](https://roblox.github.io/testez) for everything else.
+We use Jest Roblox at Roblox for testing our apps, in-game core scripts, built-in Roblox Studio plugins, as well as libraries like [Roact Navigation](https://github.com/Roblox/roact-navigation).
 
 ---
 
 Add this package to your `dev_dependencies` in your `rotriever.toml`, for example:
 ```
-JestRoblox = "github.com/roblox/jest-roblox@0.5.0"
+JestRoblox = "github.com/roblox/jest-roblox@1.0.0"
 ```
 
 Then, require anything you need from `JestRoblox.Globals`:
