@@ -106,6 +106,11 @@ local function printBasicValue(
 		return val
 	end
 
+	-- deviation: catchall for arbitrary userdata
+	if typeOf == 'userdata' then
+		return tostring(val)
+	end
+
 	-- deviation: omitted all the JS types
 
 	return nil

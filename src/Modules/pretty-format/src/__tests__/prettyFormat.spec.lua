@@ -7,7 +7,6 @@
 --  */
 
 return function()
-
 	local Workspace = script.Parent.Parent
 	local Modules = Workspace.Parent
 	local Packages = Workspace.Parent.Parent.Parent
@@ -699,6 +698,14 @@ return function()
 					prettyFormat(1, {indent = 1, min = true})
 				end).toThrow()
 			end)
+		end)
+	end)
+
+	describe('jest roblox tests', function()
+		it('works for arbitrary userdata', function()
+			local testObject = newproxy(true)
+
+			jestExpect(prettyFormat(testObject)).toContain('userdata: 0x')
 		end)
 	end)
 end
