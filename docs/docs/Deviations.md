@@ -51,3 +51,20 @@ When doing `nil` checking, use of `.toBeNil()` and `.never.toBeNil()` is encoura
 
 ### `.toThrow(error?)`
 `.toThrow(error?)` can also accept custom Error objects provided by LuauPolyfill.
+
+
+## Mock Functions
+
+### `mockFn.new`
+Our translation of `new mockFn()` in Javascript is `mockFn.new()`
+
+So for the following code pattern in Javascript:
+```
+const mockFn = jest.fn()
+const instance1 = new mockFn()
+```
+We would write it in Lua as:
+```
+local mockFn = jest:fn()
+local instance1 = mockFn.new()
+```

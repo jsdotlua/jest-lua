@@ -67,10 +67,9 @@ For example: A mock function that has been instantiated twice would have the fol
 
 ```lua
 local mockFn = jest:fn()
-mockFn.mockReturnThis()
 
-local a = mockFn()
-local b = mockFn()
+local a = mockFn.new()
+local b = mockFn.new()
 
 mockFn.mock.instances[1] == a
 mockFn.mock.instances[2] == b

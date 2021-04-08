@@ -33,14 +33,12 @@ return function()
 					local fn = moduleMocker:fn()
 					jestExpect(fn.mock.instances).toEqual({})
 
-					-- deviation: we have no built in concept of new fn() in Lua
-					-- so we use mockReturnThis to replicate that behavior
-					fn.mockReturnThis()
-
-					local instance1 = fn()
+					-- deviation: We have to call fn.new() because we don't have a new keyword
+					local instance1 = fn.new()
 					jestExpect(fn.mock.instances[1]).toBe(instance1)
 
-					local instance2 = fn()
+					-- deviation: We have to call fn.new() because we don't have a new keyword
+					local instance2 = fn.new()
 					jestExpect(fn.mock.instances[2]).toBe(instance2)
 				end)
 

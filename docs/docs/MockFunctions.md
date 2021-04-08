@@ -39,10 +39,9 @@ All mock functions have this special `.mock` property, which is where data about
 
 ```lua
 local myMock = jest:fn()
-myMock.mockReturnThis()
 
-local a = myMock()
-local b = myMock()
+local a = myMock.new()
+local b = myMock.new()
 
 expect(myMock.mock.instances[1]).toBe(a)
 expect(myMock.mock.instances[2]).toBe(b)

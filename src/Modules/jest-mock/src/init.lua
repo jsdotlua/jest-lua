@@ -287,6 +287,13 @@ function ModuleMockerClass:_makeComponent(
 			return mockConfig.mockName or 'jest:fn()'
 		end
 
+		-- deviation: Since we don't have the new keyword in Lua, we add a
+		-- fn.new() function
+		f.new = function(...)
+			f(...)
+			return f
+		end
+
 		if metadata.mockImpl then
 			f.mockImplementation(metadata.mockImpl)
 		end
