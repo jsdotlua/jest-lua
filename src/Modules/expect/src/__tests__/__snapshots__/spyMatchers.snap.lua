@@ -112,7 +112,7 @@ snapshots['lastCalledWith works with many arguments 1'] = [=[
 Expected: never [32m"foo"[39m, [32m"bar"[39m
 Received
        2:       [2m"foo"[22m, [31m"bar1"[39m
-->     3:       [2m"foo"[22m, [31m"bar"[39m
+->     3:       [2m"foo"[22m, [2m"bar"[22m
 
 Number of calls: [31m3[39m]=]
 
@@ -126,12 +126,12 @@ Received
 
 Number of calls: [31m3[39m]=]
 
--- deviation: changed undefined to false
+-- deviation: changed undefined to nil
 snapshots['lastCalledWith works with trailing undefined arguments 1'] = [=[
 [2mexpect([22m[31mjest:fn()[39m[2m).[22mlastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m
-Received: [31m"foo"[39m, [31mfalse[39m
+Received: [2m"foo"[22m, [31mnil[39m
 
 Number of calls: [31m1[39m]=]
 
@@ -397,18 +397,18 @@ snapshots['nthCalledWith works with three calls 1'] = [=[
 n: 1
 Expected: never [32m"foo1"[39m, [32m"bar"[39m
 Received
-->     1:       [2m"foo1"[22m, [31m"bar"[39m
+->     1:       [2m"foo1"[22m, [2m"bar"[22m
        2:       [31m"foo"[39m, [31m"bar1"[39m
 
 Number of calls: [31m3[39m]=]
 
--- deviation: changed undefined to false
+-- deviation: changed undefined to nil
 snapshots['nthCalledWith works with trailing undefined arguments 1'] = [=[
 [22m[32m...expected[39m[2m)[22m
 
 n: 1
 Expected: [32m"foo"[39m
-Received: [31m"foo"[39m, [31mfalse[39m
+Received: [2m"foo"[22m, [31mnil[39m
 
 Number of calls: [31m1[39m]=]
 
@@ -921,7 +921,7 @@ snapshots['toBeCalledWith works with many arguments 1'] = [=[
 
 Expected: never [32m"foo"[39m, [32m"bar"[39m
 Received
-       3:       [2m"foo"[22m, [31m"bar"[39m
+       3:       [2m"foo"[22m, [2m"bar"[22m
 
 Number of calls: [31m3[39m]=]
 
@@ -936,12 +936,12 @@ Received
 
 Number of calls: [31m3[39m]=]
 
--- deviation: changed undefined to false
+-- deviation: changed undefined to nil
 snapshots['toBeCalledWith works with trailing undefined arguments 1'] = [=[
 [2mexpect([22m[31mjest:fn()[39m[2m).[22mtoBeCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m
-Received: [31m"foo"[39m, [31mfalse[39m
+Received: [2m"foo"[22m, [31mnil[39m
 
 Number of calls: [31m1[39m]=]
 
@@ -1219,7 +1219,7 @@ snapshots['toHaveBeenCalledWith works with many arguments 1'] = [=[
 
 Expected: never [32m"foo"[39m, [32m"bar"[39m
 Received
-       3:       [2m"foo"[22m, [31m"bar"[39m
+       3:       [2m"foo"[22m, [2m"bar"[22m
 
 Number of calls: [31m3[39m]=]
 
@@ -1234,12 +1234,12 @@ Received
 
 Number of calls: [31m3[39m]=]
 
--- deviation: changed undefined to false
+-- deviation: changed undefined to nil
 snapshots['toHaveBeenCalledWith works with trailing undefined arguments 1'] = [=[
 [2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveBeenCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m
-Received: [31m"foo"[39m, [31mfalse[39m
+Received: [2m"foo"[22m, [31mnil[39m
 
 Number of calls: [31m1[39m]=]
 
@@ -1345,7 +1345,7 @@ snapshots['toHaveBeenLastCalledWith works with many arguments 1'] = [=[
 Expected: never [32m"foo"[39m, [32m"bar"[39m
 Received
        2:       [2m"foo"[22m, [31m"bar1"[39m
-->     3:       [2m"foo"[22m, [31m"bar"[39m
+->     3:       [2m"foo"[22m, [2m"bar"[22m
 
 Number of calls: [31m3[39m]=]
 
@@ -1359,12 +1359,12 @@ Received
 
 Number of calls: [31m3[39m]=]
 
--- deviation: changed undefined to false
+-- deviation: changed undefined to nil
 snapshots['toHaveBeenLastCalledWith works with trailing undefined arguments 1'] = [=[
 [2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveBeenLastCalledWith[2m([22m[32m...expected[39m[2m)[22m
 
 Expected: [32m"foo"[39m
-Received: [31m"foo"[39m, [31mfalse[39m
+Received: [2m"foo"[22m, [31mnil[39m
 
 Number of calls: [31m1[39m]=]
 
@@ -1503,18 +1503,18 @@ snapshots['toHaveBeenNthCalledWith works with three calls 1'] = [=[
 n: 1
 Expected: never [32m"foo1"[39m, [32m"bar"[39m
 Received
-->     1:       [2m"foo1"[22m, [31m"bar"[39m
+->     1:       [2m"foo1"[22m, [2m"bar"[22m
        2:       [31m"foo"[39m, [31m"bar1"[39m
 
 Number of calls: [31m3[39m]=]
 
--- deviation: changed undefined to false
+-- deviation: changed undefined to nil
 snapshots['toHaveBeenNthCalledWith works with trailing undefined arguments 1'] = [=[
 [22m[32m...expected[39m[2m)[22m
 
 n: 1
 Expected: [32m"foo"[39m
-Received: [31m"foo"[39m, [31mfalse[39m
+Received: [2m"foo"[22m, [31mnil[39m
 
 Number of calls: [31m1[39m]=]
 

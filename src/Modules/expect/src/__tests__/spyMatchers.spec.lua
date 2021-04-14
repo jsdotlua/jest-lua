@@ -263,10 +263,10 @@
 				end).toThrow(snapshots[calledWith .. ' works with arguments that match 1'])
 			end)
 
-			-- deviation: replaced undefined with false
+			-- deviation: changed undefined to nil
 			it('works with trailing undefined arguments', function()
 				local fn = jest:fn()
-				fn('foo', false)
+				fn('foo', nil)
 
 				jestExpect(function()
 					caller(jestExpect(fn)[calledWith], 'foo')
@@ -1163,23 +1163,4 @@
 			end)
 		end)
 	end
-
-	describe("Lua spyMatchers tests", function()
-		-- some basic test cases that don't work properly that exhibit the behavior that should
-		-- get fixed by ADO-1395. The second test case actually seems to be erroring correctly
-		-- but we need the error message to be better
-		describe("calls with nil arguments", function()
-			itSKIP("lastCalledWith works with trailing nil arguments", function()
-				local fn = jest:fn()
-				fn('a', 'b', nil)
-				jestExpect(fn).never.lastCalledWith('a', 'b')
-			end)
-
-			itSKIP("lastCalledWith works with inner nil argument", function()
-				local fn = jest:fn()
-				fn('a', nil, 'b')
-				jestExpect(fn).lastCalledWith('a', nil)
-			end)
-		end)
-	end)
 end

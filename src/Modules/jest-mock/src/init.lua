@@ -20,12 +20,16 @@ local ModuleMockerClass = {}
 type Array<T> = { [number]: T };
 -- ROBLOX TODO: Fix once Luau has support for default type arguments
 type MockDefaultY = Array<any>;
+-- deviation: we add a callLengths array to keep track of the number of
+-- arguments in the calls so that we don't stop at the first nil value
 type MockFunctionState<T, Y> = {
 	calls: Array<Y>,
+	callLengths: Array<number>,
 	instances: Array<T>,
 	invocationCallOrder: Array<number>,
 	results: Array<MockFunctionResult>
 };
+
 -- ROBLOX TODO: Uncomment this type and use it once Luau has supported it
 -- ROBLOX TODO: Un in-line the MockInstance type declaration once we have "extends" syntax in Luau
 -- type Mock<T, Y> = {
@@ -49,9 +53,9 @@ type MockFunctionState<T, Y> = {
 -- 	__call: (...) -> T
 -- };
 
--- deviation: MockFunctionResultType defined as any for now but
+-- deviation: MockFunctionResultType defined as string for now but
 -- eventually should be = 'return' | 'throw' | 'incomplete';
-type MockFunctionResultType = any;
+type MockFunctionResultType = string;
 type MockFunctionResult = {
 	type: MockFunctionResultType,
 	value: any
@@ -112,9 +116,12 @@ function ModuleMockerClass:_defaultMockConfig(): MockFunctionConfig
 	}
 end
 
+-- deviation: we add a callLengths array to keep track of the number of
+-- arguments in the calls so that we don't stop at the first nil value
 function ModuleMockerClass:_defaultMockState()
 	return {
 		calls = {},
+		callLengths = {},
 		instances = {},
 		invocationCallOrder = {},
 		results = {}
@@ -130,11 +137,15 @@ function ModuleMockerClass:_makeComponent(
 
 		local mockConstructor = function(f, ...)
 			local args = {...}
+
 			local mockState = mocker:_ensureMockState(f)
 			local mockConfig = mocker:_ensureMockConfig(f)
 
 			table.insert(mockState.instances, f)
 			table.insert(mockState.calls, args)
+			-- deviation: we also update a callLengths array to help deal with
+			-- function calls with nil args
+			table.insert(mockState.callLengths, select("#", ...))
 
 			-- // Create and record an "incomplete" mock result immediately upon
 			-- // calling rather than waiting for the mock to return. This avoids

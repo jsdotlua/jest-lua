@@ -152,14 +152,14 @@ function makeThrowingMatcher(
 
 		local potentialResult
 
-		local ok, result = pcall(function()
+		local ok, result = pcall(function(...)
 			-- ROBLOX TODO: Implement INTERNAL_MATCHER_FLAG cases
-			potentialResult = matcher(matcherContext, actual, unpack(args))
+			potentialResult = matcher(matcherContext, actual, ...)
 
 			local syncResult = potentialResult
 
 			return processResult(syncResult)
-		end)
+		end, ...)
 
 		if not ok then
 			error(result)

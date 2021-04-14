@@ -22,6 +22,7 @@ return function()
 	local Number = Polyfill.Number
 	local Symbol = Polyfill.Symbol
 	local RegExp = Polyfill.RegExp
+	local Set = Polyfill.Set
 
 	local jasmineUtils = require(Workspace.jasmineUtils)
 	local equals = jasmineUtils.equals
@@ -109,6 +110,14 @@ return function()
 			expect(equals(RegExp("abc"), RegExp("abd"))).to.equal(false)
 			expect(equals(RegExp("abc", "m"), RegExp("abc", "m"))).to.equal(true)
 			expect(equals(RegExp("abc", "m"), RegExp("abc"))).to.equal(false)
+		end)
+	end)
+
+	describe("set equality", function()
+		it("basic sets", function()
+			expect(equals(Set.new({1,2}), Set.new({3,4}))).to.equal(false)
+			expect(equals(Set.new({1,2}), Set.new({1,2}))).to.equal(true)
+
 		end)
 	end)
 
