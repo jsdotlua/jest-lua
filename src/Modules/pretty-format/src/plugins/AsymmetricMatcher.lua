@@ -39,7 +39,7 @@ local function serialize(
 ): string
 	local stringedValue = val:toString()
 
-	if 
+	if
 		stringedValue == 'ArrayContaining' or
 		stringedValue == 'ArrayNotContaining'
 	then
@@ -49,9 +49,9 @@ local function serialize(
 		end
 		return stringedValue ..
 			SPACE ..
-			'[' ..
+			'{' ..
 			printListItems(val.sample, config, indentation, depth, refs, printer) ..
-			']'
+			'}'
 	end
 
 	if

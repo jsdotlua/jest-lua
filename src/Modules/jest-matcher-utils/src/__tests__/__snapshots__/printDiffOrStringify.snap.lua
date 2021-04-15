@@ -81,10 +81,10 @@ snapshots["printDiffOrStringify asymmetricMatcher jest asymmetricMatcher 1"] = [
 [2m  Table {[22m
 [2m    "a": Any<number>,[22m
 [2m    "b": Anything,[22m
-[2m    "c": ArrayContaining [[22m
+[2m    "c": ArrayContaining {[22m
 [2m      1,[22m
 [2m      3,[22m
-[2m    ],[22m
+[2m    },[22m
 [2m    "d": StringContaining "jest",[22m
 [2m    "e": StringMatching "jest",[22m
 [2m    "f": ObjectContaining {[22m

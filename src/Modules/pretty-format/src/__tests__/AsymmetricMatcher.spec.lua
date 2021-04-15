@@ -62,20 +62,20 @@ return function()
 	it('arrayContaining()', function()
 		local result = prettyFormat(jestExpect.arrayContaining({1, 2}), options)
 		expect(result).to.equal(
-			'ArrayContaining [\n' ..
+			'ArrayContaining {\n' ..
 			'  1,\n' ..
 			'  2,\n' ..
-			']'
+			'}'
 		)
 	end)
 
 	it('arrayNotContaining()', function()
 		local result = prettyFormat(jestExpect.never.arrayContaining({1, 2}), options)
 		expect(result).to.equal(
-			'ArrayNotContaining [\n' ..
+			'ArrayNotContaining {\n' ..
 			'  1,\n' ..
 			'  2,\n' ..
-			']'
+			'}'
 		)
 	end)
 
@@ -155,9 +155,9 @@ return function()
 			'Table {\n' ..
 			'  "test": Table {\n' ..
 			'    "nested": ObjectContaining {\n' ..
-			'      "a": ArrayContaining [\n' ..
+			'      "a": ArrayContaining {\n' ..
 			'        1,\n' ..
-			'      ],\n' ..
+			'      },\n' ..
 			'      "b": Anything,\n' ..
 			'      "c": Any<string>,\n' ..
 			'      "d": StringContaining "jest",\n' ..
@@ -188,9 +188,9 @@ return function()
 		}
 		local result = 'Table {\n' ..
 			'  "nested": ObjectContaining {\n' ..
-			'    "a": ArrayContaining [\n' ..
+			'    "a": ArrayContaining {\n' ..
 			'      1,\n' ..
-			'    ],\n' ..
+			'    },\n' ..
 			'    "b": Anything,\n' ..
 			'    "c": Any<string>,\n' ..
 			'    "d": StringContaining "jest",\n' ..
@@ -286,10 +286,10 @@ return function()
 			local result = prettyFormat(val, options)
 			expect(result).to.equal(
 				'Table {\n' ..
-				'  ArrayContaining [\n' ..
+				'  ArrayContaining {\n' ..
 				'    "printed",\n' ..
 				'    [Table],\n' ..
-				'  ],\n' ..
+				'  },\n' ..
 				'  ObjectContaining {\n' ..
 				'    "array": [Table],\n' ..
 				'    "primitive": "printed",\n' ..
@@ -320,7 +320,7 @@ return function()
 			'{' ..
 				'"test": {' ..
 					'"nested": ObjectContaining {' ..
-						'"a": ArrayContaining [1], ' ..
+						'"a": ArrayContaining {1}, ' ..
 						'"b": Anything, '..
 						'"c": Any<string>, ' ..
 						'"d": StringContaining "jest", ' ..
