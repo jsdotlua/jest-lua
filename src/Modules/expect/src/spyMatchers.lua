@@ -6,39 +6,6 @@
  -- * LICENSE file in the root directory of this source tree.
  -- */
 
- --[[
- 	deviation: We have a deviation across many of the spyMatchers for function
- 	calls (i.e. lastCalledWith, nthCalledWith, etc.) where we pass along length
- 	parameters to allow the matchers to work with function calls with nil arguments
-
- 	Some common deviations throughout the code are:
- 		- Changing functions to have extra length parameters
- 		- Tracking a callLengths array in addition to a calls array
- 		- Changing indexedCalls to be a 3-tuple with the third item being the length of the call
-
- 	The following function APIs were modified:
- 		printExpectedArgs(expected) changed to
- 		printExpectedArgs(expected, expectedLength)
-
- 		printReceivedArgs(received, expected) changed to
- 		printReceivedArgs(received, expected, receivedLength, expectedLength)
-
-		isEqualCall(expected, received) changed to
-		isEqualCall(expected, received, expectedLength, receivedLength)
-
-		printReceivedCallsNegative(expected, indexedCalls, isOnlyCall, iExpectedCall) changed to
-		printReceivedCallsNegative(expected, expectedLength, indexedCalls, isOnlyCall, iExpectedCall)
-
-		printExpectedReceivedCallsPositive(expected, indexedCalls, expand, isOnlyCall, iExpectedCall) changed to
-		printExpectedReceivedCallsPositive(expected, expectedLength, indexedCalls, expand, isOnlyCall, iExpectedCall)
-
-		printDiffCall(expected, received, expand) changed to
-		printDiffCall(expected, received, expand, expectedLength, receivedLength)
-
-		isLineDiffableCall(expected, received) changed to
-		isLineDiffableCall(expected, received, expectedLength, receivedLength)
- ]]
-
 local Workspace = script.Parent
 local Modules = Workspace.Parent
 local Packages = Modules.Parent.Parent
@@ -48,6 +15,7 @@ local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
 local Number = LuauPolyfill.Number
 local String = LuauPolyfill.String
+local Symbol = LuauPolyfill.Symbol
 
 local getType = require(Modules.JestGetType).getType
 local isPrimitive = require(Modules.JestGetType).isPrimitive
@@ -92,53 +60,25 @@ local PRINT_LIMIT = 3
 
 local NO_ARGUMENTS = 'called with 0 arguments'
 
--- deviation: we add the expectedLength parameter as part of our deviation for
--- nil argument functionality
-function printExpectedArgs(expected: Array<any>, expectedLength: number): string
-	if expectedLength == 0 then
+function printExpectedArgs(expected: Array<any>): string
+	if #expected == 0 then
 		return NO_ARGUMENTS
 	else
-		local retval = {}
-		-- deviation: We use a for loop instead of the Array polyfills so that
-		-- we don't stop at the first nil value in a table
-		for i = 1, expectedLength do
-			local arg = expected[i]
-			table.insert(retval, printExpected(arg))
-		end
-
-		return table.concat(retval, ", ")
+		return Array.join(
+			Array.map(expected, function(arg)
+				return printExpected(arg)
+			end),
+			", "
+		)
 	end
 end
 
--- deviation: we add the expectedLength and receivedLength parameters as part
--- of our deviation for nil argument functionality
 function printReceivedArgs(
 	received: Array<any>,
-	expected: Array<any>,
-	receivedLength: number?,
-	expectedLength: number?
+	expected: Array<any>
 ): string
-	if #received == 0 or receivedLength == 0 then
+	if #received == 0 then
 		return NO_ARGUMENTS
-	end
-
-	-- deviation: We have two separate cases here depending on how the function is called
-	-- the if case is to deal with nil args and the else case is mirrored from upstream
-	if receivedLength and expectedLength then
-		local retval = {}
-		for i = 1, receivedLength do
-			local arg = received[i]
-			if Array.isArray(expected) and
-				i <= expectedLength and
-				isEqualValue(expected[i], arg)
-			then
-					table.insert(retval, printCommon(arg))
-			else
-				table.insert(retval, printReceived(arg))
-			end
-		end
-
-		return table.concat(retval, ", ")
 	else
 		return Array.join(
 			Array.map(
@@ -147,8 +87,7 @@ function printReceivedArgs(
 				if
 					Array.isArray(expected) and
 					i <= #expected and
-					isEqualValue(expected[i], arg)
-				then
+					isEqualValue(expected[i], arg) then
 						return printCommon(arg)
 				else
 					return printReceived(arg)
@@ -164,36 +103,15 @@ function printCommon(val: any)
 end
 
 
-function isEqualValue(
-	expected: any,
-	received: any
-): boolean
-	return equals(expected, received)
+function isEqualValue(expected: any, received: any): boolean
+	return equals(expected, received, {iterableEquality})
 end
 
--- deviation: we add the expectedLength and receivedLength parameters as part
--- of our deviation for nil argument functionality
 function isEqualCall(
 	expected: Array<any>,
-	received: Array<any>,
-	expectedLength: number,
-	receivedLength: number
+	received: Array<any>
 ): boolean
-	-- deviation: We use a for loop instead of the Array polyfills so that
-	-- we don't stop at the first nil value in a table
-	if expectedLength ~= receivedLength then
-		return false
-	end
-
-	for i = 1, expectedLength do
-		if expected[i] ~= received[i] then
-			if not isEqualValue(expected[i], received[i]) then
-				return false
-			end
-		end
-	end
-
-	return true
+	return isEqualValue(expected, received)
 end
 
 function isEqualReturn(expected, result): boolean
@@ -251,11 +169,8 @@ end
 -- deviation: IndexedCall annotated as any for now since we don't have tuple support in luau
 type IndexedCall = any;
 
--- deviation: we add the expectedLength parameter as part of our deviation for
--- nil argument functionality
 function printReceivedCallsNegative(
 	expected: Array<any>,
-	expectedLength: number,
 	indexedCalls: Array<IndexedCall>,
 	isOnlyCall: boolean,
 	iExpectedCall: number?
@@ -267,7 +182,7 @@ function printReceivedCallsNegative(
 	local label = 'Received:       '
 
 	if isOnlyCall then
-		return label .. printReceivedArgs(indexedCalls[1][2], expected, indexedCalls[1][3], expectedLength) .. '\n'
+		return label .. printReceivedArgs(indexedCalls[1], expected) .. '\n'
 	end
 
 	local printAligned = getRightAlignedPrinter(label)
@@ -279,28 +194,24 @@ function printReceivedCallsNegative(
 			function(printed: string, iCall: IndexedCall)
 				local i = iCall[1]
 				local args = iCall[2]
-				local receivedLength = iCall[3]
 
 				return printed ..
 					printAligned(tostring(i), i == iExpectedCall) ..
-					printReceivedArgs(args, expected, receivedLength, expectedLength) ..
+					printReceivedArgs(args, expected) ..
 					'\n'
 			end,
 			''
 		)
 end
 
--- deviation: we add the expectedLength parameter as part of our deviation for
--- nil argument functionality
 function printExpectedReceivedCallsPositive(
 	expected: Array<any>,
-	expectedLength: number,
 	indexedCalls: Array<IndexedCall>,
 	expand: boolean,
 	isOnlyCall: boolean,
 	iExpectedCall: number?
 )
-	local expectedLine = string.format('Expected: %s\n', printExpectedArgs(expected, expectedLength))
+	local expectedLine = string.format('Expected: %s\n', printExpectedArgs(expected))
 
 	if #indexedCalls == 0 then
 		return expectedLine
@@ -310,9 +221,7 @@ function printExpectedReceivedCallsPositive(
 
 	if isOnlyCall and (iExpectedCall == 1 or iExpectedCall == nil) then
 		local received = indexedCalls[1][2]
-		local receivedLength = indexedCalls[1][3]
-
-		if isLineDiffableCall(expected, received, expectedLength, receivedLength) then
+		if isLineDiffableCall(expected, received) then
 			-- // Display diff without indentation.
 			local lines = {
 				EXPECTED_COLOR('- Expected'),
@@ -320,12 +229,16 @@ function printExpectedReceivedCallsPositive(
 				'',
 			}
 
-			local length = math.max(expectedLength, receivedLength)
+			local length = math.max(#expected, #received)
 			for i = 1, length do
-				if i <= expectedLength and i <= receivedLength then
+				local added = false
+
+				if i <= #expected and i <= #received then
 					if isEqualValue(expected[i], received[i]) then
 						table.insert(lines, '  ' .. printCommon(received[i]) .. ',')
-					elseif isLineDiffableArg(expected[i], received[i]) then
+						added = true
+					end
+					if not added and isLineDiffableArg(expected[i], received[i]) then
 						local difference = diff(expected[i], received[i], {expand})
 
 						if (
@@ -346,13 +259,15 @@ function printExpectedReceivedCallsPositive(
 									'\n'
 								) .. ','
 							)
+							added = true
 						end
 					end
-				else
+				end
+				if not added then
 					if i <= #expected then
 						table.insert(lines, EXPECTED_COLOR('- ' .. stringify(expected[i])) .. ',')
 					end
-					if i < #received then
+					if i <= #received then
 						table.insert(lines, RECEIVED_COLOR('+ ' .. stringify(received[i])) .. ',')
 					end
 				end
@@ -361,8 +276,7 @@ function printExpectedReceivedCallsPositive(
 
 			return table.concat(lines, '\n') .. '\n'
 		end
-
-		return expectedLine .. label .. printReceivedArgs(received, expected, receivedLength, expectedLength) .. '\n'
+		return expectedLine .. label .. printReceivedArgs(received, expected) .. '\n'
 	end
 
 	local printAligned = getRightAlignedPrinter(label)
@@ -375,17 +289,16 @@ function printExpectedReceivedCallsPositive(
 			function(printed: string, indexedCall: IndexedCall)
 				local i = indexedCall[1]
 				local received = indexedCall[2]
-				local receivedLength = indexedCall[3]
 
 				local aligned = printAligned(tostring(i), i == iExpectedCall)
 
 				if (i == iExpectedCall or iExpectedCall == nil) and
-					isLineDiffableCall(expected, received, expectedLength, receivedLength) then
+					isLineDiffableCall(expected, received) then
 						return printed ..
 							aligned:sub(1, aligned:find(':') - 1) .. '\n' .. aligned:sub(aligned:find(':') + 1, #aligned) ..
 							printDiffCall(expected, received, expand) .. '\n'
 				else
-					return printed .. aligned .. printReceivedArgs(received, expected, receivedLength, expectedLength) .. '\n'
+					return printed .. aligned .. printReceivedArgs(received, expected) .. '\n'
 				end
 			end,
 			'')
@@ -393,82 +306,65 @@ end
 
 local indentation = string.gsub('Received', '[a-zA-Z0-9_]', ' ')
 
--- deviation: we add the expectedLength and receivedLength parameters as part
--- of our deviation for nil argument functionality
 function printDiffCall(
 	expected: Array<any>,
 	received: Array<any>,
-	expand: boolean,
-	expectedLength: number,
-	receivedLength: number
+	expand: boolean
 )
-	-- deviation: We use a for loop instead of the Array polyfills so that
-	-- we don't stop at the first nil value in a table
-	local retval = ""
-	for i = 1, receivedLength do
-		local arg = received[i]
-		if i <= expectedLength then
-			if isEqualValue(expected[i], arg) then
-				retval = retval .. indentation .. '  ' .. printCommon(arg) .. ','
-			elseif isLineDiffableArg(expected[i], arg) then
-				local difference = diff(expected[i], arg, {expand = expand})
+	return Array.join(
+		Array.map(received, function(arg, i)
+			if i <= #expected then
+				if isEqualValue(expected[i], arg) then
+					return indentation .. '  ' .. printCommon(arg) .. ','
+				end
 
-				if typeof(difference) == 'string' and
-					difference:find('%- Expected') and
-					difference:find('%+ Received')
-				then
-					 -- // Display diff with indentation.
-					 -- // Omit annotation in case multiple args have diff.
-					local splitLines = {}
-					for s in difference:gmatch("[^\n]+") do
-						table.insert(splitLines, s)
+				if isLineDiffableArg(expected[i], arg) then
+					local difference = diff(expected[i], arg, {expand = expand})
+
+					if typeof(difference) == 'string' and
+						difference:find('%- Expected') and
+						difference:find('%+ Received') then
+						 -- // Display diff with indentation.
+						 -- // Omit annotation in case multiple args have diff.
+						local splitLines = {}
+						for s in difference:gmatch("[^\n]+") do
+							table.insert(splitLines, s)
+						end
+
+						return
+							Array.join(
+								Array.map(Array.slice(splitLines, 3), function(line)
+									return indentation .. line
+								end),
+								'\n'
+							) .. ','
 					end
-
-					table.insert(retval,
-						Array.join(
-							Array.map(Array.slice(splitLines, 3), function(line)
-								return indentation .. line
-							end),
-							'\n'
-						) .. ','
-					)
 				end
 			end
-		else
-			-- // Display + only if received arg has no corresponding eexpected arg.
-			table.insert(retval,
-				indentation .. (function()
-					if i <= #expected then
-						return '  ' + printReceived(arg)
-					end
 
-					return RECEIVED_COLOR('+ ' .. stringify(arg))
-				end)() .. ','
-			)
-		end
-	end
+			-- // Display + only if received arg has no corresponding expected arg.
+			return indentation .. (function()
+				if i <= #expected then
+					return '  ' + printReceived(arg)
+				end
 
-	return table.concat(retval, '\n')
+				return RECEIVED_COLOR('+ ' .. stringify(arg))
+			end)() .. ','
+		end),
+		'\n'
+	)
 end
 
--- deviation: we add the expectedLength and receivedLength parameters as part
--- of our deviation for nil argument functionality
 function isLineDiffableCall(
 	expected: Array<any>,
-	received: Array<any>,
-	expectedLength: number,
-	receivedLength: number
+	received: Array<any>
 ): boolean
-	-- deviation: We use a for loop instead of the Array polyfills so that
-	-- we don't stop at the first nil value in a table
-	for i = 1, expectedLength do
-		local arg = expected[i]
-		if i <= receivedLength and isLineDiffableArg(arg, received[i]) then
-			return true
+	return Array.some(
+		expected,
+		function(arg, i)
+			return i <= #received and isLineDiffableArg(arg, received[i])
 		end
-	end
-
-	return false
+	)
 end
 
 -- // Almost redundant with function in jest-matcher-utils,
@@ -833,10 +729,15 @@ local function createToBeCalledWithMatcher(matcherName: string): SyncExpectation
 		received: any,
 		...
 	)
-		-- deviation: we add the expectedLength variable and change function
-		-- logic as part of our deviation for nil argument functionality
 		local expected = {...}
 		local expectedLength = select("#", ...)
+		for i = 1, expectedLength do
+			-- deviation: We add this if statement to deal with our internal symbol
+			-- that represents nil
+			if expected[i] == nil then
+				expected[i] = Symbol.for_("$$nil")
+			end
+		end
 		local expectedArgument = '...expected'
 		local options: JestMatcherUtils.MatcherHintOptions = {
 			isNot = this.isNot,
@@ -853,10 +754,7 @@ local function createToBeCalledWithMatcher(matcherName: string): SyncExpectation
 			receivedName = received.getMockName()
 		end
 
-		-- deviation: we also use the contents of the callLengths array to
-		-- make sure we iterate over entire function calls rather than stopping
-		-- at the first nil value
-		local calls, callLengths
+		local calls
 		if receivedIsSpy then
 			calls = Array.map(
 				received.calls.all(),
@@ -864,28 +762,16 @@ local function createToBeCalledWithMatcher(matcherName: string): SyncExpectation
 					return x.args
 				end
 			)
-
-			if received.calls.lengths then
-				callLengths = received.calls.lengths()
-			else
-				callLengths = {}
-				for key, value in ipairs(calls) do
-					table.insert(callLengths, #value)
-				end
-			end
 		else
 			calls = received.mock.calls
-			callLengths = received.mock.callLengths
 		end
 
-		local pass = false
-		-- deviation: We use a for loop instead of the Array polyfills so that
-		-- we don't stop at the first nil value in a table
-		for i, call in ipairs(calls) do
-			if isEqualCall(expected, call, expectedLength, callLengths[i]) then
-				pass = true
+		local pass = Array.some(
+			calls,
+			function(call)
+				return isEqualCall(expected, call)
 			end
-		end
+		)
 
 		local message
 		if pass then
@@ -894,20 +780,19 @@ local function createToBeCalledWithMatcher(matcherName: string): SyncExpectation
 				local indexedCalls: Array<IndexedCall> = {}
 				local i = 1
 				while i <= #calls and #indexedCalls < PRINT_LIMIT do
-					if isEqualCall(expected, calls[i], expectedLength, callLengths[i]) then
-						table.insert(indexedCalls, {i, calls[i], callLengths[i]})
+					if isEqualCall(expected, calls[i]) then
+						table.insert(indexedCalls, {i, calls[i]})
 					end
 					i = i + 1
 				end
 
 				local retval = matcherHint(matcherName, receivedName, expectedArgument, options) ..
 					'\n\n' ..
-					('Expected: never %s\n'):format(printExpectedArgs(expected, expectedLength))
+					('Expected: never %s\n'):format(printExpectedArgs(expected))
 
 				if not (#calls == 1 and stringify(calls[1]) == stringify(expected)) then
 					retval = retval .. printReceivedCallsNegative(
 						expected,
-						expectedLength,
 						indexedCalls,
 						#calls == 1
 					)
@@ -922,15 +807,13 @@ local function createToBeCalledWithMatcher(matcherName: string): SyncExpectation
 				local indexedCalls: Array<IndexedCall> = {}
 				local i = 1
 				while i <= #calls and #indexedCalls < PRINT_LIMIT do
-					table.insert(indexedCalls, {i, calls[i], callLengths[i]})
+					table.insert(indexedCalls, {i, calls[i]})
 					i = i + 1
 				end
-
 				return matcherHint(matcherName, receivedName, expectedArgument, options) ..
 					'\n\n' ..
 					printExpectedReceivedCallsPositive(
 						expected,
-						expectedLength,
 						indexedCalls,
 						isExpand(this.expand),
 						#calls == 1) ..
@@ -1031,10 +914,15 @@ local function createLastCalledWithMatcher(matcherName: string): SyncExpectation
 		received: any,
 		...
 	)
-		-- deviation: we add the expectedLength variable and change function
-		-- logic as part of our deviation for nil argument functionality
 		local expected: Array<any> = {...}
 		local expectedLength = select("#", ...)
+		for i = 1, expectedLength do
+			-- deviation: We add this if statement to deal with our internal symbol
+			-- that represents nil
+			if expected[i] == nil then
+				expected[i] = Symbol.for_("$$nil")
+			end
+		end
 		local expectedArgument = '...expected'
 		local options: JestMatcherUtils.MatcherHintOptions = {
 			isNot = this.isNot,
@@ -1051,10 +939,7 @@ local function createLastCalledWithMatcher(matcherName: string): SyncExpectation
 			receivedName = received.getMockName()
 		end
 
-		-- deviation: we also use the contents of the callLengths array to
-		-- make sure we iterate over entire function calls rather than stopping
-		-- at the first nil value
-		local calls, callLengths
+		local calls
 		if receivedIsSpy then
 			calls = Array.map(
 				received.calls.all(),
@@ -1062,42 +947,32 @@ local function createLastCalledWithMatcher(matcherName: string): SyncExpectation
 					return x.args
 				end
 			)
-
-			if received.calls.lengths then
-				callLengths = received.calls.lengths()
-			else
-				callLengths = {}
-				for key, value in ipairs(calls) do
-					table.insert(callLengths, #value)
-				end
-			end
 		else
 			calls = received.mock.calls
-			callLengths = received.mock.callLengths
 		end
 
 		local iLast = #calls
 
-		local pass = iLast >= 1 and isEqualCall(expected, calls[iLast], expectedLength, callLengths[iLast])
+		local pass = iLast >= 1 and isEqualCall(expected, calls[iLast])
+
 		local message
 		if pass then
 			message = function()
 				local indexedCalls: Array<IndexedCall> = {}
 				if iLast > 1 then
 					-- // Display preceding call as context.
-					table.insert(indexedCalls, {iLast - 1, calls[iLast - 1], callLengths[iLast - 1]})
+					table.insert(indexedCalls, {iLast - 1, calls[iLast - 1]})
 				end
 
-				table.insert(indexedCalls, {iLast, calls[iLast], callLengths[iLast]})
+				table.insert(indexedCalls, {iLast, calls[iLast]})
 
 				local retval = matcherHint(matcherName, receivedName, expectedArgument, options) ..
 					'\n\n' ..
-					('Expected: never %s\n'):format(printExpectedArgs(expected, expectedLength))
+					('Expected: never %s\n'):format(printExpectedArgs(expected))
 
 				if not (#calls == 1 and stringify(calls[1]) == stringify(expected)) then
 					retval = retval .. printReceivedCallsNegative(
 						expected,
-						expectedLength,
 						indexedCalls,
 						#calls == 1,
 						iLast
@@ -1115,24 +990,23 @@ local function createLastCalledWithMatcher(matcherName: string): SyncExpectation
 					if iLast > 1 then
 						local i = iLast - 1
 						-- // Is there a preceding call that is equal to expected args?
-						while i >= 1 and not isEqualCall(expected, calls[i], expectedLength, callLengths[i]) do
+						while i >= 1 and not isEqualCall(expected, calls[i]) do
 							i = i - 1
 						end
 						if i < 1 then
 							i = iLast - 1 -- // otherwise, preceding call
 						end
 
-						table.insert(indexedCalls, {i, calls[i], callLengths[i]})
+						table.insert(indexedCalls, {i, calls[i]})
 					end
 
-					table.insert(indexedCalls, {iLast, calls[iLast], callLengths[iLast]})
+					table.insert(indexedCalls, {iLast, calls[iLast]})
 				end
 
 				return matcherHint(matcherName, receivedName, expectedArgument, options) ..
 					'\n\n' ..
 					printExpectedReceivedCallsPositive(
 						expected,
-						expectedLength,
 						indexedCalls,
 						isExpand(this.expand),
 						#calls == 1,
@@ -1234,10 +1108,15 @@ local function createNthCalledWithMatcher(matcherName: string): SyncExpectationR
 		nth: number,
 		...
 	)
-		-- deviation: we add the expectedLength variable and change function
-		-- logic as part of our deviation for nil argument functionality
 		local expected = {...}
 		local expectedLength = select("#", ...)
+		for i = 1, expectedLength do
+			-- deviation: We add this if statement to deal with our internal symbol
+			-- that represents nil
+			if expected[i] == nil then
+				expected[i] = Symbol.for_("$$nil")
+			end
+		end
 		local expectedArgument = 'n'
 		local options: JestMatcherUtils.MatcherHintOptions = {
 			expectedColor = function(arg)
@@ -1266,10 +1145,7 @@ local function createNthCalledWithMatcher(matcherName: string): SyncExpectationR
 			receivedName = received.getMockName()
 		end
 
-		-- deviation: we also use the contents of the callLengths array to
-		-- make sure we iterate over entire function calls rather than stopping
-		-- at the first nil value
-		local calls, callLengths
+		local calls
 		if receivedIsSpy then
 			calls = Array.map(
 				received.calls.all(),
@@ -1277,23 +1153,13 @@ local function createNthCalledWithMatcher(matcherName: string): SyncExpectationR
 					return x.args
 				end
 			)
-
-			if received.calls.lengths then
-				callLengths = received.calls.lengths()
-			else
-				callLengths = {}
-				for key, value in ipairs(calls) do
-					table.insert(callLengths, #value)
-				end
-			end
 		else
 			calls = received.mock.calls
-			callLengths = received.mock.callLengths
 		end
 		local length = #calls
 		local iNth = nth
 
-		local pass = iNth <= length and isEqualCall(expected, calls[iNth], expectedLength, callLengths[iNth])
+		local pass = iNth <= length and isEqualCall(expected, calls[iNth])
 
 		local message
 		if pass then
@@ -1303,23 +1169,22 @@ local function createNthCalledWithMatcher(matcherName: string): SyncExpectationR
 				local indexedCalls: Array<IndexedCall> = {}
 
 				if iNth - 1 >= 1 then
-					table.insert(indexedCalls, {iNth - 1, calls[iNth - 1], callLengths[iNth - 1]})
+					table.insert(indexedCalls, {iNth - 1, calls[iNth - 1]})
 				end
-				table.insert(indexedCalls, {iNth, calls[iNth], callLengths[iNth]})
+				table.insert(indexedCalls, {iNth, calls[iNth]})
 
 				if iNth + 1 <= length then
-					table.insert(indexedCalls, {iNth + 1, calls[iNth + 1], callLengths[iNth + 1]})
+					table.insert(indexedCalls, {iNth + 1, calls[iNth + 1]})
 				end
 
 				local retval =  matcherHint(matcherName, receivedName, expectedArgument, options) ..
 					'\n\n' ..
 					('n: %s\n'):format(tostring(nth)) ..
-					('Expected: never %s\n'):format(printExpectedArgs(expected, expectedLength))
+					('Expected: never %s\n'):format(printExpectedArgs(expected))
 
 				if not (#calls == 1 and stringify(calls[1]) == stringify(expected)) then
 					retval = retval .. printReceivedCallsNegative(
 						expected,
-						expectedLength,
 						indexedCalls,
 						#calls == 1,
 						iNth
@@ -1342,7 +1207,7 @@ local function createNthCalledWithMatcher(matcherName: string): SyncExpectationR
 					if iNth - 1 >= 1 then
 						local i = iNth - 1
 						-- // Is there a preceding call that is equal to expected args?
-						while i >= 1 and not isEqualCall(expected, calls[i], expectedLength, callLengths[i]) do
+						while i >= 1 and not isEqualCall(expected, calls[i]) do
 							i = i - 1
 						end
 
@@ -1350,14 +1215,14 @@ local function createNthCalledWithMatcher(matcherName: string): SyncExpectationR
 							i = iNth - 1 -- // otherwise, adjacent call
 						end
 
-						table.insert(indexedCalls, {i, calls[i], callLengths[i]})
+						table.insert(indexedCalls, {i, calls[i]})
 					end
-					table.insert(indexedCalls, {iNth, calls[iNth], callLengths[iNth]})
+					table.insert(indexedCalls, {iNth, calls[iNth]})
 
 					if iNth + 1 <= length then
 						local i = iNth + 1
 						-- // Is there a following call that is equal to expected args?
-						while i <= length and not isEqualCall(expected, calls[i], expectedLength, callLengths[i]) do
+						while i <= length and not isEqualCall(expected, calls[i]) do
 							i = i + 1
 						end
 
@@ -1365,13 +1230,13 @@ local function createNthCalledWithMatcher(matcherName: string): SyncExpectationR
 							i = iNth + 1 -- // otherwise, adjacent call
 						end
 
-						table.insert(indexedCalls, {i, calls[i], callLengths[i]})
+						table.insert(indexedCalls, {i, calls[i]})
 					end
 				elseif length > 1 then
 					-- // Is there a call that is equal to expected args?
 					local i = length - 1
 					-- // Is there a call that is equal to expected args?
-					while i >= 1 and not isEqualCall(expected, calls[i], expectedLength, callLengths[i]) do
+					while i >= 1 and not isEqualCall(expected, calls[i]) do
 						i = i - 1
 					end
 
@@ -1379,13 +1244,13 @@ local function createNthCalledWithMatcher(matcherName: string): SyncExpectationR
 						i = length - 1
 					end
 
-					table.insert(indexedCalls, {i, calls[i], callLengths[i]})
+					table.insert(indexedCalls, {i, calls[i]})
 				end
 
 				return matcherHint(matcherName, receivedName, expectedArgument, options) ..
 					'\n\n' ..
 					('n: %s\n'):format(tostring(nth)) ..
-					printExpectedReceivedCallsPositive(expected, expectedLength, indexedCalls, isExpand(this.expand), #calls == 1, iNth) ..
+					printExpectedReceivedCallsPositive(expected, indexedCalls, isExpand(this.expand), #calls == 1, iNth) ..
 					('\nNumber of calls: %s'):format(printReceived(#calls))
 			end
 		end

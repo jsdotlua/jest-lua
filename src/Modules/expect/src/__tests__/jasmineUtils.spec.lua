@@ -114,10 +114,12 @@ return function()
 	end)
 
 	describe("set equality", function()
-		it("basic sets", function()
-			expect(equals(Set.new({1,2}), Set.new({3,4}))).to.equal(false)
-			expect(equals(Set.new({1,2}), Set.new({1,2}))).to.equal(true)
-
+		-- not yet supported, these tests should be moved to iterableEquality when that
+		-- is repurposed for the Set polyfill
+		itSKIP("basic sets", function()
+			expect(equals(Set.new({1, 2}), Set.new({3, 4}))).to.equal(false)
+			expect(equals(Set.new({1, 2}), Set.new({1, 2}))).to.equal(true)
+			expect(equals(Set.new({2, 1}), Set.new({1, 2}))).to.equal(true)
 		end)
 	end)
 

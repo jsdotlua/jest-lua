@@ -11,8 +11,9 @@ local Modules = Workspace.Parent
 local Packages = Modules.Parent.Parent
 
 local Polyfills = require(Packages.LuauPolyfill)
-local Number = Polyfills.Number
 local Array = Polyfills.Array
+local Number = Polyfills.Number
+local Symbol = Polyfills.Symbol
 
 local chalk = require(Packages.ChalkLua)
 
@@ -97,6 +98,10 @@ local replaceTrailingSpaces, getCommonAndChangedSubstrings, isLineDiffable, shou
 local matcherErrorMessage, matcherHint
 
 local function stringify(object: any, maxDepth: number?): string
+	-- deviation: Added this if logic to deal with handling nil values in Lua tables
+	if object == Symbol.for_("$$nil") then
+		object = nil
+	end
 	maxDepth = maxDepth or 10
 
 	local MAX_LENGTH = 10000

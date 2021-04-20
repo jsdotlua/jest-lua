@@ -7,6 +7,8 @@ return function()
 	local Polyfill = require(Packages.LuauPolyfill)
 	local Array = Polyfill.Array
 
+	local snapshots = require(script.Parent.__snapshots__['spyMatchers.roblox.snap'])
+
 	local jestExpect = require(Workspace)
 	local mock = require(Modules.JestMock)
 
@@ -15,10 +17,7 @@ return function()
 		jest = mock.new()
 	end)
 
-	-- A smart spy is just like a regular spy but it works with recognizing
-	-- nil arguments in mocked calls since it exposes the fn.mock.callLengths
-	-- array
-	local function createSmartSpy(fn)
+	local function createSpy(fn)
 		local spy = {}
 		setmetatable(spy, {
 			__call = function() end
@@ -35,9 +34,6 @@ return function()
 			end,
 			count = function()
 				return #fn.mock.calls
-			end,
-			lengths = function()
-				return fn.mock.callLengths
 			end
 		}
 
@@ -45,11 +41,12 @@ return function()
 	end
 
 	describe("Lua tests", function()
-		describe("calls with nil arguments", function()
-			it("lastCalledWith works with trailing nil arguments", function()
+		describe("nil argument calls", function()
+			it("lastCalledWith works with trailing nil argument", function()
 				local fn = jest:fn()
 				fn('a', 'b', nil)
 				jestExpect(fn).never.lastCalledWith('a', 'b')
+				jestExpect(function() jestExpect(fn).lastCalledWith('a', 'b') end).toThrow(snapshots['Lua tests nil argument calls lastCalledWith works with trailing nil arguments 1'])
 			end)
 
 			it("lastCalledWith works with inner nil argument", function()
@@ -57,6 +54,24 @@ return function()
 				fn('a', nil, 'b')
 				jestExpect(fn).never.lastCalledWith('a', nil)
 				jestExpect(fn).lastCalledWith('a', nil, 'b')
+				jestExpect(function() jestExpect(fn).lastCalledWith('a', nil) end).toThrow(snapshots['Lua tests nil argument calls lastCalledWith works with inner nil argument 1'])
+				jestExpect(function() jestExpect(fn).never.lastCalledWith('a', nil, 'b') end).toThrow(snapshots['Lua tests nil argument calls lastCalledWith works with inner nil argument 2'])
+			end)
+
+			it("lastCalledWith complex call with nil", function()
+				local fn = jest:fn()
+				fn('a', {1, 2}, nil, nil)
+				jestExpect(fn).lastCalledWith('a', {1, 2}, nil, nil)
+				jestExpect(function() jestExpect(fn).lastCalledWith('a', {1, 3}, nil, 'b') end).toThrow(snapshots['Lua tests nil argument calls lastCalledWith complex call with nil 1'])
+				jestExpect(function() jestExpect(fn).lastCalledWith('a', {1, 2}, nil) end).toThrow(snapshots['Lua tests nil argument calls lastCalledWith complex call with nil 2'])
+			end)
+
+			it("lastCalledWith complex multi-call with nil", function()
+				local fn = jest:fn()
+				fn('a', {1, 2})
+				fn('a', {1, 2}, nil, nil)
+				jestExpect(fn).lastCalledWith('a', {1, 2}, nil, nil)
+				jestExpect(function() jestExpect(fn).lastCalledWith('a', {1, 2}, nil) end).toThrow(snapshots['Lua tests nil argument calls lastCalledWith complex multi-call with nil 1'])
 			end)
 
 			it("toBeCalledWith single call", function()
@@ -76,6 +91,8 @@ return function()
 				jestExpect(fn).never.toBeCalledWith('a', 'b', nil, nil)
 				jestExpect(fn).toBeCalledWith('a', 'b', nil, nil, 4)
 				jestExpect(fn).never.toBeCalledWith('a', 'b', nil, nil, 4, nil)
+				jestExpect(function() jestExpect(fn).toBeCalledWith('a', 'b') end).toThrow(snapshots['Lua tests nil argument calls toBeCalledWith multi-call 1'])
+				jestExpect(function() jestExpect(fn).toBeCalledWith('a', 'b', nil, nil, 4, nil) end).toThrow(snapshots['Lua tests nil argument calls toBeCalledWith multi-call 2'])
 			end)
 
 			it("lastCalledWith single call", function()
@@ -115,11 +132,11 @@ return function()
 				jestExpect(fn).never.nthCalledWith(2, 'a', 'b', nil, nil, 4, nil)
 			end)
 
-			it("works with smart spies", function()
+			it("works with spies", function()
 				local fn = jest:fn()
 				fn('arg0', nil)
-				jestExpect(createSmartSpy(fn)).never.lastCalledWith('arg0')
-				jestExpect(createSmartSpy(fn)).lastCalledWith('arg0', nil)
+				jestExpect(createSpy(fn)).never.lastCalledWith('arg0')
+				jestExpect(createSpy(fn)).lastCalledWith('arg0', nil)
 			end)
 		end)
 	end)
