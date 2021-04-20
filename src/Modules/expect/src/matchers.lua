@@ -58,6 +58,7 @@ local getObjectSubset = Utils.getObjectSubset
 local getPath = Utils.getPath
 local iterableEquality = Utils.iterableEquality
 local subsetEquality = Utils.subsetEquality
+local typeEquality = Utils.typeEquality
 -- deviation: omitted imports for sparseArrayEquality and typeEquality
 
 local equals = require(Workspace.jasmineUtils).equals
@@ -76,11 +77,11 @@ end
 
 -- deviation: don't need any of the strict equality testers since we don't have added constraints for
 -- strict equality in Lua compared to deep equality
--- local toStrictEqualTesters = {
+local toStrictEqualTesters = {
 -- 	iterableEquality,
--- 	typeEquality,
+	typeEquality
 -- 	sparseArrayEquality,
--- }
+}
 
 -- deviation: upstream defines matchers as a single monolithic object but we split it up for readability
 
@@ -1034,7 +1035,57 @@ local function toMatchObject(this: MatcherState, received: any, expected: any)
 	return {message = message, pass = pass}
 end
 
--- deviation: toStrictEqual omitted, no strict equality in Lua
+--[[
+	deviation: the toStrictEqual matcher in Jest adds three features beyond
+	that of the toEqual matcher:
+		1) Checking for undefined properties
+		2) Checking array sparseness
+		3) Type checking
+
+	Of these, Jest-Roblox's version of the toStrictEqual matcher only
+	applies type checking
+]]
+local function toStrictEqual(this: MatcherState, received: any, expected: any)
+	local matcherName = 'toStrictEqual'
+	local options = {
+		comment = 'deep equality',
+		this = this.isNot,
+		promise = this.promise
+	}
+
+	local pass = equals(received, expected, toStrictEqualTesters, true)
+
+	local message
+	if pass then
+		message = function()
+			local retval = matcherHint(matcherName, nil, nil, options) ..
+				'\n\n' ..
+				string.format('Expected: not %s\n', printExpected(expected))
+
+			if stringify(expected) ~= stringify(received) then
+				retval = retval .. string.format('Received:     %s', printReceived(received))
+			end
+
+			return retval
+		end
+	else
+		message = function()
+			return matcherHint(matcherName, nil, nil, options) ..
+				'\n\n' ..
+				printDiffOrStringify(
+					expected,
+					received,
+					EXPECTED_LABEL,
+					RECEIVED_LABEL,
+					isExpand(this.expand)
+				)
+		end
+	end
+	-- // Passing the actual and expected objects so that a custom reporter
+	-- // could access them, for example in order to display a custom visual diff,
+	-- // or create a different error message
+	return {actual = received, expected = expected, message = message, name = matcherName, pass = pass}
+end
 
 return {
 	toBe = toBe,
@@ -1059,5 +1110,5 @@ return {
 	toHaveProperty = toHaveProperty,
 	toMatch = toMatch,
 	toMatchObject = toMatchObject,
-	-- toStrictEqual = toStrictEqual,
+	toStrictEqual = toStrictEqual,
 }

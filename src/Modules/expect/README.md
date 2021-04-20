@@ -32,6 +32,7 @@ Version: v26.5.3
     ```
     * `StringMatching` accepts Lua string patterns or a LuauPolyfill `RegExp`
     * :warning: Although Jest has use cases where `toHaveProperty` is used to detect the existence of a property as `undefined`, we should never try to use `toHaveProperty` with `nil` as the property to check for
+    * `toStrictEqual` does not check for array sparseness or `undefined` properties like in Javascript. Its only difference from `toEqual` is that it also applies a Lua type/class check based on the Lua prototypical metatable inheritance pattern
 * :warning: isError returns `true` for string and table types since we don't have a designated error type in Lua and these two types are what can be used to trigger an error
 * The throwing matchers (e.g. `toThrow()`) will print out stack traces for ALL types (except `nil`) that are thrown whereas in Javascript the stack trace is only printed if you error with an Error type. In other words, executing a `toThrow` matcher on something like `throw ''` in Javascript will not end up printing the stack trace but doing so with `error("")` will print the stack trace for our Lua equivalent.
 * :warning: When writing custom matchers with `expect.extend()`, a first argument `self` is needed to receive the `matcherContext`. It can be left empty with `_` if the `matcherContext` is not be needed.

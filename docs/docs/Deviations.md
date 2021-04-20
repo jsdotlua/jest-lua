@@ -49,6 +49,9 @@ When doing `nil` checking, use of `.toBeNil()` and `.never.toBeNil()` is encoura
 ### `.toBeInstanceOf(prototype)`
 `.toBeInstanceOf(prototype)` uses the [`instanceof` method in LuauPolyfill](https://github.com/Roblox/luau-polyfill/blob/main/src/instanceof.lua) to check that a value is an instance (or a derived instance) of a prototype class.
 
+### `.toStrictEqual()`
+`toStrictEqual()` performs a `toEqual` comparison with an additional type/class check based on metatable inheritance. Our `toStrictEqual` does not check for array sparseness or for `undefined` values like the matcher does in Javascript's Jest.
+
 ### `.toThrow(error?)`
 `.toThrow(error?)` can also accept custom Error objects provided by LuauPolyfill.
 

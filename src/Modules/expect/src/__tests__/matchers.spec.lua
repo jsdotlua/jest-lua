@@ -124,7 +124,159 @@ return function()
 		end)
 	end)
 
-	-- deviation: tests within the toStrictEqual describe block are omitted
+	--[[
+		deviation: the toStrictEqual matcher in Jest adds three features beyond
+		that of the toEqual matcher:
+			1) Checking for undefined properties
+			2) Checking array sparseness
+			3) Type checking
+
+		Of these, Jest-Roblox's version of the toStrictEqual matcher only
+		applies type checking
+
+		Thus, tests checking undefined properties and checking array sparseness
+		are omitted
+	]]
+	describe(".toStrictEqual()", function()
+		local TestClassA = {}
+		TestClassA.__index = TestClassA
+		setmetatable(TestClassA, {
+			__tostring = function(self)
+				return "TestClassObject"
+			end
+		})
+		function TestClassA.new(a, b)
+			local self = {
+				a = a,
+				b = b
+			}
+			return setmetatable(self, TestClassA)
+		end
+
+		local TestClassB = {}
+		TestClassB.__index = TestClassB
+		setmetatable(TestClassB, {
+			__tostring = function(self)
+				return "TestClassObject"
+			end
+		})
+		function TestClassB.new(a, b)
+			local self = {
+				a = a,
+				b = b
+			}
+			return setmetatable(self, TestClassB)
+		end
+
+		local TestClassC = extends(TestClassA, "Child", function(self, a, b)
+			self.a = a
+			self.b = b
+		end)
+
+		local TestClassD = extends(TestClassB, "Child", function(self, a, b)
+			self.a = a
+			self.b = b
+		end)
+
+		itSKIP('does not ignore keys with undefined values', function()
+			jestExpect({
+				a = nil,
+				b = 2,
+			}).never.toStrictEqual({b = 2})
+		end)
+
+		itSKIP('does not ignore keys with undefined values inside an array', function()
+			jestExpect({{a = nil}}).never.toStrictEqual({{}})
+		end)
+
+		itSKIP('does not ignore keys with undefined values deep inside an object', function()
+			jestExpect({{a = {{a = nil}}}}).never.toStrictEqual({{a = {{}}}})
+		end)
+
+		it('passes when comparing same type', function()
+			jestExpect({
+				test = TestClassA.new(1, 2)
+			}).toStrictEqual({test = TestClassA.new(1, 2)})
+		end)
+
+		it('matches the expected snapshot when it fails', function()
+			expect(function()
+				jestExpect({
+					test = 2
+				}).toStrictEqual({test = TestClassA.new(1, 2)})
+			end).to.throw(snapshots['.toStrictEqual() matches the expected snapshot when it fails 1'])
+
+			expect(function()
+				jestExpect({
+					test = TestClassA.new(1, 2)
+				}).never.toStrictEqual({ test = TestClassA.new(1, 2)})
+			end).to.throw(snapshots['.toStrictEqual() matches the expected snapshot when it fails 2'])
+		end)
+
+		it('displays substring diff', function()
+			local expected =
+				'Another caveat is that Jest will not typecheck your tests.'
+			local received =
+				'Because TypeScript support in Babel is just transpilation, Jest will not type-check your tests as they run.'
+			expect(function()
+				jestExpect(received).toStrictEqual(expected)
+			end).to.throw(snapshots['.toStrictEqual() displays substring diff 1'])
+		end)
+
+		it('displays substring diff for multiple lines', function()
+			local expected = table.concat({
+				'    69 | ',
+				"    70 | test('assert.doesNotThrow', () => {",
+				'  > 71 |   assert.doesNotThrow(() => {',
+				'       |          ^',
+				"    72 |     throw Error('err!');",
+				'    73 |   });',
+				'    74 | });',
+				'    at Object.doesNotThrow (__tests__/assertionError.test.js:71:10)',
+			}, '\n')
+			local received = table.concat({
+				'    68 | ',
+				"    69 | test('assert.doesNotThrow', () => {",
+				'  > 70 |   assert.doesNotThrow(() => {',
+				'       |          ^',
+				"    71 |     throw Error('err!');",
+				'    72 |   });',
+				'    73 | });',
+				'    at Object.doesNotThrow (__tests__/assertionError.test.js:70:10)',
+			}, '\n')
+			expect(function()
+				jestExpect(received).toStrictEqual(expected)
+			end).to.throw(snapshots['.toStrictEqual() displays substring diff for multiple lines 1'])
+		end)
+
+		it('does not pass for different types', function()
+			jestExpect({
+				test = TestClassA.new(1, 2),
+			}).never.toStrictEqual({test = TestClassB.new(1, 2)})
+		end)
+
+		it('does not simply compare constructor names', function()
+			local c = TestClassC.new(1, 2)
+			local d = TestClassD.new(1, 2)
+			-- deviation: instead of comparing constructor name we compare tostring values
+			jestExpect(tostring(c)).toEqual(tostring(d))
+			jestExpect({test = c}).never.toStrictEqual({test = d})
+		end)
+
+		itSKIP('passes for matching sparse arrays', function()
+			-- jestExpect({, 1}).toStrictEqual({, 1})
+		end)
+
+		itSKIP('does not pass when sparseness of arrays do not match', function()
+			-- jestExpect({, 1}).never.toStrictEqual({nil, 1})
+			-- jestExpect({nil, 1}).never.toStrictEqual({, 1})
+			-- jestExpect({, , , 1}).never.toStrictEqual({, 1})
+		end)
+
+		itSKIP('does not pass when equally sparse arrays have different values', function()
+			-- jestExpect({, 1}).never.toStrictEqual({, 2})
+		end)
+ 	end)
 
 	--[[
 			deviation: omitted test cases that become redundant in our Lua translation i.e.
@@ -1041,7 +1193,7 @@ return function()
 			jestExpect('this?: throws').toContain('this?: throws')
 		end)
 
-		it('does not maintain RegExp state between calls (lua)', function()
+		it('does not maintain RegExp state between calls', function()
 			local regex = RegExp("[fF]\\d+", 'i') -- ROBLOX TODO: change to [f] when "i" flag is working
 
 			jestExpect('f123').toMatch(regex)

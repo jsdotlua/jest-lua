@@ -2066,6 +2066,53 @@ snapshots['.toMatch() throws: [bar, foo] 1'] = [=[
 Expected pattern: [32m"foo"[39m
 Received string:  [31m"bar"[39m]=]
 
+snapshots['.toStrictEqual() displays substring diff 1'] = [=[
+[2mexpect([22m[31mreceived[39m[2m).[22mtoStrictEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
+
+Expected: [32m"[7mAnother caveat is that[27m Jest will not typecheck your tests."[39m
+Received: [31m"[7mBecause TypeScript support in Babel is just transpilation,[27m Jest will not type[7m-[27mcheck your tests[7m as they run[27m."[39m]=]
+
+snapshots['.toStrictEqual() displays substring diff for multiple lines 1'] = [=[
+[2mexpect([22m[31mreceived[39m[2m).[22mtoStrictEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
+
+[32m- Expected  - 7[39m
+[31m+ Received  + 7[39m
+
+[32m-     6[7m9[27m |[43m [49m[39m
+[31m+     6[7m8[27m |[43m [49m[39m
+[32m-     [7m70[27m | test('assert.doesNotThrow', () => {[39m
+[31m+     [7m69[27m | test('assert.doesNotThrow', () => {[39m
+[32m-   > 7[7m1[27m |   assert.doesNotThrow(() => {[39m
+[31m+   > 7[7m0[27m |   assert.doesNotThrow(() => {[39m
+[2m         |          ^[22m
+[32m-     7[7m2[27m |     throw Error('err!');[39m
+[31m+     7[7m1[27m |     throw Error('err!');[39m
+[32m-     7[7m3[27m |   });[39m
+[31m+     7[7m2[27m |   });[39m
+[32m-     7[7m4[27m | });[39m
+[31m+     7[7m3[27m | });[39m
+[32m-     at Object.doesNotThrow (__tests__/assertionError.test.js:7[7m1[27m:10)[39m
+[31m+     at Object.doesNotThrow (__tests__/assertionError.test.js:7[7m0[27m:10)[39m]=]
+
+snapshots['.toStrictEqual() matches the expected snapshot when it fails 1'] = [=[
+[2mexpect([22m[31mreceived[39m[2m).[22mtoStrictEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
+
+[32m- Expected  - 4[39m
+[31m+ Received  + 1[39m
+
+[2m  Table {[22m
+[32m-   "test": Table {[39m
+[32m-     "a": 1,[39m
+[32m-     "b": 2,[39m
+[32m-   },[39m
+[31m+   "test": 2,[39m
+[2m  }[22m]=]
+
+snapshots['.toStrictEqual() matches the expected snapshot when it fails 2'] = [=[
+[2mexpect([22m[31mreceived[39m[2m).[22mtoStrictEqual[2m([22m[32mexpected[39m[2m) -- deep equality[22m
+
+Expected: not [32m{"test": {"a": 1, "b": 2}}[39m]=]
+
 snapshots['toMatchObject() {pass: false} expect({0}).toMatchObject({-0}) 1'] = [=[
 [2mexpect([22m[31mreceived[39m[2m).[22mtoMatchObject[2m([22m[32mexpected[39m[2m)[22m
 

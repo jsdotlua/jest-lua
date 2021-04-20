@@ -1,5 +1,10 @@
 # Jest Roblox Changelog
 
+## Unreleased
+* Added `toStrictEqual` matcher
+* :bug: Bugfix in `SpyMatchers` where function calls with `nil` arguments would not be handled correctly
+* Changed the `ArrayContaining` asymmetric matcher to output curly braces instead of square brackets
+
 ## 1.0.0 (2021-03-30)
 * Added spyMatchers
 ```

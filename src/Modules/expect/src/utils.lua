@@ -342,7 +342,22 @@ function subsetEquality(
 end
 
 local function typeEquality(a: any, b: any): boolean | nil
-	if a == nil or b == nil or typeof(a) == typeof(b) then
+	if a == nil or b == nil then
+		return nil
+	end
+
+	if typeof(a) ~= typeof(b) then
+		return false
+	end
+
+	if not getmetatable(a) and not getmetatable(b) then
+		return nil
+	end
+
+	if getmetatable(a) and getmetatable(b) and
+		getmetatable(a).__index and getmetatable(b).__index and
+		getmetatable(a).__index == getmetatable(b).__index
+	then
 		return nil
 	end
 

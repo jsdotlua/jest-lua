@@ -997,6 +997,30 @@ describe('toMatchObject applied to arrays', function()
 end)
 ```
 
+### `.toStrictEqual(value)`
+
+Use `.toStrictEqual` to test that objects have the same types.
+
+Difference from `.toEqual`:
+- Lua tables that follow metatable inheritance patterns will also be checked for type equality
+
+```lua
+local LaCroix = {}
+LaCroix.__index = LaCroix
+function LaCroix.new(flavor)
+	return setmetatable({
+		flavor = flavor
+	}, LaCroix)
+end
+
+describe('the La Croix cans on my desk', function()
+	it('the La Croix cans on my desk are not semantically the same', function()
+		jestExpect(LaCroix.new('lemon')).toEqual({flavor = 'lemon'})
+		jestExpect(LaCroix.new('lemon')).never.toStrictEqual({flavor = 'lemon'})
+	end)
+end)
+```
+
 ### `.toThrow(error?)`
 
 Also under the alias: `.toThrowError(error?)`
