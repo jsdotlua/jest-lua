@@ -111,6 +111,7 @@ return function()
 		)
 	end)
 
+	-- ROBLOX TODO: ADO-1475
 	it('exposes matcherUtils in context', function()
 		jestExpect.extend({
 			_shouldNotError = function(self, _actual, _expected)
@@ -142,12 +143,13 @@ return function()
 				return {pass = false}
 			end
 		})
-	
+
 		expect(function()
 			jestExpect(true).toFailWithoutMessage()
 		end).to.throw(snapshots['is ok if there is no message specified 1'])
 	end)
 
+	-- ROBLOX TODO: ADO-1475
 	it('exposes an equality function to custom matchers', function()
 		-- // jestExpect and expect share the same global state
 		-- expect.assertions(3)
@@ -157,7 +159,7 @@ return function()
 				return {pass = not not self.equals(1, 1)}
 			end
 		})
-	
+
 		expect(function() jestExpect().toBeOne() end).never.to.throw()
 	end)
 

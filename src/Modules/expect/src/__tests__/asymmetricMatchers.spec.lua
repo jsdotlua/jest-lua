@@ -15,7 +15,7 @@ return function()
 	local Polyfills = require(Packages.LuauPolyfill)
 	local RegExp = Polyfills.RegExp
 
-	local AsymmetricMatchers = require(script.Parent.Parent.asymmetricMatchers)
+	local AsymmetricMatchers = require(Workspace.asymmetricMatchers)
 	local any = AsymmetricMatchers.any
 	local anything = AsymmetricMatchers.anything
 	local arrayContaining = AsymmetricMatchers.arrayContaining

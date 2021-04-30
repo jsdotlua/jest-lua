@@ -37,6 +37,12 @@
           },
           "JestMock": {
             "$path": "src/Modules/jest-mock/src"
+          },
+          "JestFakeTimers": {
+            "$path": "src/Modules/jest-fake-timers/src"
+          },
+          "Jest": {
+            "$path": "src/Modules/jest/src"
           }
         }
       }

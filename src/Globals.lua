@@ -1,8 +1,10 @@
 local Modules = script.Parent.Modules
-local jestExpect = require(Modules.Expect)
-local jestMock = require(Modules.JestMock)
+
+local expect = require(Modules.Expect)
+
+local jest = require(Modules.Jest).jest
 
 return {
-	expect = jestExpect,
-	jest = jestMock.new(),
+	expect = expect,
+	jest = jest
 }

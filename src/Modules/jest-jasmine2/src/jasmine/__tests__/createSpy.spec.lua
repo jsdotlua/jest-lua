@@ -8,9 +8,13 @@
 return function()
 	describe("Spies", function()
 		local Workspace = script.Parent.Parent
+		local Modules = Workspace.Parent.Parent
+
 		local createSpy = require(Workspace.createSpy)
 		local SpyStrategy = require(Workspace.SpyStrategy)
 		local CallTracker = require(Workspace.CallTracker)
+
+		local jestExpect = require(Modules.Expect)
 
 		describe("createSpy", function()
 			local TestClass = {}
@@ -58,11 +62,12 @@ return function()
 				end).to.throw("Jasmine spies would overwrite the 'and', 'andAlso' and 'calls' properties on the object being spied upon")
 			end)
 
+			-- ROBLOX TODO: ADO-1475
 			it("adds a spyStrategy and callTracker to the spy", function()
 				local spy = createSpy("TestClass.prototype", TestClass.prototype.someFunction)
 
-				expect(spy["and"].__index).to.equal(SpyStrategy)
-				expect(spy.calls.__index).to.equal(CallTracker)
+				jestExpect(spy["and"].__index).toEqual(SpyStrategy)
+				jestExpect(spy.calls.__index).toEqual(CallTracker)
 			end)
 
 			-- ROBLOX TODO: implement more tests when we have more files
