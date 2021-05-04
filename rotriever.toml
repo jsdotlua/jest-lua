@@ -7,7 +7,7 @@ version = "1.0.0"
 
 [dependencies]
 LuauPolyfill = "github.com/roblox/luau-polyfill@0.1.5"
-ChalkLua = "github.com/roblox/chalk-lua@0.1.1"
+ChalkLua = "github.com/roblox/chalk-lua@0.1.2"
 
 [dev_dependencies]
 Promise = "github.com/evaera/roblox-lua-promise@3.0.1"

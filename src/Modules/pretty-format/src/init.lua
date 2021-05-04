@@ -20,6 +20,7 @@ local printTableEntries = Collections.printTableEntries
 local printListItems = Collections.printListItems
 
 local AsymmetricMatcher = require(Workspace.plugins.AsymmetricMatcher)
+local ConvertAnsi = require(Workspace.plugins.ConvertAnsi)
 
 local getType = require(Modules.JestGetType).getType
 
@@ -439,7 +440,8 @@ local function prettyFormat(
 end
 
 local plugins = {
-	AsymmetricMatcher = AsymmetricMatcher
+	AsymmetricMatcher = AsymmetricMatcher,
+	ConvertAnsi = ConvertAnsi
 }
 
 return {
