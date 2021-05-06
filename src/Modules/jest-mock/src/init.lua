@@ -1,3 +1,5 @@
+-- FIXME: Get rid of nocheck once CLI-40294 is resolved
+--!nocheck
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-mock/src/index.ts
 
 -- deviation: Currently we have translated a limited subset of the jest-mock
@@ -159,16 +161,11 @@ function ModuleMockerClass:_makeComponent(
 			table.insert(mockState.invocationCallOrder, mocker._invocationCallCounter)
 			self._invocationCallCounter = self._invocationCallCounter + 1
 
-			-- // Will be set to the return value of the mock if an error is not thrown
-			local finalReturnValue
-			-- // Will be set to the error that is thrown by the mock (if it throws)
-			local thrownError
-			-- // Will be set to true if the mock throws an error. The presence of a
-			-- // value in `thrownError` is not a 100% reliable indicator because a
-			-- // function could throw a value of nil.
-			local callDidThrowError = false
+			-- deviation: omitted finalReturnValue, thrownError, and
+			-- callDidThrowError as we get this state for free with our
+			-- pcall error handling
 
-			local ok, result = pcall(function(args)
+			local ok, result = pcall(function(args_)
 				-- deviation: omitted section of code dealing with calling
 				-- function as constructor
 				local specificMockImpl = Array.shift(mockConfig.specificMockImpls)
@@ -177,7 +174,7 @@ function ModuleMockerClass:_makeComponent(
 				end
 
 				if specificMockImpl then
-					return specificMockImpl(unpack(args))
+					return specificMockImpl(unpack(args_))
 				end
 
 				-- deviation: omitted section on f._protoImpl
@@ -185,9 +182,6 @@ function ModuleMockerClass:_makeComponent(
 			end, {...})
 
 			if not ok then
-				thrownError = result
-				callDidThrowError = true
-
 				mockResult.type = 'throw'
 				mockResult.value = result
 

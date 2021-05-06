@@ -44,16 +44,17 @@ local STACK_INDENT = '      '
 -- local STACK_TRACE_COLOR = chalk.dim
 local STACK_PATH_REGEXP = '%s*at.*%(?:%d*:%d*%)?'
 local STACK_PATH_REGEXP_NATIVE = '%s*at.*%(?native%)?'
-local EXEC_ERROR_MESSAGE = 'Test suite failed to run'
+-- local EXEC_ERROR_MESSAGE = 'Test suite failed to run'
 
 -- deviation: rewrote this because Lua doesn't have negative lookahead
-local function indentAllLines(lines: string, indent: string): string
-	local t = string.split(lines, '\n')
-	for i, l in ipairs(t) do
-		t[i] = indent .. l
-	end
-	return table.concat(t, '\n')
-end
+-- currently commented out as it is unused
+-- local function indentAllLines(lines: string, indent: string): string
+-- 	local t = string.split(lines, '\n')
+-- 	for i, l in ipairs(t) do
+-- 		t[i] = indent .. l
+-- 	end
+-- 	return table.concat(t, '\n')
+-- end
 
 -- string trim5 implementation from http://lua-users.org/wiki/StringTrim
 local function trim(string_: string): string
@@ -73,7 +74,8 @@ local function trimPaths(string_: string): string
 end
 
 -- deviation: can't match for blank string in Lua so we match for NOT blank string
-local notBlankStringRegexp = '%S'
+-- currently commented out as it is unused
+-- local notBlankStringRegexp = '%S'
 
 local function removeInternalStackEntries(
 	lines: { string },
@@ -148,7 +150,7 @@ function getStackTraceLines(
 	stack: string,
 	options: StackTraceOptions
 ): { string }
-	if not options then
+	if options == nil then
 		options = {noCodeFrame = false, noStackTrace = false}
 	end
 	return removeInternalStackEntries(string.split(stack, '\n'), options)
@@ -205,7 +207,7 @@ end
 function separateMessageFromStack(
 	content: string
 ): {message: string, stack: string}
-	if not content then
+	if not content or content == "" then
 		return {message = '', stack = ''}
 	end
 

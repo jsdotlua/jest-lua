@@ -124,7 +124,7 @@ return function()
 				not follow any deterministic order in iterating because Lua
 				tables don't have any inherent order
 			]]
-			function sortingFunction(x, y)
+			local function sortingFunction(x, y)
 				return x[1] <= y[1]
 			end
 

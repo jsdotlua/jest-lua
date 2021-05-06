@@ -1,3 +1,4 @@
+--!nocheck
 -- upstream: https://github.com/jasmine/jasmine/blob/v3.6.0/spec/core/SpySpec.js
 --[[
 	Our usual upstream of jest v26.5.3 doesn't include any tests for the

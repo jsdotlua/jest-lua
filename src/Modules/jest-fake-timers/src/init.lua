@@ -3,7 +3,6 @@
 
 local Workspace = script
 local Modules = Workspace.Parent
-local Packages = Modules.Parent.Parent
 
 local getType = require(Modules.JestGetType).getType
 
@@ -56,12 +55,12 @@ function FakeTimers.new()
 	return self
 end
 
-function FakeTimers:_advanceToTime(time): ()
+function FakeTimers:_advanceToTime(time_): ()
 	-- Make sure we don't go back in time due to a queued timer
-	if time > self._mockTime then
-		local timeDiff = time - self._mockTime
+	if time_ > self._mockTime then
+		local timeDiff = time_ - self._mockTime
 		-- Move mockTime to target time, in case the callback reads it via `tick`
-		self._mockTime = time
+		self._mockTime = time_
 		self._mockSystemTime = self._mockSystemTime + timeDiff
 	end
 end
@@ -102,8 +101,10 @@ function FakeTimers:runOnlyPendingTimers(): ()
 	end
 end
 
-function FakeTimers:advanceTimersToNextTimer(steps: number?): ()
-	steps = steps or 1
+function FakeTimers:advanceTimersToNextTimer(steps_: number?): ()
+	-- FIXME: get rid of this extra step of creating a separate variable once
+	-- CLI-41847 is done
+	local steps: number = steps_ or 1
 	if self:_checkFakeTimers() then
 		local newTimeouts = {}
 		local nextTime = -1
@@ -166,12 +167,12 @@ function FakeTimers:useFakeTimers(): ()
 				callback = callback,
 			}
 			local insertIndex = #self._timeouts + 1
-			for i, timeout in ipairs(self._timeouts) do
+			for i, timeout_ in ipairs(self._timeouts) do
 				-- Timeouts are inserted in time order. As soon as we encounter a
 				-- timeout that's _after_ our targetTime, we place ours in the list
 				-- immediately before it. This way, timeouts with the exact same time
 				-- will be queued up in insertion order to break ties
-				if timeout.time > targetTime then
+				if timeout_.time > targetTime then
 					insertIndex = i
 					break
 				end
@@ -184,15 +185,15 @@ function FakeTimers:useFakeTimers(): ()
 		self.dateTimeOverride.now.mockImplementation(function()
 			return realDateTime.fromUnixTimestamp(self._mockSystemTime)
 		end)
-		self.osOverride.time.mockImplementation(function(time)
-			if typeof(time) == 'table' then
+		self.osOverride.time.mockImplementation(function(time_)
+			if typeof(time_) == 'table' then
 				local unixTime = realDateTime.fromUniversalTime(
-					time.year or 1970,
-					time.month or 1,
-					time.day or 1,
-					time.hour or 0,
-					time.min or 0,
-					time.sec or 0
+					time_.year or 1970,
+					time_.month or 1,
+					time_.day or 1,
+					time_.hour or 0,
+					time_.min or 0,
+					time_.sec or 0
 				).UnixTimestamp
 				return self._mockSystemTime - unixTime
 			end
@@ -215,7 +216,7 @@ function FakeTimers:reset(): ()
 	end
 end
 
-function FakeTimers:setSystemTime(now: number | userdata | nil): ()
+function FakeTimers:setSystemTime(now: any): ()
 	if self:_checkFakeTimers() then
 		if not now then
 			now = realDateTime.now()
@@ -235,6 +236,8 @@ function FakeTimers:getTimerCount(): number
 	if self:_checkFakeTimers() then
 		return #self._timeouts
 	end
+
+	return 0
 end
 
 function FakeTimers:_checkFakeTimers()

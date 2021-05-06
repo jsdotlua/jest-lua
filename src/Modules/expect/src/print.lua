@@ -206,11 +206,8 @@ function printConstructorName(
 	isNot: boolean,
 	isExpected: boolean
 ): string
-	-- if the tostring() method was overridden to return a non-string we error
-	if typeof(tostring(constructor)) ~= "string" then
-		return string.format("%s name is not a string", label)
-	end
-
+	-- deviation: omitted handling for tostring() returning non-string as
+	-- tostring() always returns string
 	local retval = label .. ": "
 	if not isNot then
 		retval = retval .. ""

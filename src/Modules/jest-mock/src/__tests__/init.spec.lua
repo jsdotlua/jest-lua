@@ -1,3 +1,4 @@
+--!nocheck
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-mock/src/__tests__/index.test.ts
 
 local Workspace = script.Parent.Parent

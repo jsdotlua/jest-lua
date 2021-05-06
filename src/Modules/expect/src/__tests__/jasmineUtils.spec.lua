@@ -19,7 +19,6 @@ return function()
 	local Packages = Modules.Parent.Parent
 
 	local Polyfill = require(Packages.LuauPolyfill)
-	local Number = Polyfill.Number
 	local Symbol = Polyfill.Symbol
 	local RegExp = Polyfill.RegExp
 	local Set = Polyfill.Set

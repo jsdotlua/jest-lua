@@ -1,3 +1,4 @@
+--!nocheck
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-fake-timers/src/__tests__/modernFakeTimers.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -45,7 +46,7 @@ return function()
 			it('runs all ticks, in order', function()
 				timers:useFakeTimers()
 
-				local runorder = {}
+				local runOrder = {}
 				local mock1 = jest:fn(function() table.insert(runOrder, 'mock1') end)
 				local mock2 = jest:fn(function() table.insert(runOrder, 'mock2') end)
 				local mock3 = jest:fn(function() table.insert(runOrder, 'mock3') end)

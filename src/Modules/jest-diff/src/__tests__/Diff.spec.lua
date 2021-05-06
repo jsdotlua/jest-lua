@@ -17,8 +17,6 @@ return function()
 
 	local Number = require(Packages.LuauPolyfill).Number
 
-	local chalk = require(Packages.ChalkLua)
-
 	local diff = require(Workspace).diff
 	local diffLinesUnified = require(Workspace.DiffLines).diffLinesUnified
 	local diffLinesUnified2 = require(Workspace.DiffLines).diffLinesUnified2
@@ -61,7 +59,7 @@ return function()
 
 	-- // Use for toMatchSnapshot assertions.
 	local unexpanded = {expand = false}
-	-- local expanded = {expand = true}
+	local expanded = {expand = true}
 
 	-- local elementSymbol = require(Workspace.Parent.React.Shared).REACT_ELEMENT_TYPE
 
@@ -830,7 +828,7 @@ Options:
 				changeColor = chalk.bold,
 				commonColor = chalk.yellow,
 			}
-		
+
 			it('diffStringsUnified', function()
 				local aChanged = table.concat(a, '\n'):gsub('change', 'changed')
 				local bChanged = table.concat(b, '\n'):gsub('change', 'changed')
@@ -838,8 +836,8 @@ Options:
 					snapshots['options change color diffStringsUnified 1']
 				)
 			end)
-			
-		
+
+
 			it('no diff', function()
 				expect(diff(a, a, options)).to.equal(
 					snapshots['options change color no diff 1']

@@ -1,3 +1,4 @@
+--!nocheck
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/toThrowMatchers.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -20,7 +21,6 @@ local Error = Polyfill.Error
 
 local JestMessageUtil = require(Modules.JestMessageUtil)
 local formatStackTrace = JestMessageUtil.formatStackTrace
-local separateMessageFromStack = JestMessageUtil.separateMessageFromStack
 
 local JestMatcherUtils = require(Modules.JestMatcherUtils)
 local EXPECTED_COLOR = JestMatcherUtils.EXPECTED_COLOR
@@ -148,7 +148,7 @@ local function createMatcher(
 				local function diffStack(compareStack, currentStack)
 					local relevantStack = ""
 					local lastRelevantStack = ""
-					topCompareStackLine = getTopStackEntry(compareStack)
+					local topCompareStackLine = getTopStackEntry(compareStack)
 					for line in string.gmatch(currentStack, "[^\n]+") do
 						if line == topCompareStackLine then
 							-- we need to exclude the last thing in Stack since
@@ -159,6 +159,8 @@ local function createMatcher(
 						lastRelevantStack = relevantStack
 						relevantStack = relevantStack .. "\n" .. line
 					end
+
+					return nil
 				end
 
 				local compareStack
@@ -166,9 +168,6 @@ local function createMatcher(
 					compareStack = debug.traceback(nil, 2)
 					received()
 				end, function(error_)
-					local currentStack = debug.traceback()
-					local stack = diffStack(compareStack, currentStack)
-
 					if error_ == nil then
 						error_ = "nil"
 					-- if they specify a table with a message field we treat
@@ -226,7 +225,7 @@ local function createMatcher(
 					end
 
 					local errorObject = Error(error_)
-					start, end_ = string.find(errorObject.stack, getTopStackEntry(errorObject.stack), 1, true)
+					local _, end_ = string.find(errorObject.stack, getTopStackEntry(errorObject.stack), 1, true)
 					errorObject.stack = string.sub(errorObject.stack, end_ + 1 + string.len('\n'))
 					errorObject.stack = diffStack(compareStack, errorObject.stack)
 					errorObject["$$robloxInternalJestError"] = true

@@ -47,7 +47,7 @@ local ansiLookupTable = {
 }
 
 local function toHumanReadableAnsi(text: string)
-	local replacedString, numMatches = text:gsub(ansiRegex, function(match)
+	local replacedString, _ = text:gsub(ansiRegex, function(match)
 		if ansiLookupTable[match] then
 			return ansiLookupTable[match]
 		else
@@ -70,7 +70,7 @@ local function serialize(
 	refs,
 	printer
 )
-	return printer(toHumanReadableAnsi(val), config, indentation, depths, refs)
+	return printer(toHumanReadableAnsi(val), config, indentation, depth, refs)
 end
 
 return {

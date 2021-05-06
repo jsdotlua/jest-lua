@@ -95,9 +95,8 @@ function makeThrowingMatcher(
 	err: any?
 )
 	return function(...)
-		local args = {...}
 		local throws = true
-		local utils = Object.assign({}, matcherUtils, iterableEquality, subsetEquality)
+		local utils = Object.assign({}, matcherUtils)
 
 		local matcherContext = {
 			-- // When throws is disabled, the matcher will not throw errors during test
@@ -186,8 +185,8 @@ end
 
 local Expect = {}
 
-Expect.extend = function(matchers): ()
-	setMatchers(matchers, false, Expect)
+Expect.extend = function(matchers_): ()
+	setMatchers(matchers_, false, Expect)
 end
 
 Expect.anything = anything

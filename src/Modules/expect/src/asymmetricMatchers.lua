@@ -262,7 +262,7 @@ end
 local StringMatching = {}
 StringMatching.__index = StringMatching
 setmetatable(StringMatching, AsymmetricMatcher)
-function StringMatching.new(sample: string | RegExp, inverse: boolean?)
+function StringMatching.new(sample: any, inverse: boolean?)
 	-- deviation: we accept matches against a Lua string pattern or RegExp polyfill
 	if not isA("string", sample) and not isA("regexp", sample) then
 		error("Expected is not a String")
@@ -274,8 +274,6 @@ function StringMatching.new(sample: string | RegExp, inverse: boolean?)
 end
 
 function StringMatching:asymmetricMatch(other: string): boolean
-	local result
-
 	local result = false
 	if isA('string', other) then
 		-- Lua pattern case
@@ -314,6 +312,6 @@ return {
 	objectNotContaining = function(sample: any) return ObjectContaining.new(sample, true) end,
 	stringContaining = function(expected: string) return StringContaining.new(expected) end,
 	stringNotContaining = function(expected: string) return StringContaining.new(expected, true) end,
-	stringMatching = function(expected: string | RegExp) return StringMatching.new(expected) end,
+	stringMatching = function(expected: any) return StringMatching.new(expected) end,
 	stringNotMatching = function(expected: string) return StringMatching.new(expected, true) end,
 }

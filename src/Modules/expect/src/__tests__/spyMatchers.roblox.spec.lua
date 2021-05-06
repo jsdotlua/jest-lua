@@ -1,3 +1,4 @@
+--!nocheck
 -- deviation: these tests are not included in upstream
 return function()
 	local Workspace = script.Parent.Parent

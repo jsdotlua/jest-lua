@@ -1,3 +1,5 @@
+-- FIXME: nochecked for now as we already have an incoming PR on this file
+--!nocheck
 local Workspace = script
 local Modules = Workspace.Parent
 
@@ -37,7 +39,7 @@ local fakeTimers = JestFakeTimers.new()
 -- ROBLOX TODO: ADO-1475
 -- ROBLOX upstream: https://github.com/Roblox/roact-alignment/blob/master/modules/roblox-jest/src/Module/init.lua#L36
 local requiredModules: { [ModuleScript]: any } = {}
-local requireOverride = function(scriptInstance: ModuleScript): any
+local function _requireOverride(scriptInstance: ModuleScript): any
 	-- This is crucial! We need to have an early out here so that we don't
 	-- override requires of ourself; this would result in the module cache
 	-- deviating into a bunch of separate ones.
@@ -62,7 +64,7 @@ local requireOverride = function(scriptInstance: ModuleScript): any
 	local moduleFunction, errorMessage = loadmodule(scriptInstance)
 	assert(moduleFunction ~= nil, errorMessage)
 
-	getfenv(moduleFunction).require = requireOverride
+	getfenv(moduleFunction).require = _requireOverride
 	getfenv(moduleFunction).delay = fakeTimers.delayOverride
 	getfenv(moduleFunction).tick = fakeTimers.tickOverride
 	getfenv(moduleFunction).DateTime = fakeTimers.dateTimeOverride

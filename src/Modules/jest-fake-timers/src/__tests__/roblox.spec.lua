@@ -1,3 +1,4 @@
+--!nocheck
 return function()
 	local Workspace = script.Parent.Parent
 	local Modules = Workspace.Parent
@@ -54,8 +55,6 @@ return function()
 			end)
 
 			it('warns when trying to advance timers while real timers are used', function()
-				local fn = jest:fn()
-
 				jestExpect(function() timers:runAllTimers() end).toThrow(
 					"A function to advance timers was called but the timers API is not " ..
 					"mocked with fake timers. Call `jest.useFakeTimers()` in this test."
@@ -353,9 +352,9 @@ return function()
 		it('affected by timers', function()
 			timers:useFakeTimers()
 
-			local time = DateTime.now().UnixTimestamp
+			local time_ = DateTime.now().UnixTimestamp
 			timers:advanceTimersByTime(100)
-			jestExpect(DateTime.now().UnixTimestamp).toEqual(time + 100)
+			jestExpect(DateTime.now().UnixTimestamp).toEqual(time_ + 100)
 		end)
 
 		describe('setSystemTime', function()
@@ -448,9 +447,9 @@ return function()
 			it('affected by timers', function()
 				timers:useFakeTimers()
 
-				local time = os.time()
+				local time_ = os.time()
 				timers:advanceTimersByTime(100)
-				jestExpect(os.time()).toBe(time + 100)
+				jestExpect(os.time()).toBe(time_ + 100)
 			end)
 		end)
 
@@ -518,7 +517,6 @@ return function()
 	it('spies', function()
 		timers:useFakeTimers()
 
-		local runOrder = {}
 		local mock1 = jest:fn()
 		local mock2 = jest:fn()
 		local mock3 = jest:fn()
@@ -609,7 +607,7 @@ return function()
 			delay(0, loopFn)
 			delay(51, function() table.insert(runOrder, os.clock()) end)
 			jestExpect(delay).toHaveBeenCalledTimes(2)
-			
+
 			timers:advanceTimersByTime(1)
 			jestExpect(runOrder).toEqual({0})
 			jestExpect(timers:getTimerCount()).toBe(2)

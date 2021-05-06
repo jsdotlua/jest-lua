@@ -193,7 +193,8 @@ local function printComplexValue(
 		if hitMaxDepth then
 			return '[Set]'
 		else
-			return 'Set {' ..
+			return
+				'Set {' ..
 				printListItems(
 					val._array,
 					config,
@@ -202,7 +203,7 @@ local function printComplexValue(
 					refs,
 					printer
 				) ..
-			'}'
+				'}'
 		end
 	end
 

@@ -1,12 +1,13 @@
- -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/__tests__/spyMatchers.test.ts
- -- /**
- -- * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
- -- *
- -- * This source code is licensed under the MIT license found in the
- -- * LICENSE file in the root directory of this source tree.
- -- */
+--!nocheck
+-- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/__tests__/spyMatchers.test.ts
+-- /**
+-- * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
+-- *
+-- * This source code is licensed under the MIT license found in the
+-- * LICENSE file in the root directory of this source tree.
+-- */
 
- return function()
+return function()
 	local Workspace = script.Parent.Parent
 	local Modules = Workspace.Parent
 	local Packages = Modules.Parent.Parent
@@ -1087,7 +1088,7 @@
 									jestExpect(fn)[returnedWith](4, 0)
 
 									jestExpect(function()
-										jestExpect(fn)[returnedWIth](1, 6)
+										jestExpect(fn)[returnedWith](1, 6)
 									end).toThrow(snapshots[returnedWith .. ' nthReturnedWith incomplete recursive calls are handled properly 1'])
 									jestExpect(function()
 										jestExpect(fn)[returnedWith](2, 3)
@@ -1099,10 +1100,12 @@
 										jestExpect(fn).never[returnedWith](4, 0)
 									end).toThrow(snapshots[returnedWith .. ' nthReturnedWith incomplete recursive calls are handled properly 4'])
 								end
-							end
 
-							fn(3)
+								return value + recursiveResult
+							end
 						end)
+
+						fn(3)
 					end)
 				end)
 			end

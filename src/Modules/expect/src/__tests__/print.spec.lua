@@ -38,16 +38,6 @@ return function()
 			)
 		end)
 
-		it("reports that tostring returns non-string", function()
-			setmetatable(Dog, {
-				__tostring = function(self)
-					return 1
-				end
-			})
-
-			jestExpect(Print.printReceivedConstructorName("Received", Dog)).toEqual("Received name is not a string\n")
-		end)
-
 		it("reports that tostring returns empty", function()
 			setmetatable(Dog, {
 				__tostring = function(self)
@@ -117,17 +107,6 @@ return function()
 				})
 			end)
 
-			it('does not print name or "never"" for class with non-string tostring', function()
-				setmetatable(Dog, {
-					__tostring = function(self)
-						return 1
-					end
-				})
-
-				local result = Print.printExpectedConstructorNameNot("Received", Dog, {})
-				jestExpect(result).toContain("Received name is not a string")
-			end)
-
 			it('does not print name or "never" for class with empty tostring', function()
 				setmetatable(Dog, {
 					__tostring = function(self)
@@ -135,14 +114,14 @@ return function()
 					end
 				})
 
-				local result = Print.printExpectedConstructorNameNot("Received", Dog, {})
+				local result = Print.printExpectedConstructorNameNot("Received", Dog)
 				jestExpect(result).toContain("Received name is an empty string")
 			end)
 
 			it('does not print "never" for class with default table address as tostring', function()
 				setmetatable(Dog, {})
 
-				local result = Print.printExpectedConstructorNameNot("Received", Dog, {})
+				local result = Print.printExpectedConstructorNameNot("Received", Dog)
 				jestExpect(result).toContain("Received: never [32mtable: 0x")
 
 			end)
@@ -153,7 +132,7 @@ return function()
 				-- prints out the contents not the table address
 				Dog.height = 50
 				Dog.goodboy = true
-				local result = Print.printExpectedConstructorNameNot("Received", Dog, {})
+				local result = Print.printExpectedConstructorNameNot("Received", Dog)
 				jestExpect(result).toContain("Received: never [32m{")
 				jestExpect(result).toContain('"height": 50')
 				jestExpect(result).toContain('"goodboy": true')

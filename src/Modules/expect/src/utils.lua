@@ -161,12 +161,13 @@ end
 
 -- deviation: omitted IteratorSymbol
 
-local function hasIterator(object: any): boolean
-	-- technically just the typeof(object) == table check would be sufficient
-	-- but to be more accurate we should return true for all types that can be
-	-- iterated over in Lua (string and table)
-	return typeof(object) == "table" or typeof(object) == "string"
-end
+-- deviation: currently unused so we comment out hasIterator
+-- local function hasIterator(object: any): boolean
+-- 	-- technically just the typeof(object) == table check would be sufficient
+-- 	-- but to be more accurate we should return true for all types that can be
+-- 	-- iterated over in Lua (string and table)
+-- 	return typeof(object) == "table" or typeof(object) == "string"
+-- end
 
 -- deviation: We currently have no need for this and we can use the native
 -- equals function in its place to avoid complications. A rough translation

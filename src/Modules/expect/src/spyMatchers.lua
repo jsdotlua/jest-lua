@@ -12,7 +12,6 @@ local Packages = Modules.Parent.Parent
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
-local Error = LuauPolyfill.Error
 local Number = LuauPolyfill.Number
 local String = LuauPolyfill.String
 local Symbol = LuauPolyfill.Symbol

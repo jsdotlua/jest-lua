@@ -15,7 +15,6 @@ local Polyfills = require(Packages.LuauPolyfill)
 local Array = Polyfills.Array
 local Number = Polyfills.Number
 local Object = Polyfills.Object
-local RegExp = Polyfills.RegExp
 local instanceof = Polyfills.instanceof
 
 local JestGetType = require(Modules.JestGetType)
@@ -909,7 +908,7 @@ local function toHaveProperty(
 end
 
 -- deviation: toMatch accepts Lua string patterns or RegExp polyfill but not simple substring
-local function toMatch(this: MatcherState, received: string, expected: string | RegExp)
+local function toMatch(this: MatcherState, received: string, expected: any)
 	local matcherName = 'toMatch'
 	local options = {
 		isNot = this.isNot,

@@ -18,6 +18,7 @@ return function()
 
 	-- deviation: don't need fnNameFor
 
+	local options
 	beforeEach(function()
 		options = {plugins = {AsymmetricMatcher}}
 	end)

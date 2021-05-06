@@ -441,54 +441,54 @@ Expected: "foo"
 Number of returns: 0]=]
 
 snapshots['nthReturnedWith nthReturnedWith incomplete recursive calls are handled properly 1'] = [=[
-expect(jest:fn()).nthReturnedWith(n, expected)
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
 
 n: 1
-Expected: 6
+Expected: [32m6[39m
 Received
 ->     1: function call has not returned yet
        2: function call has not returned yet
 
-Number of returns: 2
-Number of calls:   4]=]
+Number of returns: [31m2[39m
+Number of calls:   [31m4[39m]=]
 
 snapshots['nthReturnedWith nthReturnedWith incomplete recursive calls are handled properly 2'] = [=[
-expect(jest:fn()).nthReturnedWith(n, expected)
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
 
 n: 2
-Expected: 3
+Expected: [32m3[39m
 Received
        1: function call has not returned yet
 ->     2: function call has not returned yet
-       3: 1
+       3: [31m1[39m
 
-Number of returns: 2
-Number of calls:   4]=]
+Number of returns: [31m2[39m
+Number of calls:   [31m4[39m]=]
 
 snapshots['nthReturnedWith nthReturnedWith incomplete recursive calls are handled properly 3'] = [=[
-expect(jest:fn()).never.nthReturnedWith(n, expected)
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mnthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
 
 n: 3
-Expected: never 1
+Expected: never [32m1[39m
 Received
-       2:     function call has not returned yet
-->     3:     1
-       4:     0
+       2:       function call has not returned yet
+->     3:       [2m1[22m
+       4:       [31m0[39m
 
-Number of returns: 2
-Number of calls:   4]=]
+Number of returns: [31m2[39m
+Number of calls:   [31m4[39m]=]
 
 snapshots['nthReturnedWith nthReturnedWith incomplete recursive calls are handled properly 4'] = [=[
-expect(jest:fn()).never.nthReturnedWith(n, expected)
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mnthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
 
 n: 4
-Expected: never 0
+Expected: never [32m0[39m
 Received
-       3:     1
-->     4:     0
+       3:       [31m1[39m
+->     4:       [2m0[22m
 
-Number of returns: 2
-Number of calls:   4]=]
+Number of returns: [31m2[39m
+Number of calls:   [31m4[39m]=]
 
 snapshots['nthReturnedWith nthReturnedWith negative throw matcher error for n that is not number 1'] = [=[
 [22m[32mexpected[39m[2m)[22m
@@ -1674,54 +1674,54 @@ Expected: "foo"
 Number of returns: 0]=]
 
 snapshots['toHaveNthReturnedWith nthReturnedWith incomplete recursive calls are handled properly 1'] = [=[
-expect(jest:fn()).toHaveNthReturnedWith(n, expected)
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveNthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
 
 n: 1
-Expected: 6
+Expected: [32m6[39m
 Received
 ->     1: function call has not returned yet
        2: function call has not returned yet
 
-Number of returns: 2
-Number of calls:   4]=]
+Number of returns: [31m2[39m
+Number of calls:   [31m4[39m]=]
 
 snapshots['toHaveNthReturnedWith nthReturnedWith incomplete recursive calls are handled properly 2'] = [=[
-expect(jest:fn()).toHaveNthReturnedWith(n, expected)
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mtoHaveNthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
 
 n: 2
-Expected: 3
+Expected: [32m3[39m
 Received
        1: function call has not returned yet
 ->     2: function call has not returned yet
-       3: 1
+       3: [31m1[39m
 
-Number of returns: 2
-Number of calls:   4]=]
+Number of returns: [31m2[39m
+Number of calls:   [31m4[39m]=]
 
 snapshots['toHaveNthReturnedWith nthReturnedWith incomplete recursive calls are handled properly 3'] = [=[
-expect(jest:fn()).never.toHaveNthReturnedWith(n, expected)
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveNthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
 
 n: 3
-Expected: never 1
+Expected: never [32m1[39m
 Received
-       2:     function call has not returned yet
-->     3:     1
-       4:     0
+       2:       function call has not returned yet
+->     3:       [2m1[22m
+       4:       [31m0[39m
 
-Number of returns: 2
-Number of calls:   4]=]
+Number of returns: [31m2[39m
+Number of calls:   [31m4[39m]=]
 
 snapshots['toHaveNthReturnedWith nthReturnedWith incomplete recursive calls are handled properly 4'] = [=[
-expect(jest:fn()).never.toHaveNthReturnedWith(n, expected)
+[2mexpect([22m[31mjest:fn()[39m[2m).[22mnever[2m.[22mtoHaveNthReturnedWith[2m([22mn[2m, [22m[32mexpected[39m[2m)[22m
 
 n: 4
-Expected: never 0
+Expected: never [32m0[39m
 Received
-       3:     1
-->     4:     0
+       3:       [31m1[39m
+->     4:       [2m0[22m
 
-Number of returns: 2
-Number of calls:   4]=]
+Number of returns: [31m2[39m
+Number of calls:   [31m4[39m]=]
 
 snapshots['toHaveNthReturnedWith nthReturnedWith negative throw matcher error for n that is not number 1'] = [=[
 [22m[32mexpected[39m[2m)[22m

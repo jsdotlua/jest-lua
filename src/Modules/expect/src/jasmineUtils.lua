@@ -80,6 +80,8 @@ function asymmetricMatch(a: any, b: any)
 	if asymmetricB then
 		return b:asymmetricMatch(a)
 	end
+
+	return nil
 end
 
 -- // Equality function lovingly adapted from isEqual in

@@ -1,3 +1,4 @@
+--!nocheck
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/__tests__/extend.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -64,7 +65,7 @@ return function()
 			local pass
 			if type(actual) ~= 'number' or type(floor) ~= 'number' or type(ceiling) ~= 'number' then
 				pass = false
-			else 
+			else
 				pass = actual >= floor and actual <= ceiling
 			end
 			local message
@@ -206,7 +207,7 @@ return function()
 	it('prints the Symbol into the error message', function()
 		local foo = Symbol('foo')
 		local bar = Symbol('bar')
-	
+
 		expect(function()
 			jestExpect({a = foo}).toEqual({
 				a = jestExpect.toBeSymbol(bar),

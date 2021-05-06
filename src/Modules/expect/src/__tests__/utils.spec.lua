@@ -16,7 +16,7 @@ return function()
 	local emptyObject = require(Workspace.utils).emptyObject
 	local getObjectSubset = require(Workspace.utils).getObjectSubset
 	local getPath = require(Workspace.utils).getPath
-	local iterableEquality = require(Workspace.utils).iterableEquality
+	-- local iterableEquality = require(Workspace.utils).iterableEquality
 	local subsetEquality = require(Workspace.utils).subsetEquality
 
 	local equals = require(Workspace.jasmineUtils).equals

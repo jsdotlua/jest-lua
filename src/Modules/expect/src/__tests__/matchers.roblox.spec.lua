@@ -1,3 +1,4 @@
+--!nocheck
 return function()
 	local Workspace = script.Parent.Parent
 
