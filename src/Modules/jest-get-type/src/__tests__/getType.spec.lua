@@ -14,9 +14,10 @@ return function()
 
 	local Polyfill = require(Packages.LuauPolyfill)
 	local Error = require(Packages.LuauPolyfill).Error
-	local RegExp = Polyfill.RegExp
 	local Set = Polyfill.Set
 	local Symbol = Polyfill.Symbol
+
+	local RegExp = require(Packages.LuauRegExp)
 
 	local getType = require(Workspace).getType
 

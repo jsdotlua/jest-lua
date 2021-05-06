@@ -26,6 +26,8 @@ local isUndefined = JasmineUtils.isUndefined
 
 local emptyObject = require(Workspace.utils).emptyObject
 
+type RegExp = {exec: (string) -> any, test: (string) -> boolean}
+
 local AsymmetricMatcher = {}
 AsymmetricMatcher.__index = AsymmetricMatcher
 function AsymmetricMatcher.new(sample: any)
@@ -262,7 +264,7 @@ end
 local StringMatching = {}
 StringMatching.__index = StringMatching
 setmetatable(StringMatching, AsymmetricMatcher)
-function StringMatching.new(sample: any, inverse: boolean?)
+function StringMatching.new(sample: string | RegExp, inverse: boolean?)
 	-- deviation: we accept matches against a Lua string pattern or RegExp polyfill
 	if not isA("string", sample) and not isA("regexp", sample) then
 		error("Expected is not a String")
@@ -312,6 +314,6 @@ return {
 	objectNotContaining = function(sample: any) return ObjectContaining.new(sample, true) end,
 	stringContaining = function(expected: string) return StringContaining.new(expected) end,
 	stringNotContaining = function(expected: string) return StringContaining.new(expected, true) end,
-	stringMatching = function(expected: any) return StringMatching.new(expected) end,
-	stringNotMatching = function(expected: string) return StringMatching.new(expected, true) end,
+	stringMatching = function(expected: string | RegExp) return StringMatching.new(expected) end,
+	stringNotMatching = function(expected: string | RegExp) return StringMatching.new(expected, true) end,
 }

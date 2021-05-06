@@ -30,7 +30,7 @@ Lua doesn't have constructors for primitive types, so `expect.any` accepts eithe
 - If a table is passed in, it checks that the received value in is an instance (or a derived instance) of the expected table, using the [`instanceof` method in LuauPolyfill](https://github.com/Roblox/luau-polyfill/blob/main/src/instanceof.lua)
 
 ### `expect.stringMatching(string | regexp)`
-`expect.stringMatching(string | regexp)` can either accept a [Lua string pattern](https://developer.roblox.com/en-us/articles/string-patterns-reference) or a [LuauPolyfill RegExp object](expect#regexp).
+`expect.stringMatching(string | regexp)` can either accept a [Lua string pattern](https://developer.roblox.com/en-us/articles/string-patterns-reference) or a [LuauRegExp RegExp object](expect#regexp).
 
 ### `.toHaveLength(number)`
 `.toHaveLength(number)` uses the Lua `#` operator to check the length of the received value. Since `#` is only well defined for non-sparse array-like tables and strings it will return 0 for tables with key-value pairs. It also checks the `.length` property of the table instead if it has one.

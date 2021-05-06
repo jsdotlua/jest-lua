@@ -13,8 +13,9 @@ return function()
 	local Packages = Workspace.Parent.Parent.Parent
 
 	local Polyfill = require(Packages.LuauPolyfill)
-	local RegExp = Polyfill.RegExp
 	local Set = Polyfill.Set
+
+	local RegExp = require(Packages.LuauRegExp)
 
 	local jestExpect = require(Modules.Expect)
 

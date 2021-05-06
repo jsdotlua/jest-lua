@@ -6,15 +6,14 @@ title: Expect
 When you're writing tests, you often need to check that values meet certain conditions. `expect` gives you access to a number of "matchers" that let you validate different things.
 
 ### RegExp
-To use regular expressions in matchers that support it, you need to add [LuauPolyfill](https://github.com/Roblox/luau-polyfill) as a dependency in your `rotriever.toml` and require the `RegExp` module from it.
+To use regular expressions in matchers that support it, you need to add [LuauRegExp](https://github.com/Roblox/luau-regexp) as a dependency in your `rotriever.toml` and require it in your code.
 ```yaml title="rotriever.toml"
 [dev_dependencies]
-LuauPolyfill = "github.com/roblox/luau-polyfill@0.1.4"
+LuauRegExp = "github.com/roblox/luau-regexp@0.1.0"
 ```
 
 ```lua
-local LuauPolyfill = require(Packages.LuauPolyfill)
-local RegExp = LuauPolyfill.RegExp
+local RegExp = require(Packages.LuauRegExp)
 ```
 
 ### Error
@@ -210,7 +209,7 @@ it('identity calls its callback with CustomClass', function()
 end)
 ```
 
-In addition to Lua prototype classes, it also supports Roblox types like [`DateTime`](https://developer.roblox.com/en-us/api-reference/datatype/DateTime), Luau types like `thread` and LuauPolyfill types like `Symbol`, `RegExp`, `Set`, `Error` etc.
+In addition to Lua prototype classes, it also supports Roblox types like [`DateTime`](https://developer.roblox.com/en-us/api-reference/datatype/DateTime), Luau types like `thread`, `RegExp` from the LuauRegExp library, and LuauPolyfill types like `Symbol`, `Set`, `Error` etc.
 
 ### `expect.arrayContaining(array)`
 

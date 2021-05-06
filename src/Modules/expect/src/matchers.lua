@@ -40,7 +40,10 @@ local printWithType = JestMatcherUtils.printWithType
 local stringify = JestMatcherUtils.stringify
 
 -- deviation: omitted external type definitions and defined MatcherState as any here for now
-type MatcherState = any;
+type MatcherState = any
+-- FIXME: After CLI-39007 change this RegExp type to be something like
+-- {exec: (string) -> any, test: (string) -> boolean}
+type RegExp = any
 
 local Print = require(Workspace.print)
 local printCloseTo = Print.printCloseTo
@@ -907,6 +910,7 @@ local function toHaveProperty(
 	return {message = message, pass = pass}
 end
 
+-- FIXME: After CLI-39007, change expected to have type string | RegExp type
 -- deviation: toMatch accepts Lua string patterns or RegExp polyfill but not simple substring
 local function toMatch(this: MatcherState, received: string, expected: any)
 	local matcherName = 'toMatch'
@@ -952,7 +956,7 @@ local function toMatch(this: MatcherState, received: string, expected: any)
 			local retval = matcherHint(matcherName, nil, nil, options) ..
 				'\n\n' ..
 				string.format('Expected pattern: never %s\n', printExpected(expected))
-			if getType(expected) == 'string' then
+			if typeof(expected) == 'string' then
 				retval = retval .. string.format('Received string:        %s', printReceivedStringContainExpectedSubstring(received, received:find(expected), #expected))
 			else
 				retval = retval .. string.format('Received string:        %s', printReceivedStringContainExpectedResult(received, expected:exec(received)))

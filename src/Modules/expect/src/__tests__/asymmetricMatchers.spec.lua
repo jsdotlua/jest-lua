@@ -12,8 +12,7 @@ return function()
 	local Modules = Workspace.Parent
 	local Packages = Modules.Parent.Parent
 
-	local Polyfills = require(Packages.LuauPolyfill)
-	local RegExp = Polyfills.RegExp
+	local RegExp = require(Packages.LuauRegExp)
 
 	local AsymmetricMatchers = require(Workspace.asymmetricMatchers)
 	local any = AsymmetricMatchers.any

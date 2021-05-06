@@ -11,9 +11,11 @@ return function()
 	local Workspace = script.Parent.Parent
 	local Packages = Workspace.Parent.Parent.Parent
 
-	local Error = require(Packages.LuauPolyfill).Error
-	local RegExp = require(Packages.LuauPolyfill).RegExp
-	local extends = require(Packages.LuauPolyfill).extends
+	local Polyfill = require(Packages.LuauPolyfill)
+	local Error = Polyfill.Error
+	local extends = Polyfill.extends
+
+	local RegExp = require(Packages.LuauRegExp)
 
 	local snapshots = require(script.Parent.__snapshots__['toThrowMatchers.snap'])
 

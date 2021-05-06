@@ -20,8 +20,9 @@ return function()
 
 	local Polyfill = require(Packages.LuauPolyfill)
 	local Symbol = Polyfill.Symbol
-	local RegExp = Polyfill.RegExp
 	local Set = Polyfill.Set
+
+	local RegExp = require(Packages.LuauRegExp)
 
 	local jasmineUtils = require(Workspace.jasmineUtils)
 	local equals = jasmineUtils.equals

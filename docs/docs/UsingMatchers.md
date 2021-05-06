@@ -111,7 +111,7 @@ it('but there is a "stop" in Christoph', function()
 end)
 ```
 
-You can also check strings against a regular expression using the [`RegExp` LuauPolyfill](expect#regexp):
+You can also check strings against a regular expression using [`RegExp` from LuauRegExp](expect#regexp):
 
 ```lua
 it('Christoph ends in "oph"', function()
@@ -206,7 +206,7 @@ end
 it('the function errors', function()
 	expect(thisFunctionErrors).toThrow()
 
-	-- You can also use the exact error message or a RegExp using the RegExp polyfill
+	-- You can also use the exact error message or a RegExp using the LuauRegExp library
 	expect(thisFunctionErrors).toThrow('oh no')
 	expect(thisFunctionErrors).toThrow(RegExp('no'))
 end)

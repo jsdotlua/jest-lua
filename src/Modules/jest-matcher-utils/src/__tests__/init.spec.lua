@@ -11,8 +11,10 @@ return function()
 	local Modules = Workspace.Parent
 	local Packages = Modules.Parent.Parent
 
-	local Symbol = require(Packages.LuauPolyfill).Symbol
-	local RegExp = require(Packages.LuauPolyfill).RegExp
+	local Polyfill = require(Packages.LuauPolyfill)
+	local Symbol = Polyfill.Symbol
+
+	local RegExp = require(Packages.LuauRegExp)
 
 	local snapshots = require(script.Parent.__snapshots__["init.snap"])
 

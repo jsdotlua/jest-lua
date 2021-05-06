@@ -19,7 +19,8 @@ return function()
 	local Number = Polyfill.Number
 	local Object = Polyfill.Object
 	local extends = Polyfill.extends
-	local RegExp = Polyfill.RegExp
+
+	local RegExp = require(Packages.LuauRegExp)
 
 	local stringify = require(Modules.JestMatcherUtils).stringify
 

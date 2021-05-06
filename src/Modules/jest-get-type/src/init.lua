@@ -6,10 +6,12 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local Polyfill = require(script.Parent.Parent.Parent.LuauPolyfill)
+local Packages = script.Parent.Parent.Parent
+
+local Polyfill = require(Packages.LuauPolyfill)
 local Error = Polyfill.Error
 local instanceof = Polyfill.instanceof
-local RegExp = Polyfill.RegExp
+local RegExp
 local Set = Polyfill.Set
 
 local function getType(value: any): string
@@ -17,37 +19,53 @@ local function getType(value: any): string
 	-- lua makes no distinction between null and undefined so we just return nil
 	if value == nil then
 		return 'nil'
-	elseif typeof(value) == 'boolean' then
+	end
+	if typeof(value) == 'boolean' then
 		return 'boolean'
-	elseif typeof(value) == 'function' then
+	end
+	if typeof(value) == 'function' then
 		return 'function'
-	elseif typeof(value) == 'number' then
+	end
+	if typeof(value) == 'number' then
 		return 'number'
-	elseif typeof(value) == 'string' then
+	end
+	if typeof(value) == 'string' then
 		return 'string'
-	elseif typeof(value) == 'DateTime' then
+	end
+	if typeof(value) == 'DateTime' then
 		return 'DateTime'
-	elseif typeof(value) == 'userdata' and tostring(value):match("Symbol%(.*%)") then
+	end
+	if typeof(value) == 'userdata' and tostring(value):match("Symbol%(.*%)") then
 		return 'symbol'
-	elseif instanceof(value, RegExp) then
-		return 'regexp'
-	elseif instanceof(value, Error) then
+	end
+	if typeof(value) == "table" and typeof(value.test) == "function" and typeof(value.exec) == "function" then
+		RegExp = require(Packages.LuauRegExp)
+
+		if instanceof(value, RegExp) then
+			return 'regexp'
+		end
+	end
+	if instanceof(value, Error) then
 		return 'error'
-	elseif instanceof(value, Set) then
+	end
+	if instanceof(value, Set) then
 		return 'set'
+	end
 	-- deviation: lua makes no distinction between tables, arrays, and objects
 	-- we always return table here and consumers are expected to perform the check
-	elseif typeof(value) == 'table' then
+	if typeof(value) == 'table' then
 		return 'table'
+	end
 	-- deviation: added luau types for userdata and thread
-	elseif typeof(value) == 'userdata' then
+	if typeof(value) == 'userdata' then
 		return 'userdata'
-	elseif typeof(value) == 'thread' then
+	end
+	if typeof(value) == 'thread' then
 		return 'thread'
+	end
 	-- deviation: code omitted because lua has no primitive bigint type
 	-- deviation: code omitted because lua has no built-in Map types
 	-- deviation: code omitted because lua makes no distinction between tables, arrays, and objects
-	end
 
 	error(string.format('value of unknown type: %s', tostring(value)))
 end

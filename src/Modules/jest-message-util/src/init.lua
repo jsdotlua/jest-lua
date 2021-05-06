@@ -13,12 +13,11 @@ local Polyfills = require(Packages.LuauPolyfill)
 local Array = Polyfills.Array
 local String = Polyfills.String
 local Boolean = Polyfills.Boolean.toJSBoolean
-local RegExp = Polyfills.RegExp
 
 -- local chalk = require(Packages.ChalkLua)
 
 -- deviation: forward declarations
-local formatStackTrace, getStackTraceLines, separateMessageFromStack
+local formatStackTrace, getStackTraceLines--, separateMessageFromStack
 
 -- deviation: omitting imports since they're mostly fs related
 
@@ -185,49 +184,53 @@ function formatStackTrace(
 	)
 end
 
-local errorRegexp = '^Error:?%s*$'
+-- local errorRegexp = '^Error:?%s*$'
 
-local function removeBlankErrorLine(str: string): string
-	return String.trimRight(
-		table.concat(
-			Array.filter(
-				str:split('\n'),
-				function(line)
-					return not line:find(errorRegexp)
-				end
-			),
-			'\n'
-		)
-	)
-end
+-- deviation: function unused so commented out for now
+-- local function removeBlankErrorLine(str: string): string
+-- 	return String.trimRight(
+-- 		table.concat(
+-- 			Array.filter(
+-- 				str:split('\n'),
+-- 				function(line)
+-- 					return not line:find(errorRegexp)
+-- 				end
+-- 			),
+-- 			'\n'
+-- 		)
+-- 	)
+-- end
 
+-- deviation: function unused so commented out for now. If eventually ends up
+-- being used, be careful of automatically loading the RegExp library since we
+-- intentionally lazy-load it in Jest-Roblox for improved performance
 -- // jasmine and worker farm sometimes don't give us access to the actual
 -- // Error object, so we have to regexp out the message from the stack string
 -- // to format it.
-function separateMessageFromStack(
-	content: string
-): {message: string, stack: string}
-	if not content or content == "" then
-		return {message = '', stack = ''}
-	end
+-- function separateMessageFromStack(
+-- 	content: string
+-- ): {message: string, stack: string}
+-- 	if not content then
+-- 		return {message = '', stack = ''}
+-- 	end
 
-	-- // All lines up to what looks like a stack -- or if nothing looks like a stack
-	-- // (maybe it's a code frame instead), just the first non-empty line.
-	-- // If the error is a plain "Error:" instead of a SyntaxError or TypeError we
-	-- // remove the prefix from the message because it is generally not useful.
-	local re = RegExp([=[^(?:Error: )?([\s\S]*?(?=\n\s*at\s.*:\d*:\d*)|\s*.*)([\s\S]*)$]=])
-	local messageMatch = re:exec(content)
-	if not messageMatch then
-		-- // For typescript
-		error('If you hit this error, the regex above is buggy.')
-	end
-	local message = removeBlankErrorLine(messageMatch[2])
-	local stack = removeBlankErrorLine(messageMatch[3])
-	return {message = message, stack = stack}
-end
+-- 	-- // All lines up to what looks like a stack -- or if nothing looks like a stack
+-- 	-- // (maybe it's a code frame instead), just the first non-empty line.
+-- 	-- // If the error is a plain "Error:" instead of a SyntaxError or TypeError we
+-- 	-- // remove the prefix from the message because it is generally not useful.
+-- 	local re = RegExp([=[^(?:Error: )?([\s\S]*?(?=\n\s*at\s.*:\d*:\d*)|\s*.*)([\s\S]*)$]=])
+-- 	local messageMatch = re:exec(content)
+-- 	if not messageMatch then
+-- 		-- // For typescript
+-- 		error('If you hit this error, the regex above is buggy.')
+-- 	end
+-- 	local message = removeBlankErrorLine(messageMatch[2])
+-- 	local stack = removeBlankErrorLine(messageMatch[3])
+-- 	return {message = message, stack = stack}
+-- end
 
 return {
 	formatStackTrace = formatStackTrace,
 	getStackTraceLines = getStackTraceLines,
-	separateMessageFromStack = separateMessageFromStack
+	-- separateMessageFromStack = separateMessageFromStack
 }

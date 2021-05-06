@@ -16,7 +16,6 @@ local getType = require(Modules.JestGetType).getType
 
 local Polyfill = require(Packages.LuauPolyfill)
 local instanceof = Polyfill.instanceof
-local RegExp = Polyfill.RegExp
 local Error = Polyfill.Error
 
 local JestMessageUtil = require(Modules.JestMessageUtil)
@@ -215,10 +214,10 @@ local function createMatcher(
 							is not reported as part of the stack trace anywhere since it was captured and
 							re-errored
 						]]
-						local errorRegex = RegExp("(?:[^\\s]*\\.)+[^\\s]*:[0-9]+:\\s([\\d\\D]*)")
-						local result = errorRegex:exec(error_)
-						if result[2] ~= nil then
-							error_ = result[2]
+						local errorRegex = "[%S+\\.]+:[0-9]+:%s(.*)"
+						local _, _, result = error_:find(errorRegex)
+						if result ~= nil then
+							error_ = result
 						end
 					elseif typeof(error_) == "table" then
 						error_ = stringify(error_)
@@ -245,7 +244,7 @@ local function createMatcher(
 			return toThrowExpectedAsymmetric(matcherName, options, thrown, expected)
 		elseif typeof(expected) == "string" then
 			return toThrowExpectedString(matcherName, options, thrown, expected)
-		elseif instanceof(expected, RegExp) then
+		elseif getType(expected) == "regexp" then
 			return toThrowExpectedRegExp(matcherName, options, thrown, expected)
 		-- deviation: we have different logic for determining if expected is an Error class
 		elseif typeof(expected) == "table" and not expected.message then
@@ -284,7 +283,7 @@ function toThrowExpectedRegExp(
 	matcherName: string,
 	options: JestMatcherUtils.MatcherHintOptions,
 	thrown: Thrown,
-	expected
+	expected: any
 )
 	local pass = thrown ~= nil and expected:test(thrown.message)
 
