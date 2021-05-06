@@ -18,9 +18,9 @@ return function()
 
 	local jestExpect = require(Modules.Expect)
 
-	local prettyFormat = require(Workspace).prettyFormat
-	local mock = require(Modules.JestMock)
+	local jest = require(Modules.Jest)
 
+	local prettyFormat = require(Workspace).prettyFormat
 
 	describe('prettyFormat()', function()
 		-- deviation: omitted, no Argument type in lua
@@ -616,10 +616,9 @@ return function()
 			-- metafunctions. Therefore, we don't call an expectation on
 			-- prettyFormat in the following code but rather just evaluate the
 			-- toBeCalled expectations
-			local jest = mock.new()
-			value = { apple = 'banana', toJSON = jest:fn(function() return '1' end) }
+			value = { apple = 'banana', toJSON = jest.fn(function() return '1' end) }
 			set = Set.new({value})
-			set.toJSON = jest:fn(function() return 'map' end)
+			set.toJSON = jest.fn(function() return 'map' end)
 			prettyFormat(set, {
 				callToJSON = false
 			})

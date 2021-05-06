@@ -110,7 +110,7 @@ end
 function ModuleMockerClass:_defaultMockConfig(): MockFunctionConfig
 	return {
 		mockImpl = nil,
-		mockName = 'jest:fn()',
+		mockName = 'jest.fn()',
 		specificMockImpls = {},
 		specificReturnValues = {}
 	}
@@ -288,7 +288,7 @@ function ModuleMockerClass:_makeComponent(
 
 		f.getMockName = function()
 			local mockConfig = self:_ensureMockConfig(f)
-			return mockConfig.mockName or 'jest:fn()'
+			return mockConfig.mockName or 'jest.fn()'
 		end
 
 		-- deviation: Since we don't have the new keyword in Lua, we add a

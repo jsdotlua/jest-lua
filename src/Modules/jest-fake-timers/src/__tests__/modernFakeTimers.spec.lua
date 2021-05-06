@@ -19,9 +19,8 @@ return function()
 
 	local jestExpect = require(Modules.Expect)
 
-	local Jest = require(Modules.Jest)
-	local jest = Jest.jest
-	local timers = Jest._fakeTimers
+	local jest = require(Modules.Jest)
+	local timers = jest._fakeTimers
 
 	afterEach(function()
 		timers:useRealTimers()
@@ -47,12 +46,12 @@ return function()
 				timers:useFakeTimers()
 
 				local runOrder = {}
-				local mock1 = jest:fn(function() table.insert(runOrder, 'mock1') end)
-				local mock2 = jest:fn(function() table.insert(runOrder, 'mock2') end)
-				local mock3 = jest:fn(function() table.insert(runOrder, 'mock3') end)
-				local mock4 = jest:fn(function() table.insert(runOrder, 'mock4') end)
-				local mock5 = jest:fn(function() table.insert(runOrder, 'mock5') end)
-				local mock6 = jest:fn(function() table.insert(runOrder, 'mock6') end)
+				local mock1 = jest.fn(function() table.insert(runOrder, 'mock1') end)
+				local mock2 = jest.fn(function() table.insert(runOrder, 'mock2') end)
+				local mock3 = jest.fn(function() table.insert(runOrder, 'mock3') end)
+				local mock4 = jest.fn(function() table.insert(runOrder, 'mock4') end)
+				local mock5 = jest.fn(function() table.insert(runOrder, 'mock5') end)
+				local mock6 = jest.fn(function() table.insert(runOrder, 'mock6') end)
 
 				setTimeout(mock1, 100)
 				setTimeout(mock2, 0/0)

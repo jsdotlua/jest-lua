@@ -68,6 +68,6 @@ const instance1 = new mockFn()
 ```
 We would write it in Lua as:
 ```
-local mockFn = jest:fn()
+local mockFn = jest.fn()
 local instance1 = mockFn.new()
 ```

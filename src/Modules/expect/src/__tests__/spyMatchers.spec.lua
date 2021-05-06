@@ -20,7 +20,7 @@ return function()
 	local snapshots = require(script.Parent.__snapshots__['spyMatchers.snap'])
 
 	local jestExpect = require(Workspace)
-	local mock = require(Modules.JestMock)
+	local jestMock = require(Modules.JestMock)
 
 	local function createSpy(fn)
 		local spy = {}
@@ -46,9 +46,10 @@ return function()
 	end
 
 	-- For now, we are doing this instead of having a global namespace
-	local jest
+	local mock
+
 	beforeAll(function()
-		jest = mock.new()
+		mock = jestMock.new()
 	end)
 
 	for _, called in ipairs({'toBeCalled', 'toHaveBeenCalled'}) do
@@ -60,7 +61,7 @@ return function()
 			end)
 
 			it('passes when called', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 				fn('arg0', 'arg1', 'arg2')
 				jestExpect(createSpy(fn))[called]()
 				jestExpect(fn)[called]()
@@ -68,7 +69,7 @@ return function()
 			end)
 
 			it('.not passes when called', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 				local spy = createSpy(fn)
 
 				jestExpect(spy).never[called]()
@@ -77,14 +78,14 @@ return function()
 			end)
 
 			it('fails with any argument passed', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 
 				fn()
 				jestExpect(function() jestExpect(fn)[called](555) end).toThrow(snapshots[called .. ' fails with any argument passed 1'])
 			end)
 
 			it('.not fails with any argument passed', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 
 				jestExpect(function()
 					jestExpect(fn).never[called](555)
@@ -92,7 +93,7 @@ return function()
 			end)
 
 			it('includes the custom mock name in the error message', function()
-				local fn = jest:fn().mockName('named-mock')
+				local fn = mock:fn().mockName('named-mock')
 
 				fn()
 				jestExpect(fn)[called]()
@@ -112,7 +113,7 @@ return function()
 			end)
 
 			it('only accepts a number argument', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 				fn()
 				jestExpect(fn)[calledTimes](1)
 
@@ -124,7 +125,7 @@ return function()
 			end)
 
 			it('.not only accepts a number argument', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 				jestExpect(fn).never[calledTimes](1)
 
 				for i, value in ipairs({{}, true, 'a', function() end}) do
@@ -135,7 +136,7 @@ return function()
 			end)
 
 			it('passes if function called equal to expected times', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 				fn()
 				fn()
 
@@ -149,7 +150,7 @@ return function()
 			end)
 
 			it('.not passes if function called more than expected times', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 				fn()
 				fn()
 				fn()
@@ -167,7 +168,7 @@ return function()
 			end)
 
 			it('.not passes if function called less than expected times', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 				fn()
 
 				local spy = createSpy(fn)
@@ -183,7 +184,7 @@ return function()
 			end)
 
 			it('includes the custom mock name in the error message', function()
-				local fn = jest:fn().mockName('named-mock')
+				local fn = mock:fn().mockName('named-mock')
 				fn()
 
 				jestExpect(function()
@@ -223,7 +224,7 @@ return function()
 			end)
 
 			it('works when not called', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 				caller(jestExpect(createSpy(fn)).never[calledWith], 'foo', 'bar')
 				caller(jestExpect(fn).never[calledWith], 'foo', 'bar')
 
@@ -233,7 +234,7 @@ return function()
 			end)
 
 			it('works with no arguments', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 				fn()
 
 				caller(jestExpect(createSpy(fn))[calledWith])
@@ -241,7 +242,7 @@ return function()
 			end)
 
 			it('works with arguments that don\'t match', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 				fn('foo', 'bar1')
 
 				caller(jestExpect(createSpy(fn)).never[calledWith], 'foo', 'bar')
@@ -253,7 +254,7 @@ return function()
 			end)
 
 			it('works with arguments that match', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 				fn('foo', 'bar')
 
 				caller(jestExpect(createSpy(fn))[calledWith], 'foo', 'bar')
@@ -266,7 +267,7 @@ return function()
 
 			-- deviation: changed undefined to nil
 			it('works with trailing undefined arguments', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 				fn('foo', nil)
 
 				jestExpect(function()
@@ -276,7 +277,7 @@ return function()
 
 			-- deviation: test changed from Map to table
 			it('works with Map', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 
 				local m1 = {
 					{1, 2},
@@ -306,7 +307,7 @@ return function()
 			end)
 
 			it('works with Set', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 
 				local s1 = Set.new({1, 2})
 				local s2 = Set.new({1, 2})
@@ -340,7 +341,7 @@ return function()
 
 			if basicCalledWith[calledWith] then
 				it('works with many arguments', function()
-					local fn = jest:fn()
+					local fn = mock:fn()
 					fn('foo1', 'bar')
 					fn('foo', 'bar1')
 					fn('foo', 'bar')
@@ -353,7 +354,7 @@ return function()
 				end)
 
 				it('works with many arguments that don\'t match', function()
-					local fn = jest:fn()
+					local fn = mock:fn()
 					fn('foo', 'bar1')
 					fn('foo', 'bar2')
 					fn('foo', 'bar3')
@@ -375,7 +376,7 @@ return function()
 
 			if nthCalled[calledWith] then
 				it('works with three calls', function()
-					local fn = jest:fn()
+					local fn = mock:fn()
 					fn('foo1', 'bar')
 					fn('foo', 'bar1')
 					fn('foo', 'bar')
@@ -390,7 +391,7 @@ return function()
 				end)
 
 				it('positive throw matcher error for n that is not positive integer', function()
-					local fn = jest:fn()
+					local fn = mock:fn()
 					fn('foo1', 'bar')
 
 					jestExpect(function()
@@ -399,7 +400,7 @@ return function()
 				end)
 
 				it('positive throw matcher error for n that is not integer', function()
-					local fn = jest:fn()
+					local fn = mock:fn()
 					fn('foo1', 'bar')
 
 					jestExpect(function()
@@ -408,7 +409,7 @@ return function()
 				end)
 
 				it('negative throw matcher error for n that is not integer', function()
-					local fn = jest:fn()
+					local fn = mock:fn()
 					fn('foo1', 'bar')
 
 					jestExpect(function()
@@ -418,7 +419,7 @@ return function()
 			end
 
 			it('includes the custom mock name in the error message', function()
-				local fn = jest:fn().mockName('named-mock')
+				local fn = mock:fn().mockName('named-mock')
 				fn('foo', 'bar')
 
 				caller(jestExpect(fn)[calledWith], 'foo', 'bar')
@@ -441,7 +442,7 @@ return function()
 			end)
 
 			it('throw matcher error if received is spy', function()
-				local spy = createSpy(jest:fn())
+				local spy = createSpy(mock:fn())
 
 				jestExpect(function()
 					jestExpect(spy)[returned]()
@@ -449,7 +450,7 @@ return function()
 			end)
 
 			it('passes when returned', function()
-				local fn = jest:fn(function() return 42 end)
+				local fn = mock:fn(function() return 42 end)
 				fn()
 				jestExpect(fn)[returned]()
 				jestExpect(function()
@@ -459,7 +460,7 @@ return function()
 
 			-- deviation: changed undefined to nil
 			it('passes when undefined is returned', function()
-				local fn = jest:fn(function() return nil end)
+				local fn = mock:fn(function() return nil end)
 				fn()
 				jestExpect(fn)[returned]()
 				jestExpect(function()
@@ -468,7 +469,7 @@ return function()
 			end)
 
 			it('passes when at least one call does not throw', function()
-				local fn = jest:fn(function(causeError)
+				local fn = mock:fn(function(causeError)
 					if causeError then
 						error(Error('Error!'))
 					end
@@ -492,7 +493,7 @@ return function()
 			end)
 
 			it('.not passes when not returned', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 
 				jestExpect(fn).never[returned]()
 				jestExpect(function()
@@ -501,7 +502,7 @@ return function()
 			end)
 
 			it('.not passes when all calls throw', function()
-				local fn = jest:fn(function()
+				local fn = mock:fn(function()
 					error(Error('Error!'))
 				end)
 
@@ -521,7 +522,7 @@ return function()
 
 			-- deviation: changed undefined to nil
 			it('.not passes when a call throws undefined', function()
-				local fn = jest:fn(function()
+				local fn = mock:fn(function()
 					error(nil)
 				end)
 
@@ -534,7 +535,7 @@ return function()
 			end)
 
 			it('fails with any argument passed', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 
 				fn()
 				jestExpect(function()
@@ -543,7 +544,7 @@ return function()
 			end)
 
 			it('.not fails with any argument passed', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 
 				jestExpect(function()
 					jestExpect(fn).never[returned](555)
@@ -551,7 +552,7 @@ return function()
 			end)
 
 			it('includes the custom mock name in the error message', function()
-				local fn = jest:fn(function() return 42 end).mockName('named-mock')
+				local fn = mock:fn(function() return 42 end).mockName('named-mock')
 				fn()
 				jestExpect(fn)[returned]()
 				jestExpect(function()
@@ -562,7 +563,7 @@ return function()
 			it('incomplete recursive calls are handled properly', function()
 				-- // sums up all integers from 0 -> value, using recursion
 				local fn
-				fn = jest:fn(function(value)
+				fn = mock:fn(function(value)
 					if value == 0 then
 						-- // Before returning from the base case of recursion, none of the
 						-- // calls have returned yet.
@@ -585,7 +586,7 @@ return function()
 	for _, returnedTimes in ipairs({'toReturnTimes', 'toHaveReturnedTimes'}) do
 		describe(('%s'):format(returnedTimes), function()
 			it('throw matcher error if received is spy', function()
-				local spy = createSpy(jest:fn())
+				local spy = createSpy(mock:fn())
 
 				-- deviation: we don't test against the snapshot because the error
 				-- message is sufficiently deviated (we report a table instead of a function)
@@ -595,7 +596,7 @@ return function()
 			end)
 
 			it('only accepts a number argument', function()
-				local fn = jest:fn(function() return 42 end)
+				local fn = mock:fn(function() return 42 end)
 				fn()
 				jestExpect(fn)[returnedTimes](1)
 
@@ -607,7 +608,7 @@ return function()
 			end)
 
 			it('.not only accepts a number argument', function()
-				local fn = jest:fn(function() return 42 end)
+				local fn = mock:fn(function() return 42 end)
 				jestExpect(fn).never[returnedTimes](2)
 
 				for i, value in ipairs({{}, true, 'a', function() end}) do
@@ -618,7 +619,7 @@ return function()
 			end)
 
 			it('passes if function returned equal to expected times', function()
-				local fn = jest:fn(function() return 42 end)
+				local fn = mock:fn(function() return 42 end)
 				fn()
 				fn()
 
@@ -631,7 +632,7 @@ return function()
 
 			-- deviation: changed undefined to nil
 			it('calls that return undefined are counted as returns', function()
-				local fn = jest:fn(function() return nil end)
+				local fn = mock:fn(function() return nil end)
 				fn()
 				fn()
 
@@ -643,7 +644,7 @@ return function()
 			end)
 
 			it('.not passes if function returned more than expected times', function()
-				local fn = jest:fn(function() return 42 end)
+				local fn = mock:fn(function() return 42 end)
 				fn()
 				fn()
 				fn()
@@ -657,7 +658,7 @@ return function()
 			end)
 
 			it('.not passes if function called less than expected times', function()
-				local fn = jest:fn(function() return 42 end)
+				local fn = mock:fn(function() return 42 end)
 				fn()
 
 				jestExpect(fn)[returnedTimes](1)
@@ -669,7 +670,7 @@ return function()
 			end)
 
 			it('calls that throw are not counted', function()
-				local fn = jest:fn(function(causeError)
+				local fn = mock:fn(function(causeError)
 					if causeError then
 						error(Error('Error!'))
 					end
@@ -693,7 +694,7 @@ return function()
 			end)
 
 			it('calls that throw undefined are not counted', function()
-				local fn = jest:fn(function(causeError)
+				local fn = mock:fn(function(causeError)
 					if causeError then
 						error(nil)
 					end
@@ -717,7 +718,7 @@ return function()
 			end)
 
 			it('includes the custom mock name in the error message', function()
-				local fn = jest:fn(function() return 42 end).mockName('named-mock')
+				local fn = mock:fn(function() return 42 end).mockName('named-mock')
 				fn()
 				fn()
 
@@ -731,7 +732,7 @@ return function()
 			it('incomplete recursive calls are handled properly', function()
 				-- // sums up all integers from 0 -> value, using recursion
 				local fn
-				fn = jest:fn(function(value)
+				fn = mock:fn(function(value)
 					if value == 0 then
 						return 0
 					else
@@ -786,7 +787,7 @@ return function()
 			end)
 
 			it('works when not called', function()
-				local fn = jest:fn()
+				local fn = mock:fn()
 				caller(jestExpect(fn).never[returnedWith], 'foo')
 
 				jestExpect(function()
@@ -795,14 +796,14 @@ return function()
 			end)
 
 			it('works with no arguments', function()
-					local fn = jest:fn()
+					local fn = mock:fn()
 					fn()
 
 					caller(jestExpect(fn)[returnedWith])
 			end)
 
 			it('works with argument that does not match', function()
-				local fn = jest:fn(function() return 'foo' end)
+				local fn = mock:fn(function() return 'foo' end)
 				fn()
 
 				caller(jestExpect(fn).never[returnedWith], 'bar')
@@ -813,7 +814,7 @@ return function()
 			end)
 
 			it('works with argument that does match', function()
-				local fn = jest:fn(function() return 'foo' end)
+				local fn = mock:fn(function() return 'foo' end)
 				fn()
 
 				caller(jestExpect(fn)[returnedWith], 'foo')
@@ -824,7 +825,7 @@ return function()
 			end)
 
 			it('works with undefined', function()
-				local fn = jest:fn(function() return nil end)
+				local fn = mock:fn(function() return nil end)
 				fn()
 
 				caller(jestExpect(fn)[returnedWith], nil)
@@ -849,7 +850,7 @@ return function()
 					{'b', 'a'}
 				}
 
-				local fn = jest:fn(function() return m1 end)
+				local fn = mock:fn(function() return m1 end)
 				fn()
 
 				caller(jestExpect(fn)[returnedWith], m2)
@@ -868,7 +869,7 @@ return function()
 				local s2 = Set.new({1, 2})
 				local s3 = Set.new({3, 4})
 
-				local fn = jest:fn(function() return s1 end)
+				local fn = mock:fn(function() return s1 end)
 				fn()
 
 				caller(jestExpect(fn)[returnedWith], s2)
@@ -887,7 +888,7 @@ return function()
 			itSKIP('works with Immutable.js objects directly created', function() end)
 
 			it('a call that throws is not considered to have returned', function()
-				local fn = jest:fn(function()
+				local fn = mock:fn(function()
 					error(Error('Error!'))
 				end)
 
@@ -907,7 +908,7 @@ return function()
 
 			-- deviation: changed undefined to nil
 			it('a call that throws undefined is not considered to have returned', function()
-				local fn = jest:fn(function()
+				local fn = mock:fn(function()
 					error(nil)
 				end)
 
@@ -935,7 +936,7 @@ return function()
 			if basicReturnedWith[returnedWith] then
 				describe('returnedWith', function()
 					it('works with more calls than the limit', function()
-						local fn = jest:fn()
+						local fn = mock:fn()
 						fn.mockReturnValueOnce('foo1')
 						fn.mockReturnValueOnce('foo2')
 						fn.mockReturnValueOnce('foo3')
@@ -960,7 +961,7 @@ return function()
 					it('incomplete recursive calls are handled properly', function()
 						-- // sums up all integers from 0 -> value, using recursion
 						local fn
-						fn = jest:fn(function(value)
+						fn = mock:fn(function(value)
 							if value == 0 then
 								-- // Before returning from the base case of recursion, none of the
 								-- // calls have returned yet.
@@ -992,7 +993,7 @@ return function()
 			if nthReturnedWith[returnedWith] then
 				describe('nthReturnedWith', function()
 					it('works with three calls', function()
-						local fn = jest:fn()
+						local fn = mock:fn()
 						fn.mockReturnValueOnce('foo1')
 						fn.mockReturnValueOnce('foo2')
 						fn.mockReturnValueOnce('foo3')
@@ -1012,7 +1013,7 @@ return function()
 					end)
 
 					it('should replace 1st, 2nd, 3rd with first, second, third', function()
-						local fn = jest:fn()
+						local fn = mock:fn()
 						fn.mockReturnValueOnce('foo1')
 						fn.mockReturnValueOnce('foo2')
 						fn.mockReturnValueOnce('foo3')
@@ -1034,7 +1035,7 @@ return function()
 					end)
 
 					it('positive throw matcher error for n that is not positive integer', function()
-						local fn = jest:fn(function() return 'foo' end)
+						local fn = mock:fn(function() return 'foo' end)
 						fn()
 
 						jestExpect(function()
@@ -1043,7 +1044,7 @@ return function()
 					end)
 
 					it('should reject nth value greater than number of calls', function()
-						local fn = jest:fn(function() return 'foo' end)
+						local fn = mock:fn(function() return 'foo' end)
 						fn()
 						fn()
 						fn()
@@ -1054,7 +1055,7 @@ return function()
 					end)
 
 					it('positive throw matcher error for n that is not integer', function()
-						local fn = jest:fn(function() return 'foo' end)
+						local fn = mock:fn(function() return 'foo' end)
 						fn('foo')
 
 						jestExpect(function()
@@ -1063,7 +1064,7 @@ return function()
 					end)
 
 					it('negative throw matcher error for n that is not number', function()
-						local fn = jest:fn(function() return 'foo' end)
+						local fn = mock:fn(function() return 'foo' end)
 						fn('foo')
 
 						jestExpect(function()
@@ -1074,7 +1075,7 @@ return function()
 					it('incomplete recursive calls are handled properly', function()
 						-- // sums up all integers from 0 -> value, using recursion
 						local fn
-						fn = jest:fn(function(value)
+						fn = mock:fn(function(value)
 							if value == 0 then
 								return 0
 							else
@@ -1119,7 +1120,7 @@ return function()
 			if lastReturnedWith[returnedWith] then
 				describe('lastReturnedWith', function()
 					it('works with three calls', function()
-						local fn = jest:fn()
+						local fn = mock:fn()
 						fn.mockReturnValueOnce('foo1')
 						fn.mockReturnValueOnce('foo2')
 						fn.mockReturnValueOnce('foo3')
@@ -1137,7 +1138,7 @@ return function()
 					it('incomplete recursive calls are handled properly', function()
 						-- // sums up all integers from 0 -> value, using recursion
 						local fn
-						fn = jest:fn(function(value)
+						fn = mock:fn(function(value)
 							if value == 0 then
 								-- // Before returning from the base case of recursion, none of the
 								-- // calls have returned yet
@@ -1157,7 +1158,7 @@ return function()
 			end
 
 			it('includes the custom mock name in the error message', function()
-				local fn = jest:fn().mockName('named-mock')
+				local fn = mock:fn().mockName('named-mock')
 				caller(jestExpect(fn).never[returnedWith], 'foo')
 
 				jestExpect(function()

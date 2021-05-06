@@ -188,7 +188,7 @@ When an assertion fails, the error message should give as much signal as necessa
 
 ```lua
 it('mock calls its argument with a non-nil argument', function()
-	local mock = jest:fn()
+	local mock = jest.fn()
 	mock('a')
 	expect(mock).toBeCalledWith(expect.anything())
 end)
@@ -204,7 +204,7 @@ local function identity(a)
 end
 
 it('identity calls its callback with CustomClass', function()
-	local mock = jest:fn()
+	local mock = jest.fn()
 	identity(CustomClass.new())
 	expect(mock).toBeCalledWith(expect.any(CustomClass))
 end)
@@ -427,13 +427,13 @@ end
 
 describe('drinkAllExceptOctopus', function()
 	it('drinks something lemon-flavoured', function()
-		local drink = jest:fn()
+		local drink = jest.fn()
 		drinkAllExceptOctopus(drink, 'lemon')
 		expect(drink).toHaveBeenCalled()
 	end)
 
 	it('does not drink something octopus-flavoured', function()
-		local drink = jest:fn()
+		local drink = jest.fn()
 		drinkAllExceptOctopus(drink, 'octopus')
 		expect(drink).never.toHaveBeenCalled()
 	end)
@@ -450,7 +450,7 @@ For example, let's say you have a `drinkEach(drink, table)` function that takes 
 
 ```lua
 it('drinkEach drinks each drink', function()
-	local drink = jest:fn()
+	local drink = jest.fn()
 	drinkEach(drink, {'lemon', 'octopus'})
 	expect(drink).toHaveBeenCalledTimes(2)
 end)
@@ -468,7 +468,7 @@ For example, let's say that you can register a beverage with a `register` functi
 it('registration applies correctly to orange La Croix', function()
 	local beverage = LaCroix.new('orange')
 	register(beverage)
-	local f = jest:fn()
+	local f = jest.fn()
 	applyToAll(f)
 	expect(f).toHaveBeenCalledWith(beverage)
 end)
@@ -482,7 +482,7 @@ If you have a mock function, you can use `.toHaveBeenLastCalledWith` to test wha
 
 ```lua
 it('applying to all flavors does mango last', function()
-	local drink = jest:fn()
+	local drink = jest.fn()
 	applyToAllFlavors(drink)
 	expect(drink).toHaveBeenLastCalledWith('mango')
 end)
@@ -496,7 +496,7 @@ If you have a mock function, you can use `.toHaveBeenNthCalledWith` to test what
 
 ```lua
 it('drinkEach drinks each drink', function()
-	local drink = jest:fn()
+	local drink = jest.fn()
 	drinkEach(drink, {'lemon', 'octopus'})
 	expect(drink).toHaveBeenNthCalledWith(1, 'lemon')
 	expect(drink).toHaveBeenNthCalledWith(2, 'octopus')
@@ -513,7 +513,7 @@ If you have a mock function, you can use `.toHaveReturned` to test that the mock
 
 ```lua
 it('drinks returns', function()
-	local drink = jest:fn(function() return true end)
+	local drink = jest.fn(function() return true end)
 
 	drink()
 
@@ -531,7 +531,7 @@ For example, let's say you have a mock `drink` that returns `true`. You can writ
 
 ```lua
 it('drink returns twice', function()
-	local drink = jest:fn(function() return true end)
+	local drink = jest.fn(function() return true end)
 
 	drink()
 	drink()
@@ -551,7 +551,7 @@ For example, let's say you have a mock `drink` that returns the name of the beve
 ```lua
 it('drink returns La Croix', function()
 	local beverage = {name = 'La Croix'}
-	local drink = jest:fn(function(beverage) return beverage.name end)
+	local drink = jest.fn(function(beverage) return beverage.name end)
 
 	drink(beverage)
 
@@ -571,7 +571,7 @@ For example, let's say you have a mock `drink` that returns the name of the beve
 it('drink returns La Croix (Orange) last', function()
 	local beverage1 = {name = 'La Croix (Lemon)'}
 	local beverage2 = {name = 'La Croix (Orange)'}
-	local drink = jest:fn(function(beverage) return beverage.name end)
+	local drink = jest.fn(function(beverage) return beverage.name end)
 
 	drink(beverage1)
 	drink(beverage2)
@@ -592,7 +592,7 @@ For example, let's say you have a mock `drink` that returns the name of the beve
 it('drink returns expected nth calls', () => {
 	local beverage1 = {name = 'La Croix (Lemon)'}
 	local beverage2 = {name = 'La Croix (Orange)'}
-	local drink = jest:fn(function(beverage) return beverage.name end)
+	local drink = jest.fn(function(beverage) return beverage.name end)
 
 	drink(beverage1)
 	drink(beverage2)
@@ -613,7 +613,7 @@ This is especially useful for checking arrays or strings size.
 ```lua
 expect({1, 2, 3}).toHaveLength(3)
 expect('abc').toHaveLength(3)
-expect('').neber.toHaveLength(5)
+expect('').never.toHaveLength(5)
 ```
 
 ### `.toHaveProperty(keyPath, value?)`

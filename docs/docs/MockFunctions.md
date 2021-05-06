@@ -20,7 +20,7 @@ end
 To test this function, we can use a mock function, and inspect the mock's state to ensure the callback is invoked as expected.
 
 ```lua
-local mockCallback = jest:fn()
+local mockCallback = jest.fn()
 forEach({0, 1}, mockCallback)
 
 -- The mock function is called twice
@@ -38,7 +38,7 @@ expect(mockCallback.mock.calls[2][1]).toBe(1)
 All mock functions have this special `.mock` property, which is where data about how the function has been called and what the function returned is kept. The `.mock` property also tracks the value of `self` for each call, so it is possible to inspect this as well:
 
 ```lua
-local myMock = jest:fn()
+local myMock = jest.fn()
 
 local a = myMock.new()
 local b = myMock.new()
@@ -71,7 +71,7 @@ expect(#someMockFunction.mock.instances).toBe(2)
 Mock functions can also be used to inject test values into your code during a test:
 
 ```lua
-local myMock = jest:fn()
+local myMock = jest.fn()
 print(myMock()) -- > nil
 
 myMock.mockReturnValueOnce(10).mockReturnValueOnce('x').mockReturnValue(true)
@@ -85,7 +85,7 @@ print(myMock()) -- > true
 Mock functions are also very effective in code that uses a functional continuation-passing style. Code written in this style helps avoid the need for complicated stubs that recreate the behavior of the real component they're standing in for, in favor of injecting values directly into the test right before they're used.
 
 ```lua
-local filterTestFn = jest:fn()
+local filterTestFn = jest.fn()
 
 -- Make the mock return `true` for the first call,
 -- and `false` for the second call
@@ -107,10 +107,10 @@ Most real-world examples actually involve getting ahold of a mock function on a 
 
 ## Mock Implementations
 
-Still, there are cases where it's useful to go beyond the ability to specify return values and full-on replace the implementation of a mock function. This can be done with `jest:fn` or the `mockImplementationOnce` method on mock functions.
+Still, there are cases where it's useful to go beyond the ability to specify return values and full-on replace the implementation of a mock function. This can be done with `jest.fn` or the `mockImplementationOnce` method on mock functions.
 
 ```lua
-local myMockFn = jest:fn(function(cb) return cb(nil, true) end)
+local myMockFn = jest.fn(function(cb) return cb(nil, true) end)
 
 myMockFn(function(err, val) print(val) end) -- > true
 ```
@@ -118,7 +118,7 @@ myMockFn(function(err, val) print(val) end) -- > true
 When you need to recreate a complex behavior of a mock function such that multiple function calls produce different results, use the `mockImplementationOnce` method:
 
 ```lua
-local myMockFn = jest:fn()
+local myMockFn = jest.fn()
 	.mockImplementationOnce(function(cb) return cb(nil, true) end)
 	.mockImplementationOnce(function(cb) return cb(nil, false) end)
 
@@ -126,10 +126,10 @@ myMockFn(function(err, val) print(val) end) -- > true
 myMockFn(function(err, val) print(val) end) -- > false
 ```
 
-When the mocked function runs out of implementations defined with `mockImplementationOnce`, it will execute the default implementation set with `jest:fn` (if it is defined):
+When the mocked function runs out of implementations defined with `mockImplementationOnce`, it will execute the default implementation set with `jest.fn` (if it is defined):
 
 ```lua
-local myMockFn = jest:fn(function() return 'default' end)
+local myMockFn = jest.fn(function() return 'default' end)
 	.mockImplementationOnce(function() return 'first call' end)
 	.mockImplementationOnce(function() return 'second call' end)
 
@@ -143,16 +143,16 @@ For cases where we have methods that are typically chained (and thus always need
 
 ```lua
 local myObj = {
-	myMethod = jest:fn().mockReturnThis(),
+	myMethod = jest.fn().mockReturnThis(),
 }
 ```
 
 ## Mock Names
 
-You can optionally provide a name for your mock functions, which will be displayed instead of "jest:fn()" in the test error output. Use this if you want to be able to quickly identify the mock function reporting an error in your test output.
+You can optionally provide a name for your mock functions, which will be displayed instead of "jest.fn()" in the test error output. Use this if you want to be able to quickly identify the mock function reporting an error in your test output.
 
 ```lua
-local myMockFn = jest:fn()
+local myMockFn = jest.fn()
 	.mockReturnValue('default')
 	.mockName('onlyReturnsDefault')
 ```
