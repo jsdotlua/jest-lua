@@ -73,6 +73,7 @@ local function printBasicValue(
 	if typeOf == 'number' then
 		return printNumber(val)
 	end
+
 	-- deviation: printBigInt omitted because lua has no bingint type
 	if typeOf == 'string' then
 		if escapeString then
@@ -105,6 +106,11 @@ local function printBasicValue(
 			return val
 		end
 		return val
+	end
+
+	-- deviation: output classname for Instance types
+	if typeOf == 'Instance' then
+		return val.ClassName
 	end
 
 	-- deviation: catchall for arbitrary userdata

@@ -56,6 +56,11 @@ local function getType(value: any): string
 	if typeof(value) == 'table' then
 		return 'table'
 	end
+	-- deviation: Roblox Instance type
+	-- https://developer.roblox.com/en-us/api-reference/class/Instance
+	if typeof(value) == 'Instance' then
+		return 'Instance'
+	end
 	-- deviation: added luau types for userdata and thread
 	if typeof(value) == 'userdata' then
 		return 'userdata'

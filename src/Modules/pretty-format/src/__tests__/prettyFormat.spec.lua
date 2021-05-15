@@ -701,12 +701,4 @@ return function()
 			end)
 		end)
 	end)
-
-	describe('jest roblox tests', function()
-		it('works for arbitrary userdata', function()
-			local testObject = newproxy(true)
-
-			jestExpect(prettyFormat(testObject)).toContain('userdata: 0x')
-		end)
-	end)
 end

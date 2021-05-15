@@ -72,6 +72,14 @@ return function()
 			expect(getType(Set.new())).to.equal("set")
 		end)
 
+		it("Instance", function()
+			expect(getType(Instance.new("Frame"))).to.equal("Instance")
+		end)
+
+		it("userdata", function()
+			expect(getType(newproxy())).to.equal("userdata")
+		end)
+
 		-- deviation: test omitted because lua has no built-in Map types
 		-- deviation: test omitted because lua has no primitive bigint type
 	end)

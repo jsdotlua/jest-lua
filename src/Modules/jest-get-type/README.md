@@ -14,6 +14,12 @@ Version: v26.3.0
 * Lua lacks the following primitives: `bigint`, `symbol`.
 * Lua lacks the following built-in types: `RegExp`, `Map`, `Set`, `Date`.
 
+Types supported:
+
+* Lua Primitives - `nil`, `table`, `number`, `string`, `function`, `boolean`, `userdata`, `thread`
+* [Luau Polyfill](https://github.com/Roblox/luau-polyfill) types - `symbol`, [`regexp`](https://github.com/Roblox/luau-regexp), `error`, `set`
+* Roblox types - `Instance`, `DateTime`
+
 ### :x: Excluded
 ```
 ```
