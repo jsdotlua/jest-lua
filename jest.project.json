@@ -43,6 +43,9 @@
           },
           "Jest": {
             "$path": "src/Modules/jest/src"
+          },
+          "JestSnapshot": {
+            "$path": "src/Modules/jest-snapshot/src"
           }
         }
       }
