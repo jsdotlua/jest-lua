@@ -22,10 +22,10 @@ expect().toReturnWith() also aliased as expect().toHaveReturnedWith()
 
 * Added basic jest-mock functionality
   * The `jest` object can be imported from `Globals` and has the following methods:
-    * `:fn()`
-    * `:clearAllMocks()`
-    * `:resetAllMocks()`
-    * `:restoreAllMocks()`
+    * `.fn()`
+    * `.clearAllMocks()`
+    * `.resetAllMocks()`
+    * `.restoreAllMocks()`
 
 * Added `Error` type to `jest-get-type`
 * :bug: Bugfix in `.toMatch` where strings go into the RegEx check

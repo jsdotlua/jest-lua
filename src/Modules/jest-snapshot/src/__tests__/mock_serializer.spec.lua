@@ -94,8 +94,8 @@ return function()
 			'},',
 			'},',
 			'}'
-  		}, '\n')
-  		jestExpect(prettyFormat(fn, {indent = 0, plugins = {plugin_}})).toBe(expected)
+		}, '\n')
+		jestExpect(prettyFormat(fn, {indent = 0, plugins = {plugin_}})).toBe(expected)
 	end)
 
 	it('min option', function()
