@@ -1,9 +1,13 @@
 # Jest Roblox Changelog
 
-## Unreleased
+## 1.1.0 (2021-05-28)
 * Added `toStrictEqual` matcher
 * :bug: Bugfix in `SpyMatchers` where function calls with `nil` arguments would not be handled correctly
 * Changed the `ArrayContaining` asymmetric matcher to output curly braces instead of square brackets
+* Added instantiating mock function instance with `mockFn.new()`
+* Changed syntax for intializing mock functions from `jest:fn()` to `jest.fn()` (the colon syntax is left in for compatibility but will be removed in 2.0)
+* `RegExp` is pulled out from the LuauPolyfill repo into a separate LuauRegExp repo and lazily loaded
+* Added proper output formatting for Roblox `Instance` types
 
 ## 1.0.0 (2021-03-30)
 * Added spyMatchers

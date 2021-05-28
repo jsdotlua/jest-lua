@@ -3,7 +3,7 @@ name = "roblox/jest-roblox"
 author = "Roblox"
 license = "Apache2"
 content_root = "src"
-version = "1.0.0"
+version = "1.1.0"
 
 [dependencies]
 ChalkLua = "github.com/roblox/chalk-lua@0.1.2"

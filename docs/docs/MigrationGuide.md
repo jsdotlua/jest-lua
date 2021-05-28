@@ -76,3 +76,18 @@ expect(function()
 ```
 
 A `.toThrow()` with no arguments will match against any exception, so it is recommended to match against a specific error message or use the [`Error`](expect#error) polyfill to throw and match against a specific exception. See the reference doc on [`.toThrow(error?)`](expect#tothrowerror).
+
+### `.extend(matchers)`
+`expect.extend` takes `self` (or `_` if the `matcherContext` isn't needed) as its first argument and the `message` property in the return value must be a function. See the reference doc on the [custom matcher API](expect#custom-matchers-api).
+```diff
+expect.extends({
+-	customMatcher = function(arg)
++	customMatcher = function(_, arg)
+		return {
+			pass = true,
+-			message = "message",
++			message = function() return "message" end
+		}
+	end
+})
+```

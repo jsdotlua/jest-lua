@@ -17,7 +17,7 @@ local RegExp = require(Packages.LuauRegExp)
 ```
 
 ### Error
-LuaPolyfill also provides an extensible `Error` class that can be used with throwing matchers.
+LuauPolyfill also provides an extensible `Error` class that can be used with throwing matchers.
 
 ```lua
 local LuauPolyfill = require(Packages.LuauPolyfill)
