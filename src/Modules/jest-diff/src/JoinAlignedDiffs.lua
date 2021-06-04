@@ -305,21 +305,23 @@ local function joinAlignedDiffsExpand(
 	options
 ): string
 	return table.concat(
-		Array.map(diffs,
-		function(diff, i: number, diffs: { [number]: any }): string
-			local line = diff[2]
-			-- deviation: 1-indexing
-			local isFirstOrLast = i == 1 or i == #diff
+		Array.map(
+			diffs,
+			function(diff, i: number, diffs_: { [number]: any }): string
+				local line = diff[2]
+				-- deviation: 1-indexing
+				local isFirstOrLast = i == 1 or i == #diffs_
 
-			local case = diff[1]
-			if case == DIFF_DELETE then
-				return printDeleteLine(line, isFirstOrLast, options)
-			elseif case == DIFF_INSERT then
-				return printInsertLine(line, isFirstOrLast, options)
-			else
-				return printCommonLine(line, isFirstOrLast, options)
+				local case = diff[1]
+				if case == DIFF_DELETE then
+					return printDeleteLine(line, isFirstOrLast, options)
+				elseif case == DIFF_INSERT then
+					return printInsertLine(line, isFirstOrLast, options)
+				else
+					return printCommonLine(line, isFirstOrLast, options)
+				end
 			end
-		end),
+		),
 		'\n'
 	)
 end

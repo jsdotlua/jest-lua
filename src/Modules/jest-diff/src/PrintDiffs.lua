@@ -31,7 +31,7 @@ local diffStringsRaw
 local function hasCommonDiff(diffs: { [number]: any }, isMultiline: boolean): boolean
 	if isMultiline then
 		-- // Important: Ignore common newline that was appended to multiline strings!
-		local iLast = #diffs - 1
+		local iLast = #diffs
 		return Array.some(diffs,
 			function(diff, i)
 				return diff[1] == DIFF_EQUAL and (i ~= iLast or diff[2] ~= '\n')

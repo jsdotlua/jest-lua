@@ -13,9 +13,8 @@ local Packages = Modules.Parent.Parent
 
 local chalk = require(Packages.ChalkLua)
 
--- deviation: we only support the regex for ansi16 since all of the chalk
--- colors used in Jest/Jest-Roblox are ansi16 styles
-local ansiRegex = "\x1b%[%d+m"
+-- deviation: this regex attempts to match both ansi16 and ansi256 regexes
+local ansiRegex = "\x1b%[%d+;?5?;?%d*m"
 
 local ansiLookupTable = {
 	[chalk.red.close] = "</>",
@@ -47,15 +46,13 @@ local ansiLookupTable = {
 }
 
 local function toHumanReadableAnsi(text: string)
-	local replacedString, _ = text:gsub(ansiRegex, function(match)
+	return text:gsub(ansiRegex, function(match)
 		if ansiLookupTable[match] then
 			return ansiLookupTable[match]
 		else
 			return ""
 		end
 	end)
-
-	return replacedString
 end
 
 local function test(val: any)
@@ -75,5 +72,7 @@ end
 
 return {
 	test = test,
-	serialize = serialize
+	serialize = serialize,
+	-- deviation: exporting ansiRegex since we don't have a separate module for it
+	ansiRegex = ansiRegex
 }

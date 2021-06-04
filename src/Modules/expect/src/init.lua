@@ -211,4 +211,8 @@ setMatchers(spyMatchers, true, Expect)
 setMatchers(toThrowMatchers, true, Expect)
 
 setmetatable(Expect, {__call = expect_})
+
+-- deviation: defining addSnapshotSerializer override here
+Expect.addSnapshotSerializer = require(Modules.JestSnapshot.plugins).addSerializer
+
 return Expect

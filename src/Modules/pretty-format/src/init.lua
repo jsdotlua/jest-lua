@@ -50,7 +50,9 @@ local function printSymbol(val): string
 	return tostring(val)
 end
 
--- deviation: printError omitted
+local function printError(val)
+	return "[" .. tostring(val) .. ']'
+end
 
 -- /**
 --  * The first port of call for printing an object, handles most of the
@@ -97,6 +99,10 @@ local function printBasicValue(
 			'.' ..
 			string.format('%03d', val:ToUniversalTime().Millisecond) ..
 			'Z'
+	end
+
+	if typeOf == 'error' then
+		return printError(val)
 	end
 
 	if typeOf == 'regexp' then
