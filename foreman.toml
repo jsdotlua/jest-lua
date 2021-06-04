@@ -1,3 +1,2 @@
 [tools]
 rotrieve = { source = "roblox/rotriever", version = "0.4.3" }
-rojo = { source = "rojo-rbx/rojo", version = "6.0.0-rc.1" }

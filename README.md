@@ -6,6 +6,9 @@
 	<a href="https://roblox.github.io/jest-roblox/">
 			<img src="https://img.shields.io/badge/docs-website-green.svg" alt="Documentation" />
 	</a>
+	<a href='https://coveralls.io/github/Roblox/jest-roblox'>
+		<img src='https://coveralls.io/repos/github/Roblox/jest-roblox/badge.svg?t=4czPqO' alt='Coverage Status' />
+	</a>
 </div>
 
 <div align="center">

@@ -12,28 +12,28 @@
         "Modules": {
           "$className": "Folder",
           "JestGetType": {
-            "$path": "src/modules/jest-get-type/src"
+            "$path": "src/Modules/jest-get-type/src"
           },
           "DiffSequences": {
-            "$path": "src/modules/diff-sequences/src"
+            "$path": "src/Modules/diff-sequences/src"
           },
           "PrettyFormat": {
-            "$path": "src/modules/pretty-format/src"
+            "$path": "src/Modules/pretty-format/src"
           },
           "JestMatcherUtils": {
-            "$path": "src/modules/jest-matcher-utils/src"
+            "$path": "src/Modules/jest-matcher-utils/src"
           },
           "JestMessageUtil": {
-            "$path": "src/modules/jest-message-util/src"
+            "$path": "src/Modules/jest-message-util/src"
           },
           "Expect": {
-            "$path": "src/modules/expect/src"
+            "$path": "src/Modules/expect/src"
           },
           "JestDiff": {
-            "$path": "src/modules/jest-diff/src"
+            "$path": "src/Modules/jest-diff/src"
           },
           "JestJasmine2": {
-            "$path": "src/modules/jest-jasmine2/src"
+            "$path": "src/Modules/jest-jasmine2/src"
           },
           "JestMock": {
             "$path": "src/Modules/jest-mock/src"
