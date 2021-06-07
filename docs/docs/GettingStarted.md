@@ -6,17 +6,17 @@ slug: /
 
 Jest Roblox is a work in progress! You may need to refer to the [TestEZ API doc](testez) or the actual [TestEZ documentation](https://roblox.github.io/testez). You may also want to refer to the [Jest documentation](https://jestjs.io/docs/getting-started).
 
-Jest Roblox requires `rojo` and `roblox-cli` to run from the command line.
+Jest Roblox requires `roblox-cli` to run from the command line.
 
 Add this package to your `dev_dependencies` in your `rotriever.toml`.
 ```yaml title="rotriever.toml"
 [dev_dependencies]
-JestRoblox = "github.com/roblox/jest-roblox@1.0.0"
+JestRoblox = "github.com/roblox/jest-roblox@1.1.1"
 ```
 
 Run `rotrieve install` to install Jest Roblox.
 
-Create a `default.project.json` to set up your rojo project structure and include the `Packages` directory created by `rotriever`.
+Create a `default.project.json` to set up your project structure and include the `Packages` directory created by `rotriever`.
 ```json title="default.project.json"
 {
 	"name": "YourProject",
@@ -66,10 +66,9 @@ return function()
 end
 ```
 
-Finally, build your rojo project and run it using `roblox-cli` to run the tests and your tests should pass!
+Finally, run your project using `roblox-cli` to run the tests and your tests should pass!
 ```bash
-rojo build default.project.json --output model.rbxmx
-roblox-cli run --load.model model.rbxmx --run spec.lua
+roblox-cli run --load.model default.project.json --run spec.lua
 ```
 
 **You just successfully wrote your first test using Jest Roblox!**

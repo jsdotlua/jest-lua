@@ -1,4 +1,6 @@
 # Jest Roblox Changelog
+## 1.1.1 (2021-06-07)
+* :bug: Fix in `getType` for objects with a throwing `__index` metamethod
 
 ## 1.1.0 (2021-05-28)
 * Added `toStrictEqual` matcher

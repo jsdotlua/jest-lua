@@ -38,11 +38,14 @@ local function getType(value: any): string
 	if typeof(value) == 'userdata' and tostring(value):match("Symbol%(.*%)") then
 		return 'symbol'
 	end
-	if typeof(value) == "table" and typeof(value.test) == "function" and typeof(value.exec) == "function" then
-		RegExp = require(Packages.LuauRegExp)
+	if typeof(value) == "table" then
+		local ok, hasRegExpShape = pcall(function() return typeof(value.test) == "function" and typeof(value.exec) == "function" end)
+		if ok and hasRegExpShape then
+			RegExp = require(Packages.LuauRegExp)
 
-		if instanceof(value, RegExp) then
-			return 'regexp'
+			if instanceof(value, RegExp) then
+				return 'regexp'
+			end
 		end
 	end
 	if instanceof(value, Error) then
