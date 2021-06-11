@@ -5,7 +5,7 @@ title: CLI Options
 
 When running Jest Roblox using `roblox-cli` there are a handful of useful options. These can be appended to the end of your `roblox-cli run` command:
 ```bash
-roblox-cli run --load.model model.rbxmx --run bin/spec.lua <options>
+roblox-cli run --load.model default.project.json --run spec.lua <options>
 ```
 
 ## Options
