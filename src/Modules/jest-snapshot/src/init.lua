@@ -1,1 +1,360 @@
-return {}
+-- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-snapshot/src/index.ts
+-- /**
+--  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
+--  *
+--  * This source code is licensed under the MIT license found in the
+--  * LICENSE file in the root directory of this source tree.
+--  */
+
+-- deviation: omitting imports for file system interaction
+
+local Workspace = script
+local Modules = Workspace.Parent
+local Packages = Modules.Parent.Parent
+
+-- deviation: used to communicate with the TestEZ test runner
+local JEST_TEST_CONTEXT = "__JEST_TEST_CONTEXT__"
+
+local Polyfill = require(Packages.LuauPolyfill)
+local Error = Polyfill.Error
+
+local Config = require(Modules.JestTypes.Config)
+
+local JestMatcherUtils = require(Modules.JestMatcherUtils)
+local BOLD_WEIGHT = JestMatcherUtils.BOLD_WEIGHT
+local EXPECTED_COLOR = JestMatcherUtils.EXPECTED_COLOR
+-- local MatcherHintOptions = JestMatcherUtils.MatcherHintOptions
+local RECEIVED_COLOR = JestMatcherUtils.RECEIVED_COLOR
+local matcherErrorMessage = JestMatcherUtils.matcherErrorMessage
+local matcherHint = JestMatcherUtils.matcherHint
+local printWithType = JestMatcherUtils.printWithType
+local stringify = JestMatcherUtils.stringify
+
+-- ROBLOX TODO: ADO-1449 add imports for snapshot_resolver and related functionality
+
+local SnapshotState = require(Workspace.State)
+
+local plugins = require(Workspace.plugins)
+local addSerializer = plugins.addSerializer
+local getSerializers = plugins.getSerializers
+
+local printSnapshot = require(Workspace.printSnapshot)
+local PROPERTIES_ARG = printSnapshot.PROPERTIES_ARG
+-- local SNAPSHOT_ARG = printSnapshot.SNAPSHOT_ARG
+local bReceivedColor = printSnapshot.bReceivedColor
+local matcherHintFromConfig = printSnapshot.matcherHintFromConfig
+-- local noColor = printSnapshot.noColor
+local printExpected = printSnapshot.printExpected
+local printPropertiesAndReceived = printSnapshot.printPropertiesAndReceived
+local printReceived = printSnapshot.printReceived
+local printSnapshotAndReceived = printSnapshot.printSnapshotAndReceived
+
+local types = require(Workspace.types)
+
+local utils = require(Workspace.utils)
+
+local _toMatchSnapshot
+
+-- local DID_NOT_THROW = "Received function did not throw"
+local NOT_SNAPSHOT_MATCHERS = "Snapshot matchers cannot be used with " .. BOLD_WEIGHT("never")
+
+-- deviation: we cannot have multiline regex patterns in Lua so in our usage of
+-- this pattern, we will first split on newlines and then use it
+-- local INDENTATION_REGEX = "^([^%S\n]*)%S"
+
+-- // Display name in report when matcher fails same as in snapshot file,
+-- // but with optional hint argument in bold weight.
+local function printSnapshotName(
+	concatenatedBlockNames: string,
+	hint: string,
+	count: number
+): string
+	concatenatedBlockNames = concatenatedBlockNames or ""
+	hint = hint or ""
+	local hasNames = concatenatedBlockNames:len() ~= 0
+	local hasHint = #hint ~= 0
+
+	local retval = "Snapshot name: `"
+	if hasNames then
+		retval = retval .. utils.escapeBacktickString(concatenatedBlockNames)
+	end
+
+	if hasNames and hasHint then
+		retval = retval .. ": "
+	end
+
+	if hasHint then
+		retval = retval .. BOLD_WEIGHT(utils.escapeBacktickString(hint))
+	end
+
+	retval = retval .. " " .. count .. "`"
+
+	return retval
+end
+
+-- ROBLOX TODO: ADO-1552 Add stripAddedIndentation when we support inlineSnapshot testing
+
+-- deviation: omitted fileExists and cleanup
+
+local function toMatchSnapshot(
+	...
+)
+	local args = {...}
+	local this: types.Context = args[1]
+	local received: any = args[2]
+	local propertiesOrHint: any = args[3]
+	local hint: Config.Path = args[4]
+
+	local matcherName = "toMatchSnapshot"
+	local properties
+
+	local length = select("#", ...)
+	-- deviation: all the length parameters are one more than upstream because
+	-- the this parameter isn't counted in upstream
+	if length == 3 and typeof(propertiesOrHint) == "string" then
+		hint = propertiesOrHint
+	elseif length >= 3 then
+		if typeof(propertiesOrHint) ~= "table" or typeof(propertiesOrHint) == nil then
+			local options: JestMatcherUtils.MatcherHintOptions = {
+				isNot = this.isNot,
+				promise = this.promise
+			}
+			local printedWithType = printWithType(
+				"Expected properties",
+				propertiesOrHint,
+				printExpected
+			)
+
+			if length == 4 then
+				options.secondArgument = "hint"
+				options.secondArgumentColor = BOLD_WEIGHT
+
+				if propertiesOrHint == nil then
+					printedWithType = printedWithType .. "\n\nTo provide a hint without properties: toMatchSnapshot('hint')"
+				end
+			end
+
+			error(Error(
+				matcherErrorMessage(
+					matcherHint(matcherName, nil, PROPERTIES_ARG, options),
+					"Expected " .. EXPECTED_COLOR("properties") .. " must be an object",
+					printedWithType
+				)
+			))
+		end
+
+		-- // Future breaking change: Snapshot hint must be a string
+		-- // if (arguments.length === 3 && typeof hint !== 'string') {}
+
+		properties = propertiesOrHint
+	end
+
+	--[[
+		deviation: we modify the TestEZ test runner to record the test context in
+		a global state for jest-snapshot to find the correct snapshot
+		deviation: loads an empty snapshot state if one doesn't exist, Jest creates
+		one by default but we cannot do so because of permission issues
+	--]]
+	local snapshotFileName = _G[JEST_TEST_CONTEXT].instance.Name:match("(.*)%.spec") .. ".snap"
+	if _G[JEST_TEST_CONTEXT].snapshotState == nil then
+		local snapshotPath = nil
+		pcall(function()
+			snapshotPath = _G[JEST_TEST_CONTEXT].instance.Parent.__snapshots__[snapshotFileName]
+		end)
+		local ok, result = pcall(function()
+			return SnapshotState.new(
+				snapshotPath,
+				{ updateSnapshot = _G.UPDATESNAPSHOT or "none" }
+			)
+		end)
+		if ok then
+			_G[JEST_TEST_CONTEXT].snapshotState = result
+		else
+			return {message = function() return "Jest-Roblox: Error while loading snapshot file" end, pass = false}
+		end
+	end
+	this.snapshotState = this.snapshotState or _G[JEST_TEST_CONTEXT].snapshotState
+	this.currentTestName = this.currentTestName or table.concat(_G[JEST_TEST_CONTEXT].blocks, " ")
+	return _toMatchSnapshot({
+		context = this,
+		hint = hint,
+		isInline = false,
+		matcherName = matcherName,
+		properties = properties,
+		received = received
+	})
+end
+
+-- ROBLOX TODO: ADO-1552 add toMatchInlineSnapshot
+
+function _toMatchSnapshot(config: types.MatchSnapshotConfig)
+	local context = config.context
+	local hint = config.hint
+	local inlineSnapshot = config.inlineSnapshot
+	local isInline = config.isInline
+	local matcherName = config.matcherName
+	local properties = config.properties
+	local received = config.received
+
+	-- local _ = context.dontThrow and context.dontThrow()
+
+	local currentTestName = context.currentTestName
+	local isNot = context.isNot
+	local snapshotState = context.snapshotState
+
+	if isNot then
+		error(Error(
+			matcherErrorMessage(
+				matcherHintFromConfig(config, false),
+				NOT_SNAPSHOT_MATCHERS
+			)
+		))
+	end
+
+	if snapshotState == nil then
+		-- // Because the state is the problem, this is not a matcher error.
+		-- // Call generic stringify from jest-matcher-utils package
+		-- // because uninitialized snapshot state does not need snapshot serializers.
+		error(Error(
+			matcherHintFromConfig(config, false) ..
+			"\n\n" ..
+			"Snapshot state must be initialized" ..
+			"\n\n" ..
+			printWithType("Snapshot state", snapshotState, stringify)
+		))
+	end
+
+	local fullTestName
+	if currentTestName and hint then
+		fullTestName = currentTestName .. ": " .. hint
+	else
+		fullTestName = currentTestName or "" -- // future BREAKING change: || hint
+	end
+
+	if typeof(properties) == "table" then
+		if typeof(received) ~= "table" or received == nil then
+			error(Error(
+				matcherErrorMessage(
+					matcherHintFromConfig(config, false),
+					RECEIVED_COLOR(
+						"received"
+					) .. " value must be an object when the matcher has " ..
+					EXPECTED_COLOR(
+						"properties"
+					),
+					printWithType("Received", received, printReceived)
+				)
+			))
+		end
+
+		local propertyPass = context.equals(received, properties, {
+			context.utils.iterableEquality,
+			context.utils.subsetEquality
+		})
+
+		if not propertyPass then
+			local key = snapshotState.fail(fullTestName, received)
+			local matched = key:match("(%d+)$")
+			local count
+			if matched == nil then
+				count = 1
+			else
+				count = tonumber(matched)
+			end
+
+			local message = function()
+				return matcherHintFromConfig(config, false) ..
+					"\n\n" ..
+					printSnapshotName(currentTestName, hint, count) ..
+					"\n\n" ..
+					printPropertiesAndReceived(properties, received, snapshotState.expand)
+			end
+
+			return {
+				message = message,
+				name = matcherName,
+				pass = false
+			}
+		else
+			received = utils.deepMerge(received, properties)
+		end
+	end
+
+	local result = snapshotState:match({
+		error = context.error,
+		inlineSnapshot = inlineSnapshot,
+		isInline = isInline,
+		received = received,
+		testName = fullTestName
+	})
+	local actual = result.actual
+	local count = result.count
+	local expected = result.expected
+	local pass = result.pass
+
+	if pass then
+		return {message = function() return "" end, pass = true}
+	end
+
+	local message
+	if expected == nil then
+		message = function()
+			local retval = matcherHintFromConfig(config, true) ..
+				"\n\n" ..
+				printSnapshotName(currentTestName, hint, count) ..
+				"\n\n" ..
+				"New snapshot was " .. BOLD_WEIGHT("not written") .. ". The update flag " ..
+				"must be explicitly passed to write a new snapshot.\n\n" ..
+				"This is likely because this test is run in a continuous integration " ..
+				"(CI) environment in which snapshots are not written by default.\n\n" ..
+				"Received:"
+
+			if actual:find("\n") then
+				retval = retval .. "\n"
+			else
+				retval = retval .. " "
+			end
+
+			retval = retval .. bReceivedColor(actual)
+
+			return retval
+		end
+	else
+		message = function()
+			return matcherHintFromConfig(config, true) ..
+				"\n\n" ..
+				printSnapshotName(currentTestName, hint, count) ..
+				"\n\n" ..
+				printSnapshotAndReceived(
+					expected,
+					actual,
+					received,
+					snapshotState.expand
+				)
+		end
+	end
+
+	-- // Passing the actual and expected objects so that a custom reporter
+	-- // could access them, for example in order to display a custom visual diff,
+	-- // or create a different error message
+	return {
+		actual = actual,
+		expected = expected,
+		message = message,
+		name = matcherName,
+		pass = false
+	}
+end
+
+return {
+	-- EXTENSION = EXTENSION,
+	SnapshotState = SnapshotState,
+	addSerializer = addSerializer,
+	-- buildSnapshotResolver = buildSnapshotResolver,
+	-- cleanup = cleanup,
+	getSerializers = getSerializers,
+	-- isSnapshotPath = isSnapshotPath,
+	-- toMatchInlineSnapshot = toMatchInlineSnapshot,
+	toMatchSnapshot = toMatchSnapshot,
+	utils = utils
+}

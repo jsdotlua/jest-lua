@@ -238,7 +238,7 @@ end
 	Add a new describe node with the given method as a callback. Generates or
 	reuses all the describe nodes along the path.
 ]]
-function TestPlan:addRoot(path, method)
+function TestPlan:addRoot(path, method, instance)
 	local curNode = self
 	for i = #path, 1, -1 do
 		local nextNode = nil
@@ -257,6 +257,8 @@ function TestPlan:addRoot(path, method)
 		curNode = nextNode
 	end
 
+	curNode.isRoot = true
+	curNode.instance = instance
 	curNode.callback = method
 	curNode:expand()
 end

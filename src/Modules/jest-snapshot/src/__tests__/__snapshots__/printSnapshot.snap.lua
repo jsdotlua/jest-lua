@@ -9,6 +9,7 @@ local exports = {}
 
 -- deviation: changed String to string and Object to Table
 exports["printPropertiesAndReceived omit missing properties 1"] = [=[
+
 <g>- Expected properties  - 2</>
 <r>+ Received value       + 1</>
 
@@ -16,45 +17,135 @@ exports["printPropertiesAndReceived omit missing properties 1"] = [=[
 <g>-   "hash": Any<string>,</>
 <g>-   "path": Any<string>,</>
 <r>+   "path": "…",</>
-<d>  }</>]=]
+<d>  }</>
+]=]
+
+-- deviation: changed chalk encoding to stretch across multiple lines and
+-- unescaped the backticks
+exports["pass false toMatchSnapshot New snapshot was not written (multi line) 1"] = [=[
+
+<d>expect(</><t>received</><d>).</>toMatchSnapshot<d>(</><b>hint</><d>)</>
+
+Snapshot name: `New snapshot was not written: <b>(CI)</> 1`
+
+New snapshot was <b>not written</>. The update flag must be explicitly passed to write a new snapshot.
+
+This is likely because this test is run in a continuous integration (CI) environment in which snapshots are not written by default.
+
+Received:
+<t>"To write or not to write,
+that is the question."</>
+]=]
+
+-- deviation: unescaped the backticks
+exports["pass false toMatchSnapshot New snapshot was not written (single line) 1"] = [=[
+
+<d>expect(</><t>received</><d>).</>toMatchSnapshot<d>(</><b>hint</><d>)</>
+
+Snapshot name: `New snapshot was not written: <b>(CI)</> 2`
+
+New snapshot was <b>not written</>. The update flag must be explicitly passed to write a new snapshot.
+
+This is likely because this test is run in a continuous integration (CI) environment in which snapshots are not written by default.
+
+Received: <t>"Write me if you can!"</>
+]=]
+
+-- deviation: Changed RangeError to Error and unescaped the backticks
+exports["pass false toMatchSnapshot with properties equals false isLineDiffable false 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>toMatchSnapshot<d>(</><g>properties</><d>)</>
+
+Snapshot name: `with properties 1`
+
+Expected properties: <g>{"name": "Error"}</>
+Received value:      <r>[Error: Invalid array length]</>
+]=]
+
+-- deviation: unescape the backticks and changed Object to Table
+exports["pass false toMatchSnapshot with properties equals false isLineDiffable true 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>toMatchSnapshot<d>(</><g>properties</><d>)</>
+
+Snapshot name: `with properties 1`
+
+<g>- Expected properties  - 1</>
+<r>+ Received value       + 1</>
+
+<d>  Table {</>
+<g>-   "id": "abcdef",</>
+<r>+   "id": "abcdefg",</>
+<d>  }</>
+]=]
+
+-- deviation: unescape the backticks and changed Object to Table
+exports["pass false toMatchSnapshot with properties equals true 1"] = [=[
+
+<d>expect(</><t>received</><d>).</>toMatchSnapshot<d>(</>properties<d>, </><b>hint</><d>)</>
+
+Snapshot name: `with properties: <b>change text value</> 1`
+
+<m>- Snapshot  - 1</>
+<t>+ Received  + 1</>
+
+<d>  Table {</>
+<d>    "id": "abcdef",</>
+<m>-   "text": "snapshot",</>
+<t>+   "text": "received",</>
+<d>    "type": "ADD_ITEM",</>
+<d>  }</>
+]=]
 
 -- deviation: unescaped the backticks
 exports["printSnapshotAndReceived backtick single line expected and received 1"] = [=[
+
 Snapshot: <m>"var foo = `backtick`;"</>
-Received: <t>"var foo = <i>tag</i>`backtick`;"</>]=]
+Received: <t>"var foo = <i>tag</i>`backtick`;"</>
+]=]
 
 exports["printSnapshotAndReceived empty string expected and received single line 1"] = [=[
+
 Snapshot: <m>""</>
-Received: <t>"single line string"</>]=]
+Received: <t>"single line string"</>
+]=]
 
 exports["printSnapshotAndReceived empty string received and expected multi line 1"] = [=[
+
 <m>- Snapshot  - 3</>
 <t>+ Received  + 0</>
 
 <m>- multi</>
 <m>- line</>
-<m>- string</>]=]
+<m>- string</>
+]=]
 
 -- deviation: unescaped backslashes
 exports["printSnapshotAndReceived escape backslash in multi line string 1"] = [=[
+
 <m>- Snapshot  - 1</>
 <t>+ Received  + 2</>
 
 <m>- Forward / slash<i> and b</i>ack \ slash</>
 <t>+ Forward / slash</>
-<t>+ <i>B</i>ack \ slash</>]=]
+<t>+ <i>B</i>ack \ slash</>
+]=]
 
 -- deviation: unescaped backslashes
 exports["printSnapshotAndReceived escape backslash in single line string 1"] = [=[
+
 Snapshot: <m>"<i>f</i>orward / slash and back \\ slash"</>
-Received: <t>"<i>F</i>orward / slash and back \\ slash"</>]=]
+Received: <t>"<i>F</i>orward / slash and back \\ slash"</>
+]=]
 
 -- deviation: unescaped backslashes
 exports["printSnapshotAndReceived escape double quote marks in string 1"] = [=[
+
 Snapshot: <m>"What does \"<i>oo</i>bleck\" mean?"</>
-Received: <t>"What does \"<i>ew</i>bleck\" mean?"</>]=]
+Received: <t>"What does \"<i>ew</i>bleck\" mean?"</>
+]=]
 
 exports["printSnapshotAndReceived expand false 1"] = [=[
+
 <m>- Snapshot  - 1</>
 <t>+ Received  + 3</>
 
@@ -68,9 +159,11 @@ exports["printSnapshotAndReceived expand false 1"] = [=[
 <t>+ : T extends Function</>
 <t>+ ? "function"</>
 <t>+ : "object";</>
-<d>  ↵</>]=]
+<d>  ↵</>
+]=]
 
 exports["printSnapshotAndReceived expand true 1"] = [=[
+
 <m>- Snapshot  - 1</>
 <t>+ Received  + 3</>
 
@@ -94,9 +187,11 @@ exports["printSnapshotAndReceived expand true 1"] = [=[
 <t>+ : T extends Function</>
 <t>+ ? "function"</>
 <t>+ : "object";</>
-<d>  ↵</>]=]
+<d>  ↵</>
+]=]
 
 exports["printSnapshotAndReceived fallback to line diff 1"] = [=[
+
 <m>- Snapshot  - 1</>
 <t>+ Received  + 8</>
 
@@ -113,10 +208,12 @@ exports["printSnapshotAndReceived fallback to line diff 1"] = [=[
 <d>  [...a, ...b];</>
 <d>  [...a, ...b];</>
 
-<t>+ ================================================================================</>]=]
+<t>+ ================================================================================</>
+]=]
 
 -- deviation: changed [] to {} and Array to Table
 exports["printSnapshotAndReceived has no common after clean up chaff array 1"] = [=[
+
 <m>- Snapshot  - 2</>
 <t>+ Received  + 2</>
 
@@ -125,13 +222,17 @@ exports["printSnapshotAndReceived has no common after clean up chaff array 1"] =
 <m>-   "two",</>
 <t>+   "insert",</>
 <t>+   "2",</>
-<d>  }</>]=]
+<d>  }</>
+]=]
 
 exports["printSnapshotAndReceived has no common after clean up chaff string single line 1"] = [=[
+
 Snapshot: <m>"delete"</>
-Received: <t>"insert"</>]=]
+Received: <t>"insert"</>
+]=]
 
 exports["printSnapshotAndReceived ignore indentation object delete 1"] = [=[
+
 <m>- Snapshot  - 2</>
 <t>+ Received  + 0</>
 
@@ -141,9 +242,11 @@ exports["printSnapshotAndReceived ignore indentation object delete 1"] = [=[
 <d>    "time": "2019-11-11",</>
 <m>-   },</>
 <d>    "type": "CREATE_ITEM",</>
-<d>  }</>]=]
+<d>  }</>
+]=]
 
 exports["printSnapshotAndReceived ignore indentation object insert 1"] = [=[
+
 <m>- Snapshot  - 0</>
 <t>+ Received  + 2</>
 
@@ -153,39 +256,53 @@ exports["printSnapshotAndReceived ignore indentation object insert 1"] = [=[
 <d>      "time": "2019-11-11",</>
 <t>+   },</>
 <d>    "type": "CREATE_ITEM",</>
-<d>  }</>]=]
+<d>  }</>
+]=]
 
--- deviation: changed null to nil and Object to Table
+-- deviation: changed null to nil and Object to Table and chalk encoding to stretch across multiple lines
 exports["printSnapshotAndReceived isLineDiffable false asymmetric matcher 1"] = [=[
+
 Snapshot: <m>nil</>
 Received: <t>Table {
   "asymmetricMatch": [Function],
-}</>]=]
+}</>
+]=]
 
 exports["printSnapshotAndReceived isLineDiffable false boolean 1"] = [=[
+
 Snapshot: <m>true</>
-Received: <t>false</>]=]
+Received: <t>false</>
+]=]
 
 exports["printSnapshotAndReceived isLineDiffable false date 1"] = [=[
+
 Snapshot: <m>2019-09-19T00:00:00.000Z</>
-Received: <t>2019-09-20T00:00:00.000Z</>]=]
+Received: <t>2019-09-20T00:00:00.000Z</>
+]=]
 
 exports["printSnapshotAndReceived isLineDiffable false error 1"] = [=[
+
 Snapshot: <m>[Error: Cannot spread fragment "NameAndAppearances" within itself.]</>
-Received: <t>[Error: Cannot spread fragment "NameAndAppearancesAndFriends" within itself.]</>]=]
+Received: <t>[Error: Cannot spread fragment "NameAndAppearancesAndFriends" within itself.]</>
+]=]
 
 -- deviation: changed undefined to nil
 exports["printSnapshotAndReceived isLineDiffable false function 1"] = [=[
+
 Snapshot: <m>nil</>
-Received: <t>[Function]</>]=]
+Received: <t>[Function]</>
+]=]
 
 -- deviation: changed NaN to nan
 exports["printSnapshotAndReceived isLineDiffable false number 1"] = [=[
+
 Snapshot: <m>-0</>
-Received: <t>nan</>]=]
+Received: <t>nan</>
+]=]
 
 -- deviation: changed Array and Object to Table and [] to {}
 exports["printSnapshotAndReceived isLineDiffable true array 1"] = [=[
+
 <m>- Snapshot  - 0</>
 <t>+ Received  + 2</>
 
@@ -200,10 +317,12 @@ exports["printSnapshotAndReceived isLineDiffable true array 1"] = [=[
 <d>      "code": 4019,</>
 <d>      "count": 4,</>
 <d>    },</>
-<d>  }</>]=]
+<d>  }</>
+]=]
 
 -- deviation: changed Object to Table
 exports["printSnapshotAndReceived isLineDiffable true object 1"] = [=[
+
 <m>- Snapshot  - 2</>
 <t>+ Received  + 3</>
 
@@ -216,27 +335,33 @@ exports["printSnapshotAndReceived isLineDiffable true object 1"] = [=[
 <t>+     "src": "/img/jest.svg",</>
 <d>    },</>
 <d>    "type": "img",</>
-<d>  }</>]=]
+<d>  }</>
+]=]
 
 -- deviation: changed Array [] to Table {}
 exports["printSnapshotAndReceived isLineDiffable true single line expected and multi line received 1"] = [=[
+
 <m>- Snapshot  - 1</>
 <t>+ Received  + 3</>
 
 <m>- Table {}</>
 <t>+ Table {</>
 <t>+   0,</>
-<t>+ }</>]=]
+<t>+ }</>
+]=]
 
 exports["printSnapshotAndReceived multi line small change in one line and other is unchanged 1"] = [=[
+
 <m>- Snapshot  - 1</>
 <t>+ Received  + 1</>
 
 <m>- There is no route defined for key <i>'</i>Settings<i>'</i>.</>
 <t>+ There is no route defined for key Settings.</>
-<d>  Must be one of: 'Home'</>]=]
+<d>  Must be one of: 'Home'</>
+]=]
 
 exports["printSnapshotAndReceived multi line small changes 1"] = [=[
+
 <m>- Snapshot  - 7</>
 <t>+ Received  + 7</>
 
@@ -254,45 +379,57 @@ exports["printSnapshotAndReceived multi line small changes 1"] = [=[
 <m>-     7<i>4</i> | });</>
 <t>+     7<i>3</i> | });</>
 <m>-     at Object.doesNotThrow (__tests__/assertionError.test.js:7<i>1</i>:10)</>
-<t>+     at Object.doesNotThrow (__tests__/assertionError.test.js:7<i>0</i>:10)</>]=]
+<t>+     at Object.doesNotThrow (__tests__/assertionError.test.js:7<i>0</i>:10)</>
+]=]
 
 exports["printSnapshotAndReceived single line large changes 1"] = [=[
+
 Snapshot: <m>"<i>A</i>rray length<i> must be a finite positive integer</i>"</>
-Received: <t>"<i>Invalid a</i>rray length"</>]=]
+Received: <t>"<i>Invalid a</i>rray length"</>
+]=]
 
 exports["printSnapshotAndReceived without serialize backtick single line expected and multi line received 1"] = [=[
+
 <m>- Snapshot  - 1</>
 <t>+ Received  + 2</>
 
 <m>- var foo = `backtick`;</>
 <t>+ var foo = `back</>
-<t>+ tick`;</>]=]
+<t>+ tick`;</>
+]=]
 
 -- deviation: unescaped backticks and $
 exports["printSnapshotAndReceived without serialize backtick single line expected and received 1"] = [=[
+
 <m>- Snapshot  - 1</>
 <t>+ Received  + 1</>
 
 <m>- var foo = `backtick`;</>
-<t>+ var foo = `back<i>${x}</i>tick`;</>]=]
+<t>+ var foo = `back<i>${x}</i>tick`;</>
+]=]
 
 exports["printSnapshotAndReceived without serialize has no common after clean up chaff multi line 1"] = [=[
+
 <m>- Snapshot  - 2</>
 <t>+ Received  + 2</>
 
 <m>- delete</>
 <m>- two</>
 <t>+ insert</>
-<t>+ 2</>]=]
+<t>+ 2</>
+]=]
 
 exports["printSnapshotAndReceived without serialize has no common after clean up chaff single line 1"] = [=[
+
 <m>- Snapshot  - 1</>
 <t>+ Received  + 1</>
 
 <m>- delete</>
-<t>+ insert</>]=]
+<t>+ insert</>
+]=]
 
 exports["printSnapshotAndReceived without serialize prettier/pull/5590 1"] = [=[
+
 <m>- Snapshot  - 1</>
 <t>+ Received  + 1</>
 
@@ -305,6 +442,59 @@ exports["printSnapshotAndReceived without serialize prettier/pull/5590 1"] = [=[
 <m>- <img src="test.png" alt=<i>"</i>John <i>&quot;</i>ShotGun<i>&quot;</i> Nelson<i>"</i> /></>
 <t>+ <img src="test.png" alt=<i>'</i>John <i>"</i>ShotGun<i>"</i> Nelson<i>'</i> /></>
 
-<d>  ================================================================================</>]=]
+<d>  ================================================================================</>
+]=]
+
+exports["matcher error toMatchSnapshot Expected properties must be an object (non-null) 1"] = [=[
+<d>expect(</><r>received</><d>).</>toMatchSnapshot<d>(</><g>properties</><d>)</>
+
+<b>Matcher error</>: Expected <g>properties</> must be an object
+
+Expected properties has type:  function
+Expected properties has value: <g>[Function]</>
+]=]
+
+exports["matcher error toMatchSnapshot Expected properties must be an object (null) with hint 1"] = [=[
+<d>expect(</><r>received</><d>).</>toMatchSnapshot<d>(</><g>properties</><d>, </><b>hint</><d>)</>
+
+<b>Matcher error</>: Expected <g>properties</> must be an object
+
+Expected properties has value: <g>nil</>
+
+To provide a hint without properties: toMatchSnapshot('hint')
+]=]
+
+exports["matcher error toMatchSnapshot Expected properties must be an object (null) without hint 1"] = [=[
+<d>expect(</><r>received</><d>).</>toMatchSnapshot<d>(</><g>properties</><d>)</>
+
+<b>Matcher error</>: Expected <g>properties</> must be an object
+
+Expected properties has value: <g>nil</>
+]=]
+
+exports["matcher error toMatchSnapshot Snapshot state must be initialized 1"] = [=[
+<d>expect(</><r>received</><d>).</>resolves<d>.</>toMatchSnapshot<d>(</><b>hint</><d>)</>
+
+Snapshot state must be initialized
+
+Snapshot state has value: undefined
+]=]
+
+exports["matcher error toMatchSnapshot received value must be an object (non-null) 1"] = [=[
+<d>expect(</><r>received</><d>).</>toMatchSnapshot<d>(</><g>properties</><d>)</>
+
+<b>Matcher error</>: <r>received</> value must be an object when the matcher has <g>properties</>
+
+Received has type:  string
+Received has value: <r>"string"</>
+]=]
+
+exports["matcher error toMatchSnapshot received value must be an object (null) 1"] = [=[
+<d>expect(</><r>received</><d>).</>toMatchSnapshot<d>(</><g>properties</><d>)</>
+
+<b>Matcher error</>: <r>received</> value must be an object when the matcher has <g>properties</>
+
+Received has value: <r>nil</>
+]=]
 
 return exports

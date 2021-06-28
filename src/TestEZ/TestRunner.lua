@@ -11,6 +11,7 @@ local TestSession = require(script.Parent.TestSession)
 local LifecycleHooks = require(script.Parent.LifecycleHooks)
 
 local RUNNING_GLOBAL = "__TESTEZ_RUNNING_TEST__"
+local JEST_TEST_CONTEXT = "__JEST_TEST_CONTEXT__"
 
 local TestRunner = {
 	environment = {}
@@ -42,7 +43,15 @@ function TestRunner.runPlan(plan)
 
 	session.hasFocusNodes = #exclusiveNodes > 0
 
+	_G[JEST_TEST_CONTEXT] = {
+		blocks = {},
+		instance = nil,
+		snapshotState = nil
+	}
+
 	TestRunner.runPlanNode(session, plan, lifecycleHooks)
+
+	_G[JEST_TEST_CONTEXT] = nil
 
 	return session:finalize()
 end
@@ -105,7 +114,6 @@ function TestRunner.runPlanNode(session, planNode, lifecycleHooks)
 	local function runNode(childPlanNode)
 		-- Errors can be set either via `error` propagating upwards or
 		-- by a test calling fail([message]).
-
 		for _, hook in ipairs(lifecycleHooks:getBeforeEachHooks()) do
 			local success, errorMessage = runCallback(hook, "beforeEach hook: ")
 			if not success then
@@ -143,8 +151,17 @@ function TestRunner.runPlanNode(session, planNode, lifecycleHooks)
 		end
 	end
 
+	-- Reset the jest test context every time we process a node that
+	-- corresponds to a new spec file
+	if planNode.isRoot then
+		_G[JEST_TEST_CONTEXT].instance = planNode.instance
+		_G[JEST_TEST_CONTEXT].blocks = {}
+		_G[JEST_TEST_CONTEXT].snapshotState = nil
+	end
+
 	if not halt then
 		for _, childPlanNode in ipairs(planNode.children) do
+			table.insert(_G[JEST_TEST_CONTEXT].blocks, childPlanNode.phrase)
 			if childPlanNode.type == TestEnum.NodeType.It then
 				session:pushNode(childPlanNode)
 				if session:shouldSkip() then
@@ -172,6 +189,7 @@ function TestRunner.runPlanNode(session, planNode, lifecycleHooks)
 				end
 				session:popNode()
 			end
+			table.remove(_G[JEST_TEST_CONTEXT].blocks)
 		end
 	end
 

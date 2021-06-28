@@ -210,6 +210,16 @@ setMatchers(matchers, true, Expect)
 setMatchers(spyMatchers, true, Expect)
 setMatchers(toThrowMatchers, true, Expect)
 
+-- ROBLOX TODO: ADO-1554 clean up the following deviations and move them to the
+-- appropriate locations
+-- deviation: for now we extend the snapshot matchers in the Expect file instead
+-- of jest-jasmine2/jestExpect
+local JestSnapshot = require(Modules.JestSnapshot)
+local toMatchSnapshot = JestSnapshot.toMatchSnapshot
+setMatchers({
+	toMatchSnapshot = toMatchSnapshot
+}, false, Expect)
+
 setmetatable(Expect, {__call = expect_})
 
 -- deviation: defining addSnapshotSerializer override here
