@@ -193,6 +193,15 @@ function TestRunner.runPlanNode(session, planNode, lifecycleHooks)
 		end
 	end
 
+	local snapshotState = _G[JEST_TEST_CONTEXT].snapshotState
+	if planNode.isRoot and snapshotState and snapshotState._updateSnapshot ~= "none" then
+		local uncheckedCount = snapshotState:getUncheckedCount()
+		if uncheckedCount > 0 then
+			snapshotState:removeUncheckedKeys()
+		end
+		snapshotState:save()
+	end
+
 	for _, hook in ipairs(lifecycleHooks:getAfterAllHooks()) do
 		local success, errorMessage = runCallback(hook, "afterAll hook: ")
 		if not success then
