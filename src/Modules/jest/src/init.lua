@@ -61,14 +61,7 @@ local mock = JestMock.new()
 
 return {
 	-- Mock functions
-	fn = function(...)
-		-- ROBLOX TODO: ADO-1499 remove in v2.0
-		-- ignores self passed in through the colon syntax
-		if #table.pack(...) > 0 and typeof(select(1, ...)) == 'table' then
-			return mock:fn(table.unpack(table.pack(...), 2))
-		end
-		return mock:fn(...)
-	end,
+	fn = function(...) return mock:fn(...) end,
 	clearAllMocks = function() return mock:clearAllMocks() end,
 	resetAllMocks = function() return mock:resetAllMocks() end,
 	_mock = mock,
