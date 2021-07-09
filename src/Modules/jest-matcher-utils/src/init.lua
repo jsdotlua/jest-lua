@@ -577,9 +577,9 @@ function matcherErrorMessage(
 	specific: string? -- incorrect value returned from call to printWithType
 ): string
 	if typeof(specific) == "string" then
-		return string.format("%s\n\n%s: %s%s\n", hint, BOLD_WEIGHT("Matcher error"), generic, "\n\n" .. specific)
+		return string.format("%s\n\n%s: %s%s", hint, BOLD_WEIGHT("Matcher error"), generic, "\n\n" .. specific)
 	else
-		return string.format("%s\n\n%s: %s%s\n", hint, BOLD_WEIGHT("Matcher error"), generic, "")
+		return string.format("%s\n\n%s: %s%s", hint, BOLD_WEIGHT("Matcher error"), generic, "")
 	end
 end
 
@@ -596,11 +596,11 @@ function matcherHint(
 	expected = expected or "expected"
 	options = options or {}
 
-		--[[
-			ROBLOX TODO: Remove the "if options" check once it can pass through
-			Luau cleanly and define all of the variables in-line i.e.
-				local comment = options.comment or ""
-		]]
+	--[[
+		ROBLOX TODO: Remove the "if options" check once it can pass through
+		Luau cleanly and define all of the variables in-line i.e.
+		local comment = options.comment or ""
+	]]
 	local comment, expectedColor, isDirectExpectCall, isNot, promise,
 		receivedColor, secondArgument, secondArgumentColor
 	if options then

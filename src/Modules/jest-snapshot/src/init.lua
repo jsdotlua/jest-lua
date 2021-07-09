@@ -17,6 +17,7 @@ local JEST_TEST_CONTEXT = "__JEST_TEST_CONTEXT__"
 
 local Polyfill = require(Packages.LuauPolyfill)
 local Error = Polyfill.Error
+local instanceof = Polyfill.instanceof
 
 local Config = require(Modules.JestTypes.Config)
 
@@ -53,9 +54,9 @@ local types = require(Workspace.types)
 
 local utils = require(Workspace.utils)
 
-local _toMatchSnapshot
+local _toMatchSnapshot, _toThrowErrorMatchingSnapshot
 
--- local DID_NOT_THROW = "Received function did not throw"
+local DID_NOT_THROW = "Received function did not throw"
 local NOT_SNAPSHOT_MATCHERS = "Snapshot matchers cannot be used with " .. BOLD_WEIGHT("never")
 
 -- deviation: we cannot have multiline regex patterns in Lua so in our usage of
@@ -346,6 +347,127 @@ function _toMatchSnapshot(config: types.MatchSnapshotConfig)
 	}
 end
 
+local function toThrowErrorMatchingSnapshot(
+	this: types.Context,
+	received: any,
+	hint: string | any,
+	fromPromise: boolean
+)
+	local matcherName = 'toThrowErrorMatchingSnapshot'
+
+	-- // Future breaking change: Snapshot hint must be a string
+	-- // if (hint !== undefined && typeof hint !== string) {}
+
+	-- deviation: we modify the TestEZ test runner to record the test context in a global state for jest-snapshot to find the correct snapshot
+	local snapshotFileName = _G[JEST_TEST_CONTEXT].instance.Name:match("(.*)%.spec") .. ".snap"
+	if _G[JEST_TEST_CONTEXT].snapshotState == nil then
+		local ok, result = pcall(function()
+			return SnapshotState.new(_G[JEST_TEST_CONTEXT].instance.Parent.__snapshots__[snapshotFileName],
+				{
+					updateSnapshot = "none"
+				}
+			)
+		end)
+		if ok then
+			_G[JEST_TEST_CONTEXT].snapshotState = result
+		else
+			return {message = function() return "Jest-Roblox: unable to find a snapshot file with the name " .. snapshotFileName .. " under a __snapshots__ directory" end, pass = false}
+		end
+	end
+	this.snapshotState = this.snapshotState or _G[JEST_TEST_CONTEXT].snapshotState
+	this.currentTestName = this.currentTestName or table.concat(_G[JEST_TEST_CONTEXT].blocks, " ")
+
+	return _toThrowErrorMatchingSnapshot(
+		{
+			context = this,
+			hint = hint,
+			isInline = false,
+			matcherName = matcherName,
+			received = received
+		},
+		fromPromise
+	)
+end
+
+function _toThrowErrorMatchingSnapshot(
+	config: types.MatchSnapshotConfig,
+	fromPromise: boolean?
+)
+	local context = config.context
+	local hint = config.hint
+	local inlineSnapshot = config.inlineSnapshot
+	local isInline = config.isInline
+	local matcherName = config.matcherName
+	local received = config.received
+
+	-- local _ = context.dontThrow and context.dontThrow()
+
+	local isNot = context.isNot
+	local promise = context.promise
+
+	if not fromPromise then
+		if typeof(received) ~= "function" then
+			local options: JestMatcherUtils.MatcherHintOptions = {isNot = isNot, promise = promise}
+
+			error(Error(
+				matcherErrorMessage(
+					matcherHint(matcherName, nil, "", options),
+					RECEIVED_COLOR("received") .. " value must be a function",
+					printWithType("Received", received, printReceived)
+				)
+			))
+		end
+	end
+
+	if isNot then
+		error(Error(
+			matcherErrorMessage(
+				matcherHintFromConfig(config, false),
+				NOT_SNAPSHOT_MATCHERS
+			)
+		))
+	end
+
+	local error_
+
+	if fromPromise then
+		error_ = received
+	else
+		local ok, result = pcall(function()
+			received()
+		end)
+		if not ok then
+			error_ = result
+		end
+	end
+
+	if error_ == nil then
+		-- // Because the received value is a function, this is not a matcher error.
+		error(Error(
+			matcherHintFromConfig(config, false) .. "\n\n" .. DID_NOT_THROW
+		))
+	end
+
+	-- deviation: instead of being able to set received = error.message in our
+	-- _toMatchSnapshot call, we have to deal with different cases since in Lua
+	-- we could be dealing with our Error polyfill, a thrown object, or a thrown
+	-- string
+	if instanceof(error_, Error) or rawget(error_, "message") ~= nil then
+		error_ = error_.message
+	elseif typeof(error_) ~= "string" then
+		error_ = tostring(error_)
+	end
+
+	return _toMatchSnapshot({
+		context = context,
+		hint = hint,
+		inlineSnapshot = inlineSnapshot,
+		isInline = isInline,
+		matcherName = matcherName,
+		received = error_
+	})
+end
+
 return {
 	-- EXTENSION = EXTENSION,
 	SnapshotState = SnapshotState,
@@ -356,5 +478,6 @@ return {
 	-- isSnapshotPath = isSnapshotPath,
 	-- toMatchInlineSnapshot = toMatchInlineSnapshot,
 	toMatchSnapshot = toMatchSnapshot,
+	toThrowErrorMatchingSnapshot = toThrowErrorMatchingSnapshot,
 	utils = utils
 }

@@ -1973,8 +1973,7 @@ snapshots['toHaveReturned throw matcher error if received is spy 1'] = [=[
 [1mMatcher error[22m: [31mreceived[39m value must be a mock function
 
 Received has type:  table
-Received has value: [31m{"calls": {"all": [Function anonymous], "count": [Function anonymous]}}[39m
-]=]
+Received has value: [31m{"calls": {"all": [Function anonymous], "count": [Function anonymous]}}[39m]=]
 
 snapshots['toHaveReturnedTimes .not only accepts a number argument 1'] = [=[
 [2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoHaveReturnedTimes[2m([22m[32mexpected[39m[2m)[22m

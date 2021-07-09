@@ -123,7 +123,10 @@ local function matcherHintFromConfig(
 	local matcherName = matchSnapshotConfig.matcherName
 	local properties = matchSnapshotConfig.properties
 
-	local options: JestMatcherUtils.MatcherHintOptions = {context.isNot, context.promise}
+	local options: JestMatcherUtils.MatcherHintOptions = {
+		isNot = context.isNot,
+		promise = context.promise
+	}
 	if isUpdatable then
 		options.receivedColor = bReceivedColor
 	end

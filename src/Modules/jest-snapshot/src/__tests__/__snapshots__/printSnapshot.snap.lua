@@ -446,6 +446,7 @@ exports["printSnapshotAndReceived without serialize prettier/pull/5590 1"] = [=[
 ]=]
 
 exports["matcher error toMatchSnapshot Expected properties must be an object (non-null) 1"] = [=[
+
 <d>expect(</><r>received</><d>).</>toMatchSnapshot<d>(</><g>properties</><d>)</>
 
 <b>Matcher error</>: Expected <g>properties</> must be an object
@@ -455,6 +456,7 @@ Expected properties has value: <g>[Function]</>
 ]=]
 
 exports["matcher error toMatchSnapshot Expected properties must be an object (null) with hint 1"] = [=[
+
 <d>expect(</><r>received</><d>).</>toMatchSnapshot<d>(</><g>properties</><d>, </><b>hint</><d>)</>
 
 <b>Matcher error</>: Expected <g>properties</> must be an object
@@ -465,6 +467,7 @@ To provide a hint without properties: toMatchSnapshot('hint')
 ]=]
 
 exports["matcher error toMatchSnapshot Expected properties must be an object (null) without hint 1"] = [=[
+
 <d>expect(</><r>received</><d>).</>toMatchSnapshot<d>(</><g>properties</><d>)</>
 
 <b>Matcher error</>: Expected <g>properties</> must be an object
@@ -473,6 +476,7 @@ Expected properties has value: <g>nil</>
 ]=]
 
 exports["matcher error toMatchSnapshot Snapshot state must be initialized 1"] = [=[
+
 <d>expect(</><r>received</><d>).</>resolves<d>.</>toMatchSnapshot<d>(</><b>hint</><d>)</>
 
 Snapshot state must be initialized
@@ -481,6 +485,7 @@ Snapshot state has value: undefined
 ]=]
 
 exports["matcher error toMatchSnapshot received value must be an object (non-null) 1"] = [=[
+
 <d>expect(</><r>received</><d>).</>toMatchSnapshot<d>(</><g>properties</><d>)</>
 
 <b>Matcher error</>: <r>received</> value must be an object when the matcher has <g>properties</>
@@ -490,11 +495,37 @@ Received has value: <r>"string"</>
 ]=]
 
 exports["matcher error toMatchSnapshot received value must be an object (null) 1"] = [=[
+
 <d>expect(</><r>received</><d>).</>toMatchSnapshot<d>(</><g>properties</><d>)</>
 
 <b>Matcher error</>: <r>received</> value must be an object when the matcher has <g>properties</>
 
 Received has value: <r>nil</>
+]=]
+
+exports["matcher error toThrowErrorMatchingSnapshot Received value must be a function 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>toThrowErrorMatchingSnapshot<d>()</>
+
+<b>Matcher error</>: <r>received</> value must be a function
+
+Received has type:  number
+Received has value: <r>13</>
+]=]
+
+-- deviation: changed not to never
+exports["matcher error toThrowErrorMatchingSnapshot Snapshot matchers cannot be used with not 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>never<d>.</>toThrowErrorMatchingSnapshot<d>(</><b>hint</><d>)</>
+
+<b>Matcher error</>: Snapshot matchers cannot be used with <b>never</>
+]=]
+
+exports["other error toThrowErrorMatchingSnapshot Received function did not throw 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>toThrowErrorMatchingSnapshot<d>()</>
+
+Received function did not throw
 ]=]
 
 return exports

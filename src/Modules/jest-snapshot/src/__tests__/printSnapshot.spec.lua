@@ -11,8 +11,6 @@ local Workspace = script.Parent.Parent
 local Modules = Workspace.Parent
 local Packages = Modules.Parent.Parent
 
-local snapshots = require(script.Parent.__snapshots__["printSnapshot.snap"])
-
 local Polyfill = require(Packages.LuauPolyfill)
 local Error = Polyfill.Error
 local Object = Polyfill.Object
@@ -120,6 +118,7 @@ end
 
 local jestSnapshot = require(Workspace)
 local toMatchSnapshot = jestSnapshot.toMatchSnapshot
+local toThrowErrorMatchingSnapshot = jestSnapshot.toThrowErrorMatchingSnapshot
 
 jestExpect.addSnapshotSerializer({
 	serialize = function(val: string): string
@@ -214,22 +213,9 @@ return function()
 		end)
 	end)
 
-	--[[
-		ROBLOX TODO: ADO-1497 add missing describe blocks once we have finished jest-snapshot
-		functionality
-
-		deviation: omitted all blocks relying on finished jest-snapshot
-		functionality (i.e. functions like toThrowErrorMatchingInlineSnapshot)
-		The following describe blocks are currently omitted:
-			-matcher error
-			-other error
-
-		ROBLOX TODO: ADO-1497 we also need to eventually replace the typical
-		format of calling toEqual on values loaded from the snapshot file
-		instead of calling toMatchSnapshot() and relying on File I/O
-	]]
-
 	describe("matcher error", function()
+		-- ROBLOX TODO: ADO-1552 add toMatchInlineSnapshot block
+
 		describe("toMatchSnapshot", function()
 			local received = {
 				id = "abcdef",
@@ -244,12 +230,9 @@ return function()
 				}
 				local properties = function() return {} end
 
-				local _, err = pcall(function()
+				jestExpect(function()
 					toMatchSnapshot(context, received, properties)
-				end)
-				jestExpect(convertAnsi(err.message)).toEqual(
-					snapshots["matcher error toMatchSnapshot Expected properties must be an object (non-null) 1"]
-				)
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it("Expected properties must be an object (null) with hint", function()
@@ -260,12 +243,9 @@ return function()
 				local properties = nil
 				local hint = 'reminder'
 
-				local _, err = pcall(function()
+				jestExpect(function()
 					toMatchSnapshot(context, received, properties, hint)
-				end)
-				jestExpect(convertAnsi(err.message)).toEqual(
-					snapshots["matcher error toMatchSnapshot Expected properties must be an object (null) with hint 1"]
-				)
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it("Expected properties must be an object (null) without hint", function()
@@ -275,12 +255,9 @@ return function()
 				}
 				local properties = nil
 
-				local _, err = pcall(function()
+				jestExpect(function()
 					toMatchSnapshot(context, received, properties)
-				end)
-				jestExpect(convertAnsi(err.message)).toEqual(
-					snapshots["matcher error toMatchSnapshot Expected properties must be an object (null) without hint 1"]
-				)
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			describe("received value must be an object", function()
@@ -293,21 +270,15 @@ return function()
 				local properties = {}
 
 				it('(non-null)', function()
-					local _, err = pcall(function()
+					jestExpect(function()
 						toMatchSnapshot(context, 'string', properties)
-					end)
-					jestExpect(convertAnsi(err.message)).toEqual(
-						snapshots["matcher error toMatchSnapshot received value must be an object (non-null) 1"]
-					)
+					end).toThrowErrorMatchingSnapshot()
 				end)
 
 				it('(null)', function()
-					local _, err = pcall(function()
+					jestExpect(function()
 						toMatchSnapshot(context, nil, properties)
-					end)
-					jestExpect(convertAnsi(err.message)).toEqual(
-						snapshots["matcher error toMatchSnapshot received value must be an object (null) 1"]
-					)
+					end).toThrowErrorMatchingSnapshot()
 				end)
 			end)
 
@@ -320,12 +291,66 @@ return function()
 				-- }
 				-- local hint = 'initialize me'
 
-				-- local _, err = pcall(function()
+				-- jestExpect(function()
 				-- 	toMatchSnapshot(context, received, nil, hint)
-				-- end)
-				-- jestExpect(convertAnsi(err.message)).toEqual(
-				-- 	snapshots["matcher error toMatchSnapshot Snapshot state must be initialized 1"]
-				-- )
+				-- end).toThrowErrorMatchingSnapshot()
+			end)
+		end)
+
+		-- ROBLOX TODO: ADO-1552 add toThrowErrorMatchingInlineSnapshot block
+
+		describe("toThrowErrorMatchingSnapshot", function()
+			it("Received value must be a function", function()
+				local context = {
+					isNot = false,
+					promise = ""
+				}
+
+				local received = 13
+				local fromPromise = false
+
+				jestExpect(function()
+					toThrowErrorMatchingSnapshot(context, received, nil, fromPromise)
+				end).toThrowErrorMatchingSnapshot()
+			end)
+
+			it("Snapshot matchers cannot be used with not", function()
+				local context = {
+					isNot = true,
+					promise = ""
+				}
+				local received = Error('received')
+				local hint = 'reminder'
+				local fromPromise = true
+
+				jestExpect(function()
+					toThrowErrorMatchingSnapshot(context, received, hint, fromPromise)
+				end).toThrowErrorMatchingSnapshot()
+			end)
+
+			-- // Future test: Snapshot hint must be a string
+		end)
+	end)
+
+	describe("other error", function()
+		describe("toThrowErrorMatchingSnapshot", function()
+			it("Received function did not throw", function()
+				local context = {
+					isNot = false,
+					promise = ""
+				}
+
+				local received = function() end
+				local fromPromise = false
+
+				jestExpect(function()
+					toThrowErrorMatchingSnapshot(
+						context,
+						received,
+						nil,
+						fromPromise
+					)
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end)
 	end)

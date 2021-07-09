@@ -216,8 +216,10 @@ setMatchers(toThrowMatchers, true, Expect)
 -- of jest-jasmine2/jestExpect
 local JestSnapshot = require(Modules.JestSnapshot)
 local toMatchSnapshot = JestSnapshot.toMatchSnapshot
+local toThrowErrorMatchingSnapshot = JestSnapshot.toThrowErrorMatchingSnapshot
 setMatchers({
-	toMatchSnapshot = toMatchSnapshot
+	toMatchSnapshot = toMatchSnapshot,
+	toThrowErrorMatchingSnapshot = toThrowErrorMatchingSnapshot
 }, false, Expect)
 
 setmetatable(Expect, {__call = expect_})
