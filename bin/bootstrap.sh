@@ -3,7 +3,7 @@
 # Usage: bootstrap.sh module
 # Creates the boilerplate files for a module and updates jest.project.json.
 
-mod_path="src/Modules/$1"
+mod_path="src/Submodules/$1"
 pkg_name=$(echo $1 | sed 's/-/ /g' | awk '{for (i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2)} 1' | sed 's/ //g' )
 mkdir -p $mod_path/src/__tests__
 touch $mod_path/src/init.lua

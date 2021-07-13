@@ -9,46 +9,46 @@
         "TestEZ": {
           "$path": "src/TestEZ"
         },
-        "Modules": {
+        "Submodules": {
           "$className": "Folder",
           "JestGetType": {
-            "$path": "src/Modules/jest-get-type/src"
+            "$path": "src/Submodules/jest-get-type/src"
           },
           "DiffSequences": {
-            "$path": "src/Modules/diff-sequences/src"
+            "$path": "src/Submodules/diff-sequences/src"
           },
           "PrettyFormat": {
-            "$path": "src/Modules/pretty-format/src"
+            "$path": "src/Submodules/pretty-format/src"
           },
           "JestMatcherUtils": {
-            "$path": "src/Modules/jest-matcher-utils/src"
+            "$path": "src/Submodules/jest-matcher-utils/src"
           },
           "JestMessageUtil": {
-            "$path": "src/Modules/jest-message-util/src"
+            "$path": "src/Submodules/jest-message-util/src"
           },
           "Expect": {
-            "$path": "src/Modules/expect/src"
+            "$path": "src/Submodules/expect/src"
           },
           "JestDiff": {
-            "$path": "src/Modules/jest-diff/src"
+            "$path": "src/Submodules/jest-diff/src"
           },
           "JestJasmine2": {
-            "$path": "src/Modules/jest-jasmine2/src"
+            "$path": "src/Submodules/jest-jasmine2/src"
           },
           "JestMock": {
-            "$path": "src/Modules/jest-mock/src"
+            "$path": "src/Submodules/jest-mock/src"
           },
           "JestFakeTimers": {
-            "$path": "src/Modules/jest-fake-timers/src"
+            "$path": "src/Submodules/jest-fake-timers/src"
           },
           "Jest": {
-            "$path": "src/Modules/jest/src"
+            "$path": "src/Submodules/jest/src"
           },
           "JestSnapshot": {
-            "$path": "src/Modules/jest-snapshot/src"
+            "$path": "src/Submodules/jest-snapshot/src"
           },
           "JestTypes": {
-            "$path": "src/Modules/jest-types/src"
+            "$path": "src/Submodules/jest-types/src"
           }
         }
       }

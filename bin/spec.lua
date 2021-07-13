@@ -1,5 +1,5 @@
 local Root = script.Parent.JestRoblox.Root
-local Modules = Root.src.Modules
+local Modules = Root.src.Submodules
 
 local Jest = require(Modules.Jest)
 
