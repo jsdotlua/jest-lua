@@ -18,67 +18,53 @@ return function()
 	local Object = Polyfills.Object
 	local Array = Polyfills.Array
 
-	local snapshots = require(script.Parent.__snapshots__['init.snap'])
+	local jestExpect = require(Modules.Expect)
 
 	local diff = require(Workspace)
-
-	local function arrayEquals(a1, a2)
-		return #a1 == #a2 and
-			Array.every(
-				a1,
-				function(element, index)
-					return element == a2[index]
-				end
-			)
-	end
 
 	describe('invalid arg', function()
 		local isCommon = function() return false end
 		local foundSubsequence = function() return {} end
 
 		describe('length', function()
-			-- expect redefinition to suppress roblox-cli error
-			-- index.spec.lua:24:5-100: (E001) Argument count mismatch.  Function takes 0 arguments but you passed 1
-			local expect: any = expect
-
 			it('is not a number', function()
-				expect(function()
+				jestExpect(function()
 					diff('0', 0, isCommon, foundSubsequence)
-				end).to.throw('aLength')
+				end).toThrow('aLength')
 			end)
 			it('Infinity is not a safe integer', function()
-				expect(function()
+				jestExpect(function()
 					diff(1 / 0, 0, isCommon, foundSubsequence)
-				end).to.throw('aLength')
+				end).toThrow('aLength')
 			end)
 			it('Not a Number is not a safe integer', function()
-				expect(function()
+				jestExpect(function()
 					diff(0 / 0, 0, isCommon, foundSubsequence)
-				end).to.throw('aLength')
+				end).toThrow('aLength')
 			end)
 
 			it('MAX_SAFE_INTEGER + 1 is not a safe integer', function()
-				expect(function()
+				jestExpect(function()
 					diff(0, Number.MAX_SAFE_INTEGER + 1, isCommon, foundSubsequence)
-				end).to.throw('bLength')
+				end).toThrow('bLength')
 			end)
 			it('MIN_SAFE_INTEGER - 1 is not a safe integer', function()
-				expect(function()
+				jestExpect(function()
 					diff(0, Number.MIN_SAFE_INTEGER + 1, isCommon, foundSubsequence)
-				end).to.throw('bLength')
+				end).toThrow('bLength')
 			end)
 			it('is a negative integer', function()
-				expect(function()
+				jestExpect(function()
 					diff(0, -1, isCommon, foundSubsequence)
-				end).to.throw('bLength')
+				end).toThrow('bLength')
 			end)
 		end)
 
 		describe('callback', function()
 			it('nil is not a function', function()
-				expect(function()
+				jestExpect(function()
 					diff(0, 0, nil, foundSubsequence)
-				end).to.throw() -- throws isCommon
+				end).toThrow() -- throws isCommon
 			end)
 			-- deviation: test is omitted because lua makes no distinction between nil and undefined
 		end)
@@ -122,10 +108,10 @@ return function()
 			local b = {-0}
 
 			it('are not common according to Object.is method', function()
-				expect(countCommonObjectIs(a, b)).to.equal(0)
+				jestExpect(countCommonObjectIs(a, b)).toEqual(0)
 			end)
 			it('are not common according to == method', function()
-				expect(countCommonStrictEquality(a, b)).to.equal(1)
+				jestExpect(countCommonStrictEquality(a, b)).toEqual(1)
 			end)
 		end)
 	end)
@@ -229,7 +215,7 @@ return function()
 		)
 
 		local nDifferences = countDifferences(aLength, bLength, isCommon)
-		expect(aLength + bLength - 2 * #array).to.equal(nDifferences)
+		jestExpect(aLength + bLength - 2 * #array).toBe(nDifferences)
 
 		return array
 	end
@@ -256,14 +242,13 @@ return function()
 			expected = stringToArray(expected)
 		end
 
-		expect(arrayEquals(findCommonItems(a, b), expected)).to.equal(true)
-		-- expect(table.concat(findCommonItems(a, b), '')).to.equal(table.concat(expected, ''))
+		jestExpect(findCommonItems(a, b)).toEqual(expected)
 
 		if #a ~= #b then
 			-- // If sequences a and b have different lengths,
 			-- // then if you swap sequences in your callback functions,
 			-- // this package finds the same items.
-			expect(arrayEquals(findCommonItems(b, a), expected)).to.equal(true)
+			jestExpect(findCommonItems(b, a)).toEqual(expected)
 		end
 	end
 
@@ -307,13 +292,13 @@ return function()
 			end
 
 			it('of a', function()
-				expect(countItemsNegativeZero(-0, 1)).to.equal(0)
+				jestExpect(countItemsNegativeZero(-0, 1)).toEqual(0)
 			end)
 			it('of b', function()
-				expect(countItemsNegativeZero(1, -0)).to.equal(0)
+				jestExpect(countItemsNegativeZero(1, -0)).toEqual(0)
 			end)
 			it('of a and b', function()
-				expect(countItemsNegativeZero(-0, -0)).to.equal(0)
+				jestExpect(countItemsNegativeZero(-0, -0)).toEqual(0)
 			end)
 		end)
 
@@ -726,10 +711,64 @@ return function()
 		end)
 	end)
 
-	-- deviation: substring tests are modified to pass in arrays of characters instead
-	-- the related substring methods are omitted
+	local function assertCommonSubstring(
+		a: string,
+		b: string,
+		nCommon: number,
+		aCommon: number,
+		bCommon: number
+	)
+		local aSubstring = Array.slice(a, aCommon + 1, aCommon + nCommon + 1)
+		local bSubstring = Array.slice(b, bCommon + 1, bCommon + nCommon + 1)
+		if table.concat(aSubstring, '') ~= table.concat(bSubstring, '') then
+			error(string.format(
+				'output substrings %s and %s are not common for nCommon=%d aCommon=%d bCommon =%d',
+				aSubstring, bSubstring, nCommon, aCommon, bCommon
+			))
+		end
+	end
 
-	-- deviation: TestEZ doesn't support snapshot tests so the snapshots are copied and tested against regularly
+	local function findCommonSubstrings(a: any, b: any)
+		local array = {}
+		a = stringToArray(a)
+		b = stringToArray(b)
+		diff(
+			#a,
+			#b,
+			function(aIndex, bIndex)
+				assertMin('input aIndex', aIndex, 0)
+				assertEnd('input aIndex', aIndex, #a)
+				assertMin('input bIndex', bIndex, 0)
+				assertEnd('input bIndex', bIndex, #b)
+				return a[aIndex + 1] == b[bIndex + 1]
+			end,
+			function(nCommon, aCommon, bCommon)
+				assertMin('output nCommon', nCommon, 1)
+				assertMin('output aCommon', aCommon, 0)
+				assertMax('output aCommon + nCommon', aCommon + nCommon, #a)
+				assertMin('output bCommon', bCommon, 0)
+				assertMax('output bCommon + nCommon', bCommon + nCommon, #b)
+				assertCommonSubstring(a, b, nCommon, aCommon, bCommon)
+				table.insert(
+					array,
+					Array.slice(a, aCommon + 1, aCommon + nCommon + 1)
+				)
+			end
+		)
+		local retval = {}
+		for _, v in ipairs(array) do
+			if type(v) == 'table' then
+				table.insert(
+					retval,
+					table.concat(v, '')
+				)
+			else
+				table.insert(retval, v)
+			end
+		end
+		return retval
+	end
+
 	describe('common substrings', function()
 		-- // Find changed and unchanged substrings within adjacent changed lines
 		-- // in expected and received values after a test fails in Jest.
@@ -745,8 +784,11 @@ return function()
 				'Object {',
 				'"descending": false,',
 			}, '\n')
-			local expected = table.concat({'"sorting": ', 'Object {\n"', 'scending": ', 'e,'}, '')
-			expectCommonItems(a, b, expected)
+			local expected = {'"sorting": ', 'Object {\n"', 'scending": ', 'e,'}
+			local abCommonSubstrings = findCommonSubstrings(a, b)
+			local baCommonSubstrings = findCommonSubstrings(b, a)
+			jestExpect(abCommonSubstrings).toEqual(baCommonSubstrings)
+			jestExpect(abCommonSubstrings).toEqual(expected)
 		end)
 		it('regression', function()
 			-- // Prevent unexpected regression. If change is incorrect, then fix code.
@@ -754,11 +796,10 @@ return function()
 			-- // English translation and French quotation by Antoine de Saint Exupéry:
 			local a = "It seems that perfection is attained not when there is nothing more to add, but when there is nothing more to remove."
 			local b = "Il semble que la perfection soit atteinte non quand il n'y a plus rien à ajouter, mais quand il n'y a plus rien à retrancher."
-			local expected = table.concat(
-				snapshots['common substrings regression 1'],
-				''
-			)
-			expectCommonItems(a, b, expected)
+			local abCommonSubstrings = findCommonSubstrings(a, b)
+			local baCommonSubstrings = findCommonSubstrings(b, a)
+			jestExpect(abCommonSubstrings).toEqual(baCommonSubstrings)
+			jestExpect(abCommonSubstrings).toMatchSnapshot()
 		end)
 		it('wrapping', function()
 			local a = table.concat({
@@ -769,11 +810,10 @@ return function()
 				'When engineers have ready-to-use tools, they write more tests, which results in',
 				'more stable and healthy code bases.',
 			}, '\n')
-			local expected = table.concat(
-				snapshots['common substrings wrapping 1'],
-				''
-			)
-			expectCommonItems(a, b, expected)
+			local abCommonSubstrings = findCommonSubstrings(a, b)
+			local baCommonSubstrings = findCommonSubstrings(b, a)
+			jestExpect(abCommonSubstrings).toEqual(baCommonSubstrings)
+			jestExpect(abCommonSubstrings).toMatchSnapshot()
 		end)
 	end)
 end
