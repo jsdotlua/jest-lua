@@ -103,6 +103,8 @@ function TestBootstrap:run(roots, reporter, otherOptions)
 	otherOptions = otherOptions or {}
 	local showTimingInfo = otherOptions["showTimingInfo"] or false
 	local testNamePattern = otherOptions["testNamePattern"]
+	local testPathPattern = otherOptions["testPathPattern"]
+	local testPathIgnorePatterns = otherOptions["testPathIgnorePatterns"]
 	local extraEnvironment = otherOptions["extraEnvironment"] or {}
 
 	if type(roots) ~= "table" then
@@ -122,7 +124,15 @@ function TestBootstrap:run(roots, reporter, otherOptions)
 
 	local afterModules = tick()
 
-	local plan = TestPlanner.createPlan(modules, testNamePattern, extraEnvironment)
+	local planArgs = {
+		testNamePattern = testNamePattern,
+		testPathPattern = testPathPattern,
+		testPathIgnorePatterns = testPathIgnorePatterns,
+		extraEnvironment = extraEnvironment
+	}
+
+	local plan = TestPlanner.createPlan(modules, planArgs)
+
 	local afterPlan = tick()
 
 	local results = TestRunner.runPlan(plan)

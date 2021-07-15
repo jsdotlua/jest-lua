@@ -19,12 +19,23 @@ local TestPlanner = {}
 			path, -- array of parent entires, first element is the leaf that owns `method`
 			pathStringForSorting -- a string representation of `path`, used for sorting of the test plan
 		}
-		- testNamePattern - Only tests matching this Lua pattern string will run. Pass empty or nil to run all tests
-		- extraEnvironment - Lua table holding additional functions and variables to be injected into the specification
-							function during execution
+		- planArgs - table of additional plan params {
+			testNamePattern - Only tests matching this Lua pattern string will run. Pass empty or nil to run all tests
+			testPathPattern - Only tests paths matching this pattern will run
+			testPathIgnorePatterns - Only tests paths that do not match this pattern will run
+			extraEnvironment - Lua table holding additional functions and variables to be injected into the specification
+								function during execution
+		}
 ]]
-function TestPlanner.createPlan(modulesList, testNamePattern, extraEnvironment)
-	local plan = TestPlan.new(testNamePattern, extraEnvironment)
+function TestPlanner.createPlan(modulesList, planArgs)
+	local testPlanArgs
+	if type(planArgs) == "string" then
+		testPlanArgs = {testNamePattern = planArgs}
+	else
+		testPlanArgs = planArgs
+	end
+
+	local plan = TestPlan.new(testPlanArgs)
 
 	table.sort(modulesList, function(a, b)
 		return a.pathStringForSorting < b.pathStringForSorting

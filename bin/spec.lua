@@ -9,5 +9,9 @@ local TestEZ = require(Root.src.TestEZ)
 TestEZ.TestBootstrap:run(
 	{ Modules },
 	TestEZ.Reporters.TextReporter,
-	{ extraEnvironment = Jest.testEnv }
+	{
+		extraEnvironment = Jest.testEnv,
+		testPathPattern = _G["TESTEZ_TEST_PATH_PATTERN"],
+		testPathIgnorePatterns = _G["TESTEZ_TEST_PATH_IGNORE_PATTERNS"]
+	}
 )

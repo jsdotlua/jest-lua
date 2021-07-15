@@ -8,7 +8,25 @@
 local TestEnum = require(script.Parent.TestEnum)
 local Expectation = require(script.Parent.Expectation)
 
-local function newEnvironment(currentNode, extraEnvironment)
+local function getCoreScriptSyncService()
+	local success, result = pcall(function()
+		return game:GetService("CoreScriptSyncService")
+	end)
+
+	return (success and result or nil) -- Return result only if pcall is successful
+end
+
+local CoreScriptSyncService = getCoreScriptSyncService()
+
+local function getFilePathFromInstance(instance)
+	local success, result = pcall(function()
+		return CoreScriptSyncService:GetScriptFilePath(instance)
+	end)
+
+	return (success and result or nil)
+end
+
+local function newEnvironment(currentNode, extraEnvironment, filePath)
 	local env = {}
 
 	if extraEnvironment then
@@ -23,7 +41,7 @@ local function newEnvironment(currentNode, extraEnvironment)
 	end
 
 	local function addChild(phrase, callback, nodeType, nodeModifier)
-		local node = currentNode:addChild(phrase, nodeType, nodeModifier)
+		local node = currentNode:addChild(phrase, nodeType, nodeModifier, filePath)
 		node.callback = callback
 		if nodeType == TestEnum.NodeType.Describe then
 			node:expand()
@@ -126,7 +144,7 @@ TestNode.__index = TestNode
 	and the type of node it is are required. The modifier is optional and will
 	be None if left blank.
 ]]
-function TestNode.new(plan, phrase, nodeType, nodeModifier)
+function TestNode.new(plan, phrase, nodeType, nodeModifier, filePath)
 	nodeModifier = nodeModifier or TestEnum.NodeModifier.None
 
 	local node = {
@@ -139,7 +157,7 @@ function TestNode.new(plan, phrase, nodeType, nodeModifier)
 		parent = nil,
 	}
 
-	node.environment = newEnvironment(node, plan.extraEnvironment)
+	node.environment = newEnvironment(node, plan.extraEnvironment, filePath)
 	return setmetatable(node, TestNode)
 end
 
@@ -154,7 +172,16 @@ local function getModifier(name, pattern, modifier)
 	return modifier
 end
 
-function TestNode:addChild(phrase, nodeType, nodeModifier)
+local function getIgnoreModifier(name, pattern, modifier)
+	if pattern and (modifier == nil or modifier == TestEnum.NodeModifier.None) then
+		if name:match(pattern) then
+			return TestEnum.NodeModifier.Skip
+		end
+	end
+	return modifier
+end
+
+function TestNode:addChild(phrase, nodeType, nodeModifier, filePath)
 	if nodeType == TestEnum.NodeType.It then
 		for _, child in pairs(self.children) do
 			if child.phrase == phrase then
@@ -164,8 +191,27 @@ function TestNode:addChild(phrase, nodeType, nodeModifier)
 	end
 
 	local childName = self:getFullName() .. " " .. phrase
-	nodeModifier = getModifier(childName, self.plan.testNamePattern, nodeModifier)
-	local child = TestNode.new(self.plan, phrase, nodeType, nodeModifier)
+	local filters = {}
+	if self.plan.testNamePattern then
+		filters["nameNodeModifier"] = getModifier(childName, self.plan.testNamePattern, nodeModifier)
+	end
+	if filePath and self.plan.testPathPattern then
+		filters["pathNodeModifier"] = getModifier(filePath, self.plan.testPathPattern, nodeModifier)
+	end
+	if filePath and self.plan.testPathIgnorePatterns then
+		filters["pathIgnoreNodeModifier"] = getIgnoreModifier(filePath, self.plan.testPathIgnorePatterns, nodeModifier)
+	end
+
+	for _,filter in pairs(filters) do
+		if filter ~= TestEnum.NodeModifier.Focus then
+			nodeModifier = filter
+			break
+		else
+			nodeModifier = filter
+		end
+	end
+
+	local child = TestNode.new(self.plan, phrase, nodeType, nodeModifier, filePath)
 	child.parent = self
 	table.insert(self.children, child)
 	return child
@@ -214,12 +260,16 @@ TestPlan.__index = TestPlan
 --[[
 	Create a new, empty TestPlan.
 ]]
-function TestPlan.new(testNamePattern, extraEnvironment)
+function TestPlan.new(planArgs)
 	local plan = {
-		children = {},
-		testNamePattern = testNamePattern,
-		extraEnvironment = extraEnvironment,
+		children = {}
 	}
+
+	if planArgs then
+		for key, value in pairs(planArgs) do
+			plan[key] = value
+		end
+	end
 
 	return setmetatable(plan, TestPlan)
 end
@@ -251,7 +301,8 @@ function TestPlan:addRoot(path, method, instance)
 		end
 
 		if nextNode == nil then
-			nextNode = curNode:addChild(path[i], TestEnum.NodeType.Describe)
+			local filePath = getFilePathFromInstance(instance)
+			nextNode = curNode:addChild(path[i], TestEnum.NodeType.Describe, nil, filePath)
 		end
 
 		curNode = nextNode
