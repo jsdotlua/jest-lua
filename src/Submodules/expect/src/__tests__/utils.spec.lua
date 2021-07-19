@@ -8,18 +8,18 @@
 --  */
 
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 
 	local stringify = require(Modules.JestMatcherUtils).stringify
 
-	local emptyObject = require(Workspace.utils).emptyObject
-	local getObjectSubset = require(Workspace.utils).getObjectSubset
-	local getPath = require(Workspace.utils).getPath
-	-- local iterableEquality = require(Workspace.utils).iterableEquality
-	local subsetEquality = require(Workspace.utils).subsetEquality
+	local emptyObject = require(CurrentModule.utils).emptyObject
+	local getObjectSubset = require(CurrentModule.utils).getObjectSubset
+	local getPath = require(CurrentModule.utils).getPath
+	-- local iterableEquality = require(CurrentModule.utils).iterableEquality
+	local subsetEquality = require(CurrentModule.utils).subsetEquality
 
-	local equals = require(Workspace.jasmineUtils).equals
+	local equals = require(CurrentModule.jasmineUtils).equals
 
 	type Array<T> = { T }
 

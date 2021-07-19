@@ -8,8 +8,8 @@
 -- */
 
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 	local Packages = Modules.Parent.Parent
 
 	local Polyfill = require(Packages.LuauPolyfill)
@@ -19,7 +19,7 @@ return function()
 
 	local snapshots = require(script.Parent.__snapshots__['spyMatchers.snap'])
 
-	local jestExpect = require(Workspace)
+	local jestExpect = require(CurrentModule)
 	local jestMock = require(Modules.JestMock)
 
 	local function createSpy(fn)
@@ -413,7 +413,7 @@ return function()
 					fn('foo1', 'bar')
 
 					jestExpect(function()
-						jestExpect(fn).never[calledWith](1/0, 'foo1', 'bar')
+						jestExpect(fn).never[calledWith](math.huge, 'foo1', 'bar')
 					end).toThrow(snapshots[calledWith .. ' negative throw matcher error for n that is not integer 1'])
 				end)
 			end

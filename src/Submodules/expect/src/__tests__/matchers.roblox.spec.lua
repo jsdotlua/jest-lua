@@ -1,8 +1,8 @@
 --!nocheck
 return function()
-	local Workspace = script.Parent.Parent
+	local CurrentModule = script.Parent.Parent
 
-	local jestExpect = require(Workspace)
+	local jestExpect = require(CurrentModule)
 
 	local CustomClass = {}
 	CustomClass.__index = CustomClass

@@ -8,8 +8,8 @@
 --  */
 
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 	local Packages = Modules.Parent.Parent
 
 	local Polyfill = require(Packages.LuauPolyfill)
@@ -19,7 +19,7 @@ return function()
 
 	local RegExp = require(Packages.LuauRegExp)
 
-	local getType = require(Workspace).getType
+	local getType = require(CurrentModule).getType
 
 	describe(".getType()", function()
 		it('nil', function()

@@ -7,12 +7,12 @@
 
 return function()
 	describe("SpyStrategy", function()
-		local Workspace = script.Parent.Parent
-		local Modules = Workspace.Parent.Parent
+		local CurrentModule = script.Parent.Parent
+		local Modules = CurrentModule.Parent.Parent
 		local Packages = Modules.Parent.Parent
 
-		local SpyStrategy = require(Workspace.SpyStrategy)
-		local createSpy = require(Workspace.createSpy)
+		local SpyStrategy = require(CurrentModule.SpyStrategy)
+		local createSpy = require(CurrentModule.createSpy)
 
 		local equals = require(Modules.Expect.jasmineUtils).equals
 

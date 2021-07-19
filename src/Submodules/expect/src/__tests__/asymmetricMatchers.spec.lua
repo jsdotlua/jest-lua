@@ -8,13 +8,13 @@
 --  */
 
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 	local Packages = Modules.Parent.Parent
 
 	local RegExp = require(Packages.LuauRegExp)
 
-	local AsymmetricMatchers = require(Workspace.asymmetricMatchers)
+	local AsymmetricMatchers = require(CurrentModule.asymmetricMatchers)
 	local any = AsymmetricMatchers.any
 	local anything = AsymmetricMatchers.anything
 	local arrayContaining = AsymmetricMatchers.arrayContaining

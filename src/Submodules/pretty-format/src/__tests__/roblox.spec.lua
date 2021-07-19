@@ -1,12 +1,12 @@
 --!nocheck
 
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 
 	local jestExpect = require(Modules.Expect)
 
-	local prettyFormat = require(Workspace).prettyFormat
+	local prettyFormat = require(CurrentModule).prettyFormat
 
 	it('userdata', function()
 		local testObject = newproxy()

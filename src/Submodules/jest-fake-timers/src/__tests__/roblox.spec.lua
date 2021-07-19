@@ -1,7 +1,7 @@
 --!nocheck
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 
 	local jestExpect = require(Modules.Expect)
 

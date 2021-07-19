@@ -19,8 +19,8 @@
 -- WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -- */
 
-local Workspace = script.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local Polyfills = require(Packages.LuauPolyfill)
@@ -28,7 +28,7 @@ local Object = Polyfills.Object
 local Array = Polyfills.Array
 local toJSBoolean = Polyfills.Boolean.toJSBoolean
 
-local getType = require(Workspace.Parent.JestGetType).getType
+local getType = require(CurrentModule.Parent.JestGetType).getType
 
 type Array<T> = { T };
 type Table = { any: any };

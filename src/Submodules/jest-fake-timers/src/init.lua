@@ -1,8 +1,8 @@
 -- API aligned with https://github.com/facebook/jest/blob/v26.5.3/packages/jest-fake-timers/src/modernFakeTimers.ts
 -- deviation: major implementation deviation, refer to README for more info
 
-local Workspace = script
-local Modules = Workspace.Parent
+local CurrentModule = script
+local Modules = CurrentModule.Parent
 
 local getType = require(Modules.JestGetType).getType
 

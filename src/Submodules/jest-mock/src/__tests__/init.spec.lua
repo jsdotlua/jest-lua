@@ -1,10 +1,10 @@
 --!nocheck
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-mock/src/__tests__/index.test.ts
 
-local Workspace = script.Parent.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent.Parent
+local Modules = CurrentModule.Parent
 
-local ModuleMocker = require(Workspace)
+local ModuleMocker = require(CurrentModule)
 local jestExpect = require(Modules.Expect)
 
 return function()

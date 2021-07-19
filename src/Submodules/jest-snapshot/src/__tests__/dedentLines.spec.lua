@@ -8,8 +8,8 @@
 --  */
 
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 	local Packages = Modules.Parent.Parent
 
 	local Polyfill = require(Packages.LuauPolyfill)
@@ -19,7 +19,7 @@ return function()
 
 	local PrettyFormat = require(Modules.PrettyFormat)
 	local format = PrettyFormat.prettyFormat
-	local dedentLines = require(Workspace.dedentLines)
+	local dedentLines = require(CurrentModule.dedentLines)
 
 	local typeof_ = Symbol.for_('react.test.json')
 	local plugins = { PrettyFormat.plugins.ReactTestComponent }

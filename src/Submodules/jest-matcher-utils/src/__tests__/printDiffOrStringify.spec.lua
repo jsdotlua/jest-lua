@@ -8,15 +8,15 @@
 
 
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 	local Packages = Modules.Parent.Parent
 
 	local snapshots = require(script.Parent.__snapshots__["printDiffOrStringify.snap"])
 
 	local Symbol = require(Packages.LuauPolyfill).Symbol
 
-	local printDiffOrStringify = require(Workspace).printDiffOrStringify
+	local printDiffOrStringify = require(CurrentModule).printDiffOrStringify
 	-- deviation: omitted INVERTED_COLOR import because it doesn't have an
 	-- actual implementation yet
 

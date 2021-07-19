@@ -6,8 +6,8 @@
 -- * LICENSE file in the root directory of this source tree.
 -- */
 
-local Workspace = script.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent
+local Modules = CurrentModule.Parent
 local getType = require(Modules.JestGetType).getType
 
 type ReplaceableForEachCallBack = (any, any, any) -> nil;

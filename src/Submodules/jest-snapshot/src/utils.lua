@@ -10,8 +10,8 @@
 -- corresponds to the functions needed by the other translated files. We plan
 -- on filling the rest of utils out as we continue with the jest-snapshot file.
 
-local Workspace = script.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local FileSystemService = game:GetService("FileSystemService")
@@ -26,9 +26,9 @@ local String = Polyfill.String
 
 local Config = require(Modules.JestTypes.Config)
 local prettyFormat = require(Modules.PrettyFormat).prettyFormat
-local getSerializers = require(Workspace.plugins).getSerializers
+local getSerializers = require(CurrentModule.plugins).getSerializers
 
-local types = require(Workspace.types)
+local types = require(CurrentModule.types)
 
 type Array<T> = { T }
 

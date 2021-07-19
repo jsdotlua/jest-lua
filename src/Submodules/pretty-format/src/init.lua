@@ -9,18 +9,18 @@
 -- deviation: ansi-styles not ported
 -- local Types = require(script.Types)
 
-local Workspace = script
-local Modules = Workspace.Parent
+local CurrentModule = script
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local isNaN = require(Packages.LuauPolyfill).Number.isNaN
 
-local Collections = require(Workspace.Collections)
+local Collections = require(CurrentModule.Collections)
 local printTableEntries = Collections.printTableEntries
 local printListItems = Collections.printListItems
 
-local AsymmetricMatcher = require(Workspace.plugins.AsymmetricMatcher)
-local ConvertAnsi = require(Workspace.plugins.ConvertAnsi)
+local AsymmetricMatcher = require(CurrentModule.plugins.AsymmetricMatcher)
+local ConvertAnsi = require(CurrentModule.plugins.ConvertAnsi)
 
 local getType = require(Modules.JestGetType).getType
 
@@ -337,7 +337,7 @@ local DEFAULT_OPTIONS = {
 	escapeString = true,
 	highlight = false,
 	indent = 2,
-	maxDepth = 1/0,
+	maxDepth = math.huge,
 	min = false,
 	plugins = {},
 	printFunctionName = true,

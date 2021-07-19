@@ -6,8 +6,8 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local Workspace = script
-local Modules = Workspace.Parent
+local CurrentModule = script
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local Polyfills = require(Packages.LuauPolyfill)
@@ -20,22 +20,22 @@ local chalk = require(Packages.ChalkLua)
 
 local getType = require(Modules.JestGetType).getType
 
-local DIFF_DELETE = require(Workspace.CleanupSemantic).DIFF_DELETE
-local DIFF_EQUAL = require(Workspace.CleanupSemantic).DIFF_EQUAL
-local DIFF_INSERT = require(Workspace.CleanupSemantic).DIFF_INSERT
-local Diff = require(Workspace.CleanupSemantic).Diff
+local DIFF_DELETE = require(CurrentModule.CleanupSemantic).DIFF_DELETE
+local DIFF_EQUAL = require(CurrentModule.CleanupSemantic).DIFF_EQUAL
+local DIFF_INSERT = require(CurrentModule.CleanupSemantic).DIFF_INSERT
+local Diff = require(CurrentModule.CleanupSemantic).Diff
 
-local normalizeDiffOptions = require(Workspace.NormalizeDiffOptions).normalizeDiffOptions
+local normalizeDiffOptions = require(CurrentModule.NormalizeDiffOptions).normalizeDiffOptions
 
-local diffLinesRaw = require(Workspace.DiffLines).diffLinesRaw
-local diffLinesUnified = require(Workspace.DiffLines).diffLinesUnified
-local diffLinesUnified2 = require(Workspace.DiffLines).diffLinesUnified2
+local diffLinesRaw = require(CurrentModule.DiffLines).diffLinesRaw
+local diffLinesUnified = require(CurrentModule.DiffLines).diffLinesUnified
+local diffLinesUnified2 = require(CurrentModule.DiffLines).diffLinesUnified2
 
-local diffStringsRaw = require(Workspace.PrintDiffs).diffStringsRaw
-local diffStringsUnified = require(Workspace.PrintDiffs).diffStringsUnified
+local diffStringsRaw = require(CurrentModule.PrintDiffs).diffStringsRaw
+local diffStringsUnified = require(CurrentModule.PrintDiffs).diffStringsUnified
 
-local NO_DIFF_MESSAGE = require(Workspace.Constants).NO_DIFF_MESSAGE
-local SIMILAR_MESSAGE = require(Workspace.Constants).SIMILAR_MESSAGE
+local NO_DIFF_MESSAGE = require(CurrentModule.Constants).NO_DIFF_MESSAGE
+local SIMILAR_MESSAGE = require(CurrentModule.Constants).SIMILAR_MESSAGE
 
 -- TODO: add external types
 
@@ -56,7 +56,7 @@ local function tableCopy(t)
 end
 
 -- local pfPlugins = prettyFormat.plugins
-local AsymmetricMatcher = require(Workspace.Parent.PrettyFormat).plugins.AsymmetricMatcher
+local AsymmetricMatcher = require(CurrentModule.Parent.PrettyFormat).plugins.AsymmetricMatcher
 local PLUGINS = { AsymmetricMatcher } -- TODO: continue to implement prettyFormat plugins
 local FORMAT_OPTIONS = {
 	plugins = PLUGINS,

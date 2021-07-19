@@ -2,15 +2,15 @@
 -- deviation: this file does not exist in upstream
 
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 
-	local Print = require(Workspace.print)
+	local Print = require(CurrentModule.print)
 
 	local JestMatcherUtils = require(Modules.JestMatcherUtils)
 	local EXPECTED_COLOR = JestMatcherUtils.EXPECTED_COLOR
 
-	local jestExpect = require(Workspace)
+	local jestExpect = require(CurrentModule)
 
 	describe("printing constructor", function()
 		local Dog

@@ -6,8 +6,8 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local Workspace = script
-local Packages = Workspace.Parent.Parent.Parent
+local CurrentModule = script
+local Packages = CurrentModule.Parent.Parent.Parent
 
 local Polyfills = require(Packages.LuauPolyfill)
 local Array = Polyfills.Array

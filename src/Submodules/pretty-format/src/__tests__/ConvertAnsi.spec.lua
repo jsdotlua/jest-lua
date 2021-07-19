@@ -8,15 +8,15 @@
 --  *
 --  */
 
-local Workspace = script.Parent.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent.Parent
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local jestExpect = require(Modules.Expect)
 
 local chalk = require(Packages.ChalkLua)
 
-local PrettyFormat = require(Workspace)
+local PrettyFormat = require(CurrentModule)
 local prettyFormat = PrettyFormat.prettyFormat
 local ConvertAnsi = PrettyFormat.plugins.ConvertAnsi
 

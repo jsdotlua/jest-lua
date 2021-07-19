@@ -27,8 +27,8 @@
 -- WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -- */
 
-local Workspace = script.Parent
-local Modules = Workspace.Parent.Parent
+local CurrentModule = script.Parent
+local Modules = CurrentModule.Parent.Parent
 local Packages = Modules.Parent.Parent
 
 local Polyfills = require(Packages.LuauPolyfill)

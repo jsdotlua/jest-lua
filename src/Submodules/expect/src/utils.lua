@@ -7,8 +7,8 @@
 -- *
 -- */
 
-local Workspace = script.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local JestGetType = require(Modules.JestGetType)
@@ -19,7 +19,7 @@ local Array = Polyfill.Array
 local Object = Polyfill.Object
 
 -- deviation: omitted isPrimitive import
-local jasmineUtils = require(Workspace.jasmineUtils)
+local jasmineUtils = require(CurrentModule.jasmineUtils)
 local equals = jasmineUtils.equals
 -- deviation: omitted isA, isImmutableUnorderedKeyed, isImmutableUnorderedSet
 

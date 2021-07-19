@@ -7,8 +7,8 @@
 --  */
 
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 	local Packages = Modules.Parent.Parent
 
 	local snapshots = require(script.Parent.__snapshots__['Diff.snap'])
@@ -17,15 +17,15 @@ return function()
 
 	local Number = require(Packages.LuauPolyfill).Number
 
-	local diff = require(Workspace).diff
-	local diffLinesUnified = require(Workspace.DiffLines).diffLinesUnified
-	local diffLinesUnified2 = require(Workspace.DiffLines).diffLinesUnified2
+	local diff = require(CurrentModule).diff
+	local diffLinesUnified = require(CurrentModule.DiffLines).diffLinesUnified
+	local diffLinesUnified2 = require(CurrentModule.DiffLines).diffLinesUnified2
 
-	local noColor = require(Workspace.NormalizeDiffOptions).noColor
+	local noColor = require(CurrentModule.NormalizeDiffOptions).noColor
 
-	local diffStringsUnified = require(Workspace.PrintDiffs).diffStringsUnified
+	local diffStringsUnified = require(CurrentModule.PrintDiffs).diffStringsUnified
 
-	local NO_DIFF_MESSAGE = require(Workspace.Constants).NO_DIFF_MESSAGE
+	local NO_DIFF_MESSAGE = require(CurrentModule.Constants).NO_DIFF_MESSAGE
 
 	local optionsCounts = {
 		includeChangeCounts = true,
@@ -61,7 +61,7 @@ return function()
 	local unexpanded = {expand = false}
 	local expanded = {expand = true}
 
-	-- local elementSymbol = require(Workspace.Parent.React.Shared).REACT_ELEMENT_TYPE
+	-- local elementSymbol = require(CurrentModule.Parent.React.Shared).REACT_ELEMENT_TYPE
 
 	describe('different types', function()
 		it('1 and "a"', function()

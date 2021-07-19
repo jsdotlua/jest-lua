@@ -7,10 +7,10 @@
 -- */
 
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 
-	local Replaceable = require(Workspace.Replaceable)
+	local Replaceable = require(CurrentModule.Replaceable)
 
 	local equals = require(Modules.Expect.jasmineUtils).equals
 

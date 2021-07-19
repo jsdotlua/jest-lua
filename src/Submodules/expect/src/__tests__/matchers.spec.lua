@@ -8,8 +8,8 @@
 --  */
 
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 	local Packages = Modules.Parent.Parent
 
 	local snapshots = require(script.Parent.__snapshots__["matchers.snap"])
@@ -26,7 +26,7 @@ return function()
 
 	-- deviation: omitted alignedAnsiStyleSerializer, Immutable, chalk imports
 
-	local jestExpect = require(Workspace)
+	local jestExpect = require(CurrentModule)
 
 	-- deviation: chalk enabled by default
 

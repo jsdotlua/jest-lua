@@ -14,8 +14,8 @@
 	ROBLOX TODO: refactor tests once the matchers code has been translated
 ]]
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 	local Packages = Modules.Parent.Parent
 
 	local Polyfill = require(Packages.LuauPolyfill)
@@ -24,7 +24,7 @@ return function()
 
 	local RegExp = require(Packages.LuauRegExp)
 
-	local jasmineUtils = require(Workspace.jasmineUtils)
+	local jasmineUtils = require(CurrentModule.jasmineUtils)
 	local equals = jasmineUtils.equals
 	local fnNameFor = jasmineUtils.fnNameFor
 	local isA = jasmineUtils.isA

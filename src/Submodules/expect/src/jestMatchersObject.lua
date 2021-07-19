@@ -6,15 +6,15 @@
 --  * LICENSE file in the root directory of this source tree.
 --  *
 --  */
-local Workspace = script.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local Polyfill = require(Packages.LuauPolyfill)
 local Symbol = Polyfill.Symbol
 local Object = Polyfill.Object
 
-local AsymmetricMatcher = require(Workspace.asymmetricMatchers).AsymmetricMatcher
+local AsymmetricMatcher = require(CurrentModule.asymmetricMatchers).AsymmetricMatcher
 
 -- deviation: omitted external type definitions
 

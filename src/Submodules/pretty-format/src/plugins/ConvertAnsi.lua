@@ -7,8 +7,8 @@
 --  *
 --  */
 
-local Workspace = script.Parent.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent.Parent
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local chalk = require(Packages.ChalkLua)

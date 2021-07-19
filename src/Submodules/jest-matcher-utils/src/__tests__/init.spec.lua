@@ -7,8 +7,8 @@
 --  *
 --  */
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 	local Packages = Modules.Parent.Parent
 
 	local Polyfill = require(Packages.LuauPolyfill)
@@ -25,7 +25,7 @@ return function()
 	local prettyFormat = require(Modules.PrettyFormat).prettyFormat
 	-- deviation: omitted alignedAnsiStyleSerializer import
 
-	local JestMatcherUtils = require(Workspace)
+	local JestMatcherUtils = require(CurrentModule)
 	-- deviation: omitted MatcherHintOptions import
 	local diff = JestMatcherUtils.diff
 	local ensureNoExpected = JestMatcherUtils.ensureNoExpected

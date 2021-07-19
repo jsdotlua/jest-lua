@@ -6,8 +6,8 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local Workspace = script.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local Number = require(Packages.LuauPolyfill).Number

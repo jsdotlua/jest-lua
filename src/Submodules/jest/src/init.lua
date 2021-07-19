@@ -1,7 +1,7 @@
 -- FIXME: nochecked for now as we already have an incoming PR on this file
 --!nocheck
-local Workspace = script
-local Modules = Workspace.Parent
+local CurrentModule = script
+local Modules = CurrentModule.Parent
 
 local JestMock = require(Modules.JestMock)
 local JestFakeTimers = require(Modules.JestFakeTimers)

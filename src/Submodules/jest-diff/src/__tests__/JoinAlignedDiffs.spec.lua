@@ -7,20 +7,20 @@
 --  */
 
 return function()
-	local Workspace = script.Parent.Parent
+	local CurrentModule = script.Parent.Parent
 
 	local snapshots = require(script.Parent.__snapshots__['JoinAlignedDiffs.snap'])
 
-	local DIFF_DELETE = require(Workspace.CleanupSemantic).DIFF_DELETE
-	local DIFF_EQUAL = require(Workspace.CleanupSemantic).DIFF_EQUAL
-	local DIFF_INSERT = require(Workspace.CleanupSemantic).DIFF_INSERT
-	local Diff = require(Workspace.CleanupSemantic).Diff
+	local DIFF_DELETE = require(CurrentModule.CleanupSemantic).DIFF_DELETE
+	local DIFF_EQUAL = require(CurrentModule.CleanupSemantic).DIFF_EQUAL
+	local DIFF_INSERT = require(CurrentModule.CleanupSemantic).DIFF_INSERT
+	local Diff = require(CurrentModule.CleanupSemantic).Diff
 
-	local joinAlignedDiffsExpand = require(Workspace.JoinAlignedDiffs).joinAlignedDiffsExpand
-	local joinAlignedDiffsNoExpand = require(Workspace.JoinAlignedDiffs).joinAlignedDiffsNoExpand
+	local joinAlignedDiffsExpand = require(CurrentModule.JoinAlignedDiffs).joinAlignedDiffsExpand
+	local joinAlignedDiffsNoExpand = require(CurrentModule.JoinAlignedDiffs).joinAlignedDiffsNoExpand
 
-	local noColor = require(Workspace.NormalizeDiffOptions).noColor
-	local normalizeDiffOptions = require(Workspace.NormalizeDiffOptions).normalizeDiffOptions
+	local noColor = require(CurrentModule.NormalizeDiffOptions).noColor
+	local normalizeDiffOptions = require(CurrentModule.NormalizeDiffOptions).normalizeDiffOptions
 
 	local changeColor = function(s) return '<i>' .. s .. '</i>' end
 	local optionsNoColor = {

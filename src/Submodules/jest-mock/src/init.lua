@@ -7,8 +7,8 @@
 -- a need for more functionality, we will revisit this file and continue the translation
 -- efforts.
 
-local Workspace = script
-local Modules = Workspace.Parent
+local CurrentModule = script
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local Polyfill = require(Packages.LuauPolyfill)

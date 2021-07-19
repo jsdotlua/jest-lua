@@ -7,17 +7,17 @@
 --  */
 
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 	local Packages = Modules.Parent.Parent
 
 	local Array = require(Packages.LuauPolyfill).Array
 
-	local DIFF_DELETE = require(Workspace).DIFF_DELETE
-	local DIFF_EQUAL = require(Workspace).DIFF_EQUAL
-	local DIFF_INSERT = require(Workspace).DIFF_INSERT
-	local Diff = require(Workspace).Diff
-	local diffStringsRaw = require(Workspace).diffStringsRaw
+	local DIFF_DELETE = require(CurrentModule).DIFF_DELETE
+	local DIFF_EQUAL = require(CurrentModule).DIFF_EQUAL
+	local DIFF_INSERT = require(CurrentModule).DIFF_INSERT
+	local Diff = require(CurrentModule).Diff
+	local diffStringsRaw = require(CurrentModule).diffStringsRaw
 
 	local function arrayEquals(a1, a2)
 		return #a1 == #a2 and

@@ -6,15 +6,15 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local Workspace = script.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local Array = require(Packages.LuauPolyfill).Array
 
-local DIFF_DELETE = require(Workspace.CleanupSemantic).DIFF_DELETE
-local DIFF_EQUAL = require(Workspace.CleanupSemantic).DIFF_EQUAL
-local DIFF_INSERT = require(Workspace.CleanupSemantic).DIFF_INSERT
+local DIFF_DELETE = require(CurrentModule.CleanupSemantic).DIFF_DELETE
+local DIFF_EQUAL = require(CurrentModule.CleanupSemantic).DIFF_EQUAL
+local DIFF_INSERT = require(CurrentModule.CleanupSemantic).DIFF_INSERT
 
 -- TODO: add external types
 

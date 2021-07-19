@@ -1,11 +1,11 @@
 --!nocheck
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 
 	local jestExpect = require(Modules.Expect)
 
-	local jest = require(Workspace)
+	local jest = require(CurrentModule)
 
 	describe('Jest Object', function()
 		describe('methods are initialized', function()

@@ -1,7 +1,7 @@
 return function()
-	local Workspace = script.Parent.Parent
+	local CurrentModule = script.Parent.Parent
 
-	local getType = require(Workspace).getType
+	local getType = require(CurrentModule).getType
 
 	describe(".getType()", function()
 		it("supports tables with a throwing __index metamethod", function()

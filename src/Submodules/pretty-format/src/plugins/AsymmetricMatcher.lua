@@ -6,15 +6,15 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local Workspace = script.Parent.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent.Parent
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local Symbol = require(Packages.LuauPolyfill).Symbol
 
 -- deviation: omitting external type definitions
 
-local Collections = require(Workspace.Collections)
+local Collections = require(CurrentModule.Collections)
 local printListItems = Collections.printListItems
 local printObjectProperties = Collections.printTableEntries
 

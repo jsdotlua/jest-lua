@@ -7,8 +7,8 @@
 --  *
 --  */
 
-local Workspace = script.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local Polyfills = require(Packages.LuauPolyfill)
@@ -45,7 +45,7 @@ type MatcherState = any
 -- {exec: (string) -> any, test: (string) -> boolean}
 type RegExp = any
 
-local Print = require(Workspace.print)
+local Print = require(CurrentModule.print)
 local printCloseTo = Print.printCloseTo
 local printExpectedConstructorName = Print.printExpectedConstructorName
 local printExpectedConstructorNameNot = Print.printExpectedConstructorNameNot
@@ -55,7 +55,7 @@ local printReceivedConstructorNameNot = Print.printReceivedConstructorNameNot
 local printReceivedStringContainExpectedResult = Print.printReceivedStringContainExpectedResult
 local printReceivedStringContainExpectedSubstring = Print.printReceivedStringContainExpectedSubstring
 
-local Utils = require(Workspace.utils)
+local Utils = require(CurrentModule.utils)
 local getObjectSubset = Utils.getObjectSubset
 local getPath = Utils.getPath
 local iterableEquality = Utils.iterableEquality
@@ -63,7 +63,7 @@ local subsetEquality = Utils.subsetEquality
 local typeEquality = Utils.typeEquality
 -- deviation: omitted imports for sparseArrayEquality and typeEquality
 
-local equals = require(Workspace.jasmineUtils).equals
+local equals = require(CurrentModule.jasmineUtils).equals
 
 -- // Omit colon and one or more spaces, so can call getLabelPrinter.
 local EXPECTED_LABEL = 'Expected'

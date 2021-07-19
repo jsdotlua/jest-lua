@@ -1,10 +1,12 @@
 # Jest Roblox Changelog
 
 ## Prerelease Changes
-* Added jest-snapshot functionality
+* Added `jest-snapshot` functionality
   * Added `toMatchSnapshot` matcher
-  * Added `UPDATESNAPSHOT` flag for updating snapshots
+  * Added `toThrowErrorMatchingSnapshot` matcher
+  * Added `UPDATESNAPSHOT` flag for updating snapshots, the value can either be `all` (by default), or `new` to only add new snapshots, this can be enabled with an `--updateSnapshot` flag in Jest Roblox CLI
 * Removed colon syntax alias for initializing mock functions
+* :bug: Fix issue with CoreScriptConverter and the Modules directory
 
 ## 1.1.2 (2021-06-11)
 * :bug: Fix for `jest-snapshot` so that the init file returns a value

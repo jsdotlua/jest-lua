@@ -18,8 +18,8 @@ type JestAssertionError = {
 	matcherResult: SyncExpectationResult?
 }
 
-local Workspace = script
-local Modules = Workspace.Parent
+local CurrentModule = script
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local Polyfill = require(Packages.LuauPolyfill)
@@ -27,14 +27,14 @@ local Object = Polyfill.Object
 
 local matcherUtils = require(Modules.JestMatcherUtils)
 
-local matchers = require(Workspace.matchers)
-local spyMatchers = require(Workspace.spyMatchers)
-local toThrowMatchers = require(Workspace.toThrowMatchers).matchers
+local matchers = require(CurrentModule.matchers)
+local spyMatchers = require(CurrentModule.spyMatchers)
+local toThrowMatchers = require(CurrentModule.toThrowMatchers).matchers
 
-local JasmineUtils = require(Workspace.jasmineUtils)
+local JasmineUtils = require(CurrentModule.jasmineUtils)
 local equals = JasmineUtils.equals
 
-local AsymmetricMatchers = require(Workspace.asymmetricMatchers)
+local AsymmetricMatchers = require(CurrentModule.asymmetricMatchers)
 local any = AsymmetricMatchers.any
 local anything = AsymmetricMatchers.anything
 local arrayContaining = AsymmetricMatchers.arrayContaining
@@ -46,7 +46,7 @@ local stringNotContaining = AsymmetricMatchers.stringNotContaining
 local stringMatching = AsymmetricMatchers.stringMatching
 local stringNotMatching = AsymmetricMatchers.stringNotMatching
 
-local JestMatchersObject = require(Workspace.jestMatchersObject)
+local JestMatchersObject = require(CurrentModule.jestMatchersObject)
 --local INTERNAL_MATCHER_FLAG = JestMatchersObject.INTERNAL_MATCHER_FLAG
 local getMatchers = JestMatchersObject.getMatchers
 local getState = JestMatchersObject.getState

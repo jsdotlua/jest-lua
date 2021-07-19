@@ -27,8 +27,8 @@
 -- WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -- */
 
-local Workspace = script.Parent
-local Modules = Workspace.Parent.Parent
+local CurrentModule = script.Parent
+local Modules = CurrentModule.Parent.Parent
 local Packages = Modules.Parent.Parent
 
 local Polyfills = require(Packages.LuauPolyfill)
@@ -39,8 +39,8 @@ local Array = Polyfills.Array
 	We can't define this Spy type because it has a keyword "and" as one of
 	its table keys
 ]]
-local CallTracker = require(Workspace.CallTracker)
-local SpyStrategy = require(Workspace.SpyStrategy)
+local CallTracker = require(CurrentModule.CallTracker)
+local SpyStrategy = require(CurrentModule.SpyStrategy)
 
 -- deviation: we don't define a type like Fn
 

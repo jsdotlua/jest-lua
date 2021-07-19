@@ -8,9 +8,9 @@
 --  */
 
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
-	local Packages = Workspace.Parent.Parent.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
+	local Packages = CurrentModule.Parent.Parent.Parent
 
 	local Polyfill = require(Packages.LuauPolyfill)
 	local Set = Polyfill.Set
@@ -21,7 +21,7 @@ return function()
 
 	local jest = require(Modules.Jest)
 
-	local prettyFormat = require(Workspace).prettyFormat
+	local prettyFormat = require(CurrentModule).prettyFormat
 
 	describe('prettyFormat()', function()
 		-- deviation: omitted, no Argument type in lua

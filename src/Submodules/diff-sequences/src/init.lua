@@ -51,8 +51,8 @@
 -- // Find longest common subsequence: path with maximum number of diagonal edges
 -- // Find shortest edit script: path with minimum number of non-diagonal edges
 
-local Workspace = script
-local Modules = Workspace.Parent
+local CurrentModule = script
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 local Number = require(Packages.LuauPolyfill).Number
 

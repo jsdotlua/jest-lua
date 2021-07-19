@@ -8,13 +8,13 @@
 --  */
 
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 	local Packages = Modules.Parent.Parent
 
 	local Number = require(Packages.LuauPolyfill).Number
 
-	local deepCyclicCopyReplaceable = require(Workspace.deepCyclicCopyReplaceable)
+	local deepCyclicCopyReplaceable = require(CurrentModule.deepCyclicCopyReplaceable)
 
 	local equals = require(Modules.Expect.jasmineUtils).equals
 

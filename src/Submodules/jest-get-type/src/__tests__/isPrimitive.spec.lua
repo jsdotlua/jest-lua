@@ -40,7 +40,7 @@ return function()
 		end)
 
 		it('returns true when given primitive value of: inf', function()
-			expect(isPrimitive(1/0)).to.equal(true)
+			expect(isPrimitive(math.huge)).to.equal(true)
 		end)
 
 		-- deviation: test omitted because lua has no primitive bigint type

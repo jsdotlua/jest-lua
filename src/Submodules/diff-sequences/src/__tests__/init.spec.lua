@@ -9,8 +9,8 @@
 --  */
 
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 	local Packages = Modules.Parent.Parent
 
 	local Polyfills = require(Packages.LuauPolyfill)
@@ -20,7 +20,7 @@ return function()
 
 	local jestExpect = require(Modules.Expect)
 
-	local diff = require(Workspace)
+	local diff = require(CurrentModule)
 
 	describe('invalid arg', function()
 		local isCommon = function() return false end
@@ -34,7 +34,7 @@ return function()
 			end)
 			it('Infinity is not a safe integer', function()
 				jestExpect(function()
-					diff(1 / 0, 0, isCommon, foundSubsequence)
+					diff(math.huge, 0, isCommon, foundSubsequence)
 				end).toThrow('aLength')
 			end)
 			it('Not a Number is not a safe integer', function()

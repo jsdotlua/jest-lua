@@ -8,8 +8,8 @@
 
 -- deviation: omitting imports for file system interaction
 
-local Workspace = script
-local Modules = Workspace.Parent
+local CurrentModule = script
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 -- deviation: used to communicate with the TestEZ test runner
@@ -33,13 +33,13 @@ local stringify = JestMatcherUtils.stringify
 
 -- ROBLOX TODO: ADO-1449 add imports for snapshot_resolver and related functionality
 
-local SnapshotState = require(Workspace.State)
+local SnapshotState = require(CurrentModule.State)
 
-local plugins = require(Workspace.plugins)
+local plugins = require(CurrentModule.plugins)
 local addSerializer = plugins.addSerializer
 local getSerializers = plugins.getSerializers
 
-local printSnapshot = require(Workspace.printSnapshot)
+local printSnapshot = require(CurrentModule.printSnapshot)
 local PROPERTIES_ARG = printSnapshot.PROPERTIES_ARG
 -- local SNAPSHOT_ARG = printSnapshot.SNAPSHOT_ARG
 local bReceivedColor = printSnapshot.bReceivedColor
@@ -50,9 +50,9 @@ local printPropertiesAndReceived = printSnapshot.printPropertiesAndReceived
 local printReceived = printSnapshot.printReceived
 local printSnapshotAndReceived = printSnapshot.printSnapshotAndReceived
 
-local types = require(Workspace.types)
+local types = require(CurrentModule.types)
 
-local utils = require(Workspace.utils)
+local utils = require(CurrentModule.utils)
 
 local _toMatchSnapshot, _toThrowErrorMatchingSnapshot
 

@@ -6,10 +6,10 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local Workspace = script.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent
+local Modules = CurrentModule.Parent
 
-local jestMockSerializer = require(Workspace.mock_serializer)
+local jestMockSerializer = require(CurrentModule.mock_serializer)
 
 local plugins = require(Modules.PrettyFormat).plugins
 -- deviation: omitting DOMCollection, DOMElement, Immutable, ReactElement, ReactTestComponent

@@ -6,23 +6,23 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local Workspace = script.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local Array = require(Packages.LuauPolyfill).Array
 
-local DIFF_EQUAL = require(Workspace.CleanupSemantic).DIFF_EQUAL
-local cleanupSemantic = require(Workspace.CleanupSemantic).cleanupSemantic
+local DIFF_EQUAL = require(CurrentModule.CleanupSemantic).DIFF_EQUAL
+local cleanupSemantic = require(CurrentModule.CleanupSemantic).cleanupSemantic
 
-local diffLinesUnified = require(Workspace.DiffLines).diffLinesUnified
-local printDiffLines = require(Workspace.DiffLines).printDiffLines
+local diffLinesUnified = require(CurrentModule.DiffLines).diffLinesUnified
+local printDiffLines = require(CurrentModule.DiffLines).printDiffLines
 
-local diffStrings = require(Workspace.DiffStrings)
+local diffStrings = require(CurrentModule.DiffStrings)
 
-local getAlignedDiffs = require(Workspace.GetAlignedDiffs)
+local getAlignedDiffs = require(CurrentModule.GetAlignedDiffs)
 
-local normalizeDiffOptions = require(Workspace.NormalizeDiffOptions).normalizeDiffOptions
+local normalizeDiffOptions = require(CurrentModule.NormalizeDiffOptions).normalizeDiffOptions
 
 -- TODO: add external types
 

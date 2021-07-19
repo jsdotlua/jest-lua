@@ -9,8 +9,8 @@
 --  */
 
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 	local Packages = Modules.Parent.Parent
 
 	local snapshots = require(script.Parent.__snapshots__["extend.snap"])
@@ -21,12 +21,12 @@ return function()
 
 	local matcherUtils = require(Modules.JestMatcherUtils)
 
-	local iterableEquality = require(Workspace.utils).iterableEquality
-	local subsetEquality = require(Workspace.utils).subsetEquality
+	local iterableEquality = require(CurrentModule.utils).iterableEquality
+	local subsetEquality = require(CurrentModule.utils).subsetEquality
 
-	local equals = require(Workspace.jasmineUtils).equals
+	local equals = require(CurrentModule.jasmineUtils).equals
 
-	local jestExpect = require(Workspace)
+	local jestExpect = require(CurrentModule)
 
 	jestExpect.extend({
 		toBeDivisibleBy = function(self, actual: number, expected: number)

@@ -6,15 +6,15 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local Workspace = script.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent
+local Modules = CurrentModule.Parent
 
 local diffSequences = require(Modules.DiffSequences)
 
-local DIFF_DELETE = require(Workspace.CleanupSemantic).DIFF_DELETE
-local DIFF_EQUAL = require(Workspace.CleanupSemantic).DIFF_EQUAL
-local DIFF_INSERT = require(Workspace.CleanupSemantic).DIFF_INSERT
-local Diff = require(Workspace.CleanupSemantic).Diff
+local DIFF_DELETE = require(CurrentModule.CleanupSemantic).DIFF_DELETE
+local DIFF_EQUAL = require(CurrentModule.CleanupSemantic).DIFF_EQUAL
+local DIFF_INSERT = require(CurrentModule.CleanupSemantic).DIFF_INSERT
+local Diff = require(CurrentModule.CleanupSemantic).Diff
 
 return function(a: string, b: string): { [number]: any }
 	local isCommon = function(aIndex: number, bIndex: number)

@@ -6,8 +6,8 @@
  -- * LICENSE file in the root directory of this source tree.
  -- */
 
-local Workspace = script.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
@@ -42,10 +42,10 @@ type SyncExpectationResult = (any, any, any) -> {
 	message: () -> string
 };
 
-local jasmineUtils = require(Workspace.jasmineUtils)
+local jasmineUtils = require(CurrentModule.jasmineUtils)
 local equals = jasmineUtils.equals
 
-local utils = require(Workspace.utils)
+local utils = require(CurrentModule.utils)
 local iterableEquality = utils.iterableEquality
 
 local isExpand, printExpectedArgs, printReceivedArgs, printCommon, isEqualValue, isEqualCall, isEqualReturn, countReturns, printNumberOfReturns, getRightAlignedPrinter, printReceivedCallsNegative, printExpectedReceivedCallsPositive, printDiffCall, isLineDiffableCall, isLineDiffableArg, printResult, printReceivedResults, isMock, isSpy, ensureMockOrSpy, ensureMock
@@ -158,7 +158,7 @@ function getRightAlignedPrinter(label: string): PrintLabel
 		if isExpectedCall then
 			retval = '->' .. string.rep(' ', math.max(0, index - 3 - #string_))
 		else
-			retval = string.rep(' ', math.max(index - 1 - #string_))
+			retval = string.rep(' ', math.max(0, index - 1 - #string_))
 		end
 
 		return retval .. string_ .. suffix
@@ -240,11 +240,11 @@ function printExpectedReceivedCallsPositive(
 					if not added and isLineDiffableArg(expected[i], received[i]) then
 						local difference = diff(expected[i], received[i], {expand})
 
-						if (
+						if
 							typeof(difference) == "string" and
 							difference:find("%- Expected") and
 							difference:find("%+ Received")
-						) then
+						then
 							-- // Omit annotation in case multiple args have diff.
 							local splitLines = {}
 							for s in difference:gmatch("[^\n]+") do

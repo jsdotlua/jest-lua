@@ -6,8 +6,8 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local Workspace = script.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local Polyfill = require(Packages.LuauPolyfill)
@@ -46,7 +46,7 @@ local matcherHint = JestMatcherUtils.matcherHint
 
 local prettyFormat = require(Modules.PrettyFormat).prettyFormat
 
-local colors = require(Workspace.colors)
+local colors = require(CurrentModule.colors)
 local aBackground2 = colors.aBackground2
 local aBackground3 = colors.aBackground3
 local aForeground2 = colors.aForeground2
@@ -56,10 +56,10 @@ local bBackground3 = colors.bBackground3
 local bForeground2 = colors.bForeground2
 local bForeground3 = colors.bForeground3
 
-local dedentLines = require(Workspace.dedentLines)
+local dedentLines = require(CurrentModule.dedentLines)
 -- deviation: omitted external MatchSnapshotConfig type
 
-local utils = require(Workspace.utils)
+local utils = require(CurrentModule.utils)
 local deserializeString = utils.deserializeString
 local minify = utils.minify
 local serialize = utils.serialize

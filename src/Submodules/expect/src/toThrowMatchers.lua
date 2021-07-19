@@ -8,8 +8,8 @@
 --  *
 --  */
 
-local Workspace = script.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local getType = require(Modules.JestGetType).getType
@@ -32,7 +32,7 @@ local printReceived = JestMatcherUtils.printReceived
 local printWithType = JestMatcherUtils.printWithType
 local stringify = JestMatcherUtils.stringify
 
-local Print = require(Workspace.print)
+local Print = require(CurrentModule.print)
 local printExpectedConstructorName = Print.printExpectedConstructorName
 local printExpectedConstructorNameNot = Print.printExpectedConstructorNameNot
 local printReceivedConstructorName = Print.printReceivedConstructorName
@@ -43,7 +43,7 @@ local printReceivedStringContainExpectedSubstring = Print.printReceivedStringCon
 -- deviation: omitted type imports from types file and defined MatcherState as any for now
 type MatcherState = any;
 
-local isError = require(Workspace.utils).isError
+local isError = require(CurrentModule.utils).isError
 
 local DID_NOT_THROW = "Received function never threw"
 

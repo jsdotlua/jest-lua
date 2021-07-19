@@ -8,8 +8,8 @@
 
 -- deviation: omitting fs and types file import and defining in line instead
 
-local Workspace = script.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 -- deviation: used to communicate with the TestEZ test runner
@@ -29,7 +29,7 @@ local Config = require(Modules.JestTypes.Config)
 -- local getStackTraceLines = JestMessageUtil.getStackTraceLines
 -- local getTopFrame = JestMessageUtil.getTopFrame
 
-local utils = require(Workspace.utils)
+local utils = require(CurrentModule.utils)
 local addExtraLineBreaks = utils.addExtraLineBreaks
 local getSnapshotData = utils.getSnapshotData
 local keyToTestName = utils.keyToTestName
@@ -43,7 +43,7 @@ local testNameToKey = utils.testNameToKey
 -- ROBLOX TODO: ADO-1552 add inline_snapshots imports when we support this
 -- functionality
 
-local types = require(Workspace.types)
+local types = require(CurrentModule.types)
 -- deviation: we do not have the BabelTraverse or Prettier types defined in the
 -- types file
 

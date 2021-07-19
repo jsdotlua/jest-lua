@@ -5,10 +5,10 @@
 	is based off of, jasmine
 ]]
 return function()
-	local Workspace = script.Parent.Parent
-	local CallTracker = require(Workspace.CallTracker)
+	local CurrentModule = script.Parent.Parent
+	local CallTracker = require(CurrentModule.CallTracker)
 
-	local Modules = Workspace.Parent.Parent
+	local Modules = CurrentModule.Parent.Parent
 	local equals = require(Modules.Expect.jasmineUtils).equals
 
 	describe("CallTracker", function()

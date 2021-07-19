@@ -8,12 +8,12 @@
 
 return function()
 	describe("Spies", function()
-		local Workspace = script.Parent.Parent
-		local Modules = Workspace.Parent.Parent
+		local CurrentModule = script.Parent.Parent
+		local Modules = CurrentModule.Parent.Parent
 
-		local createSpy = require(Workspace.createSpy)
-		local SpyStrategy = require(Workspace.SpyStrategy)
-		local CallTracker = require(Workspace.CallTracker)
+		local createSpy = require(CurrentModule.createSpy)
+		local SpyStrategy = require(CurrentModule.SpyStrategy)
+		local CallTracker = require(CurrentModule.CallTracker)
 
 		local jestExpect = require(Modules.Expect)
 

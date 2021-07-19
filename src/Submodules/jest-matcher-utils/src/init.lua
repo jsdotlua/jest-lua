@@ -6,8 +6,8 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local Workspace = script
-local Modules = Workspace.Parent
+local CurrentModule = script
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local Polyfills = require(Packages.LuauPolyfill)
@@ -31,8 +31,8 @@ local isPrimitive = require(Modules.JestGetType).isPrimitive
 
 local prettyFormat = require(Modules.PrettyFormat).prettyFormat
 
-local Replaceable = require(Workspace.Replaceable)
-local deepCyclicCopyReplaceable = require(Workspace.deepCyclicCopyReplaceable)
+local Replaceable = require(CurrentModule.Replaceable)
+local deepCyclicCopyReplaceable = require(CurrentModule.deepCyclicCopyReplaceable)
 
 --[[
 	ROBLOX TODO: Add plugins to this array as they get added in prettyFormat

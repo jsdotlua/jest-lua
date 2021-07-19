@@ -1,8 +1,8 @@
 --!nocheck
 -- deviation: these tests are not included in upstream
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 	local Packages = Modules.Parent.Parent
 
 	local Polyfill = require(Packages.LuauPolyfill)
@@ -10,7 +10,7 @@ return function()
 
 	local snapshots = require(script.Parent.__snapshots__['spyMatchers.roblox.snap'])
 
-	local jestExpect = require(Workspace)
+	local jestExpect = require(CurrentModule)
 	local jestMock = require(Modules.JestMock)
 
 	local mock

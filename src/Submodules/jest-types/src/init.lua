@@ -6,9 +6,9 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local Workspace = script
+local CurrentModule = script
 
-local Config = require(Workspace.Config)
+local Config = require(CurrentModule.Config)
 
 return {
 	Config = Config

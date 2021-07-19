@@ -9,8 +9,8 @@
 -- */
 
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 	local Packages = Modules.Parent.Parent
 
 	local Polyfill = require(Packages.LuauPolyfill)
@@ -23,7 +23,7 @@ return function()
 
 	local prettyFormat = require(Modules.PrettyFormat).prettyFormat
 
-	local plugin_ = require(Workspace.mock_serializer)
+	local plugin_ = require(CurrentModule.mock_serializer)
 
 	-- FIXME: ADO-1497, rewrite these tests once we have the core functionality
 	-- of jestExpect().toMatchSnapshot() implemented

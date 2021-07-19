@@ -7,10 +7,10 @@
 --  */
 
 return function()
-	local Workspace = script.Parent.Parent
-	local Modules = Workspace.Parent
+	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 
-	local PrettyFormat = require(Workspace)
+	local PrettyFormat = require(CurrentModule)
 	local prettyFormat = PrettyFormat.prettyFormat
 	local AsymmetricMatcher = PrettyFormat.plugins.AsymmetricMatcher
 

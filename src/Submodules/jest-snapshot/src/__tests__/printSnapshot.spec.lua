@@ -7,8 +7,8 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local Workspace = script.Parent.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent.Parent
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local Polyfill = require(Packages.LuauPolyfill)
@@ -23,16 +23,16 @@ local format = require(Modules.PrettyFormat).prettyFormat
 
 local jestExpect = require(Modules.Expect)
 
-local printSnapshot = require(Workspace.printSnapshot)
+local printSnapshot = require(CurrentModule.printSnapshot)
 local getReceivedColorForChalkInstance = printSnapshot.getReceivedColorForChalkInstance
 local getSnapshotColorForChalkInstance = printSnapshot.getSnapshotColorForChalkInstance
 local noColor = printSnapshot.noColor
 local printPropertiesAndReceived = printSnapshot.printPropertiesAndReceived
 local printSnapshotAndReceived = printSnapshot.printSnapshotAndReceived
 
-local serialize = require(Workspace.utils).serialize
+local serialize = require(CurrentModule.utils).serialize
 
-local colors = require(Workspace.colors)
+local colors = require(CurrentModule.colors)
 -- ROBLOX TODO: ADO-1522 add level 3 support in chalk
 -- deviation: omitted level 3 colors since we don't have level 3 support in chalk
 local aBackground2 = colors.aBackground2
@@ -116,7 +116,7 @@ local function convertAnsi(val: string): string
 	return val
 end
 
-local jestSnapshot = require(Workspace)
+local jestSnapshot = require(CurrentModule)
 local toMatchSnapshot = jestSnapshot.toMatchSnapshot
 local toThrowErrorMatchingSnapshot = jestSnapshot.toThrowErrorMatchingSnapshot
 

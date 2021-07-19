@@ -7,8 +7,8 @@
 --  *
 --  */
 
-local Workspace = script.Parent
-local Modules = Workspace.Parent
+local CurrentModule = script.Parent
+local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local Polyfills = require(Packages.LuauPolyfill)
@@ -16,15 +16,15 @@ local Array = Polyfills.Array
 local Symbol = Polyfills.Symbol
 local instanceof = Polyfills.instanceof
 
-local getType = require(Workspace.Parent.JestGetType).getType
+local getType = require(CurrentModule.Parent.JestGetType).getType
 
-local JasmineUtils = require(Workspace.jasmineUtils)
+local JasmineUtils = require(CurrentModule.jasmineUtils)
 local equals = JasmineUtils.equals
 local hasProperty = JasmineUtils.hasProperty
 local isA = JasmineUtils.isA
 local isUndefined = JasmineUtils.isUndefined
 
-local emptyObject = require(Workspace.utils).emptyObject
+local emptyObject = require(CurrentModule.utils).emptyObject
 
 type RegExp = {exec: (string) -> any, test: (string) -> boolean}
 
