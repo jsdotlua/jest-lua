@@ -120,16 +120,22 @@ local jestSnapshot = require(CurrentModule)
 local toMatchSnapshot = jestSnapshot.toMatchSnapshot
 local toThrowErrorMatchingSnapshot = jestSnapshot.toThrowErrorMatchingSnapshot
 
-jestExpect.addSnapshotSerializer({
-	serialize = function(val: string): string
-		return convertAnsi(val)
-	end,
-	test = function(val: any)
-		return typeof(val) == "string" and val:match(ansiRegex)
-	end
-})
-
 return function()
+	beforeAll(function()
+		jestExpect.addSnapshotSerializer({
+			serialize = function(val: string): string
+				return convertAnsi(val)
+			end,
+			test = function(val: any)
+				return typeof(val) == "string" and val:match(ansiRegex)
+			end
+		})
+	end)
+
+	afterAll(function()
+		jestExpect.resetSnapshotSerializers()
+	end)
+
 	describe('chalk', function()
 		-- // Because these tests give code coverage of get functions
 		-- // and give confidence that the escape sequences are correct,

@@ -118,13 +118,13 @@ local function createMatcher(
 						placeholder = "expected"
 					end
 
-					error(
+					error(Error(
 						matcherErrorMessage(
 							matcherHint(matcherName, nil, placeholder, options),
 							RECEIVED_COLOR("received") .. " value must be a function",
 							printWithType("Received", received, printReceived)
 						)
-					)
+					))
 				end
 			else
 				--[[[
@@ -252,13 +252,13 @@ local function createMatcher(
 		elseif typeof(expected) == "table" then
 			return toThrowExpectedObject(matcherName, options, thrown, expected)
 		else
-			error(
+			error(Error(
 				matcherErrorMessage(
 					matcherHint(matcherName, nil, nil, options),
 					EXPECTED_COLOR("expected") .. " value must be a string or regular expression or class or error",
 					printWithType("Expected", expected, printExpected)
 				)
-			)
+			))
 		end
 	end
 end

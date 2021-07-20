@@ -17,9 +17,9 @@ return function()
 	local Error = Polyfill.Error
 	local Set = Polyfill.Set
 
-	local snapshots = require(script.Parent.__snapshots__['spyMatchers.snap'])
-
+	local alignedAnsiStyleSerializer = require(Modules.TestUtils).alignedAnsiStyleSerializer
 	local jestExpect = require(CurrentModule)
+
 	local jestMock = require(Modules.JestMock)
 
 	local function createSpy(fn)
@@ -50,6 +50,11 @@ return function()
 
 	beforeAll(function()
 		mock = jestMock.new()
+		jestExpect.addSnapshotSerializer(alignedAnsiStyleSerializer)
+	end)
+
+	afterAll(function()
+		jestExpect.resetSnapshotSerializers()
 	end)
 
 	for _, called in ipairs({'toBeCalled', 'toHaveBeenCalled'}) do
@@ -57,7 +62,7 @@ return function()
 			it('works only on spies or jest.fn', function()
 				local fn = function() end
 
-				jestExpect(function() jestExpect(fn)[called]() end).toThrow(snapshots[called .. ' works only on spies or jest.fn 1'])
+				jestExpect(function() jestExpect(fn)[called]() end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('passes when called', function()
@@ -65,7 +70,7 @@ return function()
 				fn('arg0', 'arg1', 'arg2')
 				jestExpect(createSpy(fn))[called]()
 				jestExpect(fn)[called]()
-				jestExpect(function() jestExpect(fn).never[called]() end).toThrow(snapshots[called .. ' passes when called 1'])
+				jestExpect(function() jestExpect(fn).never[called]() end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('.not passes when called', function()
@@ -74,14 +79,14 @@ return function()
 
 				jestExpect(spy).never[called]()
 				jestExpect(fn).never[called]()
-				jestExpect(function() jestExpect(spy)[called]() end).toThrow(snapshots[called .. ' .not passes when called 1'])
+				jestExpect(function() jestExpect(spy)[called]() end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('fails with any argument passed', function()
 				local fn = mock:fn()
 
 				fn()
-				jestExpect(function() jestExpect(fn)[called](555) end).toThrow(snapshots[called .. ' fails with any argument passed 1'])
+				jestExpect(function() jestExpect(fn)[called](555) end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('.not fails with any argument passed', function()
@@ -89,7 +94,7 @@ return function()
 
 				jestExpect(function()
 					jestExpect(fn).never[called](555)
-				end).toThrow(snapshots[called .. ' .not fails with any argument passed 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('includes the custom mock name in the error message', function()
@@ -97,7 +102,7 @@ return function()
 
 				fn()
 				jestExpect(fn)[called]()
-				jestExpect(function() jestExpect(fn).never[called]() end).toThrow(snapshots[called .. ' includes the custom mock name in the error message 1'])
+				jestExpect(function() jestExpect(fn).never[called]() end).toThrowErrorMatchingSnapshot()
 			end)
 		end)
 	end
@@ -109,7 +114,7 @@ return function()
 
 				jestExpect(function()
 					jestExpect(fn).never[calledTimes](2)
-				end).toThrow(snapshots[calledTimes .. ' .not works only on spies or jest.fn 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('only accepts a number argument', function()
@@ -120,7 +125,7 @@ return function()
 				for i, value in ipairs({{}, true, 'a', function() end}) do
 					jestExpect(function()
 						jestExpect(fn)[calledTimes](value)
-					end).toThrow(snapshots[calledTimes .. ' only accepts a number argument ' .. i])
+					end).toThrowErrorMatchingSnapshot()
 				end
 			end)
 
@@ -131,7 +136,7 @@ return function()
 				for i, value in ipairs({{}, true, 'a', function() end}) do
 					jestExpect(function()
 						jestExpect(fn).never[calledTimes](value)
-					end).toThrow(snapshots[calledTimes .. ' .not only accepts a number argument ' .. i])
+					end).toThrowErrorMatchingSnapshot()
 				end
 			end)
 
@@ -146,7 +151,7 @@ return function()
 
 				jestExpect(function()
 					jestExpect(spy).never[calledTimes](2)
-				end).toThrow(snapshots[calledTimes .. ' passes if function called equal to expected times 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('.not passes if function called more than expected times', function()
@@ -164,7 +169,7 @@ return function()
 
 				jestExpect(function()
 					jestExpect(fn)[calledTimes](2)
-				end).toThrow(snapshots[calledTimes .. ' .not passes if function called more than expected times 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('.not passes if function called less than expected times', function()
@@ -180,7 +185,7 @@ return function()
 
 				jestExpect(function()
 					jestExpect(fn)[calledTimes](2)
-				end).toThrow(snapshots[calledTimes .. ' .not passes if function called less than expected times 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('includes the custom mock name in the error message', function()
@@ -189,7 +194,7 @@ return function()
 
 				jestExpect(function()
 					jestExpect(fn)[calledTimes](2)
-				end).toThrow(snapshots[calledTimes .. ' includes the custom mock name in the error message 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end)
 	end
@@ -220,7 +225,7 @@ return function()
 			it('works only on spies or jest.fn', function()
 				local fn = function() end
 
-				jestExpect(function() jestExpect(fn)[calledWith]() end).toThrow(snapshots[calledWith .. ' works only on spies or jest.fn 1'])
+				jestExpect(function() jestExpect(fn)[calledWith]() end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('works when not called', function()
@@ -230,7 +235,7 @@ return function()
 
 				jestExpect(function()
 					caller(jestExpect(fn)[calledWith], 'foo', 'bar')
-				end).toThrow(snapshots[calledWith .. ' works when not called 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('works with no arguments', function()
@@ -250,7 +255,7 @@ return function()
 
 				jestExpect(function()
 					caller(jestExpect(fn)[calledWith], 'foo', 'bar')
-				end).toThrow(snapshots[calledWith .. ' works with arguments that don\'t match 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('works with arguments that match', function()
@@ -262,7 +267,7 @@ return function()
 
 				jestExpect(function()
 					caller(jestExpect(fn).never[calledWith], 'foo', 'bar')
-				end).toThrow(snapshots[calledWith .. ' works with arguments that match 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			-- deviation: changed undefined to nil
@@ -272,7 +277,7 @@ return function()
 
 				jestExpect(function()
 					caller(jestExpect(fn)[calledWith], 'foo')
-				end).toThrow(snapshots[calledWith .. ' works with trailing undefined arguments 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			-- deviation: test changed from Map to table
@@ -299,11 +304,11 @@ return function()
 
 				jestExpect(function()
 					caller(jestExpect(fn).never[calledWith], m2)
-				end).toThrow(snapshots[calledWith .. ' works with Map 1'])
+				end).toThrowErrorMatchingSnapshot()
 
 				jestExpect(function()
 					caller(jestExpect(fn)[calledWith], m3)
-				end).toThrow(snapshots[calledWith .. ' works with Map 2'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('works with Set', function()
@@ -320,11 +325,11 @@ return function()
 
 				jestExpect(function()
 					caller(jestExpect(fn).never[calledWith], s2)
-				end).toThrow(snapshots[calledWith .. ' works with Set 1'])
+				end).toThrowErrorMatchingSnapshot()
 
 				jestExpect(function()
 					caller(jestExpect(fn)[calledWith], s3)
-				end).toThrow(snapshots[calledWith .. ' works with Set 2'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			-- deviation: skipped test that relies on Immutable.js
@@ -350,7 +355,7 @@ return function()
 
 					jestExpect(function()
 						jestExpect(fn).never[calledWith]('foo', 'bar')
-					end).toThrow(snapshots[calledWith .. ' works with many arguments 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 
 				it('works with many arguments that don\'t match', function()
@@ -363,7 +368,7 @@ return function()
 
 					jestExpect(function()
 						jestExpect(fn)[calledWith]('foo', 'bar')
-					end).toThrow(snapshots[calledWith .. ' works with many arguments that don\'t match 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 			end
 
@@ -387,7 +392,7 @@ return function()
 
 					jestExpect(function()
 						jestExpect(fn).never[calledWith](1, 'foo1', 'bar')
-					end).toThrow(snapshots[calledWith .. ' works with three calls 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 
 				it('positive throw matcher error for n that is not positive integer', function()
@@ -396,7 +401,7 @@ return function()
 
 					jestExpect(function()
 						jestExpect(fn)[calledWith](0, 'foo1', 'bar')
-					end).toThrow(snapshots[calledWith .. ' positive throw matcher error for n that is not positive integer 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 
 				it('positive throw matcher error for n that is not integer', function()
@@ -405,7 +410,7 @@ return function()
 
 					jestExpect(function()
 						jestExpect(fn)[calledWith](0.1, 'foo1', 'bar')
-					end).toThrow(snapshots[calledWith .. ' positive throw matcher error for n that is not integer 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 
 				it('negative throw matcher error for n that is not integer', function()
@@ -414,7 +419,7 @@ return function()
 
 					jestExpect(function()
 						jestExpect(fn).never[calledWith](math.huge, 'foo1', 'bar')
-					end).toThrow(snapshots[calledWith .. ' negative throw matcher error for n that is not integer 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 			end
 
@@ -426,7 +431,7 @@ return function()
 
 				jestExpect(function()
 					caller(jestExpect(fn).never[calledWith], 'foo', 'bar')
-				end).toThrow(snapshots[calledWith .. ' includes the custom mock name in the error message 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end)
 	end
@@ -438,7 +443,7 @@ return function()
 
 				jestExpect(function()
 					jestExpect(fn).never[returned]()
-				end).toThrow(snapshots[returned .. ' .not works only on jest.fn 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('throw matcher error if received is spy', function()
@@ -446,7 +451,7 @@ return function()
 
 				jestExpect(function()
 					jestExpect(spy)[returned]()
-				end).toThrow(snapshots[returned .. ' throw matcher error if received is spy 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('passes when returned', function()
@@ -455,7 +460,7 @@ return function()
 				jestExpect(fn)[returned]()
 				jestExpect(function()
 					jestExpect(fn).never[returned]()
-				end).toThrow(snapshots[returned .. ' passes when returned 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			-- deviation: changed undefined to nil
@@ -465,7 +470,7 @@ return function()
 				jestExpect(fn)[returned]()
 				jestExpect(function()
 					jestExpect(fn).never[returned]()
-				end).toThrow(snapshots[returned .. ' passes when undefined is returned 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('passes when at least one call does not throw', function()
@@ -489,7 +494,7 @@ return function()
 
 				jestExpect(function()
 					jestExpect(fn).never[returned]()
-				end).toThrow(snapshots[returned .. ' passes when at least one call does not throw 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('.not passes when not returned', function()
@@ -498,7 +503,7 @@ return function()
 				jestExpect(fn).never[returned]()
 				jestExpect(function()
 					jestExpect(fn)[returned]()
-				end).toThrow(snapshots[returned .. ' .not passes when not returned 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('.not passes when all calls throw', function()
@@ -517,7 +522,7 @@ return function()
 				jestExpect(fn).never[returned]()
 				jestExpect(function()
 					jestExpect(fn)[returned]()
-				end).toThrow(snapshots[returned .. ' .not passes when all calls throw 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			-- deviation: changed undefined to nil
@@ -531,7 +536,7 @@ return function()
 				end)
 
 				jestExpect(fn).never[returned]()
-				jestExpect(function() jestExpect(fn)[returned]() end).toThrow(snapshots[returned .. ' .not passes when a call throws undefined 1'])
+				jestExpect(function() jestExpect(fn)[returned]() end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('fails with any argument passed', function()
@@ -540,7 +545,7 @@ return function()
 				fn()
 				jestExpect(function()
 					jestExpect(fn)[returned](555)
-				end).toThrow(snapshots[returned .. ' fails with any argument passed 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('.not fails with any argument passed', function()
@@ -548,7 +553,7 @@ return function()
 
 				jestExpect(function()
 					jestExpect(fn).never[returned](555)
-				end).toThrow(snapshots[returned .. ' .not fails with any argument passed 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('includes the custom mock name in the error message', function()
@@ -557,7 +562,7 @@ return function()
 				jestExpect(fn)[returned]()
 				jestExpect(function()
 					jestExpect(fn).never[returned]()
-				end).toThrow(snapshots[returned .. ' includes the custom mock name in the error message 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('incomplete recursive calls are handled properly', function()
@@ -570,7 +575,7 @@ return function()
 						jestExpect(fn).never[returned]()
 						jestExpect(function()
 							jestExpect(fn)[returned]()
-						end).toThrow(snapshots[returned .. ' incomplete recursive calls are handled properly 1'])
+						end).toThrowErrorMatchingSnapshot()
 
 						return 0
 					else
@@ -590,9 +595,9 @@ return function()
 
 				-- deviation: we don't test against the snapshot because the error
 				-- message is sufficiently deviated (we report a table instead of a function)
-				expect(function()
+				jestExpect(function()
 					jestExpect(spy).never[returnedTimes](2)
-				end).to.throw(snapshots[returnedTimes .. ' throw matcher error if received is spy 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('only accepts a number argument', function()
@@ -603,7 +608,7 @@ return function()
 				for i, value in ipairs({{}, true, 'a', function() end}) do
 					jestExpect(function()
 						jestExpect(fn)[returnedTimes](value)
-					end).toThrow(snapshots[returnedTimes .. ' only accepts a number argument ' .. i])
+					end).toThrowErrorMatchingSnapshot()
 				end
 			end)
 
@@ -614,7 +619,7 @@ return function()
 				for i, value in ipairs({{}, true, 'a', function() end}) do
 					jestExpect(function()
 						jestExpect(fn).never[returnedTimes](value)
-					end).toThrow(snapshots[returnedTimes .. ' .not only accepts a number argument ' .. i])
+					end).toThrowErrorMatchingSnapshot()
 				end
 			end)
 
@@ -627,7 +632,7 @@ return function()
 
 				jestExpect(function()
 					jestExpect(fn).never[returnedTimes](2)
-				end).toThrow(snapshots[returnedTimes .. ' passes if function returned equal to expected times 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			-- deviation: changed undefined to nil
@@ -640,7 +645,7 @@ return function()
 
 				jestExpect(function()
 					jestExpect(fn).never[returnedTimes](2)
-				end).toThrow(snapshots[returnedTimes .. ' calls that return undefined are counted as returns 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('.not passes if function returned more than expected times', function()
@@ -654,7 +659,7 @@ return function()
 
 				jestExpect(function()
 					jestExpect(fn)[returnedTimes](2)
-				end).toThrow(snapshots[returnedTimes .. ' .not passes if function returned more than expected times 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('.not passes if function called less than expected times', function()
@@ -666,7 +671,7 @@ return function()
 
 				jestExpect(function()
 					jestExpect(fn)[returnedTimes](2)
-				end).toThrow(snapshots[returnedTimes .. ' .not passes if function called less than expected times 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('calls that throw are not counted', function()
@@ -690,7 +695,7 @@ return function()
 
 				jestExpect(function()
 					jestExpect(fn)[returnedTimes](3)
-				end).toThrow(snapshots[returnedTimes .. ' calls that throw are not counted 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('calls that throw undefined are not counted', function()
@@ -714,7 +719,7 @@ return function()
 
 				jestExpect(function()
 					jestExpect(fn).never[returnedTimes](2)
-				end).toThrow(snapshots[returnedTimes .. ' calls that throw undefined are not counted 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('includes the custom mock name in the error message', function()
@@ -726,7 +731,7 @@ return function()
 
 				jestExpect(function()
 					jestExpect(fn)[returnedTimes](1)
-				end).toThrow(snapshots[returnedTimes .. ' includes the custom mock name in the error message 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('incomplete recursive calls are handled properly', function()
@@ -743,7 +748,7 @@ return function()
 							jestExpect(fn)[returnedTimes](2)
 							jestExpect(function()
 								jestExpect(fn).never[returnedTimes](2)
-							end).toThrow(snapshots[returnedTimes .. ' incomplete recursive calls are handled properly 1'])
+							end).toThrowErrorMatchingSnapshot()
 						end
 
 						return value + recursiveResult
@@ -783,7 +788,7 @@ return function()
 
 				jestExpect(function()
 					jestExpect(fn)[returnedWith]()
-				end).toThrow(snapshots[returnedWith .. ' works only on spies or jest.fn 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('works when not called', function()
@@ -792,7 +797,7 @@ return function()
 
 				jestExpect(function()
 					caller(jestExpect(fn)[returnedWith], 'foo')
-				end).toThrow(snapshots[returnedWith .. ' works when not called 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('works with no arguments', function()
@@ -810,7 +815,7 @@ return function()
 
 				jestExpect(function()
 					caller(jestExpect(fn)[returnedWith], 'bar')
-				end).toThrow(snapshots[returnedWith .. ' works with argument that does not match 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('works with argument that does match', function()
@@ -821,7 +826,7 @@ return function()
 
 				jestExpect(function()
 					caller(jestExpect(fn).never[returnedWith], 'foo')
-				end).toThrow(snapshots[returnedWith .. ' works with argument that does match 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('works with undefined', function()
@@ -832,7 +837,7 @@ return function()
 
 				jestExpect(function()
 					caller(jestExpect(fn).never[returnedWith], nil)
-				end).toThrow(snapshots[returnedWith .. ' works with undefined 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			-- deviation: test changed from Map to table
@@ -858,10 +863,10 @@ return function()
 
 				jestExpect(function()
 					caller(jestExpect(fn).never[returnedWith], m2)
-				end).toThrow(snapshots[returnedWith .. ' works with Map 1'])
+				end).toThrowErrorMatchingSnapshot()
 				jestExpect(function()
 					caller(jestExpect(fn)[returnedWith], m3)
-				end).toThrow(snapshots[returnedWith .. ' works with Map 2'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('works with Set', function()
@@ -877,11 +882,11 @@ return function()
 
 				jestExpect(function()
 					caller(jestExpect(fn).never[returnedWith], s2)
-				end).toThrow(snapshots[returnedWith .. ' works with Set 1'])
+				end).toThrowErrorMatchingSnapshot()
 
 				jestExpect(function()
 					caller(jestExpect(fn)[returnedWith], s3)
-				end).toThrow(snapshots[returnedWith .. ' works with Set 2'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			-- deviation: skipped test that relies on Immutable.js
@@ -903,7 +908,7 @@ return function()
 
 				jestExpect(function()
 					caller(jestExpect(fn)[returnedWith], nil)
-				end).toThrow(snapshots[returnedWith .. ' a call that throws is not considered to have returned 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			-- deviation: changed undefined to nil
@@ -923,7 +928,7 @@ return function()
 
 				jestExpect(function()
 					caller(jestExpect(fn)[returnedWith], nil)
-				end).toThrow(snapshots[returnedWith .. ' a call that throws undefined is not considered to have returned 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			-- deviation: changed from array to table with keys as array
@@ -955,7 +960,7 @@ return function()
 
 						jestExpect(function()
 							jestExpect(fn)[returnedWith]('bar')
-						end).toThrow(snapshots[returnedWith .. ' returnedWith works with more calls than the limit 1'])
+						end).toThrowErrorMatchingSnapshot()
 					end)
 
 					it('incomplete recursive calls are handled properly', function()
@@ -970,7 +975,7 @@ return function()
 								jestExpect(fn).never[returnedWith](nil)
 								jestExpect(function()
 									jestExpect(fn)[returnedWith](nil)
-								end).toThrow(snapshots[returnedWith .. ' returnedWith incomplete recursive calls are handled properly 1'])
+								end).toThrowErrorMatchingSnapshot()
 
 								return 0
 							else
@@ -1009,7 +1014,7 @@ return function()
 							jestExpect(fn).never[returnedWith](1, 'foo1')
 							jestExpect(fn).never[returnedWith](2, 'foo2')
 							jestExpect(fn).never[returnedWith](3, 'foo3')
-						end).toThrow(snapshots[returnedWith .. ' nthReturnedWith works with three calls 1'])
+						end).toThrowErrorMatchingSnapshot()
 					end)
 
 					it('should replace 1st, 2nd, 3rd with first, second, third', function()
@@ -1025,13 +1030,13 @@ return function()
 							jestExpect(fn)[returnedWith](1, 'bar1')
 							jestExpect(fn)[returnedWith](2, 'bar2')
 							jestExpect(fn)[returnedWith](3, 'bar3')
-						end).toThrow(snapshots[returnedWith .. ' nthReturnedWith should replace 1st, 2nd, 3rd with first, second, third 1'])
+						end).toThrowErrorMatchingSnapshot()
 
 						jestExpect(function()
 							jestExpect(fn).never[returnedWith](1, 'foo1')
 							jestExpect(fn).never[returnedWith](2, 'foo2')
 							jestExpect(fn).never[returnedWith](3, 'foo3')
-						end).toThrow(snapshots[returnedWith .. ' nthReturnedWith should replace 1st, 2nd, 3rd with first, second, third 2'])
+						end).toThrowErrorMatchingSnapshot()
 					end)
 
 					it('positive throw matcher error for n that is not positive integer', function()
@@ -1040,7 +1045,7 @@ return function()
 
 						jestExpect(function()
 							jestExpect(fn)[returnedWith](0, 'foo')
-						end).toThrow(snapshots[returnedWith .. ' nthReturnedWith positive throw matcher error for n that is not positive integer 1'])
+						end).toThrowErrorMatchingSnapshot()
 					end)
 
 					it('should reject nth value greater than number of calls', function()
@@ -1051,7 +1056,7 @@ return function()
 
 						jestExpect(function()
 							jestExpect(fn)[returnedWith](4, 'foo')
-						end).toThrow(snapshots[returnedWith .. ' nthReturnedWith should reject nth value greater than number of calls 1'])
+						end).toThrowErrorMatchingSnapshot()
 					end)
 
 					it('positive throw matcher error for n that is not integer', function()
@@ -1060,7 +1065,7 @@ return function()
 
 						jestExpect(function()
 							jestExpect(fn)[returnedWith](0.1, 'foo')
-						end).toThrow(snapshots[returnedWith .. ' nthReturnedWith positive throw matcher error for n that is not integer 1'])
+						end).toThrowErrorMatchingSnapshot()
 					end)
 
 					it('negative throw matcher error for n that is not number', function()
@@ -1069,7 +1074,7 @@ return function()
 
 						jestExpect(function()
 							jestExpect(fn).never[returnedWith]()
-						end).toThrow(snapshots[returnedWith .. ' nthReturnedWith negative throw matcher error for n that is not number 1'])
+						end).toThrowErrorMatchingSnapshot()
 					end)
 
 					it('incomplete recursive calls are handled properly', function()
@@ -1090,16 +1095,16 @@ return function()
 
 									jestExpect(function()
 										jestExpect(fn)[returnedWith](1, 6)
-									end).toThrow(snapshots[returnedWith .. ' nthReturnedWith incomplete recursive calls are handled properly 1'])
+									end).toThrowErrorMatchingSnapshot()
 									jestExpect(function()
 										jestExpect(fn)[returnedWith](2, 3)
-									end).toThrow(snapshots[returnedWith .. ' nthReturnedWith incomplete recursive calls are handled properly 2'])
+									end).toThrowErrorMatchingSnapshot()
 									jestExpect(function()
 										jestExpect(fn).never[returnedWith](3, 1)
-									end).toThrow(snapshots[returnedWith .. ' nthReturnedWith incomplete recursive calls are handled properly 3'])
+									end).toThrowErrorMatchingSnapshot()
 									jestExpect(function()
 										jestExpect(fn).never[returnedWith](4, 0)
-									end).toThrow(snapshots[returnedWith .. ' nthReturnedWith incomplete recursive calls are handled properly 4'])
+									end).toThrowErrorMatchingSnapshot()
 								end
 
 								return value + recursiveResult
@@ -1132,7 +1137,7 @@ return function()
 
 						jestExpect(function()
 							jestExpect(fn).never[returnedWith]('foo3')
-						end).toThrow(snapshots[returnedWith .. ' lastReturnedWith works with three calls 1'])
+						end).toThrowErrorMatchingSnapshot()
 					end)
 
 					it('incomplete recursive calls are handled properly', function()
@@ -1145,7 +1150,7 @@ return function()
 								jestExpect(fn).never[returnedWith](0)
 								jestExpect(function()
 									jestExpect(fn)[returnedWith](0)
-								end).toThrow(snapshots[returnedWith .. ' lastReturnedWith incomplete recursive calls are handled properly 1'])
+								end).toThrowErrorMatchingSnapshot()
 								return 0
 							else
 								return value + fn(value - 1)
@@ -1163,7 +1168,7 @@ return function()
 
 				jestExpect(function()
 					caller(jestExpect(fn)[returnedWith], 'foo')
-				end).toThrow(snapshots[returnedWith .. ' lastReturnedWith includes the custom mock name in the error message 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end)
 	end

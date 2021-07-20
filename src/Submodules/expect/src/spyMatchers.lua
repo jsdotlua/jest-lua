@@ -12,6 +12,7 @@ local Packages = Modules.Parent.Parent
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
+local Error = LuauPolyfill.Error
 local Number = LuauPolyfill.Number
 local String = LuauPolyfill.String
 local Symbol = LuauPolyfill.Symbol
@@ -1130,10 +1131,10 @@ local function createNthCalledWithMatcher(matcherName: string): SyncExpectationR
 
 		if not Number.isSafeInteger(nth) or nth < 1 then
 			-- deviation: we don't use the Error polyfill because we encounter an error with TestEZ
-			error(matcherErrorMessage(
+			error(Error(matcherErrorMessage(
 				matcherHint(matcherName, nil, expectedArgument, options),
 				('%s must be a positive integer'):format(expectedArgument),
-				printWithType(expectedArgument, nth, stringify)))
+				printWithType(expectedArgument, nth, stringify))))
 		end
 
 		local receivedIsSpy = isSpy(received)
@@ -1279,10 +1280,10 @@ local function createNthReturnedWithMatcher(matcherName: string): SyncExpectatio
 
 		if not Number.isSafeInteger(nth) or nth < 1 then
 			-- deviation: we don't use the Error polyfill because we encounter an error with TestEZ
-			error(matcherErrorMessage(
+			error(Error(matcherErrorMessage(
 				matcherHint(matcherName, nil, expectedArgument, options),
 				('%s must be a positive integer'):format(expectedArgument),
-				printWithType(expectedArgument, nth, stringify)))
+				printWithType(expectedArgument, nth, stringify))))
 		end
 
 		local receivedName = received.getMockName()
@@ -1433,10 +1434,10 @@ function ensureMockOrSpy(
 	options: JestMatcherUtils.MatcherHintOptions
 )
 	if not isMock(received) and not isSpy(received) then
-		error(matcherErrorMessage(
+		error(Error(matcherErrorMessage(
 			matcherHint(matcherName, nil, expectedArgument, options),
 			('%s value must be a mock or spy function'):format(RECEIVED_COLOR('received')),
-			printWithType('Received', received, printReceived)))
+			printWithType('Received', received, printReceived))))
 	end
 end
 
@@ -1448,10 +1449,10 @@ function ensureMock(
 	options: JestMatcherUtils.MatcherHintOptions
 )
 	if not isMock(received) then
-		error(matcherErrorMessage(
+		error(Error(matcherErrorMessage(
 			matcherHint(matcherName, nil, expectedArgument, options),
 			('%s value must be a mock function'):format(RECEIVED_COLOR('received')),
-			printWithType('Received', received, printReceived)))
+			printWithType('Received', received, printReceived))))
 	end
 end
 

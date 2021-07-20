@@ -452,7 +452,7 @@ function _toThrowErrorMatchingSnapshot(
 	-- _toMatchSnapshot call, we have to deal with different cases since in Lua
 	-- we could be dealing with our Error polyfill, a thrown object, or a thrown
 	-- string
-	if instanceof(error_, Error) or rawget(error_, "message") ~= nil then
+	if typeof(error_) == "table" and (instanceof(error_, Error) or rawget(error_, "message") ~= nil) then
 		error_ = error_.message
 	elseif typeof(error_) ~= "string" then
 		error_ = tostring(error_)

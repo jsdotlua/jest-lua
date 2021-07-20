@@ -1,3 +1,4 @@
+--!nocheck
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-matcher-utils/src/__tests__/index.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -16,14 +17,14 @@ return function()
 
 	local RegExp = require(Packages.LuauRegExp)
 
-	local snapshots = require(script.Parent.__snapshots__["init.snap"])
+	local jestExpect = require(Modules.Expect)
 
 	local equals = require(Modules.Expect.jasmineUtils).equals
 
 	-- deviation: omitted chalk library import
 
 	local prettyFormat = require(Modules.PrettyFormat).prettyFormat
-	-- deviation: omitted alignedAnsiStyleSerializer import
+	local alignedAnsiStyleSerializer = require(Modules.TestUtils).alignedAnsiStyleSerializer
 
 	local JestMatcherUtils = require(CurrentModule)
 	-- deviation: omitted MatcherHintOptions import
@@ -34,6 +35,14 @@ return function()
 	local matcherHint = JestMatcherUtils.matcherHint
 	local pluralize = JestMatcherUtils.pluralize
 	local stringify = JestMatcherUtils.stringify
+
+	beforeAll(function()
+		jestExpect.addSnapshotSerializer(alignedAnsiStyleSerializer)
+	end)
+
+	afterAll(function()
+		jestExpect.resetSnapshotSerializers()
+	end)
 
 	describe("stringify()", function()
 		local fixtures = {
@@ -51,14 +60,14 @@ return function()
 
 		for key, value in ipairs(fixtures) do
 			it(stringify(value[1]), function()
-				expect(stringify(value[1])).to.equal(value[2])
+				jestExpect(stringify(value[1])).toEqual(value[2])
 			end)
 		end
 
 		it("circular references", function()
 			local a: any = {}
 			a.a = a
-			expect(stringify(a)).to.equal("{\"a\": [Circular]}")
+			jestExpect(stringify(a)).toEqual("{\"a\": [Circular]}")
 		end)
 
 		it("toJSON error", function()
@@ -68,17 +77,17 @@ return function()
 				end
 			}
 
-			expect(stringify(evil)).to.equal("{\"toJSON\": [Function anonymous]}")
+			jestExpect(stringify(evil)).toEqual("{\"toJSON\": [Function anonymous]}")
 			-- deviation: PrettyFormat returns [Function anonymous] since we
 			-- can't get function information
-			expect(stringify({a = {b = {evil = evil}}})).to.equal("{\"a\": {\"b\": {\"evil\": {\"toJSON\": [Function anonymous]}}}}")
+			jestExpect(stringify({a = {b = {evil = evil}}})).toEqual("{\"a\": {\"b\": {\"evil\": {\"toJSON\": [Function anonymous]}}}}")
 
 			-- deviation: we use a table with a __call metamethod to mimic a
 			-- function with properties in upstream
 			local Evil = {}
 			setmetatable(Evil, {__call = function() end})
 			Evil.toJSON = evil.toJSON
-			expect(stringify(Evil)).to.equal("{\"toJSON\": [Function anonymous]}")
+			jestExpect(stringify(Evil)).toEqual("{\"toJSON\": [Function anonymous]}")
 		end)
 
 		it("toJSON errors when comparing two objects", function()
@@ -99,7 +108,7 @@ return function()
 			-- deviation: our to.equal() method does not work in the same way
 			-- so I'm not sure how to reconcile this. For now I just made it so that
 			-- I check equality and confirm that they are not equal
-			expect(equals(evilA, evilB)).to.equal(false)
+			jestExpect(equals(evilA, evilB)).toEqual(false)
 		end)
 
 		it("reduces maxDepth if stringifying very large objects", function()
@@ -113,8 +122,8 @@ return function()
 				small.b[i] = "test"
 			end
 
-			expect(stringify(big)).to.equal(prettyFormat(big, {maxDepth = 1, min = true}))
-			expect(stringify(small)).to.equal(prettyFormat(small, {min = true}))
+			jestExpect(stringify(big)).toEqual(prettyFormat(big, {maxDepth = 1, min = true}))
+			jestExpect(stringify(small)).toEqual(prettyFormat(small, {min = true}))
 		end)
 	end)
 
@@ -122,21 +131,21 @@ return function()
 		local matcherName = "toBeCloseTo"
 
 		it("dont throw error when variables are numbers", function()
-			expect(function()
+			jestExpect(function()
 				ensureNumbers(1, 2, matcherName)
-			end).never.to.throw()
+			end).never.toThrow()
 		end)
 
 		it("throws error when expected is not a number (backward compatibility)", function()
-			expect(function()
+			jestExpect(function()
 				ensureNumbers(1, "not_a_number", "." .. matcherName)
-			end).to.throw(snapshots["ensureNumbers() throws error when expected is not a number (backward compatibility) 1"])
+			end).toThrowErrorMatchingSnapshot()
 		end)
 
-		it("throws error when received is not a number (backward compatibility", function()
-			expect(function()
+		it("throws error when received is not a number (backward compatibility)", function()
+			jestExpect(function()
 				ensureNumbers("not_a_number", 3, "." .. matcherName)
-			end).to.throw(snapshots["ensureNumbers() throws error when received is not a number (backward compatibility) 1"])
+			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		describe("with options", function()
@@ -147,9 +156,9 @@ return function()
 					secondArgument = "precision"
 				}
 
-				expect(function()
+				jestExpect(function()
 					ensureNumbers("", 0, matcherName, options)
-				end).to.throw(snapshots["ensureNumbers() with options promise empty isNot false received 1"])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it("promise empty isNot true expected", function()
@@ -158,9 +167,9 @@ return function()
 					-- promise nil is equivalent to empty string
 				}
 
-				expect(function()
+				jestExpect(function()
 					ensureNumbers(0.1, nil, matcherName, options)
-				end).to.throw(snapshots["ensureNumbers() with options promise empty isNot true expected 1"])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it("promise rejects isNot false expected", function()
@@ -169,9 +178,9 @@ return function()
 					promise = "rejects"
 				}
 
-				expect(function()
+				jestExpect(function()
 					ensureNumbers(0.01, "0", matcherName, options)
-				end).to.throw(snapshots["ensureNumbers() with options promise rejects isNot false expected 1"])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it("promise rejects isNot true received", function()
@@ -180,9 +189,9 @@ return function()
 					promise = "rejects"
 				}
 
-				expect(function()
+				jestExpect(function()
 					ensureNumbers(Symbol(0.1), 0, matcherName, options)
-				end).to.throw(snapshots["ensureNumbers() with options promise rejects isNot true received 1"])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it("promise resolves isNot false received", function()
@@ -191,9 +200,9 @@ return function()
 					promise = "resolves"
 				}
 
-				expect(function()
+				jestExpect(function()
 					ensureNumbers(false, 0, matcherName, options)
-				end).to.throw(snapshots["ensureNumbers() with options promise resolves isNot false received 1"])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it("promise resolves isNot true expected", function()
@@ -202,9 +211,9 @@ return function()
 					promise = "resolves"
 				}
 
-				expect(function()
+				jestExpect(function()
 					ensureNumbers(0.1, nil, matcherName, options)
-				end).to.throw(snapshots["ensureNumbers() with options promise resolves isNot true expected 1"])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end)
 	end)
@@ -213,21 +222,21 @@ return function()
 		local matcherName = "toBeDefined"
 
 		it("dont throw error when undefined", function()
-			expect(function()
+			jestExpect(function()
 				ensureNoExpected(nil, matcherName)
-			end).never.to.throw()
+			end).never.toThrow()
 		end)
 
 		it("throws error when expected is not undefined with matcherName", function()
-			expect(function()
+			jestExpect(function()
 				ensureNoExpected({a = 1}, "." .. matcherName)
-			end).to.throw(snapshots["ensureNoExpected() throws error when expected is not undefined with matcherName 1"])
+			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it("throws error when expected is not undefined with matcherName and options", function()
-			expect(function()
+			jestExpect(function()
 				ensureNoExpected({a = 1}, matcherName, {isNot = true})
-			end).to.throw(snapshots["ensureNoExpected() throws error when expected is not undefined with matcherName and options 1"])
+			end).toThrowErrorMatchingSnapshot()
 		end)
 	end)
 
@@ -245,92 +254,92 @@ return function()
 			}
 
 			for i, value in ipairs(fixtures) do
-				expect(diff(value[1], value[2])).to.equal(snapshots["diff forwards to jest-diff " .. i])
+				jestExpect(diff(value[1], value[2])).toMatchSnapshot()
 			end
 		end)
 
 		it("two booleans", function()
-			expect(diff(false, true)).to.equal(nil)
+			jestExpect(diff(false, true)).toEqual(nil)
 		end)
 
 		it("two numbers", function()
-			expect(diff(1, 2)).to.equal(nil)
+			jestExpect(diff(1, 2)).toEqual(nil)
 		end)
 
 		-- deviation: skipped test testing bigints since we don't have this
 		-- type in lua
 		itSKIP("two bigints", function()
-			expect(diff(1, 2)).to.equal(nil)
+			jestExpect(diff(1, 2)).toEqual(nil)
 		end)
 	end)
 
 	describe("pluralize()", function()
 		it("one", function()
-			expect(pluralize("apple", 1)).to.equal("one apple")
+			jestExpect(pluralize("apple", 1)).toEqual("one apple")
 		end)
 
 		it("two", function()
-			expect(pluralize("apple", 2)).to.equal("two apples")
+			jestExpect(pluralize("apple", 2)).toEqual("two apples")
 		end)
 
 		it("20", function()
-			expect(pluralize("apple", 20)).to.equal("20 apples")
+			jestExpect(pluralize("apple", 20)).toEqual("20 apples")
 		end)
 	end)
 
 	describe("getLabelPrinter", function()
 		it("0 args", function()
 			local printLabel = getLabelPrinter()
-			expect(printLabel("")).to.equal(": ")
+			jestExpect(printLabel("")).toEqual(": ")
 		end)
 
 		it("1 empty string", function()
 			local printLabel = getLabelPrinter()
-			expect(printLabel("")).to.equal(": ")
+			jestExpect(printLabel("")).toEqual(": ")
 		end)
 
 		it("1 non-empty string", function()
-			local string_ = "Expected"
+			local string_ = "expected"
 			local printLabel = getLabelPrinter(string_)
-			expect(printLabel(string_)).to.equal("Expected: ")
+			jestExpect(printLabel(string_)).toEqual("expected: ")
 		end)
 
 		it("2 equal lengths", function()
-			local stringExpected = "Expected value"
+			local stringExpected = "expected value"
 			local collectionType = "array"
 			local stringReceived = string.format("Received %s", collectionType)
 			local printLabel = getLabelPrinter(stringExpected, stringReceived)
-			expect(printLabel(stringExpected)).to.equal("Expected value: ")
-			expect(printLabel(stringReceived)).to.equal("Received array: ")
+			jestExpect(printLabel(stringExpected)).toEqual("expected value: ")
+			jestExpect(printLabel(stringReceived)).toEqual("Received array: ")
 		end)
 
 		it("2 unequal lengths", function()
-			local stringExpected = "Expected value"
+			local stringExpected = "expected value"
 			local collectionType = "set"
 			local stringReceived = string.format("Received %s", collectionType)
 			local printLabel = getLabelPrinter(stringExpected, stringReceived)
-			expect(printLabel(stringExpected)).to.equal("Expected value: ")
-			expect(printLabel(stringReceived)).to.equal("Received set:   ")
+			jestExpect(printLabel(stringExpected)).toEqual("expected value: ")
+			jestExpect(printLabel(stringReceived)).toEqual("Received set:   ")
 		end)
 
 		it("returns incorrect padding if inconsistent arg is shorter", function()
-			local stringConsistent = "Expected"
+			local stringConsistent = "expected"
 			local stringInconsistent = "Received value"
 			local stringInconsistentShorter = "Received set"
 			local printLabel = getLabelPrinter(stringConsistent, stringInconsistent)
-			expect(printLabel(stringConsistent)).to.equal("Expected:       ")
-			expect(printLabel(stringInconsistentShorter)).to.equal("Received set:   ")
+			jestExpect(printLabel(stringConsistent)).toEqual("expected:       ")
+			jestExpect(printLabel(stringInconsistentShorter)).toEqual("Received set:   ")
 		end)
 
 		it("throws if inconsistent arg is longer", function()
-			local stringConsistent = "Expected"
+			local stringConsistent = "expected"
 			local stringInconsistent = "Received value"
 			local stringInconsistentLonger = "Received string"
 			local printLabel = getLabelPrinter(stringConsistent, stringInconsistent)
-			expect(printLabel(stringConsistent)).to.equal("Expected:       ")
-			expect(function()
+			jestExpect(printLabel(stringConsistent)).toEqual("expected:       ")
+			jestExpect(function()
 				printLabel(stringInconsistentLonger)
-			end).to.throw("Cannot print label for string with length larger than the max allowed of 14")
+			end).toThrow("Cannot print label for string with length larger than the max allowed of 14")
 		end)
 	end)
 
@@ -351,7 +360,7 @@ return function()
 			)
 
 			local substringNegative = expectedArgument
-			expect(string.match(received, substringNegative)).never.to.equal(nil)
+			jestExpect(string.match(received, substringNegative)).never.toBe(nil)
 		end)
 
 		it("receivedColor", function()
@@ -363,7 +372,7 @@ return function()
 
 			local substringPositive = receivedColor(receivedArgument)
 
-			expect(string.match(received, substringPositive)).never.to.equal(nil)
+			jestExpect(string.match(received, substringPositive)).never.toBe(nil)
 		end)
 
 		it("secondArgumentColor", function()
@@ -376,7 +385,7 @@ return function()
 
 			local substringPositive = secondArgumentColor(secondArgument)
 
-			expect(string.match(received, substringPositive)).never.to.equal(nil)
+			jestExpect(string.match(received, substringPositive)).never.toBe(nil)
 		end)
 	end)
 end

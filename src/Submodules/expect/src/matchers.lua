@@ -13,6 +13,7 @@ local Packages = Modules.Parent.Parent
 
 local Polyfills = require(Packages.LuauPolyfill)
 local Array = Polyfills.Array
+local Error = Polyfills.Error
 local Number = Polyfills.Number
 local Object = Polyfills.Object
 local instanceof = Polyfills.instanceof
@@ -166,23 +167,23 @@ local function toBeCloseTo(
 	}
 
 	if typeof(expected) ~= 'number' then
-		error(
+		error(Error(
 			matcherErrorMessage(
 				matcherHint(matcherName, nil, nil, options),
 				string.format('%s value must be a number', EXPECTED_COLOR('expected')),
 				printWithType('Expected', expected, printExpected)
 			)
-		)
+		))
 	end
 
 	if typeof(received) ~= 'number' then
-		error(
+		error(Error(
 			matcherErrorMessage(
 				matcherHint(matcherName, nil, nil, options),
 				string.format('%s value must be a number', RECEIVED_COLOR('received')),
 				printWithType('Received', received, printReceived)
 			)
-		)
+		))
 	end
 
 	local pass = false
@@ -328,13 +329,13 @@ local function toBeInstanceOf(this: MatcherState, received: any, expected: any)
 	}
 
 	if typeof(expected) ~= 'table' then
-		error(
+		error(Error(
 			matcherErrorMessage(
 				matcherHint(matcherName, nil, nil, options),
 				string.format('%s value must be a prototype class', EXPECTED_COLOR('expected')),
 				printWithType('Expected', expected, printExpected)
 			)
-		)
+		))
 	end
 
 	local pass = instanceof(received, expected)
@@ -515,13 +516,13 @@ local function toContain(
 	}
 
 	if received == nil then
-		error(
+		error(Error(
 			matcherErrorMessage(
 				matcherHint(matcherName, nil, nil, options),
 				string.format('%s value must not be nil', RECEIVED_COLOR('received')),
 				printWithType('Received', received, printReceived)
 			)
-		)
+		))
 	end
 
 	if typeof(received) == 'string' then
@@ -614,13 +615,13 @@ local function toContainEqual(
 	}
 
 	if received == nil then
-		error(
+		error(Error(
 			matcherErrorMessage(
 				matcherHint(matcherName, nil, nil, options),
 				string.format('%s value must not be nil', RECEIVED_COLOR('received')),
 				printWithType('Received', received, printReceived)
 			)
-		)
+		))
 	end
 
 	local index = Array.findIndex(received,
@@ -719,7 +720,7 @@ local function toHaveLength(this: MatcherState, received: any, expected: number)
 		typeof(received) ~= 'string' and
 		not hasLengthProperty
 	then
-		error(
+		error(Error(
 			matcherErrorMessage(
 				matcherHint(matcherName, nil, nil, options),
 				string.format(
@@ -728,7 +729,7 @@ local function toHaveLength(this: MatcherState, received: any, expected: number)
 				),
 				printWithType('Received', received, printReceived)
 			)
-		)
+		))
 	end
 
 	ensureExpectedIsNonNegativeInteger(expected, matcherName, options)
@@ -796,25 +797,25 @@ local function toHaveProperty(
 	}
 
 	if received == nil then
-		error(
+		error(Error(
 			matcherErrorMessage(
 				matcherHint(matcherName, nil, expectedArgument, options),
 				string.format('%s value must not be nil', RECEIVED_COLOR('received')),
 				printWithType('Received', received, printReceived)
 			)
-		)
+		))
 	end
 
 	local expectedPathType = getType(expectedPath)
 
 	if expectedPathType ~= 'string' and expectedPathType ~= 'table' then
-		error(
+		error(Error(
 			matcherErrorMessage(
 				matcherHint(matcherName, nil, expectedArgument, options),
 				string.format('%s path must be a string or array', EXPECTED_COLOR('expected')),
 				printWithType('Expected', expectedPath, printExpected)
 			)
-		)
+		))
 	end
 
 	local expectedPathLength
@@ -825,13 +826,13 @@ local function toHaveProperty(
 	end
 
 	if expectedPathType == 'table' and expectedPathLength == 0 then
-		error(
+		error(Error(
 			matcherErrorMessage(
 				matcherHint(matcherName, nil, expectedArgument, options),
 				string.format('%s path must not be an empty array', EXPECTED_COLOR('expected')),
 				printWithType('Expected', expectedPath, printExpected)
 			)
-		)
+		))
 	end
 
 	local result = getPath(received, expectedPath)
@@ -920,24 +921,24 @@ local function toMatch(this: MatcherState, received: string, expected: any)
 	}
 
 	if typeof(received) ~= 'string' then
-		error(
+		error(Error(
 			matcherErrorMessage(
 				matcherHint(matcherName, nil, nil, options),
 				string.format('%s value must be a string', RECEIVED_COLOR('received')),
 				printWithType('Received', received, printReceived)
 			)
-		)
+		))
 	end
 
 	if typeof(expected) ~= 'string' and
 		getType(expected) ~= 'regexp' then
-		error(
+		error(Error(
 			matcherErrorMessage(
 				matcherHint(matcherName, nil, nil, options),
 				string.format('%s value must be a string or regular expression', EXPECTED_COLOR('expected')),
 				printWithType('Expected', expected, printExpected)
 			)
-		)
+		))
 	end
 
 	local pass
@@ -988,23 +989,23 @@ local function toMatchObject(this: MatcherState, received: any, expected: any)
 	}
 
 	if typeof(received) ~= 'table' or received == nil then
-		error(
+		error(Error(
 			matcherErrorMessage(
 				matcherHint(matcherName, nil, nil, options),
 				string.format('%s value must be a non-nil object', RECEIVED_COLOR('received')),
 				printWithType('Received', received, printReceived)
 			)
-		)
+		))
 	end
 
 	if typeof(expected) ~= 'table' or expected == nil then
-		error(
+		error(Error(
 			matcherErrorMessage(
 				matcherHint(matcherName, nil, nil, options),
 				string.format('%s value must be a non-nil object', EXPECTED_COLOR('expected')),
 				printWithType('Expected', expected, printExpected)
 			)
-		)
+		))
 	end
 
 	-- ROBLOX TODO: Revisit usage of subsetEquality

@@ -12,8 +12,6 @@ return function()
 	local Modules = CurrentModule.Parent
 	local Packages = Modules.Parent.Parent
 
-	local snapshots = require(script.Parent.__snapshots__["matchers.snap"])
-
 	local Polyfill = require(Packages.LuauPolyfill)
 	local Symbol = Polyfill.Symbol
 	local Number = Polyfill.Number
@@ -22,9 +20,10 @@ return function()
 
 	local RegExp = require(Packages.LuauRegExp)
 
+	local alignedAnsiStyleSerializer = require(Modules.TestUtils).alignedAnsiStyleSerializer
 	local stringify = require(Modules.JestMatcherUtils).stringify
 
-	-- deviation: omitted alignedAnsiStyleSerializer, Immutable, chalk imports
+	-- deviation: omitted Immutable, chalk imports
 
 	local jestExpect = require(CurrentModule)
 
@@ -32,8 +31,16 @@ return function()
 
 	-- deviation: omitted isBigIntDefined variable declaration
 
+	beforeAll(function()
+		jestExpect.addSnapshotSerializer(alignedAnsiStyleSerializer)
+	end)
+
+	afterAll(function()
+		jestExpect.resetSnapshotSerializers()
+	end)
+
 	it("should throw if passed two arguments", function()
-		expect(function() jestExpect("foo", "bar") end).to.throw("Expect takes at most one argument")
+		jestExpect(function() jestExpect("foo", "bar") end).toThrow("Expect takes at most one argument")
 	end)
 
 	describe(".toBe()", function()
@@ -79,7 +86,7 @@ return function()
 			local a = testCase[1]
 			local b = testCase[2]
 			it("fails for: " .. stringify(a) .. " and " .. stringify(b), function()
-				expect(function() jestExpect(a).toBe(b) end).to.throw(snapshots[".toBe() fails for: " .. stringify(a) .. " and " .. stringify(b) .. " 1"])
+				jestExpect(function() jestExpect(a).toBe(b) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -87,21 +94,21 @@ return function()
 			false, 1, "a", {}
 		}) do
 			it("fails for " .. stringify(testCase) .. " with .never", function()
-				expect(function() jestExpect(testCase).never.toBe(testCase) end).to.throw(snapshots[".toBe() fails for " .. stringify(testCase) .. " with .never 1"])
+				jestExpect(function() jestExpect(testCase).never.toBe(testCase) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
 		-- deviation: we can't test nil as part of the loop above because the for loop
 		-- wouldn't iterate over a nil entry so we include the test separately
 		it("fails for nil with .never", function()
-			expect(function() jestExpect(nil).never.toBe(nil) end).to.throw(snapshots[".toBe() fails for nil with .never 1"])
+			jestExpect(function() jestExpect(nil).never.toBe(nil) end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it("does not crash on circular references", function()
 			local obj = {}
 			obj.circular = obj
 
-			expect(function() jestExpect(obj).toBe({}) end).to.throw(snapshots[".toBe() does not crash on circular references 1"])
+			jestExpect(function() jestExpect(obj).toBe({}) end).toThrowErrorMatchingSnapshot()
 		end)
 
 		-- ROBLOX TODO: assertion error currently returns strings, not an object
@@ -201,17 +208,17 @@ return function()
 		end)
 
 		it('matches the expected snapshot when it fails', function()
-			expect(function()
+			jestExpect(function()
 				jestExpect({
 					test = 2
 				}).toStrictEqual({test = TestClassA.new(1, 2)})
-			end).to.throw(snapshots['.toStrictEqual() matches the expected snapshot when it fails 1'])
+			end).toThrowErrorMatchingSnapshot()
 
-			expect(function()
+			jestExpect(function()
 				jestExpect({
 					test = TestClassA.new(1, 2)
 				}).never.toStrictEqual({ test = TestClassA.new(1, 2)})
-			end).to.throw(snapshots['.toStrictEqual() matches the expected snapshot when it fails 2'])
+			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it('displays substring diff', function()
@@ -219,9 +226,9 @@ return function()
 				'Another caveat is that Jest will not typecheck your tests.'
 			local received =
 				'Because TypeScript support in Babel is just transpilation, Jest will not type-check your tests as they run.'
-			expect(function()
+			jestExpect(function()
 				jestExpect(received).toStrictEqual(expected)
-			end).to.throw(snapshots['.toStrictEqual() displays substring diff 1'])
+			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it('displays substring diff for multiple lines', function()
@@ -245,9 +252,9 @@ return function()
 				'    73 | });',
 				'    at Object.doesNotThrow (__tests__/assertionError.test.js:70:10)',
 			}, '\n')
-			expect(function()
+			jestExpect(function()
 				jestExpect(received).toStrictEqual(expected)
-			end).to.throw(snapshots['.toStrictEqual() displays substring diff for multiple lines 1'])
+			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it('does not pass for different types', function()
@@ -392,7 +399,7 @@ return function()
 			local a = testCase[1]
 			local b = testCase[2]
 			it("{pass: false} expect(" .. stringify(a) .. ").toEqual(" .. stringify(b) .. ")", function()
-				expect(function() jestExpect(a).toEqual(b) end).to.throw(snapshots['.toEqual() {pass: false} expect(' .. stringify(a) .. ').toEqual(' .. stringify(b) .. ') 1'])
+				jestExpect(function() jestExpect(a).toEqual(b) end).toThrowErrorMatchingSnapshot()
 				jestExpect(a).never.toEqual(b)
 			end)
 		end
@@ -474,9 +481,9 @@ return function()
 		}) do
 			local a = testCase[1]
 			local b = testCase[2]
-			it("{pass: true} expect(" .. stringify(a) .. ").never.toEqual(" .. stringify(b) .. ") 1", function()
+			it("{pass: true} expect(" .. stringify(a) .. ").never.toEqual(" .. stringify(b) .. ")", function()
 				jestExpect(a).toEqual(b)
-				expect(function() jestExpect(a).never.toEqual(b) end).to.throw(snapshots[".toEqual() {pass: true} expect(" .. stringify(a) .. ").never.toEqual(" .. stringify(b) .. ") 1"])
+				jestExpect(function() jestExpect(a).never.toEqual(b) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -623,9 +630,9 @@ return function()
 		local E = extends(D, "E", function(self) end)
 
 		it('throws if expected is not a table', function()
-			expect(function()
+			jestExpect(function()
 				jestExpect(A.new()).toBeInstanceOf(1)
-			end).to.throw(
+			end).toThrow(
 				"[1mMatcher error[22m: [32mexpected[39m value must be a prototype class\n\n" ..
 				"Expected has type:  number\n" ..
 				"Expected has value: [32m1[39m"
@@ -633,9 +640,9 @@ return function()
 		end)
 
 		it('does not throw if received is not a table', function()
-			expect(function()
+			jestExpect(function()
 				jestExpect(1).toBeInstanceOf(A)
-			end).to.throw(
+			end).toThrow(
 				"[2mexpect([22m[31mreceived[39m[2m).[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n" ..
 				"Expected constructor: [32mA[39m\n\n" ..
 				"Received value has no prototype\n" ..
@@ -644,9 +651,9 @@ return function()
 		end)
 
 		it('does not throw if received does not have metatable', function ()
-			expect(function()
+			jestExpect(function()
 				jestExpect({}).toBeInstanceOf(A)
-			end).to.throw(
+			end).toThrow(
 				"[2mexpect([22m[31mreceived[39m[2m).[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n" ..
 				"Expected constructor: [32mA[39m\n\n" ..
 				"Received value has no prototype\n" ..
@@ -658,9 +665,9 @@ return function()
 		end)
 
 		it("passing A.new() and A", function()
-			expect(function()
+			jestExpect(function()
 				jestExpect(A.new()).never.toBeInstanceOf(A)
-			end).to.throw(
+			end).toThrow(
 				"[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n" ..
 				"Expected constructor: never [32mA[39m\n"
 			)
@@ -669,9 +676,9 @@ return function()
 		end)
 
 		it("passing C.new() and B", function()
-			expect(function()
+			jestExpect(function()
 				jestExpect(C.new()).never.toBeInstanceOf(B)
-			end).to.throw(
+			end).toThrow(
 				"[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n" ..
 				"Expected constructor: never [32mB[39m\n" ..
 				"Received constructor:       [31mC[39m extends [32mB[39m"
@@ -681,9 +688,9 @@ return function()
 		end)
 
 		it("passing E.new() and B", function()
-			expect(function()
+			jestExpect(function()
 				jestExpect(E.new()).never.toBeInstanceOf(B)
-			end).to.throw(
+			end).toThrow(
 				"[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n" ..
 				"Expected constructor: never [32mB[39m\n" ..
 				"Received constructor:       [31mE[39m extends … extends [32mB[39m"
@@ -693,9 +700,9 @@ return function()
 		end)
 
 		it("failing A.new() and B", function()
-			expect(function()
+			jestExpect(function()
 				jestExpect(A.new()).toBeInstanceOf(B)
-			end).to.throw(
+			end).toThrow(
 				"[2mexpect([22m[31mreceived[39m[2m).[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n" ..
 				"Expected constructor: [32mB[39m\n" ..
 				"Received constructor: [31mA[39m"
@@ -708,12 +715,10 @@ return function()
 	describe(".toBeTruthy(), .toBeFalsy()", function()
 		-- deviation: can't pass in nil as an argument because it's identical to no argument
 		it('does not accept arguments', function()
-			expect(function() jestExpect(0).toBeTruthy(1) end).to.throw(
-				snapshots['.toBeTruthy(), .toBeFalsy() does not accept arguments 1']
+			jestExpect(function() jestExpect(0).toBeTruthy(1) end).toThrowErrorMatchingSnapshot(
 			)
 
-			expect(function()jestExpect(0).never.toBeFalsy(1) end).to.throw(
-				snapshots['.toBeTruthy(), .toBeFalsy() does not accept arguments 2']
+			jestExpect(function()jestExpect(0).never.toBeFalsy(1) end).toThrowErrorMatchingSnapshot(
 			)
 		end)
 
@@ -734,19 +739,9 @@ return function()
 				jestExpect(testCase).toBeTruthy()
 				jestExpect(testCase).never.toBeFalsy()
 
-				expect(function() jestExpect(testCase).never.toBeTruthy() end).to.throw(snapshots[
-					string.format(
-						'.toBeTruthy(), .toBeFalsy() %s is truthy 1',
-						stringify(testCase)
-					)]
-				)
+				jestExpect(function() jestExpect(testCase).never.toBeTruthy() end).toThrowErrorMatchingSnapshot()
 
-				expect(function() jestExpect(testCase).toBeFalsy() end).to.throw(snapshots[
-					string.format(
-						'.toBeTruthy(), .toBeFalsy() %s is truthy 2',
-						stringify(testCase)
-					)]
-				)
+				jestExpect(function() jestExpect(testCase).toBeFalsy() end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -754,16 +749,16 @@ return function()
 			jestExpect(nil).toBeFalsy()
 			jestExpect(nil).never.toBeTruthy()
 
-			expect(function() jestExpect(nil).toBeTruthy() end).to.throw(snapshots['.toBeTruthy(), .toBeFalsy() nil is falsy 1'])
-			expect(function() jestExpect(nil).never.toBeFalsy() end).to.throw(snapshots['.toBeTruthy(), .toBeFalsy() nil is falsy 2'])
+			jestExpect(function() jestExpect(nil).toBeTruthy() end).toThrowErrorMatchingSnapshot()
+			jestExpect(function() jestExpect(nil).never.toBeFalsy() end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it('false is falsy', function()
 			jestExpect(false).toBeFalsy()
 			jestExpect(false).never.toBeTruthy()
 
-			expect(function() jestExpect(false).toBeTruthy() end).to.throw(snapshots['.toBeTruthy(), .toBeFalsy() false is falsy 1'])
-			expect(function() jestExpect(false).never.toBeFalsy() end).to.throw(snapshots['.toBeTruthy(), .toBeFalsy() false is falsy 2'])
+			jestExpect(function() jestExpect(false).toBeTruthy() end).toThrowErrorMatchingSnapshot()
+			jestExpect(function() jestExpect(false).never.toBeFalsy() end).toThrowErrorMatchingSnapshot()
 		end)
 	end)
 
@@ -775,7 +770,7 @@ return function()
 				0 / 0
 			}) do
 				jestExpect(testCase).toBeNan()
-				expect(function() jestExpect(testCase).never.toBeNan() end).to.throw(snapshots['.toBeNan() {pass: true} expect(nan).toBeNan() ' .. index])
+				jestExpect(function() jestExpect(testCase).never.toBeNan() end).toThrowErrorMatchingSnapshot()
 			end
 		end)
 
@@ -789,7 +784,7 @@ return function()
 				math.huge,
 				-math.huge
 			}) do
-				expect(function() jestExpect(testCase).toBeNan() end).to.throw(snapshots['.toBeNan() throws ' .. index])
+				jestExpect(function() jestExpect(testCase).toBeNan() end).toThrowErrorMatchingSnapshot()
 				jestExpect(testCase).never.toBeNan()
 			end
 		end)
@@ -813,12 +808,12 @@ return function()
 			it('fails for ' .. stringify(testCase), function()
 				jestExpect(testCase).never.toBeNil()
 
-				expect(function() jestExpect(testCase).toBeNil() end).to.throw(snapshots[".toBeNil() fails for " .. stringify(testCase) .. " 1"])
+				jestExpect(function() jestExpect(testCase).toBeNil() end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
 		it("fails for null with .not", function()
-			expect(function() jestExpect(nil).never.toBeNil() end).to.throw(snapshots[".toBeNil() fails for nil with .never 1"])
+			jestExpect(function() jestExpect(nil).never.toBeNil() end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it("pass for null", function()
@@ -844,8 +839,8 @@ return function()
 			it(stringify(testCase) .. ' is defined', function()
 				jestExpect(testCase).toBeDefined()
 
-				expect(function() jestExpect(testCase).never.toBeDefined() end).to.throw(snapshots[".toBeDefined() .toBeUndefined() " .. stringify(testCase) .. " is defined 1"])
-				expect(function() jestExpect(testCase).toBeUndefined() end).to.throw(snapshots[".toBeDefined() .toBeUndefined() " .. stringify(testCase) .. " is defined 2"])
+				jestExpect(function() jestExpect(testCase).never.toBeDefined() end).toThrowErrorMatchingSnapshot()
+				jestExpect(function() jestExpect(testCase).toBeUndefined() end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -853,13 +848,13 @@ return function()
 			jestExpect(nil).toBeUndefined()
 			jestExpect(nil).never.toBeDefined()
 
-			expect(function()
+			jestExpect(function()
 				jestExpect(nil).toBeDefined()
-			end).to.throw(snapshots[".toBeDefined() .toBeUndefined() nil is undefined 1"])
+			end).toThrowErrorMatchingSnapshot()
 
-			expect(function()
+			jestExpect(function()
 				jestExpect(nil).never.toBeUndefined()
-			end).to.throw(snapshots[".toBeDefined() .toBeUndefined() nil is undefined 2"])
+			end).toThrowErrorMatchingSnapshot()
 		end)
 	end)
 
@@ -909,37 +904,37 @@ return function()
 			end)
 
 			it(string.format("throws: [%s, %s]", small, big), function()
-				expect(function()
+				jestExpect(function()
 					jestExpect(small).toBeGreaterThan(big)
-				end).to.throw(snapshots[string.format(".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [%s, %s] 1", small, big)])
+				end).toThrowErrorMatchingSnapshot()
 
-				expect(function()
+				jestExpect(function()
 					jestExpect(small).never.toBeLessThan(big)
-				end).to.throw(snapshots[string.format(".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [%s, %s] 2", small, big)])
+				end).toThrowErrorMatchingSnapshot()
 
-				expect(function()
+				jestExpect(function()
 					jestExpect(big).never.toBeGreaterThan(small)
-				end).to.throw(snapshots[string.format(".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [%s, %s] 3", small, big)])
+				end).toThrowErrorMatchingSnapshot()
 
-				expect(function()
+				jestExpect(function()
 					jestExpect(big).toBeLessThan(small)
-				end).to.throw(snapshots[string.format(".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [%s, %s] 4", small, big)])
+				end).toThrowErrorMatchingSnapshot()
 
-				expect(function()
+				jestExpect(function()
 					jestExpect(small).toBeGreaterThanOrEqual(big)
-				end).to.throw(snapshots[string.format(".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [%s, %s] 5", small, big)])
+				end).toThrowErrorMatchingSnapshot()
 
-				expect(function()
+				jestExpect(function()
 					jestExpect(small).never.toBeLessThanOrEqual(big)
-				end).to.throw(snapshots[string.format(".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [%s, %s] 6", small, big)])
+				end).toThrowErrorMatchingSnapshot()
 
-				expect(function()
+				jestExpect(function()
 					jestExpect(big).never.toBeGreaterThanOrEqual(small)
-				end).to.throw(snapshots[string.format(".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [%s, %s] 7", small, big)])
+				end).toThrowErrorMatchingSnapshot()
 
-				expect(function()
+				jestExpect(function()
 					jestExpect(big).toBeLessThanOrEqual(small)
-				end).to.throw(snapshots[string.format(".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [%s, %s] 8", small, big)])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -957,13 +952,13 @@ return function()
 				jestExpect(n1).toBeGreaterThanOrEqual(n2)
 				jestExpect(n1).toBeLessThanOrEqual(n2)
 
-				expect(function()
+				jestExpect(function()
 					jestExpect(n1).never.toBeGreaterThanOrEqual(n2)
-				end).to.throw(snapshots[string.format(".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [%s, %s] 1", n1, n2)])
+				end).toThrowErrorMatchingSnapshot()
 
-				expect(function()
+				jestExpect(function()
 					jestExpect(n1).never.toBeLessThanOrEqual(n2)
-				end).to.throw(snapshots[string.format(".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [%s, %s] 2", n1, n2)])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 	end)
@@ -1002,8 +997,7 @@ return function()
 			it(string.format("%s contains %s", stringify(testCase[1]), stringify(testCase[2])), function()
 				jestExpect(testCase[1]).toContain(testCase[2])
 
-				expect(function() jestExpect(testCase[1]).never.toContain(testCase[2]) end).to.throw(snapshots[string.format(
-					".toContain(), .toContainEqual() %s contains %s 1", stringify(testCase[1]), stringify(testCase[2]))])
+				jestExpect(function() jestExpect(testCase[1]).never.toContain(testCase[2]) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -1014,13 +1008,12 @@ return function()
 			it(string.format("%s does not contain %s", stringify(testCase[1]), stringify(testCase[2])), function()
 				jestExpect(testCase[1]).never.toContain(testCase[2])
 
-				expect(function() jestExpect(testCase[1]).toContain(testCase[2]) end).to.throw(snapshots[string.format(
-					".toContain(), .toContainEqual() %s does not contain %s 1", stringify(testCase[1]), stringify(testCase[2]))])
+				jestExpect(function() jestExpect(testCase[1]).toContain(testCase[2]) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
 		it("error cases", function()
-			expect(function() jestExpect(nil).toContain(1) end).to.throw(snapshots[".toContain(), .toContainEqual() error cases 1"])
+			jestExpect(function() jestExpect(nil).toContain(1) end).toThrowErrorMatchingSnapshot()
 		end)
 
 		for _, testCase in ipairs({
@@ -1034,8 +1027,7 @@ return function()
 			it(string.format("%s contains a value equal to %s", stringify(testCase[1]), stringify(testCase[2])), function()
 				jestExpect(testCase[1]).toContainEqual(testCase[2])
 
-				expect(function() jestExpect(testCase[1]).never.toContainEqual(testCase[2]) end).to.throw(snapshots[string.format(
-					".toContain(), .toContainEqual() %s contains a value equal to %s 1", stringify(testCase[1]), stringify(testCase[2]))])
+				jestExpect(function() jestExpect(testCase[1]).never.toContainEqual(testCase[2]) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -1045,13 +1037,12 @@ return function()
 			it(string.format("%s does not contain a value equal to %s", stringify(testCase[1]), stringify(testCase[2])), function()
 				jestExpect(testCase[1]).never.toContainEqual(testCase[2])
 
-				expect(function() jestExpect(testCase[1]).toContainEqual(testCase[2]) end).to.throw(snapshots[string.format(
-					".toContain(), .toContainEqual() %s does not contain a value equal to %s 1", stringify(testCase[1]), stringify(testCase[2]))])
+				jestExpect(function() jestExpect(testCase[1]).toContainEqual(testCase[2]) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
 		it("error cases for toContainEqual", function()
-			expect(function() jestExpect(nil).toContainEqual(1) end).to.throw(snapshots[".toContain(), .toContainEqual() error cases for toContainEqual 1"])
+			jestExpect(function() jestExpect(nil).toContainEqual(1) end).toThrowErrorMatchingSnapshot()
 		end)
 	end)
 
@@ -1071,8 +1062,7 @@ return function()
 			it(string.format("{pass: true} expect(%s).toBeCloseTo(%s)", n1, n2), function()
 				jestExpect(n1).toBeCloseTo(n2)
 
-				expect(function() jestExpect(n1).never.toBeCloseTo(n2) end).to.throw(snapshots[string.format(
-					".toBeCloseTo {pass: true} expect(%s).toBeCloseTo(%s) 1", n1, n2)])
+				jestExpect(function() jestExpect(n1).never.toBeCloseTo(n2) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -1089,8 +1079,7 @@ return function()
 			it(string.format("{pass: false} expect(%s).toBeCloseTo(%s)", n1, n2), function()
 				jestExpect(n1).never.toBeCloseTo(n2)
 
-				expect(function() jestExpect(n1).toBeCloseTo(n2) end).to.throw(snapshots[string.format(
-					".toBeCloseTo {pass: false} expect(%s).toBeCloseTo(%s) 1", n1, n2)])
+				jestExpect(function() jestExpect(n1).toBeCloseTo(n2) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -1106,8 +1095,7 @@ return function()
 			it(string.format("{pass: true} expect(%s).toBeCloseTo(%s, %s)", n1, n2, p), function()
 				jestExpect(n1).toBeCloseTo(n2, p)
 
-				expect(function() jestExpect(n1).never.toBeCloseTo(n2, p) end).to.throw(snapshots[string.format(
-					".toBeCloseTo {pass: true} expect(%s).toBeCloseTo(%s, %s) 1", n1, n2, p)])
+				jestExpect(function() jestExpect(n1).never.toBeCloseTo(n2, p) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -1117,15 +1105,13 @@ return function()
 				local expected = 0
 				local received = ''
 
-				expect(function() jestExpect(received).toBeCloseTo(expected, precision) end).to.throw(
-					snapshots[".toBeCloseTo throws: Matcher error promise empty isNot false received 1"])
+				jestExpect(function() jestExpect(received).toBeCloseTo(expected, precision) end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it("promise empty isNot true expected", function()
 				local received = 0.1
 				-- expected is undefined
-				expect(function() jestExpect(received).never.toBeCloseTo() end).to.throw(snapshots[
-					".toBeCloseTo throws: Matcher error promise empty isNot true expected 1"])
+				jestExpect(function() jestExpect(received).never.toBeCloseTo() end).toThrowErrorMatchingSnapshot()
 			end)
 
 			-- deviation: omitted promise rejects and resolve tests
@@ -1151,9 +1137,8 @@ return function()
 		}) do
 			local n1 = testCase[1]
 			local n2 = testCase[2]
-			it(string.format("throws: [%s %s]", n1, tostring(n2)), function()
-				expect(function() jestExpect(n1).toMatch(n2) end).to.throw(snapshots[string.format(
-					".toMatch() throws: [%s, %s] 1", n1, tostring(n2))])
+			it(string.format("throws: [%s, %s]", n1, tostring(n2)), function()
+				jestExpect(function() jestExpect(n1).toMatch(n2) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -1168,8 +1153,7 @@ return function()
 			local n1 = testCase[1]
 			local n2 = testCase[2]
 			it(string.format("throws if non String actual value passed: [%s, %s]", stringify(n1), stringify(n2)), function()
-				expect(function() jestExpect(n1).toMatch(n2) end).to.throw(snapshots[string.format(
-					".toMatch() throws if non String actual value passed: [%s, %s] 1", stringify(n1), stringify(n2))])
+				jestExpect(function() jestExpect(n1).toMatch(n2) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -1183,8 +1167,7 @@ return function()
 			local n1 = testCase[1]
 			local n2 = testCase[2]
 			it(string.format("throws if non String/RegExp expected value passed: [%s, %s]", stringify(n1), stringify(n2)), function()
-				expect(function() jestExpect(n1).toMatch(n2) end).to.throw(snapshots[string.format(
-					".toMatch() throws if non String/RegExp expected value passed: [%s, %s] 1", stringify(n1), stringify(n2))])
+				jestExpect(function() jestExpect(n1).toMatch(n2) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -1227,9 +1210,9 @@ return function()
 			)
 			it(testname, function()
 				jestExpect(received).toHaveLength(length)
-				expect(function()
+				jestExpect(function()
 					jestExpect(received).never.toHaveLength(length)
-				end).to.throw(snapshots['.toHaveLength ' .. testname.. ' 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -1259,64 +1242,64 @@ return function()
 			)
 			it(testname, function()
 				jestExpect(received).never.toHaveLength(length)
-				expect(function()
+				jestExpect(function()
 					jestExpect(received).toHaveLength(length)
-				end).to.throw(snapshots['.toHaveLength ' .. testname .. ' 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
 		it('error cases', function()
-			expect(function()
+			jestExpect(function()
 				jestExpect({a = 9}).toHaveLength(1)
-			end).to.throw(snapshots['.toHaveLength error cases 1'])
-			expect(function()
+			end).toThrowErrorMatchingSnapshot()
+			jestExpect(function()
 				jestExpect(0).toHaveLength(1)
-			end).to.throw(snapshots['.toHaveLength error cases 2'])
-			expect(function()
+			end).toThrowErrorMatchingSnapshot()
+			jestExpect(function()
 				jestExpect(nil).never.toHaveLength(1)
-			end).to.throw(snapshots['.toHaveLength error cases 3'])
+			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		describe('matcher error expected length', function()
 			it('not number', function()
 				local expected = '3'
 				local received = 'abc'
-				expect(function()
+				jestExpect(function()
 					jestExpect(received).never.toHaveLength(expected)
-				end).to.throw(snapshots['.toHaveLength matcher error expected length not number 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			-- deviation: remove promise rejects/resolves in the following tests for now
 			it('number inf', function()
 				local expected = math.huge
 				local received = 'abc'
-				expect(function()
+				jestExpect(function()
 					jestExpect(received).toHaveLength(expected)
-				end).to.throw(snapshots['.toHaveLength matcher error expected length number inf 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('number nan', function()
 				local expected = 0/0
 				local received = 'abc'
-				expect(function()
+				jestExpect(function()
 					jestExpect(received).never.toHaveLength(expected)
-				end).to.throw(snapshots['.toHaveLength matcher error expected length number nan 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('number float', function()
 				local expected = 0.5
 				local received = 'abc'
-				expect(function()
+				jestExpect(function()
 					jestExpect(received).toHaveLength(expected)
-				end).to.throw(snapshots['.toHaveLength matcher error expected length number float 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('number negative integer', function()
 				local expected = -3
 				local received = 'abc'
-				expect(function()
+				jestExpect(function()
 					jestExpect(received).never.toHaveLength(expected)
-				end).to.throw(snapshots['.toHaveLength matcher error expected length number negative integer 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end)
 	end)
@@ -1368,9 +1351,7 @@ return function()
 			it(string.format("{pass: true} expect(%s).toHaveProperty(%s, %s)",
 				stringify(obj), stringify(keyPath), stringify(value)), function()
 					jestExpect(obj).toHaveProperty(keyPath, value)
-					expect(function() jestExpect(obj).never.toHaveProperty(keyPath, value) end).to.throw(snapshots[
-						string.format(".toHaveProperty() {pass: true} expect(%s).toHaveProperty(%s, %s) 1",
-							stringify(obj), stringify(keyPath), stringify(value))])
+					jestExpect(function() jestExpect(obj).never.toHaveProperty(keyPath, value) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -1400,9 +1381,7 @@ return function()
 
 			it(string.format("{pass: false} expect(%s).toHaveProperty(%s, %s)",
 				stringify(obj), stringify(keyPath), stringify(value)), function()
-				expect(function() jestExpect(obj).toHaveProperty(keyPath, value) end).to.throw(snapshots[
-					string.format(".toHaveProperty() {pass: false} expect(%s).toHaveProperty(%s, %s) 1",
-						stringify(obj), stringify(keyPath), stringify(value))])
+				jestExpect(function() jestExpect(obj).toHaveProperty(keyPath, value) end).toThrowErrorMatchingSnapshot()
 
 				jestExpect(obj).never.toHaveProperty(keyPath, value)
 			end)
@@ -1422,9 +1401,7 @@ return function()
 			it(string.format("{pass: true} expect(%s).toHaveProperty(%s)",
 				stringify(obj), stringify(keyPath)), function()
 					jestExpect(obj).toHaveProperty(keyPath)
-					expect(function() jestExpect(obj).never.toHaveProperty(keyPath) end).to.throw(snapshots[
-						string.format(".toHaveProperty() {pass: true} expect(%s).toHaveProperty(%s) 1",
-							stringify(obj), stringify(keyPath))])
+					jestExpect(function() jestExpect(obj).never.toHaveProperty(keyPath) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -1439,8 +1416,7 @@ return function()
 			local keyPath = testCase[2]
 
 			it(string.format("{error} expect(%s).toHaveProperty(%s)", stringify(obj), stringify(keyPath)), function()
-				expect(function() jestExpect(obj).toHaveProperty(keyPath) end).to.throw(snapshots[
-					string.format(".toHaveProperty() {error} expect(%s).toHaveProperty(%s) 1", stringify(obj), stringify(keyPath))])
+				jestExpect(function() jestExpect(obj).toHaveProperty(keyPath) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 	end)
@@ -1451,27 +1427,23 @@ return function()
 				local n1 = testCase[1]
 				local n2 = testCase[2]
 
-				local formatString = "toMatchObject() " .. innerDescribePath .. "{pass: true} expect(%s).toMatchObject(%s) 1"
 				it(string.format("{pass: true} expect(%s).toMatchObject(%s)", stringify(n1), stringify(n2)), function()
 					jestExpect(n1).toMatchObject(n2)
 
-					expect(function() jestExpect(n1).never.toMatchObject(n2) end).to.throw(snapshots[
-						string.format(formatString, stringify(n1), stringify(n2))])
+					jestExpect(function() jestExpect(n1).never.toMatchObject(n2) end).toThrowErrorMatchingSnapshot()
 				end)
 			end
 		end
 
-		local function testToMatchSnapshots(tuples, innerDescribePath)
+		local function testToMatchSnapshots(tuples)
 			for index, testCase in ipairs(tuples) do
 				local n1 = testCase[1]
 				local n2 = testCase[2]
 
-				local formatString = "toMatchObject() " .. innerDescribePath .. "{pass: false} expect(%s).toMatchObject(%s) 1"
 				it(string.format("{pass: false} expect(%s).toMatchObject(%s)", stringify(n1), stringify(n2)), function()
 					jestExpect(n1).never.toMatchObject(n2)
 
-					expect(function() jestExpect(n1).toMatchObject(n2) end).to.throw(snapshots[
-						string.format(formatString, stringify(n1), stringify(n2))])
+					jestExpect(function() jestExpect(n1).toMatchObject(n2) end).toThrowErrorMatchingSnapshot()
 				end)
 			end
 		end
@@ -1493,13 +1465,13 @@ return function()
 				testNotToMatchSnapshots({
 					{circularObjA1, {}},
 					{circularObjA2, circularObjA1}
-				}, "circular references simple circular references ")
+				})
 
 				testToMatchSnapshots({
 					{{}, circularObjA1},
 					{circularObjA1, circularObjB},
 					{primitiveInsteadOfRef, circularObjA1}
-				}, "circular references simple circular references ")
+				})
 			end)
 
 			describe("transitive circular references", function()
@@ -1524,13 +1496,13 @@ return function()
 				testNotToMatchSnapshots({
 					{transitiveCircularObjA1, {}},
 					{transitiveCircularObjA2, transitiveCircularObjA1}
-				}, "circular references transitive circular references ")
+				})
 
 				testToMatchSnapshots({
 					{{}, transitiveCircularObjA1},
 					{transitiveCircularObjB, transitiveCircularObjA1},
 					{primitiveInsteadOfRef, transitiveCircularObjA1}
-				}, "circular references transitive circular references ")
+				})
 			end)
 		end)
 
@@ -1590,7 +1562,7 @@ return function()
 				{1, 3},
 			},
 			{{0}, {-0}},
-		}, "")
+		})
 
 		for _, testCase in ipairs({
 			{nil, {}},
@@ -1606,8 +1578,7 @@ return function()
 			local n2 = testCase[2]
 
 			it(string.format("throws expect(%s).toMatchObject(%s)", stringify(n1), stringify(n2)), function()
-				expect(function() jestExpect(n1).toMatchObject(n2) end).to.throw(snapshots[
-					string.format("toMatchObject() throws expect(%s).toMatchObject(%s) 1", stringify(n1), stringify(n2))])
+				jestExpect(function() jestExpect(n1).toMatchObject(n2) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -1624,8 +1595,7 @@ return function()
 
 			jestExpect(b).never.toMatchObject(matcher)
 
-			expect(function() jestExpect(b).toMatchObject(matcher) end).to.throw(snapshots[
-				"toMatchObject() does not match properties up in the prototype chain 1"])
+			jestExpect(function() jestExpect(b).toMatchObject(matcher) end).toThrowErrorMatchingSnapshot()
 		end)
 	end)
 end

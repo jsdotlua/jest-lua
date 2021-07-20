@@ -12,6 +12,7 @@ local Packages = Modules.Parent.Parent
 
 local Polyfills = require(Packages.LuauPolyfill)
 local Array = Polyfills.Array
+local Error = Polyfills.Error
 local Number = Polyfills.Number
 local Symbol = Polyfills.Symbol
 
@@ -186,13 +187,13 @@ local function ensureNoExpected(
 			matcherString = "[.never]" .. matcherString
 		end
 
-		error(
+		error(Error(
 			matcherErrorMessage(
 				matcherHint(matcherString, nil, "", options),
 				'this matcher must not have an expected argument',
 				printWithType("Expected", expected, printExpected)
 			)
-		)
+		))
 	end
 end
 
@@ -211,13 +212,13 @@ local function ensureActualIsNumber(
 			matcherString = "[.never]" .. matcherString
 		end
 
-		error(
+		error(Error(
 			matcherErrorMessage(
 				matcherHint(matcherString, nil, nil, options),
 				RECEIVED_COLOR("received") .. " value must be a number",
 				printWithType("Received", actual, printReceived)
 			)
-		)
+		))
 	end
 end
 
@@ -236,13 +237,13 @@ local function ensureExpectedIsNumber(
 			matcherString = "[.never]" .. matcherString
 		end
 
-		error(
+		error(Error(
 			matcherErrorMessage(
 				matcherHint(matcherString, nil, nil, options),
 				EXPECTED_COLOR("expected") .. " value must be a number",
 				printWithType("Expected", expected, printExpected)
 			)
-		)
+		))
 	end
 end
 
@@ -273,13 +274,13 @@ local function ensureExpectedIsNonNegativeInteger(
 			matcherString = "[.never]" .. matcherString
 		end
 
-		error(
+		error(Error(
 			matcherErrorMessage(
 				matcherHint(matcherString, nil, nil, options),
 				EXPECTED_COLOR("expected") .. " value must be a non-negative integer",
 				printWithType("Expected", expected, printExpected)
 			)
-		)
+		))
 	end
 end
 

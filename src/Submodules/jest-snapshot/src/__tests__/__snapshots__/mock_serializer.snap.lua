@@ -16,6 +16,7 @@ exports["mock with 0 calls and non-default name 1"] = "[MockFunction MyConstruct
 
 -- deviation: changed undefined to "undefined"
 exports["mock with 1 calls and non-default name via new in object 1"] = [=[
+
 Table {
   "fn": [MockFunction MyConstructor] {
     "calls": Table {
@@ -32,7 +33,8 @@ Table {
       },
     },
   },
-}]=]
+}
+]=]
 
 exports["mock with 1 calls in React element 1"] = [=[
 <button
@@ -57,6 +59,7 @@ exports["mock with 1 calls in React element 1"] = [=[
 
 -- deviation: undefined changed to "undefined"
 exports["mock with 2 calls 1"] = [=[
+
 [MockFunction] {
   "calls": Table {
     Table {},
@@ -77,9 +80,11 @@ exports["mock with 2 calls 1"] = [=[
       "value": "undefined",
     },
   },
-}]=]
+}
+]=]
 
 exports["mock with 2 calls, 1 return, 1 throw 1"] = [=[
+
 [MockFunction] {
   "calls": Table {
     Table {
@@ -99,6 +104,7 @@ exports["mock with 2 calls, 1 return, 1 throw 1"] = [=[
       "value": [Error: Error Message!},
     },
   },
-}]=]
+}
+]=]
 
 return exports

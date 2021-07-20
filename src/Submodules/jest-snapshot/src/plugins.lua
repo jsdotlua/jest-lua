@@ -8,6 +8,10 @@
 
 local CurrentModule = script.Parent
 local Modules = CurrentModule.Parent
+local Packages = Modules.Parent.Parent
+
+local Polyfill = require(Packages.LuauPolyfill)
+local Array = Polyfill.Array
 
 local jestMockSerializer = require(CurrentModule.mock_serializer)
 
@@ -21,6 +25,8 @@ local PLUGINS = {
 	AsymmetricMatcher
 }
 
+local originalPLUGINS = Array.from(PLUGINS)
+
 -- // Prepend to list so the last added is the first tested.
 local function addSerializer(plugin_)
 	table.insert(PLUGINS, 1, plugin_)
@@ -30,8 +36,14 @@ local function getSerializers()
 	return PLUGINS
 end
 
+-- deviation: add resetSerializers to deal with resetting plugins since we don't
+-- have any of jest's test resetting implemented
+local function resetSerializers()
+	PLUGINS = Array.from(originalPLUGINS)
+end
+
 return {
 	addSerializer = addSerializer,
-	getSerializers = getSerializers
+	getSerializers = getSerializers,
+	resetSerializers = resetSerializers
 }
-

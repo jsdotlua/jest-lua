@@ -16,8 +16,6 @@ return function()
 	local Polyfill = require(Packages.LuauPolyfill)
 	local Symbol = Polyfill.Symbol
 
-	local snapshots = require(script.Parent.__snapshots__["mock_serializer.snap"])
-
 	local jestExpect = require(Modules.Expect)
 	local jest = require(Modules.Jest)
 
@@ -25,11 +23,9 @@ return function()
 
 	local plugin_ = require(CurrentModule.mock_serializer)
 
-	-- FIXME: ADO-1497, rewrite these tests once we have the core functionality
-	-- of jestExpect().toMatchSnapshot() implemented
 	it('mock with 0 calls and default name', function()
 		local fn = jest.fn()
-		jestExpect(prettyFormat(fn, {plugins = {plugin_}})).toBe(snapshots["mock with 0 calls and default name 1"])
+		jestExpect(fn).toMatchSnapshot()
 	end)
 
 	it('mock with 1 calls and non-default name via new in object', function()
@@ -43,7 +39,7 @@ return function()
 		local val = {
 			fn = fn
 		}
-		jestExpect(prettyFormat(val, {plugins = {plugin_}})).toBe(snapshots["mock with 1 calls and non-default name via new in object 1"])
+		jestExpect(val).toMatchSnapshot()
 	end)
 
 	-- deviation: skipped because we don't have support for React elements in prettyFormat
@@ -58,7 +54,7 @@ return function()
 			},
 			type = 'button'
 		}
-		jestExpect(prettyFormat(val, {plugins = {plugin_}})).toBe(snapshots["mock with 1 calls in React element 1"])
+		jestExpect(val).toMatchSnapshot()
 	end)
 
 	it('mock with 2 calls', function()
@@ -69,7 +65,7 @@ return function()
 		fn.mockReturnValue('undefined')
 		fn()
 		fn({foo = 'bar'}, 42)
-		jestExpect(prettyFormat(fn, {plugins = {plugin_}})).toBe(snapshots["mock with 2 calls 1"])
+		jestExpect(fn).toMatchSnapshot()
 	end)
 
 	it('indent option', function()

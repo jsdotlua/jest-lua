@@ -9,6 +9,7 @@
 
 return function()
 	local CurrentModule = script.Parent.Parent
+	local Modules = CurrentModule.Parent
 	local Packages = CurrentModule.Parent.Parent.Parent
 
 	local Polyfill = require(Packages.LuauPolyfill)
@@ -17,11 +18,17 @@ return function()
 
 	local RegExp = require(Packages.LuauRegExp)
 
-	local snapshots = require(script.Parent.__snapshots__['toThrowMatchers.snap'])
-
-	-- deviation: omitted alignedAnsiStyleSerializer import
+	local alignedAnsiStyleSerializer = require(Modules.TestUtils).alignedAnsiStyleSerializer
 
 	local jestExpect = require(CurrentModule)
+
+	beforeAll(function()
+		jestExpect.addSnapshotSerializer(alignedAnsiStyleSerializer)
+	end)
+
+	afterAll(function()
+		jestExpect.resetSnapshotSerializers()
+	end)
 
 	local CustomError = extends(Error, "CustomError", function(self, message)
 		self.message = message
@@ -63,25 +70,25 @@ return function()
 				end)
 
 				it('did not throw at all', function()
-					expect(function()
+					jestExpect(function()
 						jestExpect(function() end)[toThrow]('apple')
-					end).to.throw(snapshots[toThrow .. ' substring did not throw at all 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 
 				it('threw, but message did not match (error)', function()
-					expect(function()
+					jestExpect(function()
 						jestExpect(function()
 							error(CustomError('apple'))
 						end)[toThrow]('banana')
-					end).to.throw(snapshots[toThrow .. ' substring threw, but message did not match (error) 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 
 				it('threw, but message did not match (non-error falsey)', function()
-					expect(function()
+					jestExpect(function()
 						jestExpect(function()
 							error('')
 						end)[toThrow]('Server Error')
-					end).to.throw(snapshots[toThrow .. ' substring threw, but message did not match (non-error falsey) 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 
 				it('properly escapes strings when matching against errors', function()
@@ -91,19 +98,19 @@ return function()
 				end)
 
 				it('threw, but message should not match (error)', function()
-					expect(function()
+					jestExpect(function()
 						jestExpect(function()
 							error(CustomError('Invalid array length'))
 						end).never[toThrow]('array')
-					end).to.throw(snapshots[toThrow .. ' substring threw, but message should not match (error) 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 
 				it('threw, but message should not match (non-error truthy)', function()
-					expect(function()
+					jestExpect(function()
 						jestExpect(function()
 							error('Internal Server Error')
 						end).never[toThrow]('Server Error')
-					end).to.throw(snapshots[toThrow .. ' substring threw, but message should not match (non-error truthy) 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 			end)
 
@@ -119,17 +126,17 @@ return function()
 				end)
 
 				it('did not throw at all', function()
-					expect(function()
+					jestExpect(function()
 						jestExpect(function() end)[toThrow](RegExp("apple"))
-					end).to.throw(snapshots[toThrow .. ' regexp did not throw at all 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 
 				it('threw, but message did not match (error)', function()
-					expect(function()
+					jestExpect(function()
 						jestExpect(function()
 							error(CustomError('apple'))
 						end)[toThrow](RegExp("banana"))
-					end).to.throw(snapshots[toThrow .. ' regexp threw, but message did not match (error) 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 
 				-- deviation: The following test prints "0" instead of 0
@@ -137,29 +144,29 @@ return function()
 				-- error(0) is indistinguishable from error("0")
 				-- similar deviations hold for other tests that error integers
 				it('threw, but message did not match (non-error falsey)', function()
-					expect(function()
+					jestExpect(function()
 						jestExpect(function()
 							error(0)
 						end)[toThrow](RegExp('^[123456789]\\d*'))
-					end).to.throw(snapshots[toThrow .. ' regexp threw, but message did not match (non-error falsey) 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 
 				it('threw, but message should not match (error)', function()
-					expect(function()
+					jestExpect(function()
 						jestExpect(function()
 							error(CustomError('Invalid array length'))
 						end).never[toThrow](RegExp(" array "))
-					end).to.throw(snapshots[toThrow .. ' regexp threw, but message should not match (error) 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 
 				-- deviation: the following test prints "404" instead of 404 in
 				-- the output for the same reason as above
 				it('threw, but message should not match (non-error truthy)', function()
-					expect(function()
+					jestExpect(function()
 						jestExpect(function()
 							error(404)
 						end).never[toThrow](RegExp('^[123456789]\\d*'))
-					end).to.throw(snapshots[toThrow .. ' regexp threw, but message should not match (non-error truthy) 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 			end)
 
@@ -191,50 +198,50 @@ return function()
 				end)
 
 				it('did not throw at all', function()
-					expect(function()
+					jestExpect(function()
 						-- FIXME in REVIEW: upstream writes 'expect' but the intention must have been to write jestExpect
 						jestExpect(function() end)[toThrow](Err)
-					end).to.throw(snapshots[toThrow .. ' error class did not throw at all 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 
 				it('threw, but class did not match (error)', function()
-					expect(function()
+					jestExpect(function()
 						jestExpect(function()
 							error(Err('apple'))
 						end)[toThrow](Err2)
-					end).to.throw(snapshots[toThrow .. ' error class threw, but class did not match (error) 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 
 				it('threw, but class did not match (non-error falsey)', function()
-					expect(function()
+					jestExpect(function()
 						jestExpect(function()
 							error(nil)
 						end)[toThrow](Err2)
-					end).to.throw(snapshots[toThrow .. ' error class threw, but class did not match (non-error falsey) 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 
 				it('threw, but class should not match (error)', function()
-					expect(function()
+					jestExpect(function()
 						jestExpect(function()
 							error(Err('apple'))
 						end).never[toThrow](Err)
-					end).to.throw(snapshots[toThrow .. ' error class threw, but class should not match (error) 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 
 				it('threw, but class should not match (error subclass)', function()
-					expect(function()
+					jestExpect(function()
 						jestExpect(function()
 							error(SubErr('apple'))
 						end).never[toThrow](Err)
-					end).to.throw(snapshots[toThrow .. ' error class threw, but class should not match (error subclass) 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 
 				it('threw, but class should not match (error subsubclass)', function()
-					expect(function()
+					jestExpect(function()
 						jestExpect(function()
 							error(SubSubErr('apple'))
 						end).never[toThrow](Err)
-					end).to.throw(snapshots[toThrow .. ' error class threw, but class should not match (error subsubclass) 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 			end)
 
@@ -270,30 +277,30 @@ return function()
 
 				describe('fail', function()
 					it('isNot false', function()
-						expect(function()
+						jestExpect(function()
 							jestExpect(function()
 								error(ErrorMessage('banana'))
 							end)[toThrow](expected)
-						end).to.throw(snapshots[toThrow .. ' error-message fail isNot false 1'])
+						end).toThrowErrorMatchingSnapshot()
 					end)
 
 					it('isNot true', function()
 						local message = 'Invalid array length'
-						expect(function()
+						jestExpect(function()
 							jestExpect(function()
 								error(ErrorMessage(message))
 							end).never[toThrow]({message = message})
-						end).to.throw(snapshots[toThrow .. ' error-message fail isNot true 1'])
+						end).toThrowErrorMatchingSnapshot()
 					end)
 
 					it('multiline diff highlight incorrect expected space', function()
 						local a = "There is no route defined for key Settings. \nMust be one of: 'Home'"
 						local b = "There is no route defined for key Settings.\nMust be one of: 'Home'"
-						expect(function()
+						jestExpect(function()
 							jestExpect(function()
 								error(ErrorMessage(b))
 							end)[toThrow]({message = a})
-						end).to.throw(snapshots[toThrow .. ' error-message fail multiline diff highlight incorrect expected space 1'])
+						end).toThrowErrorMatchingSnapshot()
 					end)
 				end)
 			end)
@@ -316,19 +323,19 @@ return function()
 
 					describe('fail', function()
 						it('isNot false', function()
-							expect(function()
+							jestExpect(function()
 								jestExpect(function()
 									error(Err('apple'))
 								end)[toThrow](jestExpect.any(Err2))
-							end).to.throw(snapshots[toThrow .. ' asymmetric any-Class fail isNot false 1'])
+							end).toThrowErrorMatchingSnapshot()
 						end)
 
 						it('isNot true', function()
-							expect(function()
+							jestExpect(function()
 								jestExpect(function()
 									error(Err('apple'))
 								end).never[toThrow](jestExpect.any(Err))
-							end).to.throw(snapshots[toThrow .. ' asymmetric any-Class fail isNot true 1'])
+							end).toThrowErrorMatchingSnapshot()
 						end)
 					end)
 				end)
@@ -357,111 +364,111 @@ return function()
 						-- objects so that would not throw an error for
 						-- jestExpect.anything()
 						itSKIP('isNot false', function()
-							expect(function()
+							jestExpect(function()
 								jestExpect(function()
 									error(nil)
 								end)[toThrow](jestExpect.anything())
-							end).to.throw(snapshots[toThrow .. ' asymmetric anything fail isNot false 1'])
+							end).toThrowErrorMatchingSnapshot()
 						end)
 
 						it('isNot true', function()
-							expect(function()
+							jestExpect(function()
 								jestExpect(function()
 									error(CustomError('apple'))
 								end).never[toThrow](jestExpect.anything())
-							end).to.throw(snapshots[toThrow .. ' asymmetric anything fail isNot true 1'])
+							end).toThrowErrorMatchingSnapshot()
+						end)
+					end)
+				end)
+
+				describe('no-symbol', function()
+					-- // Test serialization of asymmetric matcher which has no property:
+					-- // this.$$typeof = Symbol.for('jest.asymmetricMatcher')
+
+					local matchError = {
+						asymmetricMatch = function(self, received)
+							return received ~= nil and
+								received.name == 'Error'
+						end
+					}
+
+					local matchNotError = {
+						asymmetricMatch = function(self, received)
+							return received ~= nil and
+								received.name ~= 'Error'
+						end
+					}
+
+					describe('pass', function()
+						it('isNot false', function()
+							jestExpect(function()
+								error(CustomError('apple'))
+							end)[toThrow](matchError)
+						end)
+
+						it('isNot true', function()
+							jestExpect(function()
+								error(CustomError('apple'))
+							end).never[toThrow](matchNotError)
 						end)
 					end)
 
-					describe('no-symbol', function()
-						-- // Test serialization of asymmetric matcher which has no property:
-						-- // this.$$typeof = Symbol.for('jest.asymmetricMatcher')
-
-						local matchError = {
-							asymmetricMatch = function(self, received)
-								return received ~= nil and
-									received.name == 'Error'
-							end
-						}
-
-						local matchNotError = {
-							asymmetricMatch = function(self, received)
-								return received ~= nil and
-									received.name ~= 'Error'
-							end
-						}
-
-						describe('pass', function()
-							it('isNot false', function()
+					describe('fail', function()
+						it('isNot false', function()
+							jestExpect(function()
 								jestExpect(function()
 									error(CustomError('apple'))
-								end)[toThrow](matchError)
-							end)
-
-							it('isNot true', function()
-								jestExpect(function()
-									error(CustomError('apple'))
-								end).never[toThrow](matchNotError)
-							end)
+								end)[toThrow](matchNotError)
+							end).toThrowErrorMatchingSnapshot()
 						end)
 
-						describe('fail', function()
-							it('isNot false', function()
-								expect(function()
-									jestExpect(function()
-										error(CustomError('apple'))
-									end)[toThrow](matchNotError)
-								end).to.throw(snapshots[toThrow .. ' asymmetric no-symbol fail isNot false 1'])
-							end)
+						it('isNot true', function()
+							jestExpect(function()
+								jestExpect(function()
+									error(CustomError('apple'))
+								end).never[toThrow](matchError)
+							end).toThrowErrorMatchingSnapshot()
+						end)
+					end)
+				end)
 
-							it('isNot true', function()
-								expect(function()
-									jestExpect(function()
-										error(CustomError('apple'))
-									end).never[toThrow](matchError)
-								end).to.throw(snapshots[toThrow .. ' asymmetric no-symbol fail isNot true 1'])
-							end)
+				describe('objectContaining', function()
+					local matchError = jestExpect.objectContaining({
+						name = 'Error'
+					})
+					local matchNotError = jestExpect.objectContaining({
+						name = 'NotError'
+					})
+
+					describe('pass', function()
+						it('isNot false', function()
+							jestExpect(function()
+								error(CustomError('apple'))
+							end)[toThrow](matchError)
+						end)
+
+						it('isNot true', function()
+							jestExpect(function()
+								error(CustomError('apple'))
+							end).never[toThrow](matchNotError)
 						end)
 					end)
 
-					describe('objectContaining', function()
-						local matchError = jestExpect.objectContaining({
-							name = 'Error'
-						})
-						local matchNotError = jestExpect.objectContaining({
-							name = 'NotError'
-						})
-
-						describe('pass', function()
-							it('isNot false', function()
+					describe('fail', function()
+						it('isNot false', function()
+							jestExpect(function()
 								jestExpect(function()
 									error(CustomError('apple'))
-								end)[toThrow](matchError)
-							end)
-
-							it('isNot true', function()
-								jestExpect(function()
-									error(CustomError('apple'))
-								end).never[toThrow](matchNotError)
-							end)
+								end)[toThrow](matchNotError)
+							end).toThrowErrorMatchingSnapshot()
 						end)
 
-						describe('fail', function()
-							it('isNot false', function()
-								expect(function()
-									jestExpect(function()
-										error(CustomError('apple'))
-									end)[toThrow](matchNotError)
-								end).to.throw(snapshots[toThrow .. ' asymmetric objectContaining fail isNot false 1'])
-							end)
-
-							it('isNot true', function()
-								expect(function()
-									jestExpect(function()
-										error(CustomError('apple'))
-									end).never[toThrow](matchError)
-								end).to.throw(snapshots[toThrow .. ' asymmetric objectContaining fail isNot true 1'])
-							end)
+						it('isNot true', function()
+							jestExpect(function()
+								jestExpect(function()
+									error(CustomError('apple'))
+								end).never[toThrow](matchError)
+							end).toThrowErrorMatchingSnapshot()
 						end)
 					end)
 				end)
@@ -475,24 +482,24 @@ return function()
 
 			describe('expected is undefined', function()
 				it('threw, but should not have (non-error falsey)', function()
-					expect(function()
+					jestExpect(function()
 						jestExpect(function()
 							error(nil)
 						end).never[toThrow]()
-					end).to.throw(snapshots[toThrow .. ' expected is undefined threw, but should not have (non-error falsey) 1'])
+					end).toThrowErrorMatchingSnapshot()
 				end)
 			end)
 
 			it('invalid arguments', function()
-				expect(function()
+				jestExpect(function()
 					jestExpect(function() end).never[toThrow](111)
-				end).to.throw(snapshots[toThrow .. ' invalid arguments 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it('invalid actual', function()
-				expect(function()
+				jestExpect(function()
 					jestExpect('a string')[toThrow]()
-				end).to.throw(snapshots[toThrow .. ' invalid actual 1'])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end)
 	end
@@ -549,7 +556,7 @@ return function()
 			-- Checking the snapshot
 			jestExpect(function()
 				jestExpect(function() test1() end).never.toThrow()
-			end).toThrow(snapshots['Lua tests correctly prints the stack trace for Lua Error error 1'])
+			end).toThrowErrorMatchingSnapshot()
 
 			-- Using Regex to test the stack trace for three lines with the
 			-- first line reporting info on function error1
@@ -566,7 +573,7 @@ return function()
 		it("prints the stack trace for Lua string error", function()
 			jestExpect(function()
 				jestExpect(function() test2() end).never.toThrow()
-			end).toThrow(snapshots['Lua tests correctly prints the stack trace for Lua string error 1'])
+			end).toThrowErrorMatchingSnapshot()
 
 			jestExpect(function()
 				jestExpect(function() test2() end).never.toThrow()
@@ -580,7 +587,7 @@ return function()
 		it("prints the stack trace for Lua string error 2", function()
 			jestExpect(function()
 				jestExpect(function() test2() end).toThrow("wrong information")
-			end).toThrow(snapshots['Lua tests correctly prints the stack trace for Lua string error 2'])
+			end).toThrowErrorMatchingSnapshot()
 
 			jestExpect(function()
 				jestExpect(function() test2() end).never.toThrow()

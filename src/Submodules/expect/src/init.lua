@@ -23,6 +23,8 @@ local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
 local Polyfill = require(Packages.LuauPolyfill)
+local Error = Polyfill.Error
+local instanceof = Polyfill.instanceof
 local Object = Polyfill.Object
 
 local matcherUtils = require(Modules.JestMatcherUtils)
@@ -142,7 +144,7 @@ function makeThrowingMatcher(
 				error_.matcherResult = result
 
 				if throws then
-					error(message)
+					error(Error(message))
 				else
 					table.insert(getState().suppressedErrors, error)
 				end
@@ -161,7 +163,11 @@ function makeThrowingMatcher(
 		end, ...)
 
 		if not ok then
-			error(result)
+			if instanceof(result, Error) then
+				error(Error(result.message))
+			else
+				error(Error(result))
+			end
 		end
 	end
 end
@@ -225,6 +231,9 @@ setMatchers({
 setmetatable(Expect, {__call = expect_})
 
 -- deviation: defining addSnapshotSerializer override here
-Expect.addSnapshotSerializer = require(Modules.JestSnapshot.plugins).addSerializer
+-- deviation: exposing our custom resetSnapshotSerializers
+local plugins = require(Modules.JestSnapshot.plugins)
+Expect.addSnapshotSerializer = plugins.addSerializer
+Expect.resetSnapshotSerializers = plugins.resetSerializers
 
 return Expect

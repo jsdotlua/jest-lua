@@ -49,6 +49,9 @@
           },
           "JestTypes": {
             "$path": "src/Submodules/jest-types/src"
+          },
+          "TestUtils": {
+            "$path": "src/Submodules/test-utils/src"
           }
         }
       }

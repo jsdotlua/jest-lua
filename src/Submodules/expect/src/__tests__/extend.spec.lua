@@ -13,11 +13,11 @@ return function()
 	local Modules = CurrentModule.Parent
 	local Packages = Modules.Parent.Parent
 
-	local snapshots = require(script.Parent.__snapshots__["extend.snap"])
-
 	local Polyfill = require(Packages.LuauPolyfill)
 	local Object = Polyfill.Object
 	local Symbol = Polyfill.Symbol
+
+	local alignedAnsiStyleSerializer = require(Modules.TestUtils).alignedAnsiStyleSerializer
 
 	local matcherUtils = require(Modules.JestMatcherUtils)
 
@@ -27,6 +27,14 @@ return function()
 	local equals = require(CurrentModule.jasmineUtils).equals
 
 	local jestExpect = require(CurrentModule)
+
+	beforeAll(function()
+		jestExpect.addSnapshotSerializer(alignedAnsiStyleSerializer)
+	end)
+
+	afterAll(function()
+		jestExpect.resetSnapshotSerializers()
+	end)
 
 	jestExpect.extend({
 		toBeDivisibleBy = function(self, actual: number, expected: number)
@@ -94,22 +102,18 @@ return function()
 		jestExpect(15).toBeDivisibleBy(3)
 		jestExpect(15).never.toBeDivisibleBy(6)
 
-		expect(function()
+		jestExpect(function()
 			jestExpect(15).toBeDivisibleBy(2)
-		end).to.throw(
-			snapshots['is available globally when matcher is unary 1']
-		)
+		end).toThrowErrorMatchingSnapshot()
 	end)
 
 	it('is available globally when matcher is variadic', function()
 		jestExpect(15).toBeWithinRange(10, 20)
 		jestExpect(15).never.toBeWithinRange(6)
 
-		expect(function()
+		jestExpect(function()
 			jestExpect(15).toBeWithinRange(1, 3)
-		end).to.throw(
-			snapshots['is available globally when matcher is variadic 1']
-		)
+		end).toThrowErrorMatchingSnapshot()
 	end)
 
 	-- ROBLOX TODO: ADO-1475
@@ -145,9 +149,9 @@ return function()
 			end
 		})
 
-		expect(function()
+		jestExpect(function()
 			jestExpect(true).toFailWithoutMessage()
-		end).to.throw(snapshots['is ok if there is no message specified 1'])
+		end).toThrowErrorMatchingSnapshot()
 	end)
 
 	-- ROBLOX TODO: ADO-1475
@@ -161,58 +165,58 @@ return function()
 			end
 		})
 
-		expect(function() jestExpect().toBeOne() end).never.to.throw()
+		jestExpect(function() jestExpect().toBeOne() end).never.toThrow()
 	end)
 
 	it('defines asymmetric unary matchers', function()
-		expect(function()
+		jestExpect(function()
 			jestExpect({value = 2}).toEqual({value = jestExpect.toBeDivisibleBy(2)})
-		end).never.to.throw()
-		expect(function()
+		end).never.toThrow()
+		jestExpect(function()
 			jestExpect({value = 3}).toEqual({value = jestExpect.toBeDivisibleBy(2)})
-		end).to.throw(snapshots['defines asymmetric unary matchers 1'])
+		end).toThrowErrorMatchingSnapshot()
 	end)
 
 	it('defines asymmetric unary matchers that can be prefixed by never', function()
-		expect(function()
+		jestExpect(function()
 			jestExpect({value = 2}).toEqual({value = jestExpect.never.toBeDivisibleBy(2)})
-		end).to.throw(snapshots['defines asymmetric unary matchers that can be prefixed by never 1'])
-		expect(function()
+		end).toThrowErrorMatchingSnapshot()
+		jestExpect(function()
 			jestExpect({value = 3}).toEqual({value = jestExpect.never.toBeDivisibleBy(2)})
-		end).never.to.throw()
+		end).never.toThrow()
 	end)
 
 	it('defines asymmetric variadic matchers', function()
-		expect(function()
+		jestExpect(function()
 			jestExpect({value = 2}).toEqual({value = jestExpect.toBeWithinRange(1, 3)})
-		end).never.to.throw()
-		expect(function()
+		end).never.toThrow()
+		jestExpect(function()
 			jestExpect({value = 3}).toEqual({value = jestExpect.toBeWithinRange(4, 11)})
-		end).to.throw(snapshots['defines asymmetric variadic matchers 1'])
+		end).toThrowErrorMatchingSnapshot()
 	end)
 
 	it('defines asymmetric variadic matchers that can be prefixed by never', function()
-		expect(function()
+		jestExpect(function()
 			jestExpect({value = 2}).toEqual({
 				value = jestExpect.never.toBeWithinRange(1, 3),
 			})
-		end).to.throw(snapshots['defines asymmetric variadic matchers that can be prefixed by never 1'])
-		expect(function()
+		end).toThrowErrorMatchingSnapshot()
+		jestExpect(function()
 			jestExpect({value = 3}).toEqual({
 				value = jestExpect.never.toBeWithinRange(5, 7),
 			})
-		end).never.to.throw()
+		end).never.toThrow()
 	end)
 
 	it('prints the Symbol into the error message', function()
 		local foo = Symbol('foo')
 		local bar = Symbol('bar')
 
-		expect(function()
+		jestExpect(function()
 			jestExpect({a = foo}).toEqual({
 				a = jestExpect.toBeSymbol(bar),
 			})
-		end).to.throw(snapshots['prints the Symbol into the error message 1'])
+		end).toThrowErrorMatchingSnapshot()
 	end)
 
 	-- deviation: lua specific test to handle asymmetric unary matcher with a table argument
@@ -224,8 +228,8 @@ return function()
 				return {pass = pass}
 			end
 		})
-		expect(function()
+		jestExpect(function()
 			jestExpect({value = 0}).toEqual({value = jestExpect.unaryShouldNotError(input)})
-		end).never.to.throw()
+		end).never.toThrow()
 	end)
 end
