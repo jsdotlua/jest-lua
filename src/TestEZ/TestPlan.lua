@@ -211,6 +211,12 @@ function TestNode:addChild(phrase, nodeType, nodeModifier, filePath)
 		end
 	end
 
+	if filePath and self.plan.runTestsByPath then
+		if not table.find(self.plan.runTestsByPath, filePath) then
+			nodeModifier = TestEnum.NodeModifier.Skip
+		end
+	end
+
 	local child = TestNode.new(self.plan, phrase, nodeType, nodeModifier, filePath)
 	child.parent = self
 	table.insert(self.children, child)

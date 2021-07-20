@@ -20,6 +20,7 @@ local TestPlanner = {}
 			pathStringForSorting -- a string representation of `path`, used for sorting of the test plan
 		}
 		- planArgs - table of additional plan params {
+			runTestsByPath - Runs only tests with these exact paths
 			testNamePattern - Only tests matching this Lua pattern string will run. Pass empty or nil to run all tests
 			testPathPattern - Only tests paths matching this pattern will run
 			testPathIgnorePatterns - Only tests paths that do not match this pattern will run

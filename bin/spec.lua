@@ -10,8 +10,6 @@ TestEZ.TestBootstrap:run(
 	{ Modules },
 	TestEZ.Reporters.TextReporter,
 	{
-		extraEnvironment = Jest.testEnv,
-		testPathPattern = _G["TESTEZ_TEST_PATH_PATTERN"],
-		testPathIgnorePatterns = _G["TESTEZ_TEST_PATH_IGNORE_PATTERNS"]
+		extraEnvironment = Jest.testEnv
 	}
 )

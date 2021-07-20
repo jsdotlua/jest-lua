@@ -102,10 +102,15 @@ function TestBootstrap:run(roots, reporter, otherOptions)
 
 	otherOptions = otherOptions or {}
 	local showTimingInfo = otherOptions["showTimingInfo"] or false
-	local testNamePattern = otherOptions["testNamePattern"]
-	local testPathPattern = otherOptions["testPathPattern"]
-	local testPathIgnorePatterns = otherOptions["testPathIgnorePatterns"]
+	local runTestsByPath = {}
+	local testNamePattern = _G["TESTEZ_TEST_NAME_PATTERN"]
+	local testPathPattern = _G["TESTEZ_TEST_PATH_PATTERN"]
+	local testPathIgnorePatterns = _G["TESTEZ_TEST_PATH_IGNORE_PATTERNS"]
 	local extraEnvironment = otherOptions["extraEnvironment"] or {}
+
+	for testPath in string.gmatch(_G["TESTEZ_RUN_TESTS_PATH"] or "", '([^,]+)') do
+		table.insert(runTestsByPath, testPath)
+	end
 
 	if type(roots) ~= "table" then
 		error(("Bad argument #1 to TestBootstrap:run. Expected table, got %s"):format(typeof(roots)), 2)
@@ -125,6 +130,7 @@ function TestBootstrap:run(roots, reporter, otherOptions)
 	local afterModules = tick()
 
 	local planArgs = {
+		runTestsByPath = runTestsByPath,
 		testNamePattern = testNamePattern,
 		testPathPattern = testPathPattern,
 		testPathIgnorePatterns = testPathIgnorePatterns,
