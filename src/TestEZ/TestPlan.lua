@@ -195,10 +195,10 @@ function TestNode:addChild(phrase, nodeType, nodeModifier, filePath)
 	if self.plan.testNamePattern then
 		filters["nameNodeModifier"] = getModifier(childName, self.plan.testNamePattern, nodeModifier)
 	end
-	if filePath and self.plan.testPathPattern then
+	if self.plan.testPathPattern and filePath then
 		filters["pathNodeModifier"] = getModifier(filePath, self.plan.testPathPattern, nodeModifier)
 	end
-	if filePath and self.plan.testPathIgnorePatterns then
+	if self.plan.testPathIgnorePatterns and filePath then
 		filters["pathIgnoreNodeModifier"] = getIgnoreModifier(filePath, self.plan.testPathIgnorePatterns, nodeModifier)
 	end
 
@@ -211,7 +211,7 @@ function TestNode:addChild(phrase, nodeType, nodeModifier, filePath)
 		end
 	end
 
-	if filePath and self.plan.runTestsByPath then
+	if self.plan.runTestsByPath and #self.plan.runTestsByPath > 0 and filePath then
 		if not table.find(self.plan.runTestsByPath, filePath) then
 			nodeModifier = TestEnum.NodeModifier.Skip
 		end
