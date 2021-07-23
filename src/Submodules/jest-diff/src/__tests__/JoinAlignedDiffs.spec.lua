@@ -1,3 +1,4 @@
+--!nocheck
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-diff/src/__tests__/joinAlignedDiffs.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -8,8 +9,7 @@
 
 return function()
 	local CurrentModule = script.Parent.Parent
-
-	local snapshots = require(script.Parent.__snapshots__['JoinAlignedDiffs.snap'])
+	local Modules = CurrentModule.Parent
 
 	local DIFF_DELETE = require(CurrentModule.CleanupSemantic).DIFF_DELETE
 	local DIFF_EQUAL = require(CurrentModule.CleanupSemantic).DIFF_EQUAL
@@ -31,6 +31,19 @@ return function()
 		emptyFirstOrLastLinePlaceholder = '↵', -- // U+21B5
 		patchColor = noColor,
 	}
+
+
+	local jestExpect = require(Modules.Expect)
+	beforeAll(function()
+		jestExpect.addSnapshotSerializer({
+			serialize = function(val: string) return val end,
+			test = function(val: any) return typeof(val) == "string" end
+		})
+	end)
+
+	afterAll(function()
+		jestExpect.resetSnapshotSerializers()
+	end)
 
 	local diffsCommonStartEnd = {
 		Diff.new(DIFF_EQUAL, ''),
@@ -75,9 +88,9 @@ return function()
 		it('first line is empty common', function()
 			local options = normalizeDiffOptions(optionsNoColor)
 
-			expect(
+			jestExpect(
 				joinAlignedDiffsExpand(diffsCommonStartEnd, options)
-			).to.equal(snapshots['joinAlignedDiffsExpand first line is empty common 1'])
+			).toMatchSnapshot()
 		end)
 	end)
 
@@ -100,11 +113,9 @@ return function()
 			options['expand'] = false
 			options = normalizeDiffOptions(options)
 
-			expect(
+			jestExpect(
 				joinAlignedDiffsNoExpand(diffsChangeStartEnd, options)
-			).to.equal(
-				snapshots['joinAlignedDiffsNoExpand patch 0 with context 1 and change at start and end 1']
-			)
+			).toMatchSnapshot()
 		end)
 
 		it('patch 0 with context 5 and first line is empty common', function()
@@ -112,11 +123,9 @@ return function()
 			options['expand'] = false
 			options = normalizeDiffOptions(options)
 
-			expect(
+			jestExpect(
 				joinAlignedDiffsNoExpand(diffsCommonStartEnd, options)
-			).to.equal(
-				snapshots['joinAlignedDiffsNoExpand patch 0 with context 5 and first line is empty common 1']
-			)
+			).toMatchSnapshot()
 		end)
 
 		it('patch 1 with context 4 and last line is empty common', function()
@@ -125,11 +134,9 @@ return function()
 			options['expand'] = false
 			options = normalizeDiffOptions(options)
 
-			expect(
+			jestExpect(
 				joinAlignedDiffsNoExpand(diffsCommonStartEnd, options)
-			).to.equal(
-				snapshots['joinAlignedDiffsNoExpand patch 1 with context 4 and last line is empty common 1']
-			)
+			).toMatchSnapshot()
 		end)
 
 		it('patch 2 with context 3', function()
@@ -138,11 +145,9 @@ return function()
 			options['expand'] = false
 			options = normalizeDiffOptions(options)
 
-			expect(
+			jestExpect(
 				joinAlignedDiffsNoExpand(diffsCommonStartEnd, options)
-			).to.equal(
-				snapshots['joinAlignedDiffsNoExpand patch 2 with context 3 1']
-			)
+			).toMatchSnapshot()
 		end)
 
 		it('patch 3 with context 2 and omit excess common at start', function()
@@ -151,11 +156,9 @@ return function()
 			options['expand'] = false
 			options = normalizeDiffOptions(options)
 
-			expect(
+			jestExpect(
 				joinAlignedDiffsNoExpand(diffsCommonStartEnd, options)
-			).to.equal(
-				snapshots['joinAlignedDiffsNoExpand patch 3 with context 2 and omit excess common at start 1']
-			)
+			).toMatchSnapshot()
 		end)
 	end)
 end

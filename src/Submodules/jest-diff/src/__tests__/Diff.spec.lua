@@ -1,3 +1,4 @@
+--!nocheck
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-diff/src/__tests__/diff.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -11,9 +12,9 @@ return function()
 	local Modules = CurrentModule.Parent
 	local Packages = Modules.Parent.Parent
 
-	local snapshots = require(script.Parent.__snapshots__['Diff.snap'])
-
 	local chalk = require(Packages.ChalkLua)
+	local jestExpect = require(Modules.Expect)
+	local alignedAnsiStyleSerializer = require(Modules.TestUtils).alignedAnsiStyleSerializer
 
 	local Number = require(Packages.LuauPolyfill).Number
 
@@ -33,7 +34,8 @@ return function()
 
 	local stripped = function(a: any, b: any)
 		local retval = diff(a, b) or ''
-		return string.gsub(retval, string.char(27) .. '%[%d+m', '')
+		local result, _ = string.gsub(retval, string.char(27) .. '%[%d+m', '')
+		return result
 	end
 
 	-- deviation: added a table copy method to set options
@@ -63,13 +65,21 @@ return function()
 
 	-- local elementSymbol = require(CurrentModule.Parent.React.Shared).REACT_ELEMENT_TYPE
 
+	beforeAll(function()
+		jestExpect.addSnapshotSerializer(alignedAnsiStyleSerializer)
+	end)
+
+	afterAll(function()
+		jestExpect.resetSnapshotSerializers()
+	end)
+
 	describe('different types', function()
 		it('1 and "a"', function()
 			local a = 1
 			local b = 'a'
 			local typeA = 'number'
 			local typeB = 'string'
-			expect(stripped(a, b)).to.equal(
+			jestExpect(stripped(a, b)).toBe(
 				string.format(
 					'  Comparing two different types of values. ' ..
 					'Expected %s but received %s.',
@@ -82,7 +92,7 @@ return function()
 			local b = 'a'
 			local typeA = 'table'
 			local typeB = 'string'
-			expect(stripped(a, b)).to.equal(
+			jestExpect(stripped(a, b)).toBe(
 				string.format(
 					'  Comparing two different types of values. ' ..
 					'Expected %s but received %s.',
@@ -95,7 +105,7 @@ return function()
 			local b = 2
 			local typeA = 'table'
 			local typeB = 'number'
-			expect(stripped(a, b)).to.equal(
+			jestExpect(stripped(a, b)).toBe(
 				string.format(
 					'  Comparing two different types of values. ' ..
 					'Expected %s but received %s.',
@@ -109,7 +119,7 @@ return function()
 			local b = 3
 			local typeA = 'function'
 			local typeB = 'number'
-			expect(stripped(a, b)).to.equal(
+			jestExpect(stripped(a, b)).toBe(
 				string.format(
 					'  Comparing two different types of values. ' ..
 					'Expected %s but received %s.',
@@ -121,49 +131,49 @@ return function()
 
 	describe('no visual difference', function()
 		it('"a" and "a"', function()
-			expect(stripped("a", "a")).to.equal(NO_DIFF_MESSAGE)
+			jestExpect(stripped("a", "a")).toBe(NO_DIFF_MESSAGE)
 		end)
 		it('{} and {}', function()
-			expect(stripped({}, {})).to.equal(NO_DIFF_MESSAGE)
+			jestExpect(stripped({}, {})).toBe(NO_DIFF_MESSAGE)
 		end)
 		it('{{}} and {{}}', function()
-			expect(stripped({{}}, {{}})).to.equal(NO_DIFF_MESSAGE)
+			jestExpect(stripped({{}}, {{}})).toBe(NO_DIFF_MESSAGE)
 		end)
 		it('{{1, 2}} and {{1, 2}}', function()
-			expect(stripped({{1, 2}}, {{1, 2}})).to.equal(NO_DIFF_MESSAGE)
+			jestExpect(stripped({{1, 2}}, {{1, 2}})).toBe(NO_DIFF_MESSAGE)
 		end)
 		it('{11} and {11}', function()
-			expect(stripped({11}, {11})).to.equal(NO_DIFF_MESSAGE)
+			jestExpect(stripped({11}, {11})).toBe(NO_DIFF_MESSAGE)
 		end)
 		it('{0/0} and {0/0}', function()
-			expect(stripped({0/0}, {0/0})).to.equal(NO_DIFF_MESSAGE)
+			jestExpect(stripped({0/0}, {0/0})).toBe(NO_DIFF_MESSAGE)
 		end)
 		-- deviation: omitted Number.NaN and NaN
 		it('function and function', function()
-			expect(stripped(function() end, function() end)).to.equal(NO_DIFF_MESSAGE)
+			jestExpect(stripped(function() end, function() end)).toBe(NO_DIFF_MESSAGE)
 		end)
 		it('nil and nil', function()
-			expect(stripped(nil, nil)).to.equal(NO_DIFF_MESSAGE)
+			jestExpect(stripped(nil, nil)).toBe(NO_DIFF_MESSAGE)
 		end)
 		-- deviation: omitted undefined, identical to nil
 		it('false and false', function()
-			expect(stripped(false, false)).to.equal(NO_DIFF_MESSAGE)
+			jestExpect(stripped(false, false)).toBe(NO_DIFF_MESSAGE)
 		end)
 		it('{a = 1} and {a = 1}', function()
-			expect(stripped({a = 1}, {a = 1})).to.equal(NO_DIFF_MESSAGE)
+			jestExpect(stripped({a = 1}, {a = 1})).toBe(NO_DIFF_MESSAGE)
 		end)
 		it('{a = {b = 5}} and {a = {b = 5}}', function()
-			expect(stripped({a = {b = 5}}, {a = {b = 5}})).to.equal(NO_DIFF_MESSAGE)
+			jestExpect(stripped({a = {b = 5}}, {a = {b = 5}})).toBe(NO_DIFF_MESSAGE)
 		end)
 
 		-- deviation: TODO ordering for maps and sets
 	end)
 
 	it('oneline strings', function()
-		expect(diff('ab', 'aa', optionsCounts)).to.equal(snapshots['oneline strings 1'])
-		expect(diff('123456789', '234567890', optionsCounts)).to.equal(snapshots['oneline strings 2'])
-		expect(diff('oneline', 'multi\nline', optionsCounts)).to.equal(snapshots['oneline strings 3'])
-		expect(diff('multi\nline', 'oneline', optionsCounts)).to.equal(snapshots['oneline strings 4'])
+		jestExpect(diff('ab', 'aa', optionsCounts)).toMatchSnapshot()
+		jestExpect(diff('123456789', '234567890', optionsCounts)).toMatchSnapshot()
+		jestExpect(diff('oneline', 'multi\nline', optionsCounts)).toMatchSnapshot()
+		jestExpect(diff('multi\nline', 'oneline', optionsCounts)).toMatchSnapshot()
 	end)
 
 	describe('falls back to not call toJSON', function()
@@ -175,14 +185,12 @@ return function()
 			it('but then objects have differences', function()
 				local a = {line = 1, toJSON = toJSON}
 				local b = {line = 2, toJSON = toJSON}
-				expect(diff(a, b, optionsCounts)).to.equal(
-					snapshots['falls back to not call toJSON if serialization has no differences but then objects have differences 1']
-				)
+				jestExpect(diff(a, b, optionsCounts)).toMatchSnapshot()
 			end)
 			it('and then objects have no differences', function()
 				local a = {line = 2, toJSON = toJSON}
 				local b = {line = 2, toJSON = toJSON}
-				expect(stripped(a, b)).to.equal(NO_DIFF_MESSAGE)
+				jestExpect(stripped(a, b)).toBe(NO_DIFF_MESSAGE)
 			end)
 		end)
 		describe('if it throws', function()
@@ -193,14 +201,12 @@ return function()
 			it('and then objects have differences', function()
 				local a = {line = 1, toJSON = toJSON}
 				local b = {line = 2, toJSON = toJSON}
-				expect(diff(a, b, optionsCounts)).to.equal(
-					snapshots['falls back to not call toJSON if it throws and then objects have differences 1']
-				)
+				jestExpect(diff(a, b, optionsCounts)).toMatchSnapshot()
 			end)
 			it('and then objects have no differences', function()
 				local a = {line = 2, toJSON = toJSON}
 				local b = {line = 2, toJSON = toJSON}
-				expect(stripped(a, b)).to.equal(NO_DIFF_MESSAGE)
+				jestExpect(stripped(a, b)).toBe(NO_DIFF_MESSAGE)
 			end)
 		end)
 	end)
@@ -232,10 +238,10 @@ line 4]]
 		}, '\n')
 
 		it('(unexpanded)', function()
-			expect(diff(a, b, unexpandedBe)).to.equal(expected)
+			jestExpect(diff(a, b, unexpandedBe)).toBe(expected)
 		end)
 		it('(expanded)', function()
-			expect(diff(a, b, expandedBe)).to.equal(expected)
+			jestExpect(diff(a, b, expandedBe)).toBe(expected)
 		end)
 	end)
 
@@ -255,23 +261,23 @@ line 4]]
 		}, '\n')
 
 		it('(unexpanded)', function()
-			expect(diff(a, b, unexpandedBe)).to.equal(expected)
+			jestExpect(diff(a, b, unexpandedBe)).toBe(expected)
 		end)
 		it('(expanded)', function()
-			expect(diff(a, b, expandedBe)).to.equal(expected)
+			jestExpect(diff(a, b, expandedBe)).toBe(expected)
 		end)
 	end)
 
 	it('numbers', function()
-		expect(diff(1, 2, optionsBe)).to.equal('- 1\n+ 2')
+		jestExpect(diff(1, 2, optionsBe)).toBe('- 1\n+ 2')
 	end)
 
 	it('-0 and 0', function()
-		expect(diff(-0, 0, optionsBe)).to.equal('- -0\n+ 0')
+		jestExpect(diff(-0, 0, optionsBe)).toBe('- -0\n+ 0')
 	end)
 
 	it('booleans', function()
-		expect(diff(false, true, optionsBe)).to.equal('- false\n+ true')
+		jestExpect(diff(false, true, optionsBe)).toBe('- false\n+ true')
 	end)
 
 	describe('multiline string non-snapshot', function()
@@ -298,10 +304,10 @@ Options:
 		}, '\n')
 
 		it('(unexpanded)', function()
-			expect(diff(a, b, unexpandedBe)).to.equal(expected)
+			jestExpect(diff(a, b, unexpandedBe)).toBe(expected)
 		end)
 		it('(expanded)', function()
-			expect(diff(a, b, expandedBe)).to.equal(expected)
+			jestExpect(diff(a, b, expandedBe)).toBe(expected)
 		end)
 	end)
 
@@ -330,10 +336,10 @@ Options:
 		}, '\n')
 
 		it('(unexpanded)', function()
-			expect(diff(a, b, unexpandedBe)).to.equal(expected)
+			jestExpect(diff(a, b, unexpandedBe)).toBe(expected)
 		end)
 		it('(expanded)', function()
-			expect(diff(a, b, expandedBe)).to.equal(expected)
+			jestExpect(diff(a, b, expandedBe)).toBe(expected)
 		end)
 	end)
 
@@ -360,10 +366,10 @@ Options:
 				points = '0.5,0.460\n0.5,0.875\n0.25,0.875',
 			}
 			it('(unexpanded)', function()
-				expect(diff(a, b, unexpandedBe)).to.equal(expected)
+				jestExpect(diff(a, b, unexpandedBe)).toBe(expected)
 			end)
 			it('(expanded)', function()
-				expect(diff(a, b, expandedBe)).to.equal(expected)
+				jestExpect(diff(a, b, expandedBe)).toBe(expected)
 			end)
 		end)
 
@@ -384,10 +390,10 @@ Options:
 				'}',
 			}, '\n')
 			it('(unexpanded)', function()
-				expect(diff(a, b, unexpandedBe)).to.equal(expected)
+				jestExpect(diff(a, b, unexpandedBe)).toBe(expected)
 			end)
 			it('(expanded)', function()
-				expect(diff(a, b, expandedBe)).to.equal(expected)
+				jestExpect(diff(a, b, expandedBe)).toBe(expected)
 			end)
 		end)
 	end)
@@ -427,10 +433,10 @@ Options:
 			}, '\n')
 
 			it('(unexpanded)', function()
-				expect(diff(a, b, unexpandedBe)).to.equal(expected)
+				jestExpect(diff(a, b, unexpandedBe)).toBe(expected)
 			end)
 			it('(expanded)', function()
-				expect(diff(a, b, expandedBe)).to.equal(expected)
+				jestExpect(diff(a, b, expandedBe)).toBe(expected)
 			end)
 		end)
 
@@ -453,10 +459,10 @@ Options:
 			}, '\n')
 
 			it('(unexpanded)', function()
-				expect(diff(b, a, unexpandedBe)).to.equal(expected)
+				jestExpect(diff(b, a, unexpandedBe)).toBe(expected)
 			end)
 			it('(expanded)', function()
-				expect(diff(b, a, expandedBe)).to.equal(expected)
+				jestExpect(diff(b, a, expandedBe)).toBe(expected)
 			end)
 		end)
 	end)
@@ -478,11 +484,11 @@ Options:
 		local received = diff(a, b, expanded)
 
 		it('(expanded)', function()
-			expect(received).to.equal(snapshots['color of text (expanded) 1'])
+			jestExpect(received).toMatchSnapshot()
 		end)
 		it('(unexpanded)', function()
 			-- // Expect same result, unless diff is long enough to require patch marks.
-			expect(diff(a, b, unexpanded)).to.equal(received)
+			jestExpect(diff(a, b, unexpanded)).toBe(received)
 		end)
 	end)
 
@@ -496,10 +502,10 @@ Options:
 			local expected = table.concat({'  line 1', '  line 2', '  line 3', '+'}, '\n')
 
 			it('(unexpanded)', function()
-				expect(diff(a, b, unexpandedBe)).to.equal(expected)
+				jestExpect(diff(a, b, unexpandedBe)).toBe(expected)
 			end)
 			it('(expanded)', function()
-				expect(diff(a, b, expandedBe)).to.equal(expected)
+				jestExpect(diff(a, b, expandedBe)).toBe(expected)
 			end)
 		end)
 
@@ -507,10 +513,10 @@ Options:
 			local expected = table.concat({'  line 1', '  line 2', '  line 3', '-'}, '\n')
 
 			it('(unexpanded)', function()
-				expect(diff(b, a, unexpandedBe)).to.equal(expected)
+				jestExpect(diff(b, a, unexpandedBe)).toBe(expected)
 			end)
 			it('(expanded)', function()
-				expect(diff(b, a, expandedBe)).to.equal(expected)
+				jestExpect(diff(b, a, expandedBe)).toBe(expected)
 			end)
 		end)
 	end)
@@ -522,9 +528,7 @@ Options:
 			unexpanded
 		)
 
-		expect(result).to.equal(
-			snapshots['collapses big diffs to patch format 1']
-		)
+		jestExpect(result).toMatchSnapshot()
 	end)
 
 	describe('context', function()
@@ -557,9 +561,7 @@ Options:
 					{test = {1, 2, 3, 4, 5, 6, 7, 8, 10, 9}},
 					options
 				)
-				expect(result).to.equal(
-					snapshots['context ' .. testName .. ' 1']
-				)
+				jestExpect(result).toMatchSnapshot()
 			end)
 		end
 
@@ -579,7 +581,7 @@ Options:
 			local received = diffLinesUnified(string.split(a, '\n'), string.split(b, '\n'), optionsBe)
 			local expected = ''
 
-			expect(received).to.equal(expected)
+			jestExpect(received).toBe(expected)
 		end)
 
 		it('a empty string b one line', function()
@@ -589,7 +591,7 @@ Options:
 			local received = diffLinesUnified(string.split(a, '\n'), string.split(b, '\n'), optionsBe)
 			local expected = '+ line 1'
 
-			expect(received).to.equal(expected)
+			jestExpect(received).toBe(expected)
 		end)
 
 		it('a multiple lines b empty string', function()
@@ -599,7 +601,7 @@ Options:
 			local received = diffLinesUnified(string.split(a, '\n'), string.split(b, '\n'), optionsBe)
 			local expected = '- line 1\n-\n- line 3'
 
-			expect(received).to.equal(expected)
+			jestExpect(received).toBe(expected)
 		end)
 
 		it('a one line b multiple lines', function()
@@ -609,7 +611,7 @@ Options:
 			local received = diffLinesUnified(string.split(a, '\n'), string.split(b, '\n'), optionsBe)
 			local expected = '+ line 1\n  line 2\n+ line 3'
 
-			expect(received).to.equal(expected)
+			jestExpect(received).toBe(expected)
 		end)
 	end)
 
@@ -627,7 +629,7 @@ Options:
 			)
 			local expected = ''
 
-			expect(received).to.equal(expected)
+			jestExpect(received).toBe(expected)
 		end)
 
 		it('a empty string b one line', function()
@@ -643,7 +645,7 @@ Options:
 			)
 			local expected = '+ line 1'
 
-			expect(received).to.equal(expected)
+			jestExpect(received).toBe(expected)
 		end)
 
 		it('a multiple lines b empty string', function()
@@ -659,7 +661,7 @@ Options:
 			)
 			local expected = '- line 1\n-\n- line 3'
 
-			expect(received).to.equal(expected)
+			jestExpect(received).toBe(expected)
 		end)
 
 		it('a one line b multiple lines', function()
@@ -677,7 +679,7 @@ Options:
 			)
 			local expected = '+ Line 1\n  Line 2\n+ Line 3'
 
-			expect(received).to.equal(expected)
+			jestExpect(received).toBe(expected)
 		end)
 
 		describe('lengths not equal', function()
@@ -698,7 +700,7 @@ Options:
 				)
 				local expected = '- MiXeD cAsE\n+ Mixed case\n+ UPPER CASE'
 
-				expect(received).to.equal(expected)
+				jestExpect(received).toBe(expected)
 			end)
 
 			it('b', function()
@@ -716,7 +718,7 @@ Options:
 					optionsBe
 				)
 
-				expect(received).to.equal(expected)
+				jestExpect(received).toBe(expected)
 			end)
 		end)
 	end)
@@ -726,54 +728,42 @@ Options:
 			local a = ''
 			local b = ''
 
-			expect(diffStringsUnified(a, b, optionsCounts)).to.equal(
-				snapshots['diffStringsUnified edge cases empty both a and b 1']
-			)
+			jestExpect(diffStringsUnified(a, b, optionsCounts)).toMatchSnapshot()
 		end)
 
 		it('empty only a', function()
 			local a = ''
 			local b = 'one-line string'
 
-			expect(diffStringsUnified(a, b, optionsCounts)).to.equal(
-				snapshots['diffStringsUnified edge cases empty only a 1']
-			)
+			jestExpect(diffStringsUnified(a, b, optionsCounts)).toMatchSnapshot()
 		end)
 
 		it('empty only b', function()
 			local a = 'one-line string'
 			local b = ''
 
-			expect(diffStringsUnified(a, b, optionsCounts)).to.equal(
-				snapshots['diffStringsUnified edge cases empty only b 1']
-			)
+			jestExpect(diffStringsUnified(a, b, optionsCounts)).toMatchSnapshot()
 		end)
 
 		it('equal both non-empty', function()
 			local a = 'one-line string'
 			local b = 'one-line string'
 
-			expect(diffStringsUnified(a, b, optionsCounts)).to.equal(
-				snapshots['diffStringsUnified edge cases equal both non-empty 1']
-			)
+			jestExpect(diffStringsUnified(a, b, optionsCounts)).toMatchSnapshot()
 		end)
 
 		it('multiline has no common after clean up chaff', function()
 			local a = 'delete\ntwo'
 			local b = 'insert\n2'
 
-			expect(diffStringsUnified(a, b, optionsCounts)).to.equal(
-				snapshots['diffStringsUnified edge cases multiline has no common after clean up chaff 1']
-			)
+			jestExpect(diffStringsUnified(a, b, optionsCounts)).toMatchSnapshot()
 		end)
 
 		it('one-line has no common after clean up chaff', function()
 			local a = 'delete'
 			local b = 'insert'
 
-			expect(diffStringsUnified(a, b, optionsCounts)).to.equal(
-				snapshots['diffStringsUnified edge cases one-line has no common after clean up chaff 1']
-			)
+			jestExpect(diffStringsUnified(a, b, optionsCounts)).toMatchSnapshot()
 		end)
 	end)
 
@@ -791,15 +781,11 @@ Options:
 		}
 
 		it('diff', function()
-			expect(diff(a, b, options)).to.equal(
-				snapshots['options 7980 diff 1']
-			)
+			jestExpect(diff(a, b, options)).toMatchSnapshot()
 		end)
 
 		it('diffStringsUnified', function()
-			expect(diffStringsUnified(a, b, options)).to.equal(
-				snapshots['options 7980 diffStringsUnified 1']
-			)
+			jestExpect(diffStringsUnified(a, b, options)).toMatchSnapshot()
 		end)
 	end)
 
@@ -817,9 +803,7 @@ Options:
 			}
 
 			it('diff', function()
-				expect(diff(a, b, options)).to.equal(
-					snapshots['options change indicators diff 1']
-				)
+				jestExpect(diff(a, b, options)).toMatchSnapshot()
 			end)
 		end)
 
@@ -832,16 +816,12 @@ Options:
 			it('diffStringsUnified', function()
 				local aChanged = table.concat(a, '\n'):gsub('change', 'changed')
 				local bChanged = table.concat(b, '\n'):gsub('change', 'changed')
-				expect(diffStringsUnified(aChanged, bChanged, options)).to.equal(
-					snapshots['options change color diffStringsUnified 1']
-				)
+				jestExpect(diffStringsUnified(aChanged, bChanged, options)).toMatchSnapshot()
 			end)
 
 
 			it('no diff', function()
-				expect(diff(a, a, options)).to.equal(
-					snapshots['options change color no diff 1']
-				)
+				jestExpect(diff(a, a, options)).toMatchSnapshot()
 			end)
 		end)
 
@@ -852,13 +832,11 @@ Options:
 			}
 
 			it('diff', function()
-				expect(diff(a, b, options)).to.equal(
-					snapshots['options common diff 1']
-				)
+				jestExpect(diff(a, b, options)).toMatchSnapshot()
 			end)
 
 			it('no diff', function()
-				expect(diff(a, a, options)).to.equal(NO_DIFF_MESSAGE)
+				jestExpect(diff(a, a, options)).toBe(NO_DIFF_MESSAGE)
 			end)
 		end)
 
@@ -868,15 +846,11 @@ Options:
 			}
 
 			it('diffLinesUnified', function()
-				expect(diff(a, b, options)).to.equal(
-					snapshots['options includeChangeCounts false diffLinesUnified 1']
-				)
+				jestExpect(diff(a, b, options)).toMatchSnapshot()
 			end)
 
 			it('diffStringsUnified', function()
-				expect(diffStringsUnified(aString, bString, options)).to.equal(
-					snapshots['options includeChangeCounts false diffStringsUnified 1']
-				)
+				jestExpect(diffStringsUnified(aString, bString, options)).toMatchSnapshot()
 			end)
 		end)
 
@@ -890,23 +864,17 @@ Options:
 			it('diffLinesUnified a has 2 digits', function()
 				local has2 = 'common\na\na\na\na\na\na\na\na\na\na'
 				local has1 = 'common\nb'
-				expect(diff(has2, has1, options)).to.equal(
-					snapshots['options includeChangeCounts true padding diffLinesUnified a has 2 digits 1']
-				)
+				jestExpect(diff(has2, has1, options)).toMatchSnapshot()
 			end)
 
 			it('diffLinesUnified b has 2 digits', function()
 				local has1 = 'common\na'
 				local has2 = 'common\nb\nb\nb\nb\nb\nb\nb\nb\nb\nb'
-				expect(diff(has1, has2, options)).to.equal(
-					snapshots['options includeChangeCounts true padding diffLinesUnified b has 2 digits 1']
-				)
+				jestExpect(diff(has1, has2, options)).toMatchSnapshot()
 			end)
 
 			it('diffStringsUnified', function()
-				expect(diffStringsUnified(aString, bString, options)).to.equal(
-					snapshots['options includeChangeCounts true padding diffStringsUnified 1']
-				)
+				jestExpect(diffStringsUnified(aString, bString, options)).toMatchSnapshot()
 			end)
 		end)
 
@@ -916,24 +884,18 @@ Options:
 			}
 
 			it('diff', function()
-				expect(diff(a, b, options)).to.equal(
-					snapshots['options omitAnnotationLines true diff 1']
-				)
+				jestExpect(diff(a, b, options)).toMatchSnapshot()
 			end)
 
 			it('diffStringsUnified and includeChangeCounts true', function()
 				local options2 = tableCopy(options)
 				options2['includeChangeCounts'] = true
 
-				expect(diffStringsUnified(aString, bString, options2)).to.equal(
-					snapshots['options omitAnnotationLines true diffStringsUnified and includeChangeCounts true 1']
-				)
+				jestExpect(diffStringsUnified(aString, bString, options2)).toMatchSnapshot()
 			end)
 
 			it('diffStringsUnified empty strings', function()
-				expect(diffStringsUnified('', '', options)).to.equal(
-					snapshots['options omitAnnotationLines true diffStringsUnified empty strings 1']
-				)
+				jestExpect(diffStringsUnified('', '', options)).toMatchSnapshot()
 			end)
 		end)
 
@@ -950,9 +912,7 @@ Options:
 			}, '\n')
 
 			it('diffDefault default no color', function()
-				expect(diff(aTrailingSpaces, bTrailingSpaces)).to.equal(
-					snapshots['options trailingSpaceFormatter diffDefault default no color 1']
-				)
+				jestExpect(diff(aTrailingSpaces, bTrailingSpaces)).toMatchSnapshot()
 			end)
 
 			it('diffDefault middle dot', function()
@@ -962,9 +922,7 @@ Options:
 					commonLineTrailingSpaceColor = replaceSpacesWithMiddleDot,
 				}
 
-				expect(diff(aTrailingSpaces, bTrailingSpaces, options)).to.equal(
-					snapshots['options trailingSpaceFormatter diffDefault middle dot 1']
-				)
+				jestExpect(diff(aTrailingSpaces, bTrailingSpaces, options)).toMatchSnapshot()
 			end)
 
 			it('diffDefault yellowish common', function()
@@ -972,9 +930,7 @@ Options:
 					commonLineTrailingSpaceColor = chalk.bgYellow
 				}
 
-				expect(diff(aTrailingSpaces, bTrailingSpaces, options)).to.equal(
-					snapshots['options trailingSpaceFormatter diffDefault yellowish common 1']
-				)
+				jestExpect(diff(aTrailingSpaces, bTrailingSpaces, options)).toMatchSnapshot()
 			end)
 		end)
 
@@ -994,11 +950,11 @@ Options:
 			}, '\n')
 
 			it('diffDefault', function()
-				expect(diff(aEmpty, bEmpty, options)).to.equal(expected)
+				jestExpect(diff(aEmpty, bEmpty, options)).toBe(expected)
 			end)
 
 			it('diffStringsUnified', function()
-				expect(diffStringsUnified(aEmpty, bEmpty, options)).to.equal(expected)
+				jestExpect(diffStringsUnified(aEmpty, bEmpty, options)).toBe(expected)
 			end)
 		end)
 	end)

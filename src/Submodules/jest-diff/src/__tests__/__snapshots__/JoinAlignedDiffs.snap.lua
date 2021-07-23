@@ -1,6 +1,7 @@
 local snapshots = {}
 
-snapshots['joinAlignedDiffsExpand first line is empty common 1'] = [[
+snapshots['joinAlignedDiffsExpand first line is empty common 1'] = [=[
+
   ↵
   common 2 preceding A
   common 1 preceding A
@@ -29,15 +30,19 @@ snapshots['joinAlignedDiffsExpand first line is empty common 1'] = [[
   common 2 following C
   common 3 following C
 
-  common 5 following C]]
+  common 5 following C
+]=]
 
-snapshots['joinAlignedDiffsNoExpand patch 0 with context 1 and change at start and end 1'] = [[
+snapshots['joinAlignedDiffsNoExpand patch 0 with context 1 and change at start and end 1'] = [=[
+
 - delete
   common following delete
   common preceding insert
-+ insert]]
++ insert
+]=]
 
-snapshots['joinAlignedDiffsNoExpand patch 0 with context 5 and first line is empty common 1'] = [[
+snapshots['joinAlignedDiffsNoExpand patch 0 with context 5 and first line is empty common 1'] = [=[
+
   ↵
   common 2 preceding A
   common 1 preceding A
@@ -66,9 +71,11 @@ snapshots['joinAlignedDiffsNoExpand patch 0 with context 5 and first line is emp
   common 2 following C
   common 3 following C
 
-  common 5 following C]]
+  common 5 following C
+]=]
 
-snapshots['joinAlignedDiffsNoExpand patch 1 with context 4 and last line is empty common 1'] = [[
+snapshots['joinAlignedDiffsNoExpand patch 1 with context 4 and last line is empty common 1'] = [=[
+
 @@ -1,24 +1,24 @@
 
   common 2 preceding A
@@ -97,9 +104,11 @@ snapshots['joinAlignedDiffsNoExpand patch 1 with context 4 and last line is empt
   common 1 following C
   common 2 following C
   common 3 following C
-  ↵]]
+  ↵
+]=]
 
-snapshots['joinAlignedDiffsNoExpand patch 2 with context 3 1'] = [[
+snapshots['joinAlignedDiffsNoExpand patch 2 with context 3 1'] = [=[
+
 @@ -1,8 +1,7 @@
 
   common 2 preceding A
@@ -126,9 +135,11 @@ snapshots['joinAlignedDiffsNoExpand patch 2 with context 3 1'] = [[
 + change <i>receiv</i>ed C
   common 1 following C
   common 2 following C
-  common 3 following C]]
+  common 3 following C
+]=]
 
-snapshots['joinAlignedDiffsNoExpand patch 3 with context 2 and omit excess common at start 1'] = [[
+snapshots['joinAlignedDiffsNoExpand patch 3 with context 2 and omit excess common at start 1'] = [=[
+
 @@ -2,6 +2,5 @@
   common 2 preceding A
   common 1 preceding A
@@ -151,6 +162,7 @@ snapshots['joinAlignedDiffsNoExpand patch 3 with context 2 and omit excess commo
 - change <i>expect</i>ed C
 + change <i>receiv</i>ed C
   common 1 following C
-  common 2 following C]]
+  common 2 following C
+]=]
 
 return snapshots

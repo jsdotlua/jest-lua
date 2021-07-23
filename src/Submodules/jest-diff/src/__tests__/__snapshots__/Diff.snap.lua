@@ -3,376 +3,446 @@
 local snapshots = {}
 
 -- deviation: } instead of }
-snapshots['collapses big diffs to patch format 1'] = [[
-[32m- Expected[39m
-[31m+ Received[39m
+snapshots['collapses big diffs to patch format 1'] = [=[
 
-[33m@@ -6,9 +6,9 @@[39m
-[2m      4,[22m
-[2m      5,[22m
-[2m      6,[22m
-[2m      7,[22m
-[2m      8,[22m
-[32m-     9,[39m
-[2m      10,[22m
-[31m+     9,[39m
-[2m    },[22m
-[2m  }[22m]]
+<g>- Expected</>
+<r>+ Received</>
 
-snapshots['color of text (expanded) 1'] = [[
-[32m- Expected[39m
-[31m+ Received[39m
+<y>@@ -6,9 +6,9 @@</>
+<d>      4,</>
+<d>      5,</>
+<d>      6,</>
+<d>      7,</>
+<d>      8,</>
+<g>-     9,</>
+<d>      10,</>
+<r>+     9,</>
+<d>    },</>
+<d>  }</>
+]=]
 
-[2m  Table {[22m
-[2m    "searching": "",[22m
-[2m    "sorting": Table {[22m
-[31m+     Table {[39m
-[2m        "descending": false,[22m
-[2m        "fieldKey": "what",[22m
-[31m+     },[39m
-[2m    },[22m
-[2m  }[22m]]
+snapshots['color of text (expanded) 1'] = [=[
+
+<g>- Expected</>
+<r>+ Received</>
+
+<d>  Table {</>
+<d>    "searching": "",</>
+<d>    "sorting": Table {</>
+<r>+     Table {</>
+<d>        "descending": false,</>
+<d>        "fieldKey": "what",</>
+<r>+     },</>
+<d>    },</>
+<d>  }</>
+]=]
 
 -- deviation: all context number of lines tests use } instead of }
-snapshots['context number of lines: -1 (5 default) 1'] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+snapshots['context number of lines: -1 (5 default) 1'] = [=[
 
-[2m@@ -6,9 +6,9 @@[22m
-[2m      4,[22m
-[2m      5,[22m
-[2m      6,[22m
-[2m      7,[22m
-[2m      8,[22m
-[32m-     9,[39m
-[2m      10,[22m
-[31m+     9,[39m
-[2m    },[22m
-[2m  }[22m]]
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
 
-snapshots['context number of lines: 0  1'] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+<d>@@ -6,9 +6,9 @@</>
+<d>      4,</>
+<d>      5,</>
+<d>      6,</>
+<d>      7,</>
+<d>      8,</>
+<g>-     9,</>
+<d>      10,</>
+<r>+     9,</>
+<d>    },</>
+<d>  }</>
+]=]
 
-[33m@@ -11,1 +11,0 @@[39m
-[32m-     9,[39m
-[33m@@ -13,0 +12,1 @@[39m
-[31m+     9,[39m]]
+snapshots['context number of lines: 0  1'] = [=[
 
-snapshots['context number of lines: 1  1'] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
 
-[33m@@ -10,4 +10,4 @@[39m
-[2m      8,[22m
-[32m-     9,[39m
-[2m      10,[22m
-[31m+     9,[39m
-[2m    },[22m]]
+<y>@@ -11,1 +11,0 @@</>
+<g>-     9,</>
+<y>@@ -13,0 +12,1 @@</>
+<r>+     9,</>
+]=]
 
-snapshots['context number of lines: 2  1'] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+snapshots['context number of lines: 1  1'] = [=[
 
-[33m@@ -9,6 +9,6 @@[39m
-[2m      7,[22m
-[2m      8,[22m
-[32m-     9,[39m
-[2m      10,[22m
-[31m+     9,[39m
-[2m    },[22m
-[2m  }[22m]]
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
 
-snapshots['context number of lines: 3.1 (5 default) 1'] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+<y>@@ -10,4 +10,4 @@</>
+<d>      8,</>
+<g>-     9,</>
+<d>      10,</>
+<r>+     9,</>
+<d>    },</>
+]=]
 
-[2m@@ -6,9 +6,9 @@[22m
-[2m      4,[22m
-[2m      5,[22m
-[2m      6,[22m
-[2m      7,[22m
-[2m      8,[22m
-[32m-     9,[39m
-[2m      10,[22m
-[31m+     9,[39m
-[2m    },[22m
-[2m  }[22m]]
+snapshots['context number of lines: 2  1'] = [=[
+
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
+
+<y>@@ -9,6 +9,6 @@</>
+<d>      7,</>
+<d>      8,</>
+<g>-     9,</>
+<d>      10,</>
+<r>+     9,</>
+<d>    },</>
+<d>  }</>
+]=]
+
+snapshots['context number of lines: 3.1 (5 default) 1'] = [=[
+
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
+
+<d>@@ -6,9 +6,9 @@</>
+<d>      4,</>
+<d>      5,</>
+<d>      6,</>
+<d>      7,</>
+<d>      8,</>
+<g>-     9,</>
+<d>      10,</>
+<r>+     9,</>
+<d>    },</>
+<d>  }</>
+]=]
 
 -- deviation: nil instead of undefined
-snapshots['context number of lines: nil (5 default) 1'] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+snapshots['context number of lines: nil (5 default) 1'] = [=[
 
-[2m@@ -6,9 +6,9 @@[22m
-[2m      4,[22m
-[2m      5,[22m
-[2m      6,[22m
-[2m      7,[22m
-[2m      8,[22m
-[32m-     9,[39m
-[2m      10,[22m
-[31m+     9,[39m
-[2m    },[22m
-[2m  }[22m]]
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
 
-snapshots['diffStringsUnified edge cases empty both a and b 1'] = [[
-[32m- Expected  - 0[39m
-[31m+ Received  + 0[39m
+<d>@@ -6,9 +6,9 @@</>
+<d>      4,</>
+<d>      5,</>
+<d>      6,</>
+<d>      7,</>
+<d>      8,</>
+<g>-     9,</>
+<d>      10,</>
+<r>+     9,</>
+<d>    },</>
+<d>  }</>
+]=]
 
-]]
+snapshots['diffStringsUnified edge cases empty both a and b 1'] = [=[
 
-snapshots['diffStringsUnified edge cases empty only a 1'] = [[
-[32m- Expected  - 0[39m
-[31m+ Received  + 1[39m
+<g>- Expected  - 0</>
+<r>+ Received  + 0</>
 
-[31m+ one-line string[39m]]
 
-snapshots['diffStringsUnified edge cases empty only b 1'] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 0[39m
+]=]
 
-[32m- one-line string[39m]]
+snapshots['diffStringsUnified edge cases empty only a 1'] = [=[
 
-snapshots['diffStringsUnified edge cases equal both non-empty 1'] = [[
-[32m- Expected  - 0[39m
-[31m+ Received  + 0[39m
+<g>- Expected  - 0</>
+<r>+ Received  + 1</>
 
-[2m  one-line string[22m]]
+<r>+ one-line string</>
+]=]
 
-snapshots['diffStringsUnified edge cases multiline has no common after clean up chaff 1'] = [[
-[32m- Expected  - 2[39m
-[31m+ Received  + 2[39m
+snapshots['diffStringsUnified edge cases empty only b 1'] = [=[
 
-[32m- delete[39m
-[32m- two[39m
-[31m+ insert[39m
-[31m+ 2[39m]]
+<g>- Expected  - 1</>
+<r>+ Received  + 0</>
 
-snapshots['diffStringsUnified edge cases one-line has no common after clean up chaff 1'] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+<g>- one-line string</>
+]=]
 
-[32m- delete[39m
-[31m+ insert[39m]]
+snapshots['diffStringsUnified edge cases equal both non-empty 1'] = [=[
+
+<g>- Expected  - 0</>
+<r>+ Received  + 0</>
+
+<d>  one-line string</>
+]=]
+
+snapshots['diffStringsUnified edge cases multiline has no common after clean up chaff 1'] = [=[
+
+<g>- Expected  - 2</>
+<r>+ Received  + 2</>
+
+<g>- delete</>
+<g>- two</>
+<r>+ insert</>
+<r>+ 2</>
+]=]
+
+snapshots['diffStringsUnified edge cases one-line has no common after clean up chaff 1'] = [=[
+
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
+
+<g>- delete</>
+<r>+ insert</>
+]=]
 
 -- deviation: edited to say 'Table' and 'Function anonymous', ordering changed
-snapshots['falls back to not call toJSON if it throws and then objects have differences 1'] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+snapshots['falls back to not call toJSON if it throws and then objects have differences 1'] = [=[
 
-[2m  Table {[22m
-[32m-   "line": 1,[39m
-[31m+   "line": 2,[39m
-[2m    "toJSON": [Function anonymous],[22m
-[2m  }[22m]]
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
+
+<d>  Table {</>
+<g>-   "line": 1,</>
+<r>+   "line": 2,</>
+<d>    "toJSON": [Function anonymous],</>
+<d>  }</>
+]=]
 
 -- deviation: edited to say 'Table' and 'Function anonymous', ordering changed, unescaped backticks
-snapshots['falls back to not call toJSON if serialization has no differences but then objects have differences 1'] = [[
-[2mCompared values serialize to the same structure.
-Printing internal object structure without calling `toJSON` instead.[22m
+snapshots['falls back to not call toJSON if serialization has no differences but then objects have differences 1'] = [=[
 
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+<d>Compared values serialize to the same structure.
+Printing internal object structure without calling `toJSON` instead.</>
 
-[2m  Table {[22m
-[32m-   "line": 1,[39m
-[31m+   "line": 2,[39m
-[2m    "toJSON": [Function anonymous],[22m
-[2m  }[22m]]
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
 
-snapshots['oneline strings 1'] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+<d>  Table {</>
+<g>-   "line": 1,</>
+<r>+   "line": 2,</>
+<d>    "toJSON": [Function anonymous],</>
+<d>  }</>
+]=]
 
-[32m- ab[39m
-[31m+ aa[39m]]
+snapshots['oneline strings 1'] = [=[
 
-snapshots['oneline strings 2'] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
 
-[32m- 123456789[39m
-[31m+ 234567890[39m]]
+<g>- ab</>
+<r>+ aa</>
+]=]
 
-snapshots['oneline strings 3'] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 2[39m
+snapshots['oneline strings 2'] = [=[
 
-[32m- oneline[39m
-[31m+ multi[39m
-[31m+ line[39m]]
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
 
-snapshots['oneline strings 4'] = [[
-[32m- Expected  - 2[39m
-[31m+ Received  + 1[39m
+<g>- 123456789</>
+<r>+ 234567890</>
+]=]
 
-[32m- multi[39m
-[32m- line[39m
-[31m+ oneline[39m]]
+snapshots['oneline strings 3'] = [=[
+
+<g>- Expected  - 1</>
+<r>+ Received  + 2</>
+
+<g>- oneline</>
+<r>+ multi</>
+<r>+ line</>
+]=]
+
+snapshots['oneline strings 4'] = [=[
+
+<g>- Expected  - 2</>
+<r>+ Received  + 1</>
+
+<g>- multi</>
+<g>- line</>
+<r>+ oneline</>
+]=]
 
 -- deviation: unescaped backticks and ${}
-snapshots['options 7980 diff 1'] = [[
-[31m- Original[39m
-[32m+ Modified[39m
+snapshots['options 7980 diff 1'] = [=[
 
-[31m- `${Ti.App.name} ${Ti.App.version} ${Ti.Platform.name} ${Ti.Platform.version}`[39m
-[32m+ `${Ti.App.getName()} ${Ti.App.getVersion()} ${Ti.Platform.getName()} ${Ti.Platform.getVersion()}`[39m]]
+<r>- Original</>
+<g>+ Modified</>
+
+<r>- `${Ti.App.name} ${Ti.App.version} ${Ti.Platform.name} ${Ti.Platform.version}`</>
+<g>+ `${Ti.App.getName()} ${Ti.App.getVersion()} ${Ti.Platform.getName()} ${Ti.Platform.getVersion()}`</>
+]=]
 
 -- deviation: unescaped backticks and ${}
-snapshots['options 7980 diffStringsUnified 1'] = [[
-[31m- Original[39m
-[32m+ Modified[39m
+snapshots['options 7980 diffStringsUnified 1'] = [=[
 
-[31m- `${Ti.App.[7mn[27mame} ${Ti.App.[7mv[27mersion} ${Ti.Platform.[7mn[27mame} ${Ti.Platform.[7mv[27mersion}`[39m
-[32m+ `${Ti.App.[7mgetN[27mame[7m()[27m} ${Ti.App.[7mgetV[27mersion[7m()[27m} ${Ti.Platform.[7mgetN[27mame[7m()[27m} ${Ti.Platform.[7mgetV[27mersion[7m()[27m}`[39m]]
+<r>- Original</>
+<g>+ Modified</>
 
-snapshots['options change color diffStringsUnified 1'] = [[
-[32m- Expected[39m
-[31m+ Received[39m
+<r>- `${Ti.App.<i>n</i>ame} ${Ti.App.<i>v</i>ersion} ${Ti.Platform.<i>n</i>ame} ${Ti.Platform.<i>v</i>ersion}`</>
+<g>+ `${Ti.App.<i>getN</i>ame<i>()</i>} ${Ti.App.<i>getV</i>ersion<i>()</i>} ${Ti.Platform.<i>getN</i>ame<i>()</i>} ${Ti.Platform.<i>getV</i>ersion<i>()</i>}`</>
+]=]
 
-[32m- delete[39m
-[32m- changed [1mfrom[22m[39m
-[31m+ changed [1mto[22m[39m
-[31m+ insert[39m
-[33m  common[39m]]
+snapshots['options change color diffStringsUnified 1'] = [=[
 
-snapshots['options change color no diff 1'] = [[[33mCompared values have no visual difference.[39m]]
+<g>- Expected</>
+<r>+ Received</>
+
+<g>- delete</>
+<g>- changed <b>from</></>
+<r>+ changed <b>to</></>
+<r>+ insert</>
+<y>  common</>
+]=]
+
+snapshots['options change color no diff 1'] = [=[<y>Compared values have no visual difference.</>]=]
 
 -- deviation: Table {} instead of Array []
 snapshots['options change indicators diff 1'] = [=[
-[32m< Expected[39m
-[31m> Received[39m
 
-[2m  Table {[22m
-[32m<   "delete",[39m
-[32m<   "change from",[39m
-[31m>   "change to",[39m
-[31m>   "insert",[39m
-[2m    "common",[22m
-[2m  }[22m]=]
+<g>< Expected</>
+<r>> Received</>
+
+<d>  Table {</>
+<g><   "delete",</>
+<g><   "change from",</>
+<r>>   "change to",</>
+<r>>   "insert",</>
+<d>    "common",</>
+<d>  }</>
+]=]
 
 -- deviation: Table {} instead of Array []
 snapshots['options common diff 1'] = [=[
-[32m- Expected[39m
-[31m+ Received[39m
+
+<g>- Expected</>
+<r>+ Received</>
 
 = Table {
-[32m-   "delete",[39m
-[32m-   "change from",[39m
-[31m+   "change to",[39m
-[31m+   "insert",[39m
+<g>-   "delete",</>
+<g>-   "change from",</>
+<r>+   "change to",</>
+<r>+   "insert",</>
 =   "common",
-= }]=]
+= }
+]=]
 
 -- deviation: Table {} instead of Array []
 snapshots['options includeChangeCounts false diffLinesUnified 1'] = [=[
-[32m- Expected[39m
-[31m+ Received[39m
 
-[2m  Table {[22m
-[32m-   "delete",[39m
-[32m-   "change from",[39m
-[31m+   "change to",[39m
-[31m+   "insert",[39m
-[2m    "common",[22m
-[2m  }[22m]=]
+<g>- Expected</>
+<r>+ Received</>
 
-snapshots['options includeChangeCounts false diffStringsUnified 1'] = [[
-[32m- Expected[39m
-[31m+ Received[39m
+<d>  Table {</>
+<g>-   "delete",</>
+<g>-   "change from",</>
+<r>+   "change to",</>
+<r>+   "insert",</>
+<d>    "common",</>
+<d>  }</>
+]=]
 
-[32m- change [7mfrom[27m[39m
-[31m+ change [7mto[27m[39m
-[2m  common[22m]]
+snapshots['options includeChangeCounts false diffStringsUnified 1'] = [=[
 
-snapshots['options includeChangeCounts true padding diffLinesUnified a has 2 digits 1'] = [[
-[32m- Before  - 10[39m
-[31m+ After   +  1[39m
+<g>- Expected</>
+<r>+ Received</>
 
-[2m  common[22m
-[32m- a[39m
-[32m- a[39m
-[32m- a[39m
-[32m- a[39m
-[32m- a[39m
-[32m- a[39m
-[32m- a[39m
-[32m- a[39m
-[32m- a[39m
-[32m- a[39m
-[31m+ b[39m]]
+<g>- change <i>from</i></>
+<r>+ change <i>to</i></>
+<d>  common</>
+]=]
 
-snapshots['options includeChangeCounts true padding diffLinesUnified b has 2 digits 1'] = [[
-[32m- Before  -  1[39m
-[31m+ After   + 10[39m
+snapshots['options includeChangeCounts true padding diffLinesUnified a has 2 digits 1'] = [=[
 
-[2m  common[22m
-[32m- a[39m
-[31m+ b[39m
-[31m+ b[39m
-[31m+ b[39m
-[31m+ b[39m
-[31m+ b[39m
-[31m+ b[39m
-[31m+ b[39m
-[31m+ b[39m
-[31m+ b[39m
-[31m+ b[39m]]
+<g>- Before  - 10</>
+<r>+ After   +  1</>
 
-snapshots['options includeChangeCounts true padding diffStringsUnified 1'] = [[
-[32m- Before  - 1[39m
-[31m+ After   + 1[39m
+<d>  common</>
+<g>- a</>
+<g>- a</>
+<g>- a</>
+<g>- a</>
+<g>- a</>
+<g>- a</>
+<g>- a</>
+<g>- a</>
+<g>- a</>
+<g>- a</>
+<r>+ b</>
+]=]
 
-[32m- change [7mfrom[27m[39m
-[31m+ change [7mto[27m[39m
-[2m  common[22m]]
+snapshots['options includeChangeCounts true padding diffLinesUnified b has 2 digits 1'] = [=[
+
+<g>- Before  -  1</>
+<r>+ After   + 10</>
+
+<d>  common</>
+<g>- a</>
+<r>+ b</>
+<r>+ b</>
+<r>+ b</>
+<r>+ b</>
+<r>+ b</>
+<r>+ b</>
+<r>+ b</>
+<r>+ b</>
+<r>+ b</>
+<r>+ b</>
+]=]
+
+snapshots['options includeChangeCounts true padding diffStringsUnified 1'] = [=[
+
+<g>- Before  - 1</>
+<r>+ After   + 1</>
+
+<g>- change <i>from</i></>
+<r>+ change <i>to</i></>
+<d>  common</>
+]=]
 
 -- deviation: Table {} instead of Array []
 snapshots['options omitAnnotationLines true diff 1'] = [=[
-[2m  Table {[22m
-[32m-   "delete",[39m
-[32m-   "change from",[39m
-[31m+   "change to",[39m
-[31m+   "insert",[39m
-[2m    "common",[22m
-[2m  }[22m]=]
 
-snapshots['options omitAnnotationLines true diffStringsUnified and includeChangeCounts true 1'] = [[
-[32m- change [7mfrom[27m[39m
-[31m+ change [7mto[27m[39m
-[2m  common[22m]]
+<d>  Table {</>
+<g>-   "delete",</>
+<g>-   "change from",</>
+<r>+   "change to",</>
+<r>+   "insert",</>
+<d>    "common",</>
+<d>  }</>
+]=]
+
+snapshots['options omitAnnotationLines true diffStringsUnified and includeChangeCounts true 1'] = [=[
+
+<g>- change <i>from</i></>
+<r>+ change <i>to</i></>
+<d>  common</>
+]=]
 
 snapshots['options omitAnnotationLines true diffStringsUnified empty strings 1'] = ''
 
-snapshots['options trailingSpaceFormatter diffDefault default no color 1'] = [[
-[32m- Expected[39m
-[31m+ Received[39m
+snapshots['options trailingSpaceFormatter diffDefault default no color 1'] = [=[
 
-[32m- delete 1 trailing space: [39m
-[31m+ delete 1 trailing space:[39m
-[2m  common 2 trailing spaces:  [22m
-[32m- insert 1 trailing space:[39m
-[31m+ insert 1 trailing space: [39m]]
+<g>- Expected</>
+<r>+ Received</>
 
-snapshots['options trailingSpaceFormatter diffDefault middle dot 1'] = [[
-[32m- Expected[39m
-[31m+ Received[39m
+<g>- delete 1 trailing space: </>
+<r>+ delete 1 trailing space:</>
+<d>  common 2 trailing spaces:  </>
+<g>- insert 1 trailing space:</>
+<r>+ insert 1 trailing space: </>
+]=]
 
-[32m- delete 1 trailing space:·[39m
-[31m+ delete 1 trailing space:[39m
-[2m  common 2 trailing spaces:··[22m
-[32m- insert 1 trailing space:[39m
-[31m+ insert 1 trailing space:·[39m]]
+snapshots['options trailingSpaceFormatter diffDefault middle dot 1'] = [=[
 
-snapshots['options trailingSpaceFormatter diffDefault yellowish common 1'] = [[
-[32m- Expected[39m
-[31m+ Received[39m
+<g>- Expected</>
+<r>+ Received</>
 
-[32m- delete 1 trailing space: [39m
-[31m+ delete 1 trailing space:[39m
-[2m  common 2 trailing spaces:[43m  [49m[22m
-[32m- insert 1 trailing space:[39m
-[31m+ insert 1 trailing space: [39m]]
+<g>- delete 1 trailing space:·</>
+<r>+ delete 1 trailing space:</>
+<d>  common 2 trailing spaces:··</>
+<g>- insert 1 trailing space:</>
+<r>+ insert 1 trailing space:·</>
+]=]
+
+snapshots['options trailingSpaceFormatter diffDefault yellowish common 1'] = [=[
+
+<g>- Expected</>
+<r>+ Received</>
+
+<g>- delete 1 trailing space: </>
+<r>+ delete 1 trailing space:</>
+<d>  common 2 trailing spaces:<Y>  </></>
+<g>- insert 1 trailing space:</>
+<r>+ insert 1 trailing space: </>
+]=]
 
 return snapshots
