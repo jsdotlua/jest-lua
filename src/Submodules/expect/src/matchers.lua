@@ -943,11 +943,12 @@ local function toMatch(this: MatcherState, received: string, expected: any)
 
 	local pass
 	if typeof(expected) == 'string' then
+		-- deviation: escape chalk sequences if necessary
+		expected = string.gsub(expected, string.char(27) .. "%[", string.char(27) .. "%%[")
 		pass = received:find(expected) ~= nil
 	else
 		pass = expected:test(received)
 	end
-
 
 	-- deviation: We print "expected pattern" in both cases because this function
 	-- treats strings as Lua patterns

@@ -1,3 +1,4 @@
+--!nocheck
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-matcher-utils/src/__tests__/printDiffOrStringify.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -12,20 +13,25 @@ return function()
 	local Modules = CurrentModule.Parent
 	local Packages = Modules.Parent.Parent
 
-	local snapshots = require(script.Parent.__snapshots__["printDiffOrStringify.snap"])
-
 	local Symbol = require(Packages.LuauPolyfill).Symbol
 
 	local printDiffOrStringify = require(CurrentModule).printDiffOrStringify
 	-- deviation: omitted INVERTED_COLOR import because it doesn't have an
 	-- actual implementation yet
 
-	-- deviation: omitted alignedAnsiStyleSerializer
-
 	local jestExpect = require(Modules.Expect)
+	local alignedAnsiStyleSerializer = require(Modules.TestUtils).alignedAnsiStyleSerializer
 
 	type Array<T> = { T }
 	type Map<X, Y> = { [X]: Y }
+
+	beforeAll(function()
+		jestExpect.addSnapshotSerializer(alignedAnsiStyleSerializer)
+	end)
+
+	afterAll(function()
+		jestExpect.resetSnapshotSerializers()
+	end)
 
 	describe("printDiffOrStringify", function()
 		local function testDiffOrStringify(expected: any, received: any): string
@@ -35,37 +41,37 @@ return function()
 		it("expected is empty and received is single line", function()
 			local expected = ""
 			local received = "single line"
-			expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify expected is empty and received is single line 1"])
+			jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 		end)
 
 		it("expected is multi line and received is empty", function()
 			local expected = "multi\nline"
 			local received = ""
-			expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify expected is multi line and received is empty 1"])
+			jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 		end)
 
 		it("expected and received are single line with multiple changes", function()
 			local expected = "delete common expected common prev"
 			local received = "insert common received common next"
-			expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify expected and received are single line with multiple changes 1"])
+			jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 		end)
 
 		it("expected and received are multi line with trailing spaces", function()
 			local expected = "delete \ncommon expected common\nprev "
 			local received = "insert \ncommon received common\nnext "
-			expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify expected and received are multi line with trailing spaces 1"])
+			jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 		end)
 
 		it("has no common after clean up chaff multiline", function()
 			local expected = "delete\ntwo"
 			local received = "insert\n2"
-			expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify has no common after clean up chaff multiline 1"])
+			jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 		end)
 
 		it("has no common after clean up chaff one-line", function()
 			local expected = "delete"
 			local received = "insert"
-			expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify has no common after clean up chaff one-line 1"])
+			jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 		end)
 
 		it("object contain readonly symbol key object", function()
@@ -76,7 +82,7 @@ return function()
 			local symbolKey = Symbol("key")
 			expected["a"] = symbolKey
 			received["a"] = symbolKey
-			expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify object contain readonly symbol key object 1"])
+			jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 		end)
 
 		describe("MAX_DIFF_STRING_LENGTH", function()
@@ -89,8 +95,8 @@ return function()
 			it("both are less", function()
 				local difference = testDiffOrStringify("multi\nline", less)
 
-				expect(difference:match("%- multi")).never.to.equal(nil)
-				expect(difference:match("%- line")).never.to.equal(nil)
+				jestExpect(difference).toMatch("%- multi")
+				jestExpect(difference).toMatch("%- line")
 
 				-- deviation: omitted expect.not.toMatch call since we don't
 				-- have the chalk library implemented and diffStringsUnified
@@ -101,8 +107,8 @@ return function()
 			it("expected is more", function()
 				local difference = testDiffOrStringify(more, less)
 
-				expect(difference:match("%- multi line"))
-				expect(difference:match("%+ single line"))
+				jestExpect(difference).toMatch("%- multi line")
+				jestExpect(difference).toMatch("%+ single line")
 
 				-- deviation: omitted expect.not.toMatch call with lessChange
 			end)
@@ -110,8 +116,8 @@ return function()
 			it("received is more", function()
 				local difference = testDiffOrStringify(less, more)
 
-				expect(difference:match("%- single line")).never.to.equal(nil)
-				expect(difference:match("%+ multi line")).never.to.equal(nil)
+				jestExpect(difference).toMatch("%- single line")
+				jestExpect(difference).toMatch("%+ multi line")
 
 				-- deviation: omitted expect.not.toMatch call with lessChange
 			end)
@@ -122,7 +128,7 @@ return function()
 			it("minimal test", function()
 				local expected = {a = jestExpect.any("number"), b = 2}
 				local received = {a = 1, b = 1}
-				expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify asymmetricMatcher minimal test 1"])
+				jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 			end)
 
 			it("jest asymmetricMatcher", function()
@@ -158,7 +164,7 @@ return function()
 				received["h"] = {}
 				received["h"][Symbol.for_("h")] = jestExpect.any("string")
 
-				expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify asymmetricMatcher jest asymmetricMatcher 1"])
+				jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 			end)
 
 			-- ROBLOX TODO: implement this test once we can write custom asymmetricMatchers
@@ -185,7 +191,7 @@ return function()
 			-- 		b: true,
 			-- 	};
 
-			-- 	expect(testDiffOrStringify(expected, received)).toMatchSnapshot();
+			-- 	jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot();
 			-- });
 
 			it("nested object", function()
@@ -205,19 +211,19 @@ return function()
 					},
 					c = 1,
 				}
-				expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify asymmetricMatcher nested object 1"])
+				jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 			end)
 
 			it("array", function()
 				local expected : Array<any> = {1, jestExpect.any("number"), 3}
 				local received : Array<any> = {1, 2, 2}
-				expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify asymmetricMatcher array 1"])
+				jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 			end)
 
 			it("object in array", function()
 				local expected : Array<any> = {1, {a = 1, b = jestExpect.any("number")}, 3}
 				local received : Array<any> = {1, {a = 1, b = 2}, 2}
-				expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify asymmetricMatcher object in array 1"])
+				jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 			end)
 
 			it("map", function()
@@ -231,7 +237,7 @@ return function()
 					b = 2,
 					c = 2,
 				}
-				expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify asymmetricMatcher map 1"])
+				jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 			end)
 
 			it("circular object", function()
@@ -245,7 +251,7 @@ return function()
 					c = 2,
 				}
 				received.a = received
-				expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify asymmetricMatcher circular object 1"])
+				jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 			end)
 
 			it("transitive circular", function()
@@ -257,7 +263,7 @@ return function()
 					a = 2,
 				}
 				received.nested = {b = 2, parent = received}
-				expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify asymmetricMatcher transitive circular 1"])
+				jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 			end)
 
 			it("circular array", function()
@@ -265,7 +271,7 @@ return function()
 				table.insert(expected, expected)
 				local received: Array<any> = {1, 2, 2}
 				table.insert(received, received)
-				expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify asymmetricMatcher circular array 1"])
+				jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 			end)
 
 			it("circular map", function()
@@ -281,9 +287,8 @@ return function()
 					c = 2,
 				}
 				received["circular"] = received
-				expect(testDiffOrStringify(expected, received)).to.equal(snapshots["printDiffOrStringify asymmetricMatcher circular map 1"])
+				jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 			end)
 		end)
 	end)
 end
-

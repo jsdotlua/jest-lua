@@ -14,7 +14,7 @@ local Packages = Modules.Parent.Parent
 local chalk = require(Packages.ChalkLua)
 
 -- deviation: this regex attempts to match both ansi16 and ansi256 regexes
-local ansiRegex = "\x1b%[%d+;?5?;?%d*m"
+local ansiRegex = string.char(27).. "%[%d+;?5?;?%d*m"
 
 local ansiLookupTable = {
 	[chalk.red.close] = "</>",

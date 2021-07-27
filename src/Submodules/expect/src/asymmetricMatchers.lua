@@ -280,6 +280,8 @@ function StringMatching:asymmetricMatch(other: string): boolean
 	if isA('string', other) then
 		-- Lua pattern case
 		if isA('string', self.sample) then
+			-- deviation: escape chalk sequences if necessary
+			self.sample = string.gsub(self.sample, string.char(27) .. "%[", string.char(27) .. "%%[")
 			result = other:find(self.sample)
 		-- Regex case
 		else

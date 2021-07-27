@@ -1,66 +1,76 @@
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-matcher-utils/src/__tests__/__snapshots__/printDiffOrStringify.test.ts.snap
 
---[[
+--[=[
     deviation: Many of the tests have their outputs rearranged (while
     maintaining the same contents) to align with the output order in Lua
 
     deviation: edited several of the following snapshots to use 'Table' in
     place of 'Object' and 'Array'
-]]
+]=]
+
 local snapshots = {}
 
-snapshots["printDiffOrStringify asymmetricMatcher array 1"] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+snapshots["printDiffOrStringify asymmetricMatcher array 1"] = [=[
 
-[2m  Table {[22m
-[2m    1,[22m
-[2m    Any<number>,[22m
-[32m-   3,[39m
-[31m+   2,[39m
-[2m  }[22m]]
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
 
-snapshots["printDiffOrStringify asymmetricMatcher circular array 1"] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+<d>  Table {</>
+<d>    1,</>
+<d>    Any<number>,</>
+<g>-   3,</>
+<r>+   2,</>
+<d>  }</>
+]=]
 
-[2m  Table {[22m
-[2m    1,[22m
-[2m    Any<number>,[22m
-[32m-   3,[39m
-[31m+   2,[39m
-[2m    [Circular],[22m
-[2m  }[22m]]
+snapshots["printDiffOrStringify asymmetricMatcher circular array 1"] = [=[
+
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
+
+<d>  Table {</>
+<d>    1,</>
+<d>    Any<number>,</>
+<g>-   3,</>
+<r>+   2,</>
+<d>    [Circular],</>
+<d>  }</>
+]=]
 
 -- deviation: The original snapshot had another level of information for the
 -- "circular" reference rather than immediately saying it was Circular:
 -- https://github.com/facebook/jest/blob/v26.5.3/packages/jest-matcher-utils/src/__tests__/__snapshots__/printDiffOrStringify.test.ts.snap#L37
 -- However, in our implementation Maps and Objects are treated identically so
 -- circular would be printed at the surface level in both cases
-snapshots["printDiffOrStringify asymmetricMatcher circular map 1"] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+snapshots["printDiffOrStringify asymmetricMatcher circular map 1"] = [=[
 
-[2m  Table {[22m
-[2m    "a": 1,[22m
-[2m    "b": Any<number>,[22m
-[32m-   "c": 3,[39m
-[31m+   "c": 2,[39m
-[2m    "circular": [Circular],[22m
-[2m  }[22m]]
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
 
-snapshots["printDiffOrStringify asymmetricMatcher circular object 1"] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+<d>  Table {</>
+<d>    "a": 1,</>
+<d>    "b": Any<number>,</>
+<g>-   "c": 3,</>
+<r>+   "c": 2,</>
+<d>    "circular": [Circular],</>
+<d>  }</>
+]=]
 
-[2m  Table {[22m
-[2m    "a": [Circular],[22m
-[2m    "b": Any<number>,[22m
-[32m-   "c": 3,[39m
-[31m+   "c": 2,[39m
-[2m  }[22m]]
+snapshots["printDiffOrStringify asymmetricMatcher circular object 1"] = [=[
 
-snapshots["printDiffOrStringify asymmetricMatcher custom asymmetricMatcher 1"] = [[
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
+
+<d>  Table {</>
+<d>    "a": [Circular],</>
+<d>    "b": Any<number>,</>
+<g>-   "c": 3,</>
+<r>+   "c": 2,</>
+<d>  }</>
+]=]
+
+snapshots["printDiffOrStringify asymmetricMatcher custom asymmetricMatcher 1"] = [=[
+
 - Expected  - 1
 + Received  + 1
 
@@ -69,141 +79,168 @@ snapshots["printDiffOrStringify asymmetricMatcher custom asymmetricMatcher 1"] =
 -   "b": false,
 +   "b": true,
   }
-]]
+
+]=]
 
 -- deviation: test modified from having a Symbol as a key to having "h" as a
 -- key, with "h" mapping to a table which in turn holds the original symbol.
 -- This was done to prevent indeterministic output order in Lua
-snapshots["printDiffOrStringify asymmetricMatcher jest asymmetricMatcher 1"] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+snapshots["printDiffOrStringify asymmetricMatcher jest asymmetricMatcher 1"] = [=[
 
-[2m  Table {[22m
-[2m    "a": Any<number>,[22m
-[2m    "b": Anything,[22m
-[2m    "c": ArrayContaining {[22m
-[2m      1,[22m
-[2m      3,[22m
-[2m    },[22m
-[2m    "d": StringContaining "jest",[22m
-[2m    "e": StringMatching "jest",[22m
-[2m    "f": ObjectContaining {[22m
-[2m      "a": Any<DateTime>,[22m
-[2m    },[22m
-[32m-   "g": true,[39m
-[31m+   "g": false,[39m
-[2m    "h": Table {[22m
-[2m      Symbol(h): Any<string>,[22m
-[2m    },[22m
-[2m  }[22m]]
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
 
-snapshots["printDiffOrStringify asymmetricMatcher map 1"] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+<d>  Table {</>
+<d>    "a": Any<number>,</>
+<d>    "b": Anything,</>
+<d>    "c": ArrayContaining {</>
+<d>      1,</>
+<d>      3,</>
+<d>    },</>
+<d>    "d": StringContaining "jest",</>
+<d>    "e": StringMatching "jest",</>
+<d>    "f": ObjectContaining {</>
+<d>      "a": Any<DateTime>,</>
+<d>    },</>
+<g>-   "g": true,</>
+<r>+   "g": false,</>
+<d>    "h": Table {</>
+<d>      Symbol(h): Any<string>,</>
+<d>    },</>
+<d>  }</>
+]=]
 
-[2m  Table {[22m
-[2m    "a": 1,[22m
-[2m    "b": Any<number>,[22m
-[32m-   "c": 3,[39m
-[31m+   "c": 2,[39m
-[2m  }[22m]]
+snapshots["printDiffOrStringify asymmetricMatcher map 1"] = [=[
 
-snapshots["printDiffOrStringify asymmetricMatcher minimal test 1"] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
 
-[2m  Table {[22m
-[2m    "a": Any<number>,[22m
-[32m-   "b": 2,[39m
-[31m+   "b": 1,[39m
-[2m  }[22m]]
+<d>  Table {</>
+<d>    "a": 1,</>
+<d>    "b": Any<number>,</>
+<g>-   "c": 3,</>
+<r>+   "c": 2,</>
+<d>  }</>
+]=]
 
-snapshots["printDiffOrStringify asymmetricMatcher nested object 1"] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+snapshots["printDiffOrStringify asymmetricMatcher minimal test 1"] = [=[
 
-[2m  Table {[22m
-[2m    "a": Any<number>,[22m
-[2m    "b": Table {[22m
-[2m      "a": 1,[22m
-[2m      "b": Any<number>,[22m
-[2m    },[22m
-[32m-   "c": 2,[39m
-[31m+   "c": 1,[39m
-[2m  }[22m]]
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
 
-snapshots["printDiffOrStringify asymmetricMatcher object in array 1"] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+<d>  Table {</>
+<d>    "a": Any<number>,</>
+<g>-   "b": 2,</>
+<r>+   "b": 1,</>
+<d>  }</>
+]=]
 
-[2m  Table {[22m
-[2m    1,[22m
-[2m    Table {[22m
-[2m      "a": 1,[22m
-[2m      "b": Any<number>,[22m
-[2m    },[22m
-[32m-   3,[39m
-[31m+   2,[39m
-[2m  }[22m]]
+snapshots["printDiffOrStringify asymmetricMatcher nested object 1"] = [=[
 
-snapshots["printDiffOrStringify asymmetricMatcher transitive circular 1"] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
 
-[2m  Table {[22m
-[32m-   "a": 3,[39m
-[31m+   "a": 2,[39m
-[2m    "nested": Table {[22m
-[2m      "b": Any<number>,[22m
-[2m      "parent": [Circular],[22m
-[2m    },[22m
-[2m  }[22m]]
+<d>  Table {</>
+<d>    "a": Any<number>,</>
+<d>    "b": Table {</>
+<d>      "a": 1,</>
+<d>      "b": Any<number>,</>
+<d>    },</>
+<g>-   "c": 2,</>
+<r>+   "c": 1,</>
+<d>  }</>
+]=]
 
-snapshots["printDiffOrStringify expected and received are multi line with trailing spaces 1"] = [[
-[32m- Expected  - 3[39m
-[31m+ Received  + 3[39m
+snapshots["printDiffOrStringify asymmetricMatcher object in array 1"] = [=[
 
-[32m- [7mdelete[27m[43m [49m[39m
-[31m+ [7minsert[27m[43m [49m[39m
-[32m- common [7mexpect[27med common[39m
-[31m+ common [7mreceiv[27med common[39m
-[32m- [7mprev[27m[43m [49m[39m
-[31m+ [7mnext[27m[43m [49m[39m]]
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
 
-snapshots["printDiffOrStringify expected and received are single line with multiple changes 1"] = [[
-Expected: [32m"[7mdelete[27m common [7mexpect[27med common [7mprev[27m"[39m
-Received: [31m"[7minsert[27m common [7mreceiv[27med common [7mnext[27m"[39m]]
+<d>  Table {</>
+<d>    1,</>
+<d>    Table {</>
+<d>      "a": 1,</>
+<d>      "b": Any<number>,</>
+<d>    },</>
+<g>-   3,</>
+<r>+   2,</>
+<d>  }</>
+]=]
 
-snapshots["printDiffOrStringify expected is empty and received is single line 1"] = [[
-Expected: [32m""[39m
-Received: [31m"single line"[39m]]
+snapshots["printDiffOrStringify asymmetricMatcher transitive circular 1"] = [=[
 
-snapshots["printDiffOrStringify expected is multi line and received is empty 1"] = [[
-Expected: [32m"multi
-line"[39m
-Received: [31m""[39m]]
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
 
-snapshots["printDiffOrStringify has no common after clean up chaff multiline 1"] = [[
-[32m- Expected  - 2[39m
-[31m+ Received  + 2[39m
+<d>  Table {</>
+<g>-   "a": 3,</>
+<r>+   "a": 2,</>
+<d>    "nested": Table {</>
+<d>      "b": Any<number>,</>
+<d>      "parent": [Circular],</>
+<d>    },</>
+<d>  }</>
+]=]
 
-[32m- delete[39m
-[32m- two[39m
-[31m+ insert[39m
-[31m+ 2[39m]]
+snapshots["printDiffOrStringify expected and received are multi line with trailing spaces 1"] = [=[
 
-snapshots["printDiffOrStringify has no common after clean up chaff one-line 1"] = [[
-Expected: [32m"delete"[39m
-Received: [31m"insert"[39m]]
+<g>- Expected  - 3</>
+<r>+ Received  + 3</>
 
-snapshots["printDiffOrStringify object contain readonly symbol key object 1"] = [[
-[32m- Expected  - 1[39m
-[31m+ Received  + 1[39m
+<g>- <i>delete</i><Y> </></>
+<r>+ <i>insert</i><Y> </></>
+<g>- common <i>expect</i>ed common</>
+<r>+ common <i>receiv</i>ed common</>
+<g>- <i>prev</i><Y> </></>
+<r>+ <i>next</i><Y> </></>
+]=]
 
-[2m  Table {[22m
-[2m    "a": Symbol(key),[22m
-[32m-   "b": 2,[39m
-[31m+   "b": 1,[39m
-[2m  }[22m]]
+snapshots["printDiffOrStringify expected and received are single line with multiple changes 1"] = [=[
+
+Expected: <g>"<i>delete</i> common <i>expect</i>ed common <i>prev</i>"</>
+Received: <r>"<i>insert</i> common <i>receiv</i>ed common <i>next</i>"</>
+]=]
+
+snapshots["printDiffOrStringify expected is empty and received is single line 1"] = [=[
+
+Expected: <g>""</>
+Received: <r>"single line"</>
+]=]
+
+snapshots["printDiffOrStringify expected is multi line and received is empty 1"] = [=[
+
+Expected: <g>"multi
+line"</>
+Received: <r>""</>
+]=]
+
+snapshots["printDiffOrStringify has no common after clean up chaff multiline 1"] = [=[
+
+<g>- Expected  - 2</>
+<r>+ Received  + 2</>
+
+<g>- delete</>
+<g>- two</>
+<r>+ insert</>
+<r>+ 2</>
+]=]
+
+snapshots["printDiffOrStringify has no common after clean up chaff one-line 1"] = [=[
+
+Expected: <g>"delete"</>
+Received: <r>"insert"</>
+]=]
+
+snapshots["printDiffOrStringify object contain readonly symbol key object 1"] = [=[
+
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
+
+<d>  Table {</>
+<d>    "a": Symbol(key),</>
+<g>-   "b": 2,</>
+<r>+   "b": 1,</>
+<d>  }</>
+]=]
 
 return snapshots

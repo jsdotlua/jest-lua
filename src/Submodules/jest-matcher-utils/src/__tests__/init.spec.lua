@@ -17,13 +17,13 @@ return function()
 
 	local RegExp = require(Packages.LuauRegExp)
 
-	local jestExpect = require(Modules.Expect)
-
 	local equals = require(Modules.Expect.jasmineUtils).equals
 
-	-- deviation: omitted chalk library import
+	local chalk = require(Packages.ChalkLua)
 
 	local prettyFormat = require(Modules.PrettyFormat).prettyFormat
+
+	local jestExpect = require(Modules.Expect)
 	local alignedAnsiStyleSerializer = require(Modules.TestUtils).alignedAnsiStyleSerializer
 
 	local JestMatcherUtils = require(CurrentModule)
@@ -60,14 +60,14 @@ return function()
 
 		for key, value in ipairs(fixtures) do
 			it(stringify(value[1]), function()
-				jestExpect(stringify(value[1])).toEqual(value[2])
+				jestExpect(stringify(value[1])).toBe(value[2])
 			end)
 		end
 
 		it("circular references", function()
 			local a: any = {}
 			a.a = a
-			jestExpect(stringify(a)).toEqual("{\"a\": [Circular]}")
+			jestExpect(stringify(a)).toBe("{\"a\": [Circular]}")
 		end)
 
 		it("toJSON error", function()
@@ -77,17 +77,18 @@ return function()
 				end
 			}
 
-			jestExpect(stringify(evil)).toEqual("{\"toJSON\": [Function anonymous]}")
+			jestExpect(stringify(evil)).toBe("{\"toJSON\": [Function anonymous]}")
 			-- deviation: PrettyFormat returns [Function anonymous] since we
 			-- can't get function information
-			jestExpect(stringify({a = {b = {evil = evil}}})).toEqual("{\"a\": {\"b\": {\"evil\": {\"toJSON\": [Function anonymous]}}}}")
+			jestExpect(stringify({a = {b = {evil = evil}}})).toBe("{\"a\": {\"b\": {\"evil\": {\"toJSON\": [Function anonymous]}}}}")
 
 			-- deviation: we use a table with a __call metamethod to mimic a
 			-- function with properties in upstream
 			local Evil = {}
 			setmetatable(Evil, {__call = function() end})
 			Evil.toJSON = evil.toJSON
-			jestExpect(stringify(Evil)).toEqual("{\"toJSON\": [Function anonymous]}")
+			jestExpect(stringify(Evil)).toBe("{\"toJSON\": [Function anonymous]}")
+
 		end)
 
 		it("toJSON errors when comparing two objects", function()
@@ -108,7 +109,7 @@ return function()
 			-- deviation: our to.equal() method does not work in the same way
 			-- so I'm not sure how to reconcile this. For now I just made it so that
 			-- I check equality and confirm that they are not equal
-			jestExpect(equals(evilA, evilB)).toEqual(false)
+			jestExpect(equals(evilA, evilB)).toBe(false)
 		end)
 
 		it("reduces maxDepth if stringifying very large objects", function()
@@ -122,8 +123,8 @@ return function()
 				small.b[i] = "test"
 			end
 
-			jestExpect(stringify(big)).toEqual(prettyFormat(big, {maxDepth = 1, min = true}))
-			jestExpect(stringify(small)).toEqual(prettyFormat(small, {min = true}))
+			jestExpect(stringify(big)).toBe(prettyFormat(big, {maxDepth = 1, min = true}))
+			jestExpect(stringify(small)).toBe(prettyFormat(small, {min = true}))
 		end)
 	end)
 
@@ -259,84 +260,84 @@ return function()
 		end)
 
 		it("two booleans", function()
-			jestExpect(diff(false, true)).toEqual(nil)
+			jestExpect(diff(false, true)).toBe(nil)
 		end)
 
 		it("two numbers", function()
-			jestExpect(diff(1, 2)).toEqual(nil)
+			jestExpect(diff(1, 2)).toBe(nil)
 		end)
 
 		-- deviation: skipped test testing bigints since we don't have this
 		-- type in lua
 		itSKIP("two bigints", function()
-			jestExpect(diff(1, 2)).toEqual(nil)
+			jestExpect(diff(1, 2)).toBe(nil)
 		end)
 	end)
 
 	describe("pluralize()", function()
 		it("one", function()
-			jestExpect(pluralize("apple", 1)).toEqual("one apple")
+			jestExpect(pluralize("apple", 1)).toBe("one apple")
 		end)
 
 		it("two", function()
-			jestExpect(pluralize("apple", 2)).toEqual("two apples")
+			jestExpect(pluralize("apple", 2)).toBe("two apples")
 		end)
 
 		it("20", function()
-			jestExpect(pluralize("apple", 20)).toEqual("20 apples")
+			jestExpect(pluralize("apple", 20)).toBe("20 apples")
 		end)
 	end)
 
 	describe("getLabelPrinter", function()
 		it("0 args", function()
 			local printLabel = getLabelPrinter()
-			jestExpect(printLabel("")).toEqual(": ")
+			jestExpect(printLabel("")).toBe(": ")
 		end)
 
 		it("1 empty string", function()
 			local printLabel = getLabelPrinter()
-			jestExpect(printLabel("")).toEqual(": ")
+			jestExpect(printLabel("")).toBe(": ")
 		end)
 
 		it("1 non-empty string", function()
-			local string_ = "expected"
+			local string_ = "Expected"
 			local printLabel = getLabelPrinter(string_)
-			jestExpect(printLabel(string_)).toEqual("expected: ")
+			jestExpect(printLabel(string_)).toBe("Expected: ")
 		end)
 
 		it("2 equal lengths", function()
-			local stringExpected = "expected value"
+			local stringExpected = "Expected value"
 			local collectionType = "array"
 			local stringReceived = string.format("Received %s", collectionType)
 			local printLabel = getLabelPrinter(stringExpected, stringReceived)
-			jestExpect(printLabel(stringExpected)).toEqual("expected value: ")
-			jestExpect(printLabel(stringReceived)).toEqual("Received array: ")
+			jestExpect(printLabel(stringExpected)).toBe("Expected value: ")
+			jestExpect(printLabel(stringReceived)).toBe("Received array: ")
 		end)
 
 		it("2 unequal lengths", function()
-			local stringExpected = "expected value"
+			local stringExpected = "Expected value"
 			local collectionType = "set"
 			local stringReceived = string.format("Received %s", collectionType)
 			local printLabel = getLabelPrinter(stringExpected, stringReceived)
-			jestExpect(printLabel(stringExpected)).toEqual("expected value: ")
-			jestExpect(printLabel(stringReceived)).toEqual("Received set:   ")
+			jestExpect(printLabel(stringExpected)).toBe("Expected value: ")
+			jestExpect(printLabel(stringReceived)).toBe("Received set:   ")
 		end)
 
 		it("returns incorrect padding if inconsistent arg is shorter", function()
-			local stringConsistent = "expected"
+			local stringConsistent = "Expected"
 			local stringInconsistent = "Received value"
 			local stringInconsistentShorter = "Received set"
 			local printLabel = getLabelPrinter(stringConsistent, stringInconsistent)
-			jestExpect(printLabel(stringConsistent)).toEqual("expected:       ")
-			jestExpect(printLabel(stringInconsistentShorter)).toEqual("Received set:   ")
+			jestExpect(printLabel(stringConsistent)).toBe("Expected:       ")
+			jestExpect(printLabel(stringInconsistentShorter)).toBe("Received set:   ")
 		end)
 
 		it("throws if inconsistent arg is longer", function()
-			local stringConsistent = "expected"
+			local stringConsistent = "Expected"
 			local stringInconsistent = "Received value"
 			local stringInconsistentLonger = "Received string"
 			local printLabel = getLabelPrinter(stringConsistent, stringInconsistent)
-			jestExpect(printLabel(stringConsistent)).toEqual("expected:       ")
+			jestExpect(printLabel(stringConsistent)).toBe("Expected:       ")
 			jestExpect(function()
 				printLabel(stringInconsistentLonger)
 			end).toThrow("Cannot print label for string with length larger than the max allowed of 14")
@@ -359,8 +360,9 @@ return function()
 				{expectedColor = expectedColor, secondArgument = "...expected"}
 			)
 
-			local substringNegative = expectedArgument
-			jestExpect(string.match(received, substringNegative)).never.toBe(nil)
+			local substringNegative = chalk.green(expectedArgument)
+
+			jestExpect(received).never.toMatch(substringNegative)
 		end)
 
 		it("receivedColor", function()
@@ -370,9 +372,11 @@ return function()
 				receivedColor = receivedColor,
 			})
 
+			local substringNegative = chalk.red(receivedArgument)
 			local substringPositive = receivedColor(receivedArgument)
 
-			jestExpect(string.match(received, substringPositive)).never.toBe(nil)
+			jestExpect(received).never.toMatch(substringNegative)
+			jestExpect(received).toMatch(substringPositive)
 		end)
 
 		it("secondArgumentColor", function()
@@ -383,9 +387,11 @@ return function()
 				secondArgumentColor = secondArgumentColor,
 			})
 
+			local substringNegative = chalk.green(secondArgument)
 			local substringPositive = secondArgumentColor(secondArgument)
 
-			jestExpect(string.match(received, substringPositive)).never.toBe(nil)
+			jestExpect(received).never.toMatch(substringNegative)
+			jestExpect(received).toMatch(substringPositive)
 		end)
 	end)
 end
