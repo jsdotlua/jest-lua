@@ -8,8 +8,8 @@ At the top of your test files, require `JestRoblox` from the `Packages` director
 Then, explicitly import any of the following methods from `Globals`:
 
 ```lua
-local jest = require(Packages.JestRoblox).Globals
-local expect = jest.expect
+local JestRoblox = require(Packages.JestRoblox).Globals
+local expect = JestRoblox.expect
 ```
 
 ## Methods
@@ -29,3 +29,6 @@ The `expect` function is used every time you want to test a value. See the [`exp
 
 ### `jest`
 Returns the [Jest Object](jest-object).
+
+### `jestSnapshot`
+Returns the snapshot matchers `toMatchSnapshot` and `toThrowErrorMatchingSnapshot` for use in [custom snapshot matchers](expect#custom-snapshot-matchers).

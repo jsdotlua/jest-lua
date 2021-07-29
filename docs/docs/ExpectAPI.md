@@ -181,6 +181,35 @@ Received: "apple"
 
 When an assertion fails, the error message should give as much signal as necessary to the user so they can resolve their issue quickly. You should craft a precise failure message to make sure users of your custom assertions have a good developer experience.
 
+#### Custom snapshot matchers
+
+To use snapshot testing inside of your custom matcher you can import `jestSnapshot` and use it from within your matcher.
+
+Here's a snapshot matcher that trims a string to store for a given length, `.toMatchTrimmedSnapshot(length)`:
+
+```lua
+local JestRoblox = require(Packages.JestRoblox).Globals
+local toMatchSnapshot = JestRoblox.jestSnapshot.toMatchSnapshot
+
+expect.extend({
+	toMatchTrimmedSnapshot = function(self, received, length)
+		return toMatchSnapshot(
+			self,
+			string.sub(received, 1, length),
+			'toMatchTrimmedSnapshot'
+		)
+	end
+})
+
+it('stores only 10 characters', function()
+	expect('extra long string oh my gerd').toMatchTrimmedSnapshot(10)
+end)
+
+-- Stored snapshot will look like:
+-- exports["another package custom snapshot matcher: toMatchTrimmedSnapshot 1"] = [=[
+-- "extra long"]=]
+```
+
 ### `expect.anything()`
 
 `expect.anything()` matches anything but `nil`. You can use it inside `toEqual` or `toBeCalledWith` instead of a literal value. For example, if you want to check that a mock function is called with a non-nil argument:
@@ -368,6 +397,30 @@ describe('stringMatching in arrayContaining', function()
 	end)
 end)
 ```
+
+### `expect.addSnapshotSerializer(serializer)`
+
+You can call `expect.addSnapshotSerializer` in a `beforeAll()` to add a module that formats application-specific data structures.
+
+Call `expect.resetSnapshotSerializers` in an `afterAll()` block to ensure that the serializer is specific to this test file and doesn't affect other tests being run.
+
+```lua
+beforeAll(
+	expect.addSnapshotSerializer(serializer)
+)
+
+afterAll(
+	expect.resetSnapshotSerializers()
+)
+
+-- affects expect(value).toMatchSnapshot() assertions in the test file
+```
+
+### `expect.resetSnapshotSerializers()`
+
+Clears the list of custom snapshot serializers.
+
+If custom snapshot serializers are used, this should be included in an `afterAll()` block to reset the list of custom snapshot serializers before the next test file is run.
 
 ### `.never`
 
@@ -996,6 +1049,14 @@ describe('toMatchObject applied to arrays', function()
 end)
 ```
 
+### `.toMatchSnapshot(propertyMatchers?, hint?)`
+
+This ensures that a value matches the most recent snapshot. Check out [the Snapshot Testing guide](snapshot-testing) for more information.
+
+You can provide an optional `propertyMatchers` table argument, which has asymmetric matchers as values of a subset of expected properties, **if** the received value will be a **table**. It is like `toMatchObject` with flexible criteria for a subset of properties, followed by a snapshot test as exact criteria for the rest of the properties.
+
+You can provide an optional `hint` string argument that is appended to the test name. Although Jest always appends a number at the end of a snapshot name, short descriptive hints might be more useful than numbers to differentiate **multiple** snapshots in a **single** `it` or `test` block. Jest sorts snapshots by name in the corresponding `.snap` file.
+
 ### `.toStrictEqual(value)`
 
 Use `.toStrictEqual` to test that objects have the same types.
@@ -1084,4 +1145,44 @@ it('throws on octopus', function()
 	-- Test that we get a DisgustingFlavorError
 	expect(drinkOctopus).toThrowError(DisgustingFlavorError)
 end)
+```
+
+### `.toThrowErrorMatchingSnapshot(hint?)`
+
+Use `.toThrowErrorMatchingSnapshot` to test that a function throws an error matching the most recent snapshot when it is called.
+
+You can provide an optional `hint` string argument that is appended to the test name. Although Jest always appends a number at the end of a snapshot name, short descriptive hints might be more useful than numbers to differentiate **multiple** snapshots in a **single** `it` or `test` block. Jest sorts snapshots by name in the corresponding `.snap` file.
+
+:::tip
+You can throw and match against a native Lua string error, but it is recommended to pass in an [error object](expect#error) for cleaner snapshots.
+:::
+
+For example, let's say you have a `drinkFlavor` function that throws whenever the flavor is `'octopus'`, and is coded like this:
+
+```lua
+local function drinkFlavor(flavor)
+	if flavor == 'octopus' then
+		error(Error('yuck, octopus flavor'))
+	end
+	-- Do some other stuff
+end
+```
+
+The test for this function will look this way:
+
+```lua
+it('throws on octopus', function()
+	local function drinkOctopus()
+		drinkFlavor('octopus')
+	end
+
+	expect(drinkOctopus).toThrowErrorMatchingSnapshot()
+end)
+```
+
+And it will generate the following snapshot:
+
+```lua
+exports["drinking flavors throws on octopus 1"] = [=[
+yuck, octopus flavor]=]
 ```

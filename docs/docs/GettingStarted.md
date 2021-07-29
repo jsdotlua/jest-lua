@@ -55,8 +55,8 @@ return function()
 	local Workspace = script.Parent.Parent
 	local Packages = Workspace.Parent.Packages.Dev
 
-	local jest = require(Packages.JestRoblox).Globals
-	local expect = jest.expect
+	local JestRoblox = require(Packages.JestRoblox).Globals
+	local expect = JestRoblox.expect
 
 	local sum = require(Workspace.sum)
 

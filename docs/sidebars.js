@@ -10,8 +10,15 @@ module.exports = {
         'mock-functions',
       ],
     },
+    {
+      type: 'category',
+      label: 'Guides',
+      items: [
+        'snapshot-testing',
+        'migration-guide',
+      ]
+    },
     'deviations',
-    'migration-guide',
   ],
   api: [
     'api',

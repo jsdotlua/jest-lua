@@ -14,8 +14,8 @@ Replace TestEZ with JestRoblox in your `rotriever.toml`.
 
 Unlike TestEZ, which is injected into the global environment, you will need to explicitly require anything you need from `JestRoblox.Globals`. For example, to use the new Jest Roblox assertion library, add this to the top of your test file.
 ```lua
-local jest = require(Packages.JestRoblox).Globals
-local expect = jest.expect
+local JestRoblox = require(Packages.JestRoblox).Globals
+local expect = JestRoblox.expect
 ```
 
 If you were previously overwriting the Luau type for `expect` as a workaround for TestEZ custom expectations, you can remove it.
