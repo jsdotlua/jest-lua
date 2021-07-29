@@ -108,7 +108,9 @@ local function createMatcher(
 		if fromPromise and isError(received) then
 			thrown = getThrown(received)
 		else
-			if typeof(received) ~= "function" then
+			-- deviation: we also allow received to be a table with a __call metamethod
+			if typeof(received) ~= "function" and
+				not (typeof(received) == "table" and getmetatable(received) and getmetatable(received).__call) then
 				if not fromPromise then
 					local placeholder
 

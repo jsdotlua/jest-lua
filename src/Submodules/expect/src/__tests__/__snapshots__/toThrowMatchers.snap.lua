@@ -636,39 +636,4 @@ Received value:           <r>"Internal Server Error"</>
       LoadedCode.JestRoblox.Root.src.Submodules.Expect.__tests__.toThrowMatchers.spec:111
 ]=]
 
-snapshots['Lua tests prints the stack trace for Lua Error error 1'] = [=[
-
-<d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>()</>
-
-Error name:    <r>"Error"</>
-Error message: <r>""</>
-
-      LoadedCode.JestRoblox.Root.src.Submodules.Expect.__tests__.toThrowMatchers.spec:531 function error1
-      LoadedCode.JestRoblox.Root.src.Submodules.Expect.__tests__.toThrowMatchers.spec:539 function test1
-      LoadedCode.JestRoblox.Root.src.Submodules.Expect.__tests__.toThrowMatchers.spec:558
-]=]
-
-snapshots['Lua tests prints the stack trace for Lua string error 1'] = [=[
-
-<d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>()</>
-
-Thrown value: <r>""</>
-
-      LoadedCode.JestRoblox.Root.src.Submodules.Expect.__tests__.toThrowMatchers.spec:535 function error2
-      LoadedCode.JestRoblox.Root.src.Submodules.Expect.__tests__.toThrowMatchers.spec:543 function test2
-      LoadedCode.JestRoblox.Root.src.Submodules.Expect.__tests__.toThrowMatchers.spec:575
-]=]
-
-snapshots['Lua tests prints the stack trace for Lua string error 2 1'] = [=[
-
-<d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
-
-Expected substring: <g>"wrong information"</>
-Received value:     <r>""</>
-
-      LoadedCode.JestRoblox.Root.src.Submodules.Expect.__tests__.toThrowMatchers.spec:535 function error2
-      LoadedCode.JestRoblox.Root.src.Submodules.Expect.__tests__.toThrowMatchers.spec:543 function test2
-      LoadedCode.JestRoblox.Root.src.Submodules.Expect.__tests__.toThrowMatchers.spec:589
-]=]
-
 return snapshots
