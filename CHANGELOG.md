@@ -1,12 +1,16 @@
 # Jest Roblox Changelog
 
-## Prerelease Changes
+## 2.0.0 (2021-08-02)
 * Added `jest-snapshot` functionality
   * Added `toMatchSnapshot` matcher
   * Added `toThrowErrorMatchingSnapshot` matcher
+  * Added custom snapshot matchers and property matchers, refer to the "Snapshot Testing" section of the documentation for more info
   * Added `UPDATESNAPSHOT` flag for updating snapshots, the value can either be `all` (by default), or `new` to only add new snapshots, this can be enabled with an `--updateSnapshot` flag in Jest Roblox CLI
 * Removed colon syntax alias for initializing mock functions
 * :bug: Fix issue with CoreScriptConverter and the Modules directory
+* :bug: `.toThrow` matchers now recognize `jest.fn` as callable
+* :bug: Fix for chalked strings throwing when used with string matchers
+* `--fastFlags.overrides "UseDateTimeType3=true"` removed as it is no longer needed
 
 ## 1.1.2 (2021-06-11)
 * :bug: Fix for `jest-snapshot` so that the init file returns a value

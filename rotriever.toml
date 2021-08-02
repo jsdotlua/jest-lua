@@ -3,11 +3,11 @@ name = "roblox/jest-roblox"
 author = "Roblox"
 license = "Apache2"
 content_root = "src"
-version = "2.0.0-pre.1"
+version = "2.0.0"
 
 [dependencies]
 ChalkLua = "github.com/roblox/chalk-lua@0.1.2"
-LuauPolyfill = "github.com/roblox/luau-polyfill@0.2.0"
+LuauPolyfill = "github.com/roblox/luau-polyfill@0.2.1"
 LuauRegExp = "github.com/roblox/luau-regexp@0.1.0"
 
 [dev_dependencies]
