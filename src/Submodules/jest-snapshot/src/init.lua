@@ -150,6 +150,27 @@ local function toMatchSnapshot(
 		properties = propertiesOrHint
 	end
 
+	return _toMatchSnapshot({
+		context = this,
+		hint = hint,
+		isInline = false,
+		matcherName = matcherName,
+		properties = properties,
+		received = received
+	})
+end
+
+-- ROBLOX TODO: ADO-1552 add toMatchInlineSnapshot
+
+function _toMatchSnapshot(config: types.MatchSnapshotConfig)
+	local context = config.context
+	local hint = config.hint
+	local inlineSnapshot = config.inlineSnapshot
+	local isInline = config.isInline
+	local matcherName = config.matcherName
+	local properties = config.properties
+	local received = config.received
+
 	--[[
 		deviation: we modify the TestEZ test runner to record the test context in
 		a global state for jest-snapshot to find the correct snapshot
@@ -174,30 +195,10 @@ local function toMatchSnapshot(
 			return {message = function() return "Jest-Roblox: Error while loading snapshot file" end, pass = false}
 		end
 	end
-	this.snapshotState = this.snapshotState or _G[JEST_TEST_CONTEXT].snapshotState
-	this.currentTestName = this.currentTestName or table.concat(_G[JEST_TEST_CONTEXT].blocks, " ")
-	return _toMatchSnapshot({
-		context = this,
-		hint = hint,
-		isInline = false,
-		matcherName = matcherName,
-		properties = properties,
-		received = received
-	})
-end
+	context.snapshotState = context.snapshotState or _G[JEST_TEST_CONTEXT].snapshotState
+	context.currentTestName = context.currentTestName or table.concat(_G[JEST_TEST_CONTEXT].blocks, " ")
 
--- ROBLOX TODO: ADO-1552 add toMatchInlineSnapshot
-
-function _toMatchSnapshot(config: types.MatchSnapshotConfig)
-	local context = config.context
-	local hint = config.hint
-	local inlineSnapshot = config.inlineSnapshot
-	local isInline = config.isInline
-	local matcherName = config.matcherName
-	local properties = config.properties
-	local received = config.received
-
-	-- local _ = context.dontThrow and context.dontThrow()
+	local _ = context.dontThrow and context.dontThrow()
 
 	local currentTestName = context.currentTestName
 	local isNot = context.isNot
@@ -358,25 +359,6 @@ local function toThrowErrorMatchingSnapshot(
 	-- // Future breaking change: Snapshot hint must be a string
 	-- // if (hint !== undefined && typeof hint !== string) {}
 
-	-- deviation: we modify the TestEZ test runner to record the test context in a global state for jest-snapshot to find the correct snapshot
-	local snapshotFileName = _G[JEST_TEST_CONTEXT].instance.Name:match("(.*)%.spec") .. ".snap"
-	if _G[JEST_TEST_CONTEXT].snapshotState == nil then
-		local ok, result = pcall(function()
-			return SnapshotState.new(_G[JEST_TEST_CONTEXT].instance.Parent.__snapshots__[snapshotFileName],
-				{
-					updateSnapshot = "none"
-				}
-			)
-		end)
-		if ok then
-			_G[JEST_TEST_CONTEXT].snapshotState = result
-		else
-			return {message = function() return "Jest-Roblox: unable to find a snapshot file with the name " .. snapshotFileName .. " under a __snapshots__ directory" end, pass = false}
-		end
-	end
-	this.snapshotState = this.snapshotState or _G[JEST_TEST_CONTEXT].snapshotState
-	this.currentTestName = this.currentTestName or table.concat(_G[JEST_TEST_CONTEXT].blocks, " ")
-
 	return _toThrowErrorMatchingSnapshot(
 		{
 			context = this,
@@ -400,7 +382,7 @@ function _toThrowErrorMatchingSnapshot(
 	local matcherName = config.matcherName
 	local received = config.received
 
-	-- local _ = context.dontThrow and context.dontThrow()
+	local _ = context.dontThrow and context.dontThrow()
 
 	local isNot = context.isNot
 	local promise = context.promise
