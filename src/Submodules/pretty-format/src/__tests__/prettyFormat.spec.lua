@@ -13,6 +13,7 @@ return function()
 	local Packages = CurrentModule.Parent.Parent.Parent
 
 	local Polyfill = require(Packages.LuauPolyfill)
+	local Error = Polyfill.Error
 	local Set = Polyfill.Set
 
 	local RegExp = require(Packages.LuauRegExp)
@@ -55,7 +56,12 @@ return function()
 			jestExpect(prettyFormat(val)).toEqual('false')
 		end)
 
-		-- deviation: omitted, no Error type in lua
+		it('prints an error', function()
+			local val = Error()
+			-- deviation: upstream prints [Error] but due to our serialization of
+			-- error we always print in the form "Error: message"
+			jestExpect(prettyFormat(val)).toEqual('[Error: ]')
+		end)
 
 		-- deviation: omitted, no Function constructor in lua
 
@@ -461,9 +467,10 @@ return function()
 				},
 			}
 
-			jestExpect(function()
+			local _, err = pcall(function()
 				prettyFormat('', options)
-			end).toThrow('PrettyFormatPluginError')
+			end)
+			jestExpect(err.name).toBe("PrettyFormatPluginError")
 		end)
 
 		it('throws PrettyFormatPluginError if print throws an error', function()
@@ -478,9 +485,10 @@ return function()
 				},
 			}
 
-			jestExpect(function()
+			local _, err = pcall(function()
 				prettyFormat('', options)
-			end).toThrow('PrettyFormatPluginError')
+			end)
+			jestExpect(err.name).toBe("PrettyFormatPluginError")
 		end)
 
 		it('throws PrettyFormatPluginError if serialize throws an error', function()
@@ -495,9 +503,10 @@ return function()
 				},
 			}
 
-			jestExpect(function()
+			local _, err = pcall(function()
 				prettyFormat('', options)
-			end).toThrow('PrettyFormatPluginError')
+			end)
+			jestExpect(err.name).toBe("PrettyFormatPluginError")
 		end)
 
 		it('supports plugins with deeply nested arrays (#24)', function()

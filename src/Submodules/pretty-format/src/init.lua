@@ -13,7 +13,10 @@ local CurrentModule = script
 local Modules = CurrentModule.Parent
 local Packages = Modules.Parent.Parent
 
-local isNaN = require(Packages.LuauPolyfill).Number.isNaN
+local Polyfill = require(Packages.LuauPolyfill)
+local Error = Polyfill.Error
+local extends = Polyfill.extends
+local isNaN = Polyfill.Number.isNaN
 
 local Collections = require(CurrentModule.Collections)
 local printTableEntries = Collections.printTableEntries
@@ -23,6 +26,15 @@ local AsymmetricMatcher = require(CurrentModule.plugins.AsymmetricMatcher)
 local ConvertAnsi = require(CurrentModule.plugins.ConvertAnsi)
 
 local getType = require(Modules.JestGetType).getType
+
+local PrettyFormatPluginError = extends(
+	Error,
+	"PrettyFormatPluginError",
+	function(self, message)
+		self.name = "PrettyFormatPluginError"
+		self.message = message
+	end
+)
 
 -- deviation: isToStringedArrayType omitted because lua has no typed arrays
 
@@ -271,13 +283,13 @@ function printPlugin(
 		end
 	end)
 	if not ok then
-		error(string.format('PrettyFormatPluginError: %s', err))
+		error(PrettyFormatPluginError(err))
 	end
 
 	if typeof(printed) ~= 'string' then
-		error(string.format(
+		error(Error(string.format(
 			'pretty-format: Plugin must return type "string" but instead returned "%s".',
-			typeof(printed))
+			typeof(printed)))
 		)
 	end
 	return printed
@@ -287,7 +299,7 @@ local function findPlugin(plugins, val)
 	for _, p in ipairs(plugins) do
 		local ok, ret = pcall(p.test, val)
 		if not ok then
-			error(string.format('PrettyFormatPluginError: %s', ret))
+			error(PrettyFormatPluginError(ret))
 		elseif ret then
 			return p
 		end
@@ -348,12 +360,12 @@ local DEFAULT_OPTIONS = {
 local function validateOptions(options)
 	for k, _ in pairs(options) do
 		if DEFAULT_OPTIONS[k] == nil then
-			error(string.format('pretty-format: Unknown option "%s".', tostring(k)))
+			error(Error(string.format('pretty-format: Unknown option "%s".', tostring(k))))
 		end
 	end
 
 	if options.min and options.indent ~= nil and options.indent ~= 0 then
-		error('pretty-format: Options "min" and "indent" cannot be used together.')
+		error(Error('pretty-format: Options "min" and "indent" cannot be used together.'))
 	end
 
 	-- deviation: color formatting omitted
