@@ -198,7 +198,10 @@ function _toMatchSnapshot(config: types.MatchSnapshotConfig)
 	context.snapshotState = context.snapshotState or _G[JEST_TEST_CONTEXT].snapshotState
 	context.currentTestName = context.currentTestName or table.concat(_G[JEST_TEST_CONTEXT].blocks, " ")
 
-	local _ = context.dontThrow and context.dontThrow()
+	-- deviation: we don't call dontThrow because we don't yet have the functionality in
+	-- place where we add errors to global matcher state and deal with them accordingly
+	-- so we instead rely on throwing the actual errors
+	-- local _ = context.dontThrow and context.dontThrow()
 
 	local currentTestName = context.currentTestName
 	local isNot = context.isNot
@@ -382,7 +385,10 @@ function _toThrowErrorMatchingSnapshot(
 	local matcherName = config.matcherName
 	local received = config.received
 
-	local _ = context.dontThrow and context.dontThrow()
+	-- deviation: we don't call dontThrow because we don't yet have the functionality in
+	-- place where we add errors to global matcher state and deal with them accordingly
+	-- so we instead rely on throwing the actual errors
+	-- local _ = context.dontThrow and context.dontThrow()
 
 	local isNot = context.isNot
 	local promise = context.promise

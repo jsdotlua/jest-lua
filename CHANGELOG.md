@@ -1,5 +1,8 @@
 # Jest Roblox Changelog
 
+## 2.0.1 (2021-08-04)
+* :bug: Fix for snapshot matchers not correctly throwing when the matcher fails
+
 ## 2.0.0 (2021-08-02)
 * Added `jest-snapshot` functionality
   * Added `toMatchSnapshot` matcher
