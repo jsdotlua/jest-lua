@@ -307,6 +307,19 @@ function deepMerge(target: any, source: any): any
 	return target
 end
 
+-- deviation: added to handle file paths in snapshot/State
+local function robloxSplitPath(path: string, parent): Array<string>
+	parent = parent or 0
+	local t = {}
+	for p in string.gmatch(path, "[^\\/][^\\/]*") do
+		table.insert(t, p)
+	end
+	if parent > 0 then
+		t = { table.unpack(t, 1, #t - parent) }
+	end
+	return t
+end
+
 return {
 	testNameToKey = testNameToKey,
 	keyToTestName = keyToTestName,
@@ -318,5 +331,7 @@ return {
 	deserializeString = deserializeString,
 	escapeBacktickString = escapeBacktickString,
 	saveSnapshotFile = saveSnapshotFile,
-	deepMerge = deepMerge
+	deepMerge = deepMerge,
+	-- deviation: not in upstream
+	robloxSplitPath = robloxSplitPath
 }
