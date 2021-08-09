@@ -69,7 +69,7 @@ return function()
 			{{a = 1}, {a = 1}},
 			{{a = 1}, {a = 5}},
 			{
-				{a = function() end, b = 2},
+				{a = function () end, b = 2},
 				{a = jestExpect.any("function"), b = 2}
 			},
 			{{a = false, b = 2}, {b = 2}},
@@ -1342,6 +1342,7 @@ return function()
 			]]
 			{{a = {b = {c = 5}}}, 'a.b', {c = 5}},
 			{Object.assign({}, {property = 1}), 'property', 1},
+			-- deviation: len isn't a property of an object like it is in JS
 			{'', 'len', jestExpect.any("function")}
 		}) do
 			local obj = testCase[1]

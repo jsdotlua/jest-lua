@@ -2406,7 +2406,7 @@ snapshots['.toHaveProperty() {pass: true} expect("").toHaveProperty("len", Any<f
 Expected path: <g>"len"</>
 
 Expected value: never <g>Any<function></>
-Received value:       <r>[Function anonymous]</>
+Received value:       <r>[Function len]</>
 ]=]
 
 snapshots['.toHaveProperty() {pass: true} expect({"a": {"b": {1, 2, 3}}}).toHaveProperty({"a", "b", 2}) 1'] = [=[
@@ -2895,7 +2895,7 @@ snapshots['toMatchObject() {pass: false} expect({"a": {3, 4, 5}, "b": "b"}).toMa
 <d>  }</>
 ]=]
 
--- deviation: snapshot changed since we don't have a difference as Objet and Array as in upstream
+-- deviation: snapshot changed since we don't have a difference as Object and Array as in upstream
 snapshots['toMatchObject() {pass: false} expect({"a": {3, 4, 5}, "b": "b"}).toMatchObject({"a": {"b": Any<string>}}) 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>toMatchObject<d>(</><g>expected</><d>)</>

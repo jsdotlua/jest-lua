@@ -60,7 +60,7 @@ return function()
 	for _, called in ipairs({'toBeCalled', 'toHaveBeenCalled'}) do
 		describe(called, function()
 			it('works only on spies or jest.fn', function()
-				local fn = function() end
+				local function fn() end
 
 				jestExpect(function() jestExpect(fn)[called]() end).toThrowErrorMatchingSnapshot()
 			end)
@@ -110,7 +110,7 @@ return function()
 	for _, calledTimes in ipairs({'toBeCalledTimes', 'toHaveBeenCalledTimes'}) do
 		describe(('%s'):format(calledTimes), function()
 			it('.not works only on spies or jest.fn', function()
-				local fn = function() end
+				local function fn() end
 
 				jestExpect(function()
 					jestExpect(fn).never[calledTimes](2)
@@ -223,7 +223,7 @@ return function()
 
 		describe(('%s'):format(calledWith), function()
 			it('works only on spies or jest.fn', function()
-				local fn = function() end
+				local function fn() end
 
 				jestExpect(function() jestExpect(fn)[calledWith]() end).toThrowErrorMatchingSnapshot()
 			end)
@@ -439,7 +439,7 @@ return function()
 	for _, returned in ipairs({'toReturn', 'toHaveReturned'}) do
 		describe(('%s'):format(returned), function()
 			it('.not works only on jest.fn', function()
-				local fn = function() end
+				local function fn() end
 
 				jestExpect(function()
 					jestExpect(fn).never[returned]()
@@ -784,7 +784,7 @@ return function()
 
 		describe(('%s'):format(returnedWith), function()
 			it('works only on spies or jest.fn', function()
-				local fn = function() end
+				local function fn() end
 
 				jestExpect(function()
 					jestExpect(fn)[returnedWith]()

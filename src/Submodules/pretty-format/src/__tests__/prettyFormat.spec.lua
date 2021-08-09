@@ -79,7 +79,10 @@ return function()
 			jestExpect(prettyFormat(val)).toEqual('[Function anonymous]')
 		end)
 
-		-- deviation: omitted, no named functions in lua
+		it('prints a named function', function()
+			local function named() end
+			jestExpect(prettyFormat(named)).toEqual('[Function named]')
+		end)
 
 		it('can customize function names', function()
 			local val = function() end

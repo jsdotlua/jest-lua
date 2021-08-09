@@ -28,7 +28,7 @@ snapshots['lastCalledWith works only on spies or jest.fn 1'] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock or spy function
 
 Received has type:  function
-Received has value: <r>[Function anonymous]</>
+Received has value: <r>[Function fn]</>
 ]=]
 
 snapshots['lastCalledWith works when not called 1'] = [=[
@@ -225,7 +225,7 @@ snapshots['lastReturnedWith works only on spies or jest.fn 1'] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock function
 
 Received has type:  function
-Received has value: <r>[Function anonymous]</>
+Received has value: <r>[Function fn]</>
 ]=]
 
 snapshots['lastReturnedWith works when not called 1'] = [=[
@@ -368,7 +368,7 @@ snapshots['nthCalledWith works only on spies or jest.fn 1'] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock or spy function
 
 Received has type:  function
-Received has value: <r>[Function anonymous]</>
+Received has value: <r>[Function fn]</>
 ]=]
 
 snapshots['nthCalledWith works when not called 1'] = [=[
@@ -679,7 +679,7 @@ snapshots['nthReturnedWith works only on spies or jest.fn 1'] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock function
 
 Received has type:  function
-Received has value: <r>[Function anonymous]</>
+Received has value: <r>[Function fn]</>
 ]=]
 
 snapshots['nthReturnedWith works when not called 1'] = [=[
@@ -840,7 +840,7 @@ snapshots['toBeCalled works only on spies or jest.fn 1'] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock or spy function
 
 Received has type:  function
-Received has value: <r>[Function anonymous]</>
+Received has value: <r>[Function fn]</>
 ]=]
 
 snapshots['toBeCalledTimes .not only accepts a number argument 1'] = [=[
@@ -924,7 +924,7 @@ snapshots['toBeCalledTimes .not works only on spies or jest.fn 1'] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock or spy function
 
 Received has type:  function
-Received has value: <r>[Function anonymous]</>
+Received has value: <r>[Function fn]</>
 ]=]
 
 snapshots['toBeCalledTimes includes the custom mock name in the error message 1'] = [=[
@@ -1016,7 +1016,7 @@ snapshots['toBeCalledWith works only on spies or jest.fn 1'] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock or spy function
 
 Received has type:  function
-Received has value: <r>[Function anonymous]</>
+Received has value: <r>[Function fn]</>
 ]=]
 
 snapshots['toBeCalledWith works when not called 1'] = [=[
@@ -1205,7 +1205,7 @@ snapshots['toHaveBeenCalled works only on spies or jest.fn 1'] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock or spy function
 
 Received has type:  function
-Received has value: <r>[Function anonymous]</>
+Received has value: <r>[Function fn]</>
 ]=]
 
 snapshots['toHaveBeenCalledTimes .not only accepts a number argument 1'] = [=[
@@ -1289,7 +1289,7 @@ snapshots['toHaveBeenCalledTimes .not works only on spies or jest.fn 1'] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock or spy function
 
 Received has type:  function
-Received has value: <r>[Function anonymous]</>
+Received has value: <r>[Function fn]</>
 ]=]
 
 snapshots['toHaveBeenCalledTimes includes the custom mock name in the error message 1'] = [=[
@@ -1381,7 +1381,7 @@ snapshots['toHaveBeenCalledWith works only on spies or jest.fn 1'] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock or spy function
 
 Received has type:  function
-Received has value: <r>[Function anonymous]</>
+Received has value: <r>[Function fn]</>
 ]=]
 
 snapshots['toHaveBeenCalledWith works when not called 1'] = [=[
@@ -1531,7 +1531,7 @@ snapshots['toHaveBeenLastCalledWith works only on spies or jest.fn 1'] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock or spy function
 
 Received has type:  function
-Received has value: <r>[Function anonymous]</>
+Received has value: <r>[Function fn]</>
 ]=]
 
 snapshots['toHaveBeenLastCalledWith works when not called 1'] = [=[
@@ -1712,7 +1712,7 @@ snapshots['toHaveBeenNthCalledWith works only on spies or jest.fn 1'] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock or spy function
 
 Received has type:  function
-Received has value: <r>[Function anonymous]</>
+Received has value: <r>[Function fn]</>
 ]=]
 
 snapshots['toHaveBeenNthCalledWith works when not called 1'] = [=[
@@ -1907,7 +1907,7 @@ snapshots['toHaveLastReturnedWith works only on spies or jest.fn 1'] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock function
 
 Received has type:  function
-Received has value: <r>[Function anonymous]</>
+Received has value: <r>[Function fn]</>
 ]=]
 
 snapshots['toHaveLastReturnedWith works when not called 1'] = [=[
@@ -2175,7 +2175,6 @@ Received
 Number of returns: <r>3</>
 ]=]
 
--- deviation: changed fn to anonymous
 snapshots['toHaveNthReturnedWith works only on spies or jest.fn 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>toHaveNthReturnedWith<d>(</>n<d>, </><g>expected</><d>)</>
@@ -2183,7 +2182,7 @@ snapshots['toHaveNthReturnedWith works only on spies or jest.fn 1'] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock function
 
 Received has type:  function
-Received has value: <r>[Function anonymous]</>
+Received has value: <r>[Function fn]</>
 ]=]
 
 snapshots['toHaveNthReturnedWith works when not called 1'] = [=[
@@ -2333,7 +2332,7 @@ snapshots['toHaveReturned .not works only on jest.fn 1'] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock function
 
 Received has type:  function
-Received has value: <r>[Function anonymous]</>
+Received has value: <r>[Function fn]</>
 ]=]
 
 snapshots['toHaveReturned fails with any argument passed 1'] = [=[
@@ -2666,7 +2665,7 @@ snapshots['toHaveReturnedWith works only on spies or jest.fn 1'] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock function
 
 Received has type:  function
-Received has value: <r>[Function anonymous]</>
+Received has value: <r>[Function fn]</>
 ]=]
 
 snapshots['toHaveReturnedWith works when not called 1'] = [=[
@@ -2805,7 +2804,7 @@ snapshots['toReturn .not works only on jest.fn 1'] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock function
 
 Received has type:  function
-Received has value: <r>[Function anonymous]</>
+Received has value: <r>[Function fn]</>
 ]=]
 
 snapshots['toReturn fails with any argument passed 1'] = [=[
@@ -3138,7 +3137,7 @@ snapshots['toReturnWith works only on spies or jest.fn 1'] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock function
 
 Received has type:  function
-Received has value: <r>[Function anonymous]</>
+Received has value: <r>[Function fn]</>
 ]=]
 
 snapshots['toReturnWith works when not called 1'] = [=[

@@ -17,7 +17,6 @@ Version: v26.5.2
 * `prettyFormat` formats Roblox `DateTime` objects as a replacement for JS `Date`.
 * Formats using the Lua native string representations of primitives like `nil`, `nan` and `inf` over the JS `null`, `NaN` and `Infinity`. The tests are modified accordingly.
 * Formatting for any Javascript specific types in are omitted, `Symbol`, named `Function`, `Error`, `Date`, `BigInt`, etc.
-* All functions are anonymous in Lua.
 * `getConfig` is rewritten to avoid ternary operators.
 loop is rewritten with a `for` loop instead of an `iterator.next()`.
 * `Collections.lua` deviates from upstream substantially since Lua only has tables. We only have two functions: `printTableEntries` for formatting key, value pairs and `printListItems` for formatting arrays.

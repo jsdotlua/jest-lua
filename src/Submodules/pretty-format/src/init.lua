@@ -54,8 +54,11 @@ local function printFunction(val: any, printFunctionName: boolean): string
 	if not printFunctionName then
 		return '[Function]'
 	end
-	-- deviation: lua has no named functions
-	return '[Function ' .. 'anonymous' .. ']'
+	local functionName = debug.info(val, "n")
+	if functionName == nil or functionName == "" then
+		functionName = 'anonymous'
+	end
+	return '[Function ' .. functionName .. ']'
 end
 
 local function printSymbol(val): string
