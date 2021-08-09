@@ -122,7 +122,10 @@ return function()
 			_shouldNotError = function(self, _actual, _expected)
 				local pass = self.equals(
 					self.utils,
-					Object.assign(matcherUtils, iterableEquality, subsetEquality)
+					Object.assign(matcherUtils, {
+						iterableEquality = iterableEquality,
+						subsetEquality = subsetEquality
+					})
 				)
 				local message
 				if pass then

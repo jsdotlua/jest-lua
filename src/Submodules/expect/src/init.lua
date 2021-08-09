@@ -55,6 +55,10 @@ local getState = JestMatchersObject.getState
 local setMatchers = JestMatchersObject.setMatchers
 --local setState = JestMatchersObject.setState
 
+local utils = require(CurrentModule.utils)
+local iterableEquality = utils.iterableEquality
+local subsetEquality = utils.subsetEquality
+
 local makeThrowingMatcher, _validateResult
 
 local function expect_(self, actual: any, ...): any
@@ -98,7 +102,11 @@ function makeThrowingMatcher(
 )
 	return function(...)
 		local throws = true
-		local utils = Object.assign({}, matcherUtils)
+		local utils = Object.assign({
+			iterableEquality = iterableEquality,
+			subsetEquality = subsetEquality
+		}, matcherUtils)
+
 
 		local matcherContext = {
 			-- // When throws is disabled, the matcher will not throw errors during test

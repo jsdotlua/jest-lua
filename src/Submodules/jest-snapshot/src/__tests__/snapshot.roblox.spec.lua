@@ -1,3 +1,4 @@
+--!nocheck
 local CurrentModule = script.Parent.Parent
 local Modules = CurrentModule.Parent
 
@@ -26,5 +27,29 @@ return function()
 
 	it("tests that a missing snapshot throws", function()
 		jestExpect(function() jestExpect().toMatchSnapshot() end).toThrow("Snapshot name: `tests that a missing snapshot throws 1`\n\nNew snapshot was [1mnot written[22m. The update flag must be explicitly passed to write a new snapshot.\n\nThis is likely because this test is run in a continuous integration (CI) environment in which snapshots are not written by default.")
+	end)
+
+	it("tests snapshots with asymmetric matchers", function()
+		jestExpect({
+			createdAt = DateTime.now(),
+			id = math.floor(math.random() * 20),
+			name = "LeBron James"
+		}).toMatchSnapshot({
+			createdAt = jestExpect.any("DateTime"),
+			id = jestExpect.any("number"),
+			name = "LeBron James"
+		})
+	end)
+
+	it("tests snapshots with asymmetric matchers and a subset of properties", function()
+		jestExpect({
+			createdAt = DateTime.now(),
+			id = math.floor(math.random() * 20),
+			name = "LeBron James"
+		}).toMatchSnapshot({
+			createdAt = jestExpect.any("DateTime"),
+			id = jestExpect.any("number"),
+		})
+
 	end)
 end

@@ -258,7 +258,7 @@ function _toMatchSnapshot(config: types.MatchSnapshotConfig)
 		})
 
 		if not propertyPass then
-			local key = snapshotState.fail(fullTestName, received)
+			local key = snapshotState:fail(fullTestName, received)
 			local matched = key:match("(%d+)$")
 			local count
 			if matched == nil then

@@ -432,7 +432,8 @@ return function()
 						isNot = false,
 						promise = "",
 						snapshotState = {
-							fail = function(fullTestName) return fullTestName .. " 1" end,
+							fail = function(_, fullTestName)
+								return fullTestName .. " 1" end,
 						},
 						utils = {
 							iterableEquality = function() return {} end,
