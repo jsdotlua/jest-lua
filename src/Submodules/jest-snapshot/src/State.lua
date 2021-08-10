@@ -39,7 +39,7 @@ local removeExtraLineBreaks = utils.removeExtraLineBreaks
 local saveSnapshotFile = utils.saveSnapshotFile
 local serialize = utils.serialize
 local testNameToKey = utils.testNameToKey
-local splitPath = utils.robloxSplitPath
+local getParent = utils.robloxGetParent
 
 -- ROBLOX TODO: ADO-1552 add inline_snapshots imports when we support this
 -- functionality
@@ -183,8 +183,7 @@ function SnapshotState:save(): SaveStatus
 	-- into its filesystem location
 	local snapshotPath = CoreScriptSyncService:GetScriptFilePath(_G[JEST_TEST_CONTEXT].instance)
 	-- gets path of parent directory, GetScriptFilePath can only be called on ModuleScripts
-	snapshotPath = splitPath(snapshotPath, 1)
-	snapshotPath = table.concat(snapshotPath, "/")
+	snapshotPath = getParent(snapshotPath, 1)
 	snapshotPath = snapshotPath
 		.. "/__snapshots__/"
 		.. _G[JEST_TEST_CONTEXT].instance.Name:match("(.*)%.spec")

@@ -308,16 +308,24 @@ function deepMerge(target: any, source: any): any
 end
 
 -- deviation: added to handle file paths in snapshot/State
-local function robloxSplitPath(path: string, parent): Array<string>
-	parent = parent or 0
+local function robloxGetParent(path: string, level): string
+	level = level or 0
+
+	local isUnixPath = string.sub(path, 1, 1) == "/"
 	local t = {}
+
 	for p in string.gmatch(path, "[^\\/][^\\/]*") do
 		table.insert(t, p)
 	end
-	if parent > 0 then
-		t = { table.unpack(t, 1, #t - parent) }
+	if level > 0 then
+		t = { table.unpack(t, 1, #t - level) }
 	end
-	return t
+
+	if isUnixPath then
+		return "/" .. table.concat(t, "/")
+	end
+
+	return table.concat(t, "\\")
 end
 
 return {
@@ -333,5 +341,5 @@ return {
 	saveSnapshotFile = saveSnapshotFile,
 	deepMerge = deepMerge,
 	-- deviation: not in upstream
-	robloxSplitPath = robloxSplitPath
+	robloxGetParent = robloxGetParent
 }

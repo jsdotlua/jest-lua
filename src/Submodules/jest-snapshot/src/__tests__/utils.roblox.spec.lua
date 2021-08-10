@@ -3,81 +3,39 @@ local Modules = CurrentModule.Parent
 
 local jestExpect = require(Modules.Expect)
 
-local splitPath = require(CurrentModule.utils).robloxSplitPath
+local getParent = require(CurrentModule.utils).robloxGetParent
 
 return function()
-	describe("splitPath", function()
+	describe("getParent", function()
 		it("works on Unix paths", function()
-			jestExpect(splitPath(
+			jestExpect(getParent(
 				"/Users/rng/jest-roblox/src/Submodules/expect/src/__tests__/__snapshots__/snapshot.snap.lua"
 			)).toEqual(
-				{
-					"Users",
-					"rng",
-					"jest-roblox",
-					"src",
-					"Submodules",
-					"expect",
-					"src",
-					"__tests__",
-					"__snapshots__",
-					"snapshot.snap.lua"
-				}
+				"/Users/rng/jest-roblox/src/Submodules/expect/src/__tests__/__snapshots__/snapshot.snap.lua"
 			)
 		end)
 
 		it("works on Windows paths", function()
-			jestExpect(splitPath(
+			jestExpect(getParent(
 				"C:\\Users\\Raymond\\jest-roblox\\src\\Submodules\\expect\\src\\__tests__\\__snapshots__\\snapshot.snap.lua"
 			)).toEqual(
-				{
-					"C:",
-					"Users",
-					"Raymond",
-					"jest-roblox",
-					"src",
-					"Submodules",
-					"expect",
-					"src",
-					"__tests__",
-					"__snapshots__",
-					"snapshot.snap.lua"
-				}
+				"C:\\Users\\Raymond\\jest-roblox\\src\\Submodules\\expect\\src\\__tests__\\__snapshots__\\snapshot.snap.lua"
 			)
 		end)
 
 		it("gets parent directory", function()
-			jestExpect(splitPath(
+			jestExpect(getParent(
 				"/Users/rng/jest-roblox/src/Submodules/expect/src/__tests__/__snapshots__/snapshot.snap.lua", 1
 			)).toEqual(
-				{
-					"Users",
-					"rng",
-					"jest-roblox",
-					"src",
-					"Submodules",
-					"expect",
-					"src",
-					"__tests__",
-					"__snapshots__"
-				}
+				"/Users/rng/jest-roblox/src/Submodules/expect/src/__tests__/__snapshots__"
 			)
 		end)
 
 		it("gets grandparent directory", function()
-			jestExpect(splitPath(
+			jestExpect(getParent(
 				"/Users/rng/jest-roblox/src/Submodules/expect/src/__tests__/__snapshots__/snapshot.snap.lua", 2
 			)).toEqual(
-				{
-					"Users",
-					"rng",
-					"jest-roblox",
-					"src",
-					"Submodules",
-					"expect",
-					"src",
-					"__tests__"
-				}
+				"/Users/rng/jest-roblox/src/Submodules/expect/src/__tests__"
 			)
 		end)
 	end)
