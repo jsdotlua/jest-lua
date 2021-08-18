@@ -17,10 +17,13 @@ local Polyfill = require(Packages.LuauPolyfill)
 local toJSBoolean = Polyfill.Boolean.toJSBoolean
 local Array = Polyfill.Array
 local Object = Polyfill.Object
+local instanceof = Polyfill.instanceof
+local Set = Polyfill.Set
 
 -- deviation: omitted isPrimitive import
 local jasmineUtils = require(CurrentModule.jasmineUtils)
 local equals = jasmineUtils.equals
+local isA = jasmineUtils.isA
 -- deviation: omitted isA, isImmutableUnorderedKeyed, isImmutableUnorderedSet
 
 type Array<T> = { T };
@@ -32,7 +35,7 @@ type GetPath = {
 	value: any?
 }
 
-local isObject, subsetEquality
+local isObject, subsetEquality, iterableEquality
 
 local function hasPropertyInObject(object: any, key: string): boolean
 	-- We don't have to deal with the complexities around prototype chains in
@@ -117,6 +120,7 @@ local function getObjectSubset(
 		if Array.isArray(subset) and #subset == #object then
 			-- The return correct subclass of subset
 			local subsetMap = {}
+
 			for i, sub in ipairs(subset) do
 				table.insert(subsetMap, getObjectSubset(object[i], sub))
 			end
@@ -125,29 +129,25 @@ local function getObjectSubset(
 	elseif JestGetType.getType(object) == 'DateTime' then
 		return object
 	elseif isObject(object) and isObject(subset) then
-		--[[
-			ROBLOX TODO: (ADO-1217) replace the line below once Map/Set
-			functionality is implemented and the iterableEquality method is
-			reimplemented:
-
-			if equals(object, subset, {iterableEquality, subsetEquality}) then
-		]]
-		if equals(object, subset, {subsetEquality}) then
+		if equals(object, subset, {iterableEquality, subsetEquality}) then
 			return subset
 		end
 
 		local trimmed: any = {}
 		seenReferences[object] = trimmed
 
-		for i, key in ipairs(
-			Array.filter(
-				Object.keys(object),
-				function(key) return hasPropertyInObject(subset, key) end)
-		) do
-			if seenReferences[object[key]] ~= nil then
-				trimmed[key] = seenReferences[object[key]]
-			else
-				trimmed[key] = getObjectSubset(object[key], subset[key], seenReferences)
+		-- ROBLOX TODO: remove after change in LuauPolyfill is merged
+		if not instanceof(object, Set) then
+			for i, key in ipairs(
+				Array.filter(
+					Object.keys(object),
+					function(key) return hasPropertyInObject(subset, key) end)
+			) do
+				if seenReferences[object[key]] ~= nil then
+					trimmed[key] = seenReferences[object[key]]
+				else
+					trimmed[key] = getObjectSubset(object[key], subset[key], seenReferences)
+				end
 			end
 		end
 
@@ -169,11 +169,8 @@ end
 -- 	return typeof(object) == "table" or typeof(object) == "string"
 -- end
 
--- deviation: We currently have no need for this and we can use the native
--- equals function in its place to avoid complications. A rough translation
--- is included and commented out in the case that we will need to support this
--- in the future
-local function iterableEquality(
+-- deviation: we currently only evaluate iterableEquality for Sets
+function iterableEquality(
 	a: any,
 	b: any,
 	aStack: Array<any>,
@@ -182,81 +179,73 @@ local function iterableEquality(
 	aStack = aStack or {}
 	bStack = bStack or {}
 
+	if
+		JestGetType.getType(a) ~= "set" or
+		JestGetType.getType(b) ~= "set"
+	then
+		return nil
+	end
+
+	-- deviation: omitting constructor check
+
+	local length = #aStack
+	while length > 0 do
+		-- Linear search. Performance is inversely proportional to the number of
+		-- unique nested structures.
+		-- circular references at same depth are equal
+		-- circular reference is not equal to non-circular one
+		if aStack[length] == a then
+			return bStack[length] == b
+		end
+
+		-- deviation: this if check is not included in upstream
+		-- if bStack[length] == b then
+		-- 	return aStack[length] == a
+		-- end
+
+		length -= 1
+	end
+
+	table.insert(aStack, a)
+	table.insert(bStack, b)
+
+	local function iterableEqualityWithStack(localA: any, localB: any)
+		return iterableEquality(localA, localB, {unpack(aStack)}, {unpack(bStack)})
+	end
+
+	-- ROBLOX TODO: (ADO-1217) If we eventually have a Map polyfill, we can
+	-- expand this to include the Map case as well
+	if a.size ~= nil then
+		if a.size ~= b.size then
+			return false
+		elseif isA('set', a) then
+			local allFound = true
+			for _, aValue in a:ipairs() do
+				if not b:has(aValue) then
+					local has = false
+					for _, bValue in b:ipairs() do
+						local isEqual = equals(aValue, bValue, {iterableEqualityWithStack})
+						if isEqual == true then
+							has = true
+						end
+					end
+
+					if has == false then
+						allFound = false
+						break
+					end
+				end
+			end
+			table.remove(aStack)
+			table.remove(bStack)
+			return allFound
+		end
+	end
+
 	return nil
-	-- if (
-	-- 	typeof(a) ~= "table" or
-	-- 	typeof(b) ~= "table" or
-	-- 	Array.isArray(a) or
-	-- 	Array.isArray(b) or
-	-- 	not hasIterator(a) or
-	-- 	not hasIterator(b)
-	-- ) then
-	-- 	return nil
-	-- end
 
-	-- -- deviation: omitting constructor check
-
-	-- local length = #aStack
-	-- while length > 0 do
-	-- 	-- Linear search. Performance is inversely proportional to the number of
-	-- 	-- unique nested structures.
-	-- 	-- circular references at same depth are equal
-	-- 	-- circular reference is not equal to non-circular one
-	-- 	if aStack[length] == a then
-	-- 		return bStack[length] == b
-	-- 	end
-
-	-- 	-- deviation: this if check is not included in upstream
-	-- 	if bStack[length] == b then
-	-- 		return aStack[length] == a
-	-- 	end
-
-	-- 	length -= 1
-	-- end
-
-	-- table.insert(aStack, a)
-	-- table.insert(bStack, b)
-
-	-- local function iterableEqualityWithStack(localA: any, localB: any)
-	-- 	return iterableEquality(localA, localB, {unpack(aStack)}, {unpack(bStack)})
-	-- end
-
-	-- -- ROBLOX TODO: (ADO-1217) Once we have Set and Map functionality, we can expand this
-	-- -- to actually mirror the distinct cases in upstream
-	-- if #Object.keys(a) ~= #Object.keys(b) then
-	-- 	return false
-	-- else
-	-- 	local allFound = true
-	-- 	for aKey, aValue in pairs(a) do
-	-- 		if b[aKey] == nil or not equals(aValue, b[aKey], {iterableEqualityWithStack}) then
-	-- 			local has = false
-	-- 			for bKey, bValue in pairs(b) do
-	-- 				local matchedKey = equals(aKey, bKey, {iterableEqualityWithStack})
-
-	-- 				local matchedValue = false
-	-- 				if matchedKey == true then
-	-- 					matchedValue = equals(aValue, bValue, {iterableEqualityWithStack})
-	-- 				end
-	-- 				if matchedValue == true then
-	-- 					has = true
-	-- 				end
-
-	-- 			end
-
-	-- 			if has == false then
-	-- 				allFound = false
-	-- 				break
-	-- 			end
-	-- 		end
-	-- 	end
-	-- 	-- Remove the first value from the stack of traversed values
-	-- 	table.remove(aStack)
-	-- 	table.remove(bStack)
-	-- 	return allFound
-	-- end
-
-	-- -- deviation: omitted section of code for handling the case of a different
-	-- -- kind of iterable not covered by the above table case
+	-- deviation: omitted section of code for handling the case of a different
+	-- kind of iterable not covered by the above Set case
 end
 
 function isObject(a: any)

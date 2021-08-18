@@ -3,6 +3,11 @@ return function()
 	local CurrentModule = script.Parent.Parent
 
 	local jestExpect = require(CurrentModule)
+	local Modules = CurrentModule.Parent
+	local Packages = Modules.Parent.Parent
+
+	local Polyfill = require(Packages.LuauPolyfill)
+	local Set = Polyfill.Set
 
 	local CustomClass = {}
 	CustomClass.__index = CustomClass
@@ -31,5 +36,13 @@ return function()
 	it('the La Croix cans on my desk are not semantically the same', function()
 		jestExpect(LaCroix.new('lemon')).toEqual({flavor = 'lemon'})
 		jestExpect(LaCroix.new('lemon')).never.toStrictEqual({flavor = 'lemon'})
+	end)
+
+	it("tests the set polyfill", function()
+		jestExpect(Set.new({1, 2, 5})).toEqual(Set.new{2, 5, 1})
+		jestExpect(Set.new({1, 2, 6})).never.toEqual(Set.new{1, 2, 5})
+		jestExpect(Set.new({{1, 2}, {3, 4}})).toEqual(Set.new{{3, 4}, {1, 2}})
+		jestExpect(Set.new({{1, 2}, {3, 4}})).never.toEqual(Set.new{{1, 2}, {3, 5}})
+		jestExpect(Set.new({"a"})).toContain("a")
 	end)
 end

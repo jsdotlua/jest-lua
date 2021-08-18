@@ -1290,7 +1290,7 @@ Expected has type:  number
 Expected has value: <g>1</>
 ]=]
 
-snapshots['.toContain(), .toContainEqual() "11112111" contains "2" 1'] = [=[
+snapshots[".toContain(), .toContainEqual() '\"11112111\"' contains '\"2\"' 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toContain<d>(</><g>expected</><d>) -- string.find or table.find</>
 
@@ -1298,7 +1298,7 @@ Expected substring: never <g>"2"</>
 Received string:          <r>"1111</><i>2</i><r>111</>"
 ]=]
 
-snapshots['.toContain(), .toContainEqual() "abcdef" contains "abc" 1'] = [=[
+snapshots[".toContain(), .toContainEqual() '\"abcdef\"' contains '\"abc\"' 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toContain<d>(</><g>expected</><d>) -- string.find or table.find</>
 
@@ -1306,7 +1306,7 @@ Expected substring: never <g>"abc"</>
 Received string:          <r>"</><i>abc</i><r>def</>"
 ]=]
 
-snapshots['.toContain(), .toContainEqual() {"a", "b", "c", "d"} contains "a" 1'] = [=[
+snapshots[".toContain(), .toContainEqual() '{\"a\", \"b\", \"c\", \"d\"}' contains '\"a\"' 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toContain<d>(</><g>expected</><d>) -- string.find or table.find</>
 
@@ -1314,7 +1314,7 @@ Expected value: never <g>"a"</>
 Received table:       <r>{</><i>"a"</i><r>, </><r>"b"</><r>, </><r>"c"</><r>, </><r>"d"</><r>}</>
 ]=]
 
-snapshots['.toContain(), .toContainEqual() {"a", "b", "c", "d"} contains a value equal to "a" 1'] = [=[
+snapshots[".toContain(), .toContainEqual() '{\"a\", \"b\", \"c\", \"d\"}' contains a value equal to '\"a\"' 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toContainEqual<d>(</><g>expected</><d>) -- deep equality</>
 
@@ -1322,7 +1322,7 @@ Expected value: never <g>"a"</>
 Received table:       <r>{</><i>"a"</i><r>, </><r>"b"</><r>, </><r>"c"</><r>, </><r>"d"</><r>}</>
 ]=]
 
-snapshots['.toContain(), .toContainEqual() {{"a": "b"}, {"a": "c"}} contains a value equal to {"a": "b"} 1'] = [=[
+snapshots[".toContain(), .toContainEqual() '{{\"a\": \"b\"}, {\"a\": \"c\"}}' contains a value equal to '{\"a\": \"b\"}' 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toContainEqual<d>(</><g>expected</><d>) -- deep equality</>
 
@@ -1330,7 +1330,7 @@ Expected value: never <g>{"a": "b"}</>
 Received table:       <r>{</><i>{"a": "b"}</i><r>, </><r>{"a": "c"}</><r>}</>
 ]=]
 
-snapshots['.toContain(), .toContainEqual() {{"a": "b"}, {"a": "c"}} does not contain a value equal to {"a": "d"} 1'] = [=[
+snapshots[".toContain(), .toContainEqual() '{{\"a\": \"b\"}, {\"a\": \"c\"}}' does not contain a value equal to '{\"a\": \"d\"}' 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toContainEqual<d>(</><g>expected</><d>) -- deep equality</>
 
@@ -1338,7 +1338,7 @@ Expected value: <g>{"a": "d"}</>
 Received table: <r>{{"a": "b"}, {"a": "c"}}</>
 ]=]
 
-snapshots['.toContain(), .toContainEqual() {{}, {}} does not contain {} 1'] = [=[
+snapshots[".toContain(), .toContainEqual() '{{}, {}}' does not contain '{}' 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toContain<d>(</><g>expected</><d>) -- string.find or table.find</>
 
@@ -1348,7 +1348,7 @@ Received table: <r>{{}, {}}</>
 Looks like you wanted to test for object/array equality with the stricter `toContain` matcher. You probably need to use `toContainEqual` instead.
 ]=]
 
-snapshots['.toContain(), .toContainEqual() {0, 1} contains 1 1'] = [=[
+snapshots[".toContain(), .toContainEqual() '{0, 1}' contains '1' 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toContain<d>(</><g>expected</><d>) -- string.find or table.find</>
 
@@ -1356,7 +1356,7 @@ Expected value: never <g>1</>
 Received table:       <r>{</><r>0</><r>, </><i>1</i><r>}</>
 ]=]
 
-snapshots['.toContain(), .toContainEqual() {0, 1} contains a value equal to 1 1'] = [=[
+snapshots[".toContain(), .toContainEqual() '{0, 1}' contains a value equal to '1' 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toContainEqual<d>(</><g>expected</><d>) -- deep equality</>
 
@@ -1364,7 +1364,7 @@ Expected value: never <g>1</>
 Received table:       <r>{</><r>0</><r>, </><i>1</i><r>}</>
 ]=]
 
-snapshots['.toContain(), .toContainEqual() {1, 2, 3, 4} contains 1 1'] = [=[
+snapshots[".toContain(), .toContainEqual() '{1, 2, 3, 4}' contains '1' 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toContain<d>(</><g>expected</><d>) -- string.find or table.find</>
 
@@ -1372,7 +1372,7 @@ Expected value: never <g>1</>
 Received table:       <r>{</><i>1</i><r>, </><r>2</><r>, </><r>3</><r>, </><r>4</><r>}</>
 ]=]
 
-snapshots['.toContain(), .toContainEqual() {1, 2, 3, 4} contains a value equal to 1 1'] = [=[
+snapshots[".toContain(), .toContainEqual() '{1, 2, 3, 4}' contains a value equal to '1' 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toContainEqual<d>(</><g>expected</><d>) -- deep equality</>
 
@@ -1380,7 +1380,7 @@ Expected value: never <g>1</>
 Received table:       <r>{</><i>1</i><r>, </><r>2</><r>, </><r>3</><r>, </><r>4</><r>}</>
 ]=]
 
-snapshots['.toContain(), .toContainEqual() {{1, 2}, {3, 4}} contains a value equal to {3, 4} 1'] = [=[
+snapshots[".toContain(), .toContainEqual() '{{1, 2}, {3, 4}}' contains a value equal to '{3, 4}' 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toContainEqual<d>(</><g>expected</><d>) -- deep equality</>
 
@@ -1388,7 +1388,7 @@ Expected value: never <g>{3, 4}</>
 Received table:       <r>{</><r>{1, 2}</><r>, </><i>{3, 4}</i><r>}</>
 ]=]
 
-snapshots['.toContain(), .toContainEqual() {1, 2, 3} does not contain 4 1'] = [=[
+snapshots[".toContain(), .toContainEqual() '{1, 2, 3}' does not contain '4' 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toContain<d>(</><g>expected</><d>) -- string.find or table.find</>
 
@@ -1396,7 +1396,7 @@ Expected value: <g>4</>
 Received table: <r>{1, 2, 3}</>
 ]=]
 
-snapshots['.toContain(), .toContainEqual() {Symbol(a)} contains Symbol(a) 1'] = [=[
+snapshots[".toContain(), .toContainEqual() '{Symbol(a)}' contains 'Symbol(a)' 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toContain<d>(</><g>expected</><d>) -- string.find or table.find</>
 
@@ -1404,7 +1404,7 @@ Expected value: never <g>Symbol(a)</>
 Received table:       <r>{</><i>Symbol(a)</i><r>}</>
 ]=]
 
-snapshots['.toContain(), .toContainEqual() {Symbol(a)} contains a value equal to Symbol(a) 1'] = [=[
+snapshots[".toContain(), .toContainEqual() '{Symbol(a)}' contains a value equal to 'Symbol(a)' 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toContainEqual<d>(</><g>expected</><d>) -- deep equality</>
 
@@ -1412,7 +1412,7 @@ Expected value: never <g>Symbol(a)</>
 Received table:       <r>{</><i>Symbol(a)</i><r>}</>
 ]=]
 
-snapshots['.toContain(), .toContainEqual() error cases 1'] = [=[
+snapshots[".toContain(), .toContainEqual() error cases 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toContain<d>(</><g>expected</><d>) -- string.find or table.find</>
 
@@ -1421,7 +1421,7 @@ snapshots['.toContain(), .toContainEqual() error cases 1'] = [=[
 Received has value: <r>nil</>
 ]=]
 
-snapshots['.toContain(), .toContainEqual() error cases for toContainEqual 1'] = [=[
+snapshots[".toContain(), .toContainEqual() error cases for toContainEqual 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toContainEqual<d>(</><g>expected</><d>) -- deep equality</>
 
@@ -3370,6 +3370,191 @@ snapshots['.toBeDefined() .toBeUndefined() nil is undefined 2'] = [=[
 <d>expect(</><r>received</><d>).</>never<d>.</>toBeUndefined<d>()</>
 
 Received: <r>nil</>
+]=]
+
+-- deviation: we use {} instead of Map {}
+snapshots[".toEqual() {pass: false} expect({}).toEqual(Set {}) 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
+
+Expected: <g>Set {}</>
+Received: <r>{}</>
+]=]
+
+snapshots[".toEqual() {pass: false} expect(Set {1, 2}).toEqual(Set {}) 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
+
+<g>- Expected  - 1</>
+<r>+ Received  + 4</>
+
+<g>- Set {}</>
+<r>+ Set {</>
+<r>+   1,</>
+<r>+   2,</>
+<r>+ }</>
+]=]
+
+snapshots[".toEqual() {pass: false} expect(Set {1, 2}).toEqual(Set {1, 2, 3}) 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
+
+<g>- Expected  - 1</>
+<r>+ Received  + 0</>
+
+<d>  Set {</>
+<d>    1,</>
+<d>    2,</>
+<g>-   3,</>
+<d>  }</>
+]=]
+
+snapshots[".toEqual() {pass: false} expect(Set {{1}, {2}}).toEqual(Set {{1}, {2}, {2}}) 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
+
+<g>- Expected  - 3</>
+<r>+ Received  + 0</>
+
+<y>@@ -3,9 +3,6 @@</>
+<d>      1,</>
+<d>    },</>
+<d>    Table {</>
+<d>      2,</>
+<d>    },</>
+<g>-   Table {</>
+<g>-     2,</>
+<g>-   },</>
+<d>  }</>
+]=]
+
+snapshots[".toEqual() {pass: false} expect(Set {{1}, {2}}).toEqual(Set {{1}, {2}, {3}}) 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
+
+<g>- Expected  - 3</>
+<r>+ Received  + 0</>
+
+<y>@@ -3,9 +3,6 @@</>
+<d>      1,</>
+<d>    },</>
+<d>    Table {</>
+<d>      2,</>
+<d>    },</>
+<g>-   Table {</>
+<g>-     3,</>
+<g>-   },</>
+<d>  }</>
+]=]
+
+snapshots[".toEqual() {pass: false} expect(Set {Set {1}, Set {2}}).toEqual(Set {Set {1}, Set {3}}) 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
+
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
+
+<d>  Set {</>
+<d>    Set {</>
+<d>      1,</>
+<d>    },</>
+<d>    Set {</>
+<g>-     3,</>
+<r>+     2,</>
+<d>    },</>
+<d>  }</>
+]=]
+
+snapshots[".toEqual() {pass: true} expect(Set {}).never.toEqual(Set {}) 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>never<d>.</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
+
+Expected: never <g>Set {}</>
+
+]=]
+
+snapshots[".toEqual() {pass: true} expect(Set {1, 2}).never.toEqual(Set {1, 2}) 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>never<d>.</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
+
+Expected: never <g>Set {1, 2}</>
+
+]=]
+
+snapshots[".toEqual() {pass: true} expect(Set {1, 2}).never.toEqual(Set {2, 1}) 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>never<d>.</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
+
+Expected: never <g>Set {2, 1}</>
+Received:       <r>Set {1, 2}</>
+]=]
+
+snapshots[".toEqual() {pass: true} expect(Set {Set {{1}}, Set {{2}}}).never.toEqual(Set {Set {{2}}, Set {{1}}}) 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>never<d>.</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
+
+Expected: never <g>Set {Set {{2}}, Set {{1}}}</>
+Received:       <r>Set {Set {{1}}, Set {{2}}}</>
+]=]
+
+snapshots[".toEqual() {pass: true} expect(Set {{1}, {2}, {3}, {3}}).never.toEqual(Set {{3}, {3}, {2}, {1}}) 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>never<d>.</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
+
+Expected: never <g>Set {{3}, {3}, {2}, {1}}</>
+Received:       <r>Set {{1}, {2}, {3}, {3}}</>
+]=]
+
+snapshots[".toEqual() {pass: true} expect(Set {{\"a\": 1}, {\"b\": 2}}).never.toEqual(Set {{\"b\": 2}, {\"a\": 1}}) 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>never<d>.</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
+
+Expected: never <g>Set {{"b": 2}, {"a": 1}}</>
+Received:       <r>Set {{"a": 1}, {"b": 2}}</>
+]=]
+
+snapshots[".toContain(), .toContainEqual() 'Set {\"abc\", \"def\"}' contains '\"abc\"' 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>never<d>.</>toContain<d>(</><g>expected</><d>) -- string.find or table.find</>
+
+Expected value: never <g>"abc"</>
+Received set:         <r>Set {"abc", "def"}</>
+]=]
+
+snapshots[".toContain(), .toContainEqual() 'Set {1, 2, 3, 4}' contains a value equal to '1' 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>never<d>.</>toContainEqual<d>(</><g>expected</><d>) -- deep equality</>
+
+Expected value: never <g>1</>
+Received set:         <r>Set {1, 2, 3, 4}</>
+]=]
+
+snapshots['toMatchObject() {pass: true} expect(Set {1, 2}).toMatchObject(Set {1, 2}) 1'] = [=[
+
+<d>expect(</><r>received</><d>).</>never<d>.</>toMatchObject<d>(</><g>expected</><d>)</>
+
+Expected: never <g>Set {1, 2}</>
+]=]
+
+snapshots['toMatchObject() {pass: true} expect(Set {1, 2}).toMatchObject(Set {2, 1}) 1'] = [=[
+
+<d>expect(</><r>received</><d>).</>never<d>.</>toMatchObject<d>(</><g>expected</><d>)</>
+
+Expected: never <g>Set {2, 1}</>
+Received:       <r>Set {1, 2}</>
+]=]
+
+snapshots['toMatchObject() {pass: false} expect(Set {1, 2}).toMatchObject(Set {2}) 1'] = [=[
+
+<d>expect(</><r>received</><d>).</>toMatchObject<d>(</><g>expected</><d>)</>
+
+<g>- Expected  - 0</>
+<r>+ Received  + 1</>
+
+<d>  Set {</>
+<r>+   1,</>
+<d>    2,</>
+<d>  }</>
 ]=]
 
 return snapshots

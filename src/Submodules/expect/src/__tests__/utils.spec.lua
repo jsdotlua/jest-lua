@@ -10,13 +10,17 @@
 return function()
 	local CurrentModule = script.Parent.Parent
 	local Modules = CurrentModule.Parent
+	local Packages = Modules.Parent.Parent
+
+	local Polyfill = require(Packages.LuauPolyfill)
+	local Set = Polyfill.Set
 
 	local stringify = require(Modules.JestMatcherUtils).stringify
 
 	local emptyObject = require(CurrentModule.utils).emptyObject
 	local getObjectSubset = require(CurrentModule.utils).getObjectSubset
 	local getPath = require(CurrentModule.utils).getPath
-	-- local iterableEquality = require(CurrentModule.utils).iterableEquality
+	local iterableEquality = require(CurrentModule.utils).iterableEquality
 	local subsetEquality = require(CurrentModule.utils).subsetEquality
 
 	local equals = require(CurrentModule.jasmineUtils).equals
@@ -413,7 +417,64 @@ return function()
 		end)
 	end)
 
-	-- ROBLOX TODO: (ADO-1217) implement tests once we have Map/Set functionality
+	-- ROBLOX TODO: (ADO-1217) implement tests once we have Map functionality
 	describe("iterableEquality", function()
+		it('returns true when given circular Set', function()
+			local a = Set.new({})
+			a:add(a)
+			local b = Set.new({})
+			b:add(b)
+			expect(iterableEquality(a,b)).to.equal(true)
+		end)
+
+		it('returns true when given nested Sets', function()
+			expect(
+				iterableEquality(
+					Set.new({Set.new({{1}}), Set.new({{2}})}),
+					Set.new({Set.new({{2}}), Set.new({{1}})})
+				)
+			).to.equal(true)
+			expect(
+				iterableEquality(
+					Set.new({Set.new({{1}}), Set.new({{2}})}),
+					Set.new({Set.new({{3}}), Set.new({{1}})})
+				)
+			).to.equal(false)
+		end)
+
+		it('returns false when given inequal set within a set', function()
+			expect(
+				iterableEquality(Set.new({Set.new({2})}), Set.new({Set.new({1, 2})}))
+			).to.equal(false)
+			-- duplicate call in upstream?
+			expect(
+				iterableEquality(Set.new({Set.new({2})}), Set.new({Set.new({1, 2})}))
+			).to.equal(false)
+		end)
+
+		itSKIP('returns false when given inequal set within a map', function()
+		end)
+
+		it('returns true when given circular Set shape', function()
+			local a1 = Set.new()
+			local a2 = Set.new()
+			a1:add(a2)
+			a2:add(a1)
+			local b = Set.new()
+			b:add(b)
+			expect(iterableEquality(a1, b)).to.equal(true)
+		end)
+
+		itSKIP('returns true when given circular key in Map', function()
+		end)
+
+		itSKIP('returns true when given nested Maps', function()
+		end)
+
+		itSKIP('returns true when given circular key and value in Map', function()
+		end)
+
+		itSKIP('returns true when given circular value in Map', function()
+		end)
 	end)
 end

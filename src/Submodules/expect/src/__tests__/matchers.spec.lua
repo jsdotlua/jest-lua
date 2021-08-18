@@ -13,10 +13,11 @@ return function()
 	local Packages = Modules.Parent.Parent
 
 	local Polyfill = require(Packages.LuauPolyfill)
-	local Symbol = Polyfill.Symbol
+	local extends = Polyfill.extends
 	local Number = Polyfill.Number
 	local Object = Polyfill.Object
-	local extends = Polyfill.extends
+	local Set = Polyfill.Set
+	local Symbol = Polyfill.Symbol
 
 	local RegExp = require(Packages.LuauRegExp)
 
@@ -321,6 +322,15 @@ return function()
 			},
 			{{1}, {2}},
 			{{1, 2}, {2, 1}},
+			{{}, Set.new({})},
+			{Set.new({1, 2}), Set.new({})},
+			{Set.new({1, 2}), Set.new({1, 2, 3})},
+			{Set.new({{1}, {2}}), Set.new({{1}, {2}, {3}})},
+			{Set.new({{1}, {2}}), Set.new({{1}, {2}, {2}})},
+			{
+				Set.new({Set.new({1}), Set.new({2})}),
+				Set.new({Set.new({1}), Set.new({3})})
+			},
 			{{1, 2}, {}},
 			{{1, 2}, {1, 2, 3}},
 			{{{1}, {2}}, {{1}, {2}, {3}}},
@@ -417,6 +427,21 @@ return function()
 			},
 			{{}, {}},
 			{{a = 99}, {a = 99}},
+			{Set.new({}), Set.new({})},
+			{Set.new({1, 2}), Set.new({1, 2})},
+			{Set.new({1, 2}), Set.new({2, 1})},
+			{
+				Set.new({Set.new({{1}}), Set.new({{2}})}),
+				Set.new({Set.new({{2}}), Set.new({{1}})})
+			},
+			{
+				Set.new({{1}, {2}, {3}, {3}}),
+				Set.new({{3}, {3}, {2}, {1}})
+			},
+			{
+				Set.new({{a = 1}, {b = 2}}),
+				Set.new({{b = 2}, {a = 1}})
+			},
 			{
 				{
 					[1] = 'one',
@@ -992,9 +1017,10 @@ return function()
 			{{Symbol.for_("a")}, Symbol.for_("a")},
 			{"abcdef", "abc"},
 			{"11112111", "2"},
+			{Set.new({"abc", "def"}), "abc"},
 			{{0, 1}, 1}
 		}) do
-			it(string.format("%s contains %s", stringify(testCase[1]), stringify(testCase[2])), function()
+			it(string.format("'%s' contains '%s'", stringify(testCase[1]), stringify(testCase[2])), function()
 				jestExpect(testCase[1]).toContain(testCase[2])
 
 				jestExpect(function() jestExpect(testCase[1]).never.toContain(testCase[2]) end).toThrowErrorMatchingSnapshot()
@@ -1005,7 +1031,7 @@ return function()
 			{{1, 2, 3}, 4},
 			{{{}, {}}, {}}
 		}) do
-			it(string.format("%s does not contain %s", stringify(testCase[1]), stringify(testCase[2])), function()
+			it(string.format("'%s' does not contain '%s'", stringify(testCase[1]), stringify(testCase[2])), function()
 				jestExpect(testCase[1]).never.toContain(testCase[2])
 
 				jestExpect(function() jestExpect(testCase[1]).toContain(testCase[2]) end).toThrowErrorMatchingSnapshot()
@@ -1021,10 +1047,11 @@ return function()
 			{{'a', 'b', 'c', 'd'}, 'a'},
 			{{Symbol.for_("a")}, Symbol.for_("a")},
 			{{{a = 'b'}, {a = 'c'}}, {a = 'b'}},
+			{Set.new({1, 2, 3, 4}), 1},
 			{{0, 1}, 1},
 			{{{1, 2}, {3, 4}}, {3, 4}}
 		}) do
-			it(string.format("%s contains a value equal to %s", stringify(testCase[1]), stringify(testCase[2])), function()
+			it(string.format("'%s' contains a value equal to '%s'", stringify(testCase[1]), stringify(testCase[2])), function()
 				jestExpect(testCase[1]).toContainEqual(testCase[2])
 
 				jestExpect(function() jestExpect(testCase[1]).never.toContainEqual(testCase[2]) end).toThrowErrorMatchingSnapshot()
@@ -1034,7 +1061,7 @@ return function()
 		for _, testCase in ipairs({
 			{{{a = 'b'}, {a = 'c'}}, {a = 'd'}}
 		}) do
-			it(string.format("%s does not contain a value equal to %s", stringify(testCase[1]), stringify(testCase[2])), function()
+			it(string.format("'%s' does not contain a value equal to '%s'", stringify(testCase[1]), stringify(testCase[2])), function()
 				jestExpect(testCase[1]).never.toContainEqual(testCase[2])
 
 				jestExpect(function() jestExpect(testCase[1]).toContainEqual(testCase[2]) end).toThrowErrorMatchingSnapshot()
@@ -1522,6 +1549,8 @@ return function()
 			{{a = {3, 4, 5, 'v'}, b = 'b'}, {a = {3, 4, 5, 'v'}}},
 			{{a = 1, c = 2}, {a = jestExpect.any("number")}},
 			{{a = {x = 'x', y = 'y'}}, {a = {x = jestExpect.any("string")}}},
+			{Set.new({1, 2}), Set.new({1, 2})},
+			{Set.new({1, 2}), Set.new({2, 1})},
 			{{a = DateTime.fromUniversalTime(2015, 11, 30), b = 'b'}, {a = DateTime.fromUniversalTime(2015, 11, 30)}},
 			-- {{a = nil, b = 'b'}, {a = nil}}, -- funky test
 			{{a = "undefined", b = 'b'}, {a = "undefined"}},
@@ -1563,6 +1592,7 @@ return function()
 				{1, 3},
 			},
 			{{0}, {-0}},
+			{Set.new({1, 2}), Set.new({2})}
 		})
 
 		for _, testCase in ipairs({

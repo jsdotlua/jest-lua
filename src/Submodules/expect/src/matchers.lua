@@ -560,7 +560,7 @@ local function toContain(
 		return {message = message, pass = pass}
 	end
 
-	local indexable = received
+	local indexable = Array.from(received)
 	local index = table.find(indexable, expected)
 	local pass = index ~= nil
 
@@ -624,7 +624,7 @@ local function toContainEqual(
 		))
 	end
 
-	local index = Array.findIndex(received,
+	local index = Array.findIndex(Array.from(received),
 		function(item)
 			return equals(item, expected, {iterableEquality})
 		end
@@ -1010,7 +1010,7 @@ local function toMatchObject(this: MatcherState, received: any, expected: any)
 	end
 
 	-- ROBLOX TODO: Revisit usage of subsetEquality
-	local pass = equals(received, expected, {subsetEquality})
+	local pass = equals(received, expected, {iterableEquality, subsetEquality})
 
 	local message
 	if pass then
