@@ -1,0 +1,7 @@
+[package]
+name = "JestTypes"
+version = { workspace = true }
+license = { workspace = true }
+author = "Roblox"
+content_root = "src"
+files = ["*", "!**/__tests__/**"]

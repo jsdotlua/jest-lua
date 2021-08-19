@@ -1,0 +1,14 @@
+[package]
+name = "Jest"
+version = { workspace = true }
+license = { workspace = true }
+author = "Roblox"
+content_root = "src"
+files = ["*", "!**/__tests__/**"]
+
+[dependencies]
+JestMock = { path = "../jest-mock" }
+JestFakeTimers = { path = "../jest-fake-timers" }
+
+[dev_dependencies]
+Expect = { path = "../expect" }

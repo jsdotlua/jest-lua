@@ -1,0 +1,20 @@
+[package]
+name = "JestSnapshot"
+version = { workspace = true }
+license = { workspace = true }
+author = "Roblox"
+content_root = "src"
+files = ["*", "!**/__tests__/**"]
+
+[dependencies]
+Expect = { path = "../expect" }
+JestDiff = { path = "../jest-diff" }
+JestGetType = { path = "../jest-get-type" }
+JestMatcherUtils = { path = "../jest-matcher-utils" }
+PrettyFormat = { path = "../pretty-format" }
+RobloxShared = { path = "../roblox-shared" }
+ChalkLua = { workspace = true }
+LuauPolyfill = { workspace = true }
+
+[dev_dependencies]
+Jest = { path = "../jest" }

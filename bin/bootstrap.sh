@@ -36,16 +36,16 @@ cat > $mod_path/default.project.json << EOF
     }
 }
 EOF
-sed -i '' -e :a -e '/^\n*$/{$d;N;ba' -e '}' jest.project.json
-sed -i '' -n -e :a -e '1,6!{P;N;D;};N;ba' jest.project.json
-cat >> jest.project.json << EOL
-          },
-          "$pkg_name": {
-            "\$path": "$mod_path/src"
-          }
-        }
-      }
-    }
-  }
-}
-EOL
+cat > $mod_path/rotriever.toml << EOF
+[package]
+name = "$pkg_name"
+version = { workspace = true }
+license = { workspace = true }
+author = "Roblox"
+content_root = "src"
+files = ["*", "!**/__tests__/**"]
+
+[dependencies]
+
+[dev_dependencies]
+EOF

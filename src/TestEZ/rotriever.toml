@@ -1,0 +1,7 @@
+[package]
+name = "TestEZ"
+version = { workspace = true }
+license = { workspace = true }
+author = "Roblox"
+content_root = "src"
+files = ["*", "!**/__tests__/**"]

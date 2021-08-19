@@ -1,60 +1,6 @@
 {
   "name": "JestRoblox",
   "tree": {
-    "$className": "Folder",
-    "Root": {
-      "$path": "Packages",
-      "src": {
-        "$className": "Folder",
-        "TestEZ": {
-          "$path": "src/TestEZ"
-        },
-        "Submodules": {
-          "$className": "Folder",
-          "JestGetType": {
-            "$path": "src/Submodules/jest-get-type/src"
-          },
-          "DiffSequences": {
-            "$path": "src/Submodules/diff-sequences/src"
-          },
-          "PrettyFormat": {
-            "$path": "src/Submodules/pretty-format/src"
-          },
-          "JestMatcherUtils": {
-            "$path": "src/Submodules/jest-matcher-utils/src"
-          },
-          "JestMessageUtil": {
-            "$path": "src/Submodules/jest-message-util/src"
-          },
-          "Expect": {
-            "$path": "src/Submodules/expect/src"
-          },
-          "JestDiff": {
-            "$path": "src/Submodules/jest-diff/src"
-          },
-          "JestJasmine2": {
-            "$path": "src/Submodules/jest-jasmine2/src"
-          },
-          "JestMock": {
-            "$path": "src/Submodules/jest-mock/src"
-          },
-          "JestFakeTimers": {
-            "$path": "src/Submodules/jest-fake-timers/src"
-          },
-          "Jest": {
-            "$path": "src/Submodules/jest/src"
-          },
-          "JestSnapshot": {
-            "$path": "src/Submodules/jest-snapshot/src"
-          },
-          "JestTypes": {
-            "$path": "src/Submodules/jest-types/src"
-          },
-          "TestUtils": {
-            "$path": "src/Submodules/test-utils/src"
-          }
-        }
-      }
-    }
+    "$path": "Packages"
   }
 }

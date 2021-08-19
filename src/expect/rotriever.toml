@@ -1,0 +1,21 @@
+[package]
+name = "Expect"
+version = { workspace = true }
+license = { workspace = true }
+author = "Roblox"
+content_root = "src"
+files = ["*", "!**/__tests__/**"]
+
+[dependencies]
+LuauPolyfill = { workspace = true }
+JestGetType = { path = "../jest-get-type" }
+JestMessageUtil = { path = "../jest-message-util" }
+JestMatcherUtils = { path = "../jest-matcher-utils" }
+JestSnapshot = { path = "../jest-snapshot" }
+RobloxShared = { path = "../roblox-shared" }
+
+[dev_dependencies]
+LuauRegExp = { workspace = true }
+Jest = { path = "../jest" }
+JestMock = { path = "../jest-mock" }
+TestUtils = { path = "../test-utils" }

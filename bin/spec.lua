@@ -1,15 +1,15 @@
-local Root = script.Parent.JestRoblox.Root
-local Modules = Root.src.Submodules
+local Workspace = script.Parent.JestRoblox._Workspace
+local JestGlobals = require(Workspace.JestGlobals.JestGlobals)
 
-local Jest = require(Modules.Jest)
-
-local TestEZ = require(Root.src.TestEZ)
+local TestEZ = JestGlobals.TestEZ
 
 -- Run all tests, collect results, and report to stdout.
 TestEZ.TestBootstrap:run(
-	{ Modules },
+	{ Workspace },
 	TestEZ.Reporters.TextReporter,
 	{
-		extraEnvironment = Jest.testEnv
+		extraEnvironment = JestGlobals.testEnv
 	}
 )
+
+return nil

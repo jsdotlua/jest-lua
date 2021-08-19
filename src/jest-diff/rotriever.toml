@@ -1,0 +1,18 @@
+[package]
+name = "JestDiff"
+version = { workspace = true }
+license = { workspace = true }
+author = "Roblox"
+content_root = "src"
+files = ["*", "!**/__tests__/**"]
+
+[dependencies]
+DiffSequences = { path = "../diff-sequences" }
+JestGetType = { path = "../jest-get-type" }
+PrettyFormat = { path = "../pretty-format" }
+ChalkLua = { workspace = true }
+LuauPolyfill = { workspace = true }
+
+[dev_dependencies]
+Expect = { path = "../expect" }
+TestUtils = { path = "../test-utils" }

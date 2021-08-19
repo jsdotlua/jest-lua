@@ -1,0 +1,15 @@
+[package]
+name = "JestJasmine2"
+version = { workspace = true }
+license = { workspace = true }
+author = "Roblox"
+content_root = "src"
+files = ["*", "!**/__tests__/**"]
+
+[dependencies]
+LuauPolyfill = { workspace = true }
+
+[dev_dependencies]
+Expect = { path = "../expect" }
+Promise = "github.com/evaera/roblox-lua-promise@3.1.0"
+RobloxShared = { path = "../roblox-shared" }
