@@ -13,7 +13,14 @@
 local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent
 
-local FileSystemService = game:GetService("FileSystemService")
+local function getFileSystemService()
+	local success, result = pcall(function()
+		return game:GetService("FileSystemService")
+	end)
+
+	return success and result or nil
+end
+local FileSystemService = getFileSystemService()
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
@@ -255,6 +262,10 @@ local function saveSnapshotFile(
 	end
 	table.insert(snapshots, 'return exports')
 
+	-- deviation: error when FileSystemService doesn't exist
+	if not FileSystemService then
+		error(Error('Attempting to save snapshots in an environment where FileSystemService does not exist.'))
+	end
 	ensureDirectoryExists(snapshotPath)
 	FileSystemService:WriteFile(snapshotPath, table.concat(snapshots, '\n\n'))
 end
