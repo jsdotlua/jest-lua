@@ -1053,7 +1053,7 @@ local function toStrictEqual(this: MatcherState, received: any, expected: any)
 	local matcherName = 'toStrictEqual'
 	local options = {
 		comment = 'deep equality',
-		this = this.isNot,
+		isNot = this.isNot,
 		promise = this.promise
 	}
 

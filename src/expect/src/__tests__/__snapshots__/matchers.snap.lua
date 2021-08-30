@@ -2719,7 +2719,7 @@ snapshots['.toStrictEqual() matches the expected snapshot when it fails 1'] = [=
 
 snapshots['.toStrictEqual() matches the expected snapshot when it fails 2'] = [=[
 
-<d>expect(</><r>received</><d>).</>toStrictEqual<d>(</><g>expected</><d>) -- deep equality</>
+<d>expect(</><r>received</><d>).</>never<d>.</>toStrictEqual<d>(</><g>expected</><d>) -- deep equality</>
 
 Expected: not <g>{"test": {"a": 1, "b": 2}}</>
 

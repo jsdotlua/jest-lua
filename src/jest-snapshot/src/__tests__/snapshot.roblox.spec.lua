@@ -50,6 +50,9 @@ return function()
 			createdAt = jestExpect.any("DateTime"),
 			id = jestExpect.any("number"),
 		})
+	end)
 
+	it("test with newlines\nin the name\nand body", function()
+		jestExpect("a\nb").toMatchSnapshot()
 	end)
 end

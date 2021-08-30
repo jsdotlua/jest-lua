@@ -205,13 +205,13 @@ local function deserializeString(stringified: string): string
 	return stringified
 end
 
--- deviation: escapes double quotes instead
+-- deviation: we don't escape any characters since multiline literals don't
+-- consume escape sequences
 local function escapeBacktickString(str: string): string
-	return str:gsub('"', '\\"')
+	return str
 end
 
 -- deviation: we change from backtick to our literal string delimiter [=[ and ]=]
--- str isn't escaped since multiline literals in lua ignore escape sequences
 local function printBacktickString(str: string): string
 	return "[=[\n" .. str .. "]=]"
 end
@@ -253,9 +253,11 @@ local function saveSnapshotFile(
 	for _, key in ipairs(alphanumsort(Object.keys(snapshotData))) do
 		table.insert(
 			snapshots,
-			'exports["' ..
+			'exports[ [=[' ..
+			-- deviation: we don't call printBacktickString here since we inline the
+			-- multiline literal
 			escapeBacktickString(key) ..
-			'"] = ' ..
+			']=] ] = ' ..
 			printBacktickString(normalizeNewLines(snapshotData[key]))
 		)
 		-- deviation: we don't append a semicolon
