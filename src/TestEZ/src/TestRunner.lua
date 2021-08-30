@@ -90,12 +90,28 @@ function TestRunner.runPlanNode(session, planNode, lifecycleHooks)
 
 		local context = session:getContext()
 
+		local function removeTestEZFromStack(stack)
+			stack = stack:split("\n")
+			local lines = {}
+			for _, line in pairs(stack) do
+				if line:match("TestEZ%.TestEZ%.") then
+					break
+				end
+				table.insert(lines, line)
+			end
+			return table.concat(lines, "\n")
+		end
+
 		local nodeSuccess, nodeResult = xpcall(
 			function()
 				callback(context)
 			end,
 			function(message)
-				return messagePrefix .. debug.traceback(tostring(message), 2)
+				if typeof(message) == "table" and message.stack and message.name and message.message then
+					return messagePrefix .. removeTestEZFromStack(debug.traceback(tostring(message), 4))
+				else
+					return messagePrefix .. debug.traceback(tostring(message), 2)
+				end
 			end
 		)
 
