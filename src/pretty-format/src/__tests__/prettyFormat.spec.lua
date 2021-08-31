@@ -57,9 +57,7 @@ return function()
 
 		it('prints an error', function()
 			local val = Error()
-			-- deviation: upstream prints [Error] but due to our serialization of
-			-- error we always print in the form "Error: message"
-			jestExpect(prettyFormat(val)).toEqual('[Error: ]')
+			jestExpect(prettyFormat(val)).toEqual('[Error]')
 		end)
 
 		-- deviation: omitted, no Function constructor in lua
