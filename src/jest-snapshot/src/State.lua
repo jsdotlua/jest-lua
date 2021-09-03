@@ -14,7 +14,14 @@ local Packages = CurrentModule.Parent
 -- deviation: used to communicate with the TestEZ test runner
 local JEST_TEST_CONTEXT = "__JEST_TEST_CONTEXT__"
 
-local CoreScriptSyncService = game:GetService("CoreScriptSyncService")
+local function getCoreScriptSyncService()
+	local success, result = pcall(function()
+		return game:GetService("CoreScriptSyncService")
+	end)
+
+	return success and result or nil
+end
+local CoreScriptSyncService = getCoreScriptSyncService()
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
@@ -178,6 +185,14 @@ function SnapshotState:save(): SaveStatus
 		deleted = false,
 		saved = false
 	}
+
+	-- deviation: error when FileSystemService doesn't exist
+	if not CoreScriptSyncService then
+		error(Error(
+			'Attempting to save snapshots in an environment where CoreScriptSyncService is inaccessible.\n' ..
+			'You may need to pass in --load.asRobloxScript.'
+		))
+	end
 
 	-- deviation: SnapshotState._snapshotPath stores the path in the DOM of the snapshot
 	-- and not the filesystem path

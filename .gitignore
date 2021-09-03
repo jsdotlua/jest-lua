@@ -26,3 +26,6 @@ Packages/*
 /docs/build
 /docs/node_modules
 /docs/yarn.lock
+
+# Selene
+roblox.toml

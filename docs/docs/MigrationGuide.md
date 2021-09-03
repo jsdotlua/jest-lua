@@ -5,18 +5,31 @@ title: Migrating to Jest Roblox
 
 If you are using TestEZ, migrating over should be fairly straightforward. Many parts of Jest Roblox still use the TestEZ API and all the relevant parts are documented in the [TestEZ API doc](testez).
 
-Replace TestEZ with JestRoblox in your `rotriever.toml`.
+Replace TestEZ with `JestGlobals` in your `rotriever.toml`.
 ```diff title="rotriever.toml"
 [dev_dependencies]
 - TestEZ = "github.com/roblox/testez@0.4.1"
-+ JestRoblox = "github.com/roblox/jest-roblox@1.0.0"
++ JestGlobals = "github.com/roblox/jest-roblox@2.1.0"
 ```
 
-Unlike TestEZ, which is injected into the global environment, you will need to explicitly require anything you need from `JestRoblox.Globals`. For example, to use the new Jest Roblox assertion library, add this to the top of your test file.
+Unlike TestEZ, which is injected into the global environment, you will need to explicitly require anything you need from `JestGlobals`. For example, to use the new Jest Roblox assertion library, add this to the top of your test file.
 ```lua
-local JestRoblox = require(Packages.JestRoblox).Globals
-local expect = JestRoblox.expect
+local JestGlobals = require(Packages.JestGlobals)
+local expect = JestGlobals.expect
 ```
+
+:::info
+Globals that are injected make life very difficult for languages with strong types — because there's no specific import, and the code artifact injecting the globals can change underneath hard-coded type signatures, it requires inefficient tooling and workarounds.
+
+Additionally, upstream Jest also plans to remove injected globals and instead prefers that users import any needed functionality through the `@jest/globals` package.
+
+Jest Roblox is staying ahead of that plan and not including support for injected globals.
+
+Now that rotriever 0.5.0 allows users to import specific sub-packages, users can now specifically import `JestGlobals` and import any needed functionality from that package.
+
+https://jestjs.io/blog/2020/05/05/jest-26#a-new-way-to-consume-jest---jestglobals
+:::
+
 
 If you were previously overwriting the Luau type for `expect` as a workaround for TestEZ custom expectations, you can remove it.
 ```diff

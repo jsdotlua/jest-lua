@@ -13,7 +13,7 @@ local function getCoreScriptSyncService()
 		return game:GetService("CoreScriptSyncService")
 	end)
 
-	return (success and result or nil) -- Return result only if pcall is successful
+	return success and result or nil
 end
 
 local CoreScriptSyncService = getCoreScriptSyncService()

@@ -8,10 +8,10 @@ Jest Roblox is a work in progress! You may need to refer to the [TestEZ API doc]
 
 Jest Roblox requires `roblox-cli` to run from the command line.
 
-Add this package to your `dev_dependencies` in your `rotriever.toml`.
+Add the `JestGlobals` package to your `dev_dependencies` in your `rotriever.toml`.
 ```yaml title="rotriever.toml"
 [dev_dependencies]
-JestRoblox = "github.com/roblox/jest-roblox@1.1.2"
+JestGlobals = "github.com/roblox/jest-roblox@2.1.0"
 ```
 
 Run `rotrieve install` to install Jest Roblox.
@@ -34,11 +34,12 @@ Create a `default.project.json` to set up your project structure and include the
 
 Create a `spec.lua` to point the test runner to the correct directory with your tests.
 ```lua title="spec.lua"
-local JestRoblox = require(script.Parent.YourProject.Packages.Dev.JestRoblox)
+local JestGlobals = require(script.Parent.YourProject.Packages.Dev.JestGlobals)
+local TestEZ = JestGlobals.TestEZ
 
-JestRoblox.TestBootstrap:run(
+TestEZ.TestBootstrap:run(
 	{ script.Parent.YourProject.Source },
-	JestRoblox.Reporters.TextReporter
+	TestEZ.Reporters.TextReporter
 )
 ```
 
@@ -55,8 +56,8 @@ return function()
 	local Workspace = script.Parent.Parent
 	local Packages = Workspace.Parent.Packages.Dev
 
-	local JestRoblox = require(Packages.JestRoblox).Globals
-	local expect = JestRoblox.expect
+	local JestGlobals = require(Packages.JestGlobals)
+	local expect = JestGlobals.expect
 
 	local sum = require(Workspace.sum)
 

@@ -188,8 +188,6 @@ return function()
 
 		-- deviation: omitted, Roblox DateTime throws an error with an invalid constructor
 
-		-- deviation: omitted, no Object, Set type in lua
-
 		it('prints regular expressions from constructors', function()
 			local val = RegExp('regexp')
 

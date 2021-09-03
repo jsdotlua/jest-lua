@@ -221,8 +221,17 @@ local function ensureDirectoryExists(filePath: string)
 	local path = filePath:split("/")
 	path = table.pack(table.unpack(path, 1, #path - 1))
 	path = table.concat(path, "/")
-	if not FileSystemService:Exists(path) then
-		FileSystemService:CreateDirectories(path)
+	local ok, err = pcall(function()
+		if not FileSystemService:Exists(path) then
+			FileSystemService:CreateDirectories(path)
+		end
+	end)
+
+	if not ok and err:find("Error%(13%): Access Denied%. Path is outside of sandbox%.") then
+		error(
+			"Provided path is invalid: you likely need to provide a different argument to --fs.readwrite.\n" ..
+			"You may need to pass in `--fs.readwrite=$PWD`"
+		)
 	end
 end
 
@@ -266,7 +275,7 @@ local function saveSnapshotFile(
 
 	-- deviation: error when FileSystemService doesn't exist
 	if not FileSystemService then
-		error(Error('Attempting to save snapshots in an environment where FileSystemService does not exist.'))
+		error(Error('Attempting to save snapshots in an environment where FileSystemService is inaccessible.'))
 	end
 	ensureDirectoryExists(snapshotPath)
 	FileSystemService:WriteFile(snapshotPath, table.concat(snapshots, '\n\n'))

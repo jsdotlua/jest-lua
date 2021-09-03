@@ -55,7 +55,6 @@ When doing `nil` checking, use of `.toBeNil()` and `.never.toBeNil()` is encoura
 ### `.toThrow(error?)`
 `.toThrow(error?)` can also accept custom Error objects provided by LuauPolyfill.
 
-
 ## Mock Functions
 
 ### `mockFn.new`

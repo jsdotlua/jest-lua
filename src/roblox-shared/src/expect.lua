@@ -5,23 +5,24 @@ local getType = require(Packages.JestGetType).getType
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local toJSBoolean = LuauPolyfill.Boolean.toJSBoolean
-local instanceof = LuauPolyfill.instanceof
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
-local Set = LuauPolyfill.Set
 
 type Array<T> = { T };
 type Table = { any: any };
 type Tester = (any, any) -> any;
 
+-- ROBLOX MOVED: expect/jasmineUtils.lua
 local function hasKey(obj: any, key: string)
 	return rawget(obj, key) ~= nil
 end
 
+-- ROBLOX MOVED: expect/jasmineUtils.lua
 local function hasDefinedKey(obj: any, key: string)
 	return hasKey(obj, key)
 end
 
+-- ROBLOX MOVED: expect/jasmineUtils.lua
 local function keys(
 	obj: Table,
 	isArray: boolean,
@@ -53,10 +54,12 @@ local function keys(
 	return {}
 end
 
+-- ROBLOX MOVED: expect/jasmineUtils.lua
 local function isA(typeName: string, value: any)
 	return getType(value) == typeName
 end
 
+-- ROBLOX MOVED: expect/jasmineUtils.lua
 local function isAsymmetric(obj: any)
 	if toJSBoolean(obj) and typeof(obj) == "table" then
 		local ok, val = pcall(function() return obj.asymmetricMatch end)
@@ -67,6 +70,7 @@ local function isAsymmetric(obj: any)
 	return false
 end
 
+-- ROBLOX MOVED: expect/jasmineUtils.lua
 local function asymmetricMatch(a: any, b: any)
 	local asymmetricA = isAsymmetric(a)
 	local asymmetricB = isAsymmetric(b)
@@ -86,6 +90,7 @@ local function asymmetricMatch(a: any, b: any)
 	return nil
 end
 
+-- ROBLOX MOVED: expect/jasmineUtils.lua
 -- // Equality function lovingly adapted from isEqual in
 -- //   [Underscore](http://underscorejs.org)
 local function eq(
@@ -227,6 +232,7 @@ local function eq(
 	return result
 end
 
+-- ROBLOX MOVED: expect/jasmineUtils.lua
 local function equals(
 	a: any,
 	b: any,
@@ -238,6 +244,7 @@ local function equals(
 	return eq(a, b, {}, {}, customTesters :: Array<Tester>, strictCheck and hasKey or hasDefinedKey)
 end
 
+-- ROBLOX MOVED: expect/utils.lua
 local function hasPropertyInObject(object: any, key: string): boolean
 	-- We don't have to deal with the complexities around prototype chains in
 	-- javascript since a simple key access will look up the
@@ -260,6 +267,7 @@ local function isObjectWithKeys(a: any)
 	return isObject(a) and (next(a) == nil or not Array.isArray(a))
 end
 
+-- ROBLOX MOVED: expect/utils.lua
 local function iterableEquality(
 	a: any,
 	b: any,
@@ -338,6 +346,7 @@ local function iterableEquality(
 	-- kind of iterable not covered by the above Set case
 end
 
+-- ROBLOX MOVED: expect/utils.lua
 local function subsetEquality(
 	object: any,
 	subset: any
@@ -413,6 +422,7 @@ local function subsetEquality(
 	return inner
 end
 
+-- ROBLOX MOVED: expect/utils.lua
 -- ROBLOX TODO: (LUAU) Add seenReferences type annotation once Luau can
 -- recognize that the seenReferences or {} is sufficient to make seenReferences
 -- non-nil
@@ -443,18 +453,15 @@ local function getObjectSubset(
 		local trimmed: any = {}
 		seenReferences[object] = trimmed
 
-		-- ROBLOX TODO: remove after change in LuauPolyfill is merged
-		if not instanceof(object, Set) then
-			for i, key in ipairs(
-				Array.filter(
-					Object.keys(object),
-					function(key) return hasPropertyInObject(subset, key) end)
-			) do
-				if seenReferences[object[key]] ~= nil then
-					trimmed[key] = seenReferences[object[key]]
-				else
-					trimmed[key] = getObjectSubset(object[key], subset[key], seenReferences)
-				end
+		for i, key in ipairs(
+			Array.filter(
+				Object.keys(object),
+				function(key) return hasPropertyInObject(subset, key) end)
+		) do
+			if seenReferences[object[key]] ~= nil then
+				trimmed[key] = seenReferences[object[key]]
+			else
+				trimmed[key] = getObjectSubset(object[key], subset[key], seenReferences)
 			end
 		end
 

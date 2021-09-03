@@ -11,7 +11,7 @@ A typical snapshot test case renders a UI component, takes a snapshot, then comp
 
 Consider this test:
 ```lua
-it("table", function()
+it('table', function()
 	expect({
 		a = 1,
 		b = "test",
@@ -22,7 +22,7 @@ end)
 
 The first time this test is run, Jest creates a snapshot file that looks like this:
 ```lua
-exports["describe table 1"] = [=[
+exports[ [=[describe table 1]=] ] = [=[
 
 Table {
   "a": 1,
@@ -105,7 +105,7 @@ it('will fail every time', function()
 end)
 
 -- Snapshot
-exports["will fail every time 1"] = [=[
+exports[ [=[will fail every time 1]=] ] = [=[
 
 Table {
   "createdAt": 2021-07-28T22:04:02.166Z,
@@ -133,7 +133,7 @@ it("will check the matchers and pass", function()
 end)
 
 -- Snapshot
-exports["will check the matchers and pass 1"] = [=[
+exports[ [=[will check the matchers and pass 1]=] ] = [=[
 
 Table {
   "createdAt": Any<DateTime>,
@@ -159,7 +159,7 @@ it("will check the values and pass", function()
 end)
 
 -- Snapshot
-exports["will check the values and pass 1"] = [=[
+exports[ [=[will check the values and pass 1]=] ] = [=[
 
 Table {
   "createdAt": Any<DateTime>,
@@ -193,30 +193,30 @@ Always strive to use descriptive test and/or snapshot names for snapshots. The b
 For example, compare:
 
 ```lua
-exports["test case 1"] = [=[
+exports[ [=[test case 1]=] ] = [=[
 nil]=]
 
-exports["some other test case 1"] = [=[
+exports[ [=[some other test case 1]=] ] = [=[
 "Alan Turing"]=]
 ```
 
 To:
 
 ```lua
-exports["should be nil 1"] = [=[
+exports[ [=[should be nil 1]=] ] = [=[
 nil]=]
 
-exports["should be Alan Turing 1"] = [=[
+exports[ [=[should be Alan Turing 1]=] ] = [=[
 "Alan Turing"]=]
 ```
 
 Since the later describes exactly what's expected in the output, it's more clear to see when it's wrong:
 
 ```lua
-exports["should be nil 1"] = [=[
+exports[ [=[should be nil 1]=] ] = [=[
 "Alan Turing"]=]
 
-exports["should be Alan Turing 1"] = [=[
+exports[ [=[should be Alan Turing 1]=] ] = [=[
 nil]=]
 ```
 

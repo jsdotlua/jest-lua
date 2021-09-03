@@ -1,37 +1,67 @@
 # Jest Roblox Changelog
 
+## 2.1.0 (2021-09-03)
+* :sparkles: Changed project structure to use rotriever 0.5.0 workspaces ([#96](https://github.com/Roblox/jest-roblox/pull/96))
+  * This allows downstream projects to pull individual `JestRoblox` packages as dependencies
+  * For example, to pull the `JestDiff` package as a dependency:
+  ```
+  JestDiff = "github.com/roblox/jest-roblox@2.1.0"
+
+  local JestDiff = require(Packages.JestDiff)
+  ```
+* :rotating_light: Due of the above change, `JestRoblox` is now used by pulling the `JestGlobals` package in your `rotriever.toml`:
+  * Change your `rotriever.toml` dependency to
+  ```diff
+  + JestGlobals = "github.com/roblox/jest-roblox@2.1.0"
+  - JestRoblox = "github.com/roblox/jest-roblox@2.0.1"
+  ```
+  * Now that the dependency is `JestGlobals`, you no longer need to get the `Globals` member of `JestRoblox`
+  ```diff
+  + local JestGlobals = require(Packages.JestGlobals)
+  + local expect = JestGlobals.expect
+  - local JestRoblox = require(Packages.JestRoblox).Globals
+  - local expect = JestRoblox.expect
+  ```
+* :hammer_and_wrench: Support for named functions in error output ([#95](https://github.com/Roblox/jest-roblox/pull/95))
+* :hammer_and_wrench: Support for `LuauPolyfill` `Set` object in matchers ([#101](https://github.com/Roblox/jest-roblox/pull/101))
+* :hammer_and_wrench: Remove unhelpful lines in error stacktraces ([#105](https://github.com/Roblox/jest-roblox/pull/105))
+* :bug: Fix for snapshot property matchers not working ([#93](https://github.com/Roblox/jest-roblox/pull/93))
+* :bug: Fix snapshot path resolution for snapshot updates on windows ([#97](https://github.com/Roblox/jest-roblox/pull/97))
+* :bug: Fix for `JestSnapshot` throwing in environments where `FileSystemService` does not exist ([#103](https://github.com/Roblox/jest-roblox/pull/103))
+* :bug: Fix for snapshot names with special characters  ([#108](https://github.com/Roblox/jest-roblox/pull/108))
+
 ## 2.0.1 (2021-08-04)
-* :bug: Fix for snapshot matchers not correctly throwing when the matcher fails
+* :bug: Fix for snapshot matchers not correctly throwing when the matcher fails ([#92](https://github.com/Roblox/jest-roblox/pull/92))
 
 ## 2.0.0 (2021-08-02)
-* Added `jest-snapshot` functionality
+* :sparkles: Added `JestSnapshot` functionality
   * Added `toMatchSnapshot` matcher
   * Added `toThrowErrorMatchingSnapshot` matcher
   * Added custom snapshot matchers and property matchers, refer to the "Snapshot Testing" section of the documentation for more info
   * Added `UPDATESNAPSHOT` flag for updating snapshots, the value can either be `all` (by default), or `new` to only add new snapshots, this can be enabled with an `--updateSnapshot` flag in Jest Roblox CLI
-* Removed colon syntax alias for initializing mock functions
-* :bug: Fix issue with CoreScriptConverter and the Modules directory
-* :bug: `.toThrow` matchers now recognize `jest.fn` as callable
-* :bug: Fix for chalked strings throwing when used with string matchers
-* `--fastFlags.overrides "UseDateTimeType3=true"` removed as it is no longer needed
+* :rotating_light: Removed colon syntax alias for initializing mock functions
+* :hammer_and_wrench: `--fastFlags.overrides "UseDateTimeType3=true"` removed as it is no longer needed
+* :bug: Fix issue with CoreScriptConverter and the Modules directory ([#79](https://github.com/Roblox/jest-roblox/pull/79))
+* :bug: Fix for chalked strings throwing when used with string matchers ([#85](https://github.com/Roblox/jest-roblox/pull/85))
+* :bug: `.toThrow` matchers now recognize `jest.fn` as callable ([#87](https://github.com/Roblox/jest-roblox/pull/87))
 
 ## 1.1.2 (2021-06-11)
-* :bug: Fix for `jest-snapshot` so that the init file returns a value
+* :bug: Fix for `JestSnapshot` so that the init file returns a value ([#71](https://github.com/Roblox/jest-roblox/pull/71))
 
 ## 1.1.1 (2021-06-07)
-* :bug: Fix in `getType` for objects with a throwing `__index` metamethod
+* :bug: Fix in `getType` for objects with a throwing `__index` metamethod ([#69](https://github.com/Roblox/jest-roblox/pull/69))
 
 ## 1.1.0 (2021-05-28)
-* Added `toStrictEqual` matcher
-* :bug: Bugfix in `SpyMatchers` where function calls with `nil` arguments would not be handled correctly
-* Changed the `ArrayContaining` asymmetric matcher to output curly braces instead of square brackets
-* Added instantiating mock function instance with `mockFn.new()`
-* Changed syntax for intializing mock functions from `jest:fn()` to `jest.fn()` (the colon syntax is left in for compatibility but will be removed in 2.0)
-* `RegExp` is pulled out from the LuauPolyfill repo into a separate LuauRegExp repo and lazily loaded
-* Added proper output formatting for Roblox `Instance` types
+* :sparkles: Added `toStrictEqual` matcher
+* :rotating_light: Changed syntax for intializing mock functions from `jest:fn()` to `jest.fn()` (the colon syntax is left in for compatibility but will be removed in 2.0)
+* :rotating_light: `RegExp` is pulled out from the LuauPolyfill repo into a separate LuauRegExp repo and lazily loaded ([#62](https://github.com/Roblox/jest-roblox/pull/62))
+* :hammer_and_wrench: Added instantiating mock function instance with `mockFn.new()` ([#52](https://github.com/Roblox/jest-roblox/pull/52))
+* :hammer_and_wrench: Changed the `ArrayContaining` asymmetric matcher to output curly braces instead of square brackets ([#55](https://github.com/Roblox/jest-roblox/pull/55))
+* :hammer_and_wrench: Added proper output formatting for Roblox `Instance` types ([#64](https://github.com/Roblox/jest-roblox/pull/64))
+* :bug: Bugfix in `SpyMatchers` where function calls with `nil` arguments would not be handled correctly ([#53](https://github.com/Roblox/jest-roblox/pull/53))
 
 ## 1.0.0 (2021-03-30)
-* Added spyMatchers
+* :sparkles: Added spyMatchers
 ```
 expect().lastCalledWith() also aliased as expect().toHaveBeenLastCalledWith()
 expect().lastReturnedWith() also aliased as expect().toHaveLastReturnedWith()
@@ -45,35 +75,35 @@ expect().toReturnTimes() also aliased as expect().toHaveReturnedTimes()
 expect().toReturnWith() also aliased as expect().toHaveReturnedWith()
 ```
 
-* Added basic jest-mock functionality
+* :sparkles: Added basic `JestMock` functionality
   * The `jest` object can be imported from `Globals` and has the following methods:
     * `.fn()`
     * `.clearAllMocks()`
     * `.resetAllMocks()`
     * `.restoreAllMocks()`
 
-* Added `Error` type to `jest-get-type`
-* :bug: Bugfix in `.toMatch` where strings go into the RegEx check
-* :bug: Bugfix for `.toThrow` not matching `Error` object with same message
+* :hammer_and_wrench: Added `Error` type to `JestGetType` ([#45](https://github.com/Roblox/jest-roblox/pull/45))
+* :bug: Bugfix in `.toMatch` where strings go into the RegEx check ([#41](https://github.com/Roblox/jest-roblox/pull/41))
+* :bug: Bugfix for `.toThrow` not matching `Error` object with same message ([#44](https://github.com/Roblox/jest-roblox/pull/44))
 
 ## 0.7.1 (2021-03-12)
-* Added chalk-enabled error output
-* Fix for checking for an `asymmetricMatch` method for objects that override `__index` metamethod ([#39](https://github.com/Roblox/jest-roblox/pull/39))
-* Added `userdata` and `thread` Luau types to `jestGetType`
+* :sparkles: Added chalk-enabled error output ([#38](https://github.com/Roblox/jest-roblox/pull/38))
+* :hammer_and_wrench: Added `userdata` and `thread` Luau types to `JestGetType` ([#39](https://github.com/Roblox/jest-roblox/pull/39))
+* :bug: Fix for checking for an `asymmetricMatch` method for objects that override `__index` metamethod ([#39](https://github.com/Roblox/jest-roblox/pull/39))
 
 ## 0.7.0 (2021-03-02)
-* Added `expect.extend()`
-* Added `RegExp` support to matchers
-* Added prototype information to matchers
+* :sparkles: Added `expect.extend()` ([#35](https://github.com/Roblox/jest-roblox/pull/35))
+* :hammer_and_wrench: Added `RegExp` support to matchers ([#32](https://github.com/Roblox/jest-roblox/pull/32))
+* :hammer_and_wrench: Added prototype information to matchers ([#34](https://github.com/Roblox/jest-roblox/pull/34))
 
 ## 0.6.0 (2021-02-22)
-* Added `expect().toThrow()`
+* :sparkles: Added `expect().toThrow()` ([#30](https://github.com/Roblox/jest-roblox/pull/30))
 
 ## 0.5.0 (2021-01-29)
-* Initial release of Jest Roblox. TestEZ has been rebranded as of this release.
-* Added `expect` aligned to [Jest's expect (26.5.3)](https://jestjs.io/docs/en/26.5/expect).
-  * Requires an explicit `require` from [`JestRoblox.Globals`](https://jestjs.io/docs/en/26.5/api) to use.
-  * Refer to the Jest documentation on expect for usage documentation. Refer to the `README.md` in `src/Modules/expect` for details on deviations from upstream.
+* :sparkles: Initial release of Jest Roblox, TestEZ has been rebranded as of this release.
+* :sparkles: Added `expect` aligned to [Jest's expect (26.5.3)](https://jestjs.io/docs/en/26.5/expect)
+  * Requires an explicit `require` from [`JestRoblox.Globals`](https://jestjs.io/docs/en/26.5/api) to use
+  * Refer to the Jest documentation on expect for usage documentation. Refer to the `README.md` in `src/Modules/expect` for details on deviations from upstream
   * `expect` matchers added:
   ```
   expect().toBe()
@@ -110,9 +140,9 @@ expect().toReturnWith() also aliased as expect().toHaveReturnedWith()
   expect.stringMatching()
   expect.stringNotMatching()
   ```
-  * Custom `asymmetricMatchers` for any objects with a `asymmetricMatch(self, other)` method.
-  * Negative variants of all the above matchers with the keyword `never`, i.e. `expect().never.toBe()` or `expect.never.stringContaining()`.
-  * TestEZ `expect` will be removed soon.
+  * Custom `asymmetricMatchers` for any objects with a `asymmetricMatch(self, other)` method
+  * Negative variants of all the above matchers with the keyword `never`, i.e. `expect().never.toBe()` or `expect.never.stringContaining()`
+  * TestEZ `expect` will be removed soon
 
 ---
 

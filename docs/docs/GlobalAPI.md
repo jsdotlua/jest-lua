@@ -3,13 +3,13 @@ id: api
 title: Globals
 ---
 
-At the top of your test files, require `JestRoblox` from the `Packages` directory created by `rotriever`.
+At the top of your test files, require `JestGlobals` from the `Packages` directory created by `rotriever`.
 
-Then, explicitly import any of the following methods from `Globals`:
+Then, explicitly import any of the following members:
 
 ```lua
-local JestRoblox = require(Packages.JestRoblox).Globals
-local expect = JestRoblox.expect
+local JestGlobals = require(Packages.Dev.JestGlobals)
+local expect = JestGlobals.expect
 ```
 
 ## Methods
@@ -32,3 +32,6 @@ Returns the [Jest Object](jest-object).
 
 ### `jestSnapshot`
 Returns the snapshot matchers `toMatchSnapshot` and `toThrowErrorMatchingSnapshot` for use in [custom snapshot matchers](expect#custom-snapshot-matchers).
+
+### `TestEZ`
+Returns TestEZ for use as the test runner when bootstrapping a project and for projects that may want to directly access TestEZ for legacy reasons.
