@@ -1,8 +1,8 @@
 --!nocheck
 local CurrentModule = script.Parent.Parent
-local Modules = CurrentModule.Parent
+local Packages = CurrentModule.Parent
 
-local jestExpect = require(Modules.Expect)
+local jestExpect = require(Packages.Dev.Expect)
 
 local toMatchSnapshot = require(CurrentModule).toMatchSnapshot
 

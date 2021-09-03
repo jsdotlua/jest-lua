@@ -1,7 +1,7 @@
 local CurrentModule = script.Parent.Parent
-local Modules = CurrentModule.Parent
+local Packages = CurrentModule.Parent
 
-local jestExpect = require(Modules.Expect)
+local jestExpect = require(Packages.Dev.Expect)
 
 local getParent = require(CurrentModule.utils).robloxGetParent
 

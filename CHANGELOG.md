@@ -1,5 +1,8 @@
 # Jest Roblox Changelog
 
+## 2.1.1 (2021-09-03)
+* :bug: Resolve dependency cycle in `JestSnapshot` and `Expect`
+
 ## 2.1.0 (2021-09-03)
 * :sparkles: Changed project structure to use rotriever 0.5.0 workspaces ([#96](https://github.com/Roblox/jest-roblox/pull/96))
   * This allows downstream projects to pull individual `JestRoblox` packages as dependencies

@@ -7,7 +7,6 @@ content_root = "src"
 files = ["*", "!**/__tests__/**"]
 
 [dependencies]
-Expect = { path = "../expect" }
 JestDiff = { path = "../jest-diff" }
 JestGetType = { path = "../jest-get-type" }
 JestMatcherUtils = { path = "../jest-matcher-utils" }
@@ -18,3 +17,4 @@ LuauPolyfill = { workspace = true }
 
 [dev_dependencies]
 Jest = { path = "../jest" }
+Expect = { path = "../expect" }

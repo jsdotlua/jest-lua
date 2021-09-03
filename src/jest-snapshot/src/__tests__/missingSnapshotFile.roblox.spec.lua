@@ -1,7 +1,7 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
-local jestExpect = require(Packages.Expect)
+local jestExpect = require(Packages.Dev.Expect)
 
 return function()
 	it("tests that a missing snapshot file throws", function()

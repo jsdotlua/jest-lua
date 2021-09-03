@@ -20,7 +20,7 @@ local ansiRegex = require(Packages.PrettyFormat).plugins.ConvertAnsi.ansiRegex
 local chalk = require(Packages.ChalkLua)
 local format = require(Packages.PrettyFormat).prettyFormat
 
-local jestExpect = require(Packages.Expect)
+local jestExpect = require(Packages.Dev.Expect)
 
 local printSnapshot = require(CurrentModule.printSnapshot)
 local getReceivedColorForChalkInstance = printSnapshot.getReceivedColorForChalkInstance
