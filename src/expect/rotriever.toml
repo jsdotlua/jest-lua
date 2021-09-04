@@ -19,3 +19,4 @@ LuauRegExp = { workspace = true }
 Jest = { path = "../jest" }
 JestMock = { path = "../jest-mock" }
 TestUtils = { path = "../test-utils" }
+ChalkLua = { workspace = true }

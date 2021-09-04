@@ -5,6 +5,8 @@ return function()
 
 	local jestExpect = require(CurrentModule)
 
+	local chalk = require(Packages.Dev.ChalkLua)
+
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Set = LuauPolyfill.Set
 
@@ -43,5 +45,22 @@ return function()
 		jestExpect(Set.new({{1, 2}, {3, 4}})).toEqual(Set.new{{3, 4}, {1, 2}})
 		jestExpect(Set.new({{1, 2}, {3, 4}})).never.toEqual(Set.new{{1, 2}, {3, 5}})
 		jestExpect(Set.new({"a"})).toContain("a")
+	end)
+
+	describe("chalk tests", function()
+		it("tests basic chalked string", function()
+			jestExpect(chalk.red("i am chalked")).toMatch("i am chalked")
+			jestExpect(chalk.red("i am chalked")).toMatch(chalk.red("i am chalked"))
+		end)
+
+		it("tests nested chalk string", function()
+			local nestedStyle = chalk.red .. chalk.bold .. chalk.bgYellow
+			jestExpect(nestedStyle("i am heavily chalked")).toMatch("i am heavily chalked")
+			jestExpect(nestedStyle("i am heavily chalked")).toMatch(chalk.bgYellow("i am heavily chalked"))
+			jestExpect(nestedStyle("i am heavily chalked")).toMatch(chalk.bold(chalk.bgYellow("i am heavily chalked")))
+			jestExpect(nestedStyle("i am heavily chalked")).toMatch(nestedStyle("i am heavily chalked"))
+
+			jestExpect(nestedStyle("i am heavily chalked")).never.toMatch(chalk.red("i am heavily chalked"))
+		end)
 	end)
 end
