@@ -25,13 +25,13 @@ We use Jest Roblox at Roblox for testing our apps, in-game core scripts, built-i
 
 Add this package to your `dev_dependencies` in your `rotriever.toml`, for example:
 ```
-JestRoblox = "github.com/roblox/jest-roblox@1.0.0"
+JestGlobals = "github.com/roblox/jest-roblox@2.1.1"
 ```
 
-Then, require anything you need from `JestRoblox.Globals`:
+Then, require anything you need from `JestGlobals`:
 ```
-local JestRoblox = require(Packages.JestRoblox)
-local expect = JestRoblox.Globals.expect
+local JestGlobals = require(Packages.JestGlobals)
+local expect = JestGlobals.expect
 ```
 
 ---
