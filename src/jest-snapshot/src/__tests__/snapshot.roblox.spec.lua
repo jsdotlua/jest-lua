@@ -1,12 +1,12 @@
 --!nocheck
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local jestExpect = require(Packages.Dev.Expect)
-
-local toMatchSnapshot = require(CurrentModule).toMatchSnapshot
 
 return function()
+	local CurrentModule = script.Parent.Parent
+	local Packages = CurrentModule.Parent
+
+	local jestExpect = require(Packages.Dev.Expect)
+
+	local toMatchSnapshot = require(CurrentModule).toMatchSnapshot
 	jestExpect.extend({
 		toMatchTrimmedSnapshot = function(self, received, length)
 			return toMatchSnapshot(

@@ -1,13 +1,20 @@
 --!nocheck
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-mock/src/__tests__/index.test.ts
-
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local ModuleMocker = require(CurrentModule)
-local jestExpect = require(Packages.Dev.Expect)
+-- /**
+--  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
+--  *
+--  * This source code is licensed under the MIT license found in the
+--  * LICENSE file in the root directory of this source tree.
+--  *
+--  */
 
 return function()
+	local CurrentModule = script.Parent.Parent
+	local Packages = CurrentModule.Parent
+
+	local ModuleMocker = require(CurrentModule)
+	local jestExpect = require(Packages.Dev.Expect)
+
 	local moduleMocker
 	beforeEach(function()
 		moduleMocker = ModuleMocker.new()

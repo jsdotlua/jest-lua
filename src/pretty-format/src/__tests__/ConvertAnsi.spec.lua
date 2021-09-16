@@ -5,28 +5,26 @@
 --  *
 --  * This source code is licensed under the MIT license found in the
 --  * LICENSE file in the root directory of this source tree.
---  *
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local jestExpect = require(Packages.Dev.Expect)
-
-local chalk = require(Packages.ChalkLua)
-
-local PrettyFormat = require(CurrentModule)
-local prettyFormat = PrettyFormat.prettyFormat
-local ConvertAnsi = PrettyFormat.plugins.ConvertAnsi
-
-
-local prettyFormatResult = function(val: string)
-	return prettyFormat(val, {
-		plugins = {ConvertAnsi}
-	})
-end
-
 return function()
+	local CurrentModule = script.Parent.Parent
+	local Packages = CurrentModule.Parent
+
+	local jestExpect = require(Packages.Dev.Expect)
+
+	local chalk = require(Packages.ChalkLua)
+
+	local PrettyFormat = require(CurrentModule)
+	local prettyFormat = PrettyFormat.prettyFormat
+	local ConvertAnsi = PrettyFormat.plugins.ConvertAnsi
+
+	local prettyFormatResult = function(val: string)
+		return prettyFormat(val, {
+			plugins = {ConvertAnsi}
+		})
+	end
+
 	describe('ConvertAnsi plugin', function()
 		it('supports style.red', function()
 			jestExpect(

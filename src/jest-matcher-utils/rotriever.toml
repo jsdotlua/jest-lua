@@ -12,7 +12,7 @@ JestGetType = { path = "../jest-get-type" }
 PrettyFormat = { path = "../pretty-format" }
 ChalkLua = { workspace = true }
 LuauPolyfill = { workspace = true }
-LuauRegExp = { workspace = true }
+RegExp = { workspace = true }
 
 [dev_dependencies]
 Expect = { path = "../expect" }

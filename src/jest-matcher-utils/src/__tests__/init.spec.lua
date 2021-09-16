@@ -14,7 +14,7 @@ return function()
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Symbol = LuauPolyfill.Symbol
 
-	local RegExp = require(Packages.LuauRegExp)
+	local RegExp = require(Packages.RegExp)
 
 	local equals = require(Packages.Dev.RobloxShared).expect.equals
 

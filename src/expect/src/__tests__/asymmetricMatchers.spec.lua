@@ -11,7 +11,7 @@ return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
-	local RegExp = require(Packages.Dev.LuauRegExp)
+	local RegExp = require(Packages.Dev.RegExp)
 
 	local AsymmetricMatchers = require(CurrentModule.asymmetricMatchers)
 	local any = AsymmetricMatchers.any

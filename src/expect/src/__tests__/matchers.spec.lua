@@ -18,7 +18,7 @@ return function()
 	local Set = LuauPolyfill.Set
 	local Symbol = LuauPolyfill.Symbol
 
-	local RegExp = require(Packages.Dev.LuauRegExp)
+	local RegExp = require(Packages.Dev.RegExp)
 
 	local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 	local stringify = require(Packages.JestMatcherUtils).stringify

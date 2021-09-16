@@ -1,9 +1,9 @@
 [workspace]
 members = ["src/*"]
-version = "2.1.1"
+version = "2.1.2"
 license = "Apache2"
 
 [workspace.dependencies]
 ChalkLua = "github.com/roblox/chalk-lua@0.1.2"
-LuauPolyfill = "github.com/roblox/luau-polyfill@0.2.3"
-LuauRegExp = "github.com/roblox/luau-regexp@0.1.0"
+LuauPolyfill = "github.com/roblox/luau-polyfill@0.2.4"
+RegExp = "github.com/roblox/luau-regexp@0.1.3"

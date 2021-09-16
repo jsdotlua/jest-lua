@@ -15,7 +15,7 @@ return function()
 	local Error = LuauPolyfill.Error
 	local Set = LuauPolyfill.Set
 
-	local RegExp = require(Packages.LuauRegExp)
+	local RegExp = require(Packages.RegExp)
 
 	local jestExpect = require(Packages.Dev.Expect)
 

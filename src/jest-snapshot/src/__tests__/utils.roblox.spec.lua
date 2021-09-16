@@ -1,11 +1,11 @@
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local jestExpect = require(Packages.Dev.Expect)
-
-local getParent = require(CurrentModule.utils).robloxGetParent
-
 return function()
+	local CurrentModule = script.Parent.Parent
+	local Packages = CurrentModule.Parent
+
+	local jestExpect = require(Packages.Dev.Expect)
+
+	local getParent = require(CurrentModule.utils).robloxGetParent
+
 	describe("getParent", function()
 		it("works on Unix paths", function()
 			jestExpect(getParent(

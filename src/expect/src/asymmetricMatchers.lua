@@ -25,7 +25,8 @@ local isUndefined = JasmineUtils.isUndefined
 
 local emptyObject = require(CurrentModule.utils).emptyObject
 
-type RegExp = {exec: (string) -> any, test: (string) -> boolean}
+type Array<T> = { [number]: T }
+type RegExp = Array<string> & { index: number?, input: string?, n: number }
 
 local AsymmetricMatcher = {}
 AsymmetricMatcher.__index = AsymmetricMatcher

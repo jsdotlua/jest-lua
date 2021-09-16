@@ -41,9 +41,8 @@ local stringify = JestMatcherUtils.stringify
 
 -- deviation: omitted external type definitions and defined MatcherState as any here for now
 type MatcherState = any
--- FIXME: After CLI-39007 change this RegExp type to be something like
--- {exec: (string) -> any, test: (string) -> boolean}
-type RegExp = any
+type Array<T> = { [number]: T }
+type RegExp = Array<string> & { index: number?, input: string?, n: number }
 
 local Print = require(CurrentModule.print)
 local printCloseTo = Print.printCloseTo

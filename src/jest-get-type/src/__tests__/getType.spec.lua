@@ -16,7 +16,7 @@ return function()
 	local Set = LuauPolyfill.Set
 	local Symbol = LuauPolyfill.Symbol
 
-	local RegExp = require(Packages.LuauRegExp)
+	local RegExp = require(Packages.RegExp)
 
 	local getType = require(CurrentModule).getType
 

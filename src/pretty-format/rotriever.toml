@@ -10,7 +10,7 @@ files = ["*", "!**/__tests__/**"]
 JestGetType = { path = "../jest-get-type" }
 ChalkLua = { workspace = true }
 LuauPolyfill = { workspace = true }
-LuauRegExp = { workspace = true }
+RegExp = { workspace = true }
 
 [dev_dependencies]
 Expect = { path = "../expect" }

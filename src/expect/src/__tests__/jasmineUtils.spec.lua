@@ -21,7 +21,7 @@ return function()
 	local Symbol = LuauPolyfill.Symbol
 	local Set = LuauPolyfill.Set
 
-	local RegExp = require(Packages.Dev.LuauRegExp)
+	local RegExp = require(Packages.Dev.RegExp)
 
 	local jasmineUtils = require(CurrentModule.jasmineUtils)
 	local equals = jasmineUtils.equals

@@ -41,7 +41,7 @@ local function getType(value: any): string
 	if typeof(value) == "table" then
 		local ok, hasRegExpShape = pcall(function() return typeof(value.test) == "function" and typeof(value.exec) == "function" end)
 		if ok and hasRegExpShape then
-			RegExp = require(Packages.LuauRegExp)
+			RegExp = require(Packages.RegExp)
 
 			if instanceof(value, RegExp) then
 				return 'regexp'

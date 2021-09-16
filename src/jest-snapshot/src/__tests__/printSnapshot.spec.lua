@@ -7,119 +7,119 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
-local Error = LuauPolyfill.Error
-local Object = LuauPolyfill.Object
-local Symbol = LuauPolyfill.Symbol
-
--- deviation: omitting imports for styles
-local ansiRegex = require(Packages.PrettyFormat).plugins.ConvertAnsi.ansiRegex
-local chalk = require(Packages.ChalkLua)
-local format = require(Packages.PrettyFormat).prettyFormat
-
-local jestExpect = require(Packages.Dev.Expect)
-
-local printSnapshot = require(CurrentModule.printSnapshot)
-local getReceivedColorForChalkInstance = printSnapshot.getReceivedColorForChalkInstance
-local getSnapshotColorForChalkInstance = printSnapshot.getSnapshotColorForChalkInstance
-local noColor = printSnapshot.noColor
-local printPropertiesAndReceived = printSnapshot.printPropertiesAndReceived
-local printSnapshotAndReceived = printSnapshot.printSnapshotAndReceived
-
-local serialize = require(CurrentModule.utils).serialize
-
-local colors = require(CurrentModule.colors)
--- ROBLOX TODO: ADO-1522 add level 3 support in chalk
--- deviation: omitted level 3 colors since we don't have level 3 support in chalk
-local aBackground2 = colors.aBackground2
--- local aBackground3 = colors.aBackground3
-local aForeground2 = colors.aForeground2
--- local aForeground3 = colors.aForeground3
-local bBackground2 = colors.bBackground2
--- local bBackground3 = colors.bBackground3
-local bForeground2 = colors.bForeground2
--- local bForeground3 = colors.bForeground3
-
-local aOpenForeground1 = chalk.magenta.open
-local aOpenBackground1 = chalk.bgYellowBright.open
-local bOpenForeground1 = chalk.cyan.open
-local bOpenBackground1 = chalk.bgWhiteBright.open
-
-local aOpenForeground2 = chalk.ansi256(aForeground2).open
-local bOpenForeground2 = chalk.ansi256(bForeground2).open
-local aOpenBackground2 = chalk.bgAnsi256(aBackground2).open
-local bOpenBackground2 = chalk.bgAnsi256(bBackground2).open
-
--- ROBLOX TODO: ADO-1522 add level 3 support in chalk
--- deviation: omitted level 3 colors
-
-local ansiLookupTable = {
-		[chalk.inverse.open] = "<i>",
-		[chalk.inverse.close] = "</i>",
-		[chalk.bold.open] = "<b>",
-		[chalk.dim.open] = "<d>",
-		[chalk.bold.close] = "</>",
-		[chalk.dim.close] = "</>",
-		[chalk.green.open] = "<g>",
-		[aOpenForeground1] = "<m>",
-		[aOpenForeground2] = "<m>",
-		-- [aOpenForeground3] = "<m>"
-		[chalk.red.open] = "<r>",
-		[bOpenForeground1] = "<t>",
-		[bOpenForeground2] = "<t>",
-		-- [bOpenForeground3] = "<t>",
-		[chalk.yellow.open] = "<y>",
-		[chalk.cyan.close] = "</>",
-		[chalk.green.close] = "</>",
-		[chalk.magenta.close] = "</>",
-		[chalk.red.close] = "</>",
-		[chalk.yellow.close] = "</>"
-}
-
-local function convertAnsi(val: string): string
-	-- // Trailing spaces in common lines have yellow background color.
-	local isYellowBackground = false
-
-	val = val:gsub(ansiRegex, function(match)
-		if ansiLookupTable[match] then
-			return ansiLookupTable[match]
-		elseif match == chalk.bgYellow.open then
-			isYellowBackground = true
-			return "<Y>"
-		elseif
-			match == aOpenBackground1 or
-			match == bOpenBackground1 or
-			match == aOpenBackground2 or
-			match == bOpenBackground2
-			-- ROBLOX TODO: ADO-1522 add level 3 support in chalk
-			-- match == aOpenBackground3 or
-			-- match == bOpenBackground3
-		then
-			isYellowBackground = false
-			return ""
-		elseif match == chalk.bgYellow.close then
-			-- // The same code closes any background color.
-			if isYellowBackground then
-				return "</Y>"
-			else
-				return ""
-			end
-		else
-			return match
-		end
-	end)
-
-	return val
-end
-
-local jestSnapshot = require(CurrentModule)
-local toMatchSnapshot = jestSnapshot.toMatchSnapshot
-local toThrowErrorMatchingSnapshot = jestSnapshot.toThrowErrorMatchingSnapshot
-
 return function()
+	local CurrentModule = script.Parent.Parent
+	local Packages = CurrentModule.Parent
+
+	local LuauPolyfill = require(Packages.LuauPolyfill)
+	local Error = LuauPolyfill.Error
+	local Object = LuauPolyfill.Object
+	local Symbol = LuauPolyfill.Symbol
+
+	-- deviation: omitting imports for styles
+	local ansiRegex = require(Packages.PrettyFormat).plugins.ConvertAnsi.ansiRegex
+	local chalk = require(Packages.ChalkLua)
+	local format = require(Packages.PrettyFormat).prettyFormat
+
+	local jestExpect = require(Packages.Dev.Expect)
+
+	local printSnapshot = require(CurrentModule.printSnapshot)
+	local getReceivedColorForChalkInstance = printSnapshot.getReceivedColorForChalkInstance
+	local getSnapshotColorForChalkInstance = printSnapshot.getSnapshotColorForChalkInstance
+	local noColor = printSnapshot.noColor
+	local printPropertiesAndReceived = printSnapshot.printPropertiesAndReceived
+	local printSnapshotAndReceived = printSnapshot.printSnapshotAndReceived
+
+	local serialize = require(CurrentModule.utils).serialize
+
+	local colors = require(CurrentModule.colors)
+	-- ROBLOX TODO: ADO-1522 add level 3 support in chalk
+	-- deviation: omitted level 3 colors since we don't have level 3 support in chalk
+	local aBackground2 = colors.aBackground2
+	-- local aBackground3 = colors.aBackground3
+	local aForeground2 = colors.aForeground2
+	-- local aForeground3 = colors.aForeground3
+	local bBackground2 = colors.bBackground2
+	-- local bBackground3 = colors.bBackground3
+	local bForeground2 = colors.bForeground2
+	-- local bForeground3 = colors.bForeground3
+
+	local aOpenForeground1 = chalk.magenta.open
+	local aOpenBackground1 = chalk.bgYellowBright.open
+	local bOpenForeground1 = chalk.cyan.open
+	local bOpenBackground1 = chalk.bgWhiteBright.open
+
+	local aOpenForeground2 = chalk.ansi256(aForeground2).open
+	local bOpenForeground2 = chalk.ansi256(bForeground2).open
+	local aOpenBackground2 = chalk.bgAnsi256(aBackground2).open
+	local bOpenBackground2 = chalk.bgAnsi256(bBackground2).open
+
+	-- ROBLOX TODO: ADO-1522 add level 3 support in chalk
+	-- deviation: omitted level 3 colors
+
+	local ansiLookupTable = {
+			[chalk.inverse.open] = "<i>",
+			[chalk.inverse.close] = "</i>",
+			[chalk.bold.open] = "<b>",
+			[chalk.dim.open] = "<d>",
+			[chalk.bold.close] = "</>",
+			[chalk.dim.close] = "</>",
+			[chalk.green.open] = "<g>",
+			[aOpenForeground1] = "<m>",
+			[aOpenForeground2] = "<m>",
+			-- [aOpenForeground3] = "<m>"
+			[chalk.red.open] = "<r>",
+			[bOpenForeground1] = "<t>",
+			[bOpenForeground2] = "<t>",
+			-- [bOpenForeground3] = "<t>",
+			[chalk.yellow.open] = "<y>",
+			[chalk.cyan.close] = "</>",
+			[chalk.green.close] = "</>",
+			[chalk.magenta.close] = "</>",
+			[chalk.red.close] = "</>",
+			[chalk.yellow.close] = "</>"
+	}
+
+	local function convertAnsi(val: string): string
+		-- // Trailing spaces in common lines have yellow background color.
+		local isYellowBackground = false
+
+		val = val:gsub(ansiRegex, function(match)
+			if ansiLookupTable[match] then
+				return ansiLookupTable[match]
+			elseif match == chalk.bgYellow.open then
+				isYellowBackground = true
+				return "<Y>"
+			elseif
+				match == aOpenBackground1 or
+				match == bOpenBackground1 or
+				match == aOpenBackground2 or
+				match == bOpenBackground2
+				-- ROBLOX TODO: ADO-1522 add level 3 support in chalk
+				-- match == aOpenBackground3 or
+				-- match == bOpenBackground3
+			then
+				isYellowBackground = false
+				return ""
+			elseif match == chalk.bgYellow.close then
+				-- // The same code closes any background color.
+				if isYellowBackground then
+					return "</Y>"
+				else
+					return ""
+				end
+			else
+				return match
+			end
+		end)
+
+		return val
+	end
+
+	local jestSnapshot = require(CurrentModule)
+	local toMatchSnapshot = jestSnapshot.toMatchSnapshot
+	local toThrowErrorMatchingSnapshot = jestSnapshot.toThrowErrorMatchingSnapshot
+
 	beforeAll(function()
 		jestExpect.addSnapshotSerializer({
 			serialize = function(val: string): string
@@ -634,7 +634,7 @@ return function()
 			end)
 
 			-- deviation: test skipped because we do not have support for the
-			-- global flag in LuauRegExp
+			-- global flag in RegExp
 			itSKIP('regexp', function()
 				local expected = '\\(")'
 				local received = '\\(")'

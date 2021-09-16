@@ -15,7 +15,7 @@ JestSnapshot = { path = "../jest-snapshot" }
 RobloxShared = { path = "../roblox-shared" }
 
 [dev_dependencies]
-LuauRegExp = { workspace = true }
+RegExp = { workspace = true }
 Jest = { path = "../jest" }
 JestMock = { path = "../jest-mock" }
 TestUtils = { path = "../test-utils" }

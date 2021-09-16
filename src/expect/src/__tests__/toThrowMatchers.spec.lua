@@ -15,7 +15,7 @@ return function()
 	local Error = LuauPolyfill.Error
 	local extends = LuauPolyfill.extends
 
-	local RegExp = require(Packages.Dev.LuauRegExp)
+	local RegExp = require(Packages.Dev.RegExp)
 
 	local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 
