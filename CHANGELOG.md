@@ -1,5 +1,8 @@
 # Jest Roblox Changelog
 
+## 2.1.3 (2021-09-22)
+:hammer_and_wrench: Bump `LuauPolyfill` to `0.2.5` to fix static analysis issues on `lua-apps`
+
 ## 2.1.2 (2021-09-16)
 * :hammer_and_wrench: Bump `RegExp` to `0.1.3` and `LuauPolyfill` to `0.2.4` to remove test files from cached versions
 * :hammer_and_wrench: Republish with rotriever 0.5.0-rc.4 to remove tests from rotriever cache 
