@@ -9,11 +9,11 @@ When you're writing tests, you often need to check that values meet certain cond
 To use regular expressions in matchers that support it, you need to add [LuauRegExp](https://github.com/Roblox/luau-regexp) as a dependency in your `rotriever.toml` and require it in your code.
 ```yaml title="rotriever.toml"
 [dev_dependencies]
-LuauRegExp = "github.com/roblox/luau-regexp@0.1.0"
+RegExp = "github.com/roblox/luau-regexp@0.1.3"
 ```
 
 ```lua
-local RegExp = require(Packages.LuauRegExp)
+local RegExp = require(Packages.RegExp)
 ```
 
 ### Error
@@ -72,7 +72,7 @@ You can use `expect.extend` to add your own matchers to Jest Roblox. For example
 
 ```lua
 expect.extend({
-	toBeWithinRange = function(self, received, floor, ceiling) {
+	toBeWithinRange = function(self, received, floor, ceiling)
 		local pass = received >= floor and received <= ceiling
 		if pass then
 			message = function()
@@ -134,7 +134,7 @@ This is a deep-equality function that will return `true` if two objects have the
 
 #### `self.utils`
 
-There are a number of helpful tools exposed on `self.utils` primarily consisting of the exports from [`jest-matcher-utils`](https://github.com/Roblox/jest-roblox/blob/master/src/Modules/jest-matcher-utils/src/init.lua).
+There are a number of helpful tools exposed on `self.utils` primarily consisting of the exports from [`jest-matcher-utils`](https://github.com/Roblox/jest-roblox/blob/master/src/jest-matcher-utils/src/init.lua).
 
 The most useful ones are `matcherHint`, `printExpected` and `printReceived` to format the error messages nicely. For example, take a look at this implementation for the `toBe` matcher:
 

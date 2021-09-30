@@ -1,18 +1,21 @@
 # Jest Roblox Changelog
 
+## 2.1.4 (2021-09-30)
+:sparkles: Added support and better output for [Roblox datatypes](https://developer.roblox.com/en-us/api-reference/data-types) ([#117](https://github.com/Roblox/jest-roblox/pull/117))
+
 ## 2.1.3 (2021-09-22)
 :hammer_and_wrench: Bump `LuauPolyfill` to `0.2.5` to fix static analysis issues on `lua-apps`
 
 ## 2.1.2 (2021-09-16)
 * :hammer_and_wrench: Bump `RegExp` to `0.1.3` and `LuauPolyfill` to `0.2.4` to remove test files from cached versions
-* :hammer_and_wrench: Republish with rotriever 0.5.0-rc.4 to remove tests from rotriever cache 
+* :hammer_and_wrench: Republish with rotriever `0.5.0-rc.4` to remove tests from rotriever cache 
 * :hammer_and_wrench: Add typing for `RegExp`
 
 ## 2.1.1 (2021-09-03)
 * :bug: Resolve dependency cycle in `JestSnapshot` and `Expect`
 
 ## 2.1.0 (2021-09-03)
-* :sparkles: Changed project structure to use rotriever 0.5.0 workspaces ([#96](https://github.com/Roblox/jest-roblox/pull/96))
+* :sparkles: Changed project structure to use rotriever `0.5.0` workspaces ([#96](https://github.com/Roblox/jest-roblox/pull/96))
   * This allows downstream projects to pull individual `JestRoblox` packages as dependencies
   * For example, to pull the `JestDiff` package as a dependency:
   ```
