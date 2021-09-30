@@ -133,6 +133,11 @@ local function printBasicValue(
 		return val.ClassName
 	end
 
+	-- deviation: output DataType for builtin types
+	if typeOf == 'builtin' then
+		return string.format("%s(%s)", typeof(val), tostring(val))
+	end
+
 	-- deviation: catchall for arbitrary userdata
 	if typeOf == 'userdata' then
 		return tostring(val)

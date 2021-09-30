@@ -64,8 +64,14 @@ local function getType(value: any): string
 	if typeof(value) == 'Instance' then
 		return 'Instance'
 	end
+	-- deviation: Roblox builtin data types
+	-- (call typeof(value) for the name of the builtin datatype)
+	-- https://developer.roblox.com/en-us/api-reference/data-types
+	if type(value) ~= typeof(value) then
+		return 'builtin'
+	end
 	-- deviation: added luau types for userdata and thread
-	if typeof(value) == 'userdata' then
+	if type(value) == 'userdata' then
 		return 'userdata'
 	end
 	if typeof(value) == 'thread' then
@@ -75,7 +81,8 @@ local function getType(value: any): string
 	-- deviation: code omitted because lua has no built-in Map types
 	-- deviation: code omitted because lua makes no distinction between tables, arrays, and objects
 
-	error(string.format('value of unknown type: %s', tostring(value)))
+	-- deviation: include the type in the error message
+	error(string.format('value of unknown type: %s (%s)', typeof(value), tostring(value)))
 end
 
 local function isPrimitive(value: any): boolean

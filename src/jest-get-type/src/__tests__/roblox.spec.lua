@@ -13,5 +13,11 @@ return function()
 			})
 			expect(getType(testObj)).to.equal("table")
 		end)
+
+		it("supports builtin Roblox Datatypes", function()
+			expect(getType(Vector3.new())).to.equal("builtin")
+			expect(getType(Color3.new())).to.equal("builtin")
+			expect(getType(UDim2.new())).to.equal("builtin")
+		end)
 	end)
 end
