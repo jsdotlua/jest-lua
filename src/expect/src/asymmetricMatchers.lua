@@ -72,11 +72,16 @@ function Any:asymmetricMatch(other: any): boolean
 	then
 		return instanceof(other, self.sample)
 	-- check type matches type provided by string
+	-- ROBLOX deviation: check that type matches typeof for Roblox builtins, otherwise matches getType
 	elseif
-		selfType == "string" and
-		self.sample == otherType
+		selfType == "string"
 	then
-		return true
+		if self.sample == otherType then
+			return true
+		elseif otherType == "builtin" and self.sample == typeof(other) then
+			return true
+		end
+		return false
 	end
 	return false
 end

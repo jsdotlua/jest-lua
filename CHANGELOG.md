@@ -1,5 +1,8 @@
 # Jest Roblox Changelog
 
+## Unreleased Changes
+* :bug: Fix for `expect.any` not working with Roblox datatypes
+
 ## 2.1.4 (2021-09-30)
 :sparkles: Added support and better output for [Roblox datatypes](https://developer.roblox.com/en-us/api-reference/data-types) ([#117](https://github.com/Roblox/jest-roblox/pull/117))
 

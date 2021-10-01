@@ -61,4 +61,10 @@ return function()
 			jestExpect(stringNotMatching(chalk.green("multi")):asymmetricMatch(nestedStyle("multi"))).toEqual(true)
 		end)
 	end)
+
+	it("any works with Roblox types", function()
+		jestExpect(Vector3.new()).toEqual(jestExpect.any("Vector3"))
+		jestExpect(Color3.new()).toEqual(jestExpect.any("Color3"))
+		jestExpect(UDim2.new()).toEqual(jestExpect.any("UDim2"))
+	end)
 end
