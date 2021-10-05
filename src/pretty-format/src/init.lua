@@ -24,7 +24,9 @@ local printListItems = Collections.printListItems
 local AsymmetricMatcher = require(CurrentModule.plugins.AsymmetricMatcher)
 local ConvertAnsi = require(CurrentModule.plugins.ConvertAnsi)
 
-local getType = require(Packages.JestGetType).getType
+local JestGetType = require(Packages.JestGetType)
+local getType = JestGetType.getType
+local isRobloxBuiltin = JestGetType.isRobloxBuiltin
 
 local PrettyFormatPluginError = extends(
 	Error,
@@ -134,8 +136,8 @@ local function printBasicValue(
 	end
 
 	-- deviation: output DataType for builtin types
-	if typeOf == 'builtin' then
-		return string.format("%s(%s)", typeof(val), tostring(val))
+	if isRobloxBuiltin(val) then
+		return string.format("%s(%s)", typeOf, tostring(val))
 	end
 
 	-- deviation: catchall for arbitrary userdata

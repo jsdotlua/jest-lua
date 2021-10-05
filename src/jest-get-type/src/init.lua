@@ -14,6 +14,12 @@ local instanceof = LuauPolyfill.instanceof
 local RegExp
 local Set = LuauPolyfill.Set
 
+-- ROBLOX deviation: checks for Roblox builtin data types
+-- https://developer.roblox.com/en-us/api-reference/data-types
+local function isRobloxBuiltin(value: any): boolean
+	return type(value) ~= typeof(value)
+end
+
 local function getType(value: any): string
 	-- deviation: code omitted because lua has no primitive undefined type
 	-- lua makes no distinction between null and undefined so we just return nil
@@ -59,17 +65,13 @@ local function getType(value: any): string
 	if typeof(value) == 'table' then
 		return 'table'
 	end
-	-- deviation: Roblox Instance type
-	-- https://developer.roblox.com/en-us/api-reference/class/Instance
-	if typeof(value) == 'Instance' then
-		return 'Instance'
-	end
-	-- deviation: Roblox builtin data types
-	-- (call typeof(value) for the name of the builtin datatype)
+
+	--- deviation: returns name of Roblox datatype
 	-- https://developer.roblox.com/en-us/api-reference/data-types
-	if type(value) ~= typeof(value) then
-		return 'builtin'
+	if isRobloxBuiltin(value) then
+		return typeof(value)
 	end
+
 	-- deviation: added luau types for userdata and thread
 	if type(value) == 'userdata' then
 		return 'userdata'
@@ -93,4 +95,5 @@ end
 return {
 	getType = getType,
 	isPrimitive = isPrimitive,
+	isRobloxBuiltin = isRobloxBuiltin,
 }
