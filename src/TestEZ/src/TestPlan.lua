@@ -16,10 +16,17 @@ local function getCoreScriptSyncService()
 	return success and result or nil
 end
 
-local CoreScriptSyncService = getCoreScriptSyncService()
+local CoreScriptSyncService = nil
 
 local function getFilePathFromInstance(instance)
+	if CoreScriptSyncService == nil then
+		CoreScriptSyncService = getCoreScriptSyncService() or false
+	end
+
 	local success, result = pcall(function()
+		if not CoreScriptSyncService then
+			return nil
+		end
 		return CoreScriptSyncService:GetScriptFilePath(instance)
 	end)
 

@@ -20,7 +20,7 @@ local function getFileSystemService()
 
 	return success and result or nil
 end
-local FileSystemService = getFileSystemService()
+local FileSystemService = nil
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
@@ -273,6 +273,9 @@ local function saveSnapshotFile(
 	end
 	table.insert(snapshots, 'return exports')
 
+	if FileSystemService == nil then
+		FileSystemService = getFileSystemService() or false
+	end
 	-- deviation: error when FileSystemService doesn't exist
 	if not FileSystemService then
 		error(Error('Attempting to save snapshots in an environment where FileSystemService is inaccessible.'))

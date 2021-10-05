@@ -21,7 +21,7 @@ local function getCoreScriptSyncService()
 
 	return success and result or nil
 end
-local CoreScriptSyncService = getCoreScriptSyncService()
+local CoreScriptSyncService = nil
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
@@ -186,6 +186,9 @@ function SnapshotState:save(): SaveStatus
 		saved = false
 	}
 
+	if CoreScriptSyncService == nil then
+		CoreScriptSyncService = getCoreScriptSyncService() or false
+	end
 	-- deviation: error when FileSystemService doesn't exist
 	if not CoreScriptSyncService then
 		error(Error(
