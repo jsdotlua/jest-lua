@@ -158,22 +158,29 @@ function makeThrowingMatcher(
 			end
 		end
 
-		local potentialResult
+		local potentialResult, preservedStack, result
 
-		local ok, result = pcall(function(...)
+		local ok = xpcall(function(...)
 			-- ROBLOX TODO: Implement INTERNAL_MATCHER_FLAG cases
 			potentialResult = matcher(matcherContext, actual, ...)
 
 			local syncResult = potentialResult
 
 			return processResult(syncResult)
+		end, function(e)
+			preservedStack = debug.traceback(nil, 7)
+			result = e
 		end, ...)
 
 		if not ok then
 			if instanceof(result, Error) then
-				error(Error(result.message))
+				local errorTable = Error(result.message)
+				errorTable.stack = preservedStack
+				error(errorTable)
 			else
-				error(Error(result))
+				local errorTable = Error(result)
+				errorTable.stack = preservedStack
+				error(errorTable)
 			end
 		end
 	end

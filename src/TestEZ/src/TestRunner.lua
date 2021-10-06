@@ -108,7 +108,7 @@ function TestRunner.runPlanNode(session, planNode, lifecycleHooks)
 			end,
 			function(message)
 				if typeof(message) == "table" and message.stack and message.name and message.message then
-					return messagePrefix .. removeTestEZFromStack(debug.traceback(tostring(message), 4))
+					return messagePrefix .. removeTestEZFromStack(tostring(message) .. '\n' .. message.stack)
 				else
 					return messagePrefix .. debug.traceback(tostring(message), 2)
 				end

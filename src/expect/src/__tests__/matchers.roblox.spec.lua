@@ -6,8 +6,10 @@ return function()
 	local jestExpect = require(CurrentModule)
 
 	local chalk = require(Packages.Dev.ChalkLua)
+	local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 
 	local LuauPolyfill = require(Packages.LuauPolyfill)
+	local Error = LuauPolyfill.Error
 	local Set = LuauPolyfill.Set
 
 	local CustomClass = {}
@@ -16,6 +18,15 @@ return function()
 	function CustomClass.new()
 	    return setmetatable({ foo = true }, CustomClass)
 	end
+
+	beforeAll(function()
+		jestExpect.addSnapshotSerializer(alignedAnsiStyleSerializer)
+	end)
+
+	afterAll(function()
+		jestExpect.resetSnapshotSerializers()
+	end)
+
 
 	-- test cases devised from https://github.com/Roblox/jest-roblox/pull/27#discussion_r561374828
 	it("tests toStrictEqual matcher with example class", function()
@@ -62,5 +73,44 @@ return function()
 
 			jestExpect(nestedStyle("i am heavily chalked")).never.toMatch(chalk.red("i am heavily chalked"))
 		end)
+	end)
+
+	local nestedFn = function(fn)
+		local success, result = pcall(function()
+			fn()
+		end)
+		if not success then
+			error(result)
+		end
+	end
+
+	it("tests stack traces for calls within pcalls", function()
+		jestExpect(function()
+			jestExpect(function()
+				nestedFn(function()
+					jestExpect(4).toBe(2)
+				end)
+			end).never.toThrow()
+		end).toThrowErrorMatchingSnapshot()
+	end)
+
+	local nestedFnWithError = function(fn)
+		local success, result = pcall(function()
+			fn()
+		end)
+		if not success then
+			error(Error(result))
+		end
+	end
+
+	-- TODO: ADO-1716 unskip this test and determine how to reconcile behavior
+	itSKIP("tests stack traces for calls within pcalls with Error polyfill", function()
+		jestExpect(function()
+			jestExpect(function()
+				nestedFnWithError(function()
+					jestExpect(4).toBe(2)
+				end)
+			end).never.toThrow()
+		end).toThrowErrorMatchingSnapshot()
 	end)
 end

@@ -57,7 +57,8 @@ local toThrowExpectedRegExp, toThrowExpectedAsymmetric, toThrowExpectedObject, t
 local toThrowExpectedString, toThrow, formatExpected, formatReceived, formatStack
 
 local function getThrown(e: any): Thrown
-	local hasMessage = e ~= nil and typeof(e.message) == "string"
+	-- deviation: hasMessage is also considered true if message is a table
+	local hasMessage = e ~= nil and (typeof(e.message) == "string" or typeof(e.message) == "table")
 
 	if hasMessage and typeof(e.name) == "string" and typeof(e.stack) == "string" then
 		return {
