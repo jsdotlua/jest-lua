@@ -15,7 +15,9 @@ local Object = LuauPolyfill.Object
 
 local AsymmetricMatcher = require(CurrentModule.asymmetricMatchers).AsymmetricMatcher
 
--- deviation: omitted external type definitions
+local Types = require(CurrentModule.types)
+type MatcherState = Types.MatcherState
+type MatchersObject = Types.MatchersObject
 
 -- // Global matchers object holds the list of available matchers and
 -- // the state, that can hold matcher specific values that change over time.
@@ -39,7 +41,7 @@ if not _G[JEST_MATCHERS_OBJECT] then
 	}
 end
 
-local function getState()
+local function getState(): MatcherState
 	return _G[JEST_MATCHERS_OBJECT].state
 end
 
@@ -47,14 +49,14 @@ local function setState(state): ()
 	Object.assign(_G[JEST_MATCHERS_OBJECT].state, state)
 end
 
-local function getMatchers()
+local function getMatchers(): MatchersObject
 	return _G[JEST_MATCHERS_OBJECT].matchers
 end
 
 -- deviation: matchers does not have MatchersObject type annotation and expect
 -- does not have Expect type annotation
 local function setMatchers(
-	matchers,
+	matchers: MatchersObject,
 	isInternal: boolean,
 	expect
 ): ()

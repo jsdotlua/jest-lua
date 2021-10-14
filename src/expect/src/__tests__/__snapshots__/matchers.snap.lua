@@ -10,7 +10,7 @@ local snapshots = {}
 
 snapshots['.toBe() does not crash on circular references 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 <g>- Expected  - 1</>
 <r>+ Received  + 3</>
@@ -23,42 +23,42 @@ snapshots['.toBe() does not crash on circular references 1'] = [=[
 
 snapshots['.toBe() fails for "a" with .never 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>never<d>.</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>never<d>.</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 Expected: never <g>"a"</>
 ]=]
 
 snapshots['.toBe() fails for {} with .never 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>never<d>.</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>never<d>.</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 Expected: never <g>{}</>
 ]=]
 
 snapshots['.toBe() fails for 1 with .never 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>never<d>.</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>never<d>.</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 Expected: never <g>1</>
 ]=]
 
 snapshots['.toBe() fails for false with .never 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>never<d>.</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>never<d>.</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 Expected: never <g>false</>
 ]=]
 
 snapshots['.toBe() fails for nil with .never 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>never<d>.</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>never<d>.</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 Expected: never <g>nil</>
 ]=]
 
 snapshots['.toBe() fails for: "" and "compare one-line string to empty string" 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 Expected: <g>"compare one-line string to empty string"</>
 Received: <r>""</>
@@ -66,7 +66,7 @@ Received: <r>""</>
 
 snapshots['.toBe() fails for: "abc" and "cde" 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 Expected: <g>"cde"</>
 Received: <r>"abc"</>
@@ -74,7 +74,7 @@ Received: <r>"abc"</>
 
 snapshots['.toBe() fails for: "four\n4\nline\nstring" and "3\nline\nstring" 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 <g>- Expected  - 1</>
 <r>+ Received  + 2</>
@@ -88,7 +88,7 @@ snapshots['.toBe() fails for: "four\n4\nline\nstring" and "3\nline\nstring" 1'] 
 
 snapshots['.toBe() fails for: "painless JavaScript testing" and "delightful JavaScript testing" 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 Expected: <g>"<i>delightful</i> JavaScript testing"</>
 Received: <r>"<i>painless</i> JavaScript testing"</>
@@ -96,7 +96,7 @@ Received: <r>"<i>painless</i> JavaScript testing"</>
 
 snapshots['.toBe() fails for: "with \ntrailing space" and "without trailing space" 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 <g>- Expected  - 1</>
 <r>+ Received  + 2</>
@@ -109,7 +109,7 @@ snapshots['.toBe() fails for: "with \ntrailing space" and "without trailing spac
 -- deviation: changed from regex to string
 snapshots['.toBe() fails for: "received" and "expected" 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 Expected: <g>"<i>expect</i>ed"</>
 Received: <r>"<i>receiv</i>ed"</>
@@ -117,7 +117,7 @@ Received: <r>"<i>receiv</i>ed"</>
 
 snapshots['.toBe() fails for: [Function anonymous] and [Function anonymous] 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 Expected: <g>[Function anonymous]</>
 Received: serializes to the same string
@@ -126,7 +126,7 @@ Received: serializes to the same string
 --deviation: changed from a to anonymous
 snapshots['.toBe() fails for: {"a": [Function anonymous], "b": 2} and {"a": Any<function>, "b": 2} 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 <d>If it should pass with deep equality, replace "toBe" with "toEqual"</>
 
@@ -136,7 +136,7 @@ Received: <r>{"a": [Function anonymous], "b": 2}</>
 
 snapshots['.toBe() fails for: {"a": 1} and {"a": 1} 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 <d>If it should pass with deep equality, replace "toBe" with "toEqual"</>
 
@@ -146,7 +146,7 @@ Received: serializes to the same string
 
 snapshots['.toBe() fails for: {"a": 1} and {"a": 5} 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 <g>- Expected  - 1</>
 <r>+ Received  + 1</>
@@ -161,7 +161,7 @@ snapshots['.toBe() fails for: {"a": 1} and {"a": 5} 1'] = [=[
 -- replacing toBe with toEqual
 snapshots['.toBe() fails for: {"a": false, "b": 2} and {"b": 2} 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 <g>- Expected  - 0</>
 <r>+ Received  + 1</>
@@ -174,7 +174,7 @@ snapshots['.toBe() fails for: {"a": false, "b": 2} and {"b": 2} 1'] = [=[
 
 snapshots['.toBe() fails for: {} and {} 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 <d>If it should pass with deep equality, replace "toBe" with "toEqual"</>
 
@@ -185,7 +185,7 @@ Received: serializes to the same string
 -- deviation: changed from -0 and 0 to -inf and inf
 snapshots['.toBe() fails for: -inf and inf 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 Expected: <g>inf</>
 Received: <r>-inf</>
@@ -193,7 +193,7 @@ Received: <r>-inf</>
 
 snapshots['.toBe() fails for: 1 and 2 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 Expected: <g>2</>
 Received: <r>1</>
@@ -201,7 +201,7 @@ Received: <r>1</>
 
 snapshots['.toBe() fails for: 2020-02-21T00:00:00.000Z and 2020-02-20T00:00:00.000Z 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 Expected: <g>2020-02-20T00:00:00.000Z</>
 Received: <r>2020-02-21T00:00:00.000Z</>
@@ -209,7 +209,7 @@ Received: <r>2020-02-21T00:00:00.000Z</>
 
 snapshots['.toBe() fails for: Symbol(received) and Symbol(expected) 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 Expected: <g>Symbol(expected)</>
 Received: <r>Symbol(received)</>
@@ -217,7 +217,7 @@ Received: <r>Symbol(received)</>
 
 snapshots['.toBe() fails for: true and false 1'] = [=[
 
-<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- shallow equality</>
+<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 Expected: <g>false</>
 Received: <r>true</>

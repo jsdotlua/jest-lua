@@ -94,7 +94,7 @@ return function()
 			false, 1, "a", {}
 		}) do
 			it("fails for " .. stringify(testCase) .. " with .never", function()
-				jestExpect(function() jestExpect(testCase).never.toBe(testCase) end).toThrowErrorMatchingSnapshot()
+				jestExpect(function() jestExpect(testCase :: any).never.toBe(testCase :: any) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -763,9 +763,9 @@ return function()
 				jestExpect(testCase).toBeTruthy()
 				jestExpect(testCase).never.toBeFalsy()
 
-				jestExpect(function() jestExpect(testCase).never.toBeTruthy() end).toThrowErrorMatchingSnapshot()
+				jestExpect(function() jestExpect(testCase :: any).never.toBeTruthy() end).toThrowErrorMatchingSnapshot()
 
-				jestExpect(function() jestExpect(testCase).toBeFalsy() end).toThrowErrorMatchingSnapshot()
+				jestExpect(function() jestExpect(testCase :: any).toBeFalsy() end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -794,7 +794,7 @@ return function()
 				0 / 0
 			}) do
 				jestExpect(testCase).toBeNan()
-				jestExpect(function() jestExpect(testCase).never.toBeNan() end).toThrowErrorMatchingSnapshot()
+				jestExpect(function() jestExpect(testCase :: any).never.toBeNan() end).toThrowErrorMatchingSnapshot()
 			end
 		end)
 
@@ -808,7 +808,7 @@ return function()
 				math.huge,
 				-math.huge
 			}) do
-				jestExpect(function() jestExpect(testCase).toBeNan() end).toThrowErrorMatchingSnapshot()
+				jestExpect(function() jestExpect(testCase :: any).toBeNan() end).toThrowErrorMatchingSnapshot()
 				jestExpect(testCase).never.toBeNan()
 			end
 		end)
@@ -832,7 +832,7 @@ return function()
 			it('fails for ' .. stringify(testCase), function()
 				jestExpect(testCase).never.toBeNil()
 
-				jestExpect(function() jestExpect(testCase).toBeNil() end).toThrowErrorMatchingSnapshot()
+				jestExpect(function() jestExpect(testCase :: any).toBeNil() end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -863,8 +863,8 @@ return function()
 			it(stringify(testCase) .. ' is defined', function()
 				jestExpect(testCase).toBeDefined()
 
-				jestExpect(function() jestExpect(testCase).never.toBeDefined() end).toThrowErrorMatchingSnapshot()
-				jestExpect(function() jestExpect(testCase).toBeUndefined() end).toThrowErrorMatchingSnapshot()
+				jestExpect(function() jestExpect(testCase :: any).never.toBeDefined() end).toThrowErrorMatchingSnapshot()
+				jestExpect(function() jestExpect(testCase :: any).toBeUndefined() end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 

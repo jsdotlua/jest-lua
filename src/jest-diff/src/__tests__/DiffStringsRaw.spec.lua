@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-diff/src/__tests__/diffStringsRaw.test.ts
+-- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/__tests__/diffStringsRaw.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *

@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-diff/src/diffLines.ts
+-- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/diffLines.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -11,15 +11,22 @@ local Packages = CurrentModule.Parent
 
 local diff = require(Packages.DiffSequences)
 
-local DIFF_DELETE = require(CurrentModule.CleanupSemantic).DIFF_DELETE
-local DIFF_EQUAL = require(CurrentModule.CleanupSemantic).DIFF_EQUAL
-local DIFF_INSERT = require(CurrentModule.CleanupSemantic).DIFF_INSERT
-local Diff = require(CurrentModule.CleanupSemantic).Diff
+local CleanupSemantic = require(CurrentModule.CleanupSemantic)
+local DIFF_DELETE = CleanupSemantic.DIFF_DELETE
+local DIFF_EQUAL = CleanupSemantic.DIFF_EQUAL
+local DIFF_INSERT = CleanupSemantic.DIFF_INSERT
+local Diff = CleanupSemantic.Diff
+type Diff = CleanupSemantic.Diff
+type Array<T> = { [number]: T }
 
 local joinAlignedDiffsExpand = require(CurrentModule.JoinAlignedDiffs).joinAlignedDiffsExpand
 local joinAlignedDiffsNoExpand = require(CurrentModule.JoinAlignedDiffs).joinAlignedDiffsNoExpand
 
 local normalizeDiffOptions = require(CurrentModule.NormalizeDiffOptions).normalizeDiffOptions
+
+local Types = require(CurrentModule.types)
+type DiffOptions = Types.DiffOptions
+type DiffOptionsNormalized = Types.DiffOptionsNormalized
 
 local diffLinesRaw
 
@@ -27,7 +34,9 @@ local function isEmptyString(lines: { [number]: string }): boolean
 	return #lines == 1 and #lines[1] == 0
 end
 
-local function countChanges(diffs: { [number]: any })
+export type ChangeCounts = { a: number, b: number }
+
+local function countChanges(diffs: Array<Diff>): ChangeCounts
 	local a = 0
 	local b = 0
 
@@ -44,8 +53,8 @@ local function countChanges(diffs: { [number]: any })
 end
 
 local function printAnnotation(
-	options,
-	changeCounts
+	options: DiffOptionsNormalized,
+	changeCounts: ChangeCounts
 ): string
 	local aAnnotation = options.aAnnotation
 	local aColor = options.aColor
@@ -90,8 +99,8 @@ local function printAnnotation(
 end
 
 local function printDiffLines(
-	diffs: { [number]: any },
-	options
+	diffs: Array<Diff>,
+	options: DiffOptionsNormalized
 ): string
 	if options.expand then
 		return printAnnotation(options, countChanges(diffs)) .. joinAlignedDiffsExpand(diffs, options)
@@ -103,7 +112,7 @@ end
 local function diffLinesUnified(
 	aLines: { [number]: string },
 	bLines: { [number]: string },
-	options: any?
+	options: DiffOptions?
 ): string
 	if isEmptyString(aLines) then
 		aLines = {}
@@ -129,7 +138,7 @@ local function diffLinesUnified2(
 	bLinesDisplay: { [number]: string },
 	aLinesCompare: { [number]: string },
 	bLinesCompare: { [number]: string },
-	options: any?
+	options: DiffOptions?
 ): string
 	if isEmptyString(aLinesDisplay) and isEmptyString(aLinesCompare) then
 		aLinesDisplay = {}
@@ -175,7 +184,7 @@ end
 function diffLinesRaw(
 	aLines:{ [number]: string },
 	bLines:{ [number]: string }
-): { [number]: any }
+): Array<Diff>
 	local aLength = #aLines
 	local bLength = #bLines
 

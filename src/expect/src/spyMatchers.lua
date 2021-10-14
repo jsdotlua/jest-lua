@@ -344,7 +344,7 @@ function printDiffCall(
 			-- // Display + only if received arg has no corresponding expected arg.
 			return indentation .. (function()
 				if i <= #expected then
-					return '  ' + printReceived(arg)
+					return '  ' .. printReceived(arg)
 				end
 
 				return RECEIVED_COLOR('+ ' .. stringify(arg))

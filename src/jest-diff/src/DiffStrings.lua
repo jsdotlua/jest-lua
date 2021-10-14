@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-diff/src/diffStrings.ts
+-- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/diffStrings.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -11,12 +11,15 @@ local Packages = CurrentModule.Parent
 
 local diffSequences = require(Packages.DiffSequences)
 
-local DIFF_DELETE = require(CurrentModule.CleanupSemantic).DIFF_DELETE
-local DIFF_EQUAL = require(CurrentModule.CleanupSemantic).DIFF_EQUAL
-local DIFF_INSERT = require(CurrentModule.CleanupSemantic).DIFF_INSERT
-local Diff = require(CurrentModule.CleanupSemantic).Diff
+local CleanupSemantic = require(CurrentModule.CleanupSemantic)
+local DIFF_DELETE = CleanupSemantic.DIFF_DELETE
+local DIFF_EQUAL = CleanupSemantic.DIFF_EQUAL
+local DIFF_INSERT = CleanupSemantic.DIFF_INSERT
+local Diff = CleanupSemantic.Diff
+type Diff = CleanupSemantic.Diff
+type Array<T> = { [number]: T }
 
-return function(a: string, b: string): { [number]: any }
+return function(a: string, b: string): Array<Diff>
 	local isCommon = function(aIndex: number, bIndex: number)
 		return a:sub(aIndex + 1, aIndex + 1) == b:sub(bIndex + 1, bIndex + 1)
 	end

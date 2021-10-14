@@ -7,7 +7,12 @@
 --  *
 --  */
 
--- local Types = require(script.Types)
+local CurrentModule = script.Parent
+
+local Types = require(CurrentModule.Types)
+type Config = Types.Config
+type Refs = Types.Refs
+type Printer = Types.Printer
 
 -- deviation: deviates from upstream substantially since Lua only has tables
 -- we only have two functions
@@ -22,11 +27,11 @@
 --  */
 local function printTableEntries(
 	t: any,
-	config,
+	config: Config,
 	indentation: string,
 	depth: number,
-	refs,
-	printer
+	refs: Refs,
+	printer: Printer
 ): string
 	local result = ''
 
@@ -83,11 +88,11 @@ end
 --  **/
 local function printListItems(
 	list: { [number]: any },
-	config,
+	config: Config,
 	indentation: string,
 	depth: number,
-	refs,
-	printer
+	refs: Refs,
+	printer: Printer
 ): string
 	local result = ''
 

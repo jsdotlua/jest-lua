@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-diff/src/__tests__/__snapshots__/diff.test.ts.snap
+-- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/__tests__/__snapshots__/diff.test.ts.snap
 
 local snapshots = {}
 
@@ -409,7 +409,7 @@ snapshots['options omitAnnotationLines true diffStringsUnified and includeChange
 
 snapshots['options omitAnnotationLines true diffStringsUnified empty strings 1'] = ''
 
-snapshots['options trailingSpaceFormatter diffDefault default no color 1'] = [=[
+snapshots['options trailingSpaceFormatter diff default no color 1'] = [=[
 
 <g>- Expected</>
 <r>+ Received</>
@@ -421,7 +421,7 @@ snapshots['options trailingSpaceFormatter diffDefault default no color 1'] = [=[
 <r>+ insert 1 trailing space: </>
 ]=]
 
-snapshots['options trailingSpaceFormatter diffDefault middle dot 1'] = [=[
+snapshots['options trailingSpaceFormatter diff middle dot 1'] = [=[
 
 <g>- Expected</>
 <r>+ Received</>
@@ -433,7 +433,7 @@ snapshots['options trailingSpaceFormatter diffDefault middle dot 1'] = [=[
 <r>+ insert 1 trailing space:·</>
 ]=]
 
-snapshots['options trailingSpaceFormatter diffDefault yellowish common 1'] = [=[
+snapshots['options trailingSpaceFormatter diff yellowish common 1'] = [=[
 
 <g>- Expected</>
 <r>+ Received</>

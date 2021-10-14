@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-matcher-utils/src/__tests__/__snapshots__/printDiffOrStringify.test.ts.snap
+-- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-matcher-utils/src/__tests__/__snapshots__/printDiffOrStringify.test.ts.snap
 
 --[=[
     deviation: Many of the tests have their outputs rearranged (while
@@ -39,7 +39,7 @@ snapshots["printDiffOrStringify asymmetricMatcher circular array 1"] = [=[
 
 -- deviation: The original snapshot had another level of information for the
 -- "circular" reference rather than immediately saying it was Circular:
--- https://github.com/facebook/jest/blob/v26.5.3/packages/jest-matcher-utils/src/__tests__/__snapshots__/printDiffOrStringify.test.ts.snap#L37
+-- https://github.com/facebook/jest/blob/v27.2.5/packages/jest-matcher-utils/src/__tests__/__snapshots__/printDiffOrStringify.test.ts.snap#L37
 -- However, in our implementation Maps and Objects are treated identically so
 -- circular would be printed at the surface level in both cases
 snapshots["printDiffOrStringify asymmetricMatcher circular map 1"] = [=[

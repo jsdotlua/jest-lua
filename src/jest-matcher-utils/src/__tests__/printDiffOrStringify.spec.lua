@@ -1,5 +1,4 @@
---!nocheck
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-matcher-utils/src/__tests__/printDiffOrStringify.test.ts
+-- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-matcher-utils/src/__tests__/printDiffOrStringify.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *

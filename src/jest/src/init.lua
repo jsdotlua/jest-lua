@@ -1,5 +1,3 @@
--- FIXME: nochecked for now as we already have an incoming PR on this file
---!nocheck
 local CurrentModule = script
 local Packages = CurrentModule.Parent
 

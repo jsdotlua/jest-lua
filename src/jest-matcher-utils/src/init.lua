@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-matcher-utils/src/index.ts
+-- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-matcher-utils/src/index.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -11,6 +11,7 @@ local Packages = CurrentModule.Parent
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
+type Array<T> = { T }
 local Error = LuauPolyfill.Error
 local Number = LuauPolyfill.Number
 local Symbol = LuauPolyfill.Symbol
@@ -18,16 +19,17 @@ local Symbol = LuauPolyfill.Symbol
 local chalk = require(Packages.ChalkLua)
 
 local JestDiff = require(Packages.JestDiff)
-local diffDefault = JestDiff.diff
 local DIFF_DELETE = JestDiff.DIFF_DELETE
 local DIFF_EQUAL = JestDiff.DIFF_EQUAL
 local DIFF_INSERT = JestDiff.DIFF_INSERT
--- deviation: omitted Diff and DiffOptions imports because we don't have translations
+-- ROBLOX deviation: omitted Diff and DiffOptions imports because we don't have translations
+local diffDefault = JestDiff.diff
 local diffStringsRaw = JestDiff.diffStringsRaw
 local diffStringsUnified = JestDiff.diffStringsUnified
 
-local getType = require(Packages.JestGetType).getType
-local isPrimitive = require(Packages.JestGetType).isPrimitive
+local JestGetType = require(Packages.JestGetType)
+local getType = JestGetType.getType
+local isPrimitive = JestGetType.isPrimitive
 
 local prettyFormat = require(Packages.PrettyFormat).prettyFormat
 
@@ -49,9 +51,7 @@ local deepCyclicCopyReplaceable = require(CurrentModule.deepCyclicCopyReplaceabl
 local AsymmetricMatcher = require(Packages.PrettyFormat).plugins.AsymmetricMatcher
 local PLUGINS = { AsymmetricMatcher }
 
-type Array<T> = { T };
-
-type MatcherHintColor = (string) -> string;
+type MatcherHintColor = (string) -> string -- subset of Chalk type
 
 export type MatcherHintOptions = {
 	comment: string?,
@@ -64,7 +64,7 @@ export type MatcherHintOptions = {
 	secondArgumentColor: MatcherHintColor?
 };
 
--- deviation: omitted DiffOptions since it's not currently present in jest-diff
+-- ROBLOX deviation: omitted DiffOptions since it's not currently present in jest-diff
 
 local EXPECTED_COLOR = chalk.green
 local RECEIVED_COLOR = chalk.red
@@ -98,7 +98,7 @@ local replaceTrailingSpaces, getCommonAndChangedSubstrings, isLineDiffable, shou
 local matcherErrorMessage, matcherHint
 
 local function stringify(object: any, maxDepth: number?): string
-	-- deviation: Added this if logic to deal with handling nil values in Lua tables
+	-- ROBLOX deviation: Added this if logic to deal with handling nil values in Lua tables
 	if object == Symbol.for_("$$nil") then
 		object = nil
 	end
@@ -202,7 +202,7 @@ local function ensureActualIsNumber(
 	matcherName: string,
 	options: MatcherHintOptions?
 ): ()
-	-- deviation: we do not support a "bigint" type
+	-- ROBLOX deviation: we do not support a "bigint" type
 	if typeof(actual) ~= 'number' then
 		-- Prepend maybe not only for backward compatibility
 		local matcherString = matcherName
@@ -227,7 +227,7 @@ local function ensureExpectedIsNumber(
 	matcherName: string,
 	options: MatcherHintOptions?
 ): ()
-	-- deviation: we do not support a "bigint" type
+	-- ROBLOX deviation: we do not support a "bigint" type
 	if typeof(expected) ~= 'number' then
 		-- Prepend maybe not only for backward compatibility
 		local matcherString = matcherName
@@ -289,7 +289,7 @@ end
 -- * include change substrings which have argument op
 --   with inverse highlight only if there is a common substring
 function getCommonAndChangedSubstrings(
-	diffs, -- deviation: omitted type annotation for diffs
+	diffs, -- ROBLOX deviation: omitted type annotation for diffs
 	op: number,
 	hasCommonDiff: boolean
 ): string
@@ -451,7 +451,7 @@ function shouldPrintDiff(actual: any, expected: any)
 		return false
 	end
 
-	-- deviation: excluded if statement checking bigint types
+	-- ROBLOX deviation: excluded if statement checking bigint types
 
 	if typeof(actual) == "boolean" and typeof(expected) == "boolean" then
 		return false
@@ -517,7 +517,7 @@ function replaceMatchedToAsymmetricMatcher(
 	}
 end
 
--- deviation: excluded type annotation for AsymmetricMatcher because Luau does
+-- ROBLOX deviation: excluded type annotation for AsymmetricMatcher because Luau does
 -- not yet support type annotations for a generic function
 
 function isAsymmetricMatcher(data: any)
@@ -528,7 +528,7 @@ end
 local function diff(
 	a: any,
 	b: any,
-	options -- deviation: omitted type annotation since we don't have DiffOptions translated
+	options -- ROBLOX deviation: omitted type annotation since we don't have DiffOptions translated
 ): string | nil
 	return shouldPrintDiff(a, b) and diffDefault(a, b, options) or nil
 end
@@ -548,7 +548,7 @@ end
 
 type PrintLabel = (string) -> string;
 
--- deviation: no annotation for "..." args
+-- ROBLOX deviation: no annotation for "..." args
 function getLabelPrinter(...): PrintLabel
 	local strings: Array<string> = {...}
 
@@ -561,7 +561,7 @@ function getLabelPrinter(...): PrintLabel
 	)
 
 	return function(string_: string): string
-			-- deviation: We need to throw an error since string.rep called for
+			-- ROBLOX deviation: We need to throw an error since string.rep called for
 			-- a negative repetition doesn't actually throw whereas upstream
 			-- would throw
 			if #string_ > maxLength then

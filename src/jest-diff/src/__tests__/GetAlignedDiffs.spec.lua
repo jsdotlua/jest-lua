@@ -1,5 +1,4 @@
---!nocheck
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-diff/src/__tests__/getAlignedDiffs.test.ts
+-- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/__tests__/getAlignedDiffs.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -9,9 +8,9 @@
 
 return function()
 	local CurrentModule = script.Parent.Parent
-	local Parent = CurrentModule.Parent
+	local Packages = CurrentModule.Parent
 
-	local jestExpect = require(Parent.Dev.Expect)
+	local jestExpect = require(Packages.Dev.Expect)
 
 	local diffStringsUnified = require(CurrentModule.PrintDiffs).diffStringsUnified
 

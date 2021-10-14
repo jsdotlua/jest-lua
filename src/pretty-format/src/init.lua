@@ -7,7 +7,6 @@
 --  */
 
 -- deviation: ansi-styles not ported
--- local Types = require(script.Types)
 
 local CurrentModule = script
 local Packages = CurrentModule.Parent
@@ -27,6 +26,15 @@ local ConvertAnsi = require(CurrentModule.plugins.ConvertAnsi)
 local JestGetType = require(Packages.JestGetType)
 local getType = JestGetType.getType
 local isRobloxBuiltin = JestGetType.isRobloxBuiltin
+
+local Types = require(CurrentModule.Types)
+type Config = Types.Config
+type Refs = Types.Refs
+type Plugin = Types.Plugin
+type Plugins = Types.Plugins
+type NewPlugin = Types.NewPlugin
+type OldPlugin = Types.OldPlugin
+type OptionsReceived = Types.OptionsReceived
 
 local PrettyFormatPluginError = extends(
 	Error,
@@ -62,7 +70,7 @@ local function printFunction(val: any, printFunctionName: boolean): string
 	return '[Function ' .. functionName .. ']'
 end
 
-local function printSymbol(val): string
+local function printSymbol(val: any): string
 	return tostring(val)
 end
 
@@ -177,11 +185,11 @@ end
 --  */
 local function printComplexValue(
 	val: any,
-	config,
+	config: Config,
 	indentation: string,
 	depth: number,
-	refs,
-	hasCalledToJSON: boolean | nil
+	refs: Refs,
+	hasCalledToJSON: boolean?
 ): string
 	if table.find(refs, val) ~= nil then
 		return '[Circular]'
@@ -253,32 +261,32 @@ local function printComplexValue(
 end
 
 local function isNewPlugin(
-	plugin_
-)
-	return plugin_.serialize ~= nil
+	plugin_: Plugin
+): boolean
+	return (plugin_ :: NewPlugin).serialize ~= nil
 end
 
 function printPlugin(
-	plugin_,
+	plugin_: Plugin,
 	val: any,
-	config,
+	config: Config,
 	indentation: string,
 	depth: number,
-	refs
+	refs: Refs
 ): string
 	local printed
 
 	local ok, err = pcall(function()
 		if isNewPlugin(plugin_) then
-			printed = plugin_.serialize(val, config, indentation, depth, refs, printer)
+			printed = (plugin_ :: NewPlugin).serialize(val, config, indentation, depth, refs, printer)
 		else
-			printed = plugin_.print(
+			printed = (plugin_ :: OldPlugin).print(
 				val,
 				function(valChild)
 					return printer(valChild, config, indentation, depth, refs)
 				end,
 				function(str)
-					local indentationNext = indentation + config.indent
+					local indentationNext = indentation .. config.indent
 					return indentationNext ..
 						str:gsub('\n', '\n' .. indentationNext)
 				end,
@@ -304,7 +312,7 @@ function printPlugin(
 	return printed
 end
 
-local function findPlugin(plugins, val)
+local function findPlugin(plugins: Plugins, val: any)
 	for _, p in ipairs(plugins) do
 		local ok, ret = pcall(p.test, val)
 		if not ok then
@@ -319,11 +327,11 @@ end
 
 function printer(
 	val: any,
-	config,
+	config: Config,
 	indentation: string,
 	depth: number,
-	refs,
-	hasCalledToJSON: boolean | nil
+	refs: Refs,
+	hasCalledToJSON: boolean?
 ): string
 	local plugin_ = findPlugin(config.plugins, val)
 	if plugin_ ~= nil then
@@ -366,7 +374,7 @@ local DEFAULT_OPTIONS = {
 	theme = nil,
 }
 
-local function validateOptions(options)
+local function validateOptions(options: OptionsReceived)
 	for k, _ in pairs(options) do
 		if DEFAULT_OPTIONS[k] == nil then
 			error(Error(string.format('pretty-format: Unknown option "%s".', tostring(k))))
@@ -417,8 +425,8 @@ end
 
 -- deviation: rewrote to replace ternary operators and reduce code repetition
 local function getConfig(
-	options
-)
+	options: OptionsReceived?
+): Config
 	return {
 		callToJSON = getOption(options, 'callToJSON'),
 		-- deviation: color formatting omitted
@@ -447,12 +455,12 @@ end
 --  */
 local function prettyFormat(
 	val: any,
-	options
+	options: OptionsReceived?
 ): string
 	if options then
 		validateOptions(options)
 		if options.plugins then
-			local plugin_ = findPlugin(options.plugins, val)
+			local plugin_ = findPlugin((options.plugins :: Plugins), val)
 			if plugin_ ~= nil then
 				return printPlugin(plugin_, val, getConfig(options), '', 0, {})
 			end

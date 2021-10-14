@@ -164,7 +164,7 @@ end
 	has that functionality
 ]]
 local function partition(
-	items,
+	items: Array<any>,
 	predicate: (any) -> boolean
 ): { [number]: any }
 	local result = { {}, {} }

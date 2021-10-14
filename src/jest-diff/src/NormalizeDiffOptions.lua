@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-diff/src/normalizeDiffOptions.ts
+-- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/normalizeDiffOptions.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -12,6 +12,10 @@ local Packages = CurrentModule.Parent
 local Number = require(Packages.LuauPolyfill).Number
 
 local chalk = require(Packages.ChalkLua)
+
+local Types = require(CurrentModule.types)
+type DiffOptions = Types.DiffOptions
+type DiffOptionsNormalized = Types.DiffOptionsNormalized
 
 local function noColor(s): string
 	return s
@@ -52,7 +56,9 @@ local function getContextLines(contextLines: number?)
 end
 
 -- // Pure function returns options with all properties.
-local function normalizeDiffOptions(options)
+local function normalizeDiffOptions(
+	options: DiffOptions
+): DiffOptionsNormalized
 	local ret_options = {}
 	for key, value in pairs(OPTIONS_DEFAULT) do
 		ret_options[key] = value
@@ -63,7 +69,7 @@ local function normalizeDiffOptions(options)
 		end
 		ret_options['contextLines'] = getContextLines(options.contextLines)
 	end
-	return ret_options
+	return (ret_options :: DiffOptionsNormalized)
 end
 
 return {

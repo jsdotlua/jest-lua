@@ -9,9 +9,9 @@ snapshots['Lua toThrowMatcher tests prints the stack trace for Lua Error error 1
 Error name:    <r>"Error"</>
 Error message: <r>""</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:44 function error1
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:52 function test1
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:61
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:42 function error1
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:50 function test1
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:59
 ]=]
 
 snapshots['Lua toThrowMatcher tests prints the stack trace for Lua string error 1'] = [=[
@@ -20,9 +20,9 @@ snapshots['Lua toThrowMatcher tests prints the stack trace for Lua string error 
 
 Thrown value: <r>""</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:48 function error2
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:56 function test2
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:67
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:46 function error2
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:54 function test2
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:65
 ]=]
 
 snapshots['Lua toThrowMatcher tests prints the stack trace for Lua string error 2 1'] = [=[
@@ -32,9 +32,9 @@ snapshots['Lua toThrowMatcher tests prints the stack trace for Lua string error 
 Expected substring: <g>"wrong information"</>
 Received value:     <r>""</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:48 function error2
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:56 function test2
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:73
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:46 function error2
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:54 function test2
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:71
 ]=]
 
 snapshots['Lua toThrowMatcher tests cleans stack trace and prints correct files 1'] = [=[
@@ -43,8 +43,8 @@ snapshots['Lua toThrowMatcher tests cleans stack trace and prints correct files 
 
 Thrown value: <r>"attempt to perform arithmetic (add) on nil and number"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:93 function func2
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:98
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:91 function func2
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:96
 ]=]
 
 return snapshots

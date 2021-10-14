@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-snapshot/src/mock_serializer.ts
+-- upstream: https://github.com/facebook/jest/blob/v27.0.6/packages/jest-snapshot/src/mock_serializer.ts
 -- /**
 -- * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 -- *

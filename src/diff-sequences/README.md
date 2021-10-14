@@ -2,9 +2,9 @@
 
 Status: :heavy_check_mark: Ported
 
-Source: https://github.com/facebook/jest/tree/v26.5.3/packages/diff-sequences
+Source: https://github.com/facebook/jest/tree/v27.2.5/packages/diff-sequences
 
-Version: v26.5.0
+Version: v27.2.5
 
 ---
 
@@ -23,6 +23,6 @@ perf
 src/index.property.test.ts
 ```
 
-### :package: [Dependencies](https://github.com/facebook/jest/blob/v26.5.3/packages/diff-sequences/package.json)
+### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.2.5/packages/diff-sequences/package.json)
 | Package | Version | Status | Notes |
 | - | - | - | - |

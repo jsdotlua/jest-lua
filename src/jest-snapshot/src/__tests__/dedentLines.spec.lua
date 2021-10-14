@@ -1,5 +1,5 @@
 --!nocheck
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-snapshot/src/__tests__/dedentLines.test.ts
+-- upstream: https://github.com/facebook/jest/blob/v27.0.6/packages/jest-snapshot/src/__tests__/dedentLines.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *

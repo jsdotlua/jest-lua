@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-diff/src/cleanupSemantic.ts
+-- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/cleanupSemantic.ts
 -- implementation adapted from:
 -- https://github.com/google/diff-match-patch/blob/858b3812cc02e7d48da4beebb21d4d80dc1d3062/lua/diff_match_patch.lua
 -- /**
@@ -65,6 +65,8 @@ function Diff.new(op: number, text: string)
 	setmetatable(self, Diff)
 	return self
 end
+export type Diff = typeof(Diff.new(0, ""))
+type Array<T> = { [number]: T }
 
 --[[
 * Determine the common prefix of two strings.
@@ -186,7 +188,7 @@ end
 * Reduce the number of edits by eliminating semantically trivial equalities.
 * @param {Array.<Array.<number|string>>} diffs Array of diff tuples.
 --]]
-local function diff_cleanupSemantic(diffs: { [number]: any })
+local function diff_cleanupSemantic(diffs: Array<Diff>)
 	local changes = false
 	local equalities = {}  -- Stack of indices where equalities are found.
 	local equalitiesLength = 0  -- Keeping our own length var is faster.
@@ -347,7 +349,7 @@ end
 * e.g: The c<ins>at c</ins>ame. -> The <ins>cat </ins>came.
 * @param {Array.<Array.<number|string>>} diffs Array of diff tuples.
 --]]
-_diff_cleanupSemanticLossless = function(diffs: { [number]: any })
+_diff_cleanupSemanticLossless = function(diffs: Array<Diff>)
 	local pointer = 2
 	-- Intentionally ignore the first and last element (don't need checking).
 	while diffs[pointer + 1] do
@@ -413,7 +415,7 @@ end
 
 -- deviation: no need for regex patterns
 
-_diff_cleanupMerge = function(diffs: { [number]: any })
+_diff_cleanupMerge = function(diffs: Array<Diff>)
 	diffs[#diffs + 1] = Diff.new(DIFF_EQUAL, '')  -- Add a dummy entry at the end.
 	local pointer = 1
 	local count_delete, count_insert = 0, 0

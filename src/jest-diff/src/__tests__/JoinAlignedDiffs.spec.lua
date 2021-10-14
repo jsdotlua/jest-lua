@@ -1,5 +1,4 @@
---!nocheck
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-diff/src/__tests__/joinAlignedDiffs.test.ts
+-- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/__tests__/joinAlignedDiffs.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -10,6 +9,8 @@
 return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
+
+	local jestExpect = require(Packages.Dev.Expect)
 
 	local DIFF_DELETE = require(CurrentModule.CleanupSemantic).DIFF_DELETE
 	local DIFF_EQUAL = require(CurrentModule.CleanupSemantic).DIFF_EQUAL
@@ -32,8 +33,6 @@ return function()
 		patchColor = noColor,
 	}
 
-
-	local jestExpect = require(Packages.Dev.Expect)
 	beforeAll(function()
 		jestExpect.addSnapshotSerializer({
 			serialize = function(val: string) return val end,

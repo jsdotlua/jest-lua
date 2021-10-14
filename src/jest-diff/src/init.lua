@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-diff/src/index.ts
+-- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/index.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -36,11 +36,12 @@ local diffStringsUnified = require(CurrentModule.PrintDiffs).diffStringsUnified
 local NO_DIFF_MESSAGE = require(CurrentModule.Constants).NO_DIFF_MESSAGE
 local SIMILAR_MESSAGE = require(CurrentModule.Constants).SIMILAR_MESSAGE
 
--- TODO: add external types
+local Types = require(CurrentModule.types)
+type DiffOptions = Types.DiffOptions
 
 local comparePrimitive, compareObjects
 
-local function getCommonMessage(message: string, options: any?)
+local function getCommonMessage(message: string, options: DiffOptions?)
 	local commonColor = normalizeDiffOptions(options)['commonColor']
 	return commonColor(message)
 end
@@ -75,7 +76,7 @@ FALLBACK_FORMAT_OPTIONS_0['indent'] = 0
 -- // Generate a string that will highlight the difference between two values
 -- // with green and red. (similar to how github does code diffing)
 -- // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-local function diff(a: any, b: any, options: any?): string | nil
+local function diff(a: any, b: any, options: DiffOptions?): string?
 	if Object.is(a, b) then
 		return getCommonMessage(NO_DIFF_MESSAGE, options)
 	end
@@ -126,7 +127,7 @@ end
 function comparePrimitive(
 	a: number | boolean,
 	b: number | boolean,
-	options: any?
+	options: DiffOptions?
 )
 	local aFormat = prettyFormat(a, FORMAT_OPTIONS)
 	local bFormat = prettyFormat(b, FORMAT_OPTIONS)
@@ -141,7 +142,7 @@ end
 function compareObjects(
 	a,
 	b,
-	options: any?
+	options: DiffOptions?
 )
 	local difference
 	local hasThrown = false

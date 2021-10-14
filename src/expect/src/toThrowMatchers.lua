@@ -1,4 +1,3 @@
---!nocheck
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/toThrowMatchers.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -16,9 +15,10 @@ local getType = require(Packages.JestGetType).getType
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local instanceof = LuauPolyfill.instanceof
 local Error = LuauPolyfill.Error
-
-local JestMessageUtil = require(Packages.JestMessageUtil)
-local formatStackTrace = JestMessageUtil.formatStackTrace
+type Function = (...any) -> any?
+type RegExp = {exec: (RegExp, string) -> any, test: (RegExp, string) -> boolean}
+type Object = { [string]: any }
+type Error = { message: string}
 
 local JestMatcherUtils = require(Packages.JestMatcherUtils)
 local EXPECTED_COLOR = JestMatcherUtils.EXPECTED_COLOR
@@ -30,6 +30,10 @@ local printExpected = JestMatcherUtils.printExpected
 local printReceived = JestMatcherUtils.printReceived
 local printWithType = JestMatcherUtils.printWithType
 local stringify = JestMatcherUtils.stringify
+type MatcherHintOptions = JestMatcherUtils.MatcherHintOptions
+
+local JestMessageUtil = require(Packages.JestMessageUtil)
+local formatStackTrace = JestMessageUtil.formatStackTrace
 
 local Print = require(CurrentModule.print)
 local printExpectedConstructorName = Print.printExpectedConstructorName
@@ -39,8 +43,12 @@ local printReceivedConstructorNameNot = Print.printReceivedConstructorNameNot
 local printReceivedStringContainExpectedResult = Print.printReceivedStringContainExpectedResult
 local printReceivedStringContainExpectedSubstring = Print.printReceivedStringContainExpectedSubstring
 
--- deviation: omitted type imports from types file and defined MatcherState as any for now
-type MatcherState = any;
+local Types = require(CurrentModule.types)
+type ExpectationResult = Types.ExpectationResult
+type MatcherState = Types.MatcherState
+type MatchersObject = Types.MatchersObject
+type RawMatcherFn = Types.RawMatcherFn
+type SyncExpectationResult = Types.SyncExpectationResult
 
 local isError = require(CurrentModule.utils).isError
 
@@ -92,13 +100,13 @@ end
 local function createMatcher(
 	matcherName: string,
 	fromPromise: boolean?
-)
+): RawMatcherFn
 	return function(
 		this: MatcherState,
-		received,
+		received: any,
 		expected: any
-	)
-		local options = {
+	): ExpectationResult
+		local options: MatcherHintOptions = {
 			isNot = this.isNot,
 			promise = this.promise
 		}
@@ -166,7 +174,7 @@ local function createMatcher(
 
 				local compareStack
 				local ok, e = xpcall(function()
-					compareStack = debug.traceback(nil, 2)
+					compareStack = debug.traceback(nil :: any, 2)
 					received()
 				end, function(error_)
 					if error_ == nil then
@@ -284,9 +292,9 @@ local matchers = {
 function toThrowExpectedRegExp(
 	matcherName: string,
 	options: JestMatcherUtils.MatcherHintOptions,
-	thrown: Thrown,
-	expected: any
-)
+	thrown: Thrown | nil,
+	expected: RegExp
+): SyncExpectationResult
 	local pass = thrown ~= nil and expected:test(thrown.message)
 
 	local message
@@ -345,9 +353,9 @@ type AsymmetricMatcher = {
 function toThrowExpectedAsymmetric(
 	matcherName: string,
 	options: JestMatcherUtils.MatcherHintOptions,
-	thrown: Thrown,
+	thrown: Thrown | nil,
 	expected: AsymmetricMatcher
-)
+): SyncExpectationResult
 	local pass = thrown ~= nil and expected:asymmetricMatch(thrown.value)
 
 	local message
@@ -404,9 +412,9 @@ end
 function toThrowExpectedObject(
 	matcherName: string,
 	options: JestMatcherUtils.MatcherHintOptions,
-	thrown: Thrown,
-	expected
-)
+	thrown: Thrown | nil,
+	expected: Error
+): SyncExpectationResult
 	local pass = thrown ~= nil and thrown.message == expected.message
 
 	local message
@@ -469,8 +477,8 @@ function toThrowExpectedClass(
 	matcherName: string,
 	options: JestMatcherUtils.MatcherHintOptions,
 	thrown: Thrown,
-	expected
-)
+	expected: Function
+): SyncExpectationResult
 	local function isClass(a)
 		return a and getmetatable(a) and getmetatable(a).__index
 	end
@@ -550,9 +558,9 @@ end
 function toThrowExpectedString(
 	matcherName: string,
 	options: JestMatcherUtils.MatcherHintOptions,
-	thrown: Thrown,
+	thrown: Thrown | nil,
 	expected: string
-)
+): SyncExpectationResult
 	local pass = false
 	if thrown ~= nil and thrown.message:find(expected, 1, true) then
 		pass = true
@@ -602,9 +610,9 @@ end
 
 function toThrow(
 	matcherName: string,
-	options,
-	thrown: Thrown
-)
+	options: MatcherHintOptions,
+	thrown: Thrown | nil
+): SyncExpectationResult
 	local pass = thrown ~= nil
 
 	local message
@@ -645,9 +653,9 @@ end
 -- deviation: expected does not have string | RegExp type annotation
 function formatReceived(
 	label: string,
-	thrown: Thrown,
+	thrown: Thrown, -- ROBLOX FIXME: narrowing | nil,
 	key: string,
-	expected: any
+	expected: any -- ROBLOX FIXME: narrowing string | RegExp
 )
 	if thrown == nil then
 		return ""
@@ -703,7 +711,7 @@ function formatReceived(
 	return ""
 end
 
-function formatStack(thrown: Thrown)
+function formatStack(thrown: Thrown) -- ROBLOX FIXME: narrowing | nil)
 	if thrown == nil or not thrown.isError then
 		return ""
 	else

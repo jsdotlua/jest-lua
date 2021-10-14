@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-snapshot/src/__tests__/__snapshots__/mock_serializer.test.ts.snap
+-- upstream: https://github.com/facebook/jest/blob/v27.0.6/packages/jest-snapshot/src/__tests__/__snapshots__/mock_serializer.test.ts.snap
 
 local exports = {}
 

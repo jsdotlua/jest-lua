@@ -16,6 +16,7 @@ local Error = LuauPolyfill.Error
 local Number = LuauPolyfill.Number
 local Object = LuauPolyfill.Object
 local instanceof = LuauPolyfill.instanceof
+type RegExp = {exec: (string) -> any, test: (string) -> boolean}
 
 local JestGetType = require(Packages.JestGetType)
 local getType = JestGetType.getType
@@ -24,7 +25,7 @@ local isPrimitive = JestGetType.isPrimitive
 local JestMatcherUtils = require(Packages.JestMatcherUtils)
 local DIM_COLOR = JestMatcherUtils.DIM_COLOR
 local EXPECTED_COLOR = JestMatcherUtils.EXPECTED_COLOR
--- deviation: external type definition MatcherHintOptions omitted
+type MatcherHintOptions = JestMatcherUtils.MatcherHintOptions
 local RECEIVED_COLOR = JestMatcherUtils.RECEIVED_COLOR
 local SUGGEST_TO_CONTAIN_EQUAL = JestMatcherUtils.SUGGEST_TO_CONTAIN_EQUAL
 local ensureExpectedIsNonNegativeInteger = JestMatcherUtils.ensureExpectedIsNonNegativeInteger
@@ -39,10 +40,7 @@ local printReceived = JestMatcherUtils.printReceived
 local printWithType = JestMatcherUtils.printWithType
 local stringify = JestMatcherUtils.stringify
 
--- deviation: omitted external type definitions and defined MatcherState as any here for now
-type MatcherState = any
-type Array<T> = { [number]: T }
-type RegExp = Array<string> & { index: number?, input: string?, n: number }
+local equals = require(CurrentModule.jasmineUtils).equals
 
 local Print = require(CurrentModule.print)
 local printCloseTo = Print.printCloseTo
@@ -54,42 +52,51 @@ local printReceivedConstructorNameNot = Print.printReceivedConstructorNameNot
 local printReceivedStringContainExpectedResult = Print.printReceivedStringContainExpectedResult
 local printReceivedStringContainExpectedSubstring = Print.printReceivedStringContainExpectedSubstring
 
+local Types = require(CurrentModule.types)
+type MatcherState = Types.MatcherState
+type MatchersObject = Types.MatchersObject
+
 local Utils = require(CurrentModule.utils)
 local getObjectSubset = Utils.getObjectSubset
 local getPath = Utils.getPath
+-- ROBLOX deviation: omitted imports for sparseArrayEquality
 local iterableEquality = Utils.iterableEquality
 local subsetEquality = Utils.subsetEquality
 local typeEquality = Utils.typeEquality
--- deviation: omitted imports for sparseArrayEquality and typeEquality
 
-local equals = require(CurrentModule.jasmineUtils).equals
-
--- // Omit colon and one or more spaces, so can call getLabelPrinter.
+-- Omit colon and one or more spaces, so can call getLabelPrinter.
 local EXPECTED_LABEL = 'Expected'
 local RECEIVED_LABEL = 'Received'
 local EXPECTED_VALUE_LABEL = 'Expected value'
 local RECEIVED_VALUE_LABEL = 'Received value'
 
--- // The optional property of matcher context is true if undefined.
--- deviation: upstream injects expand: false by default so we actually set to true if undefined
+-- The optional property of matcher context is true if undefined.
+-- ROBLOX deviation: upstream injects expand: false by default so we actually set to true if undefined
 local function isExpand(expand: boolean?): boolean
 	return not not expand
 end
 
--- deviation: don't need any of the strict equality testers since we don't have added constraints for
+-- ROBLOX deviation: don't need any of the strict equality testers since we don't have added constraints for
 -- strict equality in Lua compared to deep equality
 local toStrictEqualTesters = {
 -- 	iterableEquality,
 	typeEquality
 -- 	sparseArrayEquality,
 }
+-- ROBLOX deviation: we can't handle iterable with a type constraint in the same way
+-- type ContainIterable =
+--   | Array<unknown>
+--   | Set<unknown>
+--   | NodeListOf<Node>
+--   | DOMTokenList
+--   | HTMLCollectionOf<any>;
 
--- deviation: upstream defines matchers as a single monolithic object but we split it up for readability
+-- ROBLOX deviation: upstream defines matchers as a single monolithic object but we split it up for readability
 
 local function toBe(this: MatcherState, received: any, expected: any)
 	local matcherName = 'toBe'
-	local options = {
-		comment = 'shallow equality',
+	local options: MatcherHintOptions = {
+		comment = 'Object.is equality',
 		isNot = this.isNot,
 		promise = this.promise,
 	}
@@ -106,11 +113,11 @@ local function toBe(this: MatcherState, received: any, expected: any)
 	else
 		message = function()
 			local deepEqualityName = nil
-			-- deviation: no map or set types for now so this check is always true so we omit it
+			-- ROBLOX deviation: no map or set types for now so this check is always true so we omit it
 			-- if expectedType ~= 'map' and expectedType ~= 'set' then
-				-- // If deep equality passes when referential identity fails,
-				-- // but exclude map and set until review of their equality logic.
-			-- deviation: no strict equality in lua
+				-- If deep equality passes when referential identity fails,
+				-- but exclude map and set until review of their equality logic.
+			-- ROBLOX deviation: no strict equality in lua
 			if equals(received, expected, {iterableEquality}) then
 				deepEqualityName = 'toEqual'
 			end
@@ -137,9 +144,9 @@ local function toBe(this: MatcherState, received: any, expected: any)
 		end
 	end
 
-	-- // Passing the actual and expected objects so that a custom reporter
-	-- // could access them, for example in order to display a custom visual diff,
-	-- // or create a different error message
+	-- Passing the actual and expected objects so that a custom reporter
+	-- could access them, for example in order to display a custom visual diff,
+	-- or create a different error message
 	return {actual = received, expected = expected, message = message, name = matcherName, pass = pass}
 end
 
@@ -149,6 +156,7 @@ local function toBeCloseTo(
 	expected: number,
 	precision: number
 )
+	-- ROBLOX deviation: instead of getting argument count, just see if last arg is nil
 	local secondArgument
 	if precision then
 		secondArgument = 'precision'
@@ -157,7 +165,7 @@ local function toBeCloseTo(
 	end
 	local matcherName = 'toBeCloseTo'
 	local isNot = this.isNot
-	local options = {
+	local options: MatcherHintOptions = {
 		isNot = isNot,
 		promise = this.promise,
 		secondArgument = secondArgument,
@@ -189,9 +197,9 @@ local function toBeCloseTo(
 	local receivedDiff = 0
 
 	if received == math.huge and expected == math.huge then
-		pass = true -- // Infinity - Infinity is NaN
+		pass = true -- Infinity - Infinity is NaN
 	elseif received == -math.huge and expected == -math.huge then
-		pass = true -- // -Infinity - -Infinity is NaN
+		pass = true -- -Infinity - -Infinity is NaN
 	else
 		expectedDiff = (10 ^ -precision) / 2
 		receivedDiff = math.abs(expected - received)
@@ -226,10 +234,10 @@ local function toBeCloseTo(
 	return {message = message, pass = pass}
 end
 
--- deviation: toBeDefined equivalent to never.toBeNil
+-- ROBLOX deviation: toBeDefined equivalent to never.toBeNil
 local function toBeDefined(this: MatcherState, received: any, expected: nil)
 	local matcherName = 'toBeDefined'
-	local options = {
+	local options: MatcherHintOptions = {
 		isNot = this.isNot,
 		promise = this.promise,
 	}
@@ -247,10 +255,10 @@ local function toBeDefined(this: MatcherState, received: any, expected: nil)
 end
 
 
--- deviation: toBeFalsy checks for Lua falsy values, not JS falsy values
+-- ROBLOX deviation: toBeFalsy checks for Lua falsy values, not JS falsy values
 local function toBeFalsy(this: MatcherState, received: any, expected: nil)
 	local matcherName = 'toBeFalsy'
-	local options = {
+	local options: MatcherHintOptions = {
 		isNot = this.isNot,
 		promise = this.promise,
 	}
@@ -274,7 +282,7 @@ local function toBeGreaterThan(
 )
 	local matcherName = 'toBeGreaterThan'
 	local isNot = this.isNot
-	local options = {
+	local options: MatcherHintOptions = {
 		isNot = isNot,
 		promise = this.promise,
 	}
@@ -299,7 +307,7 @@ local function toBeGreaterThanOrEqual(
 )
 	local matcherName = 'toBeGreaterThanOrEqual'
 	local isNot = this.isNot
-	local options = {
+	local options: MatcherHintOptions = {
 		isNot = isNot,
 		promise = this.promise,
 	}
@@ -317,11 +325,11 @@ local function toBeGreaterThanOrEqual(
 	return {message = message, pass = pass}
 end
 
--- deviation: toBeInstanceOf checks for Lua prototypical classes, major deviation from upstream
+-- ROBLOX deviation: toBeInstanceOf checks for Lua prototypical classes, major deviation from upstream
 local function toBeInstanceOf(this: MatcherState, received: any, expected: any)
 	local matcherName = 'toBeInstanceOf'
 	local isNot = this.isNot
-	local options = {
+	local options: MatcherHintOptions = {
 		isNot = isNot,
 		promise = this.promise,
 	}
@@ -380,7 +388,7 @@ local function toBeLessThan(
 )
 	local matcherName = 'toBeLessThan'
 	local isNot = this.isNot
-	local options = {
+	local options: MatcherHintOptions = {
 		isNot = isNot,
 		promise = this.promise,
 	}
@@ -405,7 +413,7 @@ local function toBeLessThanOrEqual(
 )
 	local matcherName = 'toBeLessThanOrEqual'
 	local isNot = this.isNot
-	local options = {
+	local options: MatcherHintOptions = {
 		isNot = isNot,
 		promise = this.promise,
 	}
@@ -425,7 +433,7 @@ end
 
 local function toBeNan(this: MatcherState, received: any, expected: nil)
 	local matcherName = 'toBeNan'
-	local options = {
+	local options: MatcherHintOptions = {
 		isNot = this.isNot,
 		promise = this.promise,
 	}
@@ -444,7 +452,7 @@ end
 
 local function toBeNil(this: MatcherState, received: any, expected: nil)
 	local matcherName = 'toBeNil'
-	local options = {
+	local options: MatcherHintOptions = {
 		isNot = this.isNot,
 		promise = this.promise,
 	}
@@ -463,7 +471,7 @@ end
 
 local function toBeTruthy(this: MatcherState, received: any, expected: nil)
 	local matcherName = 'toBeTruthy'
-	local options = {
+	local options: MatcherHintOptions = {
 		isNot = this.isNot,
 		promise = this.promise,
 	}
@@ -480,10 +488,10 @@ local function toBeTruthy(this: MatcherState, received: any, expected: nil)
 	return {message = message, pass = pass}
 end
 
--- deviation: toBeUndefined equivalent to toBeNil
+-- ROBLOX deviation: toBeUndefined equivalent to toBeNil
 local function toBeUndefined(this: MatcherState, received: any, expected: nil)
 	local matcherName = 'toBeUndefined'
-	local options = {
+	local options: MatcherHintOptions = {
 		isNot = this.isNot,
 		promise = this.promise,
 	}
@@ -507,7 +515,7 @@ local function toContain(
 )
 	local matcherName = 'toContain'
 	local isNot = this.isNot
-	local options = {
+	local options: MatcherHintOptions = {
 		comment = 'string.find or table.find',
 		isNot = isNot,
 		promise = this.promise,
@@ -606,7 +614,7 @@ local function toContainEqual(
 )
 	local matcherName = 'toContainEqual'
 	local isNot = this.isNot
-	local options = {
+	local options: MatcherHintOptions = {
 		comment = 'deep equality',
 		isNot = isNot,
 		promise = this.promise,
@@ -661,7 +669,7 @@ end
 
 local function toEqual(this: MatcherState, received: any, expected: any)
 	local matcherName = 'toEqual'
-	local options = {
+	local options: MatcherHintOptions = {
 		comment = 'deep equality',
 		isNot = this.isNot,
 		promise = this.promise,
@@ -697,21 +705,21 @@ local function toEqual(this: MatcherState, received: any, expected: any)
 		end
 	end
 
-	-- // Passing the actual and expected objects so that a custom reporter
-	-- // could access them, for example in order to display a custom visual diff,
-	-- // or create a different error message
+	-- Passing the actual and expected objects so that a custom reporter
+	-- could access them, for example in order to display a custom visual diff,
+	-- or create a different error message
 	return {actual = received, expected = expected, message = message, name = matcherName, pass = pass}
 end
 
 local function toHaveLength(this: MatcherState, received: any, expected: number)
 	local matcherName = 'toHaveLength'
 	local isNot = this.isNot
-	local options = {
+	local options: MatcherHintOptions = {
 		isNot = isNot,
 		promise = this.promise,
 	}
 
-	-- deviation: only strings and array-like tables have a well defined built in length in Lua
+	-- ROBLOX deviation: only strings and array-like tables have a well defined built in length in Lua
 	-- we also allow for objects that have a length property
 	local hasLengthProperty = typeof(received) == 'table' and typeof(received.length) == 'number'
 	if not Array.isArray(received) and
@@ -788,7 +796,7 @@ local function toHaveProperty(
 	local matcherName = 'toHaveProperty'
 	local expectedArgument = 'path'
 	local hasValue = expectedValue ~= nil
-	local options = {
+	local options: MatcherHintOptions = {
 		isNot = this.isNot,
 		promise = this.promise,
 		secondArgument = hasValue and 'value' or '',
@@ -850,11 +858,11 @@ local function toHaveProperty(
 	if hasValue then
 		pass = equals(result.value, expectedValue, {iterableEquality})
 	else
-		pass = not not hasEndProp -- // theoretically undefined if empty path
+		pass = not not hasEndProp -- theoretically undefined if empty path
 	end
-	-- // Remove type cast if we rewrite getPath as iterative algorithm.
+	-- Remove type cast if we rewrite getPath as iterative algorithm.
 
-	-- deviation: omit code block for dealing with upstream edge case with undefined expectedValues
+	-- ROBLOX deviation: omit code block for dealing with upstream edge case with undefined expectedValues
 
 	local message
 	if pass then
@@ -910,10 +918,10 @@ local function toHaveProperty(
 end
 
 -- FIXME: After CLI-39007, change expected to have type string | RegExp type
--- deviation: toMatch accepts Lua string patterns or RegExp polyfill but not simple substring
+-- ROBLOX deviation: toMatch accepts Lua string patterns or RegExp polyfill but not simple substring
 local function toMatch(this: MatcherState, received: string, expected: any)
 	local matcherName = 'toMatch'
-	local options = {
+	local options: MatcherHintOptions = {
 		isNot = this.isNot,
 		promise = this.promise,
 	}
@@ -941,14 +949,14 @@ local function toMatch(this: MatcherState, received: string, expected: any)
 
 	local pass
 	if typeof(expected) == 'string' then
-		-- deviation: escape chalk sequences if necessary
+		-- ROBLOX deviation: escape chalk sequences if necessary
 		expected = string.gsub(expected, string.char(27) .. "%[", string.char(27) .. "%%[")
 		pass = received:find(expected) ~= nil
 	else
 		pass = expected:test(received)
 	end
 
-	-- deviation: We print "expected pattern" in both cases because this function
+	-- ROBLOX deviation: We print "expected pattern" in both cases because this function
 	-- treats strings as Lua patterns
 	local message
 	if pass then
@@ -982,7 +990,7 @@ end
 
 local function toMatchObject(this: MatcherState, received: any, expected: any)
 	local matcherName = 'toMatchObject'
-	local options = {
+	local options: MatcherHintOptions = {
 		isNot = this.isNot,
 		promise = this.promise,
 	}
@@ -1050,7 +1058,7 @@ end
 ]]
 local function toStrictEqual(this: MatcherState, received: any, expected: any)
 	local matcherName = 'toStrictEqual'
-	local options = {
+	local options: MatcherHintOptions = {
 		comment = 'deep equality',
 		isNot = this.isNot,
 		promise = this.promise
@@ -1084,13 +1092,13 @@ local function toStrictEqual(this: MatcherState, received: any, expected: any)
 				)
 		end
 	end
-	-- // Passing the actual and expected objects so that a custom reporter
-	-- // could access them, for example in order to display a custom visual diff,
-	-- // or create a different error message
+	-- Passing the actual and expected objects so that a custom reporter
+	-- could access them, for example in order to display a custom visual diff,
+	-- or create a different error message
 	return {actual = received, expected = expected, message = message, name = matcherName, pass = pass}
 end
 
-return {
+local matchers: MatchersObject = {
 	toBe = toBe,
 	toBeCloseTo = toBeCloseTo,
 	toBeDefined = toBeDefined,
@@ -1101,9 +1109,9 @@ return {
 	toBeLessThan = toBeLessThan,
 	toBeLessThanOrEqual = toBeLessThanOrEqual,
 	toBeNan = toBeNan,
-	toBeNaN = toBeNan, -- deviation: aliased to toBeNan
+	toBeNaN = toBeNan, -- ROBLOX deviation: aliased to toBeNan
 	toBeNil = toBeNil,
-	toBeNull = toBeNil, -- deviation: aliased to toBeNil
+	toBeNull = toBeNil, -- ROBLOX deviation: aliased to toBeNil
 	toBeTruthy = toBeTruthy,
 	toBeUndefined = toBeUndefined,
 	toContain = toContain,
@@ -1115,3 +1123,5 @@ return {
 	toMatchObject = toMatchObject,
 	toStrictEqual = toStrictEqual,
 }
+
+return matchers

@@ -12,10 +12,10 @@ export type Colors = {
 	prop: { close: string, open: string },
 	tag: { close: string, open: string },
 	value: { close: string, open: string }
-};
-type Indent = (string) -> string;
-export type Refs = { [number]: any };
-type Print = (any) -> string;
+}
+type Indent = (string) -> string
+export type Refs = { [number]: any }
+type Print = (any) -> string
 
 export type Theme = {
 	comment: string,
@@ -23,15 +23,15 @@ export type Theme = {
 	prop: string,
 	tag: string,
 	value: string,
-};
+}
 
 type ThemeReceived = {
-	comment: string | nil,
-	content: string | nil,
-	prop: string | nil,
-	tag: string | nil,
-	value: string | nil,
-};
+	comment: string?,
+	content: string?,
+	prop: string?,
+	tag: string?,
+	value: string?,
+}
 
 export type Options = {
 	callToJSON: boolean,
@@ -44,20 +44,20 @@ export type Options = {
 	plugins: Plugins,
 	printFunctionName: boolean,
 	theme: Theme,
-};
+}
 
 export type OptionsReceived = {
-	callToJSON: boolean | nil,
-	escapeRegex: boolean | nil,
-	escapeString: boolean | nil,
-	highlight: boolean | nil,
-	indent: number | nil,
-	maxDepth: number | nil,
-	min: boolean | nil,
-	plugins: Plugins | nil,
-	printFunctionName: boolean | nil,
-	theme: ThemeReceived | nil,
-};
+	callToJSON: boolean?,
+	escapeRegex: boolean?,
+	escapeString: boolean?,
+	highlight: boolean?,
+	indent: number?,
+	maxDepth: number?,
+	min: boolean?,
+	plugins: Plugins?,
+	printFunctionName: boolean?,
+	theme: ThemeReceived?,
+}
 
 export type Config = {
 	callToJSON: boolean,
@@ -71,7 +71,7 @@ export type Config = {
 	printFunctionName: boolean,
 	spacingInner: string,
 	spacingOuter: string,
-};
+}
 
 export type Printer = (
 	any,
@@ -79,10 +79,10 @@ export type Printer = (
 	string,
 	number,
 	Refs,
-	boolean | nil
-) -> string;
+	boolean?
+) -> string
 
-type Test = (any) -> boolean;
+type Test = (any) -> boolean
 
 export type NewPlugin = {
 	serialize: (
@@ -94,13 +94,13 @@ export type NewPlugin = {
 		Printer
 	) -> string,
 	test: Test,
-};
+}
 
 type PluginOptions = {
 	edgeSpacing: string,
 	min: boolean,
 	spacing: string,
-};
+}
 
 export type OldPlugin = {
 	print: (
@@ -111,10 +111,10 @@ export type OldPlugin = {
 		Colors
 	) -> string,
 	test: Test,
-};
+}
 
-export type Plugin = NewPlugin | OldPlugin;
+export type Plugin = NewPlugin | OldPlugin
 
-export type Plugins = { [number]: Plugin };
+export type Plugins = { [number]: Plugin }
 
 return {}

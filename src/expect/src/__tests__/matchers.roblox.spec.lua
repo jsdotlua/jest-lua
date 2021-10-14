@@ -1,4 +1,3 @@
---!nocheck
 return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
@@ -16,7 +15,7 @@ return function()
 	CustomClass.__index = CustomClass
 
 	function CustomClass.new()
-	    return setmetatable({ foo = true }, CustomClass)
+		return setmetatable({ foo = true }, CustomClass)
 	end
 
 	beforeAll(function()

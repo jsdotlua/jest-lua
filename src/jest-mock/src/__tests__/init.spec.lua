@@ -1,5 +1,4 @@
---!nocheck
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-mock/src/__tests__/index.test.ts
+-- upstream: https://github.com/facebook/jest/blob/v27.0.6/packages/jest-mock/src/__tests__/index.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *

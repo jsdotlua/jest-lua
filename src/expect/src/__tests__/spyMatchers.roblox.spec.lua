@@ -1,5 +1,3 @@
---!nocheck
--- deviation: these tests are not included in upstream
 return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent

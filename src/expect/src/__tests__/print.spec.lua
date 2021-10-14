@@ -1,4 +1,3 @@
---!nocheck
 -- deviation: this file does not exist in upstream
 
 return function()

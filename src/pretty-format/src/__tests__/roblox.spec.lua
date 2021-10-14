@@ -1,5 +1,3 @@
---!nocheck
-
 return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent

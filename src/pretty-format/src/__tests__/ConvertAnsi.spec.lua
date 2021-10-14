@@ -1,4 +1,3 @@
---!nocheck
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/pretty-format/src/__tests__/ConvertAnsi.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.

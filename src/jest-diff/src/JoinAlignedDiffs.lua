@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-diff/src/joinAlignedDiffs.ts
+-- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/joinAlignedDiffs.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -11,15 +11,20 @@ local Packages = CurrentModule.Parent
 
 local Array = require(Packages.LuauPolyfill).Array
 
-local DIFF_DELETE = require(CurrentModule.CleanupSemantic).DIFF_DELETE
-local DIFF_EQUAL = require(CurrentModule.CleanupSemantic).DIFF_EQUAL
-local DIFF_INSERT = require(CurrentModule.CleanupSemantic).DIFF_INSERT
+local CleanupSemantic = require(CurrentModule.CleanupSemantic)
+local DIFF_DELETE = CleanupSemantic.DIFF_DELETE
+local DIFF_EQUAL = CleanupSemantic.DIFF_EQUAL
+local DIFF_INSERT = CleanupSemantic.DIFF_INSERT
+type Diff = CleanupSemantic.Diff
+type Array<T> = { [number]: T }
 
--- TODO: add external types
+local Types = require(CurrentModule.types)
+type DiffOptionsNormalized = Types.DiffOptionsNormalized
+type DiffOptionsColor = Types.DiffOptionsColor
 
 local function formatTrailingSpaces(
 	line: string,
-	trailingSpaceFormatter
+	trailingSpaceFormatter: DiffOptionsColor
 ): string
 	return line:gsub('%s+$', function(s) return trailingSpaceFormatter(s) end)
 end
@@ -27,9 +32,9 @@ end
 local function printDiffLine(
 	line: string,
 	isFirstOrLast: boolean,
-	color,
+	color: DiffOptionsColor,
 	indicator: string,
-	trailingSpaceFormatter,
+	trailingSpaceFormatter: DiffOptionsColor,
 	emptyFirstOrLastLinePlaceholder: string
 ): string
 	if #line ~= 0 then
@@ -47,7 +52,7 @@ end
 local function printDeleteLine(
 	line: string,
 	isFirstOrLast: boolean,
-	options
+	options: DiffOptionsNormalized
 ): string
 	return printDiffLine(
 		line,
@@ -62,7 +67,7 @@ end
 local function printInsertLine(
 	line: string,
 	isFirstOrLast: boolean,
-	options
+	options: DiffOptionsNormalized
 ): string
 	return printDiffLine(
 		line,
@@ -77,7 +82,7 @@ end
 local function printCommonLine(
 	line: string,
 	isFirstOrLast: boolean,
-	options
+	options: DiffOptionsNormalized
 ): string
 	return printDiffLine(
 		line,
@@ -95,7 +100,7 @@ local function createPatchMark(
 	aEnd: number,
 	bStart: number,
 	bEnd: number,
-	options
+	options: DiffOptionsNormalized
 ): string
 	return options.patchColor(
 		string.format(
@@ -110,8 +115,8 @@ end
 -- // Given array of aligned strings with inverse highlight formatting,
 -- // return joined lines with diff formatting (and patch marks, if needed).
 local function joinAlignedDiffsNoExpand(
-	diffs: { [number]: any },
-	options
+	diffs: Array<Diff>,
+	options: DiffOptionsNormalized
 ): string
 	local iLength = #diffs
 	local nContextLines = options.contextLines
@@ -300,8 +305,8 @@ end
 -- // Given array of aligned strings with inverse highlight formatting,
 -- // return joined lines with diff formatting.
 local function joinAlignedDiffsExpand(
-	diffs: { [number]: any },
-	options
+	diffs: Array<Diff>,
+	options: DiffOptionsNormalized
 ): string
 	return table.concat(
 		Array.map(

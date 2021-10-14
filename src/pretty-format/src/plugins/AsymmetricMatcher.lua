@@ -11,8 +11,6 @@ local Packages = CurrentModule.Parent
 
 local Symbol = require(Packages.LuauPolyfill).Symbol
 
--- deviation: omitting external type definitions
-
 local Collections = require(CurrentModule.Collections)
 local printListItems = Collections.printListItems
 local printObjectProperties = Collections.printTableEntries

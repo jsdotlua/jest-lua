@@ -1,5 +1,4 @@
---!nocheck
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-diff/src/__tests__/diff.test.ts
+-- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/__tests__/diff.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -12,6 +11,7 @@ return function()
 	local Packages = CurrentModule.Parent
 
 	local chalk = require(Packages.ChalkLua)
+
 	local jestExpect = require(Packages.Dev.Expect)
 	local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 
@@ -910,11 +910,11 @@ Options:
 				'insert 1 trailing space: ',
 			}, '\n')
 
-			it('diffDefault default no color', function()
+			it('diff default no color', function()
 				jestExpect(diff(aTrailingSpaces, bTrailingSpaces)).toMatchSnapshot()
 			end)
 
-			it('diffDefault middle dot', function()
+			it('diff middle dot', function()
 				local replaceSpacesWithMiddleDot = function(s) return string.rep('·', #s) end
 				local options = {
 					changeLineTrailingSpaceColor = replaceSpacesWithMiddleDot,
@@ -924,7 +924,7 @@ Options:
 				jestExpect(diff(aTrailingSpaces, bTrailingSpaces, options)).toMatchSnapshot()
 			end)
 
-			it('diffDefault yellowish common', function()
+			it('diff yellowish common', function()
 				local options = {
 					commonLineTrailingSpaceColor = chalk.bgYellow
 				}
@@ -948,7 +948,7 @@ Options:
 				'',
 			}, '\n')
 
-			it('diffDefault', function()
+			it('diff', function()
 				jestExpect(diff(aEmpty, bEmpty, options)).toBe(expected)
 			end)
 

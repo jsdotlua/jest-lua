@@ -1,6 +1,4 @@
--- FIXME: Get rid of nocheck once CLI-40294 is resolved
---!nocheck
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-mock/src/index.ts
+-- upstream: https://github.com/facebook/jest/blob/v27.0.6/packages/jest-mock/src/index.ts
 
 -- deviation: Currently we have translated a limited subset of the jest-mock
 -- functionality just to bootstrap the development of the spyMatchers. As we have

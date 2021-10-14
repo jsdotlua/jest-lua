@@ -1,5 +1,3 @@
---!nocheck
-
 return function()
 	describe("Lua toThrowMatcher tests", function()
 		local CurrentModule = script.Parent.Parent
@@ -90,7 +88,7 @@ return function()
 		it("cleans stack trace and prints correct files", function()
 			local function func2()
 				-- this line should error
-				return nil + 1
+				return (nil :: any) + 1
 			end
 
 			-- 2 lines in stack trace

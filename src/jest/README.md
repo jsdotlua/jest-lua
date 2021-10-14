@@ -2,9 +2,9 @@
 
 Status: :hammer: In Progress
 
-Source: 
+Source: https://github.com/facebook/jest/tree/v27.2.5/packages/jest
 
-Version: 
+Version: v27.2.5
 
 ---
 
@@ -14,6 +14,6 @@ Version:
 ```
 ```
 
-### :package: [Dependencies]()
+### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.2.5/packages/jest/package.json)
 | Package | Version | Status | Notes |
 | - | - | - | - |

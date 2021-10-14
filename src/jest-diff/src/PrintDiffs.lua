@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-diff/src/printDiffs.ts
+-- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/printDiffs.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -11,11 +11,15 @@ local Packages = CurrentModule.Parent
 
 local Array = require(Packages.LuauPolyfill).Array
 
-local DIFF_EQUAL = require(CurrentModule.CleanupSemantic).DIFF_EQUAL
-local cleanupSemantic = require(CurrentModule.CleanupSemantic).cleanupSemantic
+local CleanupSemantic = require(CurrentModule.CleanupSemantic)
+local DIFF_EQUAL = CleanupSemantic.DIFF_EQUAL
+local cleanupSemantic = CleanupSemantic.cleanupSemantic
+type Diff = CleanupSemantic.Diff
+type Array<T> = { [number]: T }
 
-local diffLinesUnified = require(CurrentModule.DiffLines).diffLinesUnified
-local printDiffLines = require(CurrentModule.DiffLines).printDiffLines
+local DiffLines = require(CurrentModule.DiffLines)
+local diffLinesUnified = DiffLines.diffLinesUnified
+local printDiffLines = DiffLines.printDiffLines
 
 local diffStrings = require(CurrentModule.DiffStrings)
 
@@ -23,11 +27,15 @@ local getAlignedDiffs = require(CurrentModule.GetAlignedDiffs)
 
 local normalizeDiffOptions = require(CurrentModule.NormalizeDiffOptions).normalizeDiffOptions
 
--- TODO: add external types
+local Types = require(CurrentModule.types)
+type DiffOptions = Types.DiffOptions
 
 local diffStringsRaw
 
-local function hasCommonDiff(diffs: { [number]: any }, isMultiline: boolean): boolean
+local function hasCommonDiff(
+	diffs: Array<Diff>,
+	isMultiline: boolean
+):boolean
 	if isMultiline then
 		-- // Important: Ignore common newline that was appended to multiline strings!
 		local iLast = #diffs
@@ -48,7 +56,7 @@ end
 local function diffStringsUnified(
 	a: string,
 	b: string,
-	options
+	options: DiffOptions?
 ): string
 	if a ~= b and #a ~= 0 and #b ~= 0 then
 		local isMultiline = a:find('\n') ~= nil or b:find('\n') ~= nil
@@ -77,7 +85,7 @@ function diffStringsRaw(
 	a: string,
 	b: string,
 	cleanup: boolean
-)
+): Array<Diff>
 	local diffs = diffStrings(a, b)
 
 	if cleanup then

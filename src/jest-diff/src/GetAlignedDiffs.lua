@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-diff/src/getAlignedDiffs.ts
+-- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/getAlignedDiffs.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -11,12 +11,16 @@ local Packages = CurrentModule.Parent
 
 local Array = require(Packages.LuauPolyfill).Array
 
-local DIFF_DELETE = require(CurrentModule.CleanupSemantic).DIFF_DELETE
-local DIFF_EQUAL = require(CurrentModule.CleanupSemantic).DIFF_EQUAL
-local DIFF_INSERT = require(CurrentModule.CleanupSemantic).DIFF_INSERT
-local Diff = require(CurrentModule.CleanupSemantic).Diff
+local CleanupSemantic = require(CurrentModule.CleanupSemantic)
+local DIFF_DELETE = CleanupSemantic.DIFF_DELETE
+local DIFF_EQUAL = CleanupSemantic.DIFF_EQUAL
+local DIFF_INSERT = CleanupSemantic.DIFF_INSERT
+local Diff = CleanupSemantic.Diff
+type Diff = CleanupSemantic.Diff
+type Array<T> = { [number]: T }
 
--- TODO: add external types
+local Types = require(CurrentModule.types)
+type DiffOptionsColor = Types.DiffOptionsColor
 
 -- // Given change op and array of diffs, return concatenated string:
 -- // * include common strings
@@ -24,8 +28,8 @@ local Diff = require(CurrentModule.CleanupSemantic).Diff
 -- // * exclude change strings which have opposite op
 local function concatenateRelevantDiffs(
 	op: number,
-	diffs,
-	changeColor
+	diffs: Array<Diff>,
+	changeColor: DiffOptionsColor
 ): string
 	return Array.reduce(
 		diffs,
@@ -88,12 +92,12 @@ function ChangeBuffer:isLineEmpty(): boolean
 end
 
 -- // Minor input to buffer.
-function ChangeBuffer:pushDiff(diff): ()
+function ChangeBuffer:pushDiff(diff: Diff): ()
 	table.insert(self.line, diff)
 end
 
 -- // Main input to buffer.
-function ChangeBuffer:align(diff): ()
+function ChangeBuffer:align(diff: Diff): ()
 	local s = diff[2]
 
 	if s:match('\n') then
@@ -120,7 +124,7 @@ function ChangeBuffer:align(diff): ()
 end
 
 -- // Output from buffer.
-function ChangeBuffer:moveLinesTo(lines: { [number]: any }): ()
+function ChangeBuffer:moveLinesTo(lines: Array<Diff>): ()
 	if not self:isLineEmpty() then
 		self:pushLine()
 	end
@@ -143,11 +147,11 @@ function CommonBuffer.new(deleteBuffer, insertBuffer)
 	return self
 end
 
-function CommonBuffer:pushDiffCommonLine(diff): ()
+function CommonBuffer:pushDiffCommonLine(diff: Diff): ()
 	table.insert(self.lines, diff)
 end
 
-function CommonBuffer:pushDiffChangeLines(diff): ()
+function CommonBuffer:pushDiffChangeLines(diff: Diff): ()
 	local isDiffEmpty = #diff[2] == 0
 
 	-- // An empty diff string is redundant, unless a change line is empty.
@@ -164,7 +168,7 @@ function CommonBuffer:flushChangeLines(): ()
 	self.insertBuffer:moveLinesTo(self.lines)
 end
 
-function CommonBuffer:align(diff): ()
+function CommonBuffer:align(diff: Diff): ()
 	local op = diff[1]
 	local s = diff[2]
 
@@ -207,7 +211,7 @@ function CommonBuffer:align(diff): ()
 	end
 end
 
-function CommonBuffer:getLines(): { [number]: any }
+function CommonBuffer:getLines(): Array<Diff>
 	self:flushChangeLines()
 	return self.lines
 end
@@ -223,9 +227,9 @@ end
 -- // * if either expected or received is empty string
 -- // * if neither expected nor received is multiline string
 return function(
-	diffs: { [number]: any },
-	changeColor
-): { [number]: any }
+	diffs: Array<Diff>,
+	changeColor: DiffOptionsColor
+): Array<Diff>
 	local deleteBuffer = ChangeBuffer.new(DIFF_DELETE, changeColor)
 	local insertBuffer = ChangeBuffer.new(DIFF_INSERT, changeColor)
 	local commonBuffer = CommonBuffer.new(deleteBuffer, insertBuffer)

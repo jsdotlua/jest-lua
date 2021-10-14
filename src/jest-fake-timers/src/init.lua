@@ -1,4 +1,4 @@
--- API aligned with https://github.com/facebook/jest/blob/v26.5.3/packages/jest-fake-timers/src/modernFakeTimers.ts
+-- API aligned with https://github.com/facebook/jest/blob/v27.0.6/packages/jest-fake-timers/src/modernFakeTimers.ts
 -- deviation: major implementation deviation, refer to README for more info
 
 local CurrentModule = script

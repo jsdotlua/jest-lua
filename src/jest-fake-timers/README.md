@@ -2,9 +2,9 @@
 
 Status: :hammer: In Progress
 
-Source: https://github.com/facebook/jest/tree/v26.5.3/packages/jest-fake-timers
+Source: https://github.com/facebook/jest/tree/v27.0.6/packages/jest-fake-timers
 
-Version: v26.5.2
+Version: v27.0.6
 
 ---
 
@@ -20,12 +20,12 @@ __tests__/legacyFakeTimers.test.ts
 __tests__/__snapshots__/legacyFakeTimers.test.ts.snap
 ```
 
-### :package: [Dependencies](https://github.com/facebook/jest/blob/v26.5.3/packages/jest-fake-timers/package.json)
+### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.0.6/packages/jest-fake-timers/package.json)
 | Package | Version | Status | Notes |
 | - | - | - | - |
-| @jest/types | 26.5.2 |:x: Not needed | |
+| @jest/types | 27.0.6 |:x: Not needed | |
 | @sinonjs/fake-timers | 6.0.1 |:x: Not needed | |
 | @types/node | * |:x: Not needed | |
-| jest-message-util | 26.5.2 | :x: Not needed | |
-| jest-mock | 26.5.2 | :x: Not needed | |
-| jest-util | 26.5.2 |:x: Not needed | |
+| jest-message-util | 27.0.6 | :x: Not needed | |
+| jest-mock | 27.0.6 | :x: Not needed | |
+| jest-util | 27.0.6 |:x: Not needed | |

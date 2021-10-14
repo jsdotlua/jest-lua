@@ -1,4 +1,3 @@
---!nocheck
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/__tests__/toThrowMatchers.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -350,10 +349,10 @@ return function()
 						-- deviation: skipped test because we have no undefined
 						-- type and nil does not match expect.anything()
 						itSKIP('isNot true', function()
-							jestExpect(function() end).never[toThrow](expect.anything())
-							jestExpect(function()
-								error(nil)
-							end).never[toThrow](jestExpect.anything())
+							-- jestExpect(function() end).never[toThrow](expect.anything())
+							-- jestExpect(function()
+							-- 	error(nil)
+							-- end).never[toThrow](jestExpect.anything())
 						end)
 					end)
 

@@ -7,12 +7,7 @@
 --  *
 --  */
 
-type Array<T> = { T };
-
-type SyncExpectationResult = {
-	pass: boolean,
-	message: () -> string
-};
+type Array<T> = { T }
 
 type JestAssertionError = {
 	matcherResult: SyncExpectationResult?
@@ -32,8 +27,24 @@ local matchers = require(CurrentModule.matchers)
 local spyMatchers = require(CurrentModule.spyMatchers)
 local toThrowMatchers = require(CurrentModule.toThrowMatchers).matchers
 
+local Types = require(CurrentModule.types)
+type AsyncExpectationResult = Types.AsyncExpectationResult
+type Expect = Types.Expect
+type ExpectationResult = Types.ExpectationResult
+type JestMatcherState = Types.MatcherState
+type MatcherInterface<R> = Types.Matchers<R>
+type MatchersObject = Types.MatchersObject
+type PromiseMatcherFn = Types.PromiseMatcherFn
+type RawMatcherFn = Types.RawMatcherFn
+type SyncExpectationResult = Types.SyncExpectationResult
+type ThrowingMatcherFn = Types.ThrowingMatcherFn
+
 local JasmineUtils = require(CurrentModule.jasmineUtils)
 local equals = JasmineUtils.equals
+
+local utils = require(CurrentModule.utils)
+local iterableEquality = utils.iterableEquality
+local subsetEquality = utils.subsetEquality
 
 local AsymmetricMatchers = require(CurrentModule.asymmetricMatchers)
 local any = AsymmetricMatchers.any
@@ -53,10 +64,6 @@ local getMatchers = JestMatchersObject.getMatchers
 local getState = JestMatchersObject.getState
 local setMatchers = JestMatchersObject.setMatchers
 --local setState = JestMatchersObject.setState
-
-local utils = require(CurrentModule.utils)
-local iterableEquality = utils.iterableEquality
-local subsetEquality = utils.subsetEquality
 
 local makeThrowingMatcher, _validateResult
 
@@ -82,7 +89,7 @@ local function expect_(self, actual: any, ...): any
 	return expectation
 end
 
-local function getMessage(message: any?)
+local function getMessage(message: (() -> string)?)
 	if message then
 		return message()
 	else
@@ -93,12 +100,12 @@ end
 -- deviation: matcher does not have RawMatcherFn type annotation and the
 -- the function return is not annotated with ThrowingMatcherFn
 function makeThrowingMatcher(
-	matcher,
+	matcher: RawMatcherFn,
 	isNot: boolean,
 	promise: string,
 	actual: any,
-	err: any?
-)
+	err: JestAssertionError?
+): ThrowingMatcherFn
 	return function(...)
 		local throws = true
 		local utils = Object.assign({
@@ -205,8 +212,8 @@ end
 
 local Expect = {}
 
-Expect.extend = function(matchers_): ()
-	setMatchers(matchers_, false, Expect)
+Expect.extend = function(matchers: MatchersObject): ()
+	setMatchers(matchers, false, Expect)
 end
 
 Expect.anything = anything
@@ -249,5 +256,8 @@ setmetatable(Expect, {__call = expect_})
 local plugins = require(Packages.JestSnapshot).plugins
 Expect.addSnapshotSerializer = plugins.addSerializer
 Expect.resetSnapshotSerializers = plugins.resetSerializers
+
+export type MatcherState = JestMatcherState
+export type Matcher<R> = MatcherInterface<R>
 
 return Expect

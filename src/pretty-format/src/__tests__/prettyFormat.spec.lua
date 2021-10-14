@@ -1,4 +1,3 @@
---!nocheck
 -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/pretty-format/src/__tests__/prettyFormat.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -74,11 +73,6 @@ return function()
 		it('prints an anonymous assigned function', function()
 			local val = function() end
 			jestExpect(prettyFormat(val)).toEqual('[Function anonymous]')
-		end)
-
-		it('prints a named function', function()
-			local function named() end
-			jestExpect(prettyFormat(named)).toEqual('[Function named]')
 		end)
 
 		it('can customize function names', function()
