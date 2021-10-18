@@ -74,9 +74,10 @@ You can use `expect.extend` to add your own matchers to Jest Roblox. For example
 expect.extend({
 	toBeWithinRange = function(self, received, floor, ceiling)
 		local pass = received >= floor and received <= ceiling
+		local message
 		if pass then
 			message = function()
-				string.format(
+				return string.format(
 					'expected %s not to be within range %s - %s',
 					tostring(actual), tostring(floor), tostring(ceiling)
 				)

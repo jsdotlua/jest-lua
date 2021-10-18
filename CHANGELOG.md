@@ -1,7 +1,17 @@
 # Jest Roblox Changelog
 
-## Unreleased Changes
-* :bug: Fix for `expect.any` not working with Roblox datatypes
+## 2.2.0 (2021-10-18)
+* :sparkles: Introduced strong Luau typing ([#102](https://github.com/Roblox/jest-roblox/pull/102))
+* :sparkles: Realigned package versions ([#102](https://github.com/Roblox/jest-roblox/pull/102))
+  * `diff-sequences` realigned to v27.2.5
+  * `jest` realigned to v27.2.5
+  * `jest-diff` realigned to v27.2.5
+  * `jest-fake-timers` realigned to v27.0.6
+  * `jest-matcher-utils` realigned to v27.2.5
+  * `jest-snapshot` realigned to v27.0.6
+* :bug: Fix for `expect.any` not working with Roblox datatypes ([#119](https://github.com/Roblox/jest-roblox/pull/119))
+* :bug: Lazy initialize `game:GetService` calls to avoid throwing in debugger ([#122](https://github.com/Roblox/jest-roblox/pull/122))
+* :bug: Fix missing stacktrace entries in nested pcalls ([#121](https://github.com/Roblox/jest-roblox/pull/121))
 
 ## 2.1.4 (2021-09-30)
 :sparkles: Added support and better output for [Roblox datatypes](https://developer.roblox.com/en-us/api-reference/data-types) ([#117](https://github.com/Roblox/jest-roblox/pull/117))

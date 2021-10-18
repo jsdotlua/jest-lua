@@ -101,10 +101,6 @@ local getObjectSubset = RobloxShared.expect.getObjectSubset
 -- 	return typeof(object) == "table" or typeof(object) == "string"
 -- end
 
--- deviation: We currently have no need for this and we can use the native
--- equals function in its place to avoid complications. A rough translation
--- is included and commented out in the case that we will need to support this
--- in the future
 local iterableEquality = RobloxShared.expect.iterableEquality
 
 -- deviation: helper function moved to RobloxShared and no longer needed here

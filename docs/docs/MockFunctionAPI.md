@@ -56,7 +56,7 @@ For example: A mock function `f` that has been called two times, returning `'res
 		type = 'return',
 		value = 'result2',
 	},
-};
+}
 ```
 
 ### `mockFn.mock.instances`

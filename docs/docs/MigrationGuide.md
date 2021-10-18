@@ -18,6 +18,14 @@ local JestGlobals = require(Packages.JestGlobals)
 local expect = JestGlobals.expect
 ```
 
+Or if you're migrating tests in the `lua-apps` repo, require `JestGlobals` from `CorePackages` at the top of your test file:
+```diff
+local CorePackages = game:GetService("CorePackages")
+
+local JestGlobals = require(CorePackages.JestGlobals)
+local expect = JestGlobals.expect
+```
+
 :::info
 Globals that are injected make life very difficult for languages with strong types — because there's no specific import, and the code artifact injecting the globals can change underneath hard-coded type signatures, it requires inefficient tooling and workarounds.
 

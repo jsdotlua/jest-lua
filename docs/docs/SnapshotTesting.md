@@ -101,7 +101,7 @@ it('will fail every time', function()
 		name = "LeBron James"
 	}
 
-	expect(user).toMatchSNapshot();
+	expect(user).toMatchSnapshot()
 end)
 
 -- Snapshot
