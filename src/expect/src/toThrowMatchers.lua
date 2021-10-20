@@ -562,7 +562,8 @@ function toThrowExpectedString(
 	expected: string
 ): SyncExpectationResult
 	local pass = false
-	if thrown ~= nil and thrown.message:find(expected, 1, true) then
+	-- ROBLOX deviation: thrown.message can be nil or a table, so ensure it is a string before calling find
+	if thrown ~= nil and typeof(thrown.message) == "string" and thrown.message:find(expected, 1, true) then
 		pass = true
 	end
 
