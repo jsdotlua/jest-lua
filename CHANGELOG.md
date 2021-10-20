@@ -1,5 +1,8 @@
 # Jest Roblox Changelog
 
+## 2.2.1 (2021-10-20)
+* :bug: Check that thrown message is a string when matching against a thrown string
+
 ## 2.2.0 (2021-10-18)
 * :sparkles: Introduced strong Luau typing ([#102](https://github.com/Roblox/jest-roblox/pull/102))
 * :sparkles: Realigned package versions ([#102](https://github.com/Roblox/jest-roblox/pull/102))
@@ -14,10 +17,10 @@
 * :bug: Fix missing stacktrace entries in nested pcalls ([#121](https://github.com/Roblox/jest-roblox/pull/121))
 
 ## 2.1.4 (2021-09-30)
-:sparkles: Added support and better output for [Roblox datatypes](https://developer.roblox.com/en-us/api-reference/data-types) ([#117](https://github.com/Roblox/jest-roblox/pull/117))
+* :sparkles: Added support and better output for [Roblox datatypes](https://developer.roblox.com/en-us/api-reference/data-types) ([#117](https://github.com/Roblox/jest-roblox/pull/117))
 
 ## 2.1.3 (2021-09-22)
-:hammer_and_wrench: Bump `LuauPolyfill` to `0.2.5` to fix static analysis issues on `lua-apps`
+* :hammer_and_wrench: Bump `LuauPolyfill` to `0.2.5` to fix static analysis issues on `lua-apps`
 
 ## 2.1.2 (2021-09-16)
 * :hammer_and_wrench: Bump `RegExp` to `0.1.3` and `LuauPolyfill` to `0.2.4` to remove test files from cached versions

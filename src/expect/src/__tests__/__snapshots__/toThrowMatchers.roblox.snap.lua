@@ -1,8 +1,18 @@
 -- Jest Roblox Snapshot v1, http://roblox.github.io/jest-roblox/snapshot-testing
 
-local snapshots = {}
+local exports = {}
 
-snapshots['Lua toThrowMatcher tests prints the stack trace for Lua Error error 1'] = [=[
+exports[ [=[Lua toThrowMatcher tests cleans stack trace and prints correct files 1]=] ] = [=[
+
+<d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>()</>
+
+Thrown value: <r>"attempt to perform arithmetic (add) on nil and number"</>
+
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:91 function func2
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:96
+]=]
+
+exports[ [=[Lua toThrowMatcher tests prints the stack trace for Lua Error error 1]=] ] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>()</>
 
@@ -14,7 +24,7 @@ Error message: <r>""</>
       LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:59
 ]=]
 
-snapshots['Lua toThrowMatcher tests prints the stack trace for Lua string error 1'] = [=[
+exports[ [=[Lua toThrowMatcher tests prints the stack trace for Lua string error 1]=] ] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>()</>
 
@@ -25,7 +35,7 @@ Thrown value: <r>""</>
       LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:65
 ]=]
 
-snapshots['Lua toThrowMatcher tests prints the stack trace for Lua string error 2 1'] = [=[
+exports[ [=[Lua toThrowMatcher tests prints the stack trace for Lua string error 2 1]=] ] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -37,14 +47,13 @@ Received value:     <r>""</>
       LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:71
 ]=]
 
-snapshots['Lua toThrowMatcher tests cleans stack trace and prints correct files 1'] = [=[
+exports[ [=[Lua toThrowMatcher tests toThrow should fail if expected is a string and thrown message is a table 1]=] ] = [=[
 
-<d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>()</>
+<d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
 
-Thrown value: <r>"attempt to perform arithmetic (add) on nil and number"</>
+Expected substring: <g>"string"</>
+Received message:   <r>{"key": "value"}</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:91 function func2
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:96
 ]=]
 
-return snapshots
+return exports
