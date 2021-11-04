@@ -18,7 +18,6 @@ local Packages = CurrentModule.Parent
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Error = LuauPolyfill.Error
-local instanceof = LuauPolyfill.instanceof
 local Object = LuauPolyfill.Object
 
 local matcherUtils = require(Packages.JestMatcherUtils)
@@ -180,7 +179,7 @@ function makeThrowingMatcher(
 		end, ...)
 
 		if not ok then
-			if instanceof(result, Error) then
+			if typeof(result) == "table" and typeof(result.message) == "string" then
 				local errorTable = Error(result.message)
 				errorTable.stack = preservedStack
 				error(errorTable)
