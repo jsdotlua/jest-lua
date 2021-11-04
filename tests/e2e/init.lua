@@ -18,10 +18,14 @@ return {
 		TestEZ.run(script:FindFirstChild("afterEachAfterFailure"):FindFirstChild("errorInItBlock"), function(results)
 			assert(#results.errors == 1, "Expected one error, got " .. tostring(#results.errors))
 
-			local afterEachError = string.find(results.errors[1], "afterEach threw an error as expected")
+			local afterEachError = string.find(results.errors[1].message,
+				"afterEach threw an error as expected"
+			)
 			assert(afterEachError ~= nil, "Expected afterEach to be reached after it throws an error")
 
-			local cleaningUpError = string.find(results.errors[1], "While cleaning up the failed test another error was found")
+			local cleaningUpError = string.find(results.errors[1].message,
+				"While cleaning up the failed test another error was found"
+			)
 			assert(cleaningUpError ~= nil, "Expected 'While cleaning up...' msg to be shown when afterEach fails after it fails")
 		end)
 	end,
@@ -30,10 +34,14 @@ return {
 		TestEZ.run(script:FindFirstChild("afterEachAfterFailure"):FindFirstChild("failureInItBlock"), function(results)
 			assert(#results.errors == 1, "Expected one error, got " .. tostring(#results.errors))
 
-			local afterEachError = string.find(results.errors[1], "afterEach threw an error as expected")
+			local afterEachError = string.find(results.errors[1].message,
+				"afterEach threw an error as expected"
+			)
 			assert(afterEachError ~= nil, "Expected afterEach to be reached after it throws an error")
 
-			local cleaningUpError = string.find(results.errors[1], "While cleaning up the failed test another error was found")
+			local cleaningUpError = string.find(results.errors[1].message,
+				"While cleaning up the failed test another error was found"
+			)
 			assert(cleaningUpError ~= nil, "Expected 'While cleaning up...' msg to be shown when afterEach fails after it fails")
 		end)
 	end,
@@ -42,10 +50,14 @@ return {
 		TestEZ.run(script:FindFirstChild("afterEachAfterFailure"):FindFirstChild("errorInAfterEachBlock"), function(results)
 			assert(#results.errors == 1, "Expected one error, got " .. tostring(#results.errors))
 
-			local afterEachError = string.find(results.errors[1], "afterEach threw an error as expected")
+			local afterEachError = string.find(results.errors[1].message,
+				"afterEach threw an error as expected"
+			)
 			assert(afterEachError ~= nil, "Expected afterEach to be reached after it throws an error")
 
-			local cleaningUpError = string.find(results.errors[1], "While cleaning up the failed test another error was found")
+			local cleaningUpError = string.find(results.errors[1].message,
+				"While cleaning up the failed test another error was found"
+			)
 			assert(cleaningUpError == nil, "Expected 'While cleaning up...' msg to not be shown when only afterEach fails")
 		end)
 	end,

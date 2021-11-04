@@ -5,3 +5,6 @@ license = { workspace = true }
 author = "Roblox"
 content_root = "src"
 files = ["*", "!**/__tests__/**"]
+
+[dependencies]
+JestMatcherUtils = { path = "../jest-matcher-utils" }

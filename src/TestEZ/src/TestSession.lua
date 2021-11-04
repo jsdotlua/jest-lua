@@ -74,7 +74,10 @@ function TestSession:gatherErrors()
 	results:visitAllNodes(function(node)
 		if #node.errors > 0 then
 			for _, message in ipairs(node.errors) do
-				table.insert(results.errors, message)
+				table.insert(results.errors, {
+					message = message,
+					phrase = node.planNode.phrase
+				})
 			end
 		end
 	end)

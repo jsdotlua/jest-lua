@@ -18,8 +18,8 @@ local function check(str, test)
 
 	assert(#results.errors > 0, "Expected some errors, got none.")
 	for _, err in ipairs(results.errors) do
-		local find = string.find(err, str)
-		assert(find, string.format("Expected errors containing [%s], found [%s]", str, err))
+		local find = string.find(err.message, str)
+		assert(find, string.format("Expected errors containing [%s], found [%s]", str, err.message))
 	end
 end
 

@@ -5,13 +5,21 @@
 
 local TestService = game:GetService("TestService")
 
+local CurrentModule = script.Parent
+local Packages = CurrentModule.Parent.Parent
+local success, JestMatcherUtils = pcall(function() return require(Packages.JestMatcherUtils) end)
+local EXPECTED_COLOR = success and JestMatcherUtils.EXPECTED_COLOR or function() end
+local RECEIVED_COLOR = success and JestMatcherUtils.RECEIVED_COLOR or function() end
+local BOLD_WEIGHT = success and JestMatcherUtils.BOLD_WEIGHT or function() end
+local DIM_COLOR = success and JestMatcherUtils.DIM_COLOR or function() end
+
 local TestEnum = require(script.Parent.Parent.TestEnum)
 
 local INDENT = (" "):rep(3)
 local STATUS_SYMBOLS = {
-	[TestEnum.TestStatus.Success] = "+",
-	[TestEnum.TestStatus.Failure] = "-",
-	[TestEnum.TestStatus.Skipped] = "~"
+	[TestEnum.TestStatus.Success] = EXPECTED_COLOR("+"),
+	[TestEnum.TestStatus.Failure] = RECEIVED_COLOR("-"),
+	[TestEnum.TestStatus.Skipped] = DIM_COLOR("~")
 }
 local UNKNOWN_STATUS_SYMBOL = "?"
 
@@ -94,8 +102,10 @@ function TextReporter.report(results)
 		print("Errors reported by tests:")
 		print("")
 
-		for _, message in ipairs(results.errors) do
-			TestService:Error(message)
+		for _, e in ipairs(results.errors) do
+			print(BOLD_WEIGHT(RECEIVED_COLOR("• " .. e.phrase)))
+			print("")
+			TestService:Error(e.message)
 
 			-- Insert a blank line after each error
 			print("")
