@@ -18,6 +18,8 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local Error = LuauPolyfill.Error
 local instanceof = LuauPolyfill.instanceof
 
+local getType = require(Packages.JestGetType).getType
+
 -- ROBLOX TODO: ADO-1633 fix Jest Types imports
 -- local Config = require(Packages.JestTypes).Config
 type ConfigPath = string
@@ -238,7 +240,9 @@ function _toMatchSnapshot(config: types.MatchSnapshotConfig)
 	end
 
 	if typeof(properties) == "table" then
-		if typeof(received) ~= "table" or received == nil then
+		-- ROBLOX deviation: Roblox Instance matchers
+		-- allow property matchers against received Instance values
+		if received == nil or (typeof(received) ~= "table" and getType(received) ~= "Instance") then
 			error(Error(
 				matcherErrorMessage(
 					matcherHintFromConfig(config, false),
@@ -255,7 +259,10 @@ function _toMatchSnapshot(config: types.MatchSnapshotConfig)
 
 		local propertyPass = context.equals(received, properties, {
 			context.utils.iterableEquality,
-			context.utils.subsetEquality
+			context.utils.subsetEquality,
+			-- ROBLOX deviation: Roblox Instance matchers
+			-- ROBLOX TODO: uncomment when implementing snapshot property matchers on Instances
+			-- context.utils.instanceSubsetEquality,
 		})
 
 		if not propertyPass then

@@ -10,6 +10,11 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
+local Types = require(CurrentModule.Types)
+type Config = Types.Config
+type Refs = Types.Refs
+type Printer = Types.Printer
+
 local chalk = require(Packages.ChalkLua)
 
 -- deviation: this regex attempts to match both ansi16 and ansi256 regexes
@@ -60,11 +65,11 @@ end
 
 local function serialize(
 	val: string,
-	config,
+	config: Config,
 	indentation: string,
 	depth: number,
-	refs,
-	printer
+	refs: Refs,
+	printer: Printer
 )
 	return printer(toHumanReadableAnsi(val), config, indentation, depth, refs)
 end

@@ -49,6 +49,9 @@ When doing `nil` checking, use of `.toBeNil()` and `.never.toBeNil()` is encoura
 ### `.toBeInstanceOf(prototype)`
 `.toBeInstanceOf(prototype)` uses the [`instanceof` method in LuauPolyfill](https://github.com/Roblox/luau-polyfill/blob/main/src/instanceof.lua) to check that a value is an instance (or a derived instance) of a prototype class.
 
+### `.toMatchInstance(table)`
+`.toMatchInstance` is custom matcher unique to Jest Roblox that allows for matching a Roblox Instance against a table of properties.
+
 ### `.toStrictEqual()`
 `toStrictEqual()` performs a `toEqual` comparison with an additional type/class check based on metatable inheritance. Our `toStrictEqual` does not check for array sparseness or for `undefined` values like the matcher does in Javascript's Jest.
 
@@ -61,7 +64,7 @@ When doing `nil` checking, use of `.toBeNil()` and `.never.toBeNil()` is encoura
 Our translation of `new mockFn()` in Javascript is `mockFn.new()`
 
 So for the following code pattern in Javascript:
-```
+```lua
 const mockFn = jest.fn()
 const instance1 = new mockFn()
 ```

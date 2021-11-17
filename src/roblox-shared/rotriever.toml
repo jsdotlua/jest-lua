@@ -11,3 +11,4 @@ JestGetType = { path = "../jest-get-type" }
 LuauPolyfill = { workspace = true }
 
 [dev_dependencies]
+Expect = { path = "../expect" }

@@ -11,6 +11,7 @@ JestGetType = { path = "../jest-get-type" }
 ChalkLua = { workspace = true }
 LuauPolyfill = { workspace = true }
 RegExp = { workspace = true }
+RobloxShared = { path = "../roblox-shared" }
 
 [dev_dependencies]
 Expect = { path = "../expect" }

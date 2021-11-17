@@ -31,25 +31,19 @@ local JestGetType = require(Packages.JestGetType)
 local getType = JestGetType.getType
 local isPrimitive = JestGetType.isPrimitive
 
-local prettyFormat = require(Packages.PrettyFormat).prettyFormat
+local PrettyFormat = require(Packages.PrettyFormat)
+local prettyFormat = PrettyFormat.prettyFormat
 
 local Replaceable = require(CurrentModule.Replaceable)
 local deepCyclicCopyReplaceable = require(CurrentModule.deepCyclicCopyReplaceable)
 
---[[
-	ROBLOX TODO: Add plugins to this array as they get added in prettyFormat
-
-	For example, when asymmetricMatcher is added we can add an import for AsymmetricMatcher
-	something like:
-		local AsymmetricMatcher = require(Packages.PrettyFormat.plugins.AsymmetricMatcher)
-
-	and then add AsymmetricMatcher to the PLUGINS array like so:
-		local PLUGINS = { AsymmetricMatcher }
-
-]]
-
-local AsymmetricMatcher = require(Packages.PrettyFormat).plugins.AsymmetricMatcher
-local PLUGINS = { AsymmetricMatcher }
+-- ROBLOX TODO: continue to implement prettyFormat plugins
+local prettyFormatPlugins = PrettyFormat.plugins
+local PLUGINS = { 
+	prettyFormatPlugins.AsymmetricMatcher,
+	-- ROBLOX deviation: Roblox Instance matchers
+	prettyFormatPlugins.RobloxInstance
+}
 
 type MatcherHintColor = (string) -> string -- subset of Chalk type
 

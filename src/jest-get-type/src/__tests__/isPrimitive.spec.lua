@@ -54,6 +54,11 @@ return function()
 			expect(isPrimitive(function() end)).to.equal(false)
 		end)
 
+		-- deviation: added Roblox Instance as a non primitive
+		it('returns false when given non primitive value of: Instance', function()
+			expect(isPrimitive(Instance.new("Frame"))).to.equal(false)
+		end)
+
 		-- deviation: test omitted because lua has no primitive symbol type
 		-- deviation: test omitted because lua has no built-in RegExp, Map, Set or Date types
 	end)

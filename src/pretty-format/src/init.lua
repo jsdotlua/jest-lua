@@ -22,6 +22,7 @@ local printListItems = Collections.printListItems
 
 local AsymmetricMatcher = require(CurrentModule.plugins.AsymmetricMatcher)
 local ConvertAnsi = require(CurrentModule.plugins.ConvertAnsi)
+local RobloxInstance = require(CurrentModule.plugins.RobloxInstance)
 
 local JestGetType = require(Packages.JestGetType)
 local getType = JestGetType.getType
@@ -483,7 +484,9 @@ end
 
 local plugins = {
 	AsymmetricMatcher = AsymmetricMatcher,
-	ConvertAnsi = ConvertAnsi
+	ConvertAnsi = ConvertAnsi,
+	-- ROBLOX deviation: Roblox Instance matchers
+	RobloxInstance = RobloxInstance
 }
 
 return {

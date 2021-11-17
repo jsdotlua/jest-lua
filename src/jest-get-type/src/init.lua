@@ -88,8 +88,8 @@ local function getType(value: any): string
 end
 
 local function isPrimitive(value: any): boolean
-	-- deviation: explicitly define objects and functions as non primitives
-	return typeof(value) ~= 'table' and typeof(value) ~= 'function'
+	-- deviation: explicitly define objects and functions and Instances as non primitives
+	return typeof(value) ~= 'table' and typeof(value) ~= 'function' and not isRobloxBuiltin(value)
 end
 
 return {

@@ -108,7 +108,7 @@ local function eq(
 		return asymmetricResult
 	end
 
-	for index, value in ipairs(customTesters) do
+	for _, value in ipairs(customTesters) do
 		local customTesterResult = value(a, b)
 		if customTesterResult ~= nil then
 			return customTesterResult
@@ -124,7 +124,6 @@ local function eq(
 	-- deviation: code omitted that does strict comparison because we don't
 	-- have similar concerns in Lua where there are no distinct 'null' and
 	-- 'undefined' types
-
 
 	-- deviation: as part of the upstream className check, a type difference of
 	-- array/non-array would be detected so we add this in manually
@@ -259,10 +258,12 @@ local function hasPropertyInObject(object: any, key: string): boolean
 	return object[key] ~= nil
 end
 
+-- ROBLOX MOVED: expect/utils.lua
 local function isObject(a: any)
 	return a ~= nil and typeof(a) == 'table'
 end
 
+-- ROBLOX MOVED: expect/utils.lua
 local function isObjectWithKeys(a: any)
 	return isObject(a) and (next(a) == nil or not Array.isArray(a))
 end
@@ -477,9 +478,12 @@ return {
 	-- jasmineUtils.lua
 	equals = equals,
 	isA = isA,
+	isAsymmetric = isAsymmetric,
 
 	-- utils.lua
 	getObjectSubset = getObjectSubset,
 	iterableEquality = iterableEquality,
-	subsetEquality = subsetEquality
+	subsetEquality = subsetEquality,
+	isObjectWithKeys = isObjectWithKeys,
+	hasPropertyInObject = hasPropertyInObject,
 }

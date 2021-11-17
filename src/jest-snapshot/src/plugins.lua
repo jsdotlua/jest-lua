@@ -16,12 +16,13 @@ local jestMockSerializer = require(CurrentModule.mock_serializer)
 
 local plugins = require(Packages.PrettyFormat).plugins
 -- deviation: omitting DOMCollection, DOMElement, Immutable, ReactElement, ReactTestComponent
-local AsymmetricMatcher = plugins.AsymmetricMatcher
 
 -- ROBLOX TODO: ADO-1182 Add more plugins here as we translate them
 local PLUGINS = {
 	jestMockSerializer,
-	AsymmetricMatcher
+	plugins.AsymmetricMatcher,
+	-- ROBLOX deviation: Roblox Instance matchers
+	plugins.RobloxInstance
 }
 
 local originalPLUGINS = Array.from(PLUGINS)

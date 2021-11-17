@@ -44,6 +44,8 @@ local equals = JasmineUtils.equals
 local utils = require(CurrentModule.utils)
 local iterableEquality = utils.iterableEquality
 local subsetEquality = utils.subsetEquality
+-- ROBLOX deviation: Roblox Instance matchers
+-- local instanceSubsetEquality = utils.instanceSubsetEquality
 
 local AsymmetricMatchers = require(CurrentModule.asymmetricMatchers)
 local any = AsymmetricMatchers.any
@@ -109,9 +111,10 @@ function makeThrowingMatcher(
 		local throws = true
 		local utils = Object.assign({
 			iterableEquality = iterableEquality,
-			subsetEquality = subsetEquality
+			subsetEquality = subsetEquality,
+			-- ROBLOX deviation: Roblox Instance matchers
+			-- instanceSubsetEquality = instanceSubsetEquality
 		}, matcherUtils)
-
 
 		local matcherContext = {
 			-- // When throws is disabled, the matcher will not throw errors during test

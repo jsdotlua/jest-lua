@@ -205,6 +205,9 @@ return {
 	getObjectSubset = getObjectSubset,
 	iterableEquality = iterableEquality,
 	subsetEquality = subsetEquality,
+	-- ROBLOX deviation: Roblox Instance matchers
+	-- ROBLOX TODO: uncomment when implementing snapshot property matchers on Instances
+	-- instanceSubsetEquality = RobloxShared.RobloxInstance.instanceSubsetEquality,
 	typeEquality = typeEquality,
 	sparseArrayEquality = sparseArrayEquality,
 	partition = partition,

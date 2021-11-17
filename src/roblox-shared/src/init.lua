@@ -1,7 +1,8 @@
 local CurrentModule = script
 
 local exports = {
-	expect = require(CurrentModule.expect)
+	expect = require(CurrentModule.expect),
+	RobloxInstance = require(CurrentModule.RobloxInstance),
 }
 
 return exports

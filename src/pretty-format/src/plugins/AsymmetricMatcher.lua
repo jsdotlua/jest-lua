@@ -15,6 +15,11 @@ local Collections = require(CurrentModule.Collections)
 local printListItems = Collections.printListItems
 local printObjectProperties = Collections.printTableEntries
 
+local Types = require(CurrentModule.Types)
+type Config = Types.Config
+type Refs = Types.Refs
+type Printer = Types.Printer
+
 local asymmetricMatcher = Symbol.for_("jest.asymmetricMatcher")
 local SPACE = ' '
 
@@ -28,11 +33,11 @@ end
 
 local function serialize(
 	val: any,
-	config,
+	config: Config,
 	indentation: string,
 	depth: number,
-	refs,
-	printer
+	refs: Refs,
+	printer: Printer
 ): string
 	local stringedValue = val:toString()
 

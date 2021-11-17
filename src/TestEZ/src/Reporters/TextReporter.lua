@@ -8,10 +8,10 @@ local TestService = game:GetService("TestService")
 local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent.Parent
 local success, JestMatcherUtils = pcall(function() return require(Packages.JestMatcherUtils) end)
-local EXPECTED_COLOR = success and JestMatcherUtils.EXPECTED_COLOR or function() end
-local RECEIVED_COLOR = success and JestMatcherUtils.RECEIVED_COLOR or function() end
-local BOLD_WEIGHT = success and JestMatcherUtils.BOLD_WEIGHT or function() end
-local DIM_COLOR = success and JestMatcherUtils.DIM_COLOR or function() end
+local EXPECTED_COLOR = success and JestMatcherUtils.EXPECTED_COLOR or function(s) return s end
+local RECEIVED_COLOR = success and JestMatcherUtils.RECEIVED_COLOR or function(s) return s end
+local BOLD_WEIGHT = success and JestMatcherUtils.BOLD_WEIGHT or function(s) return s end
+local DIM_COLOR = success and JestMatcherUtils.DIM_COLOR or function(s) return s end
 
 local TestEnum = require(script.Parent.Parent.TestEnum)
 

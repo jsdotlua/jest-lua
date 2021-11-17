@@ -1004,6 +1004,34 @@ describe('an essay on the best flavor', function()
 end)
 ```
 
+### `.toMatchInstance(table)`
+
+Use `.toMatchObject` to check that a Roblox Instance and its children matches all the properties defined in an expected table.
+
+If a `ClassName` property is not in the table, the expected table will match against any class. To check that the received Instance is of a specific type, pass in a `ClassName` property.
+
+```lua
+local exampleList = Instance.new("ScrollingFrame")
+exampleList.Name = "Example List"
+exampleList.Size = UDim2.new(0, 400, 0, 600)
+exampleList.Position = UDim2.new(0.5, 0, 0.5, 0)
+exampleList.AnchorPoint = Vector2.new(0.5, 0.5)
+
+local listLayout = Instance.new("UIListLayout")
+listLayout.Parent = exampleList
+listLayout.Name = "List Layout"
+
+it('the ScrollingFrame has expected values', function()
+	expect(scrollingFrame).toMatchInstance({
+		Name = "Example List",
+		Position = UDim2.new(0.5, 0, 0.5, 0),
+		["List Layout"] = {
+			ClassName = "UIListLayout"
+		}
+	})
+end)
+```
+
 ### `.toMatchObject(table)`
 
 Use `.toMatchObject` to check that a table matches a subset of the properties of an expected table. It will match received tables with properties that are **not** in the expected table.

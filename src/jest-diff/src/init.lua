@@ -13,7 +13,8 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local Object = LuauPolyfill.Object
 local Symbol = LuauPolyfill.Symbol
 
-local prettyFormat = require(Packages.PrettyFormat).prettyFormat
+local PrettyFormat = require(Packages.PrettyFormat)
+local prettyFormat = PrettyFormat.prettyFormat
 
 local chalk = require(Packages.ChalkLua)
 
@@ -55,9 +56,13 @@ local function tableCopy(t)
 	return copy
 end
 
--- local pfPlugins = prettyFormat.plugins
-local AsymmetricMatcher = require(CurrentModule.Parent.PrettyFormat).plugins.AsymmetricMatcher
-local PLUGINS = { AsymmetricMatcher } -- TODO: continue to implement prettyFormat plugins
+-- ROBLOX TODO: continue to add prettyFormat plugins
+local prettyFormatPlugins = PrettyFormat.plugins
+local PLUGINS = { 
+	prettyFormatPlugins.AsymmetricMatcher,
+	-- ROBLOX deviation: Roblox Instance matchers
+	prettyFormatPlugins.RobloxInstance
+}
 local FORMAT_OPTIONS = {
 	plugins = PLUGINS,
 }

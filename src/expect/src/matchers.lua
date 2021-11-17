@@ -64,6 +64,11 @@ local iterableEquality = Utils.iterableEquality
 local subsetEquality = Utils.subsetEquality
 local typeEquality = Utils.typeEquality
 
+-- ROBLOX deviation: Roblox Instance matchers
+local RobloxShared = require(Packages.RobloxShared)
+local instanceSubsetEquality = RobloxShared.RobloxInstance.instanceSubsetEquality
+local getInstanceSubset = RobloxShared.RobloxInstance.getInstanceSubset
+
 -- Omit colon and one or more spaces, so can call getLabelPrinter.
 local EXPECTED_LABEL = 'Expected'
 local RECEIVED_LABEL = 'Received'
@@ -1098,6 +1103,65 @@ local function toStrictEqual(this: MatcherState, received: any, expected: any)
 	return {actual = received, expected = expected, message = message, name = matcherName, pass = pass}
 end
 
+-- ROBLOX deviation: Roblox Instance matchers
+local function toMatchInstance(this: MatcherState, received: any, expected: any)
+	local matcherName = 'toMatchInstance'
+	local options: MatcherHintOptions = {
+		isNot = this.isNot,
+		promise = this.promise,
+	}
+
+	if getType(received) ~= 'Instance' or received == nil then
+		error(Error(
+			matcherErrorMessage(
+				matcherHint(matcherName, nil, nil, options),
+				string.format('%s value must be a Roblox Instance', RECEIVED_COLOR('received')),
+				printWithType('Received', received, printReceived)
+			)
+		))
+	end
+
+	if typeof(expected) ~= 'table' or expected == nil then
+		error(Error(
+			matcherErrorMessage(
+				matcherHint(matcherName, nil, nil, options),
+				string.format('%s value must be a table', EXPECTED_COLOR('expected')),
+				printWithType('Expected', expected, printExpected)
+			)
+		))
+	end
+
+	local pass = equals(received, expected, {instanceSubsetEquality})
+
+	local message
+	if pass then
+		message = function()
+			local retval = matcherHint(matcherName, nil, nil, options) ..
+				'\n\n' ..
+				string.format('Expected: never %s', printExpected(expected))
+			if stringify(expected) ~= stringify(received) then
+				return retval .. string.format('\nReceived:       %s', printReceived(received))
+			end
+			return retval
+		end
+	else
+		local receivedSubset, expectedSubset = getInstanceSubset(received, expected)
+		message = function()
+			return matcherHint(matcherName, nil, nil, options) ..
+				'\n\n' ..
+				printDiffOrStringify(
+					expectedSubset,
+					receivedSubset,
+					EXPECTED_LABEL,
+					RECEIVED_LABEL,
+					isExpand(this.expand)
+				)
+		end
+	end
+
+	return {message = message, pass = pass}
+end
+
 local matchers: MatchersObject = {
 	toBe = toBe,
 	toBeCloseTo = toBeCloseTo,
@@ -1122,6 +1186,9 @@ local matchers: MatchersObject = {
 	toMatch = toMatch,
 	toMatchObject = toMatchObject,
 	toStrictEqual = toStrictEqual,
+
+	-- ROBLOX deviation: Roblox Instance matchers
+	toMatchInstance = toMatchInstance
 }
 
 return matchers
