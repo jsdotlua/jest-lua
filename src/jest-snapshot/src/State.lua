@@ -199,7 +199,7 @@ function SnapshotState:save(): SaveStatus
 
 	-- deviation: SnapshotState._snapshotPath stores the path in the DOM of the snapshot
 	-- and not the filesystem path
-	-- CoreScriptSyncService:GetScriptFilePath is used to convert the test Packagescript
+	-- CoreScriptSyncService:GetScriptFilePath is used to convert the test ModuleScript
 	-- into its filesystem location
 	local snapshotPath = CoreScriptSyncService:GetScriptFilePath(_G[JEST_TEST_CONTEXT].instance)
 	-- gets path of parent directory, GetScriptFilePath can only be called on ModuleScripts
@@ -222,7 +222,7 @@ function SnapshotState:save(): SaveStatus
 	 	-- deviation: omitted part of code dealing with unlinking file until we have
 		-- robust final solution for I/O. This may not even be needed in our translation?
 		if self._updateSnapshot == 'all' then
-			error("Jest-Roblox: Updating snapshots is not yet supported, it will be included in a separate PR.")
+			error("Jest-Roblox: You shouldn't reach this code path. Please file an issue at github.com/Roblox/jest-roblox or in #jest-roblox")
 		--	fs.unlinkSync(this._snapshotPath)
 		end
 		status.deleted = true

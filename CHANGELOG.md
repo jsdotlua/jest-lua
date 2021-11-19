@@ -1,7 +1,16 @@
 # Jest Roblox Changelog
 
+## 2.3.0 (2021-11-19)
+* :sparkles: Added support for Roblox Instance objects ([#127](https://github.com/Roblox/jest-roblox/pull/127))
+  * Added object serialization for Instances
+  * Added `.toMatchInstance` matcher to match against Instances
+  * `.toMatchSnapshot` now serializes and matches against Instances
+* :hammer_and_wrench: `jest.fn()` additionally returns a forwarding function for tests that require a mock to be a function
+* :hammer_and_wrench: Test reporter is now colorized and reports name of the failing test ([#126](https://github.com/Roblox/jest-roblox/pull/126))
+* :bug: Fix for a bug with throwing matchers and the `Error` polyfill in `roact-alignment` ([#128](https://github.com/Roblox/jest-roblox/pull/128))
+
 ## 2.2.1 (2021-10-20)
-* :bug: Check that thrown message is a string when matching against a thrown string
+* :bug: Check that thrown message is a string when matching against a thrown string ([#124](https://github.com/Roblox/jest-roblox/pull/124))
 
 ## 2.2.0 (2021-10-18)
 * :sparkles: Introduced strong Luau typing ([#102](https://github.com/Roblox/jest-roblox/pull/102))

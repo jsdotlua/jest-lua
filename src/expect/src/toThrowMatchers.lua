@@ -620,7 +620,7 @@ function toThrow(
 
 	if pass then
 		message = function()
-			local retval =  matcherHint(matcherName, nil, "", options) ..
+			local retval = matcherHint(matcherName, nil, "", options) ..
 				"\n\n"
 
 			if thrown ~= nil and thrown.hasMessage and not thrown.value["$$robloxInternalJestError"] then

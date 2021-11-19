@@ -127,7 +127,7 @@ local function getSnapshotData(
 	local data = {}
 	local dirty = false
 
-	-- deviation: snapshots in Jest Roblox are Packagescripts, so we require them to load them
+	-- deviation: snapshots in Jest Roblox are ModuleScripts, so we require them to load them
 	pcall(
 		function()
 			data = require(snapshotPath)
@@ -217,7 +217,7 @@ local function printBacktickString(str: string): string
 end
 
 local function ensureDirectoryExists(filePath: string)
-	-- deviation: gets path of parent directory, GetScriptFilePath can only be called on Packagescripts
+	-- deviation: gets path of parent directory, GetScriptFilePath can only be called on ModuleScripts
 	local path = filePath:split("/")
 	path = table.pack(table.unpack(path, 1, #path - 1))
 	path = table.concat(path, "/")
@@ -249,7 +249,7 @@ local function alphanumsort(o)
 	return o
 end
 
--- deviation: saves a valid Roblox Packagescript
+-- deviation: saves a valid Roblox ModuleScript
 local function saveSnapshotFile(
 	snapshotData: types.SnapshotData,
 	snapshotPath: ConfigPath
