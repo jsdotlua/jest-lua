@@ -60,16 +60,28 @@ When doing `nil` checking, use of `.toBeNil()` and `.never.toBeNil()` is encoura
 
 ## Mock Functions
 
+### `jest.fn()`
+`jest.fn()` returns two values. The first return value is the mock object, which is a callable table and _can_ be treated as a mock function if the tested code accepts a callable table as being interchangeable with a function.
+
+For cases where the tested code requires a function, pass in the second return value of `jest.fn()`, which is a forwarding function that calls the mock.
+```lua
+local mock, mockFn = jest.fn()
+mockFn()
+expect(mock).toHaveBeenCalled()
+```
+
+Note that this remains backward compatible with Jest tests translated from JavaScript, since the second argument will be dropped if not explicitly assigned.
+
 ### `mockFn.new`
 Our translation of `new mockFn()` in Javascript is `mockFn.new()`
 
 So for the following code pattern in Javascript:
-```lua
+```javascript
 const mockFn = jest.fn()
 const instance1 = new mockFn()
 ```
 We would write it in Lua as:
-```
+```lua
 local mockFn = jest.fn()
 local instance1 = mockFn.new()
 ```

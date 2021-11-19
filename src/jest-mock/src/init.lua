@@ -330,7 +330,14 @@ function ModuleMockerClass:fn(implementation)
 	if implementation then
 		fn.mockImplementation(implementation)
 	end
-	return fn
+
+	-- deviation: fn is a callable table, 
+	-- return a forwarding function as the second return value
+	local function mockFn(...)
+		return getmetatable(fn).__call(fn, ...)
+	end
+
+	return fn, mockFn
 end
 
 function ModuleMockerClass:clearAllMocks()

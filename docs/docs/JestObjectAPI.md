@@ -21,6 +21,10 @@ local returnsTrue = jest.fn(function() return true end)
 print(returnsTrue()) -- true
 ```
 
+:::info
+`jest.fn()` returns both a callable table and a function. If a function is needed, pass in the second return value. See the [deviation](Deviations.md#jestfn) note.
+:::
+
 ### `jest.clearAllMocks()`
 
 Clears the `mock.calls` and `mock.instances` properties of all mocks. Equivalent to calling [`.mockClear()`](MockFunctionAPI.md#mockfnmockclear) on every mocked function.
