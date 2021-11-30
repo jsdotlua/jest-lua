@@ -1,5 +1,8 @@
 # Jest Roblox Changelog
 
+## 2.3.1 (2021-11-30)
+* :bug: Fix error reporters not outputting captured errors when using non-default reporters ([#131](https://github.com/Roblox/jest-roblox/pull/131))
+
 ## 2.3.0 (2021-11-19)
 * :sparkles: Added support for Roblox Instance objects ([#127](https://github.com/Roblox/jest-roblox/pull/127))
   * Added object serialization for Instances
