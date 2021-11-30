@@ -91,8 +91,10 @@ function TeamCityReporter.report(results)
 		print("Errors reported by tests:")
 		print("")
 
-		for _, message in ipairs(results.errors) do
-			TestService:Error(message)
+		for _, e in ipairs(results.errors) do
+			print("• " .. e.phrase)
+			print("")
+			TestService:Error(e.message)
 
 			-- Insert a blank line after each error
 			print("")
