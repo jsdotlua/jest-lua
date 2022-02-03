@@ -9,7 +9,7 @@ local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 
 type Array<T> = { T };
-type Table = { any: any };
+type Table = { [any]: any };
 type Tester = (any, any) -> any;
 
 -- ROBLOX MOVED: expect/jasmineUtils.lua

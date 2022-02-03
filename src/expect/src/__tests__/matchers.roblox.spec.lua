@@ -272,7 +272,7 @@ return function()
 
 			itSKIP("matches instance against snapshot with fuzzy values", function()
 				local frame = Instance.new("Frame")
-				frame.Position = UDim2.new(math.random(0, 100), math.random(0, 100))
+				frame.Position = UDim2.fromOffset(math.random(0, 100), math.random(0, 100))
 				jestExpect(frame).toMatchSnapshot({
 					Position = jestExpect.any("UDim2")
 				})

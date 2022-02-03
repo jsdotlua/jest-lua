@@ -191,8 +191,7 @@ function ModuleMockerClass:_makeComponent(
 			return result
 		end
 
-		local f = {}
-		setmetatable(f, {__call = mockConstructor})
+		local f = setmetatable({}, {__call = mockConstructor})
 
 		f._isMockFunction = true
 		f.getMockImplementation = function()
@@ -331,7 +330,7 @@ function ModuleMockerClass:fn(implementation)
 		fn.mockImplementation(implementation)
 	end
 
-	-- deviation: fn is a callable table, 
+	-- deviation: fn is a callable table,
 	-- return a forwarding function as the second return value
 	local function mockFn(...)
 		return getmetatable(fn).__call(fn, ...)

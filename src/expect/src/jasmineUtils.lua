@@ -25,7 +25,6 @@ local Packages = CurrentModule.Parent
 local RobloxShared = require(Packages.RobloxShared)
 
 type Array<T> = { T };
-type Table = { any: any };
 -- deviation: Tester type defined in file since type imports are not yet
 -- supported
 -- making Tester return type 'any' due to error with type narrowing (CLI-37948)
