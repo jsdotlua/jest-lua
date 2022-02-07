@@ -5,3 +5,7 @@ license = { workspace = true }
 author = "Roblox"
 content_root = "src"
 files = ["*", "!**/__tests__/**"]
+
+[dependencies]
+LuauPolyfill = { workspace = true }
+RegExp = { workspace = true }

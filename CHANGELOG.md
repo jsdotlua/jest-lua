@@ -1,5 +1,8 @@
 # Jest Roblox Changelog
 
+## Unreleased Changes
+* :sparkles: Port `jest-types` ([#137](https://github.com/Roblox/jest-roblox/pull/137))
+
 ## 2.3.1 (2021-11-30)
 * :bug: Fix error reporters not outputting captured errors when using non-default reporters ([#131](https://github.com/Roblox/jest-roblox/pull/131))
 
