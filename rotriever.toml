@@ -5,5 +5,5 @@ license = "Apache2"
 
 [workspace.dependencies]
 ChalkLua = "github.com/roblox/chalk-lua@0.1.2"
-LuauPolyfill = "github.com/roblox/luau-polyfill@0.2.6"
+LuauPolyfill = "github.com/roblox/luau-polyfill@0.3.0"
 RegExp = "github.com/roblox/luau-regexp@0.1.3"
