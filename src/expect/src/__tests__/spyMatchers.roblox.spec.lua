@@ -10,7 +10,7 @@ return function()
 	local jestExpect = require(CurrentModule)
 	local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 
-	local jestMock = require(Packages.Dev.JestMock)
+	local jestMock = require(Packages.Dev.JestMock).ModuleMocker
 
 	local mock
 

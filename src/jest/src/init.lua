@@ -3,7 +3,7 @@
 local CurrentModule = script
 local Packages = CurrentModule.Parent
 
-local JestMock = require(Packages.JestMock)
+local JestMock = require(Packages.JestMock).ModuleMocker
 local JestFakeTimers = require(Packages.JestFakeTimers)
 
 local fakeTimers = JestFakeTimers.new()

@@ -4,7 +4,7 @@ return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
-	local ModuleMocker = require(CurrentModule)
+	local ModuleMocker = require(CurrentModule).ModuleMocker
 	local jestExpect = require(Packages.Dev.Expect)
 
 	local moduleMocker

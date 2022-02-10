@@ -19,7 +19,7 @@ return function()
 	local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 	local jestExpect = require(CurrentModule)
 
-	local jestMock = require(Packages.Dev.JestMock)
+	local jestMock = require(Packages.Dev.JestMock).ModuleMocker
 
 	local function createSpy(fn)
 		local spy = {}

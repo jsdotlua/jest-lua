@@ -9,7 +9,7 @@ local Packages = CurrentModule.Parent
 
 local getType = require(Packages.JestGetType).getType
 
-local jestMock = require(Packages.JestMock)
+local jestMock = require(Packages.JestMock).ModuleMocker
 
 local realDelay = delay
 local realTick = tick
@@ -19,6 +19,22 @@ local realOs = os
 type Timeout = {
 	time: number,
 	callback: () -> ()
+}
+
+export type FakeTimers = {
+	clearAllTimers: (self:FakeTimers )-> (),
+	dispose: (self:FakeTimers )-> (),
+	runAllTimers: (self:FakeTimers )-> (),
+	runOnlyPendingTimers: (self:FakeTimers )-> (),
+	advanceTimersToNextTimer: (self:FakeTimers,steps_: number?)-> (),
+	advanceTimersByTime: (self:FakeTimers,msToRun: number)-> (),
+	runAllTicks: (self:FakeTimers)-> (),
+	useRealTimers: (self:FakeTimers)-> (),
+	useFakeTimers: (self:FakeTimers)-> (),
+	reset: (self:FakeTimers)-> (),
+	setSystemTime: (self:FakeTimers, now:any)-> (),
+	getRealSystemTime: (self:FakeTimers)-> (),
+	getTimerCount: (self:FakeTimers)-> number,
 }
 
 local FakeTimers = {}
