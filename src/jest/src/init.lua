@@ -1,3 +1,5 @@
+-- ROBLOX NOTE: no upstream
+
 local CurrentModule = script
 local Packages = CurrentModule.Parent
 
@@ -9,7 +11,7 @@ local mock = JestMock.new()
 
 -- ROBLOX TODO: putting require override here for now
 -- ROBLOX TODO: ADO-1475
--- ROBLOX upstream: https://github.com/Roblox/roact-alignment/blob/master/modules/roblox-jest/src/Module/init.lua#L36
+-- ROBLOX NOTE: upstream: https://github.com/Roblox/roact-alignment/blob/master/modules/roblox-jest/src/Module/init.lua#L36
 -- local requiredModules: { [ModuleScript]: any } = {}
 -- local function _requireOverride(scriptInstance: ModuleScript): any
 -- 	-- This is crucial! We need to have an early out here so that we don't

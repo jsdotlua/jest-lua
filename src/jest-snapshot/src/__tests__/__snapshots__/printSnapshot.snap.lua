@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.0.6/packages/jest-snapshot/src/__tests__/__snapshots__/printSnapshot.test.ts.snap
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-snapshot/src/__tests__/__snapshots__/printSnapshot.test.ts.snap
 
 local exports = {}
 
@@ -7,7 +7,7 @@ local exports = {}
 	multiline strings in Lua don't interpret escape sequences
 ]]
 
--- deviation: changed String to string and Object to Table
+-- ROBLOX deviation: changed String to string and Object to Table
 exports["printPropertiesAndReceived omit missing properties 1"] = [=[
 
 <g>- Expected properties  - 2</>
@@ -20,7 +20,7 @@ exports["printPropertiesAndReceived omit missing properties 1"] = [=[
 <d>  }</>
 ]=]
 
--- deviation: changed chalk encoding to stretch across multiple lines and
+-- ROBLOX deviation: changed chalk encoding to stretch across multiple lines and
 -- unescaped the backticks
 exports["pass false toMatchSnapshot New snapshot was not written (multi line) 1"] = [=[
 
@@ -37,7 +37,7 @@ Received:
 that is the question."</>
 ]=]
 
--- deviation: unescaped the backticks
+-- ROBLOX deviation: unescaped the backticks
 exports["pass false toMatchSnapshot New snapshot was not written (single line) 1"] = [=[
 
 <d>expect(</><t>received</><d>).</>toMatchSnapshot<d>(</><b>hint</><d>)</>
@@ -51,7 +51,7 @@ This is likely because this test is run in a continuous integration (CI) environ
 Received: <t>"Write me if you can!"</>
 ]=]
 
--- deviation: Changed RangeError to Error and unescaped the backticks
+-- ROBLOX deviation: Changed RangeError to Error and unescaped the backticks
 exports["pass false toMatchSnapshot with properties equals false isLineDiffable false 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toMatchSnapshot<d>(</><g>properties</><d>)</>
@@ -62,7 +62,7 @@ Expected properties: <g>{"name": "Error"}</>
 Received value:      <r>[Error: Invalid array length]</>
 ]=]
 
--- deviation: unescape the backticks and changed Object to Table
+-- ROBLOX deviation: unescape the backticks and changed Object to Table
 exports["pass false toMatchSnapshot with properties equals false isLineDiffable true 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toMatchSnapshot<d>(</><g>properties</><d>)</>
@@ -78,7 +78,7 @@ Snapshot name: `with properties 1`
 <d>  }</>
 ]=]
 
--- deviation: unescape the backticks and changed Object to Table
+-- ROBLOX deviation: unescape the backticks and changed Object to Table
 exports["pass false toMatchSnapshot with properties equals true 1"] = [=[
 
 <d>expect(</><t>received</><d>).</>toMatchSnapshot<d>(</>properties<d>, </><b>hint</><d>)</>
@@ -96,7 +96,7 @@ Snapshot name: `with properties: <b>change text value</> 1`
 <d>  }</>
 ]=]
 
--- deviation: unescaped the backticks
+-- ROBLOX deviation: unescaped the backticks
 exports["printSnapshotAndReceived backtick single line expected and received 1"] = [=[
 
 Snapshot: <m>"var foo = `backtick`;"</>
@@ -119,7 +119,7 @@ exports["printSnapshotAndReceived empty string received and expected multi line 
 <m>- string</>
 ]=]
 
--- deviation: unescaped backslashes
+-- ROBLOX deviation: unescaped backslashes
 exports["printSnapshotAndReceived escape backslash in multi line string 1"] = [=[
 
 <m>- Snapshot  - 1</>
@@ -130,14 +130,14 @@ exports["printSnapshotAndReceived escape backslash in multi line string 1"] = [=
 <t>+ <i>B</i>ack \ slash</>
 ]=]
 
--- deviation: unescaped backslashes
+-- ROBLOX deviation: unescaped backslashes
 exports["printSnapshotAndReceived escape backslash in single line string 1"] = [=[
 
 Snapshot: <m>"<i>f</i>orward / slash and back \\ slash"</>
 Received: <t>"<i>F</i>orward / slash and back \\ slash"</>
 ]=]
 
--- deviation: unescaped backslashes
+-- ROBLOX deviation: unescaped backslashes
 exports["printSnapshotAndReceived escape double quote marks in string 1"] = [=[
 
 Snapshot: <m>"What does \"<i>oo</i>bleck\" mean?"</>
@@ -211,7 +211,7 @@ exports["printSnapshotAndReceived fallback to line diff 1"] = [=[
 <t>+ ================================================================================</>
 ]=]
 
--- deviation: changed [] to {} and Array to Table
+-- ROBLOX deviation: changed [] to {} and Array to Table
 exports["printSnapshotAndReceived has no common after clean up chaff array 1"] = [=[
 
 <m>- Snapshot  - 2</>
@@ -259,7 +259,7 @@ exports["printSnapshotAndReceived ignore indentation object insert 1"] = [=[
 <d>  }</>
 ]=]
 
--- deviation: changed null to nil and Object to Table and chalk encoding to stretch across multiple lines
+-- ROBLOX deviation: changed null to nil and Object to Table and chalk encoding to stretch across multiple lines
 exports["printSnapshotAndReceived isLineDiffable false asymmetric matcher 1"] = [=[
 
 Snapshot: <m>nil</>
@@ -286,21 +286,21 @@ Snapshot: <m>[Error: Cannot spread fragment "NameAndAppearances" within itself.]
 Received: <t>[Error: Cannot spread fragment "NameAndAppearancesAndFriends" within itself.]</>
 ]=]
 
--- deviation: changed undefined to nil
+-- ROBLOX deviation: changed undefined to nil
 exports["printSnapshotAndReceived isLineDiffable false function 1"] = [=[
 
 Snapshot: <m>nil</>
 Received: <t>[Function]</>
 ]=]
 
--- deviation: changed NaN to nan
+-- ROBLOX deviation: changed NaN to nan
 exports["printSnapshotAndReceived isLineDiffable false number 1"] = [=[
 
 Snapshot: <m>-0</>
 Received: <t>nan</>
 ]=]
 
--- deviation: changed Array and Object to Table and [] to {}
+-- ROBLOX deviation: changed Array and Object to Table and [] to {}
 exports["printSnapshotAndReceived isLineDiffable true array 1"] = [=[
 
 <m>- Snapshot  - 0</>
@@ -320,7 +320,7 @@ exports["printSnapshotAndReceived isLineDiffable true array 1"] = [=[
 <d>  }</>
 ]=]
 
--- deviation: changed Object to Table
+-- ROBLOX deviation: changed Object to Table
 exports["printSnapshotAndReceived isLineDiffable true object 1"] = [=[
 
 <m>- Snapshot  - 2</>
@@ -338,7 +338,7 @@ exports["printSnapshotAndReceived isLineDiffable true object 1"] = [=[
 <d>  }</>
 ]=]
 
--- deviation: changed Array [] to Table {}
+-- ROBLOX deviation: changed Array [] to Table {}
 exports["printSnapshotAndReceived isLineDiffable true single line expected and multi line received 1"] = [=[
 
 <m>- Snapshot  - 1</>
@@ -398,7 +398,7 @@ exports["printSnapshotAndReceived without serialize backtick single line expecte
 <t>+ tick`;</>
 ]=]
 
--- deviation: unescaped backticks and $
+-- ROBLOX deviation: unescaped backticks and $
 exports["printSnapshotAndReceived without serialize backtick single line expected and received 1"] = [=[
 
 <m>- Snapshot  - 1</>
@@ -513,7 +513,7 @@ Received has type:  number
 Received has value: <r>13</>
 ]=]
 
--- deviation: changed not to never
+-- ROBLOX deviation: changed not to never
 exports["matcher error toThrowErrorMatchingSnapshot Snapshot matchers cannot be used with not 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrowErrorMatchingSnapshot<d>(</><b>hint</><d>)</>

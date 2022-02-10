@@ -1,3 +1,5 @@
+-- ROBLOX NOTE: no upstream
+
 return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent

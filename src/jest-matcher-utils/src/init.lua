@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-matcher-utils/src/index.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-matcher-utils/src/index.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -11,7 +11,7 @@ local Packages = CurrentModule.Parent
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
-type Array<T> = { T }
+type Array<T> = LuauPolyfill.Array<T>
 local Error = LuauPolyfill.Error
 local Number = LuauPolyfill.Number
 local Symbol = LuauPolyfill.Symbol
@@ -32,14 +32,14 @@ local getType = JestGetType.getType
 local isPrimitive = JestGetType.isPrimitive
 
 local PrettyFormat = require(Packages.PrettyFormat)
-local prettyFormat = PrettyFormat.prettyFormat
+local prettyFormat = PrettyFormat.format
 
 local Replaceable = require(CurrentModule.Replaceable)
 local deepCyclicCopyReplaceable = require(CurrentModule.deepCyclicCopyReplaceable)
 
 -- ROBLOX TODO: continue to implement prettyFormat plugins
 local prettyFormatPlugins = PrettyFormat.plugins
-local PLUGINS = { 
+local PLUGINS = {
 	prettyFormatPlugins.AsymmetricMatcher,
 	-- ROBLOX deviation: Roblox Instance matchers
 	prettyFormatPlugins.RobloxInstance

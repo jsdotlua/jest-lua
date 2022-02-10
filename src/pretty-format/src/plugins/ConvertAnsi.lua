@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/pretty-format/src/plugins/ConvertAnsi.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/pretty-format/src/plugins/ConvertAnsi.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -17,7 +17,7 @@ type Printer = Types.Printer
 
 local chalk = require(Packages.ChalkLua)
 
--- deviation: this regex attempts to match both ansi16 and ansi256 regexes
+-- ROBLOX deviation: this regex attempts to match both ansi16 and ansi256 regexes
 local ansiRegex = string.char(27).. "%[%d+;?5?;?%d*m"
 
 local ansiLookupTable = {
@@ -77,6 +77,6 @@ end
 return {
 	test = test,
 	serialize = serialize,
-	-- deviation: exporting ansiRegex since we don't have a separate module for it
+	-- ROBLOX deviation: exporting ansiRegex since we don't have a separate module for it
 	ansiRegex = ansiRegex
 }

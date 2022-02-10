@@ -1,10 +1,10 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/__tests__/__snapshots__/toThrowMatchers.test.ts.snap
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/__tests__/__snapshots__/toThrowMatchers.test.ts.snap
 
--- deviation: We don't print 'Thrown value:' or 'Received value:' for strings
+-- ROBLOX deviation: We don't print 'Thrown value:' or 'Received value:' for strings
 -- we print 'Received message:' since the treatment of
 -- string errors is the same as Error polyfill errors for us
 
--- deviation: For upstream snapshots that throw a primitive error, our version
+-- ROBLOX deviation: For upstream snapshots that throw a primitive error, our version
 -- of the snapshot has a stack trace included since our toThwoMatchers will
 -- output a stack trace regardless of the kind of error thrown
 
@@ -46,7 +46,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
--- deviation: output has anonymous instead of asymmetricMatch
+-- ROBLOX deviation: output has anonymous instead of asymmetricMatch
 snapshots['toThrow asymmetric no-symbol fail isNot false 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
@@ -59,7 +59,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
--- deviation: output has anonymous instead of asymmetricMatch
+-- ROBLOX deviation: output has anonymous instead of asymmetricMatch
 snapshots['toThrow asymmetric no-symbol fail isNot true 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>(</><g>expected</><d>)</>
@@ -125,7 +125,7 @@ Expected constructor: <g>Err2</>
 
 Received value: <r>"nil"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:216
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:217
 ]=]
 
 snapshots['toThrow error class threw, but class should not match (error subclass) 1'] = [=[
@@ -199,7 +199,7 @@ snapshots['toThrow expected is undefined threw, but should not have (non-error f
 
 Thrown value: <r>"nil"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:485
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:486
 ]=]
 
 snapshots['toThrow invalid actual 1'] = [=[
@@ -241,7 +241,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
--- deviation: we print "0" instead of 0
+-- ROBLOX deviation: we print "0" instead of 0
 snapshots['toThrow regexp threw, but message did not match (non-error falsey) 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
@@ -249,7 +249,7 @@ snapshots['toThrow regexp threw, but message did not match (non-error falsey) 1'
 Expected pattern: <g>/^[123456789]\d*/</>
 Received value:   <r>"0"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:147
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:148
 ]=]
 
 snapshots['toThrow regexp threw, but message should not match (error) 1'] = [=[
@@ -262,7 +262,7 @@ Received message:       <r>"Invalid</><i> array </i><r>length</>"
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
--- deviation: we print "404" instead of 404
+-- ROBLOX deviation: we print "404" instead of 404
 snapshots['toThrow regexp threw, but message should not match (non-error truthy) 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>(</><g>expected</><d>)</>
@@ -270,7 +270,7 @@ snapshots['toThrow regexp threw, but message should not match (non-error truthy)
 Expected pattern: never <g>/^[123456789]\d*/</>
 Received value:         <r>"404"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:165
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:166
 ]=]
 
 snapshots['toThrow substring did not throw at all 1'] = [=[
@@ -292,7 +292,7 @@ Received message:   <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
--- deviation: we include the stack trace even when catching a "primitive" error()
+-- ROBLOX deviation: we include the stack trace even when catching a "primitive" error()
 snapshots['toThrow substring threw, but message did not match (non-error falsey) 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
@@ -300,7 +300,7 @@ snapshots['toThrow substring threw, but message did not match (non-error falsey)
 Expected substring: <g>"Server Error"</>
 Received value:     <r>""</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:87
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:88
 ]=]
 
 snapshots['toThrow substring threw, but message should not match (error) 1'] = [=[
@@ -320,7 +320,7 @@ snapshots['toThrow substring threw, but message should not match (non-error trut
 Expected substring: never <g>"Server Error"</>
 Received value:           <r>"Internal Server Error"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:109
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:110
 ]=]
 
 snapshots['toThrowError asymmetric any-Class fail isNot false 1'] = [=[
@@ -359,7 +359,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
--- deviation: output has anonymous instead of asymmetricMatch
+-- ROBLOX deviation: output has anonymous instead of asymmetricMatch
 snapshots['toThrowError asymmetric no-symbol fail isNot false 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrowError<d>(</><g>expected</><d>)</>
@@ -372,7 +372,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
--- deviation: output has anonymous instead of asymmetricMatch
+-- ROBLOX deviation: output has anonymous instead of asymmetricMatch
 snapshots['toThrowError asymmetric no-symbol fail isNot true 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrowError<d>(</><g>expected</><d>)</>
@@ -438,7 +438,7 @@ Expected constructor: <g>Err2</>
 
 Received value: <r>"nil"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:216
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:217
 ]=]
 
 snapshots['toThrowError error class threw, but class should not match (error subclass) 1'] = [=[
@@ -512,7 +512,7 @@ snapshots['toThrowError expected is undefined threw, but should not have (non-er
 
 Thrown value: <r>"nil"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:485
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:486
 ]=]
 
 snapshots['toThrowError invalid actual 1'] = [=[
@@ -554,7 +554,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
--- deviation: we print "0" instead of 0
+-- ROBLOX deviation: we print "0" instead of 0
 snapshots['toThrowError regexp threw, but message did not match (non-error falsey) 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrowError<d>(</><g>expected</><d>)</>
@@ -562,7 +562,7 @@ snapshots['toThrowError regexp threw, but message did not match (non-error false
 Expected pattern: <g>/^[123456789]\d*/</>
 Received value:   <r>"0"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:147
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:148
 ]=]
 
 snapshots['toThrowError regexp threw, but message should not match (error) 1'] = [=[
@@ -575,7 +575,7 @@ Received message:       <r>"Invalid</><i> array </i><r>length</>"
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
--- deviation: we print "404" instead of 404
+-- ROBLOX deviation: we print "404" instead of 404
 snapshots['toThrowError regexp threw, but message should not match (non-error truthy) 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrowError<d>(</><g>expected</><d>)</>
@@ -583,7 +583,7 @@ snapshots['toThrowError regexp threw, but message should not match (non-error tr
 Expected pattern: never <g>/^[123456789]\d*/</>
 Received value:         <r>"404"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:165
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:166
 ]=]
 
 snapshots['toThrowError substring did not throw at all 1'] = [=[
@@ -605,7 +605,7 @@ Received message:   <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
--- deviation: we include the stack trace even when catching a "primitive" error()
+-- ROBLOX deviation: we include the stack trace even when catching a "primitive" error()
 snapshots['toThrowError substring threw, but message did not match (non-error falsey) 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrowError<d>(</><g>expected</><d>)</>
@@ -613,7 +613,7 @@ snapshots['toThrowError substring threw, but message did not match (non-error fa
 Expected substring: <g>"Server Error"</>
 Received value:     <r>""</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:87
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:88
 ]=]
 
 snapshots['toThrowError substring threw, but message should not match (error) 1'] = [=[
@@ -633,7 +633,7 @@ snapshots['toThrowError substring threw, but message should not match (non-error
 Expected substring: never <g>"Server Error"</>
 Received value:           <r>"Internal Server Error"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:109
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:110
 ]=]
 
 return snapshots

@@ -1,3 +1,5 @@
+-- ROBLOX NOTE: no upstream
+
 return function()
 	describe("Lua toThrowMatcher tests", function()
 		local CurrentModule = script.Parent.Parent
@@ -84,7 +86,7 @@ return function()
 			jestExpect(function() error(Error()) end).toThrow(Error())
 		end)
 
-		-- deviation: sanity check test case
+		-- ROBLOX deviation: sanity check test case
 		it("cleans stack trace and prints correct files", function()
 			local function func2()
 				-- this line should error

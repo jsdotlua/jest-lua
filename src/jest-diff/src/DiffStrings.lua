@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/diffStrings.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-diff/src/diffStrings.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -8,6 +8,8 @@
 
 local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent
+local LuauPolyfill = require(Packages.LuauPolyfill)
+type Array<T> = LuauPolyfill.Array<T>
 
 local diffSequences = require(Packages.DiffSequences)
 
@@ -17,7 +19,6 @@ local DIFF_EQUAL = CleanupSemantic.DIFF_EQUAL
 local DIFF_INSERT = CleanupSemantic.DIFF_INSERT
 local Diff = CleanupSemantic.Diff
 type Diff = CleanupSemantic.Diff
-type Array<T> = { [number]: T }
 
 return function(a: string, b: string): Array<Diff>
 	local isCommon = function(aIndex: number, bIndex: number)

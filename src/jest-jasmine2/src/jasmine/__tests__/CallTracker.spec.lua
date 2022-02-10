@@ -1,6 +1,6 @@
--- upstream: https://github.com/jasmine/jasmine/blob/v3.6.0/spec/core/CallTrackerSpec.js
+-- ROBLOX upstream: https://github.com/jasmine/jasmine/blob/v3.6.0/spec/core/CallTrackerSpec.js
 --[[
-	Our usual upstream of jest v26.5.3 doesn't include any tests for the
+	Our usual upstream of jest v27.4.7 doesn't include any tests for the
 	CallTracker file so we instead look to the source that the jest/jasmine2
 	is based off of, jasmine
 ]]
@@ -102,7 +102,7 @@ return function()
 			expect(callTracker:mostRecent()).to.equal(nil)
 		end)
 
-		-- deviation: test skipped because jest's implementation of CallTracker
+		-- ROBLOX deviation: test skipped because jest's implementation of CallTracker
 		-- omits the saveArgumentsByValue function
 		itSKIP("allows object arguments to be shallow cloned", function()
 		--[[
@@ -124,7 +124,7 @@ return function()
 		]]
 		end)
 
-		-- deviation: test skipped because jest's implementation of CallTracker
+		-- ROBLOX deviation: test skipped because jest's implementation of CallTracker
 		-- omits the saveArgumentsByValue function
 		itSKIP('saves primitive arguments by value', function()
 		--[[

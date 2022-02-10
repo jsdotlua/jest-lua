@@ -1,3 +1,5 @@
+-- ROBLOX NOTE: no upstream
+
 -- Jest Roblox Snapshot v1, http://roblox.github.io/jest-roblox/snapshot-testing
 
 local exports = {}
@@ -765,10 +767,10 @@ Error message: <r>"<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><
 Expected: <g>2</>
 Received: <r>4</>"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:165
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:154
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:153
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:164
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:167
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:156
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:155
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:166
 ]=]
 
 return exports

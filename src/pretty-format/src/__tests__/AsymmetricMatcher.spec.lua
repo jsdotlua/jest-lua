@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/pretty-format/src/__tests__/AsymmetricMatcher.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/pretty-format/src/__tests__/AsymmetricMatcher.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -11,19 +11,21 @@ return function()
 	local Packages = CurrentModule.Parent
 
 	local PrettyFormat = require(CurrentModule)
-	local prettyFormat = PrettyFormat.prettyFormat
-	local AsymmetricMatcher = PrettyFormat.plugins.AsymmetricMatcher
+	local prettyFormat = PrettyFormat.default
+	local plugins = PrettyFormat.plugins
+
+	local AsymmetricMatcher = plugins.AsymmetricMatcher
 
 	local jestExpect = require(Packages.Dev.Expect)
 
-	-- deviation: don't need fnNameFor
+	-- ROBLOX deviation: don't need fnNameFor
 
 	local options
 	beforeEach(function()
 		options = {plugins = {AsymmetricMatcher}}
 	end)
 
-	-- deviation: modified to use our implementation of Any
+	-- ROBLOX deviation: modified to use our implementation of Any
 	for _, type_ in ipairs(
 		{
 			'number',
@@ -106,7 +108,7 @@ return function()
 		expect(result).to.equal('StringContaining "jest"')
 	end)
 
-	-- deviation: custom test for stringContaining to test Lua patterns
+	-- ROBLOX deviation: custom test for stringContaining to test Lua patterns
 	it('stringContaining(string with magic characters)', function()
 		local result = prettyFormat(jestExpect.stringContaining('jest*'), options)
 		expect(result).to.equal('StringContaining "jest*"')
@@ -117,19 +119,19 @@ return function()
 		expect(result).to.equal('StringNotContaining "jest"')
 	end)
 
-	-- deviation: we use Lua string patterns instead of regex
+	-- ROBLOX deviation: we use Lua string patterns instead of regex
 	it('stringMatching(string)', function()
 		local result = prettyFormat(jestExpect.stringMatching('jest'), options)
 		expect(result).to.equal('StringMatching "jest"')
 	end)
 
-	-- deviation: modified to remove alternations
+	-- ROBLOX deviation: modified to remove alternations
 	it('stringMatching(pattern)', function()
 		local result = prettyFormat(jestExpect.stringMatching('(jest).*'), options)
 		expect(result).to.equal('StringMatching "(jest).*"')
 	end)
 
-	-- deviation: omitted, escapeRegex doesn't do anything since we don't have regex
+	-- ROBLOX deviation: omitted, escapeRegex doesn't do anything since we don't have regex
 
 	it('stringNotMatching(string)', function()
 		local result = prettyFormat(jestExpect.never.stringMatching('jest'), options)
@@ -172,7 +174,7 @@ return function()
 		)
 	end)
 
-	-- deviation: our prettyFormat collapses Object{} and Array[] into just Table{}
+	-- ROBLOX deviation: our prettyFormat collapses Object{} and Array[] into just Table{}
 	describe('indent option', function()
 		local val = {
 			nested = jestExpect.objectContaining({

@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/toThrowMatchers.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/toThrowMatchers.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -16,9 +16,10 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local instanceof = LuauPolyfill.instanceof
 local Error = LuauPolyfill.Error
 type Function = (...any) -> any?
-type RegExp = {exec: (RegExp, string) -> any, test: (RegExp, string) -> boolean}
-type Object = { [string]: any }
-type Error = { message: string}
+local RegExp = require(Packages.RegExp)
+type RegExp = RegExp.RegExp
+type Object = LuauPolyfill.Object
+type Error = LuauPolyfill.Error
 
 local JestMatcherUtils = require(Packages.JestMatcherUtils)
 local EXPECTED_COLOR = JestMatcherUtils.EXPECTED_COLOR
@@ -46,8 +47,8 @@ local printReceivedStringContainExpectedSubstring = Print.printReceivedStringCon
 local Types = require(CurrentModule.types)
 type ExpectationResult = Types.ExpectationResult
 type MatcherState = Types.MatcherState
-type MatchersObject = Types.MatchersObject
-type RawMatcherFn = Types.RawMatcherFn
+type MatchersObject = Types.MatchersObject_
+type RawMatcherFn = Types.RawMatcherFn_
 type SyncExpectationResult = Types.SyncExpectationResult
 
 local isError = require(CurrentModule.utils).isError
@@ -65,7 +66,7 @@ local toThrowExpectedRegExp, toThrowExpectedAsymmetric, toThrowExpectedObject, t
 local toThrowExpectedString, toThrow, formatExpected, formatReceived, formatStack
 
 local function getThrown(e: any): Thrown
-	-- deviation: hasMessage is also considered true if message is a table
+	-- ROBLOX deviation: hasMessage is also considered true if message is a table
 	local hasMessage = e ~= nil and (typeof(e.message) == "string" or typeof(e.message) == "table")
 
 	if hasMessage and typeof(e.name) == "string" and typeof(e.stack) == "string" then
@@ -78,7 +79,7 @@ local function getThrown(e: any): Thrown
 	end
 
 	-- We include the following cases for completeness but based on our
-	-- deviation of always printing the stack trace even for non-errors
+	-- ROBLOX deviation of always printing the stack trace even for non-errors
 	-- we should always be in the case above
 	if hasMessage then
 		return {
@@ -116,7 +117,7 @@ local function createMatcher(
 		if fromPromise and isError(received) then
 			thrown = getThrown(received)
 		else
-			-- deviation: we also allow received to be a table with a __call metamethod
+			-- ROBLOX deviation: we also allow received to be a table with a __call metamethod
 			if typeof(received) ~= "function" and
 				not (typeof(received) == "table" and getmetatable(received) and getmetatable(received).__call) then
 				if not fromPromise then
@@ -256,7 +257,7 @@ local function createMatcher(
 			return toThrowExpectedString(matcherName, options, thrown, expected)
 		elseif getType(expected) == "regexp" then
 			return toThrowExpectedRegExp(matcherName, options, thrown, expected)
-		-- deviation: we have different logic for determining if expected is an Error class
+		-- ROBLOX deviation: we have different logic for determining if expected is an Error class
 		elseif typeof(expected) == "table" and not expected.message then
 			return toThrowExpectedClass(matcherName, options, thrown, expected)
 		elseif typeof(expected) == "table" then
@@ -288,7 +289,7 @@ local matchers = {
 	as error(Error('simple'))
 ]]
 
--- deviation: expected does not have RegExp type annotation
+-- ROBLOX deviation: expected does not have RegExp type annotation
 function toThrowExpectedRegExp(
 	matcherName: string,
 	options: JestMatcherUtils.MatcherHintOptions,
@@ -408,7 +409,7 @@ function toThrowExpectedAsymmetric(
 	return {message = message, pass = pass}
 end
 
--- deviation: expected does not have Error type annotation
+-- ROBLOX deviation: expected does not have Error type annotation
 function toThrowExpectedObject(
 	matcherName: string,
 	options: JestMatcherUtils.MatcherHintOptions,
@@ -472,7 +473,7 @@ function toThrowExpectedObject(
 	return {message = message, pass = pass}
 end
 
--- deviation: expected does not have Function type annotation
+-- ROBLOX deviation: expected does not have Function type annotation
 function toThrowExpectedClass(
 	matcherName: string,
 	options: JestMatcherUtils.MatcherHintOptions,
@@ -651,7 +652,7 @@ function formatExpected(label: string, expected: any)
 	return label .. printExpected(expected) .. "\n"
 end
 
--- deviation: expected does not have string | RegExp type annotation
+-- ROBLOX deviation: expected does not have string | RegExp type annotation
 function formatReceived(
 	label: string,
 	thrown: Thrown, -- ROBLOX FIXME: narrowing | nil,
@@ -679,7 +680,7 @@ function formatReceived(
 					"\n"
 			end
 		elseif getType(expected) == "regexp" then
-			-- deviation: we don't check for expected.exec being a function
+			-- ROBLOX deviation: we don't check for expected.exec being a function
 			-- since all RegExp polyfill instances have this function defined
 			return
 				label ..

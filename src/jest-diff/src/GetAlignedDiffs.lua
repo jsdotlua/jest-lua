@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/getAlignedDiffs.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-diff/src/getAlignedDiffs.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -9,7 +9,9 @@
 local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent
 
-local Array = require(Packages.LuauPolyfill).Array
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Array = LuauPolyfill.Array
+type Array<T> = LuauPolyfill.Array<T>
 
 local CleanupSemantic = require(CurrentModule.CleanupSemantic)
 local DIFF_DELETE = CleanupSemantic.DIFF_DELETE
@@ -17,7 +19,6 @@ local DIFF_EQUAL = CleanupSemantic.DIFF_EQUAL
 local DIFF_INSERT = CleanupSemantic.DIFF_INSERT
 local Diff = CleanupSemantic.Diff
 type Diff = CleanupSemantic.Diff
-type Array<T> = { [number]: T }
 
 local Types = require(CurrentModule.types)
 type DiffOptionsColor = Types.DiffOptionsColor
@@ -102,7 +103,7 @@ function ChangeBuffer:align(diff: Diff): ()
 
 	if s:match('\n') then
 		local substrings = s:split('\n')
-		-- deviation: 1-indexing
+		-- ROBLOX deviation: 1-indexing
 		local iLast = #substrings
 		for i, substring in ipairs(substrings) do
 			if i < iLast then
@@ -174,7 +175,7 @@ function CommonBuffer:align(diff: Diff): ()
 
 	if s:match('\n') then
 		local substrings = s:split('\n')
-		-- deviation: 1-indexing
+		-- ROBLOX deviation: 1-indexing
 		local iLast = #substrings
 		for i, substring in ipairs(substrings) do
 			if i == 1 then

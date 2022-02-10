@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.0.6/packages/jest-snapshot/src/mock_serializer.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-snapshot/src/mockSerializer.ts
 -- /**
 -- * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 -- *
@@ -7,7 +7,7 @@
 -- *
 -- */
 
--- deviation: omitted external type NewPlugin
+-- ROBLOX deviation: omitted external type NewPlugin
 
 local function serialize(
 	val,
@@ -62,7 +62,7 @@ local function serialize(
 end
 
 local function test(val)
-	-- deviation: add a table check to prevent access errors on non-tables
+	-- ROBLOX deviation: add a table check to prevent access errors on non-tables
 	return val and typeof(val) == "table" and val._isMockFunction
 end
 

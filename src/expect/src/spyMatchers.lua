@@ -1,4 +1,4 @@
- -- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/spyMatchers.ts
+ -- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/spyMatchers.ts
  -- /**
  -- * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  -- *
@@ -33,8 +33,8 @@ local printReceived = JestMatcherUtils.printReceived
 local printWithType = JestMatcherUtils.printWithType
 local stringify = JestMatcherUtils.stringify
 
-type Array<T> = { [number]: T };
--- deviation: omitted type imports from types file and defined MatcherState as any for now
+type Array<T> = LuauPolyfill.Array<T>
+-- ROBLOX deviation: omitted type imports from types file and defined MatcherState as any for now
 type MatcherHintOptions = JestMatcherUtils.MatcherHintOptions;
 type MatcherState = any;
 type SyncExpectationResult = (any, any, any) -> {
@@ -50,7 +50,7 @@ local iterableEquality = utils.iterableEquality
 
 local isExpand, printExpectedArgs, printReceivedArgs, printCommon, isEqualValue, isEqualCall, isEqualReturn, countReturns, printNumberOfReturns, getRightAlignedPrinter, printReceivedCallsNegative, printExpectedReceivedCallsPositive, printDiffCall, isLineDiffableCall, isLineDiffableArg, printResult, printReceivedResults, isMock, isSpy, ensureMockOrSpy, ensureMock
 
--- // The optional property of matcher context is true if undefined.
+-- The optional property of matcher context is true if undefined.
 function isExpand(expand: boolean?)
 	return expand ~= false
 end
@@ -146,10 +146,10 @@ end
 
 type PrintLabel = (string, boolean) -> string
 
--- // Given a label, return a function which given a string,
--- // right-aligns it preceding the colon in the label.
+-- Given a label, return a function which given a string,
+-- right-aligns it preceding the colon in the label.
 function getRightAlignedPrinter(label: string): PrintLabel
-	-- // Assume that the label contains a colon.
+	-- Assume that the label contains a colon.
 	local index = label:find(":")
 	local suffix = label:sub(index)
 
@@ -165,7 +165,7 @@ function getRightAlignedPrinter(label: string): PrintLabel
 	end
 end
 
--- deviation: IndexedCall annotated as any for now since we don't have tuple support in luau
+-- ROBLOX deviation: IndexedCall annotated as any for now since we don't have tuple support in luau
 type IndexedCall = any;
 
 function printReceivedCallsNegative(
@@ -221,7 +221,7 @@ function printExpectedReceivedCallsPositive(
 	if isOnlyCall and (iExpectedCall == 1 or iExpectedCall == nil) then
 		local received = indexedCalls[1][2]
 		if isLineDiffableCall(expected, received) then
-			-- // Display diff without indentation.
+			-- Display diff without indentation.
 			local lines = {
 				EXPECTED_COLOR('- Expected'),
 				RECEIVED_COLOR('+ Received'),
@@ -245,7 +245,7 @@ function printExpectedReceivedCallsPositive(
 							difference:find("%- Expected") and
 							difference:find("%+ Received")
 						then
-							-- // Omit annotation in case multiple args have diff.
+							-- Omit annotation in case multiple args have diff.
 							local splitLines = {}
 							for s in difference:gmatch("[^\n]+") do
 								table.insert(splitLines, s)
@@ -323,8 +323,8 @@ function printDiffCall(
 					if typeof(difference) == 'string' and
 						difference:find('%- Expected') and
 						difference:find('%+ Received') then
-						 -- // Display diff with indentation.
-						 -- // Omit annotation in case multiple args have diff.
+						 -- Display diff with indentation.
+						 -- Omit annotation in case multiple args have diff.
 						local splitLines = {}
 						for s in difference:gmatch("[^\n]+") do
 							table.insert(splitLines, s)
@@ -341,7 +341,7 @@ function printDiffCall(
 				end
 			end
 
-			-- // Display + only if received arg has no corresponding expected arg.
+			-- Display + only if received arg has no corresponding expected arg.
 			return indentation .. (function()
 				if i <= #expected then
 					return '  ' .. printReceived(arg)
@@ -366,8 +366,8 @@ function isLineDiffableCall(
 	)
 end
 
--- // Almost redundant with function in jest-matcher-utils,
--- // except no line diff for any strings.
+-- Almost redundant with function in jest-matcher-utils,
+-- except no line diff for any strings.
 function isLineDiffableArg(expected: any, received: any): boolean
 	local expectedType = getType(expected)
 	local receivedType = getType(received)
@@ -396,7 +396,7 @@ function isLineDiffableArg(expected: any, received: any): boolean
 	return true
 end
 
--- deviation: IndexedResult annotated as any for now since we don't have tuple support in luau
+-- ROBLOX deviation: IndexedResult annotated as any for now since we don't have tuple support in luau
 type IndexedResult = any;
 
 function printResult(result: any, expected: any)
@@ -415,8 +415,8 @@ function printResult(result: any, expected: any)
 	return printReceived(result.value)
 end
 
--- // Return either empty string or one line per indexed result,
--- // so additional empty line can separate from `Number of returns` which follows.
+-- Return either empty string or one line per indexed result,
+-- so additional empty line can separate from `Number of returns` which follows.
 function printReceivedResults(
 	label: string,
 	expected: any,
@@ -546,7 +546,7 @@ local function createToReturnMatcher(matcherName: string): SyncExpectationResult
 
 		local receivedName = received.getMockName()
 
-		-- // Count return values that correspond only to calls that returned
+		-- Count return values that correspond only to calls that returned
 		local count = Array.reduce(
 			received.mock.results,
 			function(n: number, result: any)
@@ -675,7 +675,7 @@ local function createToReturnTimesMatcher(matcherName: string): SyncExpectationR
 
 		local receivedName = received.getMockName()
 
-		-- // Count return values that correspond only to calls that returned
+		-- Count return values that correspond only to calls that returned
 		local count = Array.reduce(
 			received.mock.results,
 			function(n: number, result: any)
@@ -731,7 +731,7 @@ local function createToBeCalledWithMatcher(matcherName: string): SyncExpectation
 		local expected = {...}
 		local expectedLength = select("#", ...)
 		for i = 1, expectedLength do
-			-- deviation: We add this if statement to deal with our internal symbol
+			-- ROBLOX deviation: We add this if statement to deal with our internal symbol
 			-- that represents nil
 			if expected[i] == nil then
 				expected[i] = Symbol.for_("$$nil")
@@ -775,7 +775,7 @@ local function createToBeCalledWithMatcher(matcherName: string): SyncExpectation
 		local message
 		if pass then
 			message = function()
-			-- // Some examples of calls that are equal to expected value.
+			-- Some examples of calls that are equal to expected value.
 				local indexedCalls: Array<IndexedCall> = {}
 				local i = 1
 				while i <= #calls and #indexedCalls < PRINT_LIMIT do
@@ -802,7 +802,7 @@ local function createToBeCalledWithMatcher(matcherName: string): SyncExpectation
 			end
 		else
 			message = function()
-				-- // Some examples of calls that are not equal to expected value.
+				-- Some examples of calls that are not equal to expected value.
 				local indexedCalls: Array<IndexedCall> = {}
 				local i = 1
 				while i <= #calls and #indexedCalls < PRINT_LIMIT do
@@ -853,7 +853,7 @@ local function createToReturnWithMatcher(matcherName: string): SyncExpectationRe
 		local message
 		if pass then
 			message = function()
-				-- // Some examples of results that are equal to expected value.
+				-- Some examples of results that are equal to expected value.
 				local indexedResults: Array<IndexedResult> = {}
 				local i = 1
 				while i <= #results and #indexedResults < PRINT_LIMIT do
@@ -882,7 +882,7 @@ local function createToReturnWithMatcher(matcherName: string): SyncExpectationRe
 			end
 		else
 			message = function()
-				-- // Some examples of results that are not equal to expected value.
+				-- Some examples of results that are not equal to expected value.
 				local indexedResults: Array<IndexedResult> = {}
 				local i = 1
 				while i <= #results and #indexedResults < PRINT_LIMIT do
@@ -916,7 +916,7 @@ local function createLastCalledWithMatcher(matcherName: string): SyncExpectation
 		local expected: Array<any> = {...}
 		local expectedLength = select("#", ...)
 		for i = 1, expectedLength do
-			-- deviation: We add this if statement to deal with our internal symbol
+			-- ROBLOX deviation: We add this if statement to deal with our internal symbol
 			-- that represents nil
 			if expected[i] == nil then
 				expected[i] = Symbol.for_("$$nil")
@@ -959,7 +959,7 @@ local function createLastCalledWithMatcher(matcherName: string): SyncExpectation
 			message = function()
 				local indexedCalls: Array<IndexedCall> = {}
 				if iLast > 1 then
-					-- // Display preceding call as context.
+					-- Display preceding call as context.
 					table.insert(indexedCalls, {iLast - 1, calls[iLast - 1]})
 				end
 
@@ -988,12 +988,12 @@ local function createLastCalledWithMatcher(matcherName: string): SyncExpectation
 				if iLast >= 1 then
 					if iLast > 1 then
 						local i = iLast - 1
-						-- // Is there a preceding call that is equal to expected args?
+						-- Is there a preceding call that is equal to expected args?
 						while i >= 1 and not isEqualCall(expected, calls[i]) do
 							i = i - 1
 						end
 						if i < 1 then
-							i = iLast - 1 -- // otherwise, preceding call
+							i = iLast - 1 -- otherwise, preceding call
 						end
 
 						table.insert(indexedCalls, {i, calls[i]})
@@ -1048,7 +1048,7 @@ local function createLastReturnedMatcher(matcherName: string): SyncExpectationRe
 				local indexedResults: Array<IndexedResult> = {}
 
 				if iLast > 1 then
-					-- // Display preceding result as context.
+					-- Display preceding result as context.
 					table.insert(indexedResults, {iLast - 1, results[iLast - 1]})
 				end
 				table.insert(indexedResults, {iLast, results[iLast]})
@@ -1073,13 +1073,13 @@ local function createLastReturnedMatcher(matcherName: string): SyncExpectationRe
 				if iLast >= 1 then
 					if iLast > 1 then
 						local i = iLast - 1
-						-- // Is there a preceding result that is equal to expected value?
+						-- Is there a preceding result that is equal to expected value?
 						while i >= 1 and not isEqualReturn(expected, results[i]) do
 							i = i - 1
 						end
 
 						if i < 1 then
-							i = iLast - 1 -- // otherwise, preceding result
+							i = iLast - 1 -- otherwise, preceding result
 						end
 
 						table.insert(indexedResults, {i, results[i]})
@@ -1110,7 +1110,7 @@ local function createNthCalledWithMatcher(matcherName: string): SyncExpectationR
 		local expected = {...}
 		local expectedLength = select("#", ...)
 		for i = 1, expectedLength do
-			-- deviation: We add this if statement to deal with our internal symbol
+			-- ROBLOX deviation: We add this if statement to deal with our internal symbol
 			-- that represents nil
 			if expected[i] == nil then
 				expected[i] = Symbol.for_("$$nil")
@@ -1129,7 +1129,7 @@ local function createNthCalledWithMatcher(matcherName: string): SyncExpectationR
 		ensureMockOrSpy(received, matcherName, expectedArgument, options)
 
 		if not Number.isSafeInteger(nth) or nth < 1 then
-			-- deviation: we don't use the Error polyfill because we encounter an error with TestEZ
+			-- ROBLOX deviation: we don't use the Error polyfill because we encounter an error with TestEZ
 			error(Error(matcherErrorMessage(
 				matcherHint(matcherName, nil, expectedArgument, options),
 				('%s must be a positive integer'):format(expectedArgument),
@@ -1163,8 +1163,8 @@ local function createNthCalledWithMatcher(matcherName: string): SyncExpectationR
 		local message
 		if pass then
 			message = function()
-				-- // Display preceding and following calls,
-				-- // in case assertions fails because index is off by one.
+				-- Display preceding and following calls,
+				-- in case assertions fails because index is off by one.
 				local indexedCalls: Array<IndexedCall> = {}
 
 				if iNth - 1 >= 1 then
@@ -1196,22 +1196,22 @@ local function createNthCalledWithMatcher(matcherName: string): SyncExpectationR
 			end
 		else
 			message = function()
-				-- // Display preceding and following calls:
-				-- // * nearest call that is equal to expected args
-				-- // * otherwise, adjacent call
-				-- // in case assertions fails because of index, especially off by one.
+				-- Display preceding and following calls:
+				-- * nearest call that is equal to expected args
+				-- * otherwise, adjacent call
+				-- in case assertions fails because of index, especially off by one.
 				local indexedCalls: Array<IndexedCall> = {}
 
 				if iNth <= length then
 					if iNth - 1 >= 1 then
 						local i = iNth - 1
-						-- // Is there a preceding call that is equal to expected args?
+						-- Is there a preceding call that is equal to expected args?
 						while i >= 1 and not isEqualCall(expected, calls[i]) do
 							i = i - 1
 						end
 
 						if i < 1 then
-							i = iNth - 1 -- // otherwise, adjacent call
+							i = iNth - 1 -- otherwise, adjacent call
 						end
 
 						table.insert(indexedCalls, {i, calls[i]})
@@ -1220,21 +1220,21 @@ local function createNthCalledWithMatcher(matcherName: string): SyncExpectationR
 
 					if iNth + 1 <= length then
 						local i = iNth + 1
-						-- // Is there a following call that is equal to expected args?
+						-- Is there a following call that is equal to expected args?
 						while i <= length and not isEqualCall(expected, calls[i]) do
 							i = i + 1
 						end
 
 						if i >= length then
-							i = iNth + 1 -- // otherwise, adjacent call
+							i = iNth + 1 -- otherwise, adjacent call
 						end
 
 						table.insert(indexedCalls, {i, calls[i]})
 					end
 				elseif length > 1 then
-					-- // Is there a call that is equal to expected args?
+					-- Is there a call that is equal to expected args?
 					local i = length - 1
-					-- // Is there a call that is equal to expected args?
+					-- Is there a call that is equal to expected args?
 					while i >= 1 and not isEqualCall(expected, calls[i]) do
 						i = i - 1
 					end
@@ -1278,7 +1278,7 @@ local function createNthReturnedWithMatcher(matcherName: string): SyncExpectatio
 		ensureMock(received, matcherName, expectedArgument, options)
 
 		if not Number.isSafeInteger(nth) or nth < 1 then
-			-- deviation: we don't use the Error polyfill because we encounter an error with TestEZ
+			-- ROBLOX deviation: we don't use the Error polyfill because we encounter an error with TestEZ
 			error(Error(matcherErrorMessage(
 				matcherHint(matcherName, nil, expectedArgument, options),
 				('%s must be a positive integer'):format(expectedArgument),
@@ -1297,8 +1297,8 @@ local function createNthReturnedWithMatcher(matcherName: string): SyncExpectatio
 		local message
 		if pass then
 			message = function()
-				-- // Display preceding and following results,
-				-- // in case assertions fails because index is off by one.
+				-- Display preceding and following results,
+				-- in case assertions fails because index is off by one.
 				local indexedResults: Array<IndexedResult> = {}
 				if iNth - 1 >= 1 then
 					table.insert(indexedResults, {iNth - 1, results[iNth - 1]})
@@ -1322,16 +1322,16 @@ local function createNthReturnedWithMatcher(matcherName: string): SyncExpectatio
 			end
 		else
 			message = function()
-				-- // Display preceding and following results:
-				-- // * nearest result that is equal to expected value
-				-- // * otherwise, adjacent result
-				-- // in case assertions fails because of index, especially off by one.
+				-- Display preceding and following results:
+				-- * nearest result that is equal to expected value
+				-- * otherwise, adjacent result
+				-- in case assertions fails because of index, especially off by one.
 				local indexedResults: Array<IndexedResult> = {}
 
 				if iNth <= length then
 					if iNth - 1 >= 1 then
 						local i = iNth - 1
-						-- // Is there a preceding result that is equal to expected value?
+						-- Is there a preceding result that is equal to expected value?
 						while i >= 1 and not isEqualReturn(expected, results[i]) do
 							i = i - 1
 						end
@@ -1346,7 +1346,7 @@ local function createNthReturnedWithMatcher(matcherName: string): SyncExpectatio
 					table.insert(indexedResults, {iNth, results[iNth]})
 					if iNth + 1 <= length then
 						local i = iNth + 1
-						-- // Is there a following result that is equal to expected value?
+						-- Is there a following result that is equal to expected value?
 						while i <= length and not isEqualReturn(expected, results[i]) do
 							i = i + 1
 						end
@@ -1358,15 +1358,15 @@ local function createNthReturnedWithMatcher(matcherName: string): SyncExpectatio
 						table.insert(indexedResults, {i, results[i]})
 					end
 				elseif length > 0 then
-					-- // The number of received calls is fewer than the expected number.
+					-- The number of received calls is fewer than the expected number.
 					local i = length
-					-- // Is there a result that is equal to expected value?
+					-- Is there a result that is equal to expected value?
 					while i >= 1 and not isEqualReturn(expected, results[i]) do
 						i = i - 1
 					end
 
 					if i < 1 then
-						i = length - 1 -- // otherwise, last result
+						i = length - 1 -- otherwise, last result
 					end
 
 					table.insert(indexedResults, {i, results[i]})
@@ -1385,7 +1385,7 @@ local function createNthReturnedWithMatcher(matcherName: string): SyncExpectatio
 	end
 end
 
--- deviation: matchersObject annotated as { [string]: any } for now rather than { [string]: RawMatcherFn }
+-- ROBLOX deviation: matchersObject annotated as { [string]: any } for now rather than { [string]: RawMatcherFn }
 -- because we cannot currently express RawMatcherFn as tuple
 type MatchersObject = { [string]: any }
 
@@ -1425,7 +1425,7 @@ function isSpy(received: any)
 		typeof(received.calls.count) == 'function'
 end
 
--- deviation: we don't use the Error polyfill because we encounter an error with TestEZ
+-- ROBLOX deviation: we don't use the Error polyfill because we encounter an error with TestEZ
 function ensureMockOrSpy(
 	received: any,
 	matcherName: string,
@@ -1440,7 +1440,7 @@ function ensureMockOrSpy(
 	end
 end
 
--- deviation: we don't use the Error polyfill because we encounter an error with TestEZ
+-- ROBLOX deviation: we don't use the Error polyfill because we encounter an error with TestEZ
 function ensureMock(
 	received: any,
 	matcherName: string,

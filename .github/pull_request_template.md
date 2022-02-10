@@ -9,5 +9,5 @@ Describe how the solution was tested (ideally unit tests). If done manually, des
 
 ## Checklist (remove if not applicable)
 - [ ] For new modules, has a README.md file with notes about the translation
-- [ ] All deviations are notated in code with `-- deviation: comment`
+- [ ] All deviations are notated in code with `-- ROBLOX deviation: comment`
 - [ ] Translated files include a comment with a link to the upstream file

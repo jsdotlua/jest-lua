@@ -1,9 +1,11 @@
+-- ROBLOX NOTE: no upstream
+
 return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
 	local PrettyFormat = require(CurrentModule)
-	local prettyFormat = PrettyFormat.prettyFormat
+	local prettyFormat = PrettyFormat.default
 	local RobloxInstance = PrettyFormat.plugins.RobloxInstance
 
 	local InstanceSubset = require(Packages.RobloxShared).RobloxInstance.InstanceSubset
@@ -26,11 +28,11 @@ return function()
 				"  \"Parent\": \"__tests__\" [Folder],\n" ..
 				"}")
 		end)
-	
+
 		it('serializes Folder', function()
 			jestExpect(prettyFormatResult(CurrentModule)).toMatchSnapshot()
 		end)
-	
+
 		it('serializes Instances in table', function()
 			local SpotLight = Instance.new("SpotLight")
 			local Sky = Instance.new("Sky")
@@ -39,11 +41,11 @@ return function()
 				b = Sky
 			})).toMatchSnapshot()
 		end)
-	
+
 		it('serializes nested Roblox Instance', function()
 			local screenGui = Instance.new("ScreenGui")
 			screenGui.Name = "Root"
-	
+
 			local exampleData = {
 				{
 					name = "hello-roact",
@@ -74,7 +76,7 @@ return function()
 					label = "Binding",
 				},
 			}
-		
+
 			local exampleList = Instance.new("ScrollingFrame")
 			exampleList.Size = UDim2.new(0, 400, 0, 600)
 			exampleList.CanvasSize = UDim2.new(0, 400, 0, 80 * #exampleData)
@@ -86,14 +88,14 @@ return function()
 			exampleList.MidImage = "rbxassetid://29050676"
 			exampleList.BottomImage = "rbxassetid://29050676"
 			exampleList.Parent = screenGui
-	
+
 			local listLayout = Instance.new("UIListLayout")
 			listLayout.SortOrder = Enum.SortOrder.LayoutOrder
 			listLayout.Parent = exampleList
-		
+
 			for index, example in ipairs(exampleData) do
 				local label = ("%s: examples/%s"):format(example.label, example.name)
-		
+
 				local exampleCard = Instance.new("TextButton")
 				exampleCard.Name = "Example: " .. example.name
 				exampleCard.BackgroundColor3 = Color3.new(0.9, 0.9, 0.9)
@@ -103,9 +105,9 @@ return function()
 				exampleCard.TextSize = 20
 				exampleCard.Size = UDim2.new(1, 0, 0, 80)
 				exampleCard.LayoutOrder = index
-	
+
 				exampleCard.Parent = exampleList
-	
+
 				local bottomBorder = Instance.new("Frame")
 				bottomBorder.Name = "Bottom Border"
 				bottomBorder.Position = UDim2.new(0, 0, 1, -1)
@@ -115,10 +117,10 @@ return function()
 				bottomBorder.ZIndex = 2
 				bottomBorder.Parent = exampleCard
 			end
-	
+
 			jestExpect(prettyFormatResult(screenGui)).toMatchSnapshot()
 		end)
-	
+
 		it('collapses circular references in properties', function()
 			local leftFrame = Instance.new("ScrollingFrame")
 			local rightFrame = Instance.new("ScrollingFrame")
@@ -126,7 +128,7 @@ return function()
 			rightFrame.Name = "RightFrame"
 			leftFrame.NextSelectionRight = rightFrame
 			rightFrame.NextSelectionRight = leftFrame
-	
+
 			jestExpect(prettyFormatResult(leftFrame)).toMatchSnapshot()
 		end)
 	end)

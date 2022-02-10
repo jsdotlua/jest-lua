@@ -2,9 +2,9 @@
 
 Status: :hammer: In Progress
 
-Source: https://github.com/facebook/jest/tree/v27.0.6/packages/jest-snapshot
+Source: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-snapshot
 
-Version: v27.0.6
+Version: v27.4.7
 
 ---
 
@@ -38,14 +38,14 @@ Version: v27.0.6
 src/snapshot_resolver.ts
 ```
 
-### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.0.6/packages/jest-snapshot/package.json)
-| Package | Version | Status | Notes |
-| - | - | - | - |
-| `@jest/types` | 27.0.6 | :x: Will not port | External type definitions are not a priority |
-| `@chalk` | see chalk-lua | :heavy_check_mark: Ported  | Imported from the chalk-lua library |
-| `@expect` | 27.0.6 | :heavy_check_mark: Ported  | |
-| `@graceful-fs` | 4.2.4 | :x: Will not port  | Don't need file system interaction since we use the Roblox datamodel for file access |
-| `@jest-diff` | 27.0.6 | :heavy_check_mark: Ported  | |
-| `@jest-get-type` | 27.0.6 | :heavy_check_mark: Ported  | |
-| `@jest-matcher-utils` | 27.0.6 | :heavy_check_mark: Ported  | |
-| `@pretty-format` | 27.0.6 | :heavy_check_mark: Ported  | |
+### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.4.7/packages/jest-snapshot/package.json)
+| Package               | Version | Status                    | Notes                                                                                |
+| --------------------- | ------- | ------------------------- | ------------------------------------------------------------------------------------ |
+| `@jest/types`         | 27.4.2  | :heavy_check_mark: Ported |                                                                                      |
+| `@chalk`              | 4.0.0   | :heavy_check_mark: Ported | Imported from the chalk-lua library                                                  |
+| `@expect`             | 27.4.6  | :heavy_check_mark: Ported |                                                                                      |
+| `@graceful-fs`        | 4.2.4   | :x: Will not port         | Don't need file system interaction since we use the Roblox datamodel for file access |
+| `@jest-diff`          | 27.4.6  | :heavy_check_mark: Ported |                                                                                      |
+| `@jest-get-type`      | 27.4.0  | :heavy_check_mark: Ported |                                                                                      |
+| `@jest-matcher-utils` | 27.4.6  | :heavy_check_mark: Ported |                                                                                      |
+| `@pretty-format`      | 27.4.6  | :heavy_check_mark: Ported |                                                                                      |

@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-matcher-utils/src/__tests__/printDiffOrStringify.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-matcher-utils/src/__tests__/printDiffOrStringify.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -14,13 +14,14 @@ return function()
 	local Symbol = require(Packages.LuauPolyfill).Symbol
 
 	local printDiffOrStringify = require(CurrentModule).printDiffOrStringify
-	-- deviation: omitted INVERTED_COLOR import because it doesn't have an
+	-- ROBLOX deviation: omitted INVERTED_COLOR import because it doesn't have an
 	-- actual implementation yet
 
 	local jestExpect = require(Packages.Dev.Expect)
 	local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 
-	type Array<T> = { T }
+	local LuauPolyfill = require(Packages.LuauPolyfill)
+	type Array<T> = LuauPolyfill.Array<T>
 	type Map<X, Y> = { [X]: Y }
 
 	beforeAll(function()
@@ -75,7 +76,7 @@ return function()
 		it("object contain readonly symbol key object", function()
 			local expected = {b = 2}
 			local received = {b = 1}
-			-- deviation: test modified from upstream so we don't have to deal
+			-- ROBLOX deviation: test modified from upstream so we don't have to deal
 			-- with non-deterministic ordering of keys
 			local symbolKey = Symbol("key")
 			expected["a"] = symbolKey
@@ -84,7 +85,7 @@ return function()
 		end)
 
 		describe("MAX_DIFF_STRING_LENGTH", function()
-			-- deviation: omitted lessChange because since we don't have
+			-- ROBLOX deviation: omitted lessChange because since we don't have
 			-- output coloring implemented yet, it wouldn't match differently
 			-- local lessChange = INVERTED_COLOR("single ")
 			local less = "single line"
@@ -96,10 +97,10 @@ return function()
 				jestExpect(difference).toMatch("%- multi")
 				jestExpect(difference).toMatch("%- line")
 
-				-- deviation: omitted expect.not.toMatch call since we don't
+				-- ROBLOX deviation: omitted expect.not.toMatch call since we don't
 				-- have the chalk library implemented and diffStringsUnified
 				-- won't actually change the string
-				-- deviation: omitted expect.toMatch call with lessChange
+				-- ROBLOX deviation: omitted expect.toMatch call with lessChange
 			end)
 
 			it("expected is more", function()
@@ -108,7 +109,7 @@ return function()
 				jestExpect(difference).toMatch("%- multi line")
 				jestExpect(difference).toMatch("%+ single line")
 
-				-- deviation: omitted expect.not.toMatch call with lessChange
+				-- ROBLOX deviation: omitted expect.not.toMatch call with lessChange
 			end)
 
 			it("received is more", function()
@@ -117,7 +118,7 @@ return function()
 				jestExpect(difference).toMatch("%- single line")
 				jestExpect(difference).toMatch("%+ multi line")
 
-				-- deviation: omitted expect.not.toMatch call with lessChange
+				-- ROBLOX deviation: omitted expect.not.toMatch call with lessChange
 			end)
 		end)
 
@@ -142,7 +143,7 @@ return function()
 					},
 					g = true,
 				}
-				-- deviation: test modified from upstream so we don't have to deal
+				-- ROBLOX deviation: test modified from upstream so we don't have to deal
 				-- with non-deterministic ordering of keys
 				expected["h"] = {}
 				expected["h"][Symbol.for_("h")] = "jest is awesome"
@@ -157,7 +158,7 @@ return function()
 					}),
 					g = false,
 				}
-				-- deviation: test modified from upstream so we don't have to deal
+				-- ROBLOX deviation: test modified from upstream so we don't have to deal
 				-- with non-deterministic ordering of keys
 				received["h"] = {}
 				received["h"][Symbol.for_("h")] = jestExpect.any("string")

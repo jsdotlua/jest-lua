@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/print.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/print.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -20,7 +20,7 @@ local RECEIVED_COLOR = JestMatcherUtils.RECEIVED_COLOR
 local printReceived = JestMatcherUtils.printReceived
 local stringify = JestMatcherUtils.stringify
 
-type Array<T> = { T }
+type Array<T> = LuauPolyfill.Array<T>
 
 -- // Format substring but do not enclose in double quote marks.
 -- // The replacement is compatible with pretty-format package.
@@ -205,7 +205,7 @@ function printConstructorName(
 	isNot: boolean,
 	isExpected: boolean
 ): string
-	-- deviation: omitted handling for tostring() returning non-string as
+	-- ROBLOX deviation: omitted handling for tostring() returning non-string as
 	-- tostring() always returns string
 	local retval = label .. ": "
 	if not isNot then

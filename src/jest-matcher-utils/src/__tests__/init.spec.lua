@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-matcher-utils/src/__tests__/index.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-matcher-utils/src/__tests__/index.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -19,13 +19,13 @@ return function()
 
 	local chalk = require(Packages.ChalkLua)
 
-	local prettyFormat = require(Packages.PrettyFormat).prettyFormat
+	local prettyFormat = require(Packages.PrettyFormat).format
 
 	local jestExpect = require(Packages.Dev.Expect)
 	local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 
 	local JestMatcherUtils = require(CurrentModule)
-	-- deviation: omitted MatcherHintOptions import
+	-- ROBLOX deviation: omitted MatcherHintOptions import
 	local diff = JestMatcherUtils.diff
 	local ensureNoExpected = JestMatcherUtils.ensureNoExpected
 	local ensureNumbers = JestMatcherUtils.ensureNumbers
@@ -54,6 +54,13 @@ return function()
 			{math.huge, "inf"},
 			{-math.huge, "-inf"},
 			{RegExp("ab\\.c", "i"), "/ab\\.c/i"}
+			--[[
+				ROBLOX deviation: skipped since BigInt doesn't exist in Luau
+				original code:
+				[BigInt(1), '1n'],
+    			[BigInt(0), '0n'],
+			]]
+
 		}
 
 		for key, value in ipairs(fixtures) do
@@ -76,11 +83,11 @@ return function()
 			}
 
 			jestExpect(stringify(evil)).toBe("{\"toJSON\": [Function anonymous]}")
-			-- deviation: PrettyFormat returns [Function anonymous] since we
+			-- ROBLOX deviation: PrettyFormat returns [Function anonymous] since we
 			-- can't get function information
 			jestExpect(stringify({a = {b = {evil = evil}}})).toBe("{\"a\": {\"b\": {\"evil\": {\"toJSON\": [Function anonymous]}}}}")
 
-			-- deviation: we use a table with a __call metamethod to mimic a
+			-- ROBLOX deviation: we use a table with a __call metamethod to mimic a
 			-- function with properties in upstream
 			local Evil = {}
 			setmetatable(Evil, {__call = function() end})
@@ -104,7 +111,7 @@ return function()
 				toJSON = toJSON
 			}
 
-			-- deviation: our to.equal() method does not work in the same way
+			-- ROBLOX deviation: our to.equal() method does not work in the same way
 			-- so I'm not sure how to reconcile this. For now I just made it so that
 			-- I check equality and confirm that they are not equal
 			jestExpect(equals(evilA, evilB)).toBe(false)
@@ -133,6 +140,13 @@ return function()
 			jestExpect(function()
 				ensureNumbers(1, 2, matcherName)
 			end).never.toThrow()
+			--[[
+				ROBLOX deviation: skipped since BigInt doesn't exist in Luau
+				original code:
+				expect(() => {
+				  ensureNumbers(BigInt(1), BigInt(2), matcherName);
+				}).not.toThrow()
+			]]
 		end)
 
 		it("throws error when expected is not a number (backward compatibility)", function()
@@ -239,7 +253,7 @@ return function()
 		end)
 	end)
 
-	-- deviation: we can't mock jest-diff so we let it call through and compare
+	-- ROBLOX deviation: we can't mock jest-diff so we let it call through and compare
 	-- the actual output
 	describe("diff", function()
 		it("forwards to jest-diff", function()
@@ -250,6 +264,11 @@ return function()
 				{"a", 1},
 				{"a", true},
 				{1, true}
+				--[[
+					ROBLOX deviation: skipped since BigInt doesn't exist in Luau
+					original code:
+					[BigInt(1), true]
+				]]
 			}
 
 			for i, value in ipairs(fixtures) do
@@ -265,10 +284,12 @@ return function()
 			jestExpect(diff(1, 2)).toBe(nil)
 		end)
 
-		-- deviation: skipped test testing bigints since we don't have this
-		-- type in lua
 		itSKIP("two bigints", function()
-			jestExpect(diff(1, 2)).toBe(nil)
+			--[[
+				ROBLOX deviation: skipped since BigInt doesn't exist in Luau
+				original code:
+				expect(diff(BigInt(1), BigInt(2))).toBe(null);
+			]]
 		end)
 	end)
 

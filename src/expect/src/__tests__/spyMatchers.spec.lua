@@ -1,5 +1,5 @@
 --!nocheck
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/__tests__/spyMatchers.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/__tests__/spyMatchers.test.ts
 -- /**
 -- * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 -- *
@@ -269,7 +269,7 @@ return function()
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
-			-- deviation: changed undefined to nil
+			-- ROBLOX deviation: changed undefined to nil
 			it('works with trailing undefined arguments', function()
 				local fn = mock:fn()
 				fn('foo', nil)
@@ -279,7 +279,7 @@ return function()
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
-			-- deviation: test changed from Map to table
+			-- ROBLOX deviation: test changed from Map to table
 			it('works with Map', function()
 				local fn = mock:fn()
 
@@ -331,10 +331,10 @@ return function()
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
-			-- deviation: skipped test that relies on Immutable.js
+			-- ROBLOX deviation: skipped test that relies on Immutable.js
 			itSKIP('works with Immutable.js objects', function() end)
 
-			-- deviation: changed from array to table with keys as array
+			-- ROBLOX deviation: changed from array to table with keys as array
 			-- entries and value as true for quick lookup
 			local basicCalledWith = {
 				lastCalledWith = true,
@@ -371,7 +371,7 @@ return function()
 				end)
 			end
 
-			-- deviation: changed from array to table with keys as array
+			-- ROBLOX deviation: changed from array to table with keys as array
 			-- entries and value as true for quick lookup
 			local nthCalled = {
 				toHaveBeenNthCalledWith = true,
@@ -462,7 +462,7 @@ return function()
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
-			-- deviation: changed undefined to nil
+			-- ROBLOX deviation: changed undefined to nil
 			it('passes when undefined is returned', function()
 				local fn = mock:fn(function() return nil end)
 				fn()
@@ -524,7 +524,7 @@ return function()
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
-			-- deviation: changed undefined to nil
+			-- ROBLOX deviation: changed undefined to nil
 			it('.not passes when a call throws undefined', function()
 				local fn = mock:fn(function()
 					error(nil)
@@ -592,7 +592,7 @@ return function()
 			it('throw matcher error if received is spy', function()
 				local spy = createSpy(mock:fn())
 
-				-- deviation: we don't test against the snapshot because the error
+				-- ROBLOX deviation: we don't test against the snapshot because the error
 				-- message is sufficiently deviated (we report a table instead of a function)
 				jestExpect(function()
 					jestExpect(spy).never[returnedTimes](2)
@@ -634,7 +634,7 @@ return function()
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
-			-- deviation: changed undefined to nil
+			-- ROBLOX deviation: changed undefined to nil
 			it('calls that return undefined are counted as returns', function()
 				local fn = mock:fn(function() return nil end)
 				fn()
@@ -839,7 +839,7 @@ return function()
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
-			-- deviation: test changed from Map to table
+			-- ROBLOX deviation: test changed from Map to table
 			it('works with Map', function()
 				local m1 = {
 					{1, 2},
@@ -888,7 +888,7 @@ return function()
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
-			-- deviation: skipped test that relies on Immutable.js
+			-- ROBLOX deviation: skipped test that relies on Immutable.js
 			itSKIP('works with Immutable.js objects directly created', function() end)
 
 			it('a call that throws is not considered to have returned', function()
@@ -903,14 +903,14 @@ return function()
 				-- // It doesn't matter what return value is tested if the call threw
 				caller(jestExpect(fn).never[returnedWith], 'foo')
 				caller(jestExpect(fn).never[returnedWith], nil)
-				-- deviation: omitted call with undefined value
+				-- ROBLOX deviation: omitted call with undefined value
 
 				jestExpect(function()
 					caller(jestExpect(fn)[returnedWith], nil)
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
-			-- deviation: changed undefined to nil
+			-- ROBLOX deviation: changed undefined to nil
 			it('a call that throws undefined is not considered to have returned', function()
 				local fn = mock:fn(function()
 					error(nil)
@@ -923,14 +923,14 @@ return function()
 				-- // It doesn't matter what return value is tested if the call threw
 				caller(jestExpect(fn).never[returnedWith], 'foo')
 				caller(jestExpect(fn).never[returnedWith], nil)
-				-- deviation: omitted call with undefined value
+				-- ROBLOX deviation: omitted call with undefined value
 
 				jestExpect(function()
 					caller(jestExpect(fn)[returnedWith], nil)
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
-			-- deviation: changed from array to table with keys as array
+			-- ROBLOX deviation: changed from array to table with keys as array
 			-- entries and value as true for quick lookup
 			local basicReturnedWith = {
 				toHaveReturnedWith = true,
@@ -987,7 +987,7 @@ return function()
 				end)
 			end
 
-			-- deviation: changed from array to table with keys as array
+			-- ROBLOX deviation: changed from array to table with keys as array
 			-- entries and value as true for quick lookup
 			local nthReturnedWith = {
 				toHaveNthReturnedWith = true,
@@ -1115,7 +1115,7 @@ return function()
 				end)
 			end
 
-			-- deviation: changed from array to table with keys as array
+			-- ROBLOX deviation: changed from array to table with keys as array
 			-- entries and value as true for quick lookup
 			local lastReturnedWith = {
 				toHaveLastReturnedWith = true,

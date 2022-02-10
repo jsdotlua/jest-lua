@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/diff-sequences/src/__tests__/index.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/diff-sequences/src/__tests__/index.test.ts
 --!nocheck
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -17,7 +17,7 @@ return function()
 	local Object = LuauPolyfill.Object
 	local Array = LuauPolyfill.Array
 	local Error = LuauPolyfill.Error
-	type Array<T> = { [number]: T }
+	type Array<T> = LuauPolyfill.Array<T>
 
 	local jestExpect = require(Packages.Dev.Expect)
 

@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/asymmetricMatchers.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/asymmetricMatchers.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -12,27 +12,52 @@ local Packages = CurrentModule.Parent
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
+local Object = LuauPolyfill.Object
 local Symbol = LuauPolyfill.Symbol
 local instanceof = LuauPolyfill.instanceof
 
+type Array<T> = LuauPolyfill.Array<T>
+local RegExp = require(Packages.RegExp)
+type RegExp = RegExp.RegExp
+
 local getType = require(Packages.JestGetType).getType
 
+-- ROBLOX TODO: import jest-matcher-utils when available
+-- import * as matcherUtils from 'jest-matcher-utils';
+local matcherUtils = {} :: any
 local JasmineUtils = require(CurrentModule.jasmineUtils)
 local equals = JasmineUtils.equals
 local hasProperty = JasmineUtils.hasProperty
 local isA = JasmineUtils.isA
 local isUndefined = JasmineUtils.isUndefined
 
-local emptyObject = require(CurrentModule.utils).emptyObject
+local getState = require(CurrentModule.jestMatchersObject_extracted).getState
+local Types = require(CurrentModule.types)
+-- ROBLOX TODO: import correct types
+type AssymetricMatcherInterface = any
+type MatcherState = Types.MatcherState
+local Utils = require(CurrentModule.utils)
+local iterableEquality = Utils.iterableEquality
+local subsetEquality = Utils.subsetEquality
+-- local emptyObject = require(CurrentModule.utils).emptyObject
 
-type Array<T> = { [number]: T }
-type RegExp = Array<string> & { index: number?, input: string?, n: number }
+local utils = Object.freeze(
+	Object.assign(
+		{},
+		matcherUtils,
+		{
+			iterableEquality = iterableEquality,
+			subsetEquality = subsetEquality,
+  		}
+	));
+
 
 local AsymmetricMatcher = {}
 AsymmetricMatcher.__index = AsymmetricMatcher
-function AsymmetricMatcher.new(sample: any)
+function AsymmetricMatcher.new(sample: any, inverse: boolean?)
 	local self = {
 		sample = sample,
+		inverse = if inverse == nil then false else inverse,
 		["$$typeof"] = Symbol.for_("jest.asymmetricMatcher"),
 	}
 
@@ -40,7 +65,29 @@ function AsymmetricMatcher.new(sample: any)
 	return self
 end
 
--- deviation: our implementation of any has significant deviations, check README for more info
+type State_ = MatcherState
+function AsymmetricMatcher:getMatcherContext(): State_
+	return Object.assign(
+		{},
+		getState(),
+		{
+			equals = equals,
+			isNot = self.inverse,
+			utils = utils
+		}
+	)
+end
+
+--[[
+	ROBLOX NOTE: AssymetricMatcher method declarations
+	original code:
+	abstract asymmetricMatch(other: unknown): boolean;
+	abstract toString(): string;
+	getExpectedType?(): string;
+	toAsymmetricMatcher?(): string;
+]]
+
+-- ROBLOX deviation: our implementation of any has significant deviations, check README for more info
 -- > any("number"):asymmetricMatch(1) -- true
 -- > any("number"):toAsymmetricMatcher() -- "Any<number>"
 -- > any(ClassA):asymmetricMatch(ClassA.new()) -- true
@@ -62,7 +109,7 @@ function Any.new(sample: any)
 end
 
 function Any:asymmetricMatch(other: any): boolean
-	-- deviation: simplified since this covers all the cases in Lua
+	-- ROBLOX deviation: simplified since this covers all the cases in Lua
 	local selfType = getType(self.sample)
 	local otherType = getType(other)
 	-- compare metatable to check instance of Lua prototypical class
@@ -86,7 +133,7 @@ function Any:toString(): string
 end
 
 function Any:getExpectedType(): string
-	-- deviation: simplified since this already covers all the cases in Lua
+	-- ROBLOX deviation: simplified since this already covers all the cases in Lua
 	return tostring(self.sample)
 end
 
@@ -104,7 +151,7 @@ function Anything.new(sample: any)
 end
 
 function Anything:asymmetricMatch(other: any): boolean
-	-- deviation: other !== null is redundant since Lua doesn't distinguish undefined/nil
+	-- ROBLOX deviation: other !== null is redundant since Lua doesn't distinguish undefined/nil
 	return not isUndefined(other)
 end
 
@@ -122,8 +169,8 @@ local ArrayContaining = {}
 ArrayContaining.__index = ArrayContaining
 setmetatable(ArrayContaining, AsymmetricMatcher)
 function ArrayContaining.new(sample: { any }, inverse: boolean?)
-	local self = AsymmetricMatcher.new(sample)
-	self.inverse = inverse or false
+	inverse = if inverse ~= nil then inverse else false
+	local self = AsymmetricMatcher.new(sample, inverse)
 	setmetatable(self, ArrayContaining)
 	return self
 end
@@ -176,14 +223,14 @@ local ObjectContaining = {}
 ObjectContaining.__index = ObjectContaining
 setmetatable(ObjectContaining, AsymmetricMatcher)
 function ObjectContaining.new(sample: { any }, inverse: boolean?)
-	local self = AsymmetricMatcher.new(sample)
-	self.inverse = inverse or false
+	inverse = if inverse ~= nil then inverse else false
+	local self = AsymmetricMatcher.new(sample, inverse)
 	setmetatable(self, ObjectContaining)
 	return self
 end
 
 function ObjectContaining:asymmetricMatch(other: { any })
-	-- deviation: check for type table instead of object
+	-- ROBLOX deviation: check for type table instead of object
 	if typeof(self.sample) ~= "table" then
 		error(string.format(
 			"You must provide an object to %s, not '%s'.",
@@ -192,29 +239,19 @@ function ObjectContaining:asymmetricMatch(other: { any })
 		)
 	end
 
-	if self.inverse then
-		for property, value in pairs(self.sample) do
-			if hasProperty(other, property) and
-				equals(value, other[property]) and
-				not emptyObject(value) and
-				not emptyObject(other[property])
-			then
-				return false
-			end
-		end
+	local result = true
 
-		return true
-	else
-		for property, value in pairs(self.sample) do
-			if not hasProperty(other, property) or
-				not equals(value, other[property])
-			then
-				return false
-			end
+	for property, value in pairs(self.sample) do
+		if
+			not hasProperty(other, property) or
+			not equals(value, other[property])
+		then
+			result = false
+			break
 		end
-
-		return true
 	end
+
+	return if self.inverse then not result else result
 end
 
 function ObjectContaining:toString(): string
@@ -232,11 +269,11 @@ local StringContaining = {}
 StringContaining.__index = StringContaining
 setmetatable(StringContaining, AsymmetricMatcher)
 function StringContaining.new(sample: string, inverse: boolean?)
+	inverse = if inverse ~= nil then inverse else false
 	if not isA("string", sample) then
 		error("Expected is not a String")
 	end
-	local self = AsymmetricMatcher.new(sample)
-	self.inverse = inverse or false
+	local self = AsymmetricMatcher.new(sample, inverse)
 	setmetatable(self, StringContaining)
 	return self
 end
@@ -265,12 +302,12 @@ local StringMatching = {}
 StringMatching.__index = StringMatching
 setmetatable(StringMatching, AsymmetricMatcher)
 function StringMatching.new(sample: string | RegExp, inverse: boolean?)
-	-- deviation: we accept matches against a Lua string pattern or RegExp polyfill
+	inverse = if inverse ~= nil then inverse else false
+	-- ROBLOX deviation: we accept matches against a Lua string pattern or RegExp polyfill
 	if not isA("string", sample) and not isA("regexp", sample) then
 		error("Expected is not a String")
 	end
-	local self = AsymmetricMatcher.new(sample)
-	self.inverse = inverse or false
+	local self = AsymmetricMatcher.new(sample, inverse)
 	setmetatable(self, StringMatching)
 	return self
 end
@@ -280,7 +317,7 @@ function StringMatching:asymmetricMatch(other: string): boolean
 	if isA('string', other) then
 		-- Lua pattern case
 		if isA('string', self.sample) then
-			-- deviation: escape chalk sequences if necessary
+			-- ROBLOX deviation: escape chalk sequences if necessary
 			self.sample = string.gsub(self.sample, string.char(27) .. "%[", string.char(27) .. "%%[")
 			result = other:find(self.sample)
 		-- Regex case

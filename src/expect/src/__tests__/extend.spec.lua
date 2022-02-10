@@ -1,5 +1,6 @@
 --!nocheck
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/__tests__/extend.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/__tests__/extend.test.ts
+
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -7,6 +8,9 @@
 --  * LICENSE file in the root directory of this source tree.
 --  *
 --  */
+
+-- ROBLOX deviation: use `unknown` type until Luau starts to support it
+type unknown = any
 
 return function()
 	local CurrentModule = script.Parent.Parent
@@ -38,26 +42,25 @@ return function()
 	jestExpect.extend({
 		toBeDivisibleBy = function(self, actual: number, expected: number)
 			local pass = actual % expected == 0
-			local message
-			if pass then
-				message = function()
+			local message = if pass
+			then
+				function()
 					return string.format(
 						"expected %s not to be divisible by %s",
 						tostring(actual), tostring(expected)
 					)
 				end
 			else
-				message = function()
+				function()
 					return string.format(
 						"expected %s to be divisible by %s",
 						tostring(actual), tostring(expected)
 					)
 				end
-			end
 
 			return {message = message, pass = pass}
 		end,
-		toBeSymbol = function(self, actual, expected)
+		toBeSymbol = function(_self, actual, expected)
 			local pass = actual == expected
 			local message = function()
 				return string.format(
@@ -68,29 +71,28 @@ return function()
 
 			return {message = message, pass = pass}
 		end,
-		toBeWithinRange = function(self, actual: number, floor: number, ceiling: number)
+		toBeWithinRange = function(_self, actual: number, floor: number, ceiling: number)
 			local pass
 			if type(actual) ~= 'number' or type(floor) ~= 'number' or type(ceiling) ~= 'number' then
 				pass = false
 			else
 				pass = actual >= floor and actual <= ceiling
 			end
-			local message
-			if pass then
-				message = function()
-					string.format(
-						"expected %s not to be within range %s - %s",
-						tostring(actual), tostring(floor), tostring(ceiling)
-					)
-				end
-			else
-				message = function()
-					return string.format(
-						"expected %s to be within range %s - %s",
-						tostring(actual), tostring(floor), tostring(ceiling)
-					)
-				end
-			end
+			local message = if pass
+				then
+					function()
+						string.format(
+							"expected %s not to be within range %s - %s",
+							tostring(actual), tostring(floor), tostring(ceiling)
+						)
+					end
+				else
+					function()
+						return string.format(
+							"expected %s to be within range %s - %s",
+							tostring(actual), tostring(floor), tostring(ceiling)
+						)
+					end
 
 			return {message = message, pass = pass}
 		end
@@ -221,7 +223,22 @@ return function()
 		end).toThrowErrorMatchingSnapshot()
 	end)
 
-	-- deviation: lua specific test to handle asymmetric unary matcher with a table argument
+	it('allows overriding existing extension', function()
+		jestExpect.extend({
+			toAllowOverridingExistingMatcher = function(_self, _expected: unknown)
+				return { pass = _expected == 'bar' }
+			end,
+		})
+		jestExpect('foo').never.toAllowOverridingExistingMatcher()
+		jestExpect.extend({
+			toAllowOverridingExistingMatcher = function(_self, _expected: unknown)
+				return { pass = _expected == 'foo' }
+			end,
+		})
+		jestExpect('foo').toAllowOverridingExistingMatcher()
+	end)
+
+	-- ROBLOX deviation START: lua specific test to handle asymmetric unary matcher with a table argument
 	it('works for asymmetric unary matchers with a table argument', function()
 		local input = {1, 2, 3}
 		jestExpect.extend({
@@ -234,4 +251,5 @@ return function()
 			jestExpect({value = 0}).toEqual({value = jestExpect.unaryShouldNotError(input)})
 		end).never.toThrow()
 	end)
+	-- ROBLOX deviation END
 end

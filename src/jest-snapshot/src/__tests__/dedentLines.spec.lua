@@ -1,5 +1,5 @@
 --!nocheck
--- upstream: https://github.com/facebook/jest/blob/v27.0.6/packages/jest-snapshot/src/__tests__/dedentLines.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-snapshot/src/__tests__/dedentLines.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -17,7 +17,7 @@ return function()
 	local jestExpect = require(Packages.Dev.Expect)
 
 	local PrettyFormat = require(Packages.PrettyFormat)
-	local format = PrettyFormat.prettyFormat
+	local format = PrettyFormat.format
 	local dedentLines = require(CurrentModule.dedentLines)
 
 	local typeof_ = Symbol.for_('react.test.json')
@@ -53,7 +53,7 @@ return function()
 			jestExpect(dedentLines(indented)).toEqual(dedented)
 		end)
 
-		-- deviation: test skipped because we don't have support for react elements
+		-- ROBLOX deviation: test skipped because we don't have support for react elements
 		itSKIP('one line self-closing element', function()
 			local val = {
 				["$$typeof"] = typeof_,
@@ -86,7 +86,7 @@ return function()
 			jestExpect(dedentLines(indented)).toEqual(dedented)
 		end)
 
-		-- deviation: test skipped because we don't have support for react elements
+		-- ROBLOX deviation: test skipped because we don't have support for react elements
 		itSKIP('markup with props and text', function()
 			local val = {
 				["$$typeof"] = typeof_,
@@ -113,7 +113,7 @@ return function()
 			jestExpect(dedentLines(indented)).toEqual(dedented)
 		end)
 
-		-- deviation: test skipped because we don't have support for react elements
+		-- ROBLOX deviation: test skipped because we don't have support for react elements
 		itSKIP('markup with components as props', function()
 			-- // https://daveceddia.com/pluggable-slots-in-react-components/
 			local val = {
@@ -156,7 +156,7 @@ return function()
 			end)
 		end
 
-		-- deviation: test skipped because we don't have support for react elements
+		-- ROBLOX deviation: test skipped because we don't have support for react elements
 		itSKIP('markup prop multi-line', function()
 			local val = {
 				["$$typeof"] = typeof_,
@@ -172,7 +172,7 @@ return function()
 			jestExpect(dedentLines(indented)).toEqual(nil)
 		end)
 
-		-- deviation: test skipped because we don't have support for react elements
+		-- ROBLOX deviation: test skipped because we don't have support for react elements
 		itSKIP('markup prop component with multi-line text', function()
 		-- // https://daveceddia.com/pluggable-slots-in-react-components/
 			local val = {
@@ -206,7 +206,7 @@ return function()
 			jestExpect(dedentLines(indented)).toEqual(nil)
 		end)
 
-		-- deviation: test skipped because we don't have support for react elements
+		-- ROBLOX deviation: test skipped because we don't have support for react elements
 		itSKIP('markup text multi-line', function()
 			local text = table.concat({
 				'for (key in foo) {',
@@ -234,7 +234,7 @@ return function()
 			jestExpect(dedentLines(indented)).toEqual(nil)
 		end)
 
-		-- deviation: test skipped because we don't have support for react elements
+		-- ROBLOX deviation: test skipped because we don't have support for react elements
 		itSKIP('markup text multiple lines', function()
 			local lines = {
 				'for (key in foo) {',

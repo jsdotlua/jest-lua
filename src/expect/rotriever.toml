@@ -8,6 +8,7 @@ files = ["*", "!**/__tests__/**"]
 
 [dependencies]
 LuauPolyfill = { workspace = true }
+RegExp = { workspace = true }
 JestGetType = { path = "../jest-get-type" }
 JestMessageUtil = { path = "../jest-message-util" }
 JestMatcherUtils = { path = "../jest-matcher-utils" }
@@ -15,7 +16,6 @@ JestSnapshot = { path = "../jest-snapshot" }
 RobloxShared = { path = "../roblox-shared" }
 
 [dev_dependencies]
-RegExp = { workspace = true }
 Jest = { path = "../jest" }
 JestMock = { path = "../jest-mock" }
 TestUtils = { path = "../test-utils" }

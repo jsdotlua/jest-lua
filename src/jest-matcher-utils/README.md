@@ -2,9 +2,9 @@
 
 Status: :heavy_check_mark: Ported
 
-Source: https://github.com/facebook/jest/tree/v27.2.5/packages/jest-matcher-utils
+Source: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-matcher-utils
 
-Version: v27.2.5
+Version: v27.4.7
 
 ---
 
@@ -19,10 +19,10 @@ Version: v27.2.5
 ```
 ```
 
-### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.2.5/packages/jest-matcher-utils/package.json)
-| Package | Version | Status | Notes |
-| - | - | - | - |
-| chalk | 4.0.0 | :heavy_check_mark: Ported | [Lua-Chalk](https://github.com/Roblox/lua-chalk) |
-| jest-diff | 27.0.6 | :heavy_check_mark: Ported | |
-| jest-get-type | 27.0.6 | :heavy_check_mark: Ported | |
-| pretty-format | 27.0.6 | :heavy_check_mark: Ported | Mostly complete, need plugins |
+### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.4.7/packages/jest-matcher-utils/package.json)
+| Package       | Version | Status                    | Notes                                            |
+| ------------- | ------- | ------------------------- | ------------------------------------------------ |
+| chalk         | 4.0.0   | :heavy_check_mark: Ported | [Lua-Chalk](https://github.com/Roblox/lua-chalk) |
+| jest-diff     | 27.4.6  | :heavy_check_mark: Ported |                                                  |
+| jest-get-type | 27.4.0  | :heavy_check_mark: Ported |                                                  |
+| pretty-format | 27.4.6  | :heavy_check_mark: Ported | Mostly complete, need plugins                    |

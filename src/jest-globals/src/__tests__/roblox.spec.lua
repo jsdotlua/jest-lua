@@ -1,3 +1,6 @@
+-- ROBLOX NOTE: no upstream
+-- ROBLOX deviation: this file is not aligned with upstream version
+
 return function()
 	local CurrentModule = script.Parent.Parent
 	local Globals = require(CurrentModule)

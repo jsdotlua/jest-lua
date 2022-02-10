@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/matchers.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/matchers.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -16,7 +16,9 @@ local Error = LuauPolyfill.Error
 local Number = LuauPolyfill.Number
 local Object = LuauPolyfill.Object
 local instanceof = LuauPolyfill.instanceof
-type RegExp = {exec: (string) -> any, test: (string) -> boolean}
+
+local RegExp = require(Packages.RegExp)
+type RegExp = RegExp.RegExp
 
 local JestGetType = require(Packages.JestGetType)
 local getType = JestGetType.getType
@@ -54,13 +56,16 @@ local printReceivedStringContainExpectedSubstring = Print.printReceivedStringCon
 
 local Types = require(CurrentModule.types)
 type MatcherState = Types.MatcherState
-type MatchersObject = Types.MatchersObject
+type MatchersObject = Types.MatchersObject_
 
 local Utils = require(CurrentModule.utils)
+-- ROBLOX deviation: skipped as Lua doesn't support ArrayBuffer
+-- local arrayBufferEquality = Utils.arrayBufferEquality
 local getObjectSubset = Utils.getObjectSubset
 local getPath = Utils.getPath
--- ROBLOX deviation: omitted imports for sparseArrayEquality
 local iterableEquality = Utils.iterableEquality
+local pathAsArray = Utils.pathAsArray
+-- ROBLOX deviation: omitted imports for sparseArrayEquality
 local subsetEquality = Utils.subsetEquality
 local typeEquality = Utils.typeEquality
 
@@ -87,6 +92,7 @@ local toStrictEqualTesters = {
 -- 	iterableEquality,
 	typeEquality
 -- 	sparseArrayEquality,
+--  arrayBufferEquality,
 }
 -- ROBLOX deviation: we can't handle iterable with a type constraint in the same way
 -- type ContainIterable =
@@ -97,13 +103,17 @@ local toStrictEqualTesters = {
 --   | HTMLCollectionOf<any>;
 
 -- ROBLOX deviation: upstream defines matchers as a single monolithic object but we split it up for readability
-
-local function toBe(this: MatcherState, received: any, expected: any)
+local function toBe(
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
+	received: any,
+	expected: any
+)
 	local matcherName = 'toBe'
 	local options: MatcherHintOptions = {
 		comment = 'Object.is equality',
-		isNot = this.isNot,
-		promise = this.promise,
+		isNot = self.isNot,
+		promise = self.promise,
 	}
 
 	local pass = Object.is(received, expected)
@@ -144,7 +154,7 @@ local function toBe(this: MatcherState, received: any, expected: any)
 				received,
 				EXPECTED_LABEL,
 				RECEIVED_LABEL,
-				isExpand(this.expand)
+				isExpand(self.expand)
 			)
 		end
 	end
@@ -156,7 +166,8 @@ local function toBe(this: MatcherState, received: any, expected: any)
 end
 
 local function toBeCloseTo(
-	this: MatcherState,
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
 	received: number,
 	expected: number,
 	precision: number
@@ -169,10 +180,10 @@ local function toBeCloseTo(
 		precision = 2
 	end
 	local matcherName = 'toBeCloseTo'
-	local isNot = this.isNot
+	local isNot = self.isNot
 	local options: MatcherHintOptions = {
 		isNot = isNot,
-		promise = this.promise,
+		promise = self.promise,
 		secondArgument = secondArgument,
 		secondArgumentColor = function(arg: string) return arg end
 	}
@@ -240,11 +251,16 @@ local function toBeCloseTo(
 end
 
 -- ROBLOX deviation: toBeDefined equivalent to never.toBeNil
-local function toBeDefined(this: MatcherState, received: any, expected: nil)
+local function toBeDefined(
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
+	received: any,
+	expected: nil
+)
 	local matcherName = 'toBeDefined'
 	local options: MatcherHintOptions = {
-		isNot = this.isNot,
-		promise = this.promise,
+		isNot = self.isNot,
+		promise = self.promise,
 	}
 	ensureNoExpected(expected, matcherName, options)
 
@@ -261,11 +277,16 @@ end
 
 
 -- ROBLOX deviation: toBeFalsy checks for Lua falsy values, not JS falsy values
-local function toBeFalsy(this: MatcherState, received: any, expected: nil)
+local function toBeFalsy(
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
+	received: any,
+	expected: nil
+)
 	local matcherName = 'toBeFalsy'
 	local options: MatcherHintOptions = {
-		isNot = this.isNot,
-		promise = this.promise,
+		isNot = self.isNot,
+		promise = self.promise,
 	}
 	ensureNoExpected(expected, matcherName, options)
 
@@ -281,15 +302,16 @@ local function toBeFalsy(this: MatcherState, received: any, expected: nil)
 end
 
 local function toBeGreaterThan(
-	this: MatcherState,
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
 	received: number,
 	expected: number
 )
 	local matcherName = 'toBeGreaterThan'
-	local isNot = this.isNot
+	local isNot = self.isNot
 	local options: MatcherHintOptions = {
 		isNot = isNot,
-		promise = this.promise,
+		promise = self.promise,
 	}
 	ensureNumbers(received, expected, matcherName, options)
 
@@ -306,15 +328,16 @@ local function toBeGreaterThan(
 end
 
 local function toBeGreaterThanOrEqual(
-	this: MatcherState,
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
 	received: number,
 	expected: number
 )
 	local matcherName = 'toBeGreaterThanOrEqual'
-	local isNot = this.isNot
+	local isNot = self.isNot
 	local options: MatcherHintOptions = {
 		isNot = isNot,
-		promise = this.promise,
+		promise = self.promise,
 	}
 	ensureNumbers(received, expected, matcherName, options)
 
@@ -331,12 +354,17 @@ local function toBeGreaterThanOrEqual(
 end
 
 -- ROBLOX deviation: toBeInstanceOf checks for Lua prototypical classes, major deviation from upstream
-local function toBeInstanceOf(this: MatcherState, received: any, expected: any)
+local function toBeInstanceOf(
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
+	received: any,
+	expected: any
+)
 	local matcherName = 'toBeInstanceOf'
-	local isNot = this.isNot
+	local isNot = self.isNot
 	local options: MatcherHintOptions = {
 		isNot = isNot,
-		promise = this.promise,
+		promise = self.promise,
 	}
 
 	if typeof(expected) ~= 'table' then
@@ -387,15 +415,16 @@ local function toBeInstanceOf(this: MatcherState, received: any, expected: any)
 end
 
 local function toBeLessThan(
-	this: MatcherState,
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
 	received: number,
 	expected: number
 )
 	local matcherName = 'toBeLessThan'
-	local isNot = this.isNot
+	local isNot = self.isNot
 	local options: MatcherHintOptions = {
 		isNot = isNot,
-		promise = this.promise,
+		promise = self.promise,
 	}
 	ensureNumbers(received, expected, matcherName, options)
 
@@ -412,15 +441,16 @@ local function toBeLessThan(
 end
 
 local function toBeLessThanOrEqual(
-	this: MatcherState,
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
 	received: number,
 	expected: number
 )
 	local matcherName = 'toBeLessThanOrEqual'
-	local isNot = this.isNot
+	local isNot = self.isNot
 	local options: MatcherHintOptions = {
 		isNot = isNot,
-		promise = this.promise,
+		promise = self.promise,
 	}
 	ensureNumbers(received, expected, matcherName, options)
 
@@ -436,11 +466,16 @@ local function toBeLessThanOrEqual(
 	return {message = message, pass = pass}
 end
 
-local function toBeNan(this: MatcherState, received: any, expected: nil)
+local function toBeNan(
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
+	received: any,
+	expected: nil
+)
 	local matcherName = 'toBeNan'
 	local options: MatcherHintOptions = {
-		isNot = this.isNot,
-		promise = this.promise,
+		isNot = self.isNot,
+		promise = self.promise,
 	}
 	ensureNoExpected(expected, matcherName, options)
 
@@ -455,11 +490,16 @@ local function toBeNan(this: MatcherState, received: any, expected: nil)
 	return {message = message, pass = pass}
 end
 
-local function toBeNil(this: MatcherState, received: any, expected: nil)
+local function toBeNil(
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
+	received: any,
+	expected: nil
+)
 	local matcherName = 'toBeNil'
 	local options: MatcherHintOptions = {
-		isNot = this.isNot,
-		promise = this.promise,
+		isNot = self.isNot,
+		promise = self.promise,
 	}
 	ensureNoExpected(expected, matcherName, options)
 
@@ -474,11 +514,16 @@ local function toBeNil(this: MatcherState, received: any, expected: nil)
 	return {message = message, pass = pass}
 end
 
-local function toBeTruthy(this: MatcherState, received: any, expected: nil)
+local function toBeTruthy(
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
+	received: any,
+	expected: nil
+)
 	local matcherName = 'toBeTruthy'
 	local options: MatcherHintOptions = {
-		isNot = this.isNot,
-		promise = this.promise,
+		isNot = self.isNot,
+		promise = self.promise,
 	}
 	ensureNoExpected(expected, matcherName, options)
 
@@ -494,11 +539,16 @@ local function toBeTruthy(this: MatcherState, received: any, expected: nil)
 end
 
 -- ROBLOX deviation: toBeUndefined equivalent to toBeNil
-local function toBeUndefined(this: MatcherState, received: any, expected: nil)
+local function toBeUndefined(
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
+	received: any,
+	expected: nil
+)
 	local matcherName = 'toBeUndefined'
 	local options: MatcherHintOptions = {
-		isNot = this.isNot,
-		promise = this.promise,
+		isNot = self.isNot,
+		promise = self.promise,
 	}
 	ensureNoExpected(expected, matcherName, options)
 
@@ -514,16 +564,17 @@ local function toBeUndefined(this: MatcherState, received: any, expected: nil)
 end
 
 local function toContain(
-	this: MatcherState,
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
 	received: any,
 	expected: any
 )
 	local matcherName = 'toContain'
-	local isNot = this.isNot
+	local isNot = self.isNot
 	local options: MatcherHintOptions = {
 		comment = 'string.find or table.find',
 		isNot = isNot,
-		promise = this.promise,
+		promise = self.promise,
 	}
 
 	if received == nil then
@@ -537,6 +588,24 @@ local function toContain(
 	end
 
 	if typeof(received) == 'string' then
+		local wrongTypeErrorMessage = ('%s value must be a string if %s value is a string'):format(
+			EXPECTED_COLOR('expected'),
+			RECEIVED_COLOR('received')
+		)
+		if typeof(expected) ~= 'string' then
+			error(
+				Error.new(
+					matcherErrorMessage(
+						matcherHint(matcherName, received, tostring(expected), options),
+						wrongTypeErrorMessage,
+						tostring(printWithType('Expected', expected, printExpected))
+							.. '\n'
+							.. tostring(printWithType('Received', received, printReceived))
+					)
+				)
+			)
+		end
+
 		local index = received:find(tostring(expected), 1, true)
 		local pass = index ~= nil
 
@@ -613,16 +682,17 @@ local function toContain(
 end
 
 local function toContainEqual(
-	this: MatcherState,
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
 	received: any,
 	expected: any
 )
 	local matcherName = 'toContainEqual'
-	local isNot = this.isNot
+	local isNot = self.isNot
 	local options: MatcherHintOptions = {
 		comment = 'deep equality',
 		isNot = isNot,
-		promise = this.promise,
+		promise = self.promise,
 	}
 
 	if received == nil then
@@ -672,12 +742,17 @@ local function toContainEqual(
 	return {message = message, pass = pass}
 end
 
-local function toEqual(this: MatcherState, received: any, expected: any)
+local function toEqual(
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
+	received: any,
+	expected: any
+)
 	local matcherName = 'toEqual'
 	local options: MatcherHintOptions = {
 		comment = 'deep equality',
-		isNot = this.isNot,
-		promise = this.promise,
+		isNot = self.isNot,
+		promise = self.promise,
 	}
 
 	local pass = equals(received, expected, {iterableEquality})
@@ -705,7 +780,7 @@ local function toEqual(this: MatcherState, received: any, expected: any)
 					received,
 					EXPECTED_LABEL,
 					RECEIVED_LABEL,
-					isExpand(this.expand)
+					isExpand(self.expand)
 				)
 		end
 	end
@@ -716,12 +791,17 @@ local function toEqual(this: MatcherState, received: any, expected: any)
 	return {actual = received, expected = expected, message = message, name = matcherName, pass = pass}
 end
 
-local function toHaveLength(this: MatcherState, received: any, expected: number)
+local function toHaveLength(
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
+	received: any,
+	expected: number
+)
 	local matcherName = 'toHaveLength'
-	local isNot = this.isNot
+	local isNot = self.isNot
 	local options: MatcherHintOptions = {
 		isNot = isNot,
-		promise = this.promise,
+		promise = self.promise,
 	}
 
 	-- ROBLOX deviation: only strings and array-like tables have a well defined built in length in Lua
@@ -793,7 +873,8 @@ local function toHaveLength(this: MatcherState, received: any, expected: number)
 end
 
 local function toHaveProperty(
-	this: MatcherState,
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
 	received: any,
 	expectedPath: any,
 	expectedValue: any?
@@ -802,8 +883,8 @@ local function toHaveProperty(
 	local expectedArgument = 'path'
 	local hasValue = expectedValue ~= nil
 	local options: MatcherHintOptions = {
-		isNot = this.isNot,
-		promise = this.promise,
+		isNot = self.isNot,
+		promise = self.promise,
 		secondArgument = hasValue and 'value' or '',
 	}
 
@@ -831,7 +912,7 @@ local function toHaveProperty(
 
 	local expectedPathLength
 	if typeof(expectedPath) == 'string' then
-		expectedPathLength = #expectedPath:split('.')
+		expectedPathLength = #pathAsArray(expectedPath)
 	else
 		expectedPathLength = #expectedPath
 	end
@@ -900,7 +981,7 @@ local function toHaveProperty(
 						receivedValue,
 						EXPECTED_VALUE_LABEL,
 						RECEIVED_VALUE_LABEL,
-						isExpand(this.expand)
+						isExpand(self.expand)
 					)
 			end
 			retval = retval .. 'Received path: '
@@ -924,11 +1005,16 @@ end
 
 -- FIXME: After CLI-39007, change expected to have type string | RegExp type
 -- ROBLOX deviation: toMatch accepts Lua string patterns or RegExp polyfill but not simple substring
-local function toMatch(this: MatcherState, received: string, expected: any)
+local function toMatch(
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
+	received: string,
+	expected: any
+)
 	local matcherName = 'toMatch'
 	local options: MatcherHintOptions = {
-		isNot = this.isNot,
-		promise = this.promise,
+		isNot = self.isNot,
+		promise = self.promise,
 	}
 
 	if typeof(received) ~= 'string' then
@@ -993,11 +1079,16 @@ local function toMatch(this: MatcherState, received: string, expected: any)
 	return {message = message, pass = pass}
 end
 
-local function toMatchObject(this: MatcherState, received: any, expected: any)
+local function toMatchObject(
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
+	received: any,
+	expected: any
+)
 	local matcherName = 'toMatchObject'
 	local options: MatcherHintOptions = {
-		isNot = this.isNot,
-		promise = this.promise,
+		isNot = self.isNot,
+		promise = self.promise,
 	}
 
 	if typeof(received) ~= 'table' or received == nil then
@@ -1043,7 +1134,7 @@ local function toMatchObject(this: MatcherState, received: any, expected: any)
 					getObjectSubset(received, expected),
 					EXPECTED_LABEL,
 					RECEIVED_LABEL,
-					isExpand(this.expand)
+					isExpand(self.expand)
 				)
 		end
 	end
@@ -1061,12 +1152,17 @@ end
 	Of these, Jest-Roblox's version of the toStrictEqual matcher only
 	applies type checking
 ]]
-local function toStrictEqual(this: MatcherState, received: any, expected: any)
+local function toStrictEqual(
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
+	received: any,
+	expected: any
+)
 	local matcherName = 'toStrictEqual'
 	local options: MatcherHintOptions = {
 		comment = 'deep equality',
-		isNot = this.isNot,
-		promise = this.promise
+		isNot = self.isNot,
+		promise = self.promise
 	}
 
 	local pass = equals(received, expected, toStrictEqualTesters, true)
@@ -1093,7 +1189,7 @@ local function toStrictEqual(this: MatcherState, received: any, expected: any)
 					received,
 					EXPECTED_LABEL,
 					RECEIVED_LABEL,
-					isExpand(this.expand)
+					isExpand(self.expand)
 				)
 		end
 	end
@@ -1104,11 +1200,16 @@ local function toStrictEqual(this: MatcherState, received: any, expected: any)
 end
 
 -- ROBLOX deviation: Roblox Instance matchers
-local function toMatchInstance(this: MatcherState, received: any, expected: any)
+local function toMatchInstance(
+	-- ROBLOX deviation: self param in Lua needs to be explicitely defined
+	self: MatcherState,
+	received: any,
+	expected: any
+)
 	local matcherName = 'toMatchInstance'
 	local options: MatcherHintOptions = {
-		isNot = this.isNot,
-		promise = this.promise,
+		isNot = self.isNot,
+		promise = self.promise,
 	}
 
 	if getType(received) ~= 'Instance' or received == nil then
@@ -1154,7 +1255,7 @@ local function toMatchInstance(this: MatcherState, received: any, expected: any)
 					receivedSubset,
 					EXPECTED_LABEL,
 					RECEIVED_LABEL,
-					isExpand(this.expand)
+					isExpand(self.expand)
 				)
 		end
 	end

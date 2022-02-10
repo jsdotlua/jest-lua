@@ -2,9 +2,9 @@
 
 Status: :hammer: In Progress
 
-Source: https://github.com/facebook/jest/tree/v26.5.3/packages/expect
+Source: https://github.com/facebook/jest/tree/v27.4.7/packages/expect
 
-Version: v26.5.3
+Version: v27.4.7
 
 ---
 
@@ -42,12 +42,10 @@ Version: v26.5.3
 ```
 ```
 
-### :package: [Dependencies](https://github.com/facebook/jest/blob/v26.5.3/packages/expect/package.json)
-| Package | Version | Status | Notes |
-| - | - | - | - |
-| `@jest/types` | 26.5.2 | :x: Will not port | External type definitions are not a priority |
-| `ansi-styles` | 4.0.0 | :x: Will not port | Console output styling is not a priority |
-| `jest-get-type` | 26.3.0 | :heavy_check_mark: Ported | |
-| `jest-matcher-utils` | 26.5.2 | :heavy_check_mark: Ported | |
-| `jest-message-util` | 26.5.2 | :hammer: In Progress | Used for filtering stacktraces, low priority |
-| `jest-regex-util` | 26.0.0 | :x: Will not port | No need for regex libraries |
+### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.4.7/packages/expect/package.json)
+| Package              | Version | Status                    | Notes                                        |
+| -------------------- | ------- | ------------------------- | -------------------------------------------- |
+| `@jest/types`        | 27.4.2  | :heavy_check_mark: Ported |                                              |
+| `jest-get-type`      | 27.4.0  | :heavy_check_mark: Ported |                                              |
+| `jest-matcher-utils` | 27.4.6  | :heavy_check_mark: Ported |                                              |
+| `jest-message-util`  | 27.4.6  | :hammer: In Progress      | Used for filtering stacktraces, low priority |

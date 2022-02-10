@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.0.6/packages/jest-snapshot/src/__tests__/mock_serializer.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-snapshot/src/__tests__/mockSerializer.test.ts
 -- /**
 -- * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 -- *
@@ -17,9 +17,9 @@ return function()
 	local jestExpect = require(Packages.Dev.Expect)
 	local jest = require(Packages.Dev.Jest)
 
-	local prettyFormat = require(Packages.PrettyFormat).prettyFormat
+	local prettyFormat = require(Packages.PrettyFormat).format
 
-	local plugin_ = require(CurrentModule.mock_serializer)
+	local plugin_ = require(CurrentModule.mockSerializer)
 
 	it('mock with 0 calls and default name', function()
 		local fn = jest.fn()
@@ -29,7 +29,7 @@ return function()
 	it('mock with 1 calls and non-default name via new in object', function()
 		local fn = jest.fn()
 		fn.mockName('MyConstructor')
-		-- deviation: we add a mockReturnValueOnce statement because by default the return value
+		-- ROBLOX deviation: we add a mockReturnValueOnce statement because by default the return value
 		-- would be nil and then would not be printed in output since nil table values don't get
 		-- examined by Lua
 		fn.mockReturnValueOnce('undefined')
@@ -40,7 +40,7 @@ return function()
 		jestExpect(val).toMatchSnapshot()
 	end)
 
-	-- deviation: skipped because we don't have support for React elements in prettyFormat
+	-- ROBLOX deviation: skipped because we don't have support for React elements in prettyFormat
 	itSKIP('mock with 1 calls in React element', function()
 		local fn = jest.fn()
 		fn('Mocking you!')
@@ -57,7 +57,7 @@ return function()
 
 	it('mock with 2 calls', function()
 		local fn = jest.fn()
-		-- deviation: we add a mockReturnValue statement because by default the return value
+		-- ROBLOX deviation: we add a mockReturnValue statement because by default the return value
 		-- would be nil and then would not be printed in output since nil table values don't get
 		-- examined by Lua
 		fn.mockReturnValue('undefined')
@@ -69,7 +69,7 @@ return function()
 	it('indent option', function()
 		local fn = jest.fn(function(val) return val end)
 		fn({key = 'value'})
-		-- deviation: replaced Array with Table, Object with Table and [] with {}
+		-- ROBLOX deviation: replaced Array with Table, Object with Table and [] with {}
 		local expected = table.concat({
 			'[MockFunction] {',
 			'"calls": Table {',
@@ -95,7 +95,7 @@ return function()
 	it('min option', function()
 		local fn = jest.fn(function(val) return val end)
 		fn({key = 'value'})
-		-- deviation: replaced [] with {}
+		-- ROBLOX deviation: replaced [] with {}
 		local expected =
 			'[MockFunction] {"calls": {{{"key": "value"}}}, "results": {{"type": "return", "value": {"key": "value"}}}}'
 		jestExpect(prettyFormat(fn, {min = true, plugins = {plugin_}})).toBe(expected)
@@ -104,7 +104,7 @@ return function()
 	it('maxDepth option', function()
 		local fn1 = jest.fn()
 		fn1.mockName('atDepth1')
-		-- deviation: we add a mockReturnValueOnce statement because by default the return value
+		-- ROBLOX deviation: we add a mockReturnValueOnce statement because by default the return value
 		-- would be nil and then would not be printed in output since nil table values don't get
 		-- examined by Lua
 		fn1.mockReturnValueOnce('undefined')
@@ -125,7 +125,7 @@ return function()
 			}
 		}
 
-		-- deviation: replaced Array with Table, Object with Table and [] with {}
+		-- ROBLOX deviation: replaced Array with Table, Object with Table and [] with {}
 		local expected = table.concat({
 			'Table {', -- // ++depth === 1
 			'  "fn1": [MockFunction atDepth1] {',

@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.0.6/packages/jest-mock/src/__tests__/index.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-mock/src/__tests__/index.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -40,11 +40,11 @@ return function()
 					local fn = moduleMocker:fn()
 					jestExpect(fn.mock.instances).toEqual({})
 
-					-- deviation: We have to call fn.new() because we don't have a new keyword
+					-- ROBLOX deviation: We have to call fn.new() because we don't have a new keyword
 					local instance1 = fn.new()
 					jestExpect(fn.mock.instances[1]).toBe(instance1)
 
-					-- deviation: We have to call fn.new() because we don't have a new keyword
+					-- ROBLOX deviation: We have to call fn.new() because we don't have a new keyword
 					local instance2 = fn.new()
 					jestExpect(fn.mock.instances[2]).toBe(instance2)
 				end)
@@ -158,7 +158,7 @@ return function()
 					jestExpect(fn2()).never.toEqual('abcd')
 				end)
 
-				-- deviation: test is itSKIPped because we currently don't
+				-- ROBLOX deviation: test is itSKIPped because we currently don't
 				-- implement this ability to inspect functionArity
 				itSKIP('maintains function arity', function()
 					local mockFunctionArity1 = moduleMocker:fn(function(x) return x end)
@@ -168,7 +168,7 @@ return function()
 					jestExpect(#mockFunctionArity2).toBe(2)
 				end)
 
-				-- deviation: tests commented out for now, not yet implemented spyOn
+				-- ROBLOX deviation: tests commented out for now, not yet implemented spyOn
 				-- it('mocks the method in the passed object itself', function()
 				-- 	local parent = {func = function() return 'abcd' end}
 				-- 	local child = Object.create(parent)
@@ -230,4 +230,16 @@ return function()
 			end)
 		end)
 	end)
+
+	describe('mocked', function()
+		it('should return unmodified input', function()
+		  local subject = {};
+		  jestExpect(moduleMocker:mocked(subject)).toBe(subject);
+		end);
+	end);
+
+	--[[
+		ROBLOX deviation: skipped code:
+		original code lines 1462 - 1467
+	]]
 end

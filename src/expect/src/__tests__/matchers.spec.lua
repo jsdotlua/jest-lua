@@ -1,5 +1,5 @@
 --!nocheck
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/__tests__/matchers.test.js
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/__tests__/matchers.test.js
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -18,18 +18,18 @@ return function()
 	local Set = LuauPolyfill.Set
 	local Symbol = LuauPolyfill.Symbol
 
-	local RegExp = require(Packages.Dev.RegExp)
+	local RegExp = require(Packages.RegExp)
 
 	local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 	local stringify = require(Packages.JestMatcherUtils).stringify
 
-	-- deviation: omitted Immutable, chalk imports
+	-- ROBLOX deviation: omitted Immutable, chalk imports
 
 	local jestExpect = require(CurrentModule)
 
-	-- deviation: chalk enabled by default
+	-- ROBLOX deviation: chalk enabled by default
 
-	-- deviation: omitted isBigIntDefined variable declaration
+	-- ROBLOX deviation: omitted isBigIntDefined variable declaration
 
 	beforeAll(function()
 		jestExpect.addSnapshotSerializer(alignedAnsiStyleSerializer)
@@ -51,12 +51,19 @@ return function()
 			jestExpect(1).toBe(1)
 			jestExpect(nil).toBe(nil)
 			jestExpect(0/0).toBe(0/0)
+			--[[
+				ROBLOX deviation: skipped since BigInt doesn't exist in Luau
+				original code:
+				jestExpect(BigInt(1)).not.toBe(BigInt(2));
+				jestExpect(BigInt(1)).not.toBe(1);
+				jestExpect(BigInt(1)).toBe(BigInt(1));
+			]]
 		end)
 
 		--[[
-			deviation: omitted error test, test with +0 and -0, test with null and undefined
+			ROBLOX deviation: omitted error test, test with +0 and -0, test with null and undefined
 
-			deviation: the test with identical dates is omitted because two
+			ROBLOX deviation: the test with identical dates is omitted because two
 			equal dates are treated as the same in lua:
 			{DateTime.fromUniversalTime(2020, 2, 20), DateTime.fromUniversalTime(2020, 2, 20)},
 		]]
@@ -90,6 +97,19 @@ return function()
 			end)
 		end
 
+		--[[
+			ROBLOX deviation: skipped since BigInt doesn't exist in Luau
+			original code:
+			  [
+			    [BigInt(1), BigInt(2)],
+			    [{a: BigInt(1)}, {a: BigInt(1)}],
+			  ].forEach(([a, b]) => {
+			    it(`fails for: ${stringify(a)} and ${stringify(b)}`, () => {
+			      expect(() => jestExpect(a).toBe(b)).toThrowError('toBe');
+			    });
+			  });
+		]]
+
 		for _, testCase in ipairs({
 			false, 1, "a", {}
 		}) do
@@ -98,7 +118,17 @@ return function()
 			end)
 		end
 
-		-- deviation: we can't test nil as part of the loop above because the for loop
+		--[[
+			ROBLOX deviation: skipped since BigInt doesn't exist in Luau
+			original code:
+			  [BigInt(1), BigInt('1')].forEach(v => {
+			    it(`fails for '${stringify(v)}' with '.not'`, () => {
+			      expect(() => jestExpect(v).not.toBe(v)).toThrowError('toBe');
+			    });
+			  });
+		]]
+
+		-- ROBLOX deviation: we can't test nil as part of the loop above because the for loop
 		-- wouldn't iterate over a nil entry so we include the test separately
 		it("fails for nil with .never", function()
 			jestExpect(function() jestExpect(nil).never.toBe(nil) end).toThrowErrorMatchingSnapshot()
@@ -133,7 +163,7 @@ return function()
 	end)
 
 	--[[
-		deviation: the toStrictEqual matcher in Jest adds three features beyond
+		ROBLOX deviation: the toStrictEqual matcher in Jest adds three features beyond
 		that of the toEqual matcher:
 			1) Checking for undefined properties
 			2) Checking array sparseness
@@ -201,6 +231,13 @@ return function()
 			jestExpect({{a = {{a = nil}}}}).never.toStrictEqual({{a = {{}}}})
 		end)
 
+		-- ROBLOX deviation START: skipped since Lua doesn't support holes in a table
+		-- it('does not consider holes as undefined in sparse arrays', function()
+		-- 	-- eslint-disable-next-line no-sparse-arrays
+		-- 	jestExpect({, , , 1, , ,}).never.toStrictEqual({, , , 1, nil, ,});
+		-- end)
+		-- ROBLOX deviation END
+
 		it('passes when comparing same type', function()
 			jestExpect({
 				test = TestClassA.new(1, 2)
@@ -266,7 +303,7 @@ return function()
 		it('does not simply compare constructor names', function()
 			local c = TestClassC.new(1, 2)
 			local d = TestClassD.new(1, 2)
-			-- deviation: instead of comparing constructor name we compare tostring values
+			-- ROBLOX deviation: instead of comparing constructor name we compare tostring values
 			jestExpect(tostring(c)).toEqual(tostring(d))
 			jestExpect({test = c}).never.toStrictEqual({test = d})
 		end)
@@ -284,10 +321,38 @@ return function()
 		itSKIP('does not pass when equally sparse arrays have different values', function()
 			-- jestExpect({, 1}).never.toStrictEqual({, 2})
 		end)
+
+		--[[
+			ROBLOX deviation: skipped as Lua doesn't support ArrayBuffer
+			original code:
+			it('does not pass when ArrayBuffers are not equal', () => {
+			  expect(Uint8Array.from([1, 2]).buffer).not.toStrictEqual(
+			    Uint8Array.from([0, 0]).buffer,
+			  );
+			  expect(Uint8Array.from([2, 1]).buffer).not.toStrictEqual(
+			    Uint8Array.from([2, 2]).buffer,
+			  );
+			  expect(Uint8Array.from([]).buffer).not.toStrictEqual(
+			    Uint8Array.from([1]).buffer,
+			  );
+			});
+
+			it('passes for matching buffers', () => {
+			  expect(Uint8Array.from([1]).buffer).toStrictEqual(
+			    Uint8Array.from([1]).buffer,
+			  );
+			  expect(Uint8Array.from([]).buffer).toStrictEqual(
+			    Uint8Array.from([]).buffer,
+			  );
+			  expect(Uint8Array.from([9, 3]).buffer).toStrictEqual(
+			    Uint8Array.from([9, 3]).buffer,
+			  );
+			});
+		]]
  	end)
 
 	--[[
-			deviation: omitted test cases that become redundant in our Lua translation i.e.
+			ROBLOX deviation: omitted test cases that become redundant in our Lua translation i.e.
 
 			Number(0), 0
 			String('abc'), 'abc'
@@ -403,7 +468,33 @@ return function()
 					[Symbol.for_('foo')] = jestExpect.any("number"),
 					[Symbol.for_('bar')] = 1,
 				},
-			}
+			},
+			-- ROBLOX deviation START: no sparse arrays in Lua
+			-- {
+			-- 	-- eslint-disable-next-line no-sparse-arrays
+			-- 	{, , 1, ,},
+			-- 	-- eslint-disable-next-line no-sparse-arrays
+			-- 	{, , 2, ,},
+			-- },
+			-- ROBLOX deviation END
+			{
+				Object.assign({}, {[4294967295] = 1}),
+				Object.assign({}, {[4294967295] = 2}), -- issue 11056
+			},
+			{
+				-- eslint-disable-next-line no-useless-computed-key
+				Object.assign({}, {['-0'] = 1}),
+				-- eslint-disable-next-line no-useless-computed-key
+				Object.assign({}, {['0'] = 1}), -- issue 11056: also check (-0, 0)
+			},
+			{
+				Object.assign({}, {a = 1}),
+				Object.assign({}, {b = 1}), -- issue 11056: also check strings
+			},
+			{
+				Object.assign({}, {[Symbol()] = 1}),
+				Object.assign({}, {[Symbol()] = 1}), -- issue 11056: also check symbols
+			},
 		}) do
 			local a = testCase[1]
 			local b = testCase[2]
@@ -412,6 +503,22 @@ return function()
 				jestExpect(a).never.toEqual(b)
 			end)
 		end
+
+		--[[
+			ROBLOX deviation: skipped since BigInt doesn't exist in Luau
+			original code:
+			[
+			  [BigInt(1), BigInt(2)],
+			  [BigInt(1), 1],
+			].forEach(([a, b]) => {
+			  test(`{pass: false} expect(${stringify(a)}).toEqual(${stringify(
+			    b,
+			  )})`, () => {
+			    expect(() => jestExpect(a).toEqual(b)).toThrowError('toEqual');
+			    jestExpect(a).not.toEqual(b);
+			  });
+			});
+		]]
 
 		for _, testCase in ipairs({
 			{true, true},
@@ -502,6 +609,22 @@ return function()
 					nodeType = 1,
 				},
 			},
+			--[[
+				ROBLOX deviation: no sparse arrays in Lua
+				original code:
+				[
+				  // eslint-disable-next-line no-sparse-arrays
+				  [, , 1, ,],
+				  // eslint-disable-next-line no-sparse-arrays
+				  [, , 1, ,],
+				],
+				[
+				  // eslint-disable-next-line no-sparse-arrays
+				  [, , 1, , ,],
+				  // eslint-disable-next-line no-sparse-arrays
+				  [, , 1, undefined, ,], // same length but hole replaced by undefined
+				],
+			]]
 		}) do
 			local a = testCase[1]
 			local b = testCase[2]
@@ -510,6 +633,30 @@ return function()
 				jestExpect(function() jestExpect(a).never.toEqual(b) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
+
+		--[=[
+			ROBLOX deviation: skipped since BigInt doesn't exist in Luau
+			original code:
+			[
+			  [BigInt(1), BigInt(1)],
+			  [BigInt(0), BigInt('0')],
+			  [[BigInt(1)], [BigInt(1)]],
+			  [
+			    [BigInt(1), 2],
+			    [BigInt(1), 2],
+			  ],
+			  [Immutable.List([BigInt(1)]), Immutable.List([BigInt(1)])],
+			  [{a: BigInt(99)}, {a: BigInt(99)}],
+			  [new Set([BigInt(1), BigInt(2)]), new Set([BigInt(1), BigInt(2)])],
+			].forEach(([a, b]) => {
+			  test(`{pass: true} expect(${stringify(a)}).not.toEqual(${stringify(
+			    b,
+			  )})`, () => {
+			    jestExpect(a).toEqual(b);
+			    expect(() => jestExpect(a).not.toEqual(b)).toThrowError('toEqual');
+			  });
+			});
+		]=]
 
 		-- ROBLOX TODO: assertion error currently returns strings, not an object
 		itSKIP('assertion error matcherResult property contains matcher name, expected and actual values', function()
@@ -541,7 +688,7 @@ return function()
 			jestExpect(actual2).never.toEqual(expected)
 		end)
 
-		-- deviation: test omitted because it's not applicable to Lua translation
+		-- ROBLOX deviation: test omitted because it's not applicable to Lua translation
 		itSKIP('non-enumerable members should be skipped during equal', function()
 			-- local actual = {
 			-- 	x = 3,
@@ -553,7 +700,7 @@ return function()
 			-- expect(actual).toEqual({x = 3})
 		end)
 
-		-- deviation: test omitted because it's not applicable to Lua translation
+		-- ROBLOX deviation: test omitted because it's not applicable to Lua translation
 		itSKIP('non-enumerable symbolic members should be skipped during equal', function()
 			-- local actual = {
 			-- 	x = 3,
@@ -620,7 +767,7 @@ return function()
 		end)
 	end)
 
-	-- deviation: major deviations to toBeInstanceOf, check README for more info
+	-- ROBLOX deviation: major deviations to toBeInstanceOf, check README for more info
 	describe(".toBeInstanceOf()", function()
 		local A = {}
 		A.__index = A
@@ -737,7 +884,7 @@ return function()
 	end)
 
 	describe(".toBeTruthy(), .toBeFalsy()", function()
-		-- deviation: can't pass in nil as an argument because it's identical to no argument
+		-- ROBLOX deviation: can't pass in nil as an argument because it's identical to no argument
 		it('does not accept arguments', function()
 			jestExpect(function() jestExpect(0).toBeTruthy(1) end).toThrowErrorMatchingSnapshot(
 			)
@@ -746,7 +893,7 @@ return function()
 			)
 		end)
 
-		-- deviation: 0, '' and nan are falsy in JS but truthy in Lua so we will treat them as truthy
+		-- ROBLOX deviation: 0, '' and nan are falsy in JS but truthy in Lua so we will treat them as truthy
 		for _, testCase in ipairs({
 			{},
 			true,
@@ -784,6 +931,21 @@ return function()
 			jestExpect(function() jestExpect(false).toBeTruthy() end).toThrowErrorMatchingSnapshot()
 			jestExpect(function() jestExpect(false).never.toBeFalsy() end).toThrowErrorMatchingSnapshot()
 		end)
+
+		--[[
+			ROBLOX deviation: skipped since BigInt doesn't exist in Luau
+			original code:
+			[BigInt(0)].forEach(v => {
+			  test(`'${stringify(v)}' is falsy`, () => {
+			    jestExpect(v).toBeFalsy();
+			    jestExpect(v).not.toBeTruthy();
+
+			    expect(() => jestExpect(v).toBeTruthy()).toThrowError('toBeTruthy');
+
+			    expect(() => jestExpect(v).not.toBeFalsy()).toThrowError('toBeFalsy');
+			  });
+			});
+		]]
 	end)
 
 	describe(".toBeNan()", function()
@@ -813,7 +975,7 @@ return function()
 			end
 		end)
 
-		-- deviation: tests our alias
+		-- ROBLOX deviation: tests our alias
 		it("aliased as toBeNaN()", function()
 			jestExpect(0/0).toBeNaN()
 		end)
@@ -844,7 +1006,7 @@ return function()
 			jestExpect(nil).toBeNil()
 		end)
 
-		-- deviation: tests our alias
+		-- ROBLOX deviation: tests our alias
 		it("aliased as toBeNull()", function()
 			jestExpect(nil).toBeNull()
 		end)
@@ -867,6 +1029,21 @@ return function()
 				jestExpect(function() jestExpect(testCase :: any).toBeUndefined() end).toThrowErrorMatchingSnapshot()
 			end)
 		end
+
+		--[[
+			ROBLOX deviation: skipped since BigInt doesn't exist in Luau
+			original code:
+			[BigInt(1)].forEach(v => {
+				test(`'${stringify(v)}' is defined`, () => {
+			    jestExpect(v).toBeDefined();
+			    jestExpect(v).not.toBeUndefined();
+
+			    expect(() => jestExpect(v).not.toBeDefined()).toThrowError('toBeDefined');
+
+			    expect(() => jestExpect(v).toBeUndefined()).toThrowError('toBeUndefined');
+			  });
+			});
+		]]
 
 		it("nil is undefined", function()
 			jestExpect(nil).toBeUndefined()
@@ -962,6 +1139,10 @@ return function()
 			end)
 		end
 
+		--[[
+			ROBLOX deviation: skipped since BigInt doesn't exist in Luau
+			original code lines 1278 - 1372
+		]]
 		for _, testCase in ipairs({
 			{1, 1},
 			{Number.MIN_SAFE_INTEGER, Number.MIN_SAFE_INTEGER},
@@ -985,12 +1166,17 @@ return function()
 				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
+
+		--[[
+			ROBLOX deviation: skipped since BigInt doesn't exist in Luau
+			original code lines 1395 - 1411
+		]]
 	end)
 
 	describe(".toContain(), .toContainEqual()", function()
 		--local typedArray = {0, 1}
 
-		-- deviation: skipped test with custom iterator
+		-- ROBLOX deviation: skipped test with custom iterator
 		itSKIP("iterable", function()
 			-- const iterable = {
 			-- 	*[Symbol.iterator]() {
@@ -1026,6 +1212,11 @@ return function()
 			end)
 		end
 
+		--[[
+			ROBLOX deviation: skipped since BigInt doesn't exist in Luau
+			original code lines 1461 - 1470
+		]]
+
 		for _, testCase in ipairs({
 			{{1, 2, 3}, 4},
 			{{{}, {}}, {}}
@@ -1037,8 +1228,33 @@ return function()
 			end)
 		end
 
+		--[[
+			ROBLOX deviation: skipped since BigInt doesn't exist in Luau
+			original code lines 1487 - 1493
+		]]
+
 		it("error cases", function()
 			jestExpect(function() jestExpect(nil).toContain(1) end).toThrowErrorMatchingSnapshot()
+			jestExpect(function() jestExpect('-0').toContain(-0) end).toThrowErrorMatchingSnapshot()
+			-- ROBLOX deviation START: Lua specific case for `nil`
+			jestExpect(function()
+				jestExpect('nil').toContain(nil)
+			end).toThrowErrorMatchingSnapshot()
+			-- ROBLOX deviation END
+			jestExpect(function()
+				jestExpect('null').toContain(nil)
+			end).toThrowErrorMatchingSnapshot()
+			jestExpect(function()
+				jestExpect('undefined').toContain(nil)
+			end).toThrowErrorMatchingSnapshot()
+			jestExpect(function()
+				jestExpect('false').toContain(false)
+			end).toThrowErrorMatchingSnapshot()
+			-- ROBLOX deviation START: skipped since BigInt doesn't exist in Luau
+			-- jestExpect(function()
+			-- 	return jestExpect('1').toContain(BigInt(1))
+			-- end).toThrowError('toContain')
+			-- ROBLOX deviation END
 		end)
 
 		for _, testCase in ipairs({
@@ -1140,7 +1356,7 @@ return function()
 				jestExpect(function() jestExpect(received).never.toBeCloseTo() end).toThrowErrorMatchingSnapshot()
 			end)
 
-			-- deviation: omitted promise rejects and resolve tests
+			-- ROBLOX deviation: omitted promise rejects and resolve tests
 		end)
 	end)
 
@@ -1197,7 +1413,7 @@ return function()
 			end)
 		end
 
-		-- deviation: we use toContain here as in our translation toMatch is
+		-- ROBLOX deviation: we use toContain here as in our translation toMatch is
 		-- used for patterns and toContain is used for explicit string matching
 		it("escapes strings properly", function()
 			jestExpect('this?: throws').toContain('this?: throws')
@@ -1208,7 +1424,7 @@ return function()
 
 			jestExpect('f123').toMatch(regex)
 			jestExpect('F456').toMatch(regex)
-			-- deviation: omitted expect call for RegExp state
+			-- ROBLOX deviation: omitted expect call for RegExp state
 		end)
 
 		it('tests regex logic', function()
@@ -1220,7 +1436,7 @@ return function()
 	end)
 
 	describe(".toHaveLength", function()
-		-- deviation: {function() end, 0} is omitted, can't get the argument count of a function in Lua
+		-- ROBLOX deviation: {function() end, 0} is omitted, can't get the argument count of a function in Lua
 		for _, testCase in ipairs({
 			{{1, 2}, 2},
 			{{}, 0},
@@ -1242,7 +1458,7 @@ return function()
 			end)
 		end
 
-		-- deviation: custom test to allow for Lua objects with a length value
+		-- ROBLOX deviation: custom test to allow for Lua objects with a length value
 		local obj = { length = 12 }
 		it(string.format(
 			'{pass: false} expect(%s).toHaveLength(12)',
@@ -1251,7 +1467,7 @@ return function()
 			jestExpect(obj).toHaveLength(12)
 		end)
 
-		-- deviation: omitted function test, no argument count of function in lua
+		-- ROBLOX deviation: omitted function test, no argument count of function in lua
 		for _, testCase in ipairs({
 			{{1, 2}, 3},
 			{{}, 1},
@@ -1295,7 +1511,7 @@ return function()
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
-			-- deviation: remove promise rejects/resolves in the following tests for now
+			-- ROBLOX deviation: remove promise rejects/resolves in the following tests for now
 			it('number inf', function()
 				local expected = math.huge
 				local received = 'abc'
@@ -1360,15 +1576,19 @@ return function()
 			{{a = 0}, 'a', 0},
 			{{a = {b = false}}, 'a.b', false},
 			--[[
-				deviation: we omit the following test case since it isn't behavior
+				ROBLOX deviation: we omit the following test case since it isn't behavior
 				we can easily support and maintain consistency with in Lua. The test
 				case also looks like it is slated for removal in upstream in the next
 				major breaking change
 				{{a = {}}, 'a.b', nil}
 			]]
 			{{a = {b = {c = 5}}}, 'a.b', {c = 5}},
+			-- ROBLOX TODO: enable following tests
+			{{a = {b = {{c = {{d = 1}}}}}}, 'a.b[1].c[1].d', 1},
+			{{a = {b = {{c = {d = {{e = 1}, {f = 2}}}}}}}, 'a.b[1].c.d[2].f', 2},
+			{{a = {b = {{{c = {{d = 1}}}}}}}, 'a.b[1][1].c[1].d', 1},
 			{Object.assign({}, {property = 1}), 'property', 1},
-			-- deviation: len isn't a property of an object like it is in JS
+			-- ROBLOX deviation: len isn't a property of an object like it is in JS
 			{'', 'len', jestExpect.any("function")}
 		}) do
 			local obj = testCase[1]
@@ -1382,7 +1602,7 @@ return function()
 			end)
 		end
 
-		-- deviation: we omit two test cases where the property to check for
+		-- ROBLOX deviation: we omit two test cases where the property to check for
 		-- is undefined in upstream and we do not support checking for nil in
 		-- toHaveProperty
 		for _, testCase in ipairs({
@@ -1431,6 +1651,33 @@ return function()
 					jestExpect(function() jestExpect(obj).never.toHaveProperty(keyPath) end).toThrowErrorMatchingSnapshot()
 			end)
 		end
+
+		--[[
+			ROBLOX TODO: tests not ported yet
+			original code:
+			[
+			  [{a: {b: {c: {}}}}, 'a.b.c.d'],
+			  [{a: {b: {c: {}}}}, '.a.b.c'],
+			  [{a: 1}, 'a.b.c.d'],
+			  [{}, 'a'],
+			  [1, 'a.b.c'],
+			  ['abc', 'a.b.c'],
+			  [false, 'key'],
+			  [0, 'key'],
+			  ['', 'key'],
+			  [Symbol(), 'key'],
+			  [Object.assign(Object.create(null), {key: 1}), 'not'],
+			].forEach(([obj, keyPath]) => {
+			  test(`{pass: false} expect(${stringify(
+			    obj,
+			  )}).toHaveProperty('${keyPath}')`, () => {
+			    expect(() =>
+			      jestExpect(obj).toHaveProperty(keyPath),
+			    ).toThrowErrorMatchingSnapshot();
+			    jestExpect(obj).not.toHaveProperty(keyPath);
+			  });
+			});
+		]]
 
 		for _, testCase in ipairs({
 			{nil, 'a.b'},

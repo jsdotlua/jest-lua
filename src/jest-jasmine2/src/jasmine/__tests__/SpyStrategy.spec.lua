@@ -1,6 +1,6 @@
--- upstream: https://github.com/jasmine/jasmine/blob/v3.6.0/spec/core/SpyStrategySpec.js
+-- ROBLOX upstream: https://github.com/jasmine/jasmine/blob/v3.6.0/spec/core/SpyStrategySpec.js
 --[[
-	Our usual upstream of jest v26.5.3 doesn't include any tests for the
+	Our usual upstream of jest v27.4.7 doesn't include any tests for the
 	SpyStrategy file so we instead look to the source that the jest/jasmine2
 	is based off of, jasmine
 ]]
@@ -35,7 +35,7 @@ return function()
 
 			spyStrategy:exec()
 
-			-- deviation: toHaveBeenCalledWith() has not been implemented so
+			-- ROBLOX deviation: toHaveBeenCalledWith() has not been implemented so
 			-- we use calls:any() to see if a call has been made
 			expect(equals(originalFn.calls:any())).to.equal(false)
 		end)
@@ -90,7 +90,7 @@ return function()
 			expect(originalFn.calls:any()).to.equal(false)
 		end)
 
-		-- deviation: test skipped because its translation is identical to the
+		-- ROBLOX deviation: test skipped because its translation is identical to the
 		-- one above
 		itSKIP('allows a string to be thrown, wrapping it into an exception when executed', function()
 			local originalFn = createSpy('original')

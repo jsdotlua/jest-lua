@@ -1,4 +1,4 @@
--- deviation: this file does not exist in upstream
+-- ROBLOX NOTE: no upstream
 
 return function()
 	local CurrentModule = script.Parent.Parent

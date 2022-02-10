@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-matcher-utils/src/__tests__/deepCyclicCopyReplaceable.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-matcher-utils/src/__tests__/deepCyclicCopyReplaceable.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -30,7 +30,7 @@ return function()
 		expect(deepCyclicCopyReplaceable(fn)).to.equal(fn)
 	end)
 
-	-- deviation: test skipped because Lua doesn't have functionality
+	-- ROBLOX deviation: test skipped because Lua doesn't have functionality
 	-- corresponding to these property descriptors
 	itSKIP("convert accessor descriptor into value descriptor", function()
 		--[[
@@ -57,7 +57,7 @@ return function()
 		]]
 	end)
 
-	-- deviation: test skipped because Lua has no concept of enumerables and
+	-- ROBLOX deviation: test skipped because Lua has no concept of enumerables and
 	-- non-enumerables
 	itSKIP("shuold not skips non-enumerables", function()
 		--[[
@@ -77,7 +77,7 @@ return function()
 		]]
 	end)
 
-	-- deviation: test skipped because Lua has no Symbol type
+	-- ROBLOX deviation: test skipped because Lua has no Symbol type
 	itSKIP("copies symbols", function()
 		--[[
 			const symbol = Symbol('foo');
@@ -118,7 +118,7 @@ return function()
 
 		expect(equals(map, copy)).to.equal(true)
 
-		-- deviation: omitted expect call because there's no functionality to
+		-- ROBLOX deviation: omitted expect call because there's no functionality to
 		-- compare constructors in the same way
 		-- expect(copy.constructor).toBe(Map);
 	end)
@@ -137,11 +137,11 @@ return function()
 		expect(deepCyclicCopyReplaceable(date)).to.equal(date)
 		expect(equals(deepCyclicCopyReplaceable(numberArray), numberArray)).to.equal(true)
 		expect(equals(deepCyclicCopyReplaceable(set), set)).to.equal(true)
-		-- deviation: omitted expect calls because there are no distinct
+		-- ROBLOX deviation: omitted expect calls because there are no distinct
 		-- buffer or regular expression types in Lua
 	end)
 
-	-- deviation: test skipped because Lua has no Symbol type
+	-- ROBLOX deviation: test skipped because Lua has no Symbol type
 	itSKIP("should copy object symbol key property", function()
 		--[[
 			const symbolKey = Symbol.for('key');
@@ -149,7 +149,7 @@ return function()
 		]]
 	end)
 
-	-- deviation: test skipped because Lua doesn't have properties like
+	-- ROBLOX deviation: test skipped because Lua doesn't have properties like
 	-- 'configurable' and 'writable'
 	itSKIP("should set writable, configurable to true", function()
 		--[[
@@ -167,7 +167,7 @@ return function()
 		]]
 	end)
 
-	-- deviation: Test not present in upstream
+	-- ROBLOX deviation: Test not present in upstream
 	it("should keep metatable on copied table", function()
 		local a = {}
 		setmetatable(a, {test = 1})

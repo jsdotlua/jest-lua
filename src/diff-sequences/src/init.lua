@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/diff-sequences/src/index.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/diff-sequences/src/index.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -11,7 +11,7 @@ local Packages = CurrentModule.Parent
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Number = LuauPolyfill.Number
-type Array<T> = { T }
+type Array<T> = LuauPolyfill.Array<T>
 
 -- This diff-sequences package implements the linear space variation in
 -- An O(ND) Difference Algorithm and Its Variations by Eugene W. Myers
@@ -71,7 +71,7 @@ type FoundSubsequence = (
 	number -- caller can assume: 0 <= bCommon && bCommon < bLength
 ) -> ();
 
--- deviation: omitted since Luau doesn't have mixed type arrays
+-- ROBLOX deviation: omitted since Luau doesn't have mixed type arrays
 -- // Either original functions or wrapped to swap indexes if graph is transposed.
 -- export type Callbacks = {
 -- 	FoundSubsequence;
@@ -596,7 +596,7 @@ local function divide(
 
 	if baDeltaLength % 2 == 0 then
 		-- The number of changes in paths is 2 * d if length difference is even.
-		-- deviation: lua treats 0 as a true value
+		-- ROBLOX deviation: lua treats 0 as a true value
 		local dMin = (nChange ~= 0 and nChange or baDeltaLength) / 2
 		local dMax = (aLength + bLength) / 2
 

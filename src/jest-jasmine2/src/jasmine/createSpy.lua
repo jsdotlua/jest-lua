@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-jasmine2/src/jasmine/createSpy.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-jasmine2/src/jasmine/createSpy.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -41,9 +41,9 @@ local Array = LuauPolyfill.Array
 local CallTracker = require(CurrentModule.CallTracker)
 local SpyStrategy = require(CurrentModule.SpyStrategy)
 
--- deviation: we don't define a type like Fn
+-- ROBLOX deviation: we don't define a type like Fn
 
--- deviation: function not annotated with Spy
+-- ROBLOX deviation: function not annotated with Spy
 return function(name: string, originalFn: { [any] : any }?)
 	originalFn = originalFn or {}
 
@@ -56,7 +56,7 @@ return function(name: string, originalFn: { [any] : any }?)
 	})
 
 	local callTracker = CallTracker.new()
-	-- deviation: spy not annotated with Spy
+	-- ROBLOX deviation: spy not annotated with Spy
 	local spy = function(...)
 		local callData: CallTracker.Context = {
 			object = nil,
@@ -81,13 +81,13 @@ return function(name: string, originalFn: { [any] : any }?)
 		end
 	end
 
-	-- deviation: changed implementation since Lua doesn't support function
+	-- ROBLOX deviation: changed implementation since Lua doesn't support function
 	-- properties so instead of returning the spy, the result returned by this
 	-- function is a table with a __call metamethod
 	setmetatable(spyTable, {__call = function(self, ...) return spy(...) end})
 
 	spyTable['and'] = spyStrategy
-	-- deviation: we expose andAlso to allow for cleaner method chaining since and
+	-- ROBLOX deviation: we expose andAlso to allow for cleaner method chaining since and
 	-- is a Lua built in
 	spyTable['andAlso'] = spyStrategy
 	spyTable['calls'] = callTracker

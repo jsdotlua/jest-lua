@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.0.6/packages/jest-snapshot/src/index.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-snapshot/src/index.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -6,12 +6,12 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
--- deviation: omitting imports for file system interaction
+-- ROBLOX deviation: omitting imports for file system interaction
 
 local CurrentModule = script
 local Packages = CurrentModule.Parent
 
--- deviation: used to communicate with the TestEZ test runner
+-- ROBLOX deviation: used to communicate with the TestEZ test runner
 local JEST_TEST_CONTEXT = "__JEST_TEST_CONTEXT__"
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
@@ -62,7 +62,7 @@ local _toMatchSnapshot, _toThrowErrorMatchingSnapshot
 local DID_NOT_THROW = "Received function did not throw"
 local NOT_SNAPSHOT_MATCHERS = "Snapshot matchers cannot be used with " .. BOLD_WEIGHT("never")
 
--- deviation: we cannot have multiline regex patterns in Lua so in our usage of
+-- ROBLOX deviation: we cannot have multiline regex patterns in Lua so in our usage of
 -- this pattern, we will first split on newlines and then use it
 -- local INDENTATION_REGEX = "^([^%S\n]*)%S"
 
@@ -98,7 +98,7 @@ end
 
 -- ROBLOX TODO: ADO-1552 Add stripAddedIndentation when we support inlineSnapshot testing
 
--- deviation: omitted fileExists and cleanup
+-- ROBLOX deviation: omitted fileExists and cleanup
 
 local function toMatchSnapshot(
 	...
@@ -113,7 +113,7 @@ local function toMatchSnapshot(
 	local properties
 
 	local length = select("#", ...)
-	-- deviation: all the length parameters are one more than upstream because
+	-- ROBLOX deviation: all the length parameters are one more than upstream because
 	-- the this parameter isn't counted in upstream
 	if length == 3 and typeof(propertiesOrHint) == "string" then
 		hint = propertiesOrHint
@@ -189,7 +189,7 @@ function _toMatchSnapshot(config: types.MatchSnapshotConfig)
 		local ok, result = pcall(function()
 			return SnapshotState.new(
 				snapshotPath,
-				{ updateSnapshot = _G.UPDATESNAPSHOT or "none" }
+				{ updateSnapshot = _G.UPDATESNAPSHOT or "none", snapshotFormat = {} }
 			)
 		end)
 		if ok then
@@ -201,7 +201,7 @@ function _toMatchSnapshot(config: types.MatchSnapshotConfig)
 	context.snapshotState = context.snapshotState or _G[JEST_TEST_CONTEXT].snapshotState
 	context.currentTestName = context.currentTestName or table.concat(_G[JEST_TEST_CONTEXT].blocks, " ")
 
-	-- deviation: we don't call dontThrow because we don't yet have the functionality in
+	-- ROBLOX deviation: we don't call dontThrow because we don't yet have the functionality in
 	-- place where we add errors to global matcher state and deal with them accordingly
 	-- so we instead rely on throwing the actual errors
 	-- local _ = context.dontThrow and context.dontThrow()
@@ -393,7 +393,7 @@ function _toThrowErrorMatchingSnapshot(
 	local matcherName = config.matcherName
 	local received = config.received
 
-	-- deviation: we don't call dontThrow because we don't yet have the functionality in
+	-- ROBLOX deviation: we don't call dontThrow because we don't yet have the functionality in
 	-- place where we add errors to global matcher state and deal with them accordingly
 	-- so we instead rely on throwing the actual errors
 	-- local _ = context.dontThrow and context.dontThrow()
@@ -444,7 +444,7 @@ function _toThrowErrorMatchingSnapshot(
 		))
 	end
 
-	-- deviation: instead of being able to set received = error.message in our
+	-- ROBLOX deviation: instead of being able to set received = error.message in our
 	-- _toMatchSnapshot call, we have to deal with different cases since in Lua
 	-- we could be dealing with our Error polyfill, a thrown object, or a thrown
 	-- string

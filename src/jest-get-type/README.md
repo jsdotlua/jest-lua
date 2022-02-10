@@ -2,9 +2,9 @@
 
 Status: :heavy_check_mark: Ported
 
-Source: https://github.com/facebook/jest/tree/v27.2.5/packages/jest-get-type
+Source: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-get-type
 
-Version: v26.3.0
+Version: v27.4.7
 
 ---
 
@@ -25,6 +25,6 @@ Types supported:
 ```
 ```
 
-### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.2.5/packages/jest-get-type/package.json)
+### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.4.7/packages/jest-get-type/package.json)
 | Package | Version | Status | Notes |
-| - | - | - | - |
+| ------- | ------- | ------ | ----- |

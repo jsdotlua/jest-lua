@@ -1,3 +1,5 @@
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/diff-sequences/src/__tests__/__snapshots__/index.test.ts.snap
+
 local snapshots = {}
 
 snapshots['common substrings regression 1'] = [=[

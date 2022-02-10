@@ -2,9 +2,9 @@
 
 Status: :hammer: In Progress
 
-Source: https://github.com/facebook/jest/tree/v27.0.6/packages/jest-mock
+Source: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-mock
 
-Version: v27.0.6
+Version: v27.4.7
 
 ---
 
@@ -21,7 +21,8 @@ Version: v27.0.6
 ```
 ```
 
-### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.0.6/packages/jest-mock/package.json)
-| Package | Version | Status | Notes |
-| - | - | - | - |
-| `@jest/types` | 27.0.6 | :x: Will not port | External type definitions are not a priority |
+### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.4.7/packages/jest-mock/package.json)
+| Package       | Version | Status                    | Notes |
+| ------------- | ------- | ------------------------- | ----- |
+| `@jest/types` | 27.0.6  | :heavy_check_mark: Ported |       |
+| `@types/node` | *       | :x: Will not port         |       |

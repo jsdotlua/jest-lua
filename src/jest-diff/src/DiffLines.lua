@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/diffLines.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-diff/src/diffLines.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -8,6 +8,8 @@
 
 local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent
+local LuauPolyfill = require(Packages.LuauPolyfill)
+type Array<T> = LuauPolyfill.Array<T>
 
 local diff = require(Packages.DiffSequences)
 
@@ -17,7 +19,6 @@ local DIFF_EQUAL = CleanupSemantic.DIFF_EQUAL
 local DIFF_INSERT = CleanupSemantic.DIFF_INSERT
 local Diff = CleanupSemantic.Diff
 type Diff = CleanupSemantic.Diff
-type Array<T> = { [number]: T }
 
 local joinAlignedDiffsExpand = require(CurrentModule.JoinAlignedDiffs).joinAlignedDiffsExpand
 local joinAlignedDiffsNoExpand = require(CurrentModule.JoinAlignedDiffs).joinAlignedDiffsNoExpand
@@ -76,12 +77,12 @@ local function printAnnotation(
 		local aCount = tostring(changeCounts.a)
 		local bCount = tostring(changeCounts.b)
 
-		-- // Padding right aligns the ends of the annotations.
+		-- Padding right aligns the ends of the annotations.
 		local baAnnotationLengthDiff = #bAnnotation - #aAnnotation
 		local aAnnotationPadding = string.rep(' ', math.max(0, baAnnotationLengthDiff))
 		local bAnnotationPadding = string.rep(' ', math.max(0, -baAnnotationLengthDiff))
 
-		-- // Padding left aligns the ends of the counts.
+		-- Padding left aligns the ends of the counts.
 		local baCountLengthDiff = #bCount - #aCount
 		local aCountPadding = string.rep(' ', math.max(0, baCountLengthDiff))
 		local bCountPadding = string.rep(' ', math.max(0, -baCountLengthDiff))
@@ -108,7 +109,7 @@ local function printDiffLines(
 	return printAnnotation(options, countChanges(diffs)) .. joinAlignedDiffsNoExpand(diffs, options)
 end
 
--- // Compare two arrays of strings line-by-line. Format as comparison lines.
+-- Compare two arrays of strings line-by-line. Format as comparison lines.
 local function diffLinesUnified(
 	aLines: { [number]: string },
 	bLines: { [number]: string },
@@ -130,9 +131,9 @@ local function diffLinesUnified(
 	)
 end
 
--- // Given two pairs of arrays of strings:
--- // Compare the pair of comparison arrays line-by-line.
--- // Format the corresponding lines in the pair of displayable arrays.
+-- Given two pairs of arrays of strings:
+-- Compare the pair of comparison arrays line-by-line.
+-- Format the corresponding lines in the pair of displayable arrays.
 local function diffLinesUnified2(
 	aLinesDisplay: { [number]: string },
 	bLinesDisplay: { [number]: string },
@@ -153,13 +154,13 @@ local function diffLinesUnified2(
 		#aLinesDisplay ~= #aLinesCompare or
 		#bLinesDisplay ~= #bLinesCompare
 	then
-		-- // Fall back to diff of display lines.
+		-- Fall back to diff of display lines.
 		return diffLinesUnified(aLinesDisplay, bLinesDisplay, options)
 	end
 
 	local diffs = diffLinesRaw(aLinesCompare, bLinesCompare)
 
-	-- // Replace comparison lines with displayable lines.
+	-- Replace comparison lines with displayable lines.
 	local aIndex = 0
 	local bIndex = 0
 	for _, d in ipairs(diffs) do
@@ -180,7 +181,7 @@ local function diffLinesUnified2(
 	return printDiffLines(diffs, normalizeDiffOptions(options))
 end
 
--- // Compare two arrays of strings line-by-line.
+-- Compare two arrays of strings line-by-line.
 function diffLinesRaw(
 	aLines:{ [number]: string },
 	bLines:{ [number]: string }
@@ -219,7 +220,7 @@ function diffLinesRaw(
 
 	diff(aLength, bLength, isCommon, foundSubsequence)
 
-	-- // After the last common subsequence, push remaining change items.
+	-- After the last common subsequence, push remaining change items.
 	while aIndex ~= aLength do
 		table.insert(diffs, Diff.new(DIFF_DELETE, aLines[aIndex + 1]))
 		aIndex += 1

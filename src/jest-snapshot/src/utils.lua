@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.0.6/packages/jest-snapshot/src/utils.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-snapshot/src/utils.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -6,7 +6,7 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
--- deviation: for now we have ported a very limited subset of utils that
+-- ROBLOX deviation: for now we have ported a very limited subset of utils that
 -- corresponds to the functions needed by the other translated files. We plan
 -- on filling the rest of utils out as we continue with the jest-snapshot file.
 
@@ -28,6 +28,8 @@ local Error = LuauPolyfill.Error
 local Object = LuauPolyfill.Object
 local String = LuauPolyfill.String
 
+type Array<T> = LuauPolyfill.Array<T>
+
 -- local chalk = require(Packages.ChalkLua)
 
 -- ROBLOX TODO: ADO-1633 fix Jest Types imports
@@ -35,12 +37,15 @@ local String = LuauPolyfill.String
 type ConfigPath = string
 type ConfigSnapshotUpdateState = string
 
-local prettyFormat = require(Packages.PrettyFormat).prettyFormat
+local PrettyFormat = require(Packages.PrettyFormat)
+local PrettyFormat_ = require(CurrentModule.PrettyFormat)
+
+-- ROBLOX TODO: fix PrettyFormat types imports
+type PrettyFormatOptions = PrettyFormat_.OptionsReceived
+local prettyFormat = PrettyFormat.format
 local getSerializers = require(CurrentModule.plugins).getSerializers
 
 local types = require(CurrentModule.types)
-
-type Array<T> = { T }
 
 local SNAPSHOT_VERSION = "1"
 -- local SNAPSHOT_VERSION_REGEXP = "^// Jest Snapshot v(.+),"
@@ -127,13 +132,13 @@ local function getSnapshotData(
 	local data = {}
 	local dirty = false
 
-	-- deviation: snapshots in Jest Roblox are ModuleScripts, so we require them to load them
+	-- ROBLOX deviation: snapshots in Jest Roblox are ModuleScripts, so we require them to load them
 	pcall(
 		function()
 			data = require(snapshotPath)
 		end
 	)
-	-- deviation: omitted validateSnapshotVersion for now since we will have our own
+	-- ROBLOX deviation: omitted validateSnapshotVersion for now since we will have our own
 	-- snapshot versioning
 	-- local validationResult = validateSnapshotVersion(data)
 	local isInvalid = false -- data and validationResult
@@ -176,15 +181,16 @@ end
 local escapeRegex = true
 local printFunctionName = false
 
-local function serialize(val: any, indent: number?): string
+local function serialize(val: any, indent: number?, formatOverrides: PrettyFormatOptions?): string
 	indent = indent or 2
+	formatOverrides = formatOverrides or {}
 	return normalizeNewLines(
-		prettyFormat(val, {
+		prettyFormat(val, Object.assign({
 			escapeRegex = escapeRegex,
 			indent = indent,
 			plugins = getSerializers(),
 			printFunctionName = printFunctionName
-		})
+		}, formatOverrides))
 	)
 end
 
@@ -205,19 +211,19 @@ local function deserializeString(stringified: string): string
 	return stringified
 end
 
--- deviation: we don't escape any characters since multiline literals don't
+-- ROBLOX deviation: we don't escape any characters since multiline literals don't
 -- consume escape sequences
 local function escapeBacktickString(str: string): string
 	return str
 end
 
--- deviation: we change from backtick to our literal string delimiter [=[ and ]=]
+-- ROBLOX deviation: we change from backtick to our literal string delimiter [=[ and ]=]
 local function printBacktickString(str: string): string
 	return "[=[\n" .. str .. "]=]"
 end
 
 local function ensureDirectoryExists(filePath: string)
-	-- deviation: gets path of parent directory, GetScriptFilePath can only be called on ModuleScripts
+	-- ROBLOX deviation: gets path of parent directory, GetScriptFilePath can only be called on ModuleScripts
 	local path = filePath:split("/")
 	path = table.pack(table.unpack(path, 1, #path - 1))
 	path = table.concat(path, "/")
@@ -240,7 +246,7 @@ function normalizeNewLines(string_: string)
 	return string.gsub(string_, "\r", "\n")
 end
 
--- deviation: taken from http://notebook.kulchenko.com/algorithms/alphanumeric-natural-sorting-for-humans-in-lua
+-- ROBLOX deviation: taken from http://notebook.kulchenko.com/algorithms/alphanumeric-natural-sorting-for-humans-in-lua
 -- as an approximation of naturalCompare for now
 local function alphanumsort(o)
 	local function padnum(d) return ("%03d%s"):format(#d, d) end
@@ -249,7 +255,7 @@ local function alphanumsort(o)
 	return o
 end
 
--- deviation: saves a valid Roblox ModuleScript
+-- ROBLOX deviation: saves a valid Roblox ModuleScript
 local function saveSnapshotFile(
 	snapshotData: types.SnapshotData,
 	snapshotPath: ConfigPath
@@ -263,20 +269,20 @@ local function saveSnapshotFile(
 		table.insert(
 			snapshots,
 			'exports[ [=[' ..
-			-- deviation: we don't call printBacktickString here since we inline the
+			-- ROBLOX deviation: we don't call printBacktickString here since we inline the
 			-- multiline literal
 			escapeBacktickString(key) ..
 			']=] ] = ' ..
 			printBacktickString(normalizeNewLines(snapshotData[key]))
 		)
-		-- deviation: we don't append a semicolon
+		-- ROBLOX deviation: we don't append a semicolon
 	end
 	table.insert(snapshots, 'return exports')
 
 	if FileSystemService == nil then
 		FileSystemService = getFileSystemService() or false
 	end
-	-- deviation: error when FileSystemService doesn't exist
+	-- ROBLOX deviation: error when FileSystemService doesn't exist
 	if not FileSystemService then
 		error(Error('Attempting to save snapshots in an environment where FileSystemService is inaccessible.'))
 	end
@@ -335,7 +341,7 @@ function deepMerge(target: any, source: any): any
 	return target
 end
 
--- deviation: added to handle file paths in snapshot/State
+-- ROBLOX deviation: added to handle file paths in snapshot/State
 local function robloxGetParent(path: string, level): string
 	level = level or 0
 
@@ -368,6 +374,6 @@ return {
 	escapeBacktickString = escapeBacktickString,
 	saveSnapshotFile = saveSnapshotFile,
 	deepMerge = deepMerge,
-	-- deviation: not in upstream
+	-- ROBLOX deviation: not in upstream
 	robloxGetParent = robloxGetParent
 }

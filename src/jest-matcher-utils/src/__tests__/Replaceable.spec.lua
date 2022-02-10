@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-matcher-utils/src/__tests__/Replaceable.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-matcher-utils/src/__tests__/Replaceable.test.ts
 -- /**
 -- * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 -- *
@@ -31,7 +31,7 @@ return function()
 				expect(replaceable.type).to.equal("table")
 			end)
 
-			-- deviation: test skipped because it tests a map that is identical
+			-- ROBLOX deviation: test skipped because it tests a map that is identical
 			-- to the object test above in lua
 			itSKIP("init with Map", function()
 				--[[
@@ -69,7 +69,7 @@ return function()
 				expect(replaceable:get(2)).to.equal(2)
 			end)
 
-			-- deviation: test skipped because it tests a map that is identical
+			-- ROBLOX deviation: test skipped because it tests a map that is identical
 			-- to the object test above in lua
 			itSKIP("get Map item", function()
 				--[[
@@ -97,7 +97,7 @@ return function()
 				expect(equals(replaceable.object, {1, 3, 3})).to.equal(true)
 			end)
 
-			-- deviation: test skipped because it tests a map that is identical
+			-- ROBLOX deviation: test skipped because it tests a map that is identical
 			-- to the object test above in lua
 			itSKIP("set Map item", function()
 				--[[
@@ -120,7 +120,7 @@ return function()
 
 		describe("forEach", function()
 			--[[
-				deviation: we have to use this sorting function to sort the
+				ROBLOX deviation: we have to use this sorting function to sort the
 				calls made by the forEach method since the forEach method does
 				not follow any deterministic order in iterating because Lua
 				tables don't have any inherent order
@@ -145,7 +145,7 @@ return function()
 			end)
 
 			it("array forEach", function()
-				-- deviation: test changed from {1, 2, 3} --> {4, 5, 6} for
+				-- ROBLOX deviation: test changed from {1, 2, 3} --> {4, 5, 6} for
 				-- clarity between table values and table indices
 				local object = {4, 5, 6}
 				local replaceable = Replaceable.new(object)
@@ -175,7 +175,7 @@ return function()
 				jestExpect(calls[2]).toEqual({2, 'b', object})
 			end)
 
-			-- deviation: test skipped because we don't have an enumerable
+			-- ROBLOX deviation: test skipped because we don't have an enumerable
 			-- property in lua
 			itSKIP("forEach should ignore nonenumerable property", function()
 				--[[
@@ -211,7 +211,7 @@ return function()
 				expect(Replaceable.isReplaceable({}, {a = 1, b = 2})).to.equal(true)
 			end)
 
-			-- deviation: test skipped because we don't have different object
+			-- ROBLOX deviation: test skipped because we don't have different object
 			-- types in Lua, we only have tables
 			itSKIP("should return false if two object types not equal", function()
 				--[[

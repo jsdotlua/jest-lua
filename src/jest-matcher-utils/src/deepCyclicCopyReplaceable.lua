@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-matcher-utils/src/deepCyclicCopyReplaceable.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-matcher-utils/src/deepCyclicCopyReplaceable.ts
 -- /**
 -- * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 -- *
@@ -6,7 +6,7 @@
 -- * LICENSE file in the root directory of this source tree.
 -- */
 
--- deviation: omitted isBuiltInObject and isMap functions because Lua only has one type, the table,
+-- ROBLOX deviation: omitted isBuiltInObject and isMap functions because Lua only has one type, the table,
 -- for structuring data
 
 local deepCyclicCopyTable, deepCyclicCopyReplaceable

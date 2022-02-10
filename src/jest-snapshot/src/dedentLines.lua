@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.0.6/packages/jest-snapshot/src/dedentLines.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-snapshot/src/dedentLines.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -6,7 +6,10 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-type Array<T> = { T }
+local CurrentModule = script.Parent
+local Packages = CurrentModule.Parent
+local LuauPolyfill = require(Packages.LuauPolyfill)
+type Array<T> = LuauPolyfill.Array<T>
 
 local getIndentationLength, dedentLine, hasUnmatchedDoubleQuoteMarks,
 	isFirstLineOfTag, dedentStartTag, dedentMarkup, dedentLines

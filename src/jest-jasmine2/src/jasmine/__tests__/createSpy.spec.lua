@@ -1,7 +1,7 @@
 --!nocheck
--- upstream: https://github.com/jasmine/jasmine/blob/v3.6.0/spec/core/SpySpec.js
+-- ROBLOX upstream: https://github.com/jasmine/jasmine/blob/v3.6.0/spec/core/SpySpec.js
 --[[
-	Our usual upstream of jest v26.5.3 doesn't include any tests for the
+	Our usual upstream of jest v27.4.7 doesn't include any tests for the
 	createSpy file so we instead look to the source that the jest/jasmine2
 	is based off of, jasmine
 ]]
@@ -34,7 +34,7 @@ return function()
 				expect(spy.bob).to.equal("test")
 			end)
 
-			-- deviation: test skipped because we don't implement the
+			-- ROBLOX deviation: test skipped because we don't implement the
 			-- env.createSpy function that would actually allow for this
 			itSKIP("should allow you to omit the name argument and only pass the originalFn argument", function()
 				--[[

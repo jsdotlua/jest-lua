@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/test-utils/src/index.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/test-utils/src/index.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -9,6 +9,19 @@
 local CurrentModule = script
 
 local alignedAnsiStyleSerializer = require(CurrentModule.alignedAnsiStyleSerializer)
+
+--[[
+	ROBLOX deviation: ommiting ConditionalTest and config imports
+	original code:
+	export {
+	  isJestJasmineRun,
+	  skipSuiteOnJasmine,
+	  skipSuiteOnJestCircus,
+	  onNodeVersions,
+	} from './ConditionalTest';
+
+	export {makeGlobalConfig, makeProjectConfig} from './config';
+]]
 
 return {
 	alignedAnsiStyleSerializer = alignedAnsiStyleSerializer

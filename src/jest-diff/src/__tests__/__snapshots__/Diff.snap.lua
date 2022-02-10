@@ -1,8 +1,7 @@
--- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/__tests__/__snapshots__/diff.test.ts.snap
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-diff/src/__tests__/__snapshots__/diff.test.ts.snap
 
 local snapshots = {}
 
--- deviation: } instead of }
 snapshots['collapses big diffs to patch format 1'] = [=[
 
 <g>- Expected</>
@@ -37,7 +36,7 @@ snapshots['color of text (expanded) 1'] = [=[
 <d>  }</>
 ]=]
 
--- deviation: all context number of lines tests use } instead of }
+-- ROBLOX deviation: all context number of lines tests use } instead of }
 snapshots['context number of lines: -1 (5 default) 1'] = [=[
 
 <g>- Expected  - 1</>
@@ -113,7 +112,7 @@ snapshots['context number of lines: 3.1 (5 default) 1'] = [=[
 <d>  }</>
 ]=]
 
--- deviation: nil instead of undefined
+-- ROBLOX deviation: nil instead of undefined
 snapshots['context number of lines: nil (5 default) 1'] = [=[
 
 <g>- Expected  - 1</>
@@ -184,7 +183,7 @@ snapshots['diffStringsUnified edge cases one-line has no common after clean up c
 <r>+ insert</>
 ]=]
 
--- deviation: edited to say 'Table' and 'Function anonymous', ordering changed
+-- ROBLOX deviation: edited to say 'Table' and 'Function anonymous', ordering changed
 snapshots['falls back to not call toJSON if it throws and then objects have differences 1'] = [=[
 
 <g>- Expected  - 1</>
@@ -197,7 +196,7 @@ snapshots['falls back to not call toJSON if it throws and then objects have diff
 <d>  }</>
 ]=]
 
--- deviation: edited to say 'Table' and 'Function anonymous', ordering changed, unescaped backticks
+-- ROBLOX deviation: edited to say 'Table' and 'Function anonymous', ordering changed, unescaped backticks
 snapshots['falls back to not call toJSON if serialization has no differences but then objects have differences 1'] = [=[
 
 <d>Compared values serialize to the same structure.
@@ -251,7 +250,7 @@ snapshots['oneline strings 4'] = [=[
 <r>+ oneline</>
 ]=]
 
--- deviation: unescaped backticks and ${}
+-- ROBLOX deviation: unescaped backticks and ${}
 snapshots['options 7980 diff 1'] = [=[
 
 <r>- Original</>
@@ -261,7 +260,7 @@ snapshots['options 7980 diff 1'] = [=[
 <g>+ `${Ti.App.getName()} ${Ti.App.getVersion()} ${Ti.Platform.getName()} ${Ti.Platform.getVersion()}`</>
 ]=]
 
--- deviation: unescaped backticks and ${}
+-- ROBLOX deviation: unescaped backticks and ${}
 snapshots['options 7980 diffStringsUnified 1'] = [=[
 
 <r>- Original</>
@@ -285,7 +284,7 @@ snapshots['options change color diffStringsUnified 1'] = [=[
 
 snapshots['options change color no diff 1'] = [=[<y>Compared values have no visual difference.</>]=]
 
--- deviation: Table {} instead of Array []
+-- ROBLOX deviation: Table {} instead of Array []
 snapshots['options change indicators diff 1'] = [=[
 
 <g>< Expected</>
@@ -300,7 +299,7 @@ snapshots['options change indicators diff 1'] = [=[
 <d>  }</>
 ]=]
 
--- deviation: Table {} instead of Array []
+-- ROBLOX deviation: Table {} instead of Array []
 snapshots['options common diff 1'] = [=[
 
 <g>- Expected</>
@@ -315,7 +314,7 @@ snapshots['options common diff 1'] = [=[
 = }
 ]=]
 
--- deviation: Table {} instead of Array []
+-- ROBLOX deviation: Table {} instead of Array []
 snapshots['options includeChangeCounts false diffLinesUnified 1'] = [=[
 
 <g>- Expected</>
@@ -388,7 +387,7 @@ snapshots['options includeChangeCounts true padding diffStringsUnified 1'] = [=[
 <d>  common</>
 ]=]
 
--- deviation: Table {} instead of Array []
+-- ROBLOX deviation: Table {} instead of Array []
 snapshots['options omitAnnotationLines true diff 1'] = [=[
 
 <d>  Table {</>

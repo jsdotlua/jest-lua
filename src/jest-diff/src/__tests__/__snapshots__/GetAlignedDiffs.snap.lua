@@ -1,3 +1,5 @@
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-diff/src/__tests__/__snapshots__/getAlignedDiffs.test.ts.snap
+
 local snapshots = {}
 
 snapshots['getAlignedDiffs lines change preceding and following common 1'] = [=[

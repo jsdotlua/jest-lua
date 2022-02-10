@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-get-type/src/__tests__/getType.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-get-type/src/__tests__/getType.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -13,6 +13,7 @@ return function()
 
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Error = require(Packages.LuauPolyfill).Error
+	local Map = LuauPolyfill.Map
 	local Set = LuauPolyfill.Set
 	local Symbol = LuauPolyfill.Symbol
 
@@ -25,9 +26,18 @@ return function()
 			expect(getType(nil)).to.equal('nil')
 		end)
 
-		-- deviation: test omitted because lua has no primitive undefined type
+		--[[
+			ROBLOX deviation: test omitted because lua has no primitive undefined type
+			original code:
+			test('undefined', () => expect(getType(undefined)).toBe('undefined'));
+		]]
 
-		-- deviation: lua makes no distinction between tables, objects, and arrays
+		--[[
+			ROBLOX deviation: lua makes no distinction between tables, objects, and arrays
+			original code:
+			test('object', () => expect(getType({})).toBe('object'));
+  			test('array', () => expect(getType([])).toBe('array'));
+		]]
 		it('table', function()
 			expect(getType({})).to.equal('table')
 		end)
@@ -48,27 +58,41 @@ return function()
 			expect(getType(true)).to.equal('boolean')
 		end)
 
-		it('DateTime', function()
-			expect(getType(DateTime.now())).to.equal('DateTime')
-		end)
-
+		-- ROBLOX deviation start: additional symbol tests
 		it("symbol", function()
 			expect(getType(Symbol("test"))).to.equal("symbol")
 			expect(getType(Symbol.for_("test"))).to.equal("symbol")
 			expect(getType(Symbol.for_("test2"))).to.equal("symbol")
 			expect(getType(Symbol())).to.equal("symbol")
 		end)
+		-- ROBLOX deviation end
 
 		it("regexp", function()
 			expect(getType(RegExp("abc"))).to.equal("regexp")
 		end)
 
-		it("error", function()
-			expect(getType(Error("abc"))).to.equal("error")
+		it("map", function()
+			expect(getType(Map.new())).to.equal("map")
 		end)
 
 		it("set", function()
 			expect(getType(Set.new())).to.equal("set")
+		end)
+
+		-- ROBLOX deviation: checking DateTime instead of Date
+		it('DateTime', function()
+			expect(getType(DateTime.now())).to.equal('DateTime')
+		end)
+
+		--[[
+			ROBLOX deviation: test omitted because lua has no primitive bigint type
+			original code:
+			test('bigint', () => expect(getType(BigInt(1))).toBe('bigint'));
+		]]
+
+		-- ROBLOX deviation start: additional Luau tests
+		it("error", function()
+			expect(getType(Error("abc"))).to.equal("error")
 		end)
 
 		it("Instance", function()
@@ -78,8 +102,6 @@ return function()
 		it("userdata", function()
 			expect(getType(newproxy())).to.equal("userdata")
 		end)
-
-		-- deviation: test omitted because lua has no built-in Map types
-		-- deviation: test omitted because lua has no primitive bigint type
+		-- ROBLOX deviation end
 	end)
 end

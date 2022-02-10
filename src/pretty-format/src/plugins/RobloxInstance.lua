@@ -1,4 +1,4 @@
--- deviation: does not exist in upstream
+-- ROBLOX NOTE: no upstream
 -- this plugin serializes Roblox Instance objects
 -- https://developer.roblox.com/en-us/api-reference/class/Instance
 

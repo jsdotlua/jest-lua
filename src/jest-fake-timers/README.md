@@ -2,9 +2,9 @@
 
 Status: :hammer: In Progress
 
-Source: https://github.com/facebook/jest/tree/v27.0.6/packages/jest-fake-timers
+Source: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-fake-timers
 
-Version: v27.0.6
+Version: v27.4.7
 
 ---
 
@@ -20,12 +20,12 @@ __tests__/legacyFakeTimers.test.ts
 __tests__/__snapshots__/legacyFakeTimers.test.ts.snap
 ```
 
-### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.0.6/packages/jest-fake-timers/package.json)
-| Package | Version | Status | Notes |
-| - | - | - | - |
-| @jest/types | 27.0.6 |:x: Not needed | |
-| @sinonjs/fake-timers | 6.0.1 |:x: Not needed | |
-| @types/node | * |:x: Not needed | |
-| jest-message-util | 27.0.6 | :x: Not needed | |
-| jest-mock | 27.0.6 | :x: Not needed | |
-| jest-util | 27.0.6 |:x: Not needed | |
+### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.4.7/packages/jest-fake-timers/package.json)
+| Package              | Version | Status                    | Notes |
+| -------------------- | ------- | ------------------------- | ----- |
+| @jest/types          | 27.4.2  | :heavy_check_mark: Ported |       |
+| @sinonjs/fake-timers | 8.0.1   | :x: Not needed            |       |
+| @types/node          | *       | :x: Not needed            |       |
+| jest-message-util    | 27.4.6  | :x: Not needed            |       |
+| jest-mock            | 27.4.6  | :x: Not needed            |       |
+| jest-util            | 27.4.2  | :hammer: In Progress      |       |

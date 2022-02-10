@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/__tests__/__snapshots__/matchers.test.js.snap
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/__tests__/__snapshots__/matchers.test.js.snap
 
 --[[
   deviation: We changed output from If it should pass with deep equality, replace "toBe" with "toEqual"
@@ -106,7 +106,7 @@ snapshots['.toBe() fails for: "with \ntrailing space" and "without trailing spac
 <r>+ trailing space</>
 ]=]
 
--- deviation: changed from regex to string
+-- ROBLOX deviation: changed from regex to string
 snapshots['.toBe() fails for: "received" and "expected" 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
@@ -157,7 +157,7 @@ snapshots['.toBe() fails for: {"a": 1} and {"a": 5} 1'] = [=[
 <d>  }</>
 ]=]
 
--- deviation: changed from nil to false and therefore removed the line about
+-- ROBLOX deviation: changed from nil to false and therefore removed the line about
 -- replacing toBe with toEqual
 snapshots['.toBe() fails for: {"a": false, "b": 2} and {"b": 2} 1'] = [=[
 
@@ -182,7 +182,7 @@ Expected: <g>{}</>
 Received: serializes to the same string
 ]=]
 
--- deviation: changed from -0 and 0 to -inf and inf
+-- ROBLOX deviation: changed from -0 and 0 to -inf and inf
 snapshots['.toBe() fails for: -inf and inf 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
@@ -311,7 +311,7 @@ Expected: never <g>0</>
 
 ]=]
 
--- deviation: upstream's printing of the expected value is 0.000004 but Lua
+-- ROBLOX deviation: upstream's printing of the expected value is 0.000004 but Lua
 -- prints such a value in exponential format by default so we follow the convention
 snapshots['.toBeCloseTo {pass: true} expect(0).toBeCloseTo(4e-06, 5) 1'] = [=[
 
@@ -1421,6 +1421,63 @@ snapshots[".toContain(), .toContainEqual() error cases 1"] = [=[
 Received has value: <r>nil</>
 ]=]
 
+snapshots[".toContain(), .toContainEqual() error cases 2"] = [=[
+
+<d>expect(</><r>-0</><d>).</>toContain<d>(</><g>-0</><d>) -- string.find or table.find</>
+
+<b>Matcher error</>: <g>expected</> value must be a string if <r>received</> value is a string
+
+Expected has type:  number
+Expected has value: <g>-0</>
+Received has type:  string
+Received has value: <r>"-0"</>
+]=]
+
+snapshots[".toContain(), .toContainEqual() error cases 3"] = [=[
+
+<d>expect(</><r>nil</><d>).</>toContain<d>(</><g>nil</><d>) -- string.find or table.find</>
+
+<b>Matcher error</>: <g>expected</> value must be a string if <r>received</> value is a string
+
+Expected has value: <g>nil</>
+Received has type:  string
+Received has value: <r>"nil"</>
+]=]
+
+snapshots[".toContain(), .toContainEqual() error cases 4"] = [=[
+
+<d>expect(</><r>null</><d>).</>toContain<d>(</><g>nil</><d>) -- string.find or table.find</>
+
+<b>Matcher error</>: <g>expected</> value must be a string if <r>received</> value is a string
+
+Expected has value: <g>nil</>
+Received has type:  string
+Received has value: <r>"null"</>
+]=]
+
+snapshots[".toContain(), .toContainEqual() error cases 5"] = [=[
+
+<d>expect(</><r>undefined</><d>).</>toContain<d>(</><g>nil</><d>) -- string.find or table.find</>
+
+<b>Matcher error</>: <g>expected</> value must be a string if <r>received</> value is a string
+
+Expected has value: <g>nil</>
+Received has type:  string
+Received has value: <r>"undefined"</>
+]=]
+
+snapshots[".toContain(), .toContainEqual() error cases 6"] = [=[
+
+<d>expect(</><r>false</><d>).</>toContain<d>(</><g>false</><d>) -- string.find or table.find</>
+
+<b>Matcher error</>: <g>expected</> value must be a string if <r>received</> value is a string
+
+Expected has type:  boolean
+Expected has value: <g>false</>
+Received has type:  string
+Received has value: <r>"false"</>
+]=]
+
 snapshots[".toContain(), .toContainEqual() error cases for toContainEqual 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toContainEqual<d>(</><g>expected</><d>) -- deep equality</>
@@ -1609,6 +1666,53 @@ snapshots['.toEqual() {pass: false} expect({Symbol(bar): 2, Symbol(foo): 1}).toE
 <g>-   Symbol(bar): 1,</>
 <r>+   Symbol(bar): 2,</>
 <d>    Symbol(foo): Any<number>,</>
+<d>  }</>
+]=]
+
+snapshots['.toEqual() {pass: false} expect({4294967295: 1}).toEqual({4294967295: 2}) 1'] = [=[
+
+<d>expect(</><r>received</><d>).</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
+
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
+
+<d>  Table {</>
+<g>-   4294967295: 2,</>
+<r>+   4294967295: 1,</>
+<d>  }</>
+]=]
+
+snapshots['.toEqual() {pass: false} expect({Symbol(): 1}).toEqual({Symbol(): 1}) 1'] = [=[
+
+<d>expect(</><r>received</><d>).</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
+
+Expected: <g>{Symbol(): 1}</>
+Received: serializes to the same string
+]=]
+
+snapshots['.toEqual() {pass: false} expect({"a": 1}).toEqual({"b": 1}) 1'] = [=[
+
+<d>expect(</><r>received</><d>).</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
+
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
+
+<d>  Table {</>
+<g>-   "b": 1,</>
+<r>+   "a": 1,</>
+<d>  }</>
+]=]
+
+snapshots['.toEqual() {pass: false} expect({"-0": 1}).toEqual({"0": 1}) 1'] = [=[
+
+<d>expect(</><r>received</><d>).</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
+
+<g>- Expected  - 1</>
+<r>+ Received  + 1</>
+
+<d>  Table {</>
+<g>-   "0": 1,</>
+<r>+   "-0": 1,</>
 <d>  }</>
 ]=]
 
@@ -2437,6 +2541,33 @@ Expected value: never <g>Any<number></>
 Received value:       <r>2</>
 ]=]
 
+snapshots['.toHaveProperty() {pass: true} expect({"a": {"b": {{"c": {{"d": 1}}}}}}).toHaveProperty("a.b[1].c[1].d", 1) 1'] = [=[
+
+<d>expect(</><r>received</><d>).</>never<d>.</>toHaveProperty<d>(</><g>path</><d>, </><g>value</><d>)</>
+
+Expected path: <g>"a.b[1].c[1].d"</>
+
+Expected value: never <g>1</>
+]=]
+
+snapshots['.toHaveProperty() {pass: true} expect({"a": {"b": {{"c": {"d": {{"e": 1}, {"f": 2}}}}}}}).toHaveProperty("a.b[1].c.d[2].f", 2) 1'] = [=[
+
+<d>expect(</><r>received</><d>).</>never<d>.</>toHaveProperty<d>(</><g>path</><d>, </><g>value</><d>)</>
+
+Expected path: <g>"a.b[1].c.d[2].f"</>
+
+Expected value: never <g>2</>
+]=]
+
+snapshots['.toHaveProperty() {pass: true} expect({"a": {"b": {{{"c": {{"d": 1}}}}}}}).toHaveProperty("a.b[1][1].c[1].d", 1) 1'] = [=[
+
+<d>expect(</><r>received</><d>).</>never<d>.</>toHaveProperty<d>(</><g>path</><d>, </><g>value</><d>)</>
+
+Expected path: <g>"a.b[1][1].c[1].d"</>
+
+Expected value: never <g>1</>
+]=]
+
 snapshots['.toHaveProperty() {pass: true} expect({"a": {"b": {"c": {"d": 1}}}}).toHaveProperty({"a", "b", "c", "d"}) 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toHaveProperty<d>(</><g>path</><d>)</>
@@ -2895,7 +3026,7 @@ snapshots['toMatchObject() {pass: false} expect({"a": {3, 4, 5}, "b": "b"}).toMa
 <d>  }</>
 ]=]
 
--- deviation: snapshot changed since we don't have a difference as Object and Array as in upstream
+-- ROBLOX deviation: snapshot changed since we don't have a difference as Object and Array as in upstream
 snapshots['toMatchObject() {pass: false} expect({"a": {3, 4, 5}, "b": "b"}).toMatchObject({"a": {"b": Any<string>}}) 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>toMatchObject<d>(</><g>expected</><d>)</>
@@ -3029,7 +3160,7 @@ Expected: never <g>{"a": "undefined"}</>
 Received:       <r>{"a": "undefined", "b": "b"}</>
 ]=]
 
--- deviation: got rid of "circular references simple circular references" in the snapshot name
+-- ROBLOX deviation: got rid of "circular references simple circular references" in the snapshot name
 -- due to documented issue ADO-1604
 snapshots['toMatchObject() {pass: false} expect({"a": "hello", "ref": [Circular]}).toMatchObject({"a": "world", "ref": [Circular]}) 1'] = [=[
 
@@ -3045,7 +3176,7 @@ snapshots['toMatchObject() {pass: false} expect({"a": "hello", "ref": [Circular]
 <d>  }</>
 ]=]
 
--- deviation: got rid of "circular references simple circular references" in the snapshot name
+-- ROBLOX deviation: got rid of "circular references simple circular references" in the snapshot name
 -- due to documented issue ADO-1604
 snapshots['toMatchObject() {pass: false} expect({"ref": "not a ref"}).toMatchObject({"a": "hello", "ref": [Circular]}) 1'] = [=[
 
@@ -3061,7 +3192,7 @@ snapshots['toMatchObject() {pass: false} expect({"ref": "not a ref"}).toMatchObj
 <d>  }</>
 ]=]
 
--- deviation: got rid of "circular references simple circular references" in the snapshot name
+-- ROBLOX deviation: got rid of "circular references simple circular references" in the snapshot name
 -- due to documented issue ADO-1604
 snapshots['toMatchObject() {pass: false} expect({}).toMatchObject({"a": "hello", "ref": [Circular]}) 1'] = [=[
 
@@ -3077,7 +3208,7 @@ snapshots['toMatchObject() {pass: false} expect({}).toMatchObject({"a": "hello",
 <r>+ Table {}</>
 ]=]
 
--- deviation: got rid of "circular references simple circular references" in the snapshot name
+-- ROBLOX deviation: got rid of "circular references simple circular references" in the snapshot name
 -- due to documented issue ADO-1604
 snapshots['toMatchObject() {pass: true} expect({"a": "hello", "ref": [Circular]}).toMatchObject({"a": "hello", "ref": [Circular]}) 1'] = [=[
 
@@ -3086,7 +3217,7 @@ snapshots['toMatchObject() {pass: true} expect({"a": "hello", "ref": [Circular]}
 Expected: never <g>{"a": "hello", "ref": [Circular]}</>
 ]=]
 
--- deviation: got rid of "circular references simple circular references" in the snapshot name
+-- ROBLOX deviation: got rid of "circular references simple circular references" in the snapshot name
 -- due to documented issue ADO-1604
 snapshots['toMatchObject() {pass: true} expect({"a": "hello", "ref": [Circular]}).toMatchObject({}) 1'] = [=[
 
@@ -3096,7 +3227,7 @@ Expected: never <g>{}</>
 Received:       <r>{"a": "hello", "ref": [Circular]}</>
 ]=]
 
--- deviation: got rid of "circular references transitive circular references" in the snapshot name
+-- ROBLOX deviation: got rid of "circular references transitive circular references" in the snapshot name
 -- due to documented issue ADO-1604
 snapshots['toMatchObject() {pass: false} expect({"a": "world", "nestedObj": {"parentObj": [Circular]}}).toMatchObject({"a": "hello", "nestedObj": {"parentObj": [Circular]}}) 1'] = [=[
 
@@ -3114,7 +3245,7 @@ snapshots['toMatchObject() {pass: false} expect({"a": "world", "nestedObj": {"pa
 <d>  }</>
 ]=]
 
--- deviation: got rid of "circular references transitive circular references" in the snapshot name
+-- ROBLOX deviation: got rid of "circular references transitive circular references" in the snapshot name
 -- due to documented issue ADO-1604
 snapshots['toMatchObject() {pass: false} expect({"nestedObj": {"parentObj": "not the parent ref"}}).toMatchObject({"a": "hello", "nestedObj": {"parentObj": [Circular]}}) 1'] = [=[
 
@@ -3132,7 +3263,7 @@ snapshots['toMatchObject() {pass: false} expect({"nestedObj": {"parentObj": "not
 <d>  }</>
 ]=]
 
--- deviation: got rid of "circular references transitive circular references" in the snapshot name
+-- ROBLOX deviation: got rid of "circular references transitive circular references" in the snapshot name
 -- due to documented issue ADO-1604
 snapshots['toMatchObject() {pass: false} expect({}).toMatchObject({"a": "hello", "nestedObj": {"parentObj": [Circular]}}) 1'] = [=[
 
@@ -3150,7 +3281,7 @@ snapshots['toMatchObject() {pass: false} expect({}).toMatchObject({"a": "hello",
 <r>+ Table {}</>
 ]=]
 
--- deviation: got rid of "circular references transitive circular references" in the snapshot name
+-- ROBLOX deviation: got rid of "circular references transitive circular references" in the snapshot name
 -- due to documented issue ADO-1604
 snapshots['toMatchObject() {pass: true} expect({"a": "hello", "nestedObj": {"parentObj": [Circular]}}).toMatchObject({"a": "hello", "nestedObj": {"parentObj": [Circular]}}) 1'] = [=[
 
@@ -3159,7 +3290,7 @@ snapshots['toMatchObject() {pass: true} expect({"a": "hello", "nestedObj": {"par
 Expected: never <g>{"a": "hello", "nestedObj": {"parentObj": [Circular]}}</>
 ]=]
 
--- deviation: got rid of "circular references transitive circular references" in the snapshot name
+-- ROBLOX deviation: got rid of "circular references transitive circular references" in the snapshot name
 -- due to documented issue ADO-1604
 snapshots['toMatchObject() {pass: true} expect({"a": "hello", "nestedObj": {"parentObj": [Circular]}}).toMatchObject({}) 1'] = [=[
 
@@ -3372,7 +3503,7 @@ snapshots['.toBeDefined() .toBeUndefined() nil is undefined 2'] = [=[
 Received: <r>nil</>
 ]=]
 
--- deviation: we use {} instead of Map {}
+-- ROBLOX deviation: we use {} instead of Map {}
 snapshots[".toEqual() {pass: false} expect({}).toEqual(Set {}) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toEqual<d>(</><g>expected</><d>) -- deep equality</>

@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/cleanupSemantic.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-diff/src/cleanupSemantic.ts
 -- implementation adapted from:
 -- https://github.com/google/diff-match-patch/blob/858b3812cc02e7d48da4beebb21d4d80dc1d3062/lua/diff_match_patch.lua
 -- /**
@@ -24,6 +24,11 @@
 --  * Applies the patch onto another text, allowing for errors.
 --  * @author fraser@google.com (Neil Fraser)
 --  */
+
+local CurrentModule = script.Parent
+local Packages = CurrentModule.Parent
+local LuauPolyfill = require(Packages.LuauPolyfill)
+type Array<T> = LuauPolyfill.Array<T>
 
 -- /**
 --  * CHANGES by pedrottimark to diff_match_patch_uncompressed.ts file:
@@ -66,7 +71,6 @@ function Diff.new(op: number, text: string)
 	return self
 end
 export type Diff = typeof(Diff.new(0, ""))
-type Array<T> = { [number]: T }
 
 --[[
 * Determine the common prefix of two strings.
@@ -413,7 +417,7 @@ _diff_cleanupSemanticLossless = function(diffs: Array<Diff>)
 	end
 end
 
--- deviation: no need for regex patterns
+-- ROBLOX deviation: no need for regex patterns
 
 _diff_cleanupMerge = function(diffs: Array<Diff>)
 	diffs[#diffs + 1] = Diff.new(DIFF_EQUAL, '')  -- Add a dummy entry at the end.

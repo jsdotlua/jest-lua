@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-get-type/src/index.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-get-type/src/index.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -13,16 +13,21 @@ local Error = LuauPolyfill.Error
 local instanceof = LuauPolyfill.instanceof
 local RegExp
 local Set = LuauPolyfill.Set
+local Map = LuauPolyfill.Map
 
--- ROBLOX deviation: checks for Roblox builtin data types
--- https://developer.roblox.com/en-us/api-reference/data-types
+--[[
+	ROBLOX deviation: checks for Roblox builtin data types
+	https://developer.roblox.com/en-us/api-reference/data-types
+]]
 local function isRobloxBuiltin(value: any): boolean
 	return type(value) ~= typeof(value)
 end
 
 local function getType(value: any): string
-	-- deviation: code omitted because lua has no primitive undefined type
-	-- lua makes no distinction between null and undefined so we just return nil
+	--[[
+		ROBLOX deviation: code omitted because lua has no primitive undefined type
+		lua makes no distinction between null and undefined so we just return nil
+	]]
 	if value == nil then
 		return 'nil'
 	end
@@ -57,38 +62,44 @@ local function getType(value: any): string
 	if instanceof(value, Error) then
 		return 'error'
 	end
+	if instanceof(value, Map) then
+		return 'map'
+	end
 	if instanceof(value, Set) then
 		return 'set'
 	end
-	-- deviation: lua makes no distinction between tables, arrays, and objects
-	-- we always return table here and consumers are expected to perform the check
+	--[[
+		ROBLOX deviation: lua makes no distinction between tables, arrays, and objects
+		we always return table here and consumers are expected to perform the check
+	]]
 	if typeof(value) == 'table' then
 		return 'table'
 	end
 
-	--- deviation: returns name of Roblox datatype
-	-- https://developer.roblox.com/en-us/api-reference/data-types
+	--[[
+		ROBLOX deviation: returns name of Roblox datatype
+		https://developer.roblox.com/en-us/api-reference/data-types
+	]]
 	if isRobloxBuiltin(value) then
 		return typeof(value)
 	end
 
-	-- deviation: added luau types for userdata and thread
+	-- ROBLOX deviation: added luau types for userdata and thread
 	if type(value) == 'userdata' then
 		return 'userdata'
 	end
 	if typeof(value) == 'thread' then
 		return 'thread'
 	end
-	-- deviation: code omitted because lua has no primitive bigint type
-	-- deviation: code omitted because lua has no built-in Map types
-	-- deviation: code omitted because lua makes no distinction between tables, arrays, and objects
+	-- ROBLOX deviation: code omitted because lua has no primitive bigint type
+	-- ROBLOX deviation: code omitted because lua makes no distinction between tables, arrays, and objects
 
-	-- deviation: include the type in the error message
+	-- ROBLOX deviation: include the type in the error message
 	error(string.format('value of unknown type: %s (%s)', typeof(value), tostring(value)))
 end
 
 local function isPrimitive(value: any): boolean
-	-- deviation: explicitly define objects and functions and Instances as non primitives
+	-- ROBLOX deviation: explicitly define objects and functions and Instances as non primitives
 	return typeof(value) ~= 'table' and typeof(value) ~= 'function' and not isRobloxBuiltin(value)
 end
 

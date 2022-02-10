@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.0.6/packages/jest-snapshot/src/__tests__/__snapshots__/mock_serializer.test.ts.snap
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-snapshot/src/__tests__/__snapshots__/mockSerializer.test.ts.snap
 
 local exports = {}
 
@@ -14,7 +14,7 @@ exports["mock with 0 calls and default name in React element 1"] = [=[
 exports["mock with 0 calls and non-default name 1"] = "[MockFunction MyConstructor]"
 
 
--- deviation: changed undefined to "undefined"
+-- ROBLOX deviation: changed undefined to "undefined"
 exports["mock with 1 calls and non-default name via new in object 1"] = [=[
 
 Table {
@@ -57,7 +57,7 @@ exports["mock with 1 calls in React element 1"] = [=[
   Mock me!
 </button>]=]
 
--- deviation: undefined changed to "undefined"
+-- ROBLOX deviation: undefined changed to "undefined"
 exports["mock with 2 calls 1"] = [=[
 
 [MockFunction] {

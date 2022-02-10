@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/__tests__/joinAlignedDiffs.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-diff/src/__tests__/joinAlignedDiffs.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -94,7 +94,7 @@ return function()
 	end)
 
 	describe('joinAlignedDiffsNoExpand', function()
-		-- deviation: added a table copy method to set options
+		-- ROBLOX deviation: added a table copy method to set options
 		local function tableCopy(t)
 			local copy = {}
 			for key, value in pairs(t) do

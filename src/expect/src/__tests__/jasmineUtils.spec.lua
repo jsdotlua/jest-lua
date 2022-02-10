@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/__tests__/matchers.test.js
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/__tests__/matchers.test.js
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -21,7 +21,7 @@ return function()
 	local Symbol = LuauPolyfill.Symbol
 	local Set = LuauPolyfill.Set
 
-	local RegExp = require(Packages.Dev.RegExp)
+	local RegExp = require(Packages.RegExp)
 
 	local jasmineUtils = require(CurrentModule.jasmineUtils)
 	local equals = jasmineUtils.equals
@@ -122,7 +122,7 @@ return function()
 		end)
 	end)
 
-	-- deviation: these tests do not correlate to any upstream tests
+	-- ROBLOX deviation: these tests do not correlate to any upstream tests
 	describe("minor jasmineUtils functions", function()
 		it("tests fnNameFor", function()
 			local func = function() end

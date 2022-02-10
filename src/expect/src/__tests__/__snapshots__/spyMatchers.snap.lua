@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/__tests__/__snapshots__/spyMatchers.test.ts.snap
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/__tests__/__snapshots__/spyMatchers.test.ts.snap
 
 --[[
        deviations:
@@ -2236,7 +2236,7 @@ Received: <r>{{1, 2}, {2, 1}}</>
 Number of returns: <r>1</>
 ]=]
 
--- deviation: changed not to never
+-- ROBLOX deviation: changed not to never
 snapshots['toHaveNthReturnedWith works with Set 1'] = [=[
 
 <d>expect(</><r>jest.fn()</><d>).</>never<d>.</>toHaveNthReturnedWith<d>(</>n<d>, </><g>expected</><d>)</>
@@ -2397,7 +2397,7 @@ Received number of returns: <r>1</>
 1: <r>nil</>
 ]=]
 
--- deviation: this snapshot is heavily changed
+-- ROBLOX deviation: this snapshot is heavily changed
 snapshots['toHaveReturned throw matcher error if received is spy 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>toHaveReturned<d>()</>
@@ -2589,7 +2589,7 @@ snapshots['toHaveReturnedTimes passes if function returned equal to expected tim
 Expected number of returns: never <g>2</>
 ]=]
 
--- deviation: this snapshot is heavily changed
+-- ROBLOX deviation: this snapshot is heavily changed
 snapshots['toHaveReturnedTimes throw matcher error if received is spy 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toHaveReturnedTimes<d>(</><g>expected</><d>)</>
@@ -2869,7 +2869,7 @@ Received number of returns: <r>1</>
 1: <r>nil</>
 ]=]
 
--- deviation: this snapshot is heavily changed
+-- ROBLOX deviation: this snapshot is heavily changed
 snapshots['toReturn throw matcher error if received is spy 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>toReturn<d>()</>
@@ -3061,7 +3061,7 @@ snapshots['toReturnTimes passes if function returned equal to expected times 1']
 Expected number of returns: never <g>2</>
 ]=]
 
--- deviation: this snapshot is heavily changed
+-- ROBLOX deviation: this snapshot is heavily changed
 snapshots['toReturnTimes throw matcher error if received is spy 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toReturnTimes<d>(</><g>expected</><d>)</>

@@ -1,3 +1,6 @@
+-- ROBLOX NOTE: no upstream
+-- ROBLOX deviation: this file is not aligned with upstream version
+
 local Packages = script.Parent
 
 local expect = require(Packages.Expect)

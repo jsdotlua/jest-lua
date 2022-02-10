@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/pretty-format/src/__tests__/ConvertAnsi.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/pretty-format/src/__tests__/ConvertAnsi.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -15,8 +15,10 @@ return function()
 	local chalk = require(Packages.ChalkLua)
 
 	local PrettyFormat = require(CurrentModule)
-	local prettyFormat = PrettyFormat.prettyFormat
-	local ConvertAnsi = PrettyFormat.plugins.ConvertAnsi
+	local prettyFormat = PrettyFormat.default
+	local plugins = PrettyFormat.plugins
+
+	local ConvertAnsi = plugins.ConvertAnsi
 
 	local prettyFormatResult = function(val: string)
 		return prettyFormat(val, {

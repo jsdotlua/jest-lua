@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.0.6/packages/jest-snapshot/src/__tests__/printSnapshot.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-snapshot/src/__tests__/printSnapshot.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -15,10 +15,10 @@ return function()
 	local Object = LuauPolyfill.Object
 	local Symbol = LuauPolyfill.Symbol
 
-	-- deviation: omitting imports for styles
+	-- ROBLOX deviation: omitting imports for styles
 	local ansiRegex = require(Packages.PrettyFormat).plugins.ConvertAnsi.ansiRegex
 	local chalk = require(Packages.ChalkLua)
-	local format = require(Packages.PrettyFormat).prettyFormat
+	local format = require(Packages.PrettyFormat).default
 
 	local jestExpect = require(Packages.Dev.Expect)
 
@@ -33,7 +33,7 @@ return function()
 
 	local colors = require(CurrentModule.colors)
 	-- ROBLOX TODO: ADO-1522 add level 3 support in chalk
-	-- deviation: omitted level 3 colors since we don't have level 3 support in chalk
+	-- ROBLOX deviation: omitted level 3 colors since we don't have level 3 support in chalk
 	local aBackground2 = colors.aBackground2
 	-- local aBackground3 = colors.aBackground3
 	local aForeground2 = colors.aForeground2
@@ -54,7 +54,7 @@ return function()
 	local bOpenBackground2 = chalk.bgAnsi256(bBackground2).open
 
 	-- ROBLOX TODO: ADO-1522 add level 3 support in chalk
-	-- deviation: omitted level 3 colors
+	-- ROBLOX deviation: omitted level 3 colors
 
 	local ansiLookupTable = {
 			[chalk.inverse.open] = "<i>",
@@ -160,7 +160,7 @@ return function()
 		local expected1 = "<m>- delete 1 </>\n<d>  common 2<Y>  </Y></>\n<t>+ insert 0</>"
 
 		it("level 0", function()
-			-- deviation: we don't have a chalk instance so we set the level of
+			-- ROBLOX deviation: we don't have a chalk instance so we set the level of
 			-- the imported chalk object
 			chalk.level = 0
 			local formatted = formatLines(chalk)
@@ -170,9 +170,9 @@ return function()
 			jestExpect(formatted).toBe(expected0)
 		end)
 
-		-- deviation: test skipped because we don't have level 1 support in chalk-lua
+		-- ROBLOX deviation: test skipped because we don't have level 1 support in chalk-lua
 		itSKIP('level 1', function()
-			-- deviation: we don't have a chalk instance so we set the level of
+			-- ROBLOX deviation: we don't have a chalk instance so we set the level of
 			-- the imported chalk object
 			chalk.level = 1
 			local formatted = formatLines(chalk)
@@ -187,7 +187,7 @@ return function()
 		end)
 
 		it("level 2", function()
-			-- deviation: we don't have a chalk instance so we set the level of
+			-- ROBLOX deviation: we don't have a chalk instance so we set the level of
 			-- the imported chalk object
 			chalk.level = 2
 			local formatted = formatLines(chalk)
@@ -200,9 +200,9 @@ return function()
 			jestExpect(formatted).toContain(chalk.bgYellow("  "))
 		end)
 
-		-- deviation: test skipped because we don't have level 1 support in chalk-lua
+		-- ROBLOX deviation: test skipped because we don't have level 1 support in chalk-lua
 		itSKIP('level 3', function()
-			-- deviation: we don't have a chalk instance so we set the level of
+			-- ROBLOX deviation: we don't have a chalk instance so we set the level of
 			-- the imported chalk object
 			chalk.level = 3
 			local formatted = formatLines(chalk)
@@ -286,7 +286,7 @@ return function()
 				end)
 			end)
 
-			-- deviation: skipping this test, to work with the TestEZ runner, our implementation auto-initializes snapshot state
+			-- ROBLOX deviation: skipping this test, to work with the TestEZ runner, our implementation auto-initializes snapshot state
 			-- by default if it doesn't already exist
 			itSKIP('Snapshot state must be initialized', function()
 				-- local context = {
@@ -632,7 +632,7 @@ return function()
 				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
-			-- deviation: test skipped because we do not have support for the
+			-- ROBLOX deviation: test skipped because we do not have support for the
 			-- global flag in RegExp
 			itSKIP('regexp', function()
 				local expected = '\\(")'
@@ -857,7 +857,7 @@ return function()
 				end)
 
 				it('function', function()
-					-- deviation: changed undefined to nil
+					-- ROBLOX deviation: changed undefined to nil
 					local expected = nil
 					local received = function() end
 
@@ -916,7 +916,7 @@ return function()
 					jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 				end)
 
-				-- deviation: test skipped because there is no distinction
+				-- ROBLOX deviation: test skipped because there is no distinction
 				-- between an empty array and an empty table in Lua
 				itSKIP('single line expected and received', function()
 					-- local expected = []
@@ -974,10 +974,10 @@ return function()
 		end)
 
 		describe('ignore indentation', function()
-			-- deviation: changed $$typeof to typeof
+			-- ROBLOX deviation: changed $$typeof to typeof
 			local typeof_ = Symbol.for_('react.test.json')
 
-			-- deviation: test skipped because we don't have support for react elements
+			-- ROBLOX deviation: test skipped because we don't have support for react elements
 			itSKIP('markup delete', function()
 				local received = {
 					["$$typeof"] = typeof_,
@@ -1013,7 +1013,7 @@ return function()
 				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
-			-- deviation: test skipped because we don't have support for react elements
+			-- ROBLOX deviation: test skipped because we don't have support for react elements
 			itSKIP('markup fall back', function()
 				-- // Because text has more than one adjacent line.
 				local text = table.concat({
@@ -1042,7 +1042,7 @@ return function()
 				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
-			-- deviation: test skipped because we don't have support for react elements
+			-- ROBLOX deviation: test skipped because we don't have support for react elements
 			itSKIP('markup insert', function()
 				local text = 'when'
 				local expected = {

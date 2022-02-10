@@ -2,9 +2,9 @@
 
 Status: :hammer: In Progress
 
-Source: https://github.com/facebook/jest/tree/v26.5.3/packages/jest-jasmine2/src/jasmine
+Source: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-jasmine2/src/jasmine
 
-Version: v26.5.3
+Version: v27.4.7
 
 ---
 
@@ -19,6 +19,6 @@ Version: v26.5.3
 ```
 ```
 
-### :package: [Dependencies](https://github.com/facebook/jest/blob/v26.5.3/packages/jest-jasmine2/package.json)
+### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.4.7/packages/jest-jasmine2/package.json)
 | Package | Version | Status | Notes |
-| - | - | - | - |
+| ------- | ------- | ------ | ----- |

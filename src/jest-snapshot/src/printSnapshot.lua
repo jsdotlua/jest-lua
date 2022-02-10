@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.0.6/packages/jest-snapshot/src/printSnapshot.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-snapshot/src/printSnapshot.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -14,6 +14,8 @@ local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
 local instanceof = LuauPolyfill.instanceof
 local String = LuauPolyfill.String
+
+type Array<T> = LuauPolyfill.Array<T>
 
 local chalk = require(Packages.ChalkLua)
 
@@ -43,7 +45,7 @@ local RECEIVED_COLOR = JestMatcherUtils.RECEIVED_COLOR
 local getLabelPrinter = JestMatcherUtils.getLabelPrinter
 local matcherHint = JestMatcherUtils.matcherHint
 
-local prettyFormat = require(Packages.PrettyFormat).prettyFormat
+local prettyFormat = require(Packages.PrettyFormat).format
 
 local colors = require(CurrentModule.colors)
 local aBackground2 = colors.aBackground2
@@ -56,18 +58,16 @@ local bForeground2 = colors.bForeground2
 local bForeground3 = colors.bForeground3
 
 local dedentLines = require(CurrentModule.dedentLines)
--- deviation: omitted external MatchSnapshotConfig type
+-- ROBLOX deviation: omitted external MatchSnapshotConfig type
 
 local utils = require(CurrentModule.utils)
 local deserializeString = utils.deserializeString
 local minify = utils.minify
 local serialize = utils.serialize
 
--- deviation: omitted chalk type
+-- ROBLOX deviation: omitted chalk type
 
--- deviation: omitted Chalk and DiffOptionsColor types
-
-type Array<T> = { T }
+-- ROBLOX deviation: omitted Chalk and DiffOptionsColor types
 
 local function getSnapshotColorForChalkInstance(
 	chalkInstance
@@ -170,13 +170,13 @@ end
 -- // * include change substrings which have argument op
 -- //   with change color only if there is a common substring
 local function joinDiffs(
-	-- deviation: changed Array<Diff> to Array<any>
+	-- ROBLOX deviation: changed Array<Diff> to Array<any>
 	diffs: Array<any>,
 	op: number,
 	hasCommon: boolean
 ): string
 	return Array.reduce(diffs,
-		-- deviation: Diff changed to any
+		-- ROBLOX deviation: Diff changed to any
 		function(reduced: string, diff: any): string
 			local retval = reduced
 			if diff[1] == DIFF_EQUAL then
@@ -203,7 +203,7 @@ local function isLineDiffable(received: any): boolean
 		return typeof(received) == "string"
 	end
 
-	-- deviation: type changed from "date" to "DateTime"
+	-- ROBLOX deviation: type changed from "date" to "DateTime"
 	if
 		receivedType == "DateTime" or
 		receivedType == "function" or

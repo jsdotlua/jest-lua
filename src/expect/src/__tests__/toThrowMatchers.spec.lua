@@ -1,4 +1,5 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/__tests__/toThrowMatchers.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/__tests__/toThrowMatchers.test.ts
+
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -14,7 +15,7 @@ return function()
 	local Error = LuauPolyfill.Error
 	local extends = LuauPolyfill.extends
 
-	local RegExp = require(Packages.Dev.RegExp)
+	local RegExp = require(Packages.RegExp)
 
 	local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 
@@ -137,7 +138,7 @@ return function()
 					end).toThrowErrorMatchingSnapshot()
 				end)
 
-				-- deviation: The following test prints "0" instead of 0
+				-- ROBLOX deviation: The following test prints "0" instead of 0
 				-- because the error string that's reported by lua when you do
 				-- error(0) is indistinguishable from error("0")
 				-- similar deviations hold for other tests that error integers
@@ -157,7 +158,7 @@ return function()
 					end).toThrowErrorMatchingSnapshot()
 				end)
 
-				-- deviation: the following test prints "404" instead of 404 in
+				-- ROBLOX deviation: the following test prints "404" instead of 404 in
 				-- the output for the same reason as above
 				it('threw, but message should not match (non-error truthy)', function()
 					jestExpect(function()
@@ -346,7 +347,7 @@ return function()
 							end)[toThrow](jestExpect.anything())
 						end)
 
-						-- deviation: skipped test because we have no undefined
+						-- ROBLOX deviation: skipped test because we have no undefined
 						-- type and nil does not match expect.anything()
 						itSKIP('isNot true', function()
 							-- jestExpect(function() end).never[toThrow](expect.anything())
@@ -471,7 +472,7 @@ return function()
 					end)
 				end)
 			end)
-			-- deviation: we skip the entire promise/async block for now since
+			-- ROBLOX deviation: we skip the entire promise/async block for now since
 			-- we don't have promise/async functionality for matchers or
 			-- throwingMatchers in current release
 			describe('promise/async throws if Error-like object is returned', function()

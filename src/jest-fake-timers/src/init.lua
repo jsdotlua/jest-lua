@@ -1,5 +1,8 @@
--- API aligned with https://github.com/facebook/jest/blob/v27.0.6/packages/jest-fake-timers/src/modernFakeTimers.ts
--- deviation: major implementation deviation, refer to README for more info
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-fake-timers/src/modernFakeTimers.ts
+--[[
+	ROBLOX deviation: API aligned with the upstream
+	major implementation deviation, refer to README for more info
+]]
 
 local CurrentModule = script
 local Packages = CurrentModule.Parent

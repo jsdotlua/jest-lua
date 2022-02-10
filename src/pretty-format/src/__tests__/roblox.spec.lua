@@ -1,10 +1,12 @@
+-- ROBLOX NOTE: no upstream
+
 return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
 	local jestExpect = require(Packages.Dev.Expect)
 
-	local prettyFormat = require(CurrentModule).prettyFormat
+	local prettyFormat = require(CurrentModule).default
 
 	it('userdata', function()
 		local testObject = newproxy()

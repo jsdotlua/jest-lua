@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.0.6/packages/jest-fake-timers/src/__tests__/modernFakeTimers.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-fake-timers/src/__tests__/modernFakeTimers.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -37,7 +37,7 @@ return function()
 			end)
 		end)
 
-		-- deviation: omitted runAllTicks, not implemented
+		-- ROBLOX deviation: omitted runAllTicks, not implemented
 
 		describe('runAllTimers', function()
 			it('runs all ticks, in order', function()

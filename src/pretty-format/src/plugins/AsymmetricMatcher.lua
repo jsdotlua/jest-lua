@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/pretty-format/src/plugins/AsymmetricMatcher.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/pretty-format/src/plugins/AsymmetricMatcher.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -23,7 +23,7 @@ type Printer = Types.Printer
 local asymmetricMatcher = Symbol.for_("jest.asymmetricMatcher")
 local SPACE = ' '
 
--- deviation: stringContaining shouldn't accept string patterns so we unescape special characters
+-- ROBLOX deviation: stringContaining shouldn't accept string patterns so we unescape special characters
 local function unescape(s: string): string
 	return s:gsub(
 		"%%([%$%%%^%*%(%)%.%[%]%+%-%?])",

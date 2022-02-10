@@ -17,4 +17,4 @@ Version:
 
 ### :package: [Dependencies]()
 | Package | Version | Status | Notes |
-| - | - | - | - |
+| ------- | ------- | ------ | ----- |

@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/__tests__/diff.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-diff/src/__tests__/diff.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -9,6 +9,10 @@
 return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
+
+	local LuauPolyfill = require(Packages.LuauPolyfill)
+	local Array = LuauPolyfill.Array
+	local Object = LuauPolyfill.Object
 
 	local chalk = require(Packages.ChalkLua)
 
@@ -37,7 +41,7 @@ return function()
 		return result
 	end
 
-	-- deviation: added a table copy method to set options
+	-- ROBLOX deviation: added a table copy method to set options
 	local function tableCopy(t)
 		local copy = {}
 		for key, value in pairs(t) do
@@ -112,7 +116,7 @@ return function()
 				)
 			)
 		end)
-		-- deviation: omitted nil vs undefined, no distinction in lua
+		-- ROBLOX deviation: omitted nil vs undefined, no distinction in lua
 		it('function and 3', function()
 			local a = function() end
 			local b = 3
@@ -147,14 +151,14 @@ return function()
 		it('{0/0} and {0/0}', function()
 			jestExpect(stripped({0/0}, {0/0})).toBe(NO_DIFF_MESSAGE)
 		end)
-		-- deviation: omitted Number.NaN and NaN
+		-- ROBLOX deviation: omitted Number.NaN and NaN
 		it('function and function', function()
 			jestExpect(stripped(function() end, function() end)).toBe(NO_DIFF_MESSAGE)
 		end)
 		it('nil and nil', function()
 			jestExpect(stripped(nil, nil)).toBe(NO_DIFF_MESSAGE)
 		end)
-		-- deviation: omitted undefined, identical to nil
+		-- ROBLOX deviation: omitted undefined, identical to nil
 		it('false and false', function()
 			jestExpect(stripped(false, false)).toBe(NO_DIFF_MESSAGE)
 		end)
@@ -165,7 +169,7 @@ return function()
 			jestExpect(stripped({a = {b = 5}}, {a = {b = 5}})).toBe(NO_DIFF_MESSAGE)
 		end)
 
-		-- deviation: TODO ordering for maps and sets
+		-- ROBLOX deviation: TODO ordering for maps and sets
 	end)
 
 	it('oneline strings', function()
@@ -244,7 +248,7 @@ line 4]]
 		end)
 	end)
 
-	-- deviation: modified to be tables instead of objects
+	-- ROBLOX deviation: modified to be tables instead of objects
 	describe('tables', function()
 		local a = {a = {b = {c = 5}}}
 		local b = {a = {b = {c = 6}}}
@@ -344,7 +348,7 @@ Options:
 
 	-- TODO: react elements
 
-	-- deviation: Tables instead of Object
+	-- ROBLOX deviation: Tables instead of Object
 	describe('multiline string as value of object property', function()
 		local expected = table.concat({
 			'  Table {',
@@ -397,7 +401,7 @@ Options:
 		end)
 	end)
 
-	-- deviation: Tables instead of Object and Array
+	-- ROBLOX deviation: Tables instead of Object and Array
 	describe('indentation in JavaScript structures', function()
 		local searching = ''
 		local object = {
@@ -417,7 +421,7 @@ Options:
 			local expected = table.concat({
 				'  Table {',
 				'    "searching": "",',
-				-- deviation: no diff here because Object and Array are both Table
+				-- ROBLOX deviation: no diff here because Object and Array are both Table
 				-- '-   "sorting": Object {',
 				-- '+   "sorting": Array [',
 				'    "sorting": Table {',
@@ -425,7 +429,7 @@ Options:
 				-- // following 3 lines are unchanged, except for more indentation
 				'        "descending": false,',
 				'        "fieldKey": "what",',
-				-- deviation: diff is on the inner Table
+				-- ROBLOX deviation: diff is on the inner Table
 				'+     },',
 				'    },',
 				'  }',
@@ -443,7 +447,7 @@ Options:
 			local expected = table.concat({
 				'  Table {',
 				'    "searching": "",',
-				-- deviation: no diff here because Object and Array are both Table
+				-- ROBLOX deviation: no diff here because Object and Array are both Table
 				-- '-   "sorting": Array [',
 				-- '-     Object {',
 				-- '+   "sorting": Object {',
@@ -958,4 +962,77 @@ Options:
 		end)
 	end)
 
+	describe('compare keys', function()
+		local a = { a = { d = 1, e = 1, f = 1 }, b = 1, c = 1 }
+		local b = { a = { d = 1, e = 2, f = 1 }, b = 1, c = 1 }
+		-- ROBLOX deviation start: skipping test in Lua we can't rely on the order of keys
+		itSKIP('keeps the object keys in their original order', function()
+			local function compareKeys()
+				return 0
+			end
+			local expected = Array.join(
+				{
+					'  Table {',
+					'    "a": Table {',
+					'      "d": 1,',
+					'-     "e": 1,',
+					'+     "e": 2,',
+					'      "f": 1,',
+					'    },',
+					'    "b": 1,',
+					'    "c": 1,',
+					'  }',
+				},
+				'\n'
+			)
+			jestExpect(diff(a, b, Object.assign({}, optionsBe, { compareKeys = compareKeys }))).toBe(expected)
+		end)
+		-- ROBLOX deviation end
+
+		it('sorts the object keys in reverse order', function()
+			local function compareKeys(a: string, b: string)
+				return if a > b then -1 else 1
+			end
+			local expected = Array.join(
+				{
+					'  Table {',
+					'    "c": 1,',
+					'    "b": 1,',
+					'    "a": Table {',
+					'      "f": 1,',
+					'-     "e": 1,',
+					'+     "e": 2,',
+					'      "d": 1,',
+					'    },',
+					'  }',
+				},
+				'\n'
+			)
+			jestExpect(diff(a, b, Object.assign({}, optionsBe, { compareKeys = compareKeys }))).toBe(expected)
+		end)
+
+		-- ROBLOX deviation start: additional test to verify the compareKeys function
+		it('sorts the object keys in ascending order', function()
+			local compareKeys = function(a: string, b: string)
+				return if a > b then 1 else -1
+			end
+			local expected = Array.join(
+				{
+					'  Table {',
+					'    "a": Table {',
+					'      "d": 1,',
+					'-     "e": 1,',
+					'+     "e": 2,',
+					'      "f": 1,',
+					'    },',
+					'    "b": 1,',
+					'    "c": 1,',
+					'  }',
+				},
+				'\n'
+			)
+			jestExpect(diff(a, b, Object.assign({}, optionsBe, { compareKeys = compareKeys }))).toBe(expected)
+		end)
+		-- ROBLOX deviation end
+	end)
 end

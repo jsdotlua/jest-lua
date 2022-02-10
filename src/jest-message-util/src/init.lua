@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-message-util/src/index.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-message-util/src/index.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -16,21 +16,31 @@ local Boolean = LuauPolyfill.Boolean.toJSBoolean
 
 -- local chalk = require(Packages.ChalkLua)
 
--- deviation: forward declarations
+-- ROBLOX deviation: forward declarations
 local formatStackTrace, getStackTraceLines--, separateMessageFromStack
 
--- deviation: omitting imports since they're mostly fs related
+-- ROBLOX deviation: omitting imports since they're mostly fs related
 
--- deviation: omitting type StackTraceConfig
+-- ROBLOX deviation: omitting type StackTraceConfig
 type StackTraceOptions = { noStackTrace: boolean, noCodeFrame: boolean? };
 
--- deviation: rewrote regex patterns and split up patterns for alternations
+--[[
+	ROBLOX deviation: rewrote regex patterns and split up patterns for alternations
+	original code:
+	const JASMINE_IGNORE =
+	  /^\s+at(?:(?:.jasmine\-)|\s+jasmine\.buildExpectationResult)/;
+]]
 -- // filter for noisy stack trace lines
 local JASMINE_IGNORE = '%s+at(.jasmine%-)'
 local JASMINE_IGNORE_BUILDEXPECTATIONRESULT = '%s+at(%s+jasmine%.buildExpectationResult)'
--- local JEST_INTERNALS_IGNORE = /^\s+at.*?jest(-.*?)?(\/|\\)(build|node_modules|packages)(\/|\\)/
+--[[
+	ROBLOX deviation: skipping JEST_INTERNALS_IGNORE
+	original code:
+	const JEST_INTERNALS_IGNORE =
+	  /^\s+at.*?jest(-.*?)?(\/|\\)(build|node_modules|packages)(\/|\\)/;
+]]
 local ANONYMOUS_FN_IGNORE = '^%s+at <anonymous>.*$'
--- deviation: no optional capturing group in Lua string patterns so we try matching against both
+-- ROBLOX deviation: no optional capturing group in Lua string patterns so we try matching against both
 local ANONYMOUS_PROMISE_IGNORE = '^%s+at Promise %(<anonymous>%).*$'
 local ANONYMOUS_NEW_PROMISE_IGNORE = '^%s+at new Promise %(<anonymous>%).*$'
 local ANONYMOUS_GENERATOR_IGNORE = '^%s+at Generator.next %(<anonymous>%).*$'
@@ -45,7 +55,7 @@ local STACK_PATH_REGEXP = '%s*at.*%(?:%d*:%d*%)?'
 local STACK_PATH_REGEXP_NATIVE = '%s*at.*%(?native%)?'
 -- local EXEC_ERROR_MESSAGE = 'Test suite failed to run'
 
--- deviation: rewrote this because Lua doesn't have negative lookahead
+-- ROBLOX deviation: rewrote this because Lua doesn't have negative lookahead
 -- currently commented out as it is unused
 -- local function indentAllLines(lines: string, indent: string): string
 -- 	local t = string.split(lines, '\n')
@@ -65,16 +75,109 @@ end
 -- // want to trim those, because they may have pointers to the column/character
 -- // which will get misaligned.
 local function trimPaths(string_: string): string
-	-- deviation: match both since Lua doesn't have alternations
+	-- ROBLOX deviation: match both since Lua doesn't have alternations
 	if string_:find(STACK_PATH_REGEXP) or string_:find(STACK_PATH_REGEXP_NATIVE) then
 		return trim(string_)
 	end
 	return string_
 end
 
--- deviation: can't match for blank string in Lua so we match for NOT blank string
+-- ROBLOX deviation: can't match for blank string in Lua so we match for NOT blank string
 -- currently commented out as it is unused
 -- local notBlankStringRegexp = '%S'
+
+--[[
+	ROBLOX deviation: code not ported
+	original code:
+function checkForCommonEnvironmentErrors(error: string) {
+  if (
+    error.includes('ReferenceError: document is not defined') ||
+    error.includes('ReferenceError: window is not defined') ||
+    error.includes('ReferenceError: navigator is not defined')
+  ) {
+    return warnAboutWrongTestEnvironment(error, 'jsdom');
+  } else if (error.includes('.unref is not a function')) {
+    return warnAboutWrongTestEnvironment(error, 'node');
+  }
+
+  return error;
+}
+
+function warnAboutWrongTestEnvironment(error: string, env: 'jsdom' | 'node') {
+  return (
+    chalk.bold.red(
+      `The error below may be caused by using the wrong test environment, see ${chalk.dim.underline(
+        'https://jestjs.io/docs/configuration#testenvironment-string',
+      )}.\nConsider using the "${env}" test environment.\n\n`,
+    ) + error
+  );
+}
+
+// ExecError is an error thrown outside of the test suite (not inside an `it` or
+// `before/after each` hooks). If it's thrown, none of the tests in the file
+// are executed.
+export const formatExecError = (
+  error: Error | TestResult.SerializableError | string | undefined,
+  config: StackTraceConfig,
+  options: StackTraceOptions,
+  testPath?: Path,
+  reuseMessage?: boolean,
+): string => {
+  if (!error || typeof error === 'number') {
+    error = new Error(`Expected an Error, but "${String(error)}" was thrown`);
+    error.stack = '';
+  }
+
+  let message, stack;
+
+  if (typeof error === 'string' || !error) {
+    error || (error = 'EMPTY ERROR');
+    message = '';
+    stack = error;
+  } else {
+    message = error.message;
+    stack =
+      typeof error.stack === 'string'
+        ? error.stack
+        : `thrown: ${prettyFormat(error, {maxDepth: 3})}`;
+  }
+
+  const separated = separateMessageFromStack(stack || '');
+  stack = separated.stack;
+
+  if (separated.message.includes(trim(message))) {
+    // Often stack trace already contains the duplicate of the message
+    message = separated.message;
+  }
+
+  message = checkForCommonEnvironmentErrors(message);
+
+  message = indentAllLines(message, MESSAGE_INDENT);
+
+  stack =
+    stack && !options.noStackTrace
+      ? '\n' + formatStackTrace(stack, config, options, testPath)
+      : '';
+
+  if (
+    typeof stack !== 'string' ||
+    (blankStringRegexp.test(message) && blankStringRegexp.test(stack))
+  ) {
+    // this can happen if an empty object is thrown.
+    message = `thrown: ${prettyFormat(error, {maxDepth: 3})}`;
+  }
+
+  let messageToUse;
+
+  if (reuseMessage) {
+    messageToUse = ` ${message.trim()}`;
+  } else {
+    messageToUse = `${EXEC_ERROR_MESSAGE}\n\n${message}`;
+  }
+
+  return TITLE_INDENT + TITLE_BULLET + messageToUse + stack + '\n';
+};
+]]
 
 local function removeInternalStackEntries(
 	lines: { string },
@@ -101,17 +204,17 @@ local function removeInternalStackEntries(
 				return false
 			end
 
-			-- deviation: omitting node specific stuff
+			-- ROBLOX deviation: omitting node specific stuff
 			-- if (nodeInternals.some(internal => internal.test(line))) {
 			-- 	return false;
 			-- }
 
-			-- deviation: match both since Lua doesn't have alternations
+			-- ROBLOX deviation: match both since Lua doesn't have alternations
 			if not line:find(STACK_PATH_REGEXP) or not line:find(STACK_PATH_REGEXP_NATIVE) then
 				return true
 			end
 
-			-- deviation: match both since Lua doesn't have alternations
+			-- ROBLOX deviation: match both since Lua doesn't have alternations
 			if line:find(JASMINE_IGNORE) or line:find(JASMINE_IGNORE_BUILDEXPECTATIONRESULT) then
 				return false
 			end
@@ -134,14 +237,14 @@ local function removeInternalStackEntries(
 	)
 end
 
--- deviation: config does not have StackTraceConfig type annotation
+-- ROBLOX deviation: config does not have StackTraceConfig type annotation
 local function formatPaths(
 	config,
 	relativeTestPath,
 	line: string
 ): string
 
-	-- deviation: we don't do any formatting of paths in Lua to align with upstream
+	-- ROBLOX deviation: we don't do any formatting of paths in Lua to align with upstream
 	return line
 end
 
@@ -184,9 +287,63 @@ function formatStackTrace(
 	)
 end
 
+--[[
+	ROBLOX deviation: code not ported
+	original code:
+type FailedResults = Array<{
+  content: string;
+  result: TestResult.AssertionResult;
+}>;
+
+export const formatResultsErrors = (
+  testResults: Array<TestResult.AssertionResult>,
+  config: StackTraceConfig,
+  options: StackTraceOptions,
+  testPath?: Path,
+): string | null => {
+  const failedResults: FailedResults = testResults.reduce<FailedResults>(
+    (errors, result) => {
+      result.failureMessages.forEach(item => {
+        errors.push({content: checkForCommonEnvironmentErrors(item), result});
+      });
+      return errors;
+    },
+    [],
+  );
+
+  if (!failedResults.length) {
+    return null;
+  }
+
+  return failedResults
+    .map(({result, content}) => {
+      let {message, stack} = separateMessageFromStack(content);
+      stack = options.noStackTrace
+        ? ''
+        : STACK_TRACE_COLOR(
+            formatStackTrace(stack, config, options, testPath),
+          ) + '\n';
+
+      message = indentAllLines(message, MESSAGE_INDENT);
+
+      const title =
+        chalk.bold.red(
+          TITLE_INDENT +
+            TITLE_BULLET +
+            result.ancestorTitles.join(ANCESTRY_SEPARATOR) +
+            (result.ancestorTitles.length ? ANCESTRY_SEPARATOR : '') +
+            result.title,
+        ) + '\n';
+
+      return title + '\n' + message + '\n' + stack;
+    })
+    .join('\n');
+};
+]]
+
 -- local errorRegexp = '^Error:?%s*$'
 
--- deviation: function unused so commented out for now
+-- ROBLOX deviation: function unused so commented out for now
 -- local function removeBlankErrorLine(str: string): string
 -- 	return String.trimRight(
 -- 		table.concat(
@@ -201,7 +358,7 @@ end
 -- 	)
 -- end
 
--- deviation: function unused so commented out for now. If eventually ends up
+-- ROBLOX deviation: function unused so commented out for now. If eventually ends up
 -- being used, be careful of automatically loading the RegExp library since we
 -- intentionally lazy-load it in Jest-Roblox for improved performance
 -- // jasmine and worker farm sometimes don't give us access to the actual

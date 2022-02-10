@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v27.2.5/packages/jest-diff/src/printDiffs.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-diff/src/printDiffs.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -9,13 +9,14 @@
 local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent
 
-local Array = require(Packages.LuauPolyfill).Array
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Array = LuauPolyfill.Array
+type Array<T> = LuauPolyfill.Array<T>
 
 local CleanupSemantic = require(CurrentModule.CleanupSemantic)
 local DIFF_EQUAL = CleanupSemantic.DIFF_EQUAL
 local cleanupSemantic = CleanupSemantic.cleanupSemantic
 type Diff = CleanupSemantic.Diff
-type Array<T> = { [number]: T }
 
 local DiffLines = require(CurrentModule.DiffLines)
 local diffLinesUnified = DiffLines.diffLinesUnified

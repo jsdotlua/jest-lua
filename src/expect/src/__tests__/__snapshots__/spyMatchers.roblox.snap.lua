@@ -1,3 +1,5 @@
+-- ROBLOX NOTE: no upstream
+
 local snapshots = {}
 
 snapshots['Lua tests nil argument calls lastCalledWith works with trailing nil argument 1'] = [=[

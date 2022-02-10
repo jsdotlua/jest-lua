@@ -1,3 +1,6 @@
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/__tests__/matchers.test.js
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/utils.ts
+
 local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent
 
@@ -8,7 +11,7 @@ local toJSBoolean = LuauPolyfill.Boolean.toJSBoolean
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 
-type Array<T> = { T };
+type Array<T> = LuauPolyfill.Array<T>
 type Table = { [any]: any };
 type Tester = (any, any) -> any;
 
@@ -25,33 +28,22 @@ end
 -- ROBLOX MOVED: expect/jasmineUtils.lua
 local function keys(
 	obj: Table,
-	isArray: boolean,
-	hasKey: (Table, string) -> boolean
+	_hasKey: (Table, string) -> boolean
 )
-	local function getAllKeys(o)
-		local allKeys = {}
-		for key, value in pairs(o) do
-			if o[key] ~= nil then
-				table.insert(allKeys, key)
-			end
+	local keys_ = {}
+	for key in pairs(obj) do
+		if obj[key] ~= nil then
+			table.insert(keys_, key)
 		end
-
-		return allKeys
 	end
 
-	local allKeys = getAllKeys(obj)
-
-	if not isArray then
-		return allKeys
-	end
-
-	-- deviation: code omitted for adding 'extraKeys' since we don't have
+	-- ROBLOX deviation: code omitted for adding 'extraKeys' since we don't have
  	-- similar concerns of overlooking symbols and non-numeric properties for
  	-- arrays
 
  	-- Thus, in the array case we should always just be returning an empty array
 
-	return {}
+	return keys_
 end
 
 -- ROBLOX MOVED: expect/jasmineUtils.lua
@@ -115,17 +107,17 @@ local function eq(
 		end
 	end
 
-	-- deviation: code omitted because there are no error objects in Lua
+	-- ROBLOX deviation: code omitted because there are no error objects in Lua
 
 	if Object.is(a, b) then
 		return true
 	end
 
-	-- deviation: code omitted that does strict comparison because we don't
+	-- ROBLOX deviation: code omitted that does strict comparison because we don't
 	-- have similar concerns in Lua where there are no distinct 'null' and
 	-- 'undefined' types
 
-	-- deviation: as part of the upstream className check, a type difference of
+	-- ROBLOX deviation: as part of the upstream className check, a type difference of
 	-- array/non-array would be detected so we add this in manually
 	local className = getType(a)
 	if className ~= getType(b) then
@@ -134,7 +126,7 @@ local function eq(
 		return false
 	end
 
-	-- deviation: code omitted for elseif case with regular expressions since
+	-- ROBLOX deviation: code omitted for elseif case with regular expressions since
 	-- Lua doesn't have a built in regular expression type
 
 	if className == "boolean" or
@@ -180,33 +172,18 @@ local function eq(
 	table.insert(aStack, a)
 	table.insert(bStack, b)
 
-	local size = 0
-
 	-- Recursively compare objects and arrays.
 	-- Compare array lengths to determine if a deep comparison is necessary.
-
-	if Array.isArray(a) then
-		size = #a
-		if size ~= #b then
-			return false
-		end
-
-		while size > 0 do
-			result = eq(a[size], b[size], aStack, bStack, customTesters, _hasKey)
-
-			if not result then
-				return false
-			end
-			size -= 1
-		end
+	if Array.isArray(a) and #a ~= #b then
+		return false
 	end
 
 	-- // Deep compare objects
-	local aKeys = keys(a, Array.isArray(a), _hasKey)
-	size = #aKeys
+	local aKeys = keys(a, _hasKey)
+	local size = #aKeys
 
 	-- Ensure that both objects contain the same number of properties before comparing deep equality.
-	if #keys(b, Array.isArray(b), _hasKey) ~= size then
+	if #keys(b, _hasKey) ~= size then
 		return false
 	end
 
@@ -285,7 +262,7 @@ local function iterableEquality(
 		return nil
 	end
 
-	-- deviation: omitting constructor check
+	-- ROBLOX deviation: omitting constructor check
 
 	local length = #aStack
 	while length > 0 do
@@ -297,7 +274,7 @@ local function iterableEquality(
 			return bStack[length] == b
 		end
 
-		-- deviation: this if check is not included in upstream
+		-- ROBLOX deviation: this if check is not included in upstream
 		-- if bStack[length] == b then
 		-- 	return aStack[length] == a
 		-- end
@@ -343,7 +320,7 @@ local function iterableEquality(
 
 	return nil
 
-	-- deviation: omitted section of code for handling the case of a different
+	-- ROBLOX deviation: omitted section of code for handling the case of a different
 	-- kind of iterable not covered by the above Set case
 end
 
@@ -355,43 +332,36 @@ local function subsetEquality(
 	-- subsetEquality needs to keep track of the references
 	-- it has already visited to avoid infinite loops in case
 	-- there are circular references in the subset passed to it
-
-	-- ROBLOX TODO: (LUAU) Add seenReferences type annotation once Luau can
-	-- recognize that the seenReferences or {} is sufficient to make seenReferences
-	-- non-nil
 	local function subsetEqualityWithContext(
-		seenReferences-- : { [any]: boolean }?
+		seenReferences_: { [any]: boolean }?
 	)
-		if not isObjectWithKeys(subset) then
-			return nil
-		end
+		local seenReferences = seenReferences_ or {}
 
-		return function(localObject, localSubset): boolean | nil
-			seenReferences = seenReferences or {}
+		return function(object_: any, subset_: any): boolean | nil
 
-			if not isObjectWithKeys(localSubset) then
+			if not isObjectWithKeys(subset_) then
 				return nil
 			end
 
 			return Array.every(
-				Object.keys(localSubset),
+				Object.keys(subset_),
 				function(key)
-					if isObjectWithKeys(localSubset[key]) then
-						if seenReferences[localSubset[key]] then
+					if isObjectWithKeys(subset_[key]) then
+						if seenReferences[subset_[key]] then
 							--[[
 								ROBLOX TODO: (ADO-1217) replace the line below
 								once Map/Set functionality is implemented
 
 								return equals(localObject[key], localSubset[key], {iterableEquality})
 							]]
-							return equals(localObject[key], localSubset[key], {iterableEquality})
+							return equals(object_[key], subset_[key], {iterableEquality})
 						end
-						seenReferences[localSubset[key]] = true
+						seenReferences[subset_[key]] = true
 					end
 					local result =
-						localObject ~= nil and
-						hasPropertyInObject(localObject, key) and
-						equals(localObject[key], localSubset[key], {
+						object_ ~= nil and
+						hasPropertyInObject(object_, key) and
+						equals(object_[key], subset_[key], {
 								--[[
 									ROBLOX TODO: (ADO-1217) uncomment the line
 									iterableEquality,
@@ -407,20 +377,14 @@ local function subsetEquality(
 					-- Thus we should delete the reference immediately so that
 					-- it doesn't interfere other nodes within the same level
 					-- on tree.
-					seenReferences[localSubset[key]] = nil
+					seenReferences[subset_[key]] = nil
 					return result
 				end
 			 )
 		end
 	end
 
-	local inner = subsetEqualityWithContext()
-
-	if inner then
-		return inner(object, subset)
-	end
-
-	return inner
+	return subsetEqualityWithContext()(object, subset)
 end
 
 -- ROBLOX MOVED: expect/utils.lua

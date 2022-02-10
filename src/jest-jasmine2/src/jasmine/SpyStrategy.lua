@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/jest-jasmine2/src/jasmine/SpyStrategy.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-jasmine2/src/jasmine/SpyStrategy.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -32,8 +32,7 @@ local Packages = CurrentModule.Parent.Parent
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
-
-type Array<T> = { T };
+type Array<T> = LuauPolyfill.Array<T>
 
 local SpyStrategy = {}
 
@@ -41,7 +40,7 @@ SpyStrategy.__index = SpyStrategy
 function SpyStrategy.new(args)
 	args = args or {}
 
-	-- deviation: API changed we allow originalFn to also be a table with a
+	-- ROBLOX deviation: API changed we allow originalFn to also be a table with a
 	-- __call metamethod since this allows for the typical use case of passing
 	-- in a spy as the originalFn
 	local self = {
@@ -96,7 +95,7 @@ function SpyStrategy:throwError(something: string | { [any]: any }): any
 end
 
 function SpyStrategy:callFake(fn): any
-	-- deviation: we modify this type check to include table since we can have
+	-- ROBLOX deviation: we modify this type check to include table since we can have
 	-- fn be a spy which is a table with a __call metafunction not a function
 	-- as in upstream
 	if typeof(fn) ~= "function" and typeof(fn) ~= "table" then

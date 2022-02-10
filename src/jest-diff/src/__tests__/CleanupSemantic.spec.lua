@@ -1,3 +1,5 @@
+-- ROBLOX NOTE: no upstream
+
 -- adapted from:
 -- https://github.com/google/diff-match-patch/blob/858b3812cc02e7d48da4beebb21d4d80dc1d3062/lua/tests/diff_match_patch_test.lua
 --[[

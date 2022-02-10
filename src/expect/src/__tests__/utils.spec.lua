@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/jest/blob/v26.5.3/packages/expect/src/__tests__/utils.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/__tests__/utils.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -24,7 +24,7 @@ return function()
 
 	local equals = require(CurrentModule.jasmineUtils).equals
 
-	type Array<T> = { T }
+	type Array<T> = LuauPolyfill.Array<T>
 
 	type GetPath = {
 		hasEndProp: boolean?,
@@ -80,7 +80,7 @@ return function()
 			)).to.equal(true)
 		end)
 
-		-- deviation: modified test because we don't have built in
+		-- ROBLOX deviation: modified test because we don't have built in
 		it("property is a getter on class instance", function()
 			local A = {}
 			A.a = "a"
@@ -344,7 +344,7 @@ return function()
 			expect(subsetEquality(nil, {foo = "bar"})).to.equal(false)
 		end)
 
-		-- deviation: skipped test because it would be identical to the one
+		-- ROBLOX deviation: skipped test because it would be identical to the one
 		-- directly above since we don't have a distinct undefined type
 		itSKIP("undefined does not return errors", function()
 			expect(not not subsetEquality(nil, {foo = "bar"})).to.equal(false)
@@ -475,5 +475,27 @@ return function()
 
 		itSKIP('returns true when given circular value in Map', function()
 		end)
+
+		-- ROBLOX deviation START: skipped as Lua doesn't support ArrayBuffer
+		-- describe('arrayBufferEquality', function()
+		-- 	it('returns undefined if given a non instance of ArrayBuffer', function()
+		-- 		expect(arrayBufferEquality(2, 's')).toBeUndefined()
+		-- 		expect(arrayBufferEquality(nil, 2)).toBeUndefined()
+		-- 		expect(arrayBufferEquality(Date.new(), ArrayBuffer.new(2))).toBeUndefined()
+		-- 	end)
+
+		-- 	it('returns false when given non-matching buffers', function()
+		-- 		local a = Array.from(Uint8Array, { 2, 4 }).buffer
+		-- 		local b = Array.from(Uint16Array, { 1, 7 }).buffer
+		-- 		expect(arrayBufferEquality(a, b)).not_.toBeTruthy()
+		-- 	end)
+
+		-- 	it('returns true when given matching buffers', function()
+		-- 		local a = Array.from(Uint8Array, { 1, 2 }).buffer
+		-- 		local b = Array.from(Uint8Array, { 1, 2 }).buffer
+		-- 		expect(arrayBufferEquality(a, b)).toBeTruthy()
+		-- 	end)
+		-- end)
+		-- ROBLOX deviation END
 	end)
 end
