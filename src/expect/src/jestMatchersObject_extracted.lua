@@ -10,8 +10,8 @@ local Symbol = LuauPolyfill.Symbol
 local Types = require(CurrentModule.types)
 type MatcherState = Types.MatcherState
 
--- // Global matchers object holds the list of available matchers and
--- // the state, that can hold matcher specific values that change over time.
+-- Global matchers object holds the list of available matchers and
+-- the state, that can hold matcher specific values that change over time.
 local JEST_MATCHERS_OBJECT = Symbol.for_("$$jest-matchers-object")
 
 --[[
@@ -25,5 +25,5 @@ end
 
 return {
 	JEST_MATCHERS_OBJECT = JEST_MATCHERS_OBJECT,
-	getState = getState
+	getState = getState,
 }

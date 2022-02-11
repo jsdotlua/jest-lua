@@ -2,7 +2,7 @@
 
 local snapshots = {}
 
-snapshots['Lua tests nil argument calls lastCalledWith works with trailing nil argument 1'] = [=[
+snapshots["Lua tests nil argument calls lastCalledWith works with trailing nil argument 1"] = [=[
 
 <d>expect(</><r>jest.fn()</><d>).</>lastCalledWith<d>(</><g>...expected</><d>)</>
 
@@ -12,7 +12,7 @@ Received: <d>"a"</>, <d>"b"</>, <r>nil</>
 Number of calls: <r>1</>
 ]=]
 
-snapshots['Lua tests nil argument calls lastCalledWith works with inner nil argument 1'] = [=[
+snapshots["Lua tests nil argument calls lastCalledWith works with inner nil argument 1"] = [=[
 
 <d>expect(</><r>jest.fn()</><d>).</>lastCalledWith<d>(</><g>...expected</><d>)</>
 
@@ -22,7 +22,7 @@ Received: <d>"a"</>, <d>nil</>, <r>"b"</>
 Number of calls: <r>1</>
 ]=]
 
-snapshots['Lua tests nil argument calls lastCalledWith works with inner nil argument 2'] = [=[
+snapshots["Lua tests nil argument calls lastCalledWith works with inner nil argument 2"] = [=[
 
 <d>expect(</><r>jest.fn()</><d>).</>never<d>.</>lastCalledWith<d>(</><g>...expected</><d>)</>
 
@@ -31,7 +31,7 @@ Expected: never <g>"a"</>, <g>nil</>, <g>"b"</>
 Number of calls: <r>1</>
 ]=]
 
-snapshots['Lua tests nil argument calls lastCalledWith complex call with nil 1'] = [=[
+snapshots["Lua tests nil argument calls lastCalledWith complex call with nil 1"] = [=[
 
 <d>expect(</><r>jest.fn()</><d>).</>lastCalledWith<d>(</><g>...expected</><d>)</>
 
@@ -51,7 +51,7 @@ snapshots['Lua tests nil argument calls lastCalledWith complex call with nil 1']
 Number of calls: <r>1</>
 ]=]
 
-snapshots['Lua tests nil argument calls lastCalledWith complex call with nil 2'] = [=[
+snapshots["Lua tests nil argument calls lastCalledWith complex call with nil 2"] = [=[
 
 <d>expect(</><r>jest.fn()</><d>).</>lastCalledWith<d>(</><g>...expected</><d>)</>
 
@@ -66,7 +66,7 @@ snapshots['Lua tests nil argument calls lastCalledWith complex call with nil 2']
 Number of calls: <r>1</>
 ]=]
 
-snapshots['Lua tests nil argument calls lastCalledWith complex multi-call with nil 1'] = [=[
+snapshots["Lua tests nil argument calls lastCalledWith complex multi-call with nil 1"] = [=[
 
 <d>expect(</><r>jest.fn()</><d>).</>lastCalledWith<d>(</><g>...expected</><d>)</>
 
@@ -82,7 +82,7 @@ Received
 Number of calls: <r>2</>
 ]=]
 
-snapshots['Lua tests nil argument calls toBeCalledWith multi-call 1'] = [=[
+snapshots["Lua tests nil argument calls toBeCalledWith multi-call 1"] = [=[
 
 <d>expect(</><r>jest.fn()</><d>).</>toBeCalledWith<d>(</><g>...expected</><d>)</>
 
@@ -94,7 +94,7 @@ Received
 Number of calls: <r>2</>
 ]=]
 
-snapshots['Lua tests nil argument calls toBeCalledWith multi-call 2'] = [=[
+snapshots["Lua tests nil argument calls toBeCalledWith multi-call 2"] = [=[
 
 <d>expect(</><r>jest.fn()</><d>).</>toBeCalledWith<d>(</><g>...expected</><d>)</>
 

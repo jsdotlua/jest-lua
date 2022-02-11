@@ -12,8 +12,8 @@ local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 
 type Array<T> = LuauPolyfill.Array<T>
-type Table = { [any]: any };
-type Tester = (any, any) -> any;
+type Table = { [any]: any }
+type Tester = (any, any) -> any
 
 -- ROBLOX MOVED: expect/jasmineUtils.lua
 local function hasKey(obj: any, key: string)
@@ -26,10 +26,7 @@ local function hasDefinedKey(obj: any, key: string)
 end
 
 -- ROBLOX MOVED: expect/jasmineUtils.lua
-local function keys(
-	obj: Table,
-	_hasKey: (Table, string) -> boolean
-)
+local function keys(obj: Table, _hasKey: (Table, string) -> boolean)
 	local keys_ = {}
 	for key in pairs(obj) do
 		if obj[key] ~= nil then
@@ -38,10 +35,10 @@ local function keys(
 	end
 
 	-- ROBLOX deviation: code omitted for adding 'extraKeys' since we don't have
- 	-- similar concerns of overlooking symbols and non-numeric properties for
- 	-- arrays
+	-- similar concerns of overlooking symbols and non-numeric properties for
+	-- arrays
 
- 	-- Thus, in the array case we should always just be returning an empty array
+	-- Thus, in the array case we should always just be returning an empty array
 
 	return keys_
 end
@@ -54,8 +51,10 @@ end
 -- ROBLOX MOVED: expect/jasmineUtils.lua
 local function isAsymmetric(obj: any)
 	if toJSBoolean(obj) and typeof(obj) == "table" then
-		local ok, val = pcall(function() return obj.asymmetricMatch end)
-		if ok and isA('function', val) then
+		local ok, val = pcall(function()
+			return obj.asymmetricMatch
+		end)
+		if ok and isA("function", val) then
 			return true
 		end
 	end
@@ -83,8 +82,8 @@ local function asymmetricMatch(a: any, b: any)
 end
 
 -- ROBLOX MOVED: expect/jasmineUtils.lua
--- // Equality function lovingly adapted from isEqual in
--- //   [Underscore](http://underscorejs.org)
+-- Equality function lovingly adapted from isEqual in
+--   [Underscore](http://underscorejs.org)
 local function eq(
 	a: any,
 	b: any,
@@ -129,12 +128,8 @@ local function eq(
 	-- ROBLOX deviation: code omitted for elseif case with regular expressions since
 	-- Lua doesn't have a built in regular expression type
 
-	if className == "boolean" or
-		className == "string" or
-		className == "number" or
-		className == "userdata"
-	then
-		return Object.is(a,b)
+	if className == "boolean" or className == "string" or className == "number" or className == "userdata" then
+		return Object.is(a, b)
 	elseif className == "DateTime" then
 		return a == b
 	elseif className == "regexp" then
@@ -155,10 +150,10 @@ local function eq(
 	-- Used to detect circular references.
 	local length = #aStack
 	while length > 0 do
-		-- // Linear search. Performance is inversely proportional to the number of
-	 	-- // unique nested structures.
-	 	-- // circular references at same depth are equal
-	 	-- // circular reference is not equal to non-circular one
+		-- Linear search. Performance is inversely proportional to the number of
+		-- unique nested structures.
+		-- circular references at same depth are equal
+		-- circular reference is not equal to non-circular one
 		if aStack[length] == a then
 			return bStack[length] == b
 		elseif bStack[length] == b then
@@ -168,7 +163,7 @@ local function eq(
 		length -= 1
 	end
 
-	-- // Add the first object to the stack of traversed objects.
+	-- Add the first object to the stack of traversed objects.
 	table.insert(aStack, a)
 	table.insert(bStack, b)
 
@@ -178,7 +173,7 @@ local function eq(
 		return false
 	end
 
-	-- // Deep compare objects
+	-- Deep compare objects
 	local aKeys = keys(a, _hasKey)
 	local size = #aKeys
 
@@ -190,9 +185,8 @@ local function eq(
 	while size > 0 do
 		local key = aKeys[size]
 
-		-- // Deep compare each member
-		result = hasKey(b, key) and
-				eq(a[key], b[key], aStack, bStack, customTesters, _hasKey)
+		-- Deep compare each member
+		result = hasKey(b, key) and eq(a[key], b[key], aStack, bStack, customTesters, _hasKey)
 
 		if not result then
 			return false
@@ -209,12 +203,7 @@ local function eq(
 end
 
 -- ROBLOX MOVED: expect/jasmineUtils.lua
-local function equals(
-	a: any,
-	b: any,
-	customTesters: Array<Tester>?,
-	strictCheck: boolean?
-): boolean
+local function equals(a: any, b: any, customTesters: Array<Tester>?, strictCheck: boolean?): boolean
 	customTesters = customTesters or {}
 	strictCheck = strictCheck or false
 	return eq(a, b, {}, {}, customTesters :: Array<Tester>, strictCheck and hasKey or hasDefinedKey)
@@ -225,8 +214,7 @@ local function hasPropertyInObject(object: any, key: string): boolean
 	-- We don't have to deal with the complexities around prototype chains in
 	-- javascript since a simple key access will look up the
 	-- metatable chain for us
-	local shouldBeFalse =
-		not toJSBoolean(object) or typeof(object) ~= "table"
+	local shouldBeFalse = not toJSBoolean(object) or typeof(object) ~= "table"
 
 	if shouldBeFalse then
 		return false
@@ -237,7 +225,7 @@ end
 
 -- ROBLOX MOVED: expect/utils.lua
 local function isObject(a: any)
-	return a ~= nil and typeof(a) == 'table'
+	return a ~= nil and typeof(a) == "table"
 end
 
 -- ROBLOX MOVED: expect/utils.lua
@@ -246,19 +234,11 @@ local function isObjectWithKeys(a: any)
 end
 
 -- ROBLOX MOVED: expect/utils.lua
-local function iterableEquality(
-	a: any,
-	b: any,
-	aStack: Array<any>,
-	bStack: Array<any>
-): boolean | nil
+local function iterableEquality(a: any, b: any, aStack: Array<any>, bStack: Array<any>): boolean | nil
 	aStack = aStack or {}
 	bStack = bStack or {}
 
-	if
-		getType(a) ~= "set" or
-		getType(b) ~= "set"
-	then
+	if getType(a) ~= "set" or getType(b) ~= "set" then
 		return nil
 	end
 
@@ -286,7 +266,7 @@ local function iterableEquality(
 	table.insert(bStack, b)
 
 	local function iterableEqualityWithStack(localA: any, localB: any)
-		return iterableEquality(localA, localB, {unpack(aStack)}, {unpack(bStack)})
+		return iterableEquality(localA, localB, { unpack(aStack) }, { unpack(bStack) })
 	end
 
 	-- ROBLOX TODO: (ADO-1217) If we eventually have a Map polyfill, we can
@@ -294,13 +274,13 @@ local function iterableEquality(
 	if a.size ~= nil then
 		if a.size ~= b.size then
 			return false
-		elseif isA('set', a) then
+		elseif isA("set", a) then
 			local allFound = true
 			for _, aValue in a:ipairs() do
 				if not b:has(aValue) then
 					local has = false
 					for _, bValue in b:ipairs() do
-						local isEqual = equals(aValue, bValue, {iterableEqualityWithStack})
+						local isEqual = equals(aValue, bValue, { iterableEqualityWithStack })
 						if isEqual == true then
 							has = true
 						end
@@ -325,62 +305,52 @@ local function iterableEquality(
 end
 
 -- ROBLOX MOVED: expect/utils.lua
-local function subsetEquality(
-	object: any,
-	subset: any
-): boolean | nil
+local function subsetEquality(object: any, subset: any): boolean | nil
 	-- subsetEquality needs to keep track of the references
 	-- it has already visited to avoid infinite loops in case
 	-- there are circular references in the subset passed to it
-	local function subsetEqualityWithContext(
-		seenReferences_: { [any]: boolean }?
-	)
+	local function subsetEqualityWithContext(seenReferences_: { [any]: boolean }?)
 		local seenReferences = seenReferences_ or {}
 
 		return function(object_: any, subset_: any): boolean | nil
-
 			if not isObjectWithKeys(subset_) then
 				return nil
 			end
 
-			return Array.every(
-				Object.keys(subset_),
-				function(key)
-					if isObjectWithKeys(subset_[key]) then
-						if seenReferences[subset_[key]] then
-							--[[
+			return Array.every(Object.keys(subset_), function(key)
+				if isObjectWithKeys(subset_[key]) then
+					if seenReferences[subset_[key]] then
+						--[[
 								ROBLOX TODO: (ADO-1217) replace the line below
 								once Map/Set functionality is implemented
 
 								return equals(localObject[key], localSubset[key], {iterableEquality})
 							]]
-							return equals(object_[key], subset_[key], {iterableEquality})
-						end
-						seenReferences[subset_[key]] = true
+						return equals(object_[key], subset_[key], { iterableEquality })
 					end
-					local result =
-						object_ ~= nil and
-						hasPropertyInObject(object_, key) and
-						equals(object_[key], subset_[key], {
-								--[[
+					seenReferences[subset_[key]] = true
+				end
+				local result = object_ ~= nil
+					and hasPropertyInObject(object_, key)
+					and equals(object_[key], subset_[key], {
+						--[[
 									ROBLOX TODO: (ADO-1217) uncomment the line
 									iterableEquality,
 								]]
-							subsetEqualityWithContext(seenReferences)
-						})
-					-- The main goal of using seenReference is to avoid
-					-- circular node on tree.
-					-- It will only happen within a parent and its child, not a
-					-- node and nodes next to it (same level)
-					-- We should keep the reference for a parent and its child
-					-- only
-					-- Thus we should delete the reference immediately so that
-					-- it doesn't interfere other nodes within the same level
-					-- on tree.
-					seenReferences[subset_[key]] = nil
-					return result
-				end
-			 )
+						subsetEqualityWithContext(seenReferences),
+					})
+				-- The main goal of using seenReference is to avoid
+				-- circular node on tree.
+				-- It will only happen within a parent and its child, not a
+				-- node and nodes next to it (same level)
+				-- We should keep the reference for a parent and its child
+				-- only
+				-- Thus we should delete the reference immediately so that
+				-- it doesn't interfere other nodes within the same level
+				-- on tree.
+				seenReferences[subset_[key]] = nil
+				return result
+			end)
 		end
 	end
 
@@ -394,7 +364,7 @@ end
 local function getObjectSubset(
 	object: any,
 	subset: any,
-	seenReferences--: { [any]: boolean }?
+	seenReferences --: { [any]: boolean }?
 ): any
 	seenReferences = seenReferences or {}
 
@@ -408,21 +378,21 @@ local function getObjectSubset(
 			end
 			return subsetMap
 		end
-	elseif getType(object) == 'DateTime' then
+	elseif getType(object) == "DateTime" then
 		return object
 	elseif isObject(object) and isObject(subset) then
-		if equals(object, subset, {iterableEquality, subsetEquality}) then
+		if equals(object, subset, { iterableEquality, subsetEquality }) then
 			return subset
 		end
 
 		local trimmed: any = {}
 		seenReferences[object] = trimmed
 
-		for i, key in ipairs(
-			Array.filter(
-				Object.keys(object),
-				function(key) return hasPropertyInObject(subset, key) end)
-		) do
+		for i, key in
+			ipairs(Array.filter(Object.keys(object), function(key)
+				return hasPropertyInObject(subset, key)
+			end))
+		do
 			if seenReferences[object[key]] ~= nil then
 				trimmed[key] = seenReferences[object[key]]
 			else

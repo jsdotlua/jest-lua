@@ -6,7 +6,7 @@
 --  * LICENSE file in the root directory of this source tree.
 --  *
 --  */
--- // This file is a heavily modified fork of Jasmine. Original license:
+-- This file is a heavily modified fork of Jasmine. Original license:
 -- /*
 -- Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 -- Permission is hereby granted, free of charge, to any person obtaining
@@ -47,7 +47,7 @@ function SpyStrategy.new(args)
 		identity = args.name or "unknown",
 		originalFn = args.fn or function() end,
 		getSpy = args.getSpy or function() end,
-		plan = function() end
+		plan = function() end,
 	}
 
 	setmetatable(self, SpyStrategy)
@@ -60,7 +60,7 @@ function SpyStrategy:identity(): string
 end
 
 function SpyStrategy:exec(...): any
-	local arg: Array<any> = {...}
+	local arg: Array<any> = { ... }
 
 	return self.plan(unpack(arg))
 end
@@ -72,13 +72,15 @@ function SpyStrategy:callThrough(): any
 end
 
 function SpyStrategy:returnValue(value: any): any
-	self.plan = function() return value end
+	self.plan = function()
+		return value
+	end
 
 	return self.getSpy()
 end
 
 function SpyStrategy:returnValues(...): any
-	local values = Array.slice({...})
+	local values = Array.slice({ ... })
 	self.plan = function()
 		return Array.shift(values)
 	end

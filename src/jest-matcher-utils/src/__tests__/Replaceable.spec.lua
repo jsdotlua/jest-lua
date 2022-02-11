@@ -17,17 +17,17 @@ return function()
 	local jest = require(Packages.Dev.Jest)
 	local jestExpect = require(Packages.Dev.Expect)
 
-	describe("Replaceable", function ()
+	describe("Replaceable", function()
 		describe("constructor", function()
 			it("init with object", function()
-				local replaceable = Replaceable.new({a = 1, b = 2})
-				expect(equals(replaceable.object, {a = 1, b = 2})).to.equal(true)
+				local replaceable = Replaceable.new({ a = 1, b = 2 })
+				expect(equals(replaceable.object, { a = 1, b = 2 })).to.equal(true)
 				expect(replaceable.type).to.equal("table")
 			end)
 
 			it("init with array", function()
-				local replaceable = Replaceable.new({1, 2, 3})
-				expect(equals(replaceable.object, {1, 2, 3})).to.equal(true)
+				local replaceable = Replaceable.new({ 1, 2, 3 })
+				expect(equals(replaceable.object, { 1, 2, 3 })).to.equal(true)
 				expect(replaceable.type).to.equal("table")
 			end)
 
@@ -60,12 +60,12 @@ return function()
 
 		describe("get", function()
 			it("get object item", function()
-				local replaceable = Replaceable.new({a = 1, b = 2})
+				local replaceable = Replaceable.new({ a = 1, b = 2 })
 				expect(replaceable:get("b")).to.equal(2)
 			end)
 
 			it("get array item", function()
-				local replaceable = Replaceable.new({1, 2, 3})
+				local replaceable = Replaceable.new({ 1, 2, 3 })
 				expect(replaceable:get(2)).to.equal(2)
 			end)
 
@@ -86,15 +86,15 @@ return function()
 
 		describe("set", function()
 			it("set object item", function()
-				local replaceable = Replaceable.new({a = 1, b = 2})
+				local replaceable = Replaceable.new({ a = 1, b = 2 })
 				replaceable:set("b", 3)
-				expect(equals(replaceable.object, {a = 1, b = 3})).to.equal(true)
+				expect(equals(replaceable.object, { a = 1, b = 3 })).to.equal(true)
 			end)
 
 			it("set array item", function()
-				local replaceable = Replaceable.new({1, 2, 3})
+				local replaceable = Replaceable.new({ 1, 2, 3 })
 				replaceable:set(2, 3)
-				expect(equals(replaceable.object, {1, 3, 3})).to.equal(true)
+				expect(equals(replaceable.object, { 1, 3, 3 })).to.equal(true)
 			end)
 
 			-- ROBLOX deviation: test skipped because it tests a map that is identical
@@ -130,7 +130,7 @@ return function()
 			end
 
 			it("object forEach", function()
-				local object = {a = 1, b = 2, jest = 3}
+				local object = { a = 1, b = 2, jest = 3 }
 				local replaceable = Replaceable.new(object)
 
 				local spy = jest.fn()
@@ -139,15 +139,15 @@ return function()
 				local calls = spy.mock.calls
 
 				table.sort(calls, sortingFunction)
-				jestExpect(calls[1]).toEqual({1, 'a', object})
-				jestExpect(calls[2]).toEqual({2, 'b', object})
-				jestExpect(calls[3]).toEqual({3, 'jest', object})
+				jestExpect(calls[1]).toEqual({ 1, "a", object })
+				jestExpect(calls[2]).toEqual({ 2, "b", object })
+				jestExpect(calls[3]).toEqual({ 3, "jest", object })
 			end)
 
 			it("array forEach", function()
 				-- ROBLOX deviation: test changed from {1, 2, 3} --> {4, 5, 6} for
 				-- clarity between table values and table indices
-				local object = {4, 5, 6}
+				local object = { 4, 5, 6 }
 				local replaceable = Replaceable.new(object)
 
 				local spy = jest.fn()
@@ -156,13 +156,13 @@ return function()
 				local calls = spy.mock.calls
 
 				table.sort(calls, sortingFunction)
-				jestExpect(calls[1]).toEqual({4, 1, object})
-				jestExpect(calls[2]).toEqual({5, 2, object})
-				jestExpect(calls[3]).toEqual({6, 3, object})
+				jestExpect(calls[1]).toEqual({ 4, 1, object })
+				jestExpect(calls[2]).toEqual({ 5, 2, object })
+				jestExpect(calls[3]).toEqual({ 6, 3, object })
 			end)
 
 			it("map forEach", function()
-				local object = {a = 1, b = 2}
+				local object = { a = 1, b = 2 }
 				local replaceable = Replaceable.new(object)
 
 				local spy = jest.fn()
@@ -171,8 +171,8 @@ return function()
 				local calls = spy.mock.calls
 
 				table.sort(calls, sortingFunction)
-				jestExpect(calls[1]).toEqual({1, 'a', object})
-				jestExpect(calls[2]).toEqual({2, 'b', object})
+				jestExpect(calls[1]).toEqual({ 1, "a", object })
+				jestExpect(calls[2]).toEqual({ 2, "b", object })
 			end)
 
 			-- ROBLOX deviation: test skipped because we don't have an enumerable
@@ -206,9 +206,9 @@ return function()
 
 		describe("isReplaceable", function()
 			it("should return true if two object types equal and support", function()
-				expect(Replaceable.isReplaceable({a = 1}, {b = 2})).to.equal(true)
-				expect(Replaceable.isReplaceable({}, {1, 2, 3})).to.equal(true)
-				expect(Replaceable.isReplaceable({}, {a = 1, b = 2})).to.equal(true)
+				expect(Replaceable.isReplaceable({ a = 1 }, { b = 2 })).to.equal(true)
+				expect(Replaceable.isReplaceable({}, { 1, 2, 3 })).to.equal(true)
+				expect(Replaceable.isReplaceable({}, { a = 1, b = 2 })).to.equal(true)
 			end)
 
 			-- ROBLOX deviation: test skipped because we don't have different object
@@ -220,7 +220,7 @@ return function()
 			end)
 
 			it("should return false if object types not support", function()
-				expect(Replaceable.isReplaceable('foo', 'bar')).to.equal(false)
+				expect(Replaceable.isReplaceable("foo", "bar")).to.equal(false)
 			end)
 		end)
 	end)

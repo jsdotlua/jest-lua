@@ -48,7 +48,7 @@ return function()
 
 		it("properties with different circularity are not equal", function()
 			local a = {}
-			a.x = {y = a}
+			a.x = { y = a }
 			local b = {}
 			local bx = {}
 			b.x = bx
@@ -63,11 +63,11 @@ return function()
 			a.a = a
 			b.a = {}
 			b.a.a = a
-			expect(equals(a,b)).to.equal(false)
-			expect(equals(b,a)).to.equal(false)
+			expect(equals(a, b)).to.equal(false)
+			expect(equals(b, a)).to.equal(false)
 
 			local c = {}
-			c.x = {x = c}
+			c.x = { x = c }
 			local d = {}
 			d.x = d
 			expect(equals(c, d)).to.equal(false)
@@ -78,7 +78,7 @@ return function()
 			local a = Symbol.for_("foo")
 			local b = Symbol.for_("foo")
 
-			expect(equals(a,b)).to.equal(true)
+			expect(equals(a, b)).to.equal(true)
 
 			local c = {}
 			local d = {}
@@ -86,26 +86,26 @@ return function()
 			c[a] = 5
 			d[b] = 5
 
-			expect(equals(c,d)).to.equal(true)
+			expect(equals(c, d)).to.equal(true)
 		end)
 
-		it('tests circularity defined on different property', function()
+		it("tests circularity defined on different property", function()
 			local a = {}
 			local b = {}
 			a.a = a
 			b.a = {}
 			b.a.a = a
-			expect(equals(a,b)).to.equal(false)
-			expect(equals(b,a)).to.equal(false)
+			expect(equals(a, b)).to.equal(false)
+			expect(equals(b, a)).to.equal(false)
 		end)
 	end)
 
 	describe("equality edge cases", function()
-		it('tests keys with false value', function()
-			expect(equals({{a = false, b = 2}, {b = 2}})).to.equal(false)
+		it("tests keys with false value", function()
+			expect(equals({ { a = false, b = 2 }, { b = 2 } })).to.equal(false)
 		end)
 
-		it('tests equality of regex', function()
+		it("tests equality of regex", function()
 			expect(equals(RegExp("abc"), RegExp("abd"))).to.equal(false)
 			expect(equals(RegExp("abc", "m"), RegExp("abc", "m"))).to.equal(true)
 			expect(equals(RegExp("abc", "m"), RegExp("abc"))).to.equal(false)
@@ -116,9 +116,9 @@ return function()
 		-- not yet supported, these tests should be moved to iterableEquality when that
 		-- is repurposed for the Set polyfill
 		itSKIP("basic sets", function()
-			expect(equals(Set.new({1, 2}), Set.new({3, 4}))).to.equal(false)
-			expect(equals(Set.new({1, 2}), Set.new({1, 2}))).to.equal(true)
-			expect(equals(Set.new({2, 1}), Set.new({1, 2}))).to.equal(true)
+			expect(equals(Set.new({ 1, 2 }), Set.new({ 3, 4 }))).to.equal(false)
+			expect(equals(Set.new({ 1, 2 }), Set.new({ 1, 2 }))).to.equal(true)
+			expect(equals(Set.new({ 2, 1 }), Set.new({ 1, 2 }))).to.equal(true)
 		end)
 	end)
 
@@ -138,27 +138,37 @@ return function()
 		end)
 
 		it("tests hasProperty", function()
-			local objA = {prop3 = "test"}
-			local metaA = {prop1 = 5, prop2 = "prop"}
-			setmetatable(objA, {__index = metaA})
+			local objA = { prop3 = "test" }
+			local metaA = { prop1 = 5, prop2 = "prop" }
+			setmetatable(objA, { __index = metaA })
 			expect(jasmineUtils.hasProperty(objA, "prop1")).to.equal(true)
 			expect(jasmineUtils.hasProperty(objA, "prop2")).to.equal(true)
 			expect(jasmineUtils.hasProperty(objA, "prop3")).to.equal(true)
 			expect(jasmineUtils.hasProperty(objA, "prop4")).to.equal(false)
 
-
-			local objB = {prop1 = "test"}
-			local metaB = {prop1 = 3, prop2 = {a = 1, b = {} }}
-			setmetatable(objB, {__index = function(table, key) return metaB[key] end})
+			local objB = { prop1 = "test" }
+			local metaB = { prop1 = 3, prop2 = { a = 1, b = {} } }
+			setmetatable(objB, {
+				__index = function(table, key)
+					return metaB[key]
+				end,
+			})
 			expect(jasmineUtils.hasProperty(objB, "prop1")).to.equal(true)
 			expect(jasmineUtils.hasProperty(objB, "prop2")).to.equal(true)
 			expect(jasmineUtils.hasProperty(objB, "prop3")).to.equal(false)
 
-			local objC = {prop1 = "test"}
-			setmetatable(objC, {__index = function(table, key) error("invalid access") end})
-			expect(function() jasmineUtils.hasProperty(objC, "prop1") end).never.to.throw()
-			expect(function() jasmineUtils.hasProperty(objC, "prop2") end).to.throw()
+			local objC = { prop1 = "test" }
+			setmetatable(objC, {
+				__index = function(table, key)
+					error("invalid access")
+				end,
+			})
+			expect(function()
+				jasmineUtils.hasProperty(objC, "prop1")
+			end).never.to.throw()
+			expect(function()
+				jasmineUtils.hasProperty(objC, "prop2")
+			end).to.throw()
 		end)
 	end)
-
 end

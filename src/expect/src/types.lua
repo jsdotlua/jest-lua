@@ -21,7 +21,7 @@ export type PromiseLike<T> = {
 	andThen: (
 		((T) -> T)? | (PromiseLike<T>)?, -- resolve
 		((any) -> () | PromiseLike<T>)? -- reject
-	) -> PromiseLike<T>
+	) -> PromiseLike<T>,
 }
 
 export type Promise<T> = {
@@ -30,16 +30,14 @@ export type Promise<T> = {
 		((any) -> () | PromiseLike<nil>)? -- reject
 	) -> Promise<T>)?,
 
-	catch: ((
-		((any) -> () | PromiseLike<nil>)
-	) -> Promise<T>)?,
+	catch: ((((any) -> () | PromiseLike<nil>)) -> Promise<T>)?,
 
-	onCancel: ((() -> ()?) -> boolean)?
+	onCancel: ((() -> ()?) -> boolean)?,
 }
 
 export type SyncExpectationResult = {
 	pass: boolean,
-	message: () -> string
+	message: () -> string,
 }
 
 export type AsyncExpectationResult = Promise<SyncExpectationResult>
@@ -72,12 +70,7 @@ export type MatcherState = {
 	currentTestName: string?,
 	dontThrow: (() -> ())?,
 	error: Error?,
-	equals: (
-		any,
-		any,
-		Array<Tester>?,
-		boolean?
-	) -> boolean,
+	equals: (any, any, Array<Tester>?, boolean?) -> boolean,
 	expand: boolean?,
 	expectedAssertionsNumber: number?,
 	expectedAssertionsNumberError: Error?,
@@ -94,10 +87,10 @@ export type MatcherState = {
 }
 
 export type AsymmetricMatcher = {
-	asymmetricMatch: (self: AsymmetricMatcher, other: unknown) -> boolean;
-	toString: (self: AsymmetricMatcher) -> string;
-	getExpectedType: ((self: AsymmetricMatcher) -> string)?;
-	toAsymmetricMatcher: ((self: AsymmetricMatcher) -> string)?;
+	asymmetricMatch: (self: AsymmetricMatcher, other: unknown) -> boolean,
+	toString: (self: AsymmetricMatcher) -> string,
+	getExpectedType: ((self: AsymmetricMatcher) -> string)?,
+	toAsymmetricMatcher: ((self: AsymmetricMatcher) -> string)?,
 }
 
 --[[
@@ -105,13 +98,13 @@ export type AsymmetricMatcher = {
 	original code:
 	export type MatchersObject<T extends MatcherState = MatcherState> = {
 ]]
-export type MatchersObject<T> = {[string]: RawMatcherFn<T>}
+export type MatchersObject<T> = { [string]: RawMatcherFn<T> }
 -- ROBLOX FIXME: workaround for defult generic param
 export type MatchersObject_ = MatchersObject<MatcherState>
 export type ExpectedAssertionsErrors = Array<{
 	actual: string | number,
 	error: Error,
-	expected: string
+	expected: string,
 }>
 
 -- ROBLOX deviation start: no Omit utility in Luau
@@ -147,13 +140,13 @@ export type Expect<State> = {
 	hasAssertions: () -> (),
 	setState: (Partial<MatcherState>) -> (),
 } & AsymmetricMatchers & {
-	never: AsymmetricMatchersOmitAnyAndAnything
+	never: AsymmetricMatchersOmitAnyAndAnything,
 }
 -- ROBLOX FIXME: workaround for defult generic param
 export type Expect_ = Expect<MatcherState>
 
 type Constructable = {
-	new: (...Array<any>) -> any
+	new: (...Array<any>) -> any,
 }
 
 -- This is a copy from https://github.com/DefinitelyTyped/DefinitelyTyped/blob/de6730f4463cba69904698035fafd906a72b9664/types/jest/index.d.ts#L570-L817

@@ -13,28 +13,40 @@ return function()
 		timers:useRealTimers()
 	end)
 
-	describe('FakeTimers', function()
-		describe('construction', function()
-			it('installs delay mock', function()
+	describe("FakeTimers", function()
+		describe("construction", function()
+			it("installs delay mock", function()
 				jestExpect(delay).never.toBeNil()
 			end)
 
-			it('installs tick mock', function()
+			it("installs tick mock", function()
 				jestExpect(tick).never.toBeNil()
 			end)
 		end)
 
-		describe('runAllTimers', function()
-			it('runs all timers in order', function()
+		describe("runAllTimers", function()
+			it("runs all timers in order", function()
 				timers:useFakeTimers()
 
 				local runOrder = {}
-				local mock1 = jest.fn(function() table.insert(runOrder, 'mock1') end)
-				local mock2 = jest.fn(function() table.insert(runOrder, 'mock2') end)
-				local mock3 = jest.fn(function() table.insert(runOrder, 'mock3') end)
-				local mock4 = jest.fn(function() table.insert(runOrder, 'mock4') end)
-				local mock5 = jest.fn(function() table.insert(runOrder, 'mock5') end)
-				local mock6 = jest.fn(function() table.insert(runOrder, 'mock6') end)
+				local mock1 = jest.fn(function()
+					table.insert(runOrder, "mock1")
+				end)
+				local mock2 = jest.fn(function()
+					table.insert(runOrder, "mock2")
+				end)
+				local mock3 = jest.fn(function()
+					table.insert(runOrder, "mock3")
+				end)
+				local mock4 = jest.fn(function()
+					table.insert(runOrder, "mock4")
+				end)
+				local mock5 = jest.fn(function()
+					table.insert(runOrder, "mock5")
+				end)
+				local mock6 = jest.fn(function()
+					table.insert(runOrder, "mock6")
+				end)
 
 				delay(100, mock1)
 				delay(0, mock2)
@@ -45,30 +57,32 @@ return function()
 				timers:runAllTimers()
 				jestExpect(os.clock()).toEqual(200)
 				jestExpect(runOrder).toEqual({
-					'mock2',
-					'mock3',
-					'mock5',
-					'mock6',
-					'mock1',
-					'mock4',
+					"mock2",
+					"mock3",
+					"mock5",
+					"mock6",
+					"mock1",
+					"mock4",
 				})
 			end)
 
-			it('warns when trying to advance timers while real timers are used', function()
-				jestExpect(function() timers:runAllTimers() end).toThrow(
-					"A function to advance timers was called but the timers API is not " ..
-					"mocked with fake timers. Call `jest.useFakeTimers()` in this test."
+			it("warns when trying to advance timers while real timers are used", function()
+				jestExpect(function()
+					timers:runAllTimers()
+				end).toThrow(
+					"A function to advance timers was called but the timers API is not "
+						.. "mocked with fake timers. Call `jest.useFakeTimers()` in this test."
 				)
 			end)
 
-			it('does nothing when no timers have been scheduled', function()
+			it("does nothing when no timers have been scheduled", function()
 				timers:useFakeTimers()
 
 				jestExpect(os.clock()).toEqual(0)
 				timers:runAllTimers()
 			end)
 
-			it('only runs a delay callback once (ever)', function()
+			it("only runs a delay callback once (ever)", function()
 				timers:useFakeTimers()
 
 				local fn = jest.fn()
@@ -82,27 +96,37 @@ return function()
 				jestExpect(fn).toHaveBeenCalledTimes(1)
 			end)
 
-			it('runs callbacks with arguments after the interval', function()
+			it("runs callbacks with arguments after the interval", function()
 				timers:useFakeTimers()
 
 				local fn = jest.fn()
-				delay(0, function() fn('mockArg1', 'mockArg2') end)
+				delay(0, function()
+					fn("mockArg1", "mockArg2")
+				end)
 
 				timers:runAllTimers()
 				jestExpect(fn).toHaveBeenCalledTimes(1)
-				jestExpect(fn).toHaveBeenCalledWith('mockArg1', 'mockArg2')
+				jestExpect(fn).toHaveBeenCalledWith("mockArg1", "mockArg2")
 			end)
 		end)
 
-		describe('advanceTimersByTime', function()
-			it('runs timers in order', function()
+		describe("advanceTimersByTime", function()
+			it("runs timers in order", function()
 				timers:useFakeTimers()
 
 				local runOrder = {}
-				local mock1 = jest.fn(function() table.insert(runOrder, 'mock1') end)
-				local mock2 = jest.fn(function() table.insert(runOrder, 'mock2') end)
-				local mock3 = jest.fn(function() table.insert(runOrder, 'mock3') end)
-				local mock4 = jest.fn(function() table.insert(runOrder, 'mock4') end)
+				local mock1 = jest.fn(function()
+					table.insert(runOrder, "mock1")
+				end)
+				local mock2 = jest.fn(function()
+					table.insert(runOrder, "mock2")
+				end)
+				local mock3 = jest.fn(function()
+					table.insert(runOrder, "mock3")
+				end)
+				local mock4 = jest.fn(function()
+					table.insert(runOrder, "mock4")
+				end)
 
 				delay(100, mock1)
 				delay(0, mock2)
@@ -112,39 +136,47 @@ return function()
 				-- Move forward to t=50
 				timers:advanceTimersByTime(50)
 				jestExpect(os.clock()).toEqual(50)
-				jestExpect(runOrder).toEqual({'mock2', 'mock3'})
+				jestExpect(runOrder).toEqual({ "mock2", "mock3" })
 
 				-- Move forward to t=60
 				timers:advanceTimersByTime(10)
 				jestExpect(os.clock()).toEqual(60)
-				jestExpect(runOrder).toEqual({'mock2', 'mock3'})
+				jestExpect(runOrder).toEqual({ "mock2", "mock3" })
 
 				-- Move forward to t=100
 				timers:advanceTimersByTime(40)
 				jestExpect(os.clock()).toEqual(100)
-				jestExpect(runOrder).toEqual({'mock2', 'mock3', 'mock1'})
+				jestExpect(runOrder).toEqual({ "mock2", "mock3", "mock1" })
 
 				-- Move forward to t=200
 				timers:advanceTimersByTime(100)
 				jestExpect(os.clock()).toEqual(200)
-				jestExpect(runOrder).toEqual({'mock2', 'mock3', 'mock1', 'mock4'})
+				jestExpect(runOrder).toEqual({ "mock2", "mock3", "mock1", "mock4" })
 			end)
 
-			it('does nothing when no timers have been scheduled', function()
+			it("does nothing when no timers have been scheduled", function()
 				timers:useFakeTimers()
 				timers:advanceTimersByTime(100)
 			end)
 		end)
 
-		describe('advanceTimersToNextTimer', function()
-			it('runs timers in order', function()
+		describe("advanceTimersToNextTimer", function()
+			it("runs timers in order", function()
 				timers:useFakeTimers()
 
 				local runOrder = {}
-				local mock1 = jest.fn(function() table.insert(runOrder, 'mock1') end)
-				local mock2 = jest.fn(function() table.insert(runOrder, 'mock2') end)
-				local mock3 = jest.fn(function() table.insert(runOrder, 'mock3') end)
-				local mock4 = jest.fn(function() table.insert(runOrder, 'mock4') end)
+				local mock1 = jest.fn(function()
+					table.insert(runOrder, "mock1")
+				end)
+				local mock2 = jest.fn(function()
+					table.insert(runOrder, "mock2")
+				end)
+				local mock3 = jest.fn(function()
+					table.insert(runOrder, "mock3")
+				end)
+				local mock4 = jest.fn(function()
+					table.insert(runOrder, "mock4")
+				end)
 
 				delay(100, mock1)
 				delay(0, mock2)
@@ -154,27 +186,35 @@ return function()
 				timers:advanceTimersToNextTimer()
 				-- Move forward to t=0
 				jestExpect(os.clock()).toEqual(0)
-				jestExpect(runOrder).toEqual({'mock2', 'mock3'})
+				jestExpect(runOrder).toEqual({ "mock2", "mock3" })
 
 				timers:advanceTimersToNextTimer()
 				-- Move forward to t=100
 				jestExpect(os.clock()).toEqual(100)
-				jestExpect(runOrder).toEqual({'mock2', 'mock3', 'mock1'})
+				jestExpect(runOrder).toEqual({ "mock2", "mock3", "mock1" })
 
 				timers:advanceTimersToNextTimer()
 				-- Move forward to t=200
 				jestExpect(os.clock()).toEqual(200)
-				jestExpect(runOrder).toEqual({'mock2', 'mock3', 'mock1', 'mock4'})
+				jestExpect(runOrder).toEqual({ "mock2", "mock3", "mock1", "mock4" })
 			end)
 
-			it('run correct amount of steps', function()
+			it("run correct amount of steps", function()
 				timers:useFakeTimers()
 
 				local runOrder = {}
-				local mock1 = jest.fn(function() table.insert(runOrder, 'mock1') end)
-				local mock2 = jest.fn(function() table.insert(runOrder, 'mock2') end)
-				local mock3 = jest.fn(function() table.insert(runOrder, 'mock3') end)
-				local mock4 = jest.fn(function() table.insert(runOrder, 'mock4') end)
+				local mock1 = jest.fn(function()
+					table.insert(runOrder, "mock1")
+				end)
+				local mock2 = jest.fn(function()
+					table.insert(runOrder, "mock2")
+				end)
+				local mock3 = jest.fn(function()
+					table.insert(runOrder, "mock3")
+				end)
+				local mock4 = jest.fn(function()
+					table.insert(runOrder, "mock4")
+				end)
 
 				delay(100, mock1)
 				delay(0, mock2)
@@ -186,29 +226,37 @@ return function()
 				-- Move forward to t=100
 				timers:advanceTimersToNextTimer(2)
 				jestExpect(os.clock()).toEqual(100)
-				jestExpect(runOrder).toEqual({'mock2', 'mock3', 'mock1'})
+				jestExpect(runOrder).toEqual({ "mock2", "mock3", "mock1" })
 
 				-- Move forward to t=600
 				timers:advanceTimersToNextTimer(3)
 				jestExpect(os.clock()).toEqual(600)
 				jestExpect(runOrder).toEqual({
-					'mock2',
-					'mock3',
-					'mock1',
-					'mock4',
-					'mock4',
-					'mock4',
+					"mock2",
+					"mock3",
+					"mock1",
+					"mock4",
+					"mock4",
+					"mock4",
 				})
 			end)
 
-			it('setTimeout inside setTimeout', function()
+			it("setTimeout inside setTimeout", function()
 				timers:useFakeTimers()
 
 				local runOrder = {}
-				local mock1 = jest.fn(function() table.insert(runOrder, 'mock1') end)
-				local mock2 = jest.fn(function() table.insert(runOrder, 'mock2') end)
-				local mock3 = jest.fn(function() table.insert(runOrder, 'mock3') end)
-				local mock4 = jest.fn(function() table.insert(runOrder, 'mock4') end)
+				local mock1 = jest.fn(function()
+					table.insert(runOrder, "mock1")
+				end)
+				local mock2 = jest.fn(function()
+					table.insert(runOrder, "mock2")
+				end)
+				local mock3 = jest.fn(function()
+					table.insert(runOrder, "mock3")
+				end)
+				local mock4 = jest.fn(function()
+					table.insert(runOrder, "mock4")
+				end)
 
 				delay(0, mock1)
 				delay(25, function()
@@ -220,17 +268,17 @@ return function()
 				-- Move forward to t=75
 				timers:advanceTimersToNextTimer(3)
 				jestExpect(os.clock()).toEqual(75)
-				jestExpect(runOrder).toEqual({'mock1', 'mock2', 'mock3'})
+				jestExpect(runOrder).toEqual({ "mock1", "mock2", "mock3" })
 			end)
 
-			it('does nothing when no timers have been scheduled', function()
+			it("does nothing when no timers have been scheduled", function()
 				timers:useFakeTimers()
 				timers:advanceTimersToNextTimer()
 			end)
 		end)
 
-		describe('reset', function()
-			it('resets all pending timers', function()
+		describe("reset", function()
+			it("resets all pending timers", function()
 				timers:useFakeTimers()
 
 				local mock1 = jest.fn()
@@ -241,7 +289,7 @@ return function()
 				jestExpect(mock1).toHaveBeenCalledTimes(0)
 			end)
 
-			it('resets current advanceTimersByTime time cursor', function()
+			it("resets current advanceTimersByTime time cursor", function()
 				timers:useFakeTimers()
 
 				local mock1 = jest.fn()
@@ -259,17 +307,29 @@ return function()
 			end)
 		end)
 
-		describe('runOnlyPendingTimers', function()
-			it('runs all timers in order', function()
+		describe("runOnlyPendingTimers", function()
+			it("runs all timers in order", function()
 				timers:useFakeTimers()
 
 				local runOrder = {}
-				local mock1 = jest.fn(function() table.insert(runOrder, 'mock1') end)
-				local mock2 = jest.fn(function() table.insert(runOrder, 'mock2') end)
-				local mock3 = jest.fn(function() table.insert(runOrder, 'mock3') end)
-				local mock4 = jest.fn(function() table.insert(runOrder, 'mock4') end)
-				local mock5 = jest.fn(function() table.insert(runOrder, 'mock5') end)
-				local mock6 = jest.fn(function() table.insert(runOrder, 'mock6') end)
+				local mock1 = jest.fn(function()
+					table.insert(runOrder, "mock1")
+				end)
+				local mock2 = jest.fn(function()
+					table.insert(runOrder, "mock2")
+				end)
+				local mock3 = jest.fn(function()
+					table.insert(runOrder, "mock3")
+				end)
+				local mock4 = jest.fn(function()
+					table.insert(runOrder, "mock4")
+				end)
+				local mock5 = jest.fn(function()
+					table.insert(runOrder, "mock5")
+				end)
+				local mock6 = jest.fn(function()
+					table.insert(runOrder, "mock6")
+				end)
 
 				delay(100, mock1)
 				delay(0, mock2)
@@ -280,18 +340,18 @@ return function()
 				timers:runOnlyPendingTimers()
 				jestExpect(os.clock()).toEqual(200)
 				jestExpect(runOrder).toEqual({
-					'mock2',
-					'mock3',
-					'mock5',
-					'mock6',
-					'mock1',
-					'mock4',
+					"mock2",
+					"mock3",
+					"mock5",
+					"mock6",
+					"mock1",
+					"mock4",
 				})
 			end)
 		end)
 
-		describe('useRealTimers, useFakeTimers', function()
-			it('resets native timer APIs', function()
+		describe("useRealTimers, useFakeTimers", function()
+			it("resets native timer APIs", function()
 				local nativeDelay = delay.getMockImplementation()
 				local nativeTick = tick.getMockImplementation()
 
@@ -309,8 +369,8 @@ return function()
 			end)
 		end)
 
-		describe('getTimerCount', function()
-			it('returns the correct count', function()
+		describe("getTimerCount", function()
+			it("returns the correct count", function()
 				timers:useFakeTimers()
 
 				delay(0, function() end)
@@ -330,14 +390,14 @@ return function()
 		end)
 	end)
 
-	describe('DateTime', function()
-		describe('construction', function()
-			it('installs DateTime mock', function()
+	describe("DateTime", function()
+		describe("construction", function()
+			it("installs DateTime mock", function()
 				jestExpect(DateTime).never.toBeNil()
 				jestExpect(DateTime.now()).never.toBeNil()
 			end)
 
-			it('DateTime constructors pass through', function()
+			it("DateTime constructors pass through", function()
 				timers:useFakeTimers()
 
 				jestExpect(DateTime.now()).never.toBeNil()
@@ -345,11 +405,11 @@ return function()
 				jestExpect(DateTime.fromUnixTimestampMillis()).never.toBeNil()
 				jestExpect(DateTime.fromUniversalTime()).never.toBeNil()
 				jestExpect(DateTime.fromLocalTime()).never.toBeNil()
-				jestExpect(DateTime.fromIsoDate('2020-01-02T10:30:45Z')).never.toBeNil()
+				jestExpect(DateTime.fromIsoDate("2020-01-02T10:30:45Z")).never.toBeNil()
 			end)
 		end)
 
-		it('affected by timers', function()
+		it("affected by timers", function()
 			timers:useFakeTimers()
 
 			local time_ = DateTime.now().UnixTimestamp
@@ -357,15 +417,15 @@ return function()
 			jestExpect(DateTime.now().UnixTimestamp).toEqual(time_ + 100)
 		end)
 
-		describe('setSystemTime', function()
-			it('UnixTimestamp', function()
+		describe("setSystemTime", function()
+			it("UnixTimestamp", function()
 				timers:useFakeTimers()
 
 				timers:setSystemTime(0)
 				jestExpect(DateTime.now()).toEqual(DateTime.fromUnixTimestamp(0))
 			end)
 
-			it('DateTime object', function()
+			it("DateTime object", function()
 				timers:useFakeTimers()
 
 				timers:setSystemTime(DateTime.fromUniversalTime(1971))
@@ -373,8 +433,8 @@ return function()
 			end)
 		end)
 
-		describe('getRealSystemTime', function()
-			it('returns real system time', function()
+		describe("getRealSystemTime", function()
+			it("returns real system time", function()
 				timers:useFakeTimers()
 
 				timers:setSystemTime(0)
@@ -382,8 +442,8 @@ return function()
 			end)
 		end)
 
-		describe('useRealTimers, useFakeTimers', function()
-			it('resets native timer APIs', function()
+		describe("useRealTimers, useFakeTimers", function()
+			it("resets native timer APIs", function()
 				local nativeDateTime = DateTime.now.getMockImplementation()
 
 				timers:useFakeTimers()
@@ -396,8 +456,8 @@ return function()
 			end)
 		end)
 
-		describe('reset', function()
-			it('resets system time', function()
+		describe("reset", function()
+			it("resets system time", function()
 				timers:useFakeTimers()
 
 				timers:setSystemTime(0)
@@ -410,15 +470,15 @@ return function()
 		end)
 	end)
 
-	describe('os', function()
-		describe('construction', function()
-			it('installs os mock', function()
+	describe("os", function()
+		describe("construction", function()
+			it("installs os mock", function()
 				jestExpect(os).never.toBeNil()
 				jestExpect(os.time).never.toBeNil()
 				jestExpect(os.clock).never.toBeNil()
 			end)
 
-			it('os methods pass through', function()
+			it("os methods pass through", function()
 				timers:useFakeTimers()
 
 				jestExpect(os.difftime(2, 1)).toBe(1)
@@ -426,25 +486,29 @@ return function()
 			end)
 		end)
 
-		describe('os.time', function()
-			it('returns correct value', function()
+		describe("os.time", function()
+			it("returns correct value", function()
 				timers:useFakeTimers()
 
 				timers:setSystemTime(1586982482)
 				jestExpect(os.time()).toBe(1586982482)
 			end)
 
-			it('returns correct value when passing in table', function()
+			it("returns correct value when passing in table", function()
 				timers:useFakeTimers()
 
 				timers:setSystemTime(100)
 				jestExpect(os.time({
-					year=1970, month=1, day=1,
-					hour=0, min=0, sec=0
+					year = 1970,
+					month = 1,
+					day = 1,
+					hour = 0,
+					min = 0,
+					sec = 0,
 				})).toBe(100)
 			end)
 
-			it('affected by timers', function()
+			it("affected by timers", function()
 				timers:useFakeTimers()
 
 				local time_ = os.time()
@@ -453,8 +517,8 @@ return function()
 			end)
 		end)
 
-		describe('os.clock', function()
-			it('affected by timers', function()
+		describe("os.clock", function()
+			it("affected by timers", function()
 				timers:useFakeTimers()
 
 				jestExpect(os.clock()).toBe(0)
@@ -463,8 +527,8 @@ return function()
 			end)
 		end)
 
-		describe('useRealTimers, useFakeTimers', function()
-			it('resets native timer APIs', function()
+		describe("useRealTimers, useFakeTimers", function()
+			it("resets native timer APIs", function()
 				local nativeOsTime = os.time.getMockImplementation()
 				local nativeOsClock = os.clock.getMockImplementation()
 
@@ -482,8 +546,8 @@ return function()
 			end)
 		end)
 
-		describe('reset', function()
-			it('resets system time', function()
+		describe("reset", function()
+			it("resets system time", function()
 				timers:useFakeTimers()
 
 				timers:setSystemTime(0)
@@ -496,15 +560,15 @@ return function()
 		end)
 	end)
 
-	describe('tick', function()
-		it('returns UNIX time', function()
+	describe("tick", function()
+		it("returns UNIX time", function()
 			timers:useFakeTimers()
 
 			timers:setSystemTime(100)
 			jestExpect(tick()).toBe(100)
 		end)
 
-		it('affected by timers', function()
+		it("affected by timers", function()
 			timers:useFakeTimers()
 
 			timers:setSystemTime(0)
@@ -514,7 +578,7 @@ return function()
 		end)
 	end)
 
-	it('spies', function()
+	it("spies", function()
 		timers:useFakeTimers()
 
 		local mock1 = jest.fn()
@@ -542,8 +606,8 @@ return function()
 		jestExpect(DateTime.now).toHaveBeenCalledTimes(1)
 	end)
 
-	describe('recursive timer', function()
-		it('runAllTimers', function()
+	describe("recursive timer", function()
+		it("runAllTimers", function()
 			timers:useFakeTimers()
 
 			local loop = 5
@@ -563,7 +627,7 @@ return function()
 			jestExpect(delay).toHaveBeenCalledTimes(6)
 		end)
 
-		it('runOnlyPendingTimers', function()
+		it("runOnlyPendingTimers", function()
 			timers:useFakeTimers()
 
 			local loopFn = function() end
@@ -594,7 +658,7 @@ return function()
 			jestExpect(os.clock()).toBe(100)
 		end)
 
-		it('advanceTimersByTime', function()
+		it("advanceTimersByTime", function()
 			timers:useFakeTimers()
 
 			local runOrder = {}
@@ -605,26 +669,28 @@ return function()
 			end
 
 			delay(0, loopFn)
-			delay(51, function() table.insert(runOrder, os.clock()) end)
+			delay(51, function()
+				table.insert(runOrder, os.clock())
+			end)
 			jestExpect(delay).toHaveBeenCalledTimes(2)
 
 			timers:advanceTimersByTime(1)
-			jestExpect(runOrder).toEqual({0})
+			jestExpect(runOrder).toEqual({ 0 })
 			jestExpect(timers:getTimerCount()).toBe(2)
 
 			timers:advanceTimersByTime(10)
-			jestExpect(runOrder).toEqual({0, 10})
+			jestExpect(runOrder).toEqual({ 0, 10 })
 
 			timers:advanceTimersByTime(20)
-			jestExpect(runOrder).toEqual({0, 10, 20, 30})
+			jestExpect(runOrder).toEqual({ 0, 10, 20, 30 })
 			jestExpect(os.clock()).toBe(31)
 
 			timers:advanceTimersByTime(24)
-			jestExpect(runOrder).toEqual({0, 10, 20, 30, 40, 50, 51})
+			jestExpect(runOrder).toEqual({ 0, 10, 20, 30, 40, 50, 51 })
 			jestExpect(os.clock()).toBe(55)
 		end)
 
-		it('advanceTimersToNextTimer', function()
+		it("advanceTimersToNextTimer", function()
 			timers:useFakeTimers()
 
 			local runOrder = {}
@@ -635,67 +701,81 @@ return function()
 			end
 
 			delay(0, loopFn)
-			delay(0, function() table.insert(runOrder, os.clock()) end)
+			delay(0, function()
+				table.insert(runOrder, os.clock())
+			end)
 
 			timers:advanceTimersToNextTimer()
-			jestExpect(runOrder).toEqual({0, 0})
+			jestExpect(runOrder).toEqual({ 0, 0 })
 
 			timers:advanceTimersToNextTimer(2)
-			jestExpect(runOrder).toEqual({0, 0, 10, 20})
+			jestExpect(runOrder).toEqual({ 0, 0, 10, 20 })
 		end)
 	end)
 
-	describe('internal timer never goes backwards', function()
-		it('runAllTimers', function()
+	describe("internal timer never goes backwards", function()
+		it("runAllTimers", function()
 			timers:useFakeTimers()
 
 			local runOrder = {}
 			delay(0, function()
 				table.insert(runOrder, 0)
-				delay(10, function() table.insert(runOrder, 10) end)
+				delay(10, function()
+					table.insert(runOrder, 10)
+				end)
 			end)
-			delay(100, function() table.insert(runOrder, 100) end)
+			delay(100, function()
+				table.insert(runOrder, 100)
+			end)
 
 			timers:runOnlyPendingTimers()
-			jestExpect(runOrder).toEqual({0, 100})
+			jestExpect(runOrder).toEqual({ 0, 100 })
 			jestExpect(os.clock()).toBe(100)
 
 			timers:runAllTimers()
-			jestExpect(runOrder).toEqual({0, 100, 10})
+			jestExpect(runOrder).toEqual({ 0, 100, 10 })
 			jestExpect(os.clock()).toBe(100)
 		end)
 
-		it('run timers in order', function()
+		it("run timers in order", function()
 			timers:useFakeTimers()
 
 			local runOrder = {}
 			delay(0, function()
 				table.insert(runOrder, 0)
-				delay(10, function() table.insert(runOrder, 10) end)
+				delay(10, function()
+					table.insert(runOrder, 10)
+				end)
 			end)
-			delay(100, function() table.insert(runOrder, 100) end)
+			delay(100, function()
+				table.insert(runOrder, 100)
+			end)
 
 			timers:runAllTimers()
-			jestExpect(runOrder).toEqual({0, 10, 100})
+			jestExpect(runOrder).toEqual({ 0, 10, 100 })
 			jestExpect(os.clock()).toBe(100)
 		end)
 
-		it('runOnlyPendingTimers', function()
+		it("runOnlyPendingTimers", function()
 			timers:useFakeTimers()
 
 			local runOrder = {}
 			delay(0, function()
 				table.insert(runOrder, 0)
-				delay(10, function() table.insert(runOrder, 10) end)
+				delay(10, function()
+					table.insert(runOrder, 10)
+				end)
 			end)
-			delay(100, function() table.insert(runOrder, 100) end)
+			delay(100, function()
+				table.insert(runOrder, 100)
+			end)
 
 			timers:runOnlyPendingTimers()
-			jestExpect(runOrder).toEqual({0, 100})
+			jestExpect(runOrder).toEqual({ 0, 100 })
 			jestExpect(os.clock()).toBe(100)
 
 			timers:runOnlyPendingTimers()
-			jestExpect(runOrder).toEqual({0, 100, 10})
+			jestExpect(runOrder).toEqual({ 0, 100, 10 })
 			jestExpect(os.clock()).toBe(100)
 		end)
 	end)

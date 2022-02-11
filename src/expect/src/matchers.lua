@@ -75,10 +75,10 @@ local instanceSubsetEquality = RobloxShared.RobloxInstance.instanceSubsetEqualit
 local getInstanceSubset = RobloxShared.RobloxInstance.getInstanceSubset
 
 -- Omit colon and one or more spaces, so can call getLabelPrinter.
-local EXPECTED_LABEL = 'Expected'
-local RECEIVED_LABEL = 'Received'
-local EXPECTED_VALUE_LABEL = 'Expected value'
-local RECEIVED_VALUE_LABEL = 'Received value'
+local EXPECTED_LABEL = "Expected"
+local RECEIVED_LABEL = "Received"
+local EXPECTED_VALUE_LABEL = "Expected value"
+local RECEIVED_VALUE_LABEL = "Received value"
 
 -- The optional property of matcher context is true if undefined.
 -- ROBLOX deviation: upstream injects expand: false by default so we actually set to true if undefined
@@ -89,10 +89,10 @@ end
 -- ROBLOX deviation: don't need any of the strict equality testers since we don't have added constraints for
 -- strict equality in Lua compared to deep equality
 local toStrictEqualTesters = {
--- 	iterableEquality,
-	typeEquality
--- 	sparseArrayEquality,
---  arrayBufferEquality,
+	-- 	iterableEquality,
+	typeEquality,
+	-- 	sparseArrayEquality,
+	--  arrayBufferEquality,
 }
 -- ROBLOX deviation: we can't handle iterable with a type constraint in the same way
 -- type ContainIterable =
@@ -109,9 +109,9 @@ local function toBe(
 	received: any,
 	expected: any
 )
-	local matcherName = 'toBe'
+	local matcherName = "toBe"
 	local options: MatcherHintOptions = {
-		comment = 'Object.is equality',
+		comment = "Object.is equality",
 		isNot = self.isNot,
 		promise = self.promise,
 	}
@@ -121,48 +121,44 @@ local function toBe(
 	local message
 	if pass then
 		message = function()
-			return matcherHint(matcherName, nil, nil, options) ..
-				'\n\n' ..
-				string.format('Expected: never %s', printExpected(expected))
+			return matcherHint(matcherName, nil, nil, options)
+				.. "\n\n"
+				.. string.format("Expected: never %s", printExpected(expected))
 		end
 	else
 		message = function()
 			local deepEqualityName = nil
 			-- ROBLOX deviation: no map or set types for now so this check is always true so we omit it
 			-- if expectedType ~= 'map' and expectedType ~= 'set' then
-				-- If deep equality passes when referential identity fails,
-				-- but exclude map and set until review of their equality logic.
+			-- If deep equality passes when referential identity fails,
+			-- but exclude map and set until review of their equality logic.
 			-- ROBLOX deviation: no strict equality in lua
-			if equals(received, expected, {iterableEquality}) then
-				deepEqualityName = 'toEqual'
+			if equals(received, expected, { iterableEquality }) then
+				deepEqualityName = "toEqual"
 			end
 			-- end
 
-			local retval = matcherHint(matcherName, nil, nil, options) .. '\n\n'
+			local retval = matcherHint(matcherName, nil, nil, options) .. "\n\n"
 			if deepEqualityName ~= nil then
-				retval = retval ..
-					DIM_COLOR(
+				retval = retval
+					.. DIM_COLOR(
 						string.format(
 							'If it should pass with deep equality, replace "%s" with "%s"',
 							matcherName,
 							deepEqualityName
 						)
-					) .. '\n\n'
+					)
+					.. "\n\n"
 			end
-			return retval .. printDiffOrStringify(
-				expected,
-				received,
-				EXPECTED_LABEL,
-				RECEIVED_LABEL,
-				isExpand(self.expand)
-			)
+			return retval
+				.. printDiffOrStringify(expected, received, EXPECTED_LABEL, RECEIVED_LABEL, isExpand(self.expand))
 		end
 	end
 
 	-- Passing the actual and expected objects so that a custom reporter
 	-- could access them, for example in order to display a custom visual diff,
 	-- or create a different error message
-	return {actual = received, expected = expected, message = message, name = matcherName, pass = pass}
+	return { actual = received, expected = expected, message = message, name = matcherName, pass = pass }
 end
 
 local function toBeCloseTo(
@@ -175,37 +171,43 @@ local function toBeCloseTo(
 	-- ROBLOX deviation: instead of getting argument count, just see if last arg is nil
 	local secondArgument
 	if precision then
-		secondArgument = 'precision'
+		secondArgument = "precision"
 	else
 		precision = 2
 	end
-	local matcherName = 'toBeCloseTo'
+	local matcherName = "toBeCloseTo"
 	local isNot = self.isNot
 	local options: MatcherHintOptions = {
 		isNot = isNot,
 		promise = self.promise,
 		secondArgument = secondArgument,
-		secondArgumentColor = function(arg: string) return arg end
+		secondArgumentColor = function(arg: string)
+			return arg
+		end,
 	}
 
-	if typeof(expected) ~= 'number' then
-		error(Error(
-			matcherErrorMessage(
-				matcherHint(matcherName, nil, nil, options),
-				string.format('%s value must be a number', EXPECTED_COLOR('expected')),
-				printWithType('Expected', expected, printExpected)
+	if typeof(expected) ~= "number" then
+		error(
+			Error(
+				matcherErrorMessage(
+					matcherHint(matcherName, nil, nil, options),
+					string.format("%s value must be a number", EXPECTED_COLOR("expected")),
+					printWithType("Expected", expected, printExpected)
+				)
 			)
-		))
+		)
 	end
 
-	if typeof(received) ~= 'number' then
-		error(Error(
-			matcherErrorMessage(
-				matcherHint(matcherName, nil, nil, options),
-				string.format('%s value must be a number', RECEIVED_COLOR('received')),
-				printWithType('Received', received, printReceived)
+	if typeof(received) ~= "number" then
+		error(
+			Error(
+				matcherErrorMessage(
+					matcherHint(matcherName, nil, nil, options),
+					string.format("%s value must be a number", RECEIVED_COLOR("received")),
+					printWithType("Received", received, printReceived)
+				)
 			)
-		))
+		)
 	end
 
 	local pass = false
@@ -225,29 +227,29 @@ local function toBeCloseTo(
 	local message
 	if pass then
 		message = function()
-			local retval = matcherHint(matcherName, nil, nil, options) ..
-				'\n\n' ..
-				string.format('Expected: never %s\n', printExpected(expected))
+			local retval = matcherHint(matcherName, nil, nil, options)
+				.. "\n\n"
+				.. string.format("Expected: never %s\n", printExpected(expected))
 			if receivedDiff == 0 then
 				return retval
 			end
-			return retval ..
-				string.format('Received:       %s\n', printReceived(received)) ..
-				'\n' ..
-				printCloseTo(receivedDiff, expectedDiff, precision, isNot)
+			return retval
+				.. string.format("Received:       %s\n", printReceived(received))
+				.. "\n"
+				.. printCloseTo(receivedDiff, expectedDiff, precision, isNot)
 		end
 	else
 		message = function()
-			return matcherHint(matcherName, nil, nil, options) ..
-				'\n\n' ..
-				string.format('Expected: %s\n', printExpected(expected)) ..
-				string.format('Received: %s\n', printReceived(received)) ..
-				'\n' ..
-				printCloseTo(receivedDiff, expectedDiff, precision, isNot)
+			return matcherHint(matcherName, nil, nil, options)
+				.. "\n\n"
+				.. string.format("Expected: %s\n", printExpected(expected))
+				.. string.format("Received: %s\n", printReceived(received))
+				.. "\n"
+				.. printCloseTo(receivedDiff, expectedDiff, precision, isNot)
 		end
 	end
 
-	return {message = message, pass = pass}
+	return { message = message, pass = pass }
 end
 
 -- ROBLOX deviation: toBeDefined equivalent to never.toBeNil
@@ -257,7 +259,7 @@ local function toBeDefined(
 	received: any,
 	expected: nil
 )
-	local matcherName = 'toBeDefined'
+	local matcherName = "toBeDefined"
 	local options: MatcherHintOptions = {
 		isNot = self.isNot,
 		promise = self.promise,
@@ -267,14 +269,13 @@ local function toBeDefined(
 	local pass = received ~= nil
 
 	local message = function()
-		return matcherHint(matcherName, nil, '', options) ..
-			'\n\n' ..
-			string.format('Received: %s', printReceived(received))
+		return matcherHint(matcherName, nil, "", options)
+			.. "\n\n"
+			.. string.format("Received: %s", printReceived(received))
 	end
 
-	return {message = message, pass = pass}
+	return { message = message, pass = pass }
 end
-
 
 -- ROBLOX deviation: toBeFalsy checks for Lua falsy values, not JS falsy values
 local function toBeFalsy(
@@ -283,7 +284,7 @@ local function toBeFalsy(
 	received: any,
 	expected: nil
 )
-	local matcherName = 'toBeFalsy'
+	local matcherName = "toBeFalsy"
 	local options: MatcherHintOptions = {
 		isNot = self.isNot,
 		promise = self.promise,
@@ -293,12 +294,12 @@ local function toBeFalsy(
 	local pass = not received
 
 	local message = function()
-		return matcherHint(matcherName, nil, '', options) ..
-			'\n\n' ..
-			string.format('Received: %s', printReceived(received))
+		return matcherHint(matcherName, nil, "", options)
+			.. "\n\n"
+			.. string.format("Received: %s", printReceived(received))
 	end
 
-	return {message = message, pass = pass}
+	return { message = message, pass = pass }
 end
 
 local function toBeGreaterThan(
@@ -307,7 +308,7 @@ local function toBeGreaterThan(
 	received: number,
 	expected: number
 )
-	local matcherName = 'toBeGreaterThan'
+	local matcherName = "toBeGreaterThan"
 	local isNot = self.isNot
 	local options: MatcherHintOptions = {
 		isNot = isNot,
@@ -318,13 +319,13 @@ local function toBeGreaterThan(
 	local pass = received > expected
 
 	local message = function()
-		return matcherHint(matcherName, nil, nil, options) ..
-			'\n\n' ..
-			string.format('Expected:%s > %s\n', isNot and ' never' or '', printExpected(expected)) ..
-			string.format('Received:%s   %s', isNot and '      ' or '', printReceived(received))
+		return matcherHint(matcherName, nil, nil, options)
+			.. "\n\n"
+			.. string.format("Expected:%s > %s\n", isNot and " never" or "", printExpected(expected))
+			.. string.format("Received:%s   %s", isNot and "      " or "", printReceived(received))
 	end
 
-	return {message = message, pass = pass}
+	return { message = message, pass = pass }
 end
 
 local function toBeGreaterThanOrEqual(
@@ -333,7 +334,7 @@ local function toBeGreaterThanOrEqual(
 	received: number,
 	expected: number
 )
-	local matcherName = 'toBeGreaterThanOrEqual'
+	local matcherName = "toBeGreaterThanOrEqual"
 	local isNot = self.isNot
 	local options: MatcherHintOptions = {
 		isNot = isNot,
@@ -344,13 +345,13 @@ local function toBeGreaterThanOrEqual(
 	local pass = received >= expected
 
 	local message = function()
-		return matcherHint(matcherName, nil, nil, options) ..
-			'\n\n' ..
-			string.format('Expected:%s >= %s\n', isNot and ' never' or '', printExpected(expected)) ..
-			string.format('Received:%s    %s', isNot and '      ' or '', printReceived(received))
+		return matcherHint(matcherName, nil, nil, options)
+			.. "\n\n"
+			.. string.format("Expected:%s >= %s\n", isNot and " never" or "", printExpected(expected))
+			.. string.format("Received:%s    %s", isNot and "      " or "", printReceived(received))
 	end
 
-	return {message = message, pass = pass}
+	return { message = message, pass = pass }
 end
 
 -- ROBLOX deviation: toBeInstanceOf checks for Lua prototypical classes, major deviation from upstream
@@ -360,58 +361,61 @@ local function toBeInstanceOf(
 	received: any,
 	expected: any
 )
-	local matcherName = 'toBeInstanceOf'
+	local matcherName = "toBeInstanceOf"
 	local isNot = self.isNot
 	local options: MatcherHintOptions = {
 		isNot = isNot,
 		promise = self.promise,
 	}
 
-	if typeof(expected) ~= 'table' then
-		error(Error(
-			matcherErrorMessage(
-				matcherHint(matcherName, nil, nil, options),
-				string.format('%s value must be a prototype class', EXPECTED_COLOR('expected')),
-				printWithType('Expected', expected, printExpected)
+	if typeof(expected) ~= "table" then
+		error(
+			Error(
+				matcherErrorMessage(
+					matcherHint(matcherName, nil, nil, options),
+					string.format("%s value must be a prototype class", EXPECTED_COLOR("expected")),
+					printWithType("Expected", expected, printExpected)
+				)
 			)
-		))
+		)
 	end
 
 	local pass = instanceof(received, expected)
 	local receivedPrototype = nil
-	if typeof(getmetatable(received)) == "table" and typeof(getmetatable(received).__index) == 'table' then
+	if typeof(getmetatable(received)) == "table" and typeof(getmetatable(received).__index) == "table" then
 		receivedPrototype = getmetatable(received).__index
 	end
 
 	local message
 	if pass then
 		message = function()
-			local retval = matcherHint(matcherName, nil, nil, options) ..
-				'\n\n' ..
-				printExpectedConstructorNameNot('Expected constructor', expected)
+			local retval = matcherHint(matcherName, nil, nil, options)
+				.. "\n\n"
+				.. printExpectedConstructorNameNot("Expected constructor", expected)
 
 			if receivedPrototype and receivedPrototype ~= expected then
-				retval = retval .. printReceivedConstructorNameNot('Received constructor', receivedPrototype, expected)
+				retval = retval .. printReceivedConstructorNameNot("Received constructor", receivedPrototype, expected)
 			end
 
 			return retval
 		end
 	else
 		message = function()
-			local retval = matcherHint(matcherName, nil, nil, options) ..
-				'\n\n' ..
-				printExpectedConstructorName('Expected constructor', expected)
+			local retval = matcherHint(matcherName, nil, nil, options)
+				.. "\n\n"
+				.. printExpectedConstructorName("Expected constructor", expected)
 			if isPrimitive(received) or receivedPrototype == nil then
-				retval = retval .. string.format('\nReceived value has no prototype\nReceived value: %s', printReceived(received))
+				retval = retval
+					.. string.format("\nReceived value has no prototype\nReceived value: %s", printReceived(received))
 			else
-				retval = retval ..printReceivedConstructorName('Received constructor', receivedPrototype)
+				retval = retval .. printReceivedConstructorName("Received constructor", receivedPrototype)
 			end
 
 			return retval
 		end
 	end
 
-	return {message = message, pass = pass}
+	return { message = message, pass = pass }
 end
 
 local function toBeLessThan(
@@ -420,7 +424,7 @@ local function toBeLessThan(
 	received: number,
 	expected: number
 )
-	local matcherName = 'toBeLessThan'
+	local matcherName = "toBeLessThan"
 	local isNot = self.isNot
 	local options: MatcherHintOptions = {
 		isNot = isNot,
@@ -431,13 +435,13 @@ local function toBeLessThan(
 	local pass = received < expected
 
 	local message = function()
-		return matcherHint(matcherName, nil, nil, options) ..
-			'\n\n' ..
-			string.format('Expected:%s < %s\n', isNot and ' never' or '', printExpected(expected)) ..
-			string.format('Received:%s   %s', isNot and '      ' or '', printReceived(received))
+		return matcherHint(matcherName, nil, nil, options)
+			.. "\n\n"
+			.. string.format("Expected:%s < %s\n", isNot and " never" or "", printExpected(expected))
+			.. string.format("Received:%s   %s", isNot and "      " or "", printReceived(received))
 	end
 
-	return {message = message, pass = pass}
+	return { message = message, pass = pass }
 end
 
 local function toBeLessThanOrEqual(
@@ -446,7 +450,7 @@ local function toBeLessThanOrEqual(
 	received: number,
 	expected: number
 )
-	local matcherName = 'toBeLessThanOrEqual'
+	local matcherName = "toBeLessThanOrEqual"
 	local isNot = self.isNot
 	local options: MatcherHintOptions = {
 		isNot = isNot,
@@ -457,13 +461,13 @@ local function toBeLessThanOrEqual(
 	local pass = received <= expected
 
 	local message = function()
-		return matcherHint(matcherName, nil, nil, options) ..
-			'\n\n' ..
-			string.format('Expected:%s <= %s\n', isNot and ' never' or '', printExpected(expected)) ..
-			string.format('Received:%s    %s', isNot and '      ' or '', printReceived(received))
+		return matcherHint(matcherName, nil, nil, options)
+			.. "\n\n"
+			.. string.format("Expected:%s <= %s\n", isNot and " never" or "", printExpected(expected))
+			.. string.format("Received:%s    %s", isNot and "      " or "", printReceived(received))
 	end
 
-	return {message = message, pass = pass}
+	return { message = message, pass = pass }
 end
 
 local function toBeNan(
@@ -472,7 +476,7 @@ local function toBeNan(
 	received: any,
 	expected: nil
 )
-	local matcherName = 'toBeNan'
+	local matcherName = "toBeNan"
 	local options: MatcherHintOptions = {
 		isNot = self.isNot,
 		promise = self.promise,
@@ -482,12 +486,12 @@ local function toBeNan(
 	local pass = Number.isNaN(received)
 
 	local message = function()
-		return matcherHint(matcherName, nil, '', options) ..
-			'\n\n' ..
-			string.format('Received: %s', printReceived(received))
+		return matcherHint(matcherName, nil, "", options)
+			.. "\n\n"
+			.. string.format("Received: %s", printReceived(received))
 	end
 
-	return {message = message, pass = pass}
+	return { message = message, pass = pass }
 end
 
 local function toBeNil(
@@ -496,7 +500,7 @@ local function toBeNil(
 	received: any,
 	expected: nil
 )
-	local matcherName = 'toBeNil'
+	local matcherName = "toBeNil"
 	local options: MatcherHintOptions = {
 		isNot = self.isNot,
 		promise = self.promise,
@@ -506,12 +510,12 @@ local function toBeNil(
 	local pass = received == nil
 
 	local message = function()
-		return matcherHint(matcherName, nil, '', options) ..
-			'\n\n' ..
-			string.format('Received: %s', printReceived(received))
+		return matcherHint(matcherName, nil, "", options)
+			.. "\n\n"
+			.. string.format("Received: %s", printReceived(received))
 	end
 
-	return {message = message, pass = pass}
+	return { message = message, pass = pass }
 end
 
 local function toBeTruthy(
@@ -520,7 +524,7 @@ local function toBeTruthy(
 	received: any,
 	expected: nil
 )
-	local matcherName = 'toBeTruthy'
+	local matcherName = "toBeTruthy"
 	local options: MatcherHintOptions = {
 		isNot = self.isNot,
 		promise = self.promise,
@@ -530,12 +534,12 @@ local function toBeTruthy(
 	local pass = not not received
 
 	local message = function()
-		return matcherHint(matcherName, nil, '', options) ..
-			'\n\n' ..
-			string.format('Received: %s', printReceived(received))
+		return matcherHint(matcherName, nil, "", options)
+			.. "\n\n"
+			.. string.format("Received: %s", printReceived(received))
 	end
 
-	return {message = message, pass = pass}
+	return { message = message, pass = pass }
 end
 
 -- ROBLOX deviation: toBeUndefined equivalent to toBeNil
@@ -545,7 +549,7 @@ local function toBeUndefined(
 	received: any,
 	expected: nil
 )
-	local matcherName = 'toBeUndefined'
+	local matcherName = "toBeUndefined"
 	local options: MatcherHintOptions = {
 		isNot = self.isNot,
 		promise = self.promise,
@@ -555,12 +559,12 @@ local function toBeUndefined(
 	local pass = received == nil
 
 	local message = function()
-		return matcherHint(matcherName, nil, '', options) ..
-			'\n\n' ..
-			string.format('Received: %s', printReceived(received))
+		return matcherHint(matcherName, nil, "", options)
+			.. "\n\n"
+			.. string.format("Received: %s", printReceived(received))
 	end
 
-	return {message = message, pass = pass}
+	return { message = message, pass = pass }
 end
 
 local function toContain(
@@ -569,38 +573,40 @@ local function toContain(
 	received: any,
 	expected: any
 )
-	local matcherName = 'toContain'
+	local matcherName = "toContain"
 	local isNot = self.isNot
 	local options: MatcherHintOptions = {
-		comment = 'string.find or table.find',
+		comment = "string.find or table.find",
 		isNot = isNot,
 		promise = self.promise,
 	}
 
 	if received == nil then
-		error(Error(
-			matcherErrorMessage(
-				matcherHint(matcherName, nil, nil, options),
-				string.format('%s value must not be nil', RECEIVED_COLOR('received')),
-				printWithType('Received', received, printReceived)
+		error(
+			Error(
+				matcherErrorMessage(
+					matcherHint(matcherName, nil, nil, options),
+					string.format("%s value must not be nil", RECEIVED_COLOR("received")),
+					printWithType("Received", received, printReceived)
+				)
 			)
-		))
+		)
 	end
 
-	if typeof(received) == 'string' then
-		local wrongTypeErrorMessage = ('%s value must be a string if %s value is a string'):format(
-			EXPECTED_COLOR('expected'),
-			RECEIVED_COLOR('received')
+	if typeof(received) == "string" then
+		local wrongTypeErrorMessage = ("%s value must be a string if %s value is a string"):format(
+			EXPECTED_COLOR("expected"),
+			RECEIVED_COLOR("received")
 		)
-		if typeof(expected) ~= 'string' then
+		if typeof(expected) ~= "string" then
 			error(
 				Error.new(
 					matcherErrorMessage(
 						matcherHint(matcherName, received, tostring(expected), options),
 						wrongTypeErrorMessage,
-						tostring(printWithType('Expected', expected, printExpected))
-							.. '\n'
-							.. tostring(printWithType('Received', received, printReceived))
+						tostring(printWithType("Expected", expected, printExpected))
+							.. "\n"
+							.. tostring(printWithType("Received", received, printReceived))
 					)
 				)
 			)
@@ -610,34 +616,28 @@ local function toContain(
 		local pass = index ~= nil
 
 		local message = function()
-			local labelExpected = string.format(
-				'Expected %s',
-				typeof(expected) == 'string' and 'substring' or 'value'
-			)
-			local labelReceived = 'Received string'
+			local labelExpected = string.format("Expected %s", typeof(expected) == "string" and "substring" or "value")
+			local labelReceived = "Received string"
 			local printLabel = getLabelPrinter(labelExpected, labelReceived)
 
-			return matcherHint(matcherName, nil, nil, options) ..
-				'\n\n' ..
-				string.format(
-					'%s%s%s\n',
+			return matcherHint(matcherName, nil, nil, options)
+				.. "\n\n"
+				.. string.format(
+					"%s%s%s\n",
 					printLabel(labelExpected),
-					isNot and 'never ' or '',
+					isNot and "never " or "",
 					printExpected(expected)
-				) ..
-				string.format(
-					'%s%s%s',
+				)
+				.. string.format(
+					"%s%s%s",
 					printLabel(labelReceived),
-					isNot and '      ' or '',
-					isNot and printReceivedStringContainExpectedSubstring(
-						received,
-						index,
-						#tostring(expected)
-					) or printReceived(received)
+					isNot and "      " or "",
+					isNot and printReceivedStringContainExpectedSubstring(received, index, #tostring(expected))
+						or printReceived(received)
 				)
 		end
 
-		return {message = message, pass = pass}
+		return { message = message, pass = pass }
 	end
 
 	local indexable = Array.from(received)
@@ -645,40 +645,38 @@ local function toContain(
 	local pass = index ~= nil
 
 	local message = function()
-		local labelExpected = 'Expected value'
-		local labelReceived = string.format('Received %s', getType(received))
+		local labelExpected = "Expected value"
+		local labelReceived = string.format("Received %s", getType(received))
 		local printLabel = getLabelPrinter(labelExpected, labelReceived)
 
-		local retval = matcherHint(matcherName, nil, nil, options) ..
-			'\n\n' ..
-			string.format(
-				'%s%s%s\n',
+		local retval = matcherHint(matcherName, nil, nil, options)
+			.. "\n\n"
+			.. string.format(
+				"%s%s%s\n",
 				printLabel(labelExpected),
-				isNot and 'never ' or '',
+				isNot and "never " or "",
 				printExpected(expected)
-			) ..
-			string.format(
-				'%s%s',
-				printLabel(labelReceived),
-				isNot and '      ' or ''
 			)
-			if isNot and Array.isArray(received) then
-				retval = retval .. printReceivedArrayContainExpectedItem(received, index)
-			else
-				retval = retval .. printReceived(received)
-			end
-			if not isNot and Array.findIndex(received,
-				function(item)
-					return equals(item, expected, {iterableEquality})
-				end) ~= -1
-			then
-				retval = retval .. string.format('\n\n%s', SUGGEST_TO_CONTAIN_EQUAL)
-			end
+			.. string.format("%s%s", printLabel(labelReceived), isNot and "      " or "")
+		if isNot and Array.isArray(received) then
+			retval = retval .. printReceivedArrayContainExpectedItem(received, index)
+		else
+			retval = retval .. printReceived(received)
+		end
+		if
+			not isNot
+			and Array.findIndex(received, function(item)
+					return equals(item, expected, { iterableEquality })
+				end)
+				~= -1
+		then
+			retval = retval .. string.format("\n\n%s", SUGGEST_TO_CONTAIN_EQUAL)
+		end
 
-			return retval
+		return retval
 	end
 
-	return {message = message, pass = pass}
+	return { message = message, pass = pass }
 end
 
 local function toContainEqual(
@@ -687,49 +685,45 @@ local function toContainEqual(
 	received: any,
 	expected: any
 )
-	local matcherName = 'toContainEqual'
+	local matcherName = "toContainEqual"
 	local isNot = self.isNot
 	local options: MatcherHintOptions = {
-		comment = 'deep equality',
+		comment = "deep equality",
 		isNot = isNot,
 		promise = self.promise,
 	}
 
 	if received == nil then
-		error(Error(
-			matcherErrorMessage(
-				matcherHint(matcherName, nil, nil, options),
-				string.format('%s value must not be nil', RECEIVED_COLOR('received')),
-				printWithType('Received', received, printReceived)
+		error(
+			Error(
+				matcherErrorMessage(
+					matcherHint(matcherName, nil, nil, options),
+					string.format("%s value must not be nil", RECEIVED_COLOR("received")),
+					printWithType("Received", received, printReceived)
+				)
 			)
-		))
+		)
 	end
 
-	local index = Array.findIndex(Array.from(received),
-		function(item)
-			return equals(item, expected, {iterableEquality})
-		end
-	)
+	local index = Array.findIndex(Array.from(received), function(item)
+		return equals(item, expected, { iterableEquality })
+	end)
 	local pass = index ~= -1
 
 	local message = function()
-		local labelExpected = 'Expected value'
-		local labelReceived = string.format('Received %s', getType(received))
+		local labelExpected = "Expected value"
+		local labelReceived = string.format("Received %s", getType(received))
 		local printLabel = getLabelPrinter(labelExpected, labelReceived)
 
-		local retval = matcherHint(matcherName, nil, nil, options) ..
-			'\n\n' ..
-			string.format(
-				'%s%s%s\n',
+		local retval = matcherHint(matcherName, nil, nil, options)
+			.. "\n\n"
+			.. string.format(
+				"%s%s%s\n",
 				printLabel(labelExpected),
-				isNot and 'never ' or '',
+				isNot and "never " or "",
 				printExpected(expected)
-			) ..
-			string.format(
-				'%s%s',
-				printLabel(labelReceived),
-				isNot and '      ' or ''
 			)
+			.. string.format("%s%s", printLabel(labelReceived), isNot and "      " or "")
 		if isNot and Array.isArray(received) then
 			retval = retval .. printReceivedArrayContainExpectedItem(received, index)
 		else
@@ -739,7 +733,7 @@ local function toContainEqual(
 		return retval
 	end
 
-	return {message = message, pass = pass}
+	return { message = message, pass = pass }
 end
 
 local function toEqual(
@@ -748,47 +742,38 @@ local function toEqual(
 	received: any,
 	expected: any
 )
-	local matcherName = 'toEqual'
+	local matcherName = "toEqual"
 	local options: MatcherHintOptions = {
-		comment = 'deep equality',
+		comment = "deep equality",
 		isNot = self.isNot,
 		promise = self.promise,
 	}
 
-	local pass = equals(received, expected, {iterableEquality})
+	local pass = equals(received, expected, { iterableEquality })
 
 	local message
 	if pass then
 		message = function()
-			local retval = matcherHint(matcherName, nil, nil, options) ..
-				'\n\n' ..
-				string.format('Expected: never %s\n', printExpected(expected))
+			local retval = matcherHint(matcherName, nil, nil, options)
+				.. "\n\n"
+				.. string.format("Expected: never %s\n", printExpected(expected))
 			if stringify(expected) ~= stringify(received) then
-				retval = retval .. string.format(
-					'Received:       %s',
-					printReceived(received)
-				)
+				retval = retval .. string.format("Received:       %s", printReceived(received))
 			end
 			return retval
 		end
 	else
 		message = function()
-			return matcherHint(matcherName, nil, nil, options) ..
-				'\n\n' ..
-				printDiffOrStringify(
-					expected,
-					received,
-					EXPECTED_LABEL,
-					RECEIVED_LABEL,
-					isExpand(self.expand)
-				)
+			return matcherHint(matcherName, nil, nil, options)
+				.. "\n\n"
+				.. printDiffOrStringify(expected, received, EXPECTED_LABEL, RECEIVED_LABEL, isExpand(self.expand))
 		end
 	end
 
 	-- Passing the actual and expected objects so that a custom reporter
 	-- could access them, for example in order to display a custom visual diff,
 	-- or create a different error message
-	return {actual = received, expected = expected, message = message, name = matcherName, pass = pass}
+	return { actual = received, expected = expected, message = message, name = matcherName, pass = pass }
 end
 
 local function toHaveLength(
@@ -797,7 +782,7 @@ local function toHaveLength(
 	received: any,
 	expected: number
 )
-	local matcherName = 'toHaveLength'
+	local matcherName = "toHaveLength"
 	local isNot = self.isNot
 	local options: MatcherHintOptions = {
 		isNot = isNot,
@@ -806,21 +791,20 @@ local function toHaveLength(
 
 	-- ROBLOX deviation: only strings and array-like tables have a well defined built in length in Lua
 	-- we also allow for objects that have a length property
-	local hasLengthProperty = typeof(received) == 'table' and typeof(received.length) == 'number'
-	if not Array.isArray(received) and
-		typeof(received) ~= 'string' and
-		not hasLengthProperty
-	then
-		error(Error(
-			matcherErrorMessage(
-				matcherHint(matcherName, nil, nil, options),
-				string.format(
-					'%s value must have a length property whose value must be a number',
-					RECEIVED_COLOR('received')
-				),
-				printWithType('Received', received, printReceived)
+	local hasLengthProperty = typeof(received) == "table" and typeof(received.length) == "number"
+	if not Array.isArray(received) and typeof(received) ~= "string" and not hasLengthProperty then
+		error(
+			Error(
+				matcherErrorMessage(
+					matcherHint(matcherName, nil, nil, options),
+					string.format(
+						"%s value must have a length property whose value must be a number",
+						RECEIVED_COLOR("received")
+					),
+					printWithType("Received", received, printReceived)
+				)
 			)
-		))
+		)
 	end
 
 	ensureExpectedIsNonNegativeInteger(expected, matcherName, options)
@@ -836,40 +820,33 @@ local function toHaveLength(
 	end
 
 	local message = function()
-		local labelExpected = 'Expected length'
-		local labelReceivedLength = 'Received length'
-		local labelReceivedValue = string.format('Received %s', getType(received))
-		local printLabel = getLabelPrinter(
-			labelExpected,
-			labelReceivedLength,
-			labelReceivedValue
-		)
+		local labelExpected = "Expected length"
+		local labelReceivedLength = "Received length"
+		local labelReceivedValue = string.format("Received %s", getType(received))
+		local printLabel = getLabelPrinter(labelExpected, labelReceivedLength, labelReceivedValue)
 
-		local retval = matcherHint(matcherName, nil, nil, options) ..
-			'\n\n' ..
-			string.format(
-				'%s%s%s\n',
+		local retval = matcherHint(matcherName, nil, nil, options)
+			.. "\n\n"
+			.. string.format(
+				"%s%s%s\n",
 				printLabel(labelExpected),
-				isNot and 'never ' or '',
+				isNot and "never " or "",
 				printExpected(expected)
 			)
 		if not isNot then
-			retval = retval .. string.format(
-				'%s%s\n',
-				printLabel(labelReceivedLength),
-				printReceived(receivedLength)
-			)
+			retval = retval .. string.format("%s%s\n", printLabel(labelReceivedLength), printReceived(receivedLength))
 		end
 
-		return retval .. string.format(
-			'%s%s%s',
-			printLabel(labelReceivedValue),
-			isNot and '      ' or '' ,
-			printReceived(received)
-		)
+		return retval
+			.. string.format(
+				"%s%s%s",
+				printLabel(labelReceivedValue),
+				isNot and "      " or "",
+				printReceived(received)
+			)
 	end
 
-	return {message = message, pass = pass}
+	return { message = message, pass = pass }
 end
 
 local function toHaveProperty(
@@ -879,52 +856,58 @@ local function toHaveProperty(
 	expectedPath: any,
 	expectedValue: any?
 )
-	local matcherName = 'toHaveProperty'
-	local expectedArgument = 'path'
+	local matcherName = "toHaveProperty"
+	local expectedArgument = "path"
 	local hasValue = expectedValue ~= nil
 	local options: MatcherHintOptions = {
 		isNot = self.isNot,
 		promise = self.promise,
-		secondArgument = hasValue and 'value' or '',
+		secondArgument = hasValue and "value" or "",
 	}
 
 	if received == nil then
-		error(Error(
-			matcherErrorMessage(
-				matcherHint(matcherName, nil, expectedArgument, options),
-				string.format('%s value must not be nil', RECEIVED_COLOR('received')),
-				printWithType('Received', received, printReceived)
+		error(
+			Error(
+				matcherErrorMessage(
+					matcherHint(matcherName, nil, expectedArgument, options),
+					string.format("%s value must not be nil", RECEIVED_COLOR("received")),
+					printWithType("Received", received, printReceived)
+				)
 			)
-		))
+		)
 	end
 
 	local expectedPathType = getType(expectedPath)
 
-	if expectedPathType ~= 'string' and expectedPathType ~= 'table' then
-		error(Error(
-			matcherErrorMessage(
-				matcherHint(matcherName, nil, expectedArgument, options),
-				string.format('%s path must be a string or array', EXPECTED_COLOR('expected')),
-				printWithType('Expected', expectedPath, printExpected)
+	if expectedPathType ~= "string" and expectedPathType ~= "table" then
+		error(
+			Error(
+				matcherErrorMessage(
+					matcherHint(matcherName, nil, expectedArgument, options),
+					string.format("%s path must be a string or array", EXPECTED_COLOR("expected")),
+					printWithType("Expected", expectedPath, printExpected)
+				)
 			)
-		))
+		)
 	end
 
 	local expectedPathLength
-	if typeof(expectedPath) == 'string' then
+	if typeof(expectedPath) == "string" then
 		expectedPathLength = #pathAsArray(expectedPath)
 	else
 		expectedPathLength = #expectedPath
 	end
 
-	if expectedPathType == 'table' and expectedPathLength == 0 then
-		error(Error(
-			matcherErrorMessage(
-				matcherHint(matcherName, nil, expectedArgument, options),
-				string.format('%s path must not be an empty array', EXPECTED_COLOR('expected')),
-				printWithType('Expected', expectedPath, printExpected)
+	if expectedPathType == "table" and expectedPathLength == 0 then
+		error(
+			Error(
+				matcherErrorMessage(
+					matcherHint(matcherName, nil, expectedArgument, options),
+					string.format("%s path must not be an empty array", EXPECTED_COLOR("expected")),
+					printWithType("Expected", expectedPath, printExpected)
+				)
 			)
-		))
+		)
 	end
 
 	local result = getPath(received, expectedPath)
@@ -942,7 +925,7 @@ local function toHaveProperty(
 
 	local pass
 	if hasValue then
-		pass = equals(result.value, expectedValue, {iterableEquality})
+		pass = equals(result.value, expectedValue, { iterableEquality })
 	else
 		pass = not not hasEndProp -- theoretically undefined if empty path
 	end
@@ -953,30 +936,30 @@ local function toHaveProperty(
 	local message
 	if pass then
 		message = function()
-			local retval = matcherHint(matcherName, nil, expectedArgument, options) .. '\n\n'
+			local retval = matcherHint(matcherName, nil, expectedArgument, options) .. "\n\n"
 			if hasValue then
-				retval = retval ..
-					string.format('Expected path: %s\n\n', printExpected(expectedPath)) ..
-					string.format('Expected value: never %s', printExpected(expectedValue))
+				retval = retval
+					.. string.format("Expected path: %s\n\n", printExpected(expectedPath))
+					.. string.format("Expected value: never %s", printExpected(expectedValue))
 				if stringify(expectedValue) ~= stringify(receivedValue) then
-					return retval ..
-						string.format('\nReceived value:       %s', printReceived(receivedValue))
+					return retval .. string.format("\nReceived value:       %s", printReceived(receivedValue))
 				end
 				return retval
 			else
-				return retval ..
-					string.format('Expected path: never %s\n\n', printExpected(expectedPath)) ..
-					string.format('Received value: %s', printReceived(receivedValue))
+				return retval
+					.. string.format("Expected path: never %s\n\n", printExpected(expectedPath))
+					.. string.format("Received value: %s", printReceived(receivedValue))
 			end
 		end
 	else
 		message = function()
-			local retval = matcherHint(matcherName, nil, expectedArgument, options) ..
-				'\n\n' ..
-				string.format('Expected path: %s\n', printExpected(expectedPath))
+			local retval = matcherHint(matcherName, nil, expectedArgument, options)
+				.. "\n\n"
+				.. string.format("Expected path: %s\n", printExpected(expectedPath))
 			if hasCompletePath then
-				return retval .. '\n' ..
-					printDiffOrStringify(
+				return retval
+					.. "\n"
+					.. printDiffOrStringify(
 						expectedValue,
 						receivedValue,
 						EXPECTED_VALUE_LABEL,
@@ -984,23 +967,23 @@ local function toHaveProperty(
 						isExpand(self.expand)
 					)
 			end
-			retval = retval .. 'Received path: '
+			retval = retval .. "Received path: "
 
-			if expectedPathType == 'table' or #receivedPath == 0 then
-				retval = retval .. string.format('%s\n\n', printReceived(receivedPath))
+			if expectedPathType == "table" or #receivedPath == 0 then
+				retval = retval .. string.format("%s\n\n", printReceived(receivedPath))
 			else
-				retval = retval .. string.format('%s\n\n', printReceived(table.concat(receivedPath, '.')))
+				retval = retval .. string.format("%s\n\n", printReceived(table.concat(receivedPath, ".")))
 			end
 
 			if hasValue then
-				retval = retval .. string.format('Expected value: %s\n', printExpected(expectedValue))
+				retval = retval .. string.format("Expected value: %s\n", printExpected(expectedValue))
 			end
 
-			return retval .. string.format('Received value: %s', printReceived(receivedValue))
+			return retval .. string.format("Received value: %s", printReceived(receivedValue))
 		end
 	end
 
-	return {message = message, pass = pass}
+	return { message = message, pass = pass }
 end
 
 -- FIXME: After CLI-39007, change expected to have type string | RegExp type
@@ -1011,35 +994,38 @@ local function toMatch(
 	received: string,
 	expected: any
 )
-	local matcherName = 'toMatch'
+	local matcherName = "toMatch"
 	local options: MatcherHintOptions = {
 		isNot = self.isNot,
 		promise = self.promise,
 	}
 
-	if typeof(received) ~= 'string' then
-		error(Error(
-			matcherErrorMessage(
-				matcherHint(matcherName, nil, nil, options),
-				string.format('%s value must be a string', RECEIVED_COLOR('received')),
-				printWithType('Received', received, printReceived)
+	if typeof(received) ~= "string" then
+		error(
+			Error(
+				matcherErrorMessage(
+					matcherHint(matcherName, nil, nil, options),
+					string.format("%s value must be a string", RECEIVED_COLOR("received")),
+					printWithType("Received", received, printReceived)
+				)
 			)
-		))
+		)
 	end
 
-	if typeof(expected) ~= 'string' and
-		getType(expected) ~= 'regexp' then
-		error(Error(
-			matcherErrorMessage(
-				matcherHint(matcherName, nil, nil, options),
-				string.format('%s value must be a string or regular expression', EXPECTED_COLOR('expected')),
-				printWithType('Expected', expected, printExpected)
+	if typeof(expected) ~= "string" and getType(expected) ~= "regexp" then
+		error(
+			Error(
+				matcherErrorMessage(
+					matcherHint(matcherName, nil, nil, options),
+					string.format("%s value must be a string or regular expression", EXPECTED_COLOR("expected")),
+					printWithType("Expected", expected, printExpected)
+				)
 			)
-		))
+		)
 	end
 
 	local pass
-	if typeof(expected) == 'string' then
+	if typeof(expected) == "string" then
 		-- ROBLOX deviation: escape chalk sequences if necessary
 		expected = string.gsub(expected, string.char(27) .. "%[", string.char(27) .. "%%[")
 		pass = received:find(expected) ~= nil
@@ -1052,31 +1038,39 @@ local function toMatch(
 	local message
 	if pass then
 		message = function()
-			local retval = matcherHint(matcherName, nil, nil, options) ..
-				'\n\n' ..
-				string.format('Expected pattern: never %s\n', printExpected(expected))
-			if typeof(expected) == 'string' then
-				retval = retval .. string.format('Received string:        %s', printReceivedStringContainExpectedSubstring(received, received:find(expected), #expected))
+			local retval = matcherHint(matcherName, nil, nil, options)
+				.. "\n\n"
+				.. string.format("Expected pattern: never %s\n", printExpected(expected))
+			if typeof(expected) == "string" then
+				retval = retval
+					.. string.format(
+						"Received string:        %s",
+						printReceivedStringContainExpectedSubstring(received, received:find(expected), #expected)
+					)
 			else
-				retval = retval .. string.format('Received string:        %s', printReceivedStringContainExpectedResult(received, expected:exec(received)))
+				retval = retval
+					.. string.format(
+						"Received string:        %s",
+						printReceivedStringContainExpectedResult(received, expected:exec(received))
+					)
 			end
 
 			return retval
 		end
 	else
 		message = function()
-			local labelExpected = 'Expected pattern'
-			local labelReceived = 'Received string'
+			local labelExpected = "Expected pattern"
+			local labelReceived = "Received string"
 			local printLabel = getLabelPrinter(labelExpected, labelReceived)
 
-			return matcherHint(matcherName, nil, nil, options) ..
-				'\n\n' ..
-				string.format('%s%s\n', printLabel(labelExpected), printExpected(expected)) ..
-				string.format('%s%s', printLabel(labelReceived), printReceived(received))
+			return matcherHint(matcherName, nil, nil, options)
+				.. "\n\n"
+				.. string.format("%s%s\n", printLabel(labelExpected), printExpected(expected))
+				.. string.format("%s%s", printLabel(labelReceived), printReceived(received))
 		end
 	end
 
-	return {message = message, pass = pass}
+	return { message = message, pass = pass }
 end
 
 local function toMatchObject(
@@ -1085,51 +1079,55 @@ local function toMatchObject(
 	received: any,
 	expected: any
 )
-	local matcherName = 'toMatchObject'
+	local matcherName = "toMatchObject"
 	local options: MatcherHintOptions = {
 		isNot = self.isNot,
 		promise = self.promise,
 	}
 
-	if typeof(received) ~= 'table' or received == nil then
-		error(Error(
-			matcherErrorMessage(
-				matcherHint(matcherName, nil, nil, options),
-				string.format('%s value must be a non-nil object', RECEIVED_COLOR('received')),
-				printWithType('Received', received, printReceived)
+	if typeof(received) ~= "table" or received == nil then
+		error(
+			Error(
+				matcherErrorMessage(
+					matcherHint(matcherName, nil, nil, options),
+					string.format("%s value must be a non-nil object", RECEIVED_COLOR("received")),
+					printWithType("Received", received, printReceived)
+				)
 			)
-		))
+		)
 	end
 
-	if typeof(expected) ~= 'table' or expected == nil then
-		error(Error(
-			matcherErrorMessage(
-				matcherHint(matcherName, nil, nil, options),
-				string.format('%s value must be a non-nil object', EXPECTED_COLOR('expected')),
-				printWithType('Expected', expected, printExpected)
+	if typeof(expected) ~= "table" or expected == nil then
+		error(
+			Error(
+				matcherErrorMessage(
+					matcherHint(matcherName, nil, nil, options),
+					string.format("%s value must be a non-nil object", EXPECTED_COLOR("expected")),
+					printWithType("Expected", expected, printExpected)
+				)
 			)
-		))
+		)
 	end
 
 	-- ROBLOX TODO: Revisit usage of subsetEquality
-	local pass = equals(received, expected, {iterableEquality, subsetEquality})
+	local pass = equals(received, expected, { iterableEquality, subsetEquality })
 
 	local message
 	if pass then
 		message = function()
-			local retval = matcherHint(matcherName, nil, nil, options) ..
-				'\n\n' ..
-				string.format('Expected: never %s', printExpected(expected))
+			local retval = matcherHint(matcherName, nil, nil, options)
+				.. "\n\n"
+				.. string.format("Expected: never %s", printExpected(expected))
 			if stringify(expected) ~= stringify(received) then
-				return retval .. string.format('\nReceived:       %s', printReceived(received))
+				return retval .. string.format("\nReceived:       %s", printReceived(received))
 			end
 			return retval
 		end
 	else
 		message = function()
-			return matcherHint(matcherName, nil, nil, options) ..
-				'\n\n' ..
-				printDiffOrStringify(
+			return matcherHint(matcherName, nil, nil, options)
+				.. "\n\n"
+				.. printDiffOrStringify(
 					expected,
 					getObjectSubset(received, expected),
 					EXPECTED_LABEL,
@@ -1139,7 +1137,7 @@ local function toMatchObject(
 		end
 	end
 
-	return {message = message, pass = pass}
+	return { message = message, pass = pass }
 end
 
 --[[
@@ -1158,11 +1156,11 @@ local function toStrictEqual(
 	received: any,
 	expected: any
 )
-	local matcherName = 'toStrictEqual'
+	local matcherName = "toStrictEqual"
 	local options: MatcherHintOptions = {
-		comment = 'deep equality',
+		comment = "deep equality",
 		isNot = self.isNot,
-		promise = self.promise
+		promise = self.promise,
 	}
 
 	local pass = equals(received, expected, toStrictEqualTesters, true)
@@ -1170,33 +1168,27 @@ local function toStrictEqual(
 	local message
 	if pass then
 		message = function()
-			local retval = matcherHint(matcherName, nil, nil, options) ..
-				'\n\n' ..
-				string.format('Expected: not %s\n', printExpected(expected))
+			local retval = matcherHint(matcherName, nil, nil, options)
+				.. "\n\n"
+				.. string.format("Expected: not %s\n", printExpected(expected))
 
 			if stringify(expected) ~= stringify(received) then
-				retval = retval .. string.format('Received:     %s', printReceived(received))
+				retval = retval .. string.format("Received:     %s", printReceived(received))
 			end
 
 			return retval
 		end
 	else
 		message = function()
-			return matcherHint(matcherName, nil, nil, options) ..
-				'\n\n' ..
-				printDiffOrStringify(
-					expected,
-					received,
-					EXPECTED_LABEL,
-					RECEIVED_LABEL,
-					isExpand(self.expand)
-				)
+			return matcherHint(matcherName, nil, nil, options)
+				.. "\n\n"
+				.. printDiffOrStringify(expected, received, EXPECTED_LABEL, RECEIVED_LABEL, isExpand(self.expand))
 		end
 	end
 	-- Passing the actual and expected objects so that a custom reporter
 	-- could access them, for example in order to display a custom visual diff,
 	-- or create a different error message
-	return {actual = received, expected = expected, message = message, name = matcherName, pass = pass}
+	return { actual = received, expected = expected, message = message, name = matcherName, pass = pass }
 end
 
 -- ROBLOX deviation: Roblox Instance matchers
@@ -1206,51 +1198,55 @@ local function toMatchInstance(
 	received: any,
 	expected: any
 )
-	local matcherName = 'toMatchInstance'
+	local matcherName = "toMatchInstance"
 	local options: MatcherHintOptions = {
 		isNot = self.isNot,
 		promise = self.promise,
 	}
 
-	if getType(received) ~= 'Instance' or received == nil then
-		error(Error(
-			matcherErrorMessage(
-				matcherHint(matcherName, nil, nil, options),
-				string.format('%s value must be a Roblox Instance', RECEIVED_COLOR('received')),
-				printWithType('Received', received, printReceived)
+	if getType(received) ~= "Instance" or received == nil then
+		error(
+			Error(
+				matcherErrorMessage(
+					matcherHint(matcherName, nil, nil, options),
+					string.format("%s value must be a Roblox Instance", RECEIVED_COLOR("received")),
+					printWithType("Received", received, printReceived)
+				)
 			)
-		))
+		)
 	end
 
-	if typeof(expected) ~= 'table' or expected == nil then
-		error(Error(
-			matcherErrorMessage(
-				matcherHint(matcherName, nil, nil, options),
-				string.format('%s value must be a table', EXPECTED_COLOR('expected')),
-				printWithType('Expected', expected, printExpected)
+	if typeof(expected) ~= "table" or expected == nil then
+		error(
+			Error(
+				matcherErrorMessage(
+					matcherHint(matcherName, nil, nil, options),
+					string.format("%s value must be a table", EXPECTED_COLOR("expected")),
+					printWithType("Expected", expected, printExpected)
+				)
 			)
-		))
+		)
 	end
 
-	local pass = equals(received, expected, {instanceSubsetEquality})
+	local pass = equals(received, expected, { instanceSubsetEquality })
 
 	local message
 	if pass then
 		message = function()
-			local retval = matcherHint(matcherName, nil, nil, options) ..
-				'\n\n' ..
-				string.format('Expected: never %s', printExpected(expected))
+			local retval = matcherHint(matcherName, nil, nil, options)
+				.. "\n\n"
+				.. string.format("Expected: never %s", printExpected(expected))
 			if stringify(expected) ~= stringify(received) then
-				return retval .. string.format('\nReceived:       %s', printReceived(received))
+				return retval .. string.format("\nReceived:       %s", printReceived(received))
 			end
 			return retval
 		end
 	else
 		local receivedSubset, expectedSubset = getInstanceSubset(received, expected)
 		message = function()
-			return matcherHint(matcherName, nil, nil, options) ..
-				'\n\n' ..
-				printDiffOrStringify(
+			return matcherHint(matcherName, nil, nil, options)
+				.. "\n\n"
+				.. printDiffOrStringify(
 					expectedSubset,
 					receivedSubset,
 					EXPECTED_LABEL,
@@ -1260,7 +1256,7 @@ local function toMatchInstance(
 		end
 	end
 
-	return {message = message, pass = pass}
+	return { message = message, pass = pass }
 end
 
 local matchers: MatchersObject = {
@@ -1289,7 +1285,7 @@ local matchers: MatchersObject = {
 	toStrictEqual = toStrictEqual,
 
 	-- ROBLOX deviation: Roblox Instance matchers
-	toMatchInstance = toMatchInstance
+	toMatchInstance = toMatchInstance,
 }
 
 return matchers

@@ -33,7 +33,7 @@ local function printTableEntries(
 	refs: Refs,
 	printer: Printer
 ): string
-	local result = ''
+	local result = ""
 
 	-- ROBLOX deviation: rewritten with a for ... pairs instead of an iterator
 	local keys = {}
@@ -42,8 +42,12 @@ local function printTableEntries(
 	end
 
 	local compareKeys = if typeof(config.compareKeys) == "function"
-		then function(a, b) return config.compareKeys(a, b) < 0 end
-		else function(a,b) return type(a) .. tostring(a) < type(b) .. tostring(b) end
+		then function(a, b)
+			return config.compareKeys(a, b) < 0
+		end
+		else function(a, b)
+			return type(a) .. tostring(a) < type(b) .. tostring(b)
+		end
 
 	table.sort(keys, compareKeys)
 
@@ -55,27 +59,15 @@ local function printTableEntries(
 		for i = 1, #keys do
 			local k = keys[i]
 			local v = t[k]
-			local name = printer(
-				k,
-				config,
-				indentationNext,
-				depth,
-				refs
-			)
-			local value = printer(
-				v,
-				config,
-				indentationNext,
-				depth,
-				refs
-			)
+			local name = printer(k, config, indentationNext, depth, refs)
+			local value = printer(v, config, indentationNext, depth, refs)
 
-			result = result .. indentationNext .. name .. ': ' .. value
+			result = result .. indentationNext .. name .. ": " .. value
 
 			if i < #keys then
-				result = result .. ',' .. config.spacingInner
+				result = result .. "," .. config.spacingInner
 			elseif not config.min then
-				result = result .. ','
+				result = result .. ","
 			end
 		end
 
@@ -98,7 +90,7 @@ local function printListItems(
 	refs: Refs,
 	printer: Printer
 ): string
-	local result = ''
+	local result = ""
 
 	if #list > 0 then
 		result = result .. config.spacingOuter
@@ -114,9 +106,9 @@ local function printListItems(
 
 			-- ROBLOX deviation: < #list instead of #list - 1 because of 1-indexing
 			if i < #list then
-				result = result .. ',' .. config.spacingInner
+				result = result .. "," .. config.spacingInner
 			elseif not config.min then
-				result = result .. ','
+				result = result .. ","
 			end
 		end
 

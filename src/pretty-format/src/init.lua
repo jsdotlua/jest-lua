@@ -458,5 +458,5 @@ return {
 	default = format,
 
 	plugins = plugins,
-	DEFAULT_OPTIONS = DEFAULT_OPTIONS
+	DEFAULT_OPTIONS = DEFAULT_OPTIONS,
 }

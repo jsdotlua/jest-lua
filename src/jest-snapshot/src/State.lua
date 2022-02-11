@@ -67,7 +67,7 @@ type SnapshotStateOptions = {
 	-- ROBLOX deviation: the function return is defined as any instead of null | Prettier
 	-- prettierPath: ConfigPath;
 	expand: boolean?,
-	snapshotFormat: PrettyFormatOptions
+	snapshotFormat: PrettyFormatOptions,
 }
 
 type SnapshotMatchOptions = {
@@ -77,7 +77,7 @@ type SnapshotMatchOptions = {
 	inlineSnapshot: string?,
 	isInline: boolean,
 	-- ROBLOX deviation: error type defined as any instead of Error
-	error_: any
+	error_: any,
 }
 
 type SnapshotReturnOptions = {
@@ -85,12 +85,12 @@ type SnapshotReturnOptions = {
 	count: number,
 	expected: string?,
 	key: string,
-	pass: boolean
+	pass: boolean,
 }
 
 type SaveStatus = {
 	deleted: boolean,
-	saved: boolean
+	saved: boolean,
 }
 
 type SnapshotState = {
@@ -102,30 +102,27 @@ type SnapshotState = {
 	_initialData: types.SnapshotData,
 	_snapshotPath: ConfigPath,
 	-- ROBLOX TODO: ADO-1552 align this type as Array<InlineSnapshot> when we support inlineSnapshot testing
-	_inlineSnapshots: {any},
+	_inlineSnapshots: { any },
 	-- ROBLOX deviation: defined as any for now because LuauPolyfill.Set<string> and Set.Set<string>
 	-- both didn't seem to be working
 	_uncheckedKeys: any,
 	-- _uncheckedKeys: LuauPolyfill.Set<string>,
 	-- ROBLOX deviation: omitting field _prettierPath
 	-- _prettierPath: ConfigPath;
-	_snapshotFormat: PrettyFormatOptions;
+	_snapshotFormat: PrettyFormatOptions,
 
 	added: number,
 	expand: boolean,
 	matched: number,
 	unmatched: number,
-	updated: number
+	updated: number,
 }
 
 local SnapshotState = {}
 SnapshotState.__index = SnapshotState
 
 function SnapshotState.new(snapshotPath: ConfigPath, options: SnapshotStateOptions)
-	local returnValue = getSnapshotData(
-		snapshotPath,
-		options.updateSnapshot
-	)
+	local returnValue = getSnapshotData(snapshotPath, options.updateSnapshot)
 	local data = returnValue.data
 	local dirty = returnValue.dirty
 
@@ -163,7 +160,7 @@ end
 function SnapshotState:_addSnapshot(
 	key: string,
 	receivedSerialized: string,
-	options: {isInline: boolean, error: any?}
+	options: { isInline: boolean, error: any? }
 ): ()
 	self._dirty = true
 	if options.isInline then
@@ -192,7 +189,7 @@ function SnapshotState:save(): SaveStatus
 
 	local status: SaveStatus = {
 		deleted = false,
-		saved = false
+		saved = false,
 	}
 
 	if CoreScriptSyncService == nil then
@@ -200,10 +197,12 @@ function SnapshotState:save(): SaveStatus
 	end
 	-- ROBLOX deviation: error when FileSystemService doesn't exist
 	if not CoreScriptSyncService then
-		error(Error(
-			'Attempting to save snapshots in an environment where CoreScriptSyncService is inaccessible.\n' ..
-			'You may need to pass in --load.asRobloxScript.'
-		))
+		error(
+			Error(
+				"Attempting to save snapshots in an environment where CoreScriptSyncService is inaccessible.\n"
+					.. "You may need to pass in --load.asRobloxScript."
+			)
+		)
 	end
 
 	-- ROBLOX deviation: SnapshotState._snapshotPath stores the path in the DOM of the snapshot
@@ -228,11 +227,13 @@ function SnapshotState:save(): SaveStatus
 		end
 		status.saved = true
 	elseif not hasExternalSnapshots and require(snapshotPath) then
-	 	-- ROBLOX deviation: omitted part of code dealing with unlinking file until we have
+		-- ROBLOX deviation: omitted part of code dealing with unlinking file until we have
 		-- robust final solution for I/O. This may not even be needed in our translation?
-		if self._updateSnapshot == 'all' then
-			error("Jest-Roblox: You shouldn't reach this code path. Please file an issue at github.com/Roblox/jest-roblox or in #jest-roblox")
-		--	fs.unlinkSync(this._snapshotPath)
+		if self._updateSnapshot == "all" then
+			error(
+				"Jest-Roblox: You shouldn't reach this code path. Please file an issue at github.com/Roblox/jest-roblox or in #jest-roblox"
+			)
+			--	fs.unlinkSync(this._snapshotPath)
 		end
 		status.deleted = true
 	end
@@ -244,12 +245,12 @@ function SnapshotState:getUncheckedCount(): number
 	return self._uncheckedKeys.size or 0
 end
 
-function SnapshotState:getUncheckedKeys(): {string}
+function SnapshotState:getUncheckedKeys(): { string }
 	return Array.from(self._uncheckedKeys)
 end
 
 function SnapshotState:removeUncheckedKeys(): ()
-	if self._updateSnapshot == 'all' and self._uncheckedKeys.size > 0 then
+	if self._updateSnapshot == "all" and self._uncheckedKeys.size > 0 then
 		self._dirty = true
 		for index, key in self._uncheckedKeys:ipairs() do
 			self._snapshotData[key] = nil
@@ -258,9 +259,7 @@ function SnapshotState:removeUncheckedKeys(): ()
 	end
 end
 
-function SnapshotState:match(
-	snapshotMatchOptions: SnapshotMatchOptions
-): SnapshotReturnOptions
+function SnapshotState:match(snapshotMatchOptions: SnapshotMatchOptions): SnapshotReturnOptions
 	local testName = snapshotMatchOptions.testName
 	local received = snapshotMatchOptions.received
 	local key = snapshotMatchOptions.key
@@ -275,9 +274,9 @@ function SnapshotState:match(
 		key = testNameToKey(testName, count)
 	end
 
-	-- // Do not mark the snapshot as "checked" if the snapshot is inline and
-	-- // there's an external snapshot. This way the external snapshot can be
-	-- // removed with `--updateSnapshot`.
+	-- Do not mark the snapshot as "checked" if the snapshot is inline and
+	-- there's an external snapshot. This way the external snapshot can be
+	-- removed with `--updateSnapshot`.
 	if not (isInline and self._snapshotData[key]) then
 		self._uncheckedKeys:delete(key)
 	end
@@ -293,44 +292,48 @@ function SnapshotState:match(
 
 	local pass = expected == receivedSerialized
 	local hasSnapshot = expected ~= nil
-	local snapshotPathExists, _ = pcall(function() require(self._snapshotPath) end)
+	local snapshotPathExists, _ = pcall(function()
+		require(self._snapshotPath)
+	end)
 	local snapshotIsPersisted = isInline or snapshotPathExists
 
 	if pass and not isInline then
-		-- // Executing a snapshot file as JavaScript and writing the strings back
-		-- // when other snapshots have changed loses the proper escaping for some
-		-- // characters. Since we check every snapshot in every test, use the newly
-		-- // generated formatted string.
-		-- // Note that this is only relevant when a snapshot is added and the dirty
-		-- // flag is set.
+		-- Executing a snapshot file as JavaScript and writing the strings back
+		-- when other snapshots have changed loses the proper escaping for some
+		-- characters. Since we check every snapshot in every test, use the newly
+		-- generated formatted string.
+		-- Note that this is only relevant when a snapshot is added and the dirty
+		-- flag is set.
 		self._snapshotData[key] = receivedSerialized
 	end
 
-	-- // These are the conditions on when to write snapshots:
-	-- //  * There's no snapshot file in a non-CI environment.
-	-- //  * There is a snapshot file and we decided to update the snapshot.
-	-- //  * There is a snapshot file, but it doesn't have this snaphsot.
-	-- // These are the conditions on when not to write snapshots:
-	-- //  * The update flag is set to 'none'.
-	-- //  * There's no snapshot file or a file without this snapshot on a CI environment.
+	-- These are the conditions on when to write snapshots:
+	--  * There's no snapshot file in a non-CI environment.
+	--  * There is a snapshot file and we decided to update the snapshot.
+	--  * There is a snapshot file, but it doesn't have this snaphsot.
+	-- These are the conditions on when not to write snapshots:
+	--  * The update flag is set to 'none'.
+	--  * There's no snapshot file or a file without this snapshot on a CI environment.
 	if
-		(hasSnapshot and self._updateSnapshot == 'all') or
-		((not hasSnapshot or not snapshotIsPersisted) and
-			(self._updateSnapshot == 'new' or self._updateSnapshot == 'all'))
+		(hasSnapshot and self._updateSnapshot == "all")
+		or (
+			(not hasSnapshot or not snapshotIsPersisted)
+			and (self._updateSnapshot == "new" or self._updateSnapshot == "all")
+		)
 	then
-		if self._updateSnapshot == 'all' then
+		if self._updateSnapshot == "all" then
 			if not pass then
 				if hasSnapshot then
 					self.updated = self.updated + 1
 				else
 					self.added = self.added + 1
 				end
-				self:_addSnapshot(key, receivedSerialized, {error = error_, isInline = isInline})
+				self:_addSnapshot(key, receivedSerialized, { error = error_, isInline = isInline })
 			else
 				self.matched = self.matched + 1
 			end
 		else
-			self:_addSnapshot(key, receivedSerialized, {error = error_, isInline = isInline})
+			self:_addSnapshot(key, receivedSerialized, { error = error_, isInline = isInline })
 			self.added = self.added + 1
 		end
 
@@ -339,7 +342,7 @@ function SnapshotState:match(
 			count = count,
 			expected = "",
 			key = key,
-			pass = true
+			pass = true,
 		}
 	else
 		if not pass then
@@ -355,7 +358,7 @@ function SnapshotState:match(
 				count = count,
 				expected = expectedValue,
 				key = key,
-				pass = false
+				pass = false,
 			}
 		else
 			self.matched = self.matched + 1
@@ -364,7 +367,7 @@ function SnapshotState:match(
 				count = count,
 				expected = "",
 				key = key,
-				pass = true
+				pass = true,
 			}
 		end
 	end

@@ -12,7 +12,7 @@ return function()
 			setmetatable(testObj, {
 				__index = function(self, key)
 					error(("%q is not a valid member of BackBehavior"):format(tostring(key)), 2)
-				end
+				end,
 			})
 			expect(getType(testObj)).to.equal("table")
 		end)

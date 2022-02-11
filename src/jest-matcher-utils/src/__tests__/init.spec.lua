@@ -44,23 +44,22 @@ return function()
 
 	describe("stringify()", function()
 		local fixtures = {
-			{{}, "{}"},
-			{1, "1"},
-			{0, "0"},
-			{1.5, "1.5"},
-			{nil, "nil"},
-			{"abc", "\"abc\""},
-			{0/0, "nan"},
-			{math.huge, "inf"},
-			{-math.huge, "-inf"},
-			{RegExp("ab\\.c", "i"), "/ab\\.c/i"}
+			{ {}, "{}" },
+			{ 1, "1" },
+			{ 0, "0" },
+			{ 1.5, "1.5" },
+			{ nil, "nil" },
+			{ "abc", '"abc"' },
+			{ 0 / 0, "nan" },
+			{ math.huge, "inf" },
+			{ -math.huge, "-inf" },
+			{ RegExp("ab\\.c", "i"), "/ab\\.c/i" },
 			--[[
 				ROBLOX deviation: skipped since BigInt doesn't exist in Luau
 				original code:
 				[BigInt(1), '1n'],
     			[BigInt(0), '0n'],
 			]]
-
 		}
 
 		for key, value in ipairs(fixtures) do
@@ -72,28 +71,29 @@ return function()
 		it("circular references", function()
 			local a: any = {}
 			a.a = a
-			jestExpect(stringify(a)).toBe("{\"a\": [Circular]}")
+			jestExpect(stringify(a)).toBe('{"a": [Circular]}')
 		end)
 
 		it("toJSON error", function()
 			local evil = {
 				toJSON = function()
 					error("Nope.")
-				end
+				end,
 			}
 
-			jestExpect(stringify(evil)).toBe("{\"toJSON\": [Function anonymous]}")
+			jestExpect(stringify(evil)).toBe('{"toJSON": [Function anonymous]}')
 			-- ROBLOX deviation: PrettyFormat returns [Function anonymous] since we
 			-- can't get function information
-			jestExpect(stringify({a = {b = {evil = evil}}})).toBe("{\"a\": {\"b\": {\"evil\": {\"toJSON\": [Function anonymous]}}}}")
+			jestExpect(stringify({ a = { b = { evil = evil } } })).toBe(
+				'{"a": {"b": {"evil": {"toJSON": [Function anonymous]}}}}'
+			)
 
 			-- ROBLOX deviation: we use a table with a __call metamethod to mimic a
 			-- function with properties in upstream
 			local Evil = {}
-			setmetatable(Evil, {__call = function() end})
+			setmetatable(Evil, { __call = function() end })
 			Evil.toJSON = evil.toJSON
-			jestExpect(stringify(Evil)).toBe("{\"toJSON\": [Function anonymous]}")
-
+			jestExpect(stringify(Evil)).toBe('{"toJSON": [Function anonymous]}')
 		end)
 
 		it("toJSON errors when comparing two objects", function()
@@ -103,12 +103,12 @@ return function()
 
 			local evilA = {
 				a = 1,
-				toJSON = toJSON
+				toJSON = toJSON,
 			}
 
 			local evilB = {
 				b = 1,
-				toJSON = toJSON
+				toJSON = toJSON,
 			}
 
 			-- ROBLOX deviation: our to.equal() method does not work in the same way
@@ -118,8 +118,8 @@ return function()
 		end)
 
 		it("reduces maxDepth if stringifying very large objects", function()
-			local big: any = {a = 1, b = {}}
-			local small: any = {a = 1, b = {}}
+			local big: any = { a = 1, b = {} }
+			local small: any = { a = 1, b = {} }
 			for i = 0, 9999 do
 				big.b[i] = "test"
 			end
@@ -128,8 +128,8 @@ return function()
 				small.b[i] = "test"
 			end
 
-			jestExpect(stringify(big)).toBe(prettyFormat(big, {maxDepth = 1, min = true}))
-			jestExpect(stringify(small)).toBe(prettyFormat(small, {min = true}))
+			jestExpect(stringify(big)).toBe(prettyFormat(big, { maxDepth = 1, min = true }))
+			jestExpect(stringify(small)).toBe(prettyFormat(small, { min = true }))
 		end)
 	end)
 
@@ -166,7 +166,7 @@ return function()
 				local options: JestMatcherUtils.MatcherHintOptions = {
 					isNot = false,
 					promise = "",
-					secondArgument = "precision"
+					secondArgument = "precision",
 				}
 
 				jestExpect(function()
@@ -188,7 +188,7 @@ return function()
 			it("promise rejects isNot false expected", function()
 				local options: JestMatcherUtils.MatcherHintOptions = {
 					isNot = false,
-					promise = "rejects"
+					promise = "rejects",
 				}
 
 				jestExpect(function()
@@ -199,7 +199,7 @@ return function()
 			it("promise rejects isNot true received", function()
 				local options: JestMatcherUtils.MatcherHintOptions = {
 					isNot = true,
-					promise = "rejects"
+					promise = "rejects",
 				}
 
 				jestExpect(function()
@@ -210,7 +210,7 @@ return function()
 			it("promise resolves isNot false received", function()
 				local options: JestMatcherUtils.MatcherHintOptions = {
 					isNot = false,
-					promise = "resolves"
+					promise = "resolves",
 				}
 
 				jestExpect(function()
@@ -221,7 +221,7 @@ return function()
 			it("promise resolves isNot true expected", function()
 				local options: JestMatcherUtils.MatcherHintOptions = {
 					isNot = true,
-					promise = "resolves"
+					promise = "resolves",
 				}
 
 				jestExpect(function()
@@ -242,13 +242,13 @@ return function()
 
 		it("throws error when expected is not undefined with matcherName", function()
 			jestExpect(function()
-				ensureNoExpected({a = 1}, "." .. matcherName)
+				ensureNoExpected({ a = 1 }, "." .. matcherName)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it("throws error when expected is not undefined with matcherName and options", function()
 			jestExpect(function()
-				ensureNoExpected({a = 1}, matcherName, {isNot = true})
+				ensureNoExpected({ a = 1 }, matcherName, { isNot = true })
 			end).toThrowErrorMatchingSnapshot()
 		end)
 	end)
@@ -258,12 +258,12 @@ return function()
 	describe("diff", function()
 		it("forwards to jest-diff", function()
 			local fixtures = {
-				{"a", "b"},
-				{"a", {}},
-				{"a", nil},
-				{"a", 1},
-				{"a", true},
-				{1, true}
+				{ "a", "b" },
+				{ "a", {} },
+				{ "a", nil },
+				{ "a", 1 },
+				{ "a", true },
+				{ 1, true },
 				--[[
 					ROBLOX deviation: skipped since BigInt doesn't exist in Luau
 					original code:
@@ -376,7 +376,7 @@ return function()
 				"toHaveBeenNthCalledWith",
 				"jest.fn()",
 				expectedArgument,
-				{expectedColor = expectedColor, secondArgument = "...expected"}
+				{ expectedColor = expectedColor, secondArgument = "...expected" }
 			)
 
 			local substringNegative = chalk.green(expectedArgument)

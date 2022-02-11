@@ -42,7 +42,7 @@ local prettyFormatPlugins = PrettyFormat.plugins
 local PLUGINS = {
 	prettyFormatPlugins.AsymmetricMatcher,
 	-- ROBLOX deviation: Roblox Instance matchers
-	prettyFormatPlugins.RobloxInstance
+	prettyFormatPlugins.RobloxInstance,
 }
 
 type MatcherHintColor = (string) -> string -- subset of Chalk type
@@ -55,8 +55,8 @@ export type MatcherHintOptions = {
 	promise: string?,
 	receivedColor: MatcherHintColor?,
 	secondArgument: string?,
-	secondArgumentColor: MatcherHintColor?
-};
+	secondArgumentColor: MatcherHintColor?,
+}
 
 -- ROBLOX deviation: omitted DiffOptions since it's not currently present in jest-diff
 
@@ -83,10 +83,11 @@ local NUMBERS = {
 	"ten",
 	"eleven",
 	"twelve",
-	"thirteen"
+	"thirteen",
 }
 
-local SUGGEST_TO_CONTAIN_EQUAL = "Looks like you wanted to test for object/array equality with the stricter `toContain` matcher. You probably need to use `toContainEqual` instead."
+local SUGGEST_TO_CONTAIN_EQUAL =
+	"Looks like you wanted to test for object/array equality with the stricter `toContain` matcher. You probably need to use `toContainEqual` instead."
 
 local replaceTrailingSpaces, getCommonAndChangedSubstrings, isLineDiffable, shouldPrintDiff, replaceMatchedToAsymmetricMatcher, isAsymmetricMatcher
 local matcherErrorMessage, matcherHint
@@ -105,7 +106,7 @@ local function stringify(object: any, maxDepth: number?): string
 		result = prettyFormat(object, {
 			maxDepth = maxDepth,
 			min = true,
-			plugins = PLUGINS
+			plugins = PLUGINS,
 		})
 	end)
 
@@ -114,7 +115,7 @@ local function stringify(object: any, maxDepth: number?): string
 			callToJSON = false,
 			maxDepth = maxDepth,
 			min = true,
-			plugins = PLUGINS
+			plugins = PLUGINS,
 		})
 	end
 
@@ -131,15 +132,16 @@ local function stringify(object: any, maxDepth: number?): string
 end
 
 local function highlightTrailingWhitespace(text: string): string
-	return text:gsub("%s+$", function(s) return INVERTED_COLOR(s) end)
+	return text:gsub("%s+$", function(s)
+		return INVERTED_COLOR(s)
+	end)
 end
 
 -- Replace common spaces with middle dot at the end of any line
 function replaceTrailingSpaces(text: string): string
-	return text:gsub(
-		"%s+$",
-		function(spaces) return string.rep(SPACE_SYMBOL, #spaces) end
-	)
+	return text:gsub("%s+$", function(spaces)
+		return string.rep(SPACE_SYMBOL, #spaces)
+	end)
 end
 
 local function printReceived(object: any): string
@@ -167,11 +169,7 @@ local function printWithType(
 	return hasType .. hasValue
 end
 
-local function ensureNoExpected(
-	expected: any,
-	matcherName: string,
-	options: MatcherHintOptions?
-): ()
+local function ensureNoExpected(expected: any, matcherName: string, options: MatcherHintOptions?): ()
 	if typeof(expected) ~= "nil" then
 		-- Prepend maybe not only for backward compatibility
 		local matcherString = matcherName
@@ -180,24 +178,22 @@ local function ensureNoExpected(
 			matcherString = "[.never]" .. matcherString
 		end
 
-		error(Error(
-			matcherErrorMessage(
-				matcherHint(matcherString, nil, "", options),
-				'this matcher must not have an expected argument',
-				printWithType("Expected", expected, printExpected)
+		error(
+			Error(
+				matcherErrorMessage(
+					matcherHint(matcherString, nil, "", options),
+					"this matcher must not have an expected argument",
+					printWithType("Expected", expected, printExpected)
+				)
 			)
-		))
+		)
 	end
 end
 
 -- Ensures that 'actual' is of type 'number'
-local function ensureActualIsNumber(
-	actual: any,
-	matcherName: string,
-	options: MatcherHintOptions?
-): ()
+local function ensureActualIsNumber(actual: any, matcherName: string, options: MatcherHintOptions?): ()
 	-- ROBLOX deviation: we do not support a "bigint" type
-	if typeof(actual) ~= 'number' then
+	if typeof(actual) ~= "number" then
 		-- Prepend maybe not only for backward compatibility
 		local matcherString = matcherName
 
@@ -205,24 +201,22 @@ local function ensureActualIsNumber(
 			matcherString = "[.never]" .. matcherString
 		end
 
-		error(Error(
-			matcherErrorMessage(
-				matcherHint(matcherString, nil, nil, options),
-				RECEIVED_COLOR("received") .. " value must be a number",
-				printWithType("Received", actual, printReceived)
+		error(
+			Error(
+				matcherErrorMessage(
+					matcherHint(matcherString, nil, nil, options),
+					RECEIVED_COLOR("received") .. " value must be a number",
+					printWithType("Received", actual, printReceived)
+				)
 			)
-		))
+		)
 	end
 end
 
 -- Ensures that 'expected' is of type 'number'
-local function ensureExpectedIsNumber(
-	expected: any,
-	matcherName: string,
-	options: MatcherHintOptions?
-): ()
+local function ensureExpectedIsNumber(expected: any, matcherName: string, options: MatcherHintOptions?): ()
 	-- ROBLOX deviation: we do not support a "bigint" type
-	if typeof(expected) ~= 'number' then
+	if typeof(expected) ~= "number" then
 		-- Prepend maybe not only for backward compatibility
 		local matcherString = matcherName
 
@@ -230,50 +224,41 @@ local function ensureExpectedIsNumber(
 			matcherString = "[.never]" .. matcherString
 		end
 
-		error(Error(
-			matcherErrorMessage(
-				matcherHint(matcherString, nil, nil, options),
-				EXPECTED_COLOR("expected") .. " value must be a number",
-				printWithType("Expected", expected, printExpected)
+		error(
+			Error(
+				matcherErrorMessage(
+					matcherHint(matcherString, nil, nil, options),
+					EXPECTED_COLOR("expected") .. " value must be a number",
+					printWithType("Expected", expected, printExpected)
+				)
 			)
-		))
+		)
 	end
 end
 
 -- Ensures that 'actual' & 'expected' are of type 'number'
-local function ensureNumbers(
-	actual: any,
-	expected: any,
-	matcherName: string,
-	options: MatcherHintOptions?
-): ()
+local function ensureNumbers(actual: any, expected: any, matcherName: string, options: MatcherHintOptions?): ()
 	ensureActualIsNumber(actual, matcherName, options)
 	ensureExpectedIsNumber(expected, matcherName, options)
 end
 
-local function ensureExpectedIsNonNegativeInteger(
-	expected: any,
-	matcherName: string,
-	options: MatcherHintOptions?
-): ()
-	if
-		typeof(expected) ~= 'number' or
-		not Number.isSafeInteger(expected) or
-		expected < 0
-	then
+local function ensureExpectedIsNonNegativeInteger(expected: any, matcherName: string, options: MatcherHintOptions?): ()
+	if typeof(expected) ~= "number" or not Number.isSafeInteger(expected) or expected < 0 then
 		local matcherString = matcherName
 
 		if not options then
 			matcherString = "[.never]" .. matcherString
 		end
 
-		error(Error(
-			matcherErrorMessage(
-				matcherHint(matcherString, nil, nil, options),
-				EXPECTED_COLOR("expected") .. " value must be a non-negative integer",
-				printWithType("Expected", expected, printExpected)
+		error(
+			Error(
+				matcherErrorMessage(
+					matcherHint(matcherString, nil, nil, options),
+					EXPECTED_COLOR("expected") .. " value must be a non-negative integer",
+					printWithType("Expected", expected, printExpected)
+				)
 			)
-		))
+		)
 	end
 end
 
@@ -287,21 +272,17 @@ function getCommonAndChangedSubstrings(
 	op: number,
 	hasCommonDiff: boolean
 ): string
-	return Array.reduce(
-		diffs,
-		function(reduced: string, diff): string
-			if diff[1] == DIFF_EQUAL then
-				return reduced .. diff[2]
-			elseif diff[1] ~= op then
-				return reduced
-			elseif hasCommonDiff then
-				return reduced .. INVERTED_COLOR(diff[2])
-			else
-				return reduced .. diff[2]
-			end
-		end,
-		""
-	)
+	return Array.reduce(diffs, function(reduced: string, diff): string
+		if diff[1] == DIFF_EQUAL then
+			return reduced .. diff[2]
+		elseif diff[1] ~= op then
+			return reduced
+		elseif hasCommonDiff then
+			return reduced .. INVERTED_COLOR(diff[2])
+		else
+			return reduced .. diff[2]
+		end
+	end, "")
 end
 
 function isLineDiffable(expected: any, received: any): boolean
@@ -317,30 +298,23 @@ function isLineDiffable(expected: any, received: any): boolean
 		-- * if neither string is empty
 		-- * if either string has more than one line
 		return (
-			typeof(expected) == "string" and
-			typeof(received) == "string" and
-			#expected ~= 0 and
-			#received ~= 0 and
-			not not (string.find(expected, MULTILINE_REGEXP)
-				or string.find(received, MULTILINE_REGEXP))
-		)
+				typeof(expected) == "string"
+				and typeof(received) == "string"
+				and #expected ~= 0
+				and #received ~= 0
+				and not not (string.find(expected, MULTILINE_REGEXP) or string.find(received, MULTILINE_REGEXP))
+			)
 	end
 
 	if expectedType == "DateTime" or expectedType == "function" then
 		return false
 	end
 
-	if
-		expectedType == "table" and
-		typeof(expected.asymmetricMatch) == "function"
-	then
+	if expectedType == "table" and typeof(expected.asymmetricMatch) == "function" then
 		return false
 	end
 
-	if
-		receivedType == "table" and
-		typeof(received.asymmetricMatch) == "function"
-	then
+	if receivedType == "table" and typeof(received.asymmetricMatch) == "function" then
 		return false
 	end
 
@@ -357,18 +331,15 @@ function printDiffOrStringify(
 	expand: boolean -- CLI options: true if '--expand' or false if '--no-expand'
 ): string
 	if
-		typeof(expected) == "string" and
-		typeof(received) == "string" and
-		#expected ~= 0 and
-		#received ~= 0 and
-		#expected <= MAX_DIFF_STRING_LENGTH and
-		#received <= MAX_DIFF_STRING_LENGTH and
-		expected ~= received
+		typeof(expected) == "string"
+		and typeof(received) == "string"
+		and #expected ~= 0
+		and #received ~= 0
+		and #expected <= MAX_DIFF_STRING_LENGTH
+		and #received <= MAX_DIFF_STRING_LENGTH
+		and expected ~= received
 	then
-		if
-			string.find(expected, MULTILINE_REGEXP) or
-			string.find(received, MULTILINE_REGEXP)
-		then
+		if string.find(expected, MULTILINE_REGEXP) or string.find(received, MULTILINE_REGEXP) then
 			return diffStringsUnified(expected, received, {
 				aAnnotation = expectedLabel,
 				bAnnotation = receivedLabel,
@@ -376,50 +347,45 @@ function printDiffOrStringify(
 				commonLineTrailingSpaceColor = chalk.bgYellow,
 				emptyFirstOrLastLinePlaceholder = utf8.char(8629),
 				expand = expand,
-				includeChangeCounts = true
+				includeChangeCounts = true,
 			})
 		end
 
 		local diffs = diffStringsRaw(expected, received, true)
-		local hasCommonDiff = Array.some(diffs, function(diff) return diff[1] == DIFF_EQUAL end)
+		local hasCommonDiff = Array.some(diffs, function(diff)
+			return diff[1] == DIFF_EQUAL
+		end)
 
 		local printLabel = getLabelPrinter(expectedLabel, receivedLabel)
-		local expectedLine =
-			printLabel(expectedLabel) ..
-			printExpected(
-				getCommonAndChangedSubstrings(diffs, DIFF_DELETE, hasCommonDiff)
-			)
+		local expectedLine = printLabel(expectedLabel)
+			.. printExpected(getCommonAndChangedSubstrings(diffs, DIFF_DELETE, hasCommonDiff))
 
-		local receivedLine =
-			printLabel(receivedLabel) ..
-			printReceived(
-				getCommonAndChangedSubstrings(diffs, DIFF_INSERT, hasCommonDiff)
-			)
+		local receivedLine = printLabel(receivedLabel)
+			.. printReceived(getCommonAndChangedSubstrings(diffs, DIFF_INSERT, hasCommonDiff))
 
 		return expectedLine .. "\n" .. receivedLine
 	end
 
 	if isLineDiffable(expected, received) then
-		local replaced =
-			replaceMatchedToAsymmetricMatcher(
-				deepCyclicCopyReplaceable(expected),
-				deepCyclicCopyReplaceable(received),
-				{},
-				{}
-			)
+		local replaced = replaceMatchedToAsymmetricMatcher(
+			deepCyclicCopyReplaceable(expected),
+			deepCyclicCopyReplaceable(received),
+			{},
+			{}
+		)
 		local replacedExpected = replaced.replacedExpected
 		local replacedReceived = replaced.replacedReceived
 		local difference = diffDefault(replacedExpected, replacedReceived, {
 			aAnnotation = expectedLabel,
 			bAnnotation = receivedLabel,
 			expand = expand,
-			includeChangeCounts = true
+			includeChangeCounts = true,
 		})
 
 		if
-			typeof(difference) == "string" and
-			string.find(difference, "%- " .. expectedLabel) and
-			string.find(difference, "%+ " .. receivedLabel)
+			typeof(difference) == "string"
+			and string.find(difference, "%- " .. expectedLabel)
+			and string.find(difference, "%+ " .. receivedLabel)
 		then
 			return difference
 		end
@@ -463,17 +429,17 @@ function replaceMatchedToAsymmetricMatcher(
 	if not Replaceable.isReplaceable(replacedExpected, replacedReceived) then
 		return {
 			replacedExpected = replacedExpected,
-			replacedReceived = replacedReceived
+			replacedReceived = replacedReceived,
 		}
 	end
 
 	if
-		Array.indexOf(expectedCycles, replacedExpected) ~= -1 or
-		Array.indexOf(receivedCycles, replacedReceived) ~= -1
+		Array.indexOf(expectedCycles, replacedExpected) ~= -1
+		or Array.indexOf(receivedCycles, replacedReceived) ~= -1
 	then
 		return {
 			replacedExpected = replacedExpected,
-			replacedReceived = replacedReceived
+			replacedReceived = replacedReceived,
 		}
 	end
 
@@ -507,7 +473,7 @@ function replaceMatchedToAsymmetricMatcher(
 
 	return {
 		replacedExpected = expectedReplaceable.object,
-		replacedReceived = receivedReplaceable.object
+		replacedReceived = receivedReplaceable.object,
 	}
 end
 
@@ -540,29 +506,25 @@ end
 -- return function which given each string, returns the label:
 -- stirng, colon, space, and enough padding spaces to align the value.
 
-type PrintLabel = (string) -> string;
+type PrintLabel = (string) -> string
 
 -- ROBLOX deviation: no annotation for "..." args
 function getLabelPrinter(...): PrintLabel
-	local strings: Array<string> = {...}
+	local strings: Array<string> = { ... }
 
-	local maxLength = Array.reduce(
-		strings,
-		function(max, string_)
-			return math.max(#string_, max)
-		end,
-		0
-	)
+	local maxLength = Array.reduce(strings, function(max, string_)
+		return math.max(#string_, max)
+	end, 0)
 
 	return function(string_: string): string
-			-- ROBLOX deviation: We need to throw an error since string.rep called for
-			-- a negative repetition doesn't actually throw whereas upstream
-			-- would throw
-			if #string_ > maxLength then
-				error("Cannot print label for string with length larger than the max allowed of " .. maxLength)
-			end
-			return string.format("%s: %s", string_, string.rep(" ", maxLength - #string_))
+		-- ROBLOX deviation: We need to throw an error since string.rep called for
+		-- a negative repetition doesn't actually throw whereas upstream
+		-- would throw
+		if #string_ > maxLength then
+			error("Cannot print label for string with length larger than the max allowed of " .. maxLength)
 		end
+		return string.format("%s: %s", string_, string.rep(" ", maxLength - #string_))
+	end
 end
 
 function matcherErrorMessage(
@@ -580,12 +542,7 @@ end
 -- Display assertion for the report when a test fails.
 -- New format: rejects/resolves, not, and matcher name have black color
 -- Old format: matcher name has dim color
-function matcherHint(
-	matcherName: string,
-	received: string?,
-	expected: string?,
-	options: MatcherHintOptions?
-): string
+function matcherHint(matcherName: string, received: string?, expected: string?, options: MatcherHintOptions?): string
 	received = received or "received"
 	expected = expected or "expected"
 	options = options or {}
@@ -595,8 +552,7 @@ function matcherHint(
 		Luau cleanly and define all of the variables in-line i.e.
 		local comment = options.comment or ""
 	]]
-	local comment, expectedColor, isDirectExpectCall, isNot, promise,
-		receivedColor, secondArgument, secondArgumentColor
+	local comment, expectedColor, isDirectExpectCall, isNot, promise, receivedColor, secondArgument, secondArgumentColor
 	if options then
 		comment = options.comment or ""
 		expectedColor = options.expectedColor or EXPECTED_COLOR

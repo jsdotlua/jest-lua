@@ -22,10 +22,10 @@ export type MatchSnapshotConfig = {
 
 export type SnapshotData = { [string]: string }
 
--- // copied from `expect` - should be shared
+-- copied from `expect` - should be shared
 export type ExpectationResult = {
 	pass: boolean,
-	message: () -> string
+	message: () -> string,
 }
 
 return {}

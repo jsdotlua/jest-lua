@@ -1,7 +1,7 @@
 -- ROBLOX NOTE: no upstream
 -- ROBLOX TODO: fix PrettyFormat types imports
 
-type CompareKeys = ((a: string, b: string) -> number) | nil;
+type CompareKeys = ((a: string, b: string) -> number) | nil
 
 type Plugin = any
 

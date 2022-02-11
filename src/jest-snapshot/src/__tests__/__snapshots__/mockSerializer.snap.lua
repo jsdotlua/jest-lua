@@ -13,7 +13,6 @@ exports["mock with 0 calls and default name in React element 1"] = [=[
 
 exports["mock with 0 calls and non-default name 1"] = "[MockFunction MyConstructor]"
 
-
 -- ROBLOX deviation: changed undefined to "undefined"
 exports["mock with 1 calls and non-default name via new in object 1"] = [=[
 

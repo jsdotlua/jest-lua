@@ -64,49 +64,49 @@ end
 
 -- ROBLOX TODO: ADO-1587, add snapshot version validation
 -- local function validateSnapshotVersion(snapshotContents: { [string]: string)
-	-- local version = snapshotContents:match(SNAPSHOT_VERSION_REGEXP)
+-- local version = snapshotContents:match(SNAPSHOT_VERSION_REGEXP)
 
-	-- if not version then
-	-- 	return Error(
-	-- 		chalk.red(
-	-- 			chalk.bold('Outdated snapshot') .. ": No snapshot header found. " ..
-	-- 			"Jest 19 introduced version snapshots to ensure all developers " ..
-	-- 			"on a project are using the same version of Jest. " ..
-	-- 			"Please update all snapshots during this upgrade of Jest.\n\n"
-	-- 		) .. SNAPSHOT_VERSION_WARNING
-	-- 	)
-	-- end
+-- if not version then
+-- 	return Error(
+-- 		chalk.red(
+-- 			chalk.bold('Outdated snapshot') .. ": No snapshot header found. " ..
+-- 			"Jest 19 introduced version snapshots to ensure all developers " ..
+-- 			"on a project are using the same version of Jest. " ..
+-- 			"Please update all snapshots during this upgrade of Jest.\n\n"
+-- 		) .. SNAPSHOT_VERSION_WARNING
+-- 	)
+-- end
 
-	-- if version < SNAPSHOT_VERSION then
-	-- 	return Error(
-	-- 		chalk.red(
-	-- 			chalk.red.bold('Outdated snapshot') .. ": The version of the snapshot " ..
-	-- 			"file associated with this test is outdated. The snapshot file " ..
-	-- 			"version ensures that all developers on a project are using " ..
-	-- 			"the same version of Jest. " ..
-	-- 			"Please update all snapshots during this upgrade of Jest.\n\n"
-	-- 		) ..
-	-- 		"Expected: v" .. SNAPSHOT_VERSION .. "\n" ..
-	-- 		"Received: v" .. version .. "\n\n" ..
-	-- 		SNAPSHOT_VERSION_WARNING
-	-- 	)
-	-- end
+-- if version < SNAPSHOT_VERSION then
+-- 	return Error(
+-- 		chalk.red(
+-- 			chalk.red.bold('Outdated snapshot') .. ": The version of the snapshot " ..
+-- 			"file associated with this test is outdated. The snapshot file " ..
+-- 			"version ensures that all developers on a project are using " ..
+-- 			"the same version of Jest. " ..
+-- 			"Please update all snapshots during this upgrade of Jest.\n\n"
+-- 		) ..
+-- 		"Expected: v" .. SNAPSHOT_VERSION .. "\n" ..
+-- 		"Received: v" .. version .. "\n\n" ..
+-- 		SNAPSHOT_VERSION_WARNING
+-- 	)
+-- end
 
-	-- if version > SNAPSHOT_VERSION then
-	-- 	return Error(
-	-- 		chalk.red(
-	-- 			chalk.red.bold('Outdated Jest version') ..": The version of this " ..
-	-- 			"snapshot file indicates that this project is meant to be used " ..
-	-- 			"with a newer version of Jest. The snapshot file version ensures " ..
-	-- 			"that all developers on a project are using the same version of " ..
-	-- 			"Jest. Please update your version of Jest and re-run the tests.\n\n"
-	-- 		) ..
-	-- 		"Expected: v${SNAPSHOT_VERSION}\n" ..
-	-- 		"Received: v${version}"
-	-- 	)
-	-- end
+-- if version > SNAPSHOT_VERSION then
+-- 	return Error(
+-- 		chalk.red(
+-- 			chalk.red.bold('Outdated Jest version') ..": The version of this " ..
+-- 			"snapshot file indicates that this project is meant to be used " ..
+-- 			"with a newer version of Jest. The snapshot file version ensures " ..
+-- 			"that all developers on a project are using the same version of " ..
+-- 			"Jest. Please update your version of Jest and re-run the tests.\n\n"
+-- 		) ..
+-- 		"Expected: v${SNAPSHOT_VERSION}\n" ..
+-- 		"Received: v${version}"
+-- 	)
+-- end
 
-	-- return nil
+-- return nil
 -- end
 
 local function isObject(item: any): boolean
@@ -133,11 +133,9 @@ local function getSnapshotData(
 	local dirty = false
 
 	-- ROBLOX deviation: snapshots in Jest Roblox are ModuleScripts, so we require them to load them
-	pcall(
-		function()
-			data = require(snapshotPath)
-		end
-	)
+	pcall(function()
+		data = require(snapshotPath)
+	end)
 	-- ROBLOX deviation: omitted validateSnapshotVersion for now since we will have our own
 	-- snapshot versioning
 	-- local validationResult = validateSnapshotVersion(data)
@@ -153,12 +151,12 @@ local function getSnapshotData(
 
 	return {
 		data = data,
-		dirty = dirty
+		dirty = dirty,
 	}
 end
 
--- // Add extra line breaks at beginning and end of multiline snapshot
--- // to make the content easier to read.
+-- Add extra line breaks at beginning and end of multiline snapshot
+-- to make the content easier to read.
 local function addExtraLineBreaks(string_: string): string
 	if string_:match("\n") then
 		return "\n" .. string_ .. "\n"
@@ -167,9 +165,9 @@ local function addExtraLineBreaks(string_: string): string
 	end
 end
 
--- // Remove extra line breaks at beginning and end of multiline snapshot.
--- // Instead of trim, which can remove additional newlines or spaces
--- // at beginning or end of the content from a custom serializer.
+-- Remove extra line breaks at beginning and end of multiline snapshot.
+-- Instead of trim, which can remove additional newlines or spaces
+-- at beginning or end of the content from a custom serializer.
 local function removeExtraLineBreaks(string_: string): string
 	if string_:len() > 2 and String.startsWith(string_, "\n") and String.endsWith(string_, "\n") then
 		return string_:sub(2, -2)
@@ -184,14 +182,15 @@ local printFunctionName = false
 local function serialize(val: any, indent: number?, formatOverrides: PrettyFormatOptions?): string
 	indent = indent or 2
 	formatOverrides = formatOverrides or {}
-	return normalizeNewLines(
-		prettyFormat(val, Object.assign({
+	return normalizeNewLines(prettyFormat(
+		val,
+		Object.assign({
 			escapeRegex = escapeRegex,
 			indent = indent,
 			plugins = getSerializers(),
-			printFunctionName = printFunctionName
-		}, formatOverrides))
-	)
+			printFunctionName = printFunctionName,
+		}, formatOverrides)
+	))
 end
 
 local function minify(val: any): string
@@ -199,11 +198,11 @@ local function minify(val: any): string
 		escapeRegex = true,
 		min = true,
 		plugins = getSerializers(),
-		printFunctionName = printFunctionName
+		printFunctionName = printFunctionName,
 	})
 end
 
--- // Remove double quote marks and unescape double quotes and backslashes.
+-- Remove double quote marks and unescape double quotes and backslashes.
 local function deserializeString(stringified: string): string
 	stringified = string.sub(stringified, 2, -2)
 	stringified = string.gsub(stringified, "\\\\", "\\")
@@ -235,8 +234,8 @@ local function ensureDirectoryExists(filePath: string)
 
 	if not ok and err:find("Error%(13%): Access Denied%. Path is outside of sandbox%.") then
 		error(
-			"Provided path is invalid: you likely need to provide a different argument to --fs.readwrite.\n" ..
-			"You may need to pass in `--fs.readwrite=$PWD`"
+			"Provided path is invalid: you likely need to provide a different argument to --fs.readwrite.\n"
+				.. "You may need to pass in `--fs.readwrite=$PWD`"
 		)
 	end
 end
@@ -249,51 +248,48 @@ end
 -- ROBLOX deviation: taken from http://notebook.kulchenko.com/algorithms/alphanumeric-natural-sorting-for-humans-in-lua
 -- as an approximation of naturalCompare for now
 local function alphanumsort(o)
-	local function padnum(d) return ("%03d%s"):format(#d, d) end
+	local function padnum(d)
+		return ("%03d%s"):format(#d, d)
+	end
 	table.sort(o, function(a, b)
-		return tostring(a):gsub("%d+",padnum) < tostring(b):gsub("%d+",padnum) end)
+		return tostring(a):gsub("%d+", padnum) < tostring(b):gsub("%d+", padnum)
+	end)
 	return o
 end
 
 -- ROBLOX deviation: saves a valid Roblox ModuleScript
-local function saveSnapshotFile(
-	snapshotData: types.SnapshotData,
-	snapshotPath: ConfigPath
-)
+local function saveSnapshotFile(snapshotData: types.SnapshotData, snapshotPath: ConfigPath)
 	local snapshots = {
 		writeSnapshotVersion(),
-		'local exports = {}'
+		"local exports = {}",
 	}
 
 	for _, key in ipairs(alphanumsort(Object.keys(snapshotData))) do
 		table.insert(
 			snapshots,
-			'exports[ [=[' ..
-			-- ROBLOX deviation: we don't call printBacktickString here since we inline the
-			-- multiline literal
-			escapeBacktickString(key) ..
-			']=] ] = ' ..
-			printBacktickString(normalizeNewLines(snapshotData[key]))
+			"exports[ [=["
+				-- ROBLOX deviation: we don't call printBacktickString here since we inline the
+				-- multiline literal
+				.. escapeBacktickString(key)
+				.. "]=] ] = "
+				.. printBacktickString(normalizeNewLines(snapshotData[key]))
 		)
 		-- ROBLOX deviation: we don't append a semicolon
 	end
-	table.insert(snapshots, 'return exports')
+	table.insert(snapshots, "return exports")
 
 	if FileSystemService == nil then
 		FileSystemService = getFileSystemService() or false
 	end
 	-- ROBLOX deviation: error when FileSystemService doesn't exist
 	if not FileSystemService then
-		error(Error('Attempting to save snapshots in an environment where FileSystemService is inaccessible.'))
+		error(Error("Attempting to save snapshots in an environment where FileSystemService is inaccessible."))
 	end
 	ensureDirectoryExists(snapshotPath)
-	FileSystemService:WriteFile(snapshotPath, table.concat(snapshots, '\n\n'))
+	FileSystemService:WriteFile(snapshotPath, table.concat(snapshots, "\n\n"))
 end
 
-local function deepMergeArray(
-	target: Array<any>,
-	source: Array<any>
-)
+local function deepMergeArray(target: Array<any>, source: Array<any>)
 	local mergedOutput = Array.from(target)
 
 	for index, sourceElement in ipairs(source) do
@@ -304,7 +300,7 @@ local function deepMergeArray(
 		elseif isObject(targetElement) then
 			mergedOutput[index] = deepMerge(target[index], sourceElement)
 		else
-			-- // Source does not exist in target or target is primitive and cannot be deep merged
+			-- Source does not exist in target or target is primitive and cannot be deep merged
 			mergedOutput[index] = sourceElement
 		end
 	end
@@ -322,14 +318,14 @@ function deepMerge(target: any, source: any): any
 		for key, value in pairs(source) do
 			if isObject(source[key]) and not source[key]["$$typeof"] then
 				if not target[key] then
-					Object.assign(mergedOutput, {[key] = source[key]})
+					Object.assign(mergedOutput, { [key] = source[key] })
 				else
 					mergedOutput[key] = deepMerge(target[key], source[key])
 				end
 			elseif Array.isArray(source[key]) then
 				mergedOutput[key] = deepMergeArray(target[key], source[key])
 			else
-				Object.assign(mergedOutput, {[key] = source[key]})
+				Object.assign(mergedOutput, { [key] = source[key] })
 			end
 		end
 
@@ -375,5 +371,5 @@ return {
 	saveSnapshotFile = saveSnapshotFile,
 	deepMerge = deepMerge,
 	-- ROBLOX deviation: not in upstream
-	robloxGetParent = robloxGetParent
+	robloxGetParent = robloxGetParent,
 }

@@ -22,8 +22,8 @@ return function()
 	local getType = require(CurrentModule).getType
 
 	describe(".getType()", function()
-		it('nil', function()
-			expect(getType(nil)).to.equal('nil')
+		it("nil", function()
+			expect(getType(nil)).to.equal("nil")
 		end)
 
 		--[[
@@ -38,24 +38,24 @@ return function()
 			test('object', () => expect(getType({})).toBe('object'));
   			test('array', () => expect(getType([])).toBe('array'));
 		]]
-		it('table', function()
-			expect(getType({})).to.equal('table')
+		it("table", function()
+			expect(getType({})).to.equal("table")
 		end)
 
-		it('number', function()
-			expect(getType(1)).to.equal('number')
+		it("number", function()
+			expect(getType(1)).to.equal("number")
 		end)
 
-		it('string', function()
-			expect(getType('oi')).to.equal('string')
+		it("string", function()
+			expect(getType("oi")).to.equal("string")
 		end)
 
-		it('function', function()
-			expect(getType(function() end)).to.equal('function')
+		it("function", function()
+			expect(getType(function() end)).to.equal("function")
 		end)
 
-		it('boolean', function()
-			expect(getType(true)).to.equal('boolean')
+		it("boolean", function()
+			expect(getType(true)).to.equal("boolean")
 		end)
 
 		-- ROBLOX deviation start: additional symbol tests
@@ -80,8 +80,8 @@ return function()
 		end)
 
 		-- ROBLOX deviation: checking DateTime instead of Date
-		it('DateTime', function()
-			expect(getType(DateTime.now())).to.equal('DateTime')
+		it("DateTime", function()
+			expect(getType(DateTime.now())).to.equal("DateTime")
 		end)
 
 		--[[

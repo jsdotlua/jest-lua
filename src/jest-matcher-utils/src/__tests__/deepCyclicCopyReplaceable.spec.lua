@@ -25,8 +25,8 @@ return function()
 		expect(deepCyclicCopyReplaceable(nil)).to.equal(nil)
 		expect(deepCyclicCopyReplaceable(true)).to.equal(true)
 		expect(deepCyclicCopyReplaceable(42)).to.equal(42)
-		expect(Number.isNaN(deepCyclicCopyReplaceable(0/0))).to.equal(true)
-		expect(deepCyclicCopyReplaceable('foo')).to.equal('foo')
+		expect(Number.isNaN(deepCyclicCopyReplaceable(0 / 0))).to.equal(true)
+		expect(deepCyclicCopyReplaceable("foo")).to.equal("foo")
 		expect(deepCyclicCopyReplaceable(fn)).to.equal(fn)
 	end)
 
@@ -88,21 +88,23 @@ return function()
 	end)
 
 	it("copies arrays as array objects", function()
-		local array = {42, 'foo', 'bar', {}, {}}
+		local array = { 42, "foo", "bar", {}, {} }
 		local copy = deepCyclicCopyReplaceable(array)
 
 		expect(equals(copy, array)).to.equal(true)
 		expect(array ~= copy).to.equal(true)
-		expect(typeof(array) == 'table').to.equal(true)
+		expect(typeof(array) == "table").to.equal(true)
 	end)
 
 	it("handles cyclic dependencies", function()
-		local cyclic: anyTable = {a = 42, subcycle = {}}
+		local cyclic: anyTable = { a = 42, subcycle = {} }
 
 		cyclic.subcycle.baz = cyclic
 		cyclic.bar = cyclic
 
-		expect(function() deepCyclicCopyReplaceable(cyclic) end).never.to.throw()
+		expect(function()
+			deepCyclicCopyReplaceable(cyclic)
+		end).never.to.throw()
 
 		local copy = deepCyclicCopyReplaceable(cyclic)
 
@@ -112,7 +114,7 @@ return function()
 	end)
 
 	it("Copy Map", function()
-		local map = {a = 1, b = 2}
+		local map = { a = 1, b = 2 }
 
 		local copy = deepCyclicCopyReplaceable(map)
 
@@ -124,15 +126,15 @@ return function()
 	end)
 
 	it("Copy cyclic Map", function()
-		local map = {a = 1, b = 2}
+		local map = { a = 1, b = 2 }
 		map.map = map
 		expect(equals(map, deepCyclicCopyReplaceable(map))).to.equal(true)
 	end)
 
 	it("return same value for built-in object type except array, map and object", function()
 		local date = DateTime.now()
-		local numberArray = {1, 2, 3}
-		local set = {foo = true, bar = true}
+		local numberArray = { 1, 2, 3 }
+		local set = { foo = true, bar = true }
 
 		expect(deepCyclicCopyReplaceable(date)).to.equal(date)
 		expect(equals(deepCyclicCopyReplaceable(numberArray), numberArray)).to.equal(true)
@@ -170,7 +172,7 @@ return function()
 	-- ROBLOX deviation: Test not present in upstream
 	it("should keep metatable on copied table", function()
 		local a = {}
-		setmetatable(a, {test = 1})
+		setmetatable(a, { test = 1 })
 
 		expect(getmetatable(deepCyclicCopyReplaceable(a))["test"]).to.equal(1)
 	end)

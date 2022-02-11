@@ -6,7 +6,7 @@
 --  * LICENSE file in the root directory of this source tree.
 --  *
 --  */
--- // This file is a heavily modified fork of Jasmine. Original license:
+-- This file is a heavily modified fork of Jasmine. Original license:
 -- /*
 -- Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 -- Permission is hereby granted, free of charge, to any person obtaining
@@ -44,7 +44,7 @@ local SpyStrategy = require(CurrentModule.SpyStrategy)
 -- ROBLOX deviation: we don't define a type like Fn
 
 -- ROBLOX deviation: function not annotated with Spy
-return function(name: string, originalFn: { [any] : any }?)
+return function(name: string, originalFn: { [any]: any }?)
 	originalFn = originalFn or {}
 
 	local spyTable = {}
@@ -52,7 +52,9 @@ return function(name: string, originalFn: { [any] : any }?)
 	local spyStrategy = SpyStrategy.new({
 		name = name,
 		fn = originalFn,
-		getSpy = function() return spyTable end
+		getSpy = function()
+			return spyTable
+		end,
 	})
 
 	local callTracker = CallTracker.new()
@@ -60,12 +62,12 @@ return function(name: string, originalFn: { [any] : any }?)
 	local spy = function(...)
 		local callData: CallTracker.Context = {
 			object = nil,
-			args = Array.slice({...}),
+			args = Array.slice({ ... }),
 		}
 		callData.object = callData
 
 		callTracker:track(callData)
-		local returnValue = spyStrategy:exec(nil, unpack({...}))
+		local returnValue = spyStrategy:exec(nil, unpack({ ... }))
 		callData.returnValue = returnValue
 
 		return returnValue
@@ -74,8 +76,10 @@ return function(name: string, originalFn: { [any] : any }?)
 	if originalFn then
 		for key, value in pairs(originalFn) do
 			if key == "and" or key == "andAlso" or key == "calls" then
-				error("Jasmine spies would overwrite the 'and', 'andAlso' and 'calls' properties " ..
-					"on the object being spied upon")
+				error(
+					"Jasmine spies would overwrite the 'and', 'andAlso' and 'calls' properties "
+						.. "on the object being spied upon"
+				)
 			end
 			spyTable[key] = value
 		end
@@ -84,13 +88,17 @@ return function(name: string, originalFn: { [any] : any }?)
 	-- ROBLOX deviation: changed implementation since Lua doesn't support function
 	-- properties so instead of returning the spy, the result returned by this
 	-- function is a table with a __call metamethod
-	setmetatable(spyTable, {__call = function(self, ...) return spy(...) end})
+	setmetatable(spyTable, {
+		__call = function(self, ...)
+			return spy(...)
+		end,
+	})
 
-	spyTable['and'] = spyStrategy
+	spyTable["and"] = spyStrategy
 	-- ROBLOX deviation: we expose andAlso to allow for cleaner method chaining since and
 	-- is a Lua built in
-	spyTable['andAlso'] = spyStrategy
-	spyTable['calls'] = callTracker
+	spyTable["andAlso"] = spyStrategy
+	spyTable["calls"] = callTracker
 
 	return spyTable
 end

@@ -11,51 +11,51 @@ return function()
 	local isPrimitive = require(script.Parent.Parent).isPrimitive
 
 	describe(".isPrimitive()", function()
-		it('returns true when given primitive value of: nil', function()
+		it("returns true when given primitive value of: nil", function()
 			expect(isPrimitive(nil)).to.equal(true)
 		end)
 
 		-- ROBLOX deviation: test omitted because lua has no primitive undefined type
 
-		it('returns true when given primitive value of: 100', function()
+		it("returns true when given primitive value of: 100", function()
 			expect(isPrimitive(100)).to.equal(true)
 		end)
 
-		it('returns true when given primitive value of: \'hello world\'', function()
-			expect(isPrimitive('hello world')).to.equal(true)
+		it("returns true when given primitive value of: 'hello world'", function()
+			expect(isPrimitive("hello world")).to.equal(true)
 		end)
 
-		it('returns true when given primitive value of: true', function()
+		it("returns true when given primitive value of: true", function()
 			expect(isPrimitive(true)).to.equal(true)
 		end)
 
 		-- ROBLOX deviation: test omitted because lua has no primitive symbol type
 
-		it('returns true when given primitive value of: 0', function()
+		it("returns true when given primitive value of: 0", function()
 			expect(isPrimitive(0)).to.equal(true)
 		end)
 
-		it('returns true when given primitive value of: -nan', function()
-			expect(isPrimitive(0/0)).to.equal(true)
+		it("returns true when given primitive value of: -nan", function()
+			expect(isPrimitive(0 / 0)).to.equal(true)
 		end)
 
-		it('returns true when given primitive value of: inf', function()
+		it("returns true when given primitive value of: inf", function()
 			expect(isPrimitive(math.huge)).to.equal(true)
 		end)
 
 		-- ROBLOX deviation: test omitted because lua has no primitive bigint type
 
 		-- ROBLOX deviation: lua makes no distinction between tables, objects, and arrays
-		it('returns false when given non primitive value of: {}', function()
+		it("returns false when given non primitive value of: {}", function()
 			expect(isPrimitive({})).to.equal(false)
 		end)
 
-		it('returns false when given non primitive value of: function() end', function()
+		it("returns false when given non primitive value of: function() end", function()
 			expect(isPrimitive(function() end)).to.equal(false)
 		end)
 
 		-- ROBLOX deviation: added Roblox Instance as a non primitive
-		it('returns false when given non primitive value of: Instance', function()
+		it("returns false when given non primitive value of: Instance", function()
 			expect(isPrimitive(Instance.new("Frame"))).to.equal(false)
 		end)
 

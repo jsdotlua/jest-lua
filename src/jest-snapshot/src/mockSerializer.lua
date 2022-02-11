@@ -9,15 +9,8 @@
 
 -- ROBLOX deviation: omitted external type NewPlugin
 
-local function serialize(
-	val,
-	config,
-	indentation,
-	depth,
-	refs,
-	printer
-): string
-	-- // Serialize a non-default name, even if config.printFunctionName is false.
+local function serialize(val, config, indentation, depth, refs, printer): string
+	-- Serialize a non-default name, even if config.printFunctionName is false.
 	local name = val.getMockName()
 	local nameString = ""
 	if name == "jest.fn()" then
@@ -29,33 +22,29 @@ local function serialize(
 	local callsString = ""
 	if #val.mock.calls ~= 0 then
 		local indentationNext = indentation .. config.indent
-		callsString =
-			' {' ..
-			config.spacingOuter ..
-			indentationNext ..
-			'"calls": ' ..
-			printer(val.mock.calls, config, indentationNext, depth, refs)
+		callsString = " {"
+			.. config.spacingOuter
+			.. indentationNext
+			.. '"calls": '
+			.. printer(val.mock.calls, config, indentationNext, depth, refs)
 
 		if config.min then
-			callsString = callsString .. ', '
+			callsString = callsString .. ", "
 		else
-			callsString = callsString .. ','
+			callsString = callsString .. ","
 		end
 
-		callsString = callsString ..
-			config.spacingOuter ..
-			indentationNext ..
-			'"results": ' ..
-			printer(val.mock.results, config, indentationNext, depth, refs)
+		callsString = callsString
+			.. config.spacingOuter
+			.. indentationNext
+			.. '"results": '
+			.. printer(val.mock.results, config, indentationNext, depth, refs)
 
 		if not config.min then
-			callsString = callsString .. ','
+			callsString = callsString .. ","
 		end
 
-		callsString = callsString ..
-			config.spacingOuter ..
-			indentation ..
-			'}'
+		callsString = callsString .. config.spacingOuter .. indentation .. "}"
 	end
 
 	return "[MockFunction" .. nameString .. "]" .. callsString
@@ -68,5 +57,5 @@ end
 
 return {
 	serialize = serialize,
-	test = test
+	test = test,
 }

@@ -19,9 +19,9 @@ return function()
 			Dog.__index = Dog
 
 			setmetatable(Dog, {
-			__tostring = function(self)
-				return "Dog"
-			end
+				__tostring = function(self)
+					return "Dog"
+				end,
 			})
 		end)
 
@@ -41,10 +41,12 @@ return function()
 			setmetatable(Dog, {
 				__tostring = function(self)
 					return ""
-				end
+				end,
 			})
 
-			jestExpect(Print.printReceivedConstructorName("Received", Dog)).toEqual("Received name is an empty string\n")
+			jestExpect(Print.printReceivedConstructorName("Received", Dog)).toEqual(
+				"Received name is an empty string\n"
+			)
 		end)
 
 		it("prints some entries of non-tostring class", function()
@@ -102,7 +104,7 @@ return function()
 				setmetatable(Dog, {
 					__tostring = function(self)
 						return "Doge"
-					end
+					end,
 				})
 			end)
 
@@ -110,7 +112,7 @@ return function()
 				setmetatable(Dog, {
 					__tostring = function(self)
 						return ""
-					end
+					end,
 				})
 
 				local result = Print.printExpectedConstructorNameNot("Received", Dog)
@@ -122,10 +124,9 @@ return function()
 
 				local result = Print.printExpectedConstructorNameNot("Received", Dog)
 				jestExpect(result).toContain("Received: never [32mtable: 0x")
-
 			end)
 
-			it('prints table contents', function()
+			it("prints table contents", function()
 				setmetatable(Dog, {})
 				-- Sanity check that once we give Dog some properties, it
 				-- prints out the contents not the table address

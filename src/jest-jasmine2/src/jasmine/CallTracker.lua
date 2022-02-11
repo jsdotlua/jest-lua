@@ -6,7 +6,7 @@
 --  * LICENSE file in the root directory of this source tree.
 --  *
 --  */
--- // This file is a heavily modified fork of Jasmine. Original license:
+-- This file is a heavily modified fork of Jasmine. Original license:
 -- /*
 -- Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 -- Permission is hereby granted, free of charge, to any person obtaining
@@ -35,15 +35,15 @@ type Array<T> = LuauPolyfill.Array<T>
 export type Context = {
 	object: any,
 	args: Array<any>,
-	returnValue: any?
+	returnValue: any?,
 }
 
 local CallTracker = {}
 
 CallTracker.__index = CallTracker
 function CallTracker.new()
-	local self: {calls: Array<Context>} = {
-		calls = {}
+	local self: { calls: Array<Context> } = {
+		calls = {},
 	}
 
 	setmetatable(self, CallTracker)
@@ -56,7 +56,7 @@ function CallTracker:track(context: Context)
 	-- called with empty arguments but in Lua if we add nil to calls, the table
 	-- won't actually increase in size, so we opt to insert a nil context
 	if context == nil then
-		local nilContext = {object = nil, args = {nil}}
+		local nilContext = { object = nil, args = { nil } }
 		table.insert(self.calls, nilContext)
 	else
 		table.insert(self.calls, context)
@@ -106,4 +106,3 @@ function CallTracker:reset()
 end
 
 return CallTracker
-

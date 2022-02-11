@@ -7,7 +7,7 @@
 ]]
 
 -- ROBLOX TODO: fix PrettyFormat types imports
-type CompareKeys = ((a: string, b: string) -> number) | nil;
+type CompareKeys = ((a: string, b: string) -> number) | nil
 
 export type DiffOptionsColor = (string) -> string
 
@@ -29,7 +29,7 @@ export type DiffOptions = {
 	includeChangeCounts: boolean?,
 	omitAnnotationLines: boolean?,
 	patchColor: DiffOptionsColor?,
-	compareKeys: CompareKeys?
+	compareKeys: CompareKeys?,
 }
 
 export type DiffOptionsNormalized = {
@@ -50,7 +50,7 @@ export type DiffOptionsNormalized = {
 	expand: boolean,
 	includeChangeCounts: boolean,
 	omitAnnotationLines: boolean,
-	patchColor: DiffOptionsColor
+	patchColor: DiffOptionsColor,
 }
 
 return {}

@@ -16,7 +16,7 @@ return {
 	testEnv = jest.testEnv,
 	jestSnapshot = {
 		toMatchSnapshot = jestSnapshot.toMatchSnapshot,
-		toThrowErrorMatchingSnapshot = jestSnapshot.toThrowErrorMatchingSnapshot
+		toThrowErrorMatchingSnapshot = jestSnapshot.toThrowErrorMatchingSnapshot,
 	},
-	TestEZ = TestEZ
+	TestEZ = TestEZ,
 }

@@ -12,15 +12,15 @@ return function()
 
 	describe("getRobloxProperties()", function()
 		it("returns properties for Instance", function()
-			jestExpect(getRobloxProperties("Instance")).toEqual({"Archivable", "ClassName", "Name", "Parent"})
+			jestExpect(getRobloxProperties("Instance")).toEqual({ "Archivable", "ClassName", "Name", "Parent" })
 		end)
 
 		it("doesn't return protected properties", function()
-			jestExpect(getRobloxProperties("ModuleScript")).never.toContain({"Source"})
+			jestExpect(getRobloxProperties("ModuleScript")).never.toContain({ "Source" })
 		end)
 
 		it("doesn't return hidden properties", function()
-			jestExpect(getRobloxProperties("TextLabel")).never.toContain({"LocalizedText", "Transparency"})
+			jestExpect(getRobloxProperties("TextLabel")).never.toContain({ "LocalizedText", "Transparency" })
 		end)
 
 		it("returns all properties and inherited properties of Frame", function()
@@ -56,7 +56,7 @@ return function()
 				"SizeConstraint",
 				"Style",
 				"Visible",
-				"ZIndex"
+				"ZIndex",
 			})
 		end)
 	end)
@@ -70,45 +70,29 @@ return function()
 		childFrame.Name = "ChildFrame"
 
 		it("matching Instance returns true", function()
-			jestExpect(instanceSubsetEquality(
-				parentFrame,
-				{ Name = "ParentFrame", ClassName = "Frame"}
-			)).toBe(true)
+			jestExpect(instanceSubsetEquality(parentFrame, { Name = "ParentFrame", ClassName = "Frame" })).toBe(true)
 		end)
 
 		it("Instance does not match", function()
-			jestExpect(instanceSubsetEquality(
-				parentFrame,
-				{ Name = "ParentFrame", ClassName = "TextButton"}
-			)).toBe(false)
+			jestExpect(instanceSubsetEquality(parentFrame, { Name = "ParentFrame", ClassName = "TextButton" })).toBe(
+				false
+			)
 		end)
 
 		it("Instance does not have property", function()
-			jestExpect(instanceSubsetEquality(
-				parentFrame,
-				{ Foo = "Bar"}
-			)).toBe(false)
+			jestExpect(instanceSubsetEquality(parentFrame, { Foo = "Bar" })).toBe(false)
 		end)
 
 		it("table without keys is undefined", function()
-			jestExpect(instanceSubsetEquality(
-				parentFrame,
-				{ 1, 2, 3 }
-			)).toBeNil()
+			jestExpect(instanceSubsetEquality(parentFrame, { 1, 2, 3 })).toBeNil()
 		end)
 
 		it("non table subset is undefined", function()
-			jestExpect(instanceSubsetEquality(
-				parentFrame,
-				1
-			)).toBeNil()
+			jestExpect(instanceSubsetEquality(parentFrame, 1)).toBeNil()
 		end)
 
 		it("non Instance object is undefined", function()
-			jestExpect(instanceSubsetEquality(
-				{},
-				{ Foo = "Bar" }
-			)).toBeNil()
+			jestExpect(instanceSubsetEquality({}, { Foo = "Bar" })).toBeNil()
 		end)
 
 		it("returns false for circular references", function()
@@ -116,70 +100,52 @@ return function()
 			local circularObjB = { Parent = circularObjA }
 			circularObjA.Parent = circularObjB
 
-			jestExpect(instanceSubsetEquality(
-				parentFrame,
-				circularObjA
-			)).toBe(false)
+			jestExpect(instanceSubsetEquality(parentFrame, circularObjA)).toBe(false)
 		end)
 
 		it("returns true if child matches subset", function()
-			jestExpect(instanceSubsetEquality(
-				parentFrame,
-				{
-					Name = "ParentFrame",
-					ChildFrame = {
-						Name = "ChildFrame"
-					}
-				}
-			)).toBe(true)
+			jestExpect(instanceSubsetEquality(parentFrame, {
+				Name = "ParentFrame",
+				ChildFrame = {
+					Name = "ChildFrame",
+				},
+			})).toBe(true)
 		end)
 
 		it("returns false if child does not match subset", function()
-			jestExpect(instanceSubsetEquality(
-				parentFrame,
-				{
-					Name = "ParentFrame",
-					ChildFrame = {
-						Name = "Foo"
-					}
-				}
-			)).toBe(false)
+			jestExpect(instanceSubsetEquality(parentFrame, {
+				Name = "ParentFrame",
+				ChildFrame = {
+					Name = "Foo",
+				},
+			})).toBe(false)
 		end)
 
 		it("returns false if child does not exist", function()
-			jestExpect(instanceSubsetEquality(
-				parentFrame,
-				{
-					Name = "ParentFrame",
-					ChildButton = {
-						Name = "ChildFrame"
-					}
-				}
-			)).toBe(false)
+			jestExpect(instanceSubsetEquality(parentFrame, {
+				Name = "ParentFrame",
+				ChildButton = {
+					Name = "ChildFrame",
+				},
+			})).toBe(false)
 		end)
 
 		it("returns true if nested Instance matches", function()
-			jestExpect(instanceSubsetEquality(
-				childFrame,
-				{
-					Name = "ChildFrame",
-					Parent = {
-						Name = "ParentFrame"
-					}
-				}
-			)).toBe(true)
+			jestExpect(instanceSubsetEquality(childFrame, {
+				Name = "ChildFrame",
+				Parent = {
+					Name = "ParentFrame",
+				},
+			})).toBe(true)
 		end)
 
 		it("returns false if nested Instance does not match", function()
-			jestExpect(instanceSubsetEquality(
-				childFrame,
-				{
-					Name = "ChildFrame",
-					Parent = {
-						Name = "Frame"
-					}
-				}
-			)).toBe(false)
+			jestExpect(instanceSubsetEquality(childFrame, {
+				Name = "ChildFrame",
+				Parent = {
+					Name = "Frame",
+				},
+			})).toBe(false)
 		end)
 	end)
 
@@ -201,48 +167,36 @@ return function()
 		it("only returns matching subset", function()
 			local subset = {
 				Name = "ParentFrame",
-				Foo = "Bar"
+				Foo = "Bar",
 			}
 			local received, expected = getInstanceSubset(parentFrame, subset)
 			jestExpect(received).toEqual(InstanceSubset.new("Frame", { Name = "ParentFrame" }))
-			jestExpect(expected).toEqual(
-				InstanceSubset.new("Frame",
-					{
-						Name = "ParentFrame",
-						Foo = "Bar"
-					}
-				)
-			)
+			jestExpect(expected).toEqual(InstanceSubset.new("Frame", {
+				Name = "ParentFrame",
+				Foo = "Bar",
+			}))
 		end)
 
 		it("returns subset of child", function()
 			local subset = {
 				Name = "ParentFrame",
 				ChildFrame = {
-					Name = "ChildFrame"
-				}
+					Name = "ChildFrame",
+				},
 			}
 			local received, expected = getInstanceSubset(parentFrame, subset)
-			jestExpect(received).toEqual(
-				InstanceSubset.new("Frame",
-					{
-						Name = "ParentFrame",
-						ChildFrame = InstanceSubset.new("Frame", {
-							Name = "ChildFrame"
-						})
-					}
-				)
-			)
-			jestExpect(expected).toEqual(
-				InstanceSubset.new("Frame",
-					{
-						Name = "ParentFrame",
-						ChildFrame = InstanceSubset.new("Frame", {
-							Name = "ChildFrame"
-						})
-					}
-				)
-			)
+			jestExpect(received).toEqual(InstanceSubset.new("Frame", {
+				Name = "ParentFrame",
+				ChildFrame = InstanceSubset.new("Frame", {
+					Name = "ChildFrame",
+				}),
+			}))
+			jestExpect(expected).toEqual(InstanceSubset.new("Frame", {
+				Name = "ParentFrame",
+				ChildFrame = InstanceSubset.new("Frame", {
+					Name = "ChildFrame",
+				}),
+			}))
 		end)
 
 		it("returns only matching subset of child", function()
@@ -250,31 +204,23 @@ return function()
 				Name = "ParentFrame",
 				ChildFrame = {
 					Name = "ChildFrame",
-					Foo = "Bar"
-				}
+					Foo = "Bar",
+				},
 			}
 			local received, expected = getInstanceSubset(parentFrame, subset)
-			jestExpect(received).toEqual(
-				InstanceSubset.new("Frame",
-					{
-						Name = "ParentFrame",
-						ChildFrame = InstanceSubset.new("Frame", {
-							Name = "ChildFrame"
-						})
-					}
-				)
-			)
-			jestExpect(expected).toEqual(
-				InstanceSubset.new("Frame",
-					{
-						Name = "ParentFrame",
-						ChildFrame = InstanceSubset.new("Frame", {
-							Name = "ChildFrame",
-							Foo = "Bar"
-						})
-					}
-				)
-			)
+			jestExpect(received).toEqual(InstanceSubset.new("Frame", {
+				Name = "ParentFrame",
+				ChildFrame = InstanceSubset.new("Frame", {
+					Name = "ChildFrame",
+				}),
+			}))
+			jestExpect(expected).toEqual(InstanceSubset.new("Frame", {
+				Name = "ParentFrame",
+				ChildFrame = InstanceSubset.new("Frame", {
+					Name = "ChildFrame",
+					Foo = "Bar",
+				}),
+			}))
 		end)
 
 		it("mismatched Name", function()
@@ -282,34 +228,24 @@ return function()
 				Name = "ChildFrame",
 			}
 			local received, expected = getInstanceSubset(parentFrame, subset)
-			jestExpect(received).toEqual(
-				InstanceSubset.new("Frame", { Name = "ParentFrame" })
-			)
-			jestExpect(expected).toEqual(
-				InstanceSubset.new("Frame", { Name = "ChildFrame" })
-			)
+			jestExpect(received).toEqual(InstanceSubset.new("Frame", { Name = "ParentFrame" }))
+			jestExpect(expected).toEqual(InstanceSubset.new("Frame", { Name = "ChildFrame" }))
 		end)
 
 		it("mismatched ClassName", function()
 			local subset = {
 				Name = "ParentFrame",
-				ClassName = "ScrollingFrame"
+				ClassName = "ScrollingFrame",
 			}
 			local received, expected = getInstanceSubset(parentFrame, subset)
-			jestExpect(received).toEqual(
-				InstanceSubset.new("Frame",
-				{
-					Name = "ParentFrame",
-					ClassName = "Frame"
-				})
-			)
-			jestExpect(expected).toEqual(
-				InstanceSubset.new("ScrollingFrame",
-				{
-					Name = "ParentFrame",
-					ClassName = "ScrollingFrame"
-				})
-			)
+			jestExpect(received).toEqual(InstanceSubset.new("Frame", {
+				Name = "ParentFrame",
+				ClassName = "Frame",
+			}))
+			jestExpect(expected).toEqual(InstanceSubset.new("ScrollingFrame", {
+				Name = "ParentFrame",
+				ClassName = "ScrollingFrame",
+			}))
 		end)
 	end)
 end

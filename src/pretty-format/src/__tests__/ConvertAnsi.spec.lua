@@ -22,47 +22,43 @@ return function()
 
 	local prettyFormatResult = function(val: string)
 		return prettyFormat(val, {
-			plugins = {ConvertAnsi}
+			plugins = { ConvertAnsi },
 		})
 	end
 
-	describe('ConvertAnsi plugin', function()
-		it('supports style.red', function()
-			jestExpect(
-				prettyFormatResult(
-					string.format('%s foo content %s', chalk.red.open, chalk.red.close)
-				)
-			).toEqual('"<red> foo content </>"')
+	describe("ConvertAnsi plugin", function()
+		it("supports style.red", function()
+			jestExpect(prettyFormatResult(string.format("%s foo content %s", chalk.red.open, chalk.red.close))).toEqual(
+				'"<red> foo content </>"'
+			)
 		end)
 
-		it('supports style.green', function()
-			jestExpect(
-				prettyFormatResult(
-					string.format('%s foo content %s', chalk.green.open, chalk.green.close)
-				)
-			).toEqual('"<green> foo content </>"')
+		it("supports style.green", function()
+			jestExpect(prettyFormatResult(string.format("%s foo content %s", chalk.green.open, chalk.green.close))).toEqual(
+				'"<green> foo content </>"'
+			)
 		end)
 
-		it('supports style.reset', function()
-			jestExpect(
-				prettyFormatResult(
-					string.format('%s foo content %s', chalk.reset.open, chalk.reset.close)
-				)
-			).toEqual('"</> foo content </>"')
+		it("supports style.reset", function()
+			jestExpect(prettyFormatResult(string.format("%s foo content %s", chalk.reset.open, chalk.reset.close))).toEqual(
+				'"</> foo content </>"'
+			)
 		end)
 
-		it('supports style.bold', function()
-			jestExpect(prettyFormatResult(string.format('%s foo content', chalk.bold.open))).toEqual(
-				'"<bold> foo content"')
+		it("supports style.bold", function()
+			jestExpect(prettyFormatResult(string.format("%s foo content", chalk.bold.open))).toEqual(
+				'"<bold> foo content"'
+			)
 		end)
 
-		it('supports style.dim', function()
-			jestExpect(prettyFormatResult(string.format('%s foo content', chalk.dim.open))).toEqual(
-				'"<dim> foo content"')
+		it("supports style.dim", function()
+			jestExpect(prettyFormatResult(string.format("%s foo content", chalk.dim.open))).toEqual(
+				'"<dim> foo content"'
+			)
 		end)
 
-		it('does not support other colors', function()
-			jestExpect(prettyFormatResult(string.format('%s', chalk.blue.open))).toEqual('""')
+		it("does not support other colors", function()
+			jestExpect(prettyFormatResult(string.format("%s", chalk.blue.open))).toEqual('""')
 		end)
 	end)
 end

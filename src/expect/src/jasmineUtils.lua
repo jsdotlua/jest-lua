@@ -30,9 +30,9 @@ type Array<T> = LuauPolyfill.Array<T>
 -- supported
 -- making Tester return type 'any' due to error with type narrowing (CLI-37948)
 
--- // Extracted out of jasmine 2.5.2
+-- Extracted out of jasmine 2.5.2
 
-type Tester = (any, any) -> any;
+type Tester = (any, any) -> any
 
 local equals = RobloxShared.expect.equals
 
@@ -91,7 +91,9 @@ local function hasProperty(obj: any, property: string): boolean
 		return false
 	end
 
-	local ok, result = pcall(function() return obj[property] end)
+	local ok, result = pcall(function()
+		return obj[property]
+	end)
 
 	if ok then
 		return result ~= nil
@@ -106,5 +108,5 @@ return {
 	fnNameFor = fnNameFor,
 	isUndefined = isUndefined,
 	getPrototype = getPrototype,
-	hasProperty = hasProperty
+	hasProperty = hasProperty,
 }

@@ -26,7 +26,7 @@ function deepCyclicCopyTable(tableToCopy: anyTable, cycles: anyTable)
 end
 
 function deepCyclicCopyReplaceable(value: any, cycles: anyTable)
-	if typeof(value) ~= 'table' then
+	if typeof(value) ~= "table" then
 		return value
 	elseif cycles[value] then
 		return cycles[value]
@@ -42,7 +42,7 @@ end
 
 return function(value, cycles)
 	cycles = cycles or {}
-	setmetatable(cycles, {_mode = "kv"})
+	setmetatable(cycles, { _mode = "kv" })
 
 	return deepCyclicCopyReplaceable(value, cycles)
 end

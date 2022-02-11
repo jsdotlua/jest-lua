@@ -14,35 +14,36 @@ return function()
 
 	local prettyFormatResult = function(val: string)
 		return prettyFormat(val, {
-			plugins = {RobloxInstance}
+			plugins = { RobloxInstance },
 		})
 	end
 
 	describe("Instance", function()
-		it('serializes ModuleScript', function()
+		it("serializes ModuleScript", function()
 			jestExpect(prettyFormatResult(script)).toEqual(
-				"ModuleScript {\n" ..
-				"  \"Archivable\": true,\n" ..
-				"  \"ClassName\": \"ModuleScript\",\n" ..
-				"  \"Name\": \"RobloxInstance.roblox.spec\",\n" ..
-				"  \"Parent\": \"__tests__\" [Folder],\n" ..
-				"}")
+				"ModuleScript {\n"
+					.. '  "Archivable": true,\n'
+					.. '  "ClassName": "ModuleScript",\n'
+					.. '  "Name": "RobloxInstance.roblox.spec",\n'
+					.. '  "Parent": "__tests__" [Folder],\n'
+					.. "}"
+			)
 		end)
 
-		it('serializes Folder', function()
+		it("serializes Folder", function()
 			jestExpect(prettyFormatResult(CurrentModule)).toMatchSnapshot()
 		end)
 
-		it('serializes Instances in table', function()
+		it("serializes Instances in table", function()
 			local SpotLight = Instance.new("SpotLight")
 			local Sky = Instance.new("Sky")
 			jestExpect(prettyFormatResult({
 				a = SpotLight,
-				b = Sky
+				b = Sky,
 			})).toMatchSnapshot()
 		end)
 
-		it('serializes nested Roblox Instance', function()
+		it("serializes nested Roblox Instance", function()
 			local screenGui = Instance.new("ScreenGui")
 			screenGui.Name = "Root"
 
@@ -121,7 +122,7 @@ return function()
 			jestExpect(prettyFormatResult(screenGui)).toMatchSnapshot()
 		end)
 
-		it('collapses circular references in properties', function()
+		it("collapses circular references in properties", function()
 			local leftFrame = Instance.new("ScrollingFrame")
 			local rightFrame = Instance.new("ScrollingFrame")
 			leftFrame.Name = "LeftFrame"
@@ -134,31 +135,27 @@ return function()
 	end)
 
 	describe("InstanceSubset", function()
-		it('serializes a subset of Frame', function()
+		it("serializes a subset of Frame", function()
 			local frame = InstanceSubset.new("Frame", { Name = "ParentFrame" })
 
-			jestExpect(prettyFormatResult(frame)).toEqual(
-				"Frame {\n" ..
-				"  \"Name\": \"ParentFrame\",\n" ..
-				"}")
+			jestExpect(prettyFormatResult(frame)).toEqual("Frame {\n" .. '  "Name": "ParentFrame",\n' .. "}")
 		end)
 
-		it('serializes nested InstanceSubsets', function()
+		it("serializes nested InstanceSubsets", function()
 			local childFrame = InstanceSubset.new("Frame", { Name = "ChildFrame" })
-			local frame = InstanceSubset.new(
-				"Frame",
-				{
-					Name = "ParentFrame",
-					ChildFrame = childFrame
-				})
+			local frame = InstanceSubset.new("Frame", {
+				Name = "ParentFrame",
+				ChildFrame = childFrame,
+			})
 
-				jestExpect(prettyFormatResult(frame)).toEqual(
-					"Frame {\n" ..
-					"  \"ChildFrame\": Frame {\n" ..
-					"    \"Name\": \"ChildFrame\",\n" ..
-					"  },\n" ..
-					"  \"Name\": \"ParentFrame\",\n" ..
-					"}")
+			jestExpect(prettyFormatResult(frame)).toEqual(
+				"Frame {\n"
+					.. '  "ChildFrame": Frame {\n'
+					.. '    "Name": "ChildFrame",\n'
+					.. "  },\n"
+					.. '  "Name": "ParentFrame",\n'
+					.. "}"
+			)
 		end)
 	end)
 end

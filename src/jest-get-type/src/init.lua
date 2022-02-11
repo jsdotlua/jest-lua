@@ -29,51 +29,53 @@ local function getType(value: any): string
 		lua makes no distinction between null and undefined so we just return nil
 	]]
 	if value == nil then
-		return 'nil'
+		return "nil"
 	end
-	if typeof(value) == 'boolean' then
-		return 'boolean'
+	if typeof(value) == "boolean" then
+		return "boolean"
 	end
-	if typeof(value) == 'function' then
-		return 'function'
+	if typeof(value) == "function" then
+		return "function"
 	end
-	if typeof(value) == 'number' then
-		return 'number'
+	if typeof(value) == "number" then
+		return "number"
 	end
-	if typeof(value) == 'string' then
-		return 'string'
+	if typeof(value) == "string" then
+		return "string"
 	end
-	if typeof(value) == 'DateTime' then
-		return 'DateTime'
+	if typeof(value) == "DateTime" then
+		return "DateTime"
 	end
-	if typeof(value) == 'userdata' and tostring(value):match("Symbol%(.*%)") then
-		return 'symbol'
+	if typeof(value) == "userdata" and tostring(value):match("Symbol%(.*%)") then
+		return "symbol"
 	end
 	if typeof(value) == "table" then
-		local ok, hasRegExpShape = pcall(function() return typeof(value.test) == "function" and typeof(value.exec) == "function" end)
+		local ok, hasRegExpShape = pcall(function()
+			return typeof(value.test) == "function" and typeof(value.exec) == "function"
+		end)
 		if ok and hasRegExpShape then
 			RegExp = require(Packages.RegExp)
 
 			if instanceof(value, RegExp) then
-				return 'regexp'
+				return "regexp"
 			end
 		end
 	end
 	if instanceof(value, Error) then
-		return 'error'
+		return "error"
 	end
 	if instanceof(value, Map) then
-		return 'map'
+		return "map"
 	end
 	if instanceof(value, Set) then
-		return 'set'
+		return "set"
 	end
 	--[[
 		ROBLOX deviation: lua makes no distinction between tables, arrays, and objects
 		we always return table here and consumers are expected to perform the check
 	]]
-	if typeof(value) == 'table' then
-		return 'table'
+	if typeof(value) == "table" then
+		return "table"
 	end
 
 	--[[
@@ -85,22 +87,22 @@ local function getType(value: any): string
 	end
 
 	-- ROBLOX deviation: added luau types for userdata and thread
-	if type(value) == 'userdata' then
-		return 'userdata'
+	if type(value) == "userdata" then
+		return "userdata"
 	end
-	if typeof(value) == 'thread' then
-		return 'thread'
+	if typeof(value) == "thread" then
+		return "thread"
 	end
 	-- ROBLOX deviation: code omitted because lua has no primitive bigint type
 	-- ROBLOX deviation: code omitted because lua makes no distinction between tables, arrays, and objects
 
 	-- ROBLOX deviation: include the type in the error message
-	error(string.format('value of unknown type: %s (%s)', typeof(value), tostring(value)))
+	error(string.format("value of unknown type: %s (%s)", typeof(value), tostring(value)))
 end
 
 local function isPrimitive(value: any): boolean
 	-- ROBLOX deviation: explicitly define objects and functions and Instances as non primitives
-	return typeof(value) ~= 'table' and typeof(value) ~= 'function' and not isRobloxBuiltin(value)
+	return typeof(value) ~= "table" and typeof(value) ~= "function" and not isRobloxBuiltin(value)
 end
 
 return {

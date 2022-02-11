@@ -23,7 +23,9 @@ return function()
 			jestExpect(stringContaining(chalk.red("red")):asymmetricMatch(chalk.red("red"))).toEqual(true)
 
 			jestExpect(stringContaining("multi"):asymmetricMatch(nestedStyle("multi"))).toEqual(true)
-			jestExpect(stringContaining(chalk.italic(chalk.bgMagenta("multi"))):asymmetricMatch(nestedStyle("multi"))).toEqual(true)
+			jestExpect(stringContaining(chalk.italic(chalk.bgMagenta("multi"))):asymmetricMatch(nestedStyle("multi"))).toEqual(
+				true
+			)
 
 			jestExpect(stringContaining("multi"):asymmetricMatch(nestedStyle("multi"))).toEqual(true)
 			jestExpect(stringContaining(chalk.green("multi")):asymmetricMatch(nestedStyle("multi"))).never.toEqual(true)
@@ -34,7 +36,9 @@ return function()
 			jestExpect(stringNotContaining(chalk.red("red")):asymmetricMatch(chalk.red("red"))).never.toEqual(true)
 
 			jestExpect(stringNotContaining("multi"):asymmetricMatch(nestedStyle("multi"))).never.toEqual(true)
-			jestExpect(stringNotContaining(chalk.italic(chalk.bgMagenta("multi"))):asymmetricMatch(nestedStyle("multi"))).never.toEqual(true)
+			jestExpect(
+				stringNotContaining(chalk.italic(chalk.bgMagenta("multi"))):asymmetricMatch(nestedStyle("multi"))
+			).never.toEqual(true)
 
 			jestExpect(stringNotContaining("multi"):asymmetricMatch(nestedStyle("multi"))).never.toEqual(true)
 			jestExpect(stringNotContaining(chalk.green("multi")):asymmetricMatch(nestedStyle("multi"))).toEqual(true)
@@ -45,7 +49,9 @@ return function()
 			jestExpect(stringMatching(chalk.red("red")):asymmetricMatch(chalk.red("red"))).toEqual(true)
 
 			jestExpect(stringMatching("multi"):asymmetricMatch(nestedStyle("multi"))).toEqual(true)
-			jestExpect(stringMatching(chalk.italic(chalk.bgMagenta("multi"))):asymmetricMatch(nestedStyle("multi"))).toEqual(true)
+			jestExpect(stringMatching(chalk.italic(chalk.bgMagenta("multi"))):asymmetricMatch(nestedStyle("multi"))).toEqual(
+				true
+			)
 
 			jestExpect(stringMatching("multi"):asymmetricMatch(nestedStyle("multi"))).toEqual(true)
 			jestExpect(stringMatching(chalk.green("multi")):asymmetricMatch(nestedStyle("multi"))).never.toEqual(true)
@@ -56,7 +62,9 @@ return function()
 			jestExpect(stringNotMatching(chalk.red("red")):asymmetricMatch(chalk.red("red"))).never.toEqual(true)
 
 			jestExpect(stringNotMatching("multi"):asymmetricMatch(nestedStyle("multi"))).never.toEqual(true)
-			jestExpect(stringNotMatching(chalk.italic(chalk.bgMagenta("multi"))):asymmetricMatch(nestedStyle("multi"))).never.toEqual(true)
+			jestExpect(stringNotMatching(chalk.italic(chalk.bgMagenta("multi"))):asymmetricMatch(nestedStyle("multi"))).never.toEqual(
+				true
+			)
 
 			jestExpect(stringNotMatching("multi"):asymmetricMatch(nestedStyle("multi"))).never.toEqual(true)
 			jestExpect(stringNotMatching(chalk.green("multi")):asymmetricMatch(nestedStyle("multi"))).toEqual(true)

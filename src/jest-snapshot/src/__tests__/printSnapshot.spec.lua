@@ -57,30 +57,30 @@ return function()
 	-- ROBLOX deviation: omitted level 3 colors
 
 	local ansiLookupTable = {
-			[chalk.inverse.open] = "<i>",
-			[chalk.inverse.close] = "</i>",
-			[chalk.bold.open] = "<b>",
-			[chalk.dim.open] = "<d>",
-			[chalk.bold.close] = "</>",
-			[chalk.dim.close] = "</>",
-			[chalk.green.open] = "<g>",
-			[aOpenForeground1] = "<m>",
-			[aOpenForeground2] = "<m>",
-			-- [aOpenForeground3] = "<m>"
-			[chalk.red.open] = "<r>",
-			[bOpenForeground1] = "<t>",
-			[bOpenForeground2] = "<t>",
-			-- [bOpenForeground3] = "<t>",
-			[chalk.yellow.open] = "<y>",
-			[chalk.cyan.close] = "</>",
-			[chalk.green.close] = "</>",
-			[chalk.magenta.close] = "</>",
-			[chalk.red.close] = "</>",
-			[chalk.yellow.close] = "</>"
+		[chalk.inverse.open] = "<i>",
+		[chalk.inverse.close] = "</i>",
+		[chalk.bold.open] = "<b>",
+		[chalk.dim.open] = "<d>",
+		[chalk.bold.close] = "</>",
+		[chalk.dim.close] = "</>",
+		[chalk.green.open] = "<g>",
+		[aOpenForeground1] = "<m>",
+		[aOpenForeground2] = "<m>",
+		-- [aOpenForeground3] = "<m>"
+		[chalk.red.open] = "<r>",
+		[bOpenForeground1] = "<t>",
+		[bOpenForeground2] = "<t>",
+		-- [bOpenForeground3] = "<t>",
+		[chalk.yellow.open] = "<y>",
+		[chalk.cyan.close] = "</>",
+		[chalk.green.close] = "</>",
+		[chalk.magenta.close] = "</>",
+		[chalk.red.close] = "</>",
+		[chalk.yellow.close] = "</>",
 	}
 
 	local function convertAnsi(val: string): string
-		-- // Trailing spaces in common lines have yellow background color.
+		-- Trailing spaces in common lines have yellow background color.
 		local isYellowBackground = false
 
 		val = val:gsub(ansiRegex, function(match)
@@ -90,10 +90,10 @@ return function()
 				isYellowBackground = true
 				return "<Y>"
 			elseif
-				match == aOpenBackground1 or
-				match == bOpenBackground1 or
-				match == aOpenBackground2 or
-				match == bOpenBackground2
+				match == aOpenBackground1
+				or match == bOpenBackground1
+				or match == aOpenBackground2
+				or match == bOpenBackground2
 				-- ROBLOX TODO: ADO-1522 add level 3 support in chalk
 				-- match == aOpenBackground3 or
 				-- match == bOpenBackground3
@@ -101,7 +101,7 @@ return function()
 				isYellowBackground = false
 				return ""
 			elseif match == chalk.bgYellow.close then
-				-- // The same code closes any background color.
+				-- The same code closes any background color.
 				if isYellowBackground then
 					return "</Y>"
 				else
@@ -126,7 +126,7 @@ return function()
 			end,
 			test = function(val: any)
 				return typeof(val) == "string" and val:match(ansiRegex)
-			end
+			end,
 		})
 	end)
 
@@ -134,13 +134,13 @@ return function()
 		jestExpect.resetSnapshotSerializers()
 	end)
 
-	describe('chalk', function()
-		-- // Because these tests give code coverage of get functions
-		-- // and give confidence that the escape sequences are correct,
-		-- // convertAnsi can return same serialization for any chalk level
-		-- // so snapshot tests pass in any environment with chalk level >= 1.
+	describe("chalk", function()
+		-- Because these tests give code coverage of get functions
+		-- and give confidence that the escape sequences are correct,
+		-- convertAnsi can return same serialization for any chalk level
+		-- so snapshot tests pass in any environment with chalk level >= 1.
 
-		-- // Simulate comparison lines from printSnapshotAndReceived.
+		-- Simulate comparison lines from printSnapshotAndReceived.
 		local function formatLines(chalkInstance)
 			local aColor = getSnapshotColorForChalkInstance(chalkInstance)
 			local bColor = getReceivedColorForChalkInstance(chalkInstance)
@@ -171,7 +171,7 @@ return function()
 		end)
 
 		-- ROBLOX deviation: test skipped because we don't have level 1 support in chalk-lua
-		itSKIP('level 1', function()
+		itSKIP("level 1", function()
 			-- ROBLOX deviation: we don't have a chalk instance so we set the level of
 			-- the imported chalk object
 			chalk.level = 1
@@ -180,10 +180,10 @@ return function()
 			chalk.level = 2
 
 			jestExpect(converted).toBe(expected1)
-			jestExpect(formatted).toContain(aOpenForeground1 .. aOpenBackground1 .. '-')
-			jestExpect(formatted).toContain(bOpenForeground1 .. bOpenBackground1 .. '+')
-			jestExpect(formatted).never.toContain(chalk.bgYellow(' ')) -- // noColor
-			jestExpect(formatted).toContain(chalk.bgYellow('  '))
+			jestExpect(formatted).toContain(aOpenForeground1 .. aOpenBackground1 .. "-")
+			jestExpect(formatted).toContain(bOpenForeground1 .. bOpenBackground1 .. "+")
+			jestExpect(formatted).never.toContain(chalk.bgYellow(" ")) -- noColor
+			jestExpect(formatted).toContain(chalk.bgYellow("  "))
 		end)
 
 		it("level 2", function()
@@ -201,7 +201,7 @@ return function()
 		end)
 
 		-- ROBLOX deviation: test skipped because we don't have level 1 support in chalk-lua
-		itSKIP('level 3', function()
+		itSKIP("level 3", function()
 			-- ROBLOX deviation: we don't have a chalk instance so we set the level of
 			-- the imported chalk object
 			chalk.level = 3
@@ -212,8 +212,8 @@ return function()
 			jestExpect(converted).toBe(expected1)
 			-- jestExpect(formatted).toContain(aOpenForeground3 .. aOpenBackground3 .. '-')
 			-- jestExpect(formatted).toContain(bOpenForeground3 .. bOpenBackground3 .. '+')
-			jestExpect(formatted).never.toContain(chalk.bgYellow(' ')) -- noColor
-			jestExpect(formatted).toContain(chalk.bgYellow('  '))
+			jestExpect(formatted).never.toContain(chalk.bgYellow(" ")) -- noColor
+			jestExpect(formatted).toContain(chalk.bgYellow("  "))
 		end)
 	end)
 
@@ -224,15 +224,17 @@ return function()
 			local received = {
 				id = "abcdef",
 				text = "Throw matcher error",
-				type = "ADD_ITEM"
+				type = "ADD_ITEM",
 			}
 
 			it("Expected properties must be an object (non-null)", function()
 				local context = {
 					isNot = false,
-					promise = '',
+					promise = "",
 				}
-				local properties = function() return {} end
+				local properties = function()
+					return {}
+				end
 
 				jestExpect(function()
 					toMatchSnapshot(context, received, properties)
@@ -242,10 +244,10 @@ return function()
 			it("Expected properties must be an object (null) with hint", function()
 				local context = {
 					isNot = false,
-					promise = '',
+					promise = "",
 				}
 				local properties = nil
-				local hint = 'reminder'
+				local hint = "reminder"
 
 				jestExpect(function()
 					toMatchSnapshot(context, received, properties, hint)
@@ -255,7 +257,7 @@ return function()
 			it("Expected properties must be an object (null) without hint", function()
 				local context = {
 					isNot = false,
-					promise = '',
+					promise = "",
 				}
 				local properties = nil
 
@@ -266,20 +268,20 @@ return function()
 
 			describe("received value must be an object", function()
 				local context = {
-					currentTestName = '',
+					currentTestName = "",
 					isNot = false,
-					promise = '',
+					promise = "",
 					snapshotState = {},
 				}
 				local properties = {}
 
-				it('(non-null)', function()
+				it("(non-null)", function()
 					jestExpect(function()
-						toMatchSnapshot(context, 'string', properties)
+						toMatchSnapshot(context, "string", properties)
 					end).toThrowErrorMatchingSnapshot()
 				end)
 
-				it('(null)', function()
+				it("(null)", function()
 					jestExpect(function()
 						toMatchSnapshot(context, nil, properties)
 					end).toThrowErrorMatchingSnapshot()
@@ -288,7 +290,7 @@ return function()
 
 			-- ROBLOX deviation: skipping this test, to work with the TestEZ runner, our implementation auto-initializes snapshot state
 			-- by default if it doesn't already exist
-			itSKIP('Snapshot state must be initialized', function()
+			itSKIP("Snapshot state must be initialized", function()
 				-- local context = {
 				-- 	isNot = false,
 				-- 	promise = 'resolves',
@@ -307,7 +309,7 @@ return function()
 			it("Received value must be a function", function()
 				local context = {
 					isNot = false,
-					promise = ""
+					promise = "",
 				}
 
 				local received = 13
@@ -321,10 +323,10 @@ return function()
 			it("Snapshot matchers cannot be used with not", function()
 				local context = {
 					isNot = true,
-					promise = ""
+					promise = "",
 				}
-				local received = Error('received')
-				local hint = 'reminder'
+				local received = Error("received")
+				local hint = "reminder"
 				local fromPromise = true
 
 				jestExpect(function()
@@ -332,7 +334,7 @@ return function()
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
-			-- // Future test: Snapshot hint must be a string
+			-- Future test: Snapshot hint must be a string
 		end)
 	end)
 
@@ -341,19 +343,14 @@ return function()
 			it("Received function did not throw", function()
 				local context = {
 					isNot = false,
-					promise = ""
+					promise = "",
 				}
 
 				local received = function() end
 				local fromPromise = false
 
 				jestExpect(function()
-					toThrowErrorMatchingSnapshot(
-						context,
-						received,
-						nil,
-						fromPromise
-					)
+					toThrowErrorMatchingSnapshot(context, received, nil, fromPromise)
 				end).toThrowErrorMatchingSnapshot()
 			end)
 		end)
@@ -375,10 +372,10 @@ return function()
 								actual = format(received),
 								count = 1,
 								expected = nil,
-								pass = false
+								pass = false,
 							}
-						end
-					}
+						end,
+					},
 				}
 
 				local received = "To write or not to write,\nthat is the question."
@@ -403,10 +400,10 @@ return function()
 								actual = format(received),
 								count = 2,
 								expected = nil,
-								pass = false
+								pass = false,
 							}
-						end
-					}
+						end,
+					},
 				}
 				local received = "Write me if you can!"
 				local hint = "(CI)"
@@ -420,31 +417,34 @@ return function()
 
 			describe("with properties", function()
 				local id = "abcdef"
-				local properties = {id = id}
+				local properties = { id = id }
 				local type_ = "ADD_ITEM"
 
 				describe("equals false", function()
 					local context = {
 						currentTestName = "with properties",
-						equals = function() return false end,
+						equals = function()
+							return false
+						end,
 						isNot = false,
 						promise = "",
 						snapshotState = {
 							fail = function(_, fullTestName)
-								return fullTestName .. " 1" end,
+								return fullTestName .. " 1"
+							end,
 						},
 						utils = {
-							iterableEquality = function() return {} end,
-							subsetEquality = function() return {} end
-						}
+							iterableEquality = function()
+								return {}
+							end,
+							subsetEquality = function()
+								return {}
+							end,
+						},
 					}
 
 					it("isLineDiffable false", function()
-						local result = toMatchSnapshot(
-							context,
-							Error("Invalid array length"),
-							{name = "Error"}
-						)
+						local result = toMatchSnapshot(context, Error("Invalid array length"), { name = "Error" })
 						local message = result.message
 						local pass = result.pass
 						jestExpect(pass).toBe(false)
@@ -455,7 +455,7 @@ return function()
 						local received = {
 							id = "abcdefg",
 							text = "Increase code coverage",
-							type = type_
+							type = type_,
 						}
 
 						local result = toMatchSnapshot(context, received, properties)
@@ -469,7 +469,9 @@ return function()
 				it("equals true", function()
 					local context = {
 						currentTestName = "with properties",
-						equals = function() return true end,
+						equals = function()
+							return true
+						end,
 						isNot = false,
 						promise = "",
 						snapshotState = {
@@ -482,30 +484,29 @@ return function()
 									expected = format({
 										id = id,
 										text = "snapshot",
-										type = type_
-									})
+										type = type_,
+									}),
 								}
 							end,
-							pass = false
+							pass = false,
 						},
 						utils = {
-							iterableEquality = function() return {} end,
-							subsetEquality = function() return {} end
-						}
+							iterableEquality = function()
+								return {}
+							end,
+							subsetEquality = function()
+								return {}
+							end,
+						},
 					}
 					local received = {
 						id = id,
 						text = "received",
-						type = type_
+						type = type_,
 					}
 					local hint = "change text value"
 
-					local result = toMatchSnapshot(
-						context,
-						received,
-						properties,
-						hint
-					)
+					local result = toMatchSnapshot(context, received, properties, hint)
 					local message = result.message
 					local pass = result.pass
 					jestExpect(pass).toBe(false)
@@ -527,10 +528,10 @@ return function()
 						match = function(self)
 							return {
 								expected = "",
-								pass = true
+								pass = true,
 							}
-						end
-					}
+						end,
+					},
 				}
 				local received = 7
 
@@ -547,14 +548,14 @@ return function()
 				branchMap = {},
 				f = {},
 				fnMap = {},
-				-- // hash is missing
+				-- hash is missing
 				path = "…",
 				s = {},
-				statementMap = {}
+				statementMap = {},
 			}
 			local properties = {
 				hash = jestExpect.any("string"),
-				path = jestExpect.any("string")
+				path = jestExpect.any("string"),
 			}
 
 			jestExpect(printPropertiesAndReceived(properties, received, false)).toMatchSnapshot()
@@ -562,47 +563,34 @@ return function()
 	end)
 
 	describe("printSnapshotAndReceived", function()
-		-- // Simulate default serialization.
-		local function testWithStringify(
-			expected: any,
-			received: any,
-			expand: boolean
-		): string
-			return printSnapshotAndReceived(
-				serialize(expected),
-				serialize(received),
-				received,
-				expand
-			)
+		-- Simulate default serialization.
+		local function testWithStringify(expected: any, received: any, expand: boolean): string
+			return printSnapshotAndReceived(serialize(expected), serialize(received), received, expand)
 		end
 
-		-- // Simulate custom raw string serialization.
-		local function testWithoutStringify(
-			expected: string,
-			received: string,
-			expand: boolean
-		): string
+		-- Simulate custom raw string serialization.
+		local function testWithoutStringify(expected: string, received: string, expand: boolean): string
 			return printSnapshotAndReceived(expected, received, received, expand)
 		end
 
-		describe('backtick', function()
-			it('single line expected and received', function()
-				local expected = 'var foo = `backtick`;'
-				local received = 'var foo = tag`backtick`;'
+		describe("backtick", function()
+			it("single line expected and received", function()
+				local expected = "var foo = `backtick`;"
+				local received = "var foo = tag`backtick`;"
 
 				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 		end)
 
-		describe('empty string', function()
-			it('expected and received single line', function()
+		describe("empty string", function()
+			it("expected and received single line", function()
 				local expected = ""
 				local received = "single line string"
 
 				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
-			it('received and expected multi line', function()
+			it("received and expected multi line", function()
 				local expected = "multi\nline\nstring"
 				local received = ""
 
@@ -610,131 +598,131 @@ return function()
 			end)
 		end)
 
-		describe('escape', function()
-			it('double quote marks in string', function()
+		describe("escape", function()
+			it("double quote marks in string", function()
 				local expected = 'What does "oobleck" mean?'
 				local received = 'What does "ewbleck" mean?'
 
 				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
-			it('backslash in multi line string', function()
-				local expected = 'Forward / slash and back \\ slash'
-				local received = 'Forward / slash\nBack \\ slash'
+			it("backslash in multi line string", function()
+				local expected = "Forward / slash and back \\ slash"
+				local received = "Forward / slash\nBack \\ slash"
 
 				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
-			it('backslash in single line string', function()
-				local expected = 'forward / slash and back \\ slash'
-				local received = 'Forward / slash and back \\ slash'
+			it("backslash in single line string", function()
+				local expected = "forward / slash and back \\ slash"
+				local received = "Forward / slash and back \\ slash"
 
 				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
 			-- ROBLOX deviation: test skipped because we do not have support for the
 			-- global flag in RegExp
-			itSKIP('regexp', function()
+			itSKIP("regexp", function()
 				local expected = '\\(")'
 				local received = '\\(")'
 				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 		end)
 
-		describe('expand', function()
-			-- // prettier/pull/522
+		describe("expand", function()
+			-- prettier/pull/522
 			local expected = table.concat({
-				'type TypeName<T> =',
+				"type TypeName<T> =",
 				'T extends string ? "string" :',
 				'T extends number ? "number" :',
 				'T extends boolean ? "boolean" :',
 				'T extends undefined ? "undefined" :',
 				'T extends Function ? "function" :',
 				'"object";',
-				'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
-				'type TypeName<T> = T extends string',
+				"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+				"type TypeName<T> = T extends string",
 				'? "string"',
-				': T extends number',
+				": T extends number",
 				'? "number"',
-				': T extends boolean',
+				": T extends boolean",
 				'? "boolean"',
-				': T extends undefined',
+				": T extends undefined",
 				'? "undefined"',
 				': T extends Function ? "function" : "object";',
-				''
-			}, '\n')
+				"",
+			}, "\n")
 			local received = table.concat({
-				'type TypeName<T> =',
+				"type TypeName<T> =",
 				'T extends string ? "string" :',
 				'T extends number ? "number" :',
 				'T extends boolean ? "boolean" :',
 				'T extends undefined ? "undefined" :',
 				'T extends Function ? "function" :',
 				'"object";',
-				'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
-				'type TypeName<T> = T extends string',
+				"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+				"type TypeName<T> = T extends string",
 				'? "string"',
-				': T extends number',
+				": T extends number",
 				'? "number"',
-				': T extends boolean',
+				": T extends boolean",
 				'? "boolean"',
-				': T extends undefined',
+				": T extends undefined",
 				'? "undefined"',
-				': T extends Function',
+				": T extends Function",
 				'? "function"',
 				': "object";',
-				''
-			}, '\n')
+				"",
+			}, "\n")
 
-			it('false', function()
+			it("false", function()
 				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
-			it('true', function()
+			it("true", function()
 				jestExpect(testWithStringify(expected, received, true)).toMatchSnapshot()
 			end)
 		end)
 
-		it('fallback to line diff', function()
+		it("fallback to line diff", function()
 			local expected = table.concat({
-				'[...a, ...b,];',
-				'[...a, ...b];',
-				'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
-				'[...a, ...b];',
-				'[...a, ...b];',
-				''
-			}, '\n')
+				"[...a, ...b,];",
+				"[...a, ...b];",
+				"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+				"[...a, ...b];",
+				"[...a, ...b];",
+				"",
+			}, "\n")
 
 			local received = table.concat({
-				'====================================options=====================================',
+				"====================================options=====================================",
 				'parsers: ["flow", "typescript"]',
-				'printWidth: 80',
-				'                                                                                | printWidth',
-				'=====================================input======================================',
-				'[...a, ...b,];',
-				'[...a, ...b];',
-				'',
-				'=====================================output=====================================',
-				'[...a, ...b];',
-				'[...a, ...b];',
-				'',
-				'================================================================================'
-			}, '\n')
+				"printWidth: 80",
+				"                                                                                | printWidth",
+				"=====================================input======================================",
+				"[...a, ...b,];",
+				"[...a, ...b];",
+				"",
+				"=====================================output=====================================",
+				"[...a, ...b];",
+				"[...a, ...b];",
+				"",
+				"================================================================================",
+			}, "\n")
 
 			jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 		end)
 
-		describe('has no common after clean up chaff', function()
-			it('array', function()
-				local expected = {'delete', 'two'}
-				local received = {'insert', '2'}
+		describe("has no common after clean up chaff", function()
+			it("array", function()
+				local expected = { "delete", "two" }
+				local received = { "insert", "2" }
 
 				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
-			it('string single line', function()
-				local expected = 'delete'
-				local received = 'insert'
+			it("string single line", function()
+				local expected = "delete"
+				local received = "insert"
 
 				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
@@ -742,121 +730,106 @@ return function()
 
 		describe("MAX_DIFF_STRING_LENGTH", function()
 			describe("unquoted", function()
-				-- // Do not call diffStringsUnified if either string is longer than max.
-				local lessChange = chalk.inverse('single ')
-				local less = 'single line'
-				local more = 'multi line' .. string.rep('\n123456789', 2000) -- // 10 + 20K chars
+				-- Do not call diffStringsUnified if either string is longer than max.
+				local lessChange = chalk.inverse("single ")
+				local less = "single line"
+				local more = "multi line" .. string.rep("\n123456789", 2000) -- 10 + 20K chars
 
-				it('both are less', function()
-					local less2 = 'multi\nline'
+				it("both are less", function()
+					local less2 = "multi\nline"
 					local difference = printSnapshotAndReceived(less2, less, less, true)
 
-					jestExpect(difference).toMatch('- multi')
-					jestExpect(difference).toMatch('- line')
+					jestExpect(difference).toMatch("- multi")
+					jestExpect(difference).toMatch("- line")
 					jestExpect(difference).toContain(lessChange)
-					jestExpect(difference).never.toMatch('+ single line')
+					jestExpect(difference).never.toMatch("+ single line")
 				end)
 
-				it('expected is more', function()
+				it("expected is more", function()
 					local difference = printSnapshotAndReceived(less, more, more, true)
 
-					jestExpect(difference).toMatch('- single line')
-					jestExpect(difference).toMatch('+ multi line')
+					jestExpect(difference).toMatch("- single line")
+					jestExpect(difference).toMatch("+ multi line")
 					jestExpect(difference).never.toContain(lessChange)
 				end)
 
-				it('received is more', function()
+				it("received is more", function()
 					local difference = printSnapshotAndReceived(less, more, more, true)
 
-					jestExpect(difference).toMatch('- single line')
-					jestExpect(difference).toMatch('+ multi line')
+					jestExpect(difference).toMatch("- single line")
+					jestExpect(difference).toMatch("+ multi line")
 					jestExpect(difference).never.toContain(lessChange)
 				end)
 			end)
 
 			describe("quoted", function()
-				-- // Do not call diffStringsRaw if either string is longer than max.
-				local lessChange = chalk.inverse('no')
-				local less = 'no numbers'
-				local more = 'many numbers' .. string.rep(' 123456789', 2000) -- // 12 + 20K chars
+				-- Do not call diffStringsRaw if either string is longer than max.
+				local lessChange = chalk.inverse("no")
+				local less = "no numbers"
+				local more = "many numbers" .. string.rep(" 123456789", 2000) -- 12 + 20K chars
 				local lessQuoted = '"' .. less .. '"'
 				local moreQuoted = '"' .. more .. '"'
 
-				it('both are less', function()
+				it("both are less", function()
 					local lessQuoted2 = '"0 numbers"'
-					local stringified = printSnapshotAndReceived(
-						lessQuoted2,
-						lessQuoted,
-						less,
-						true
-					)
+					local stringified = printSnapshotAndReceived(lessQuoted2, lessQuoted, less, true)
 
-					jestExpect(stringified).toMatch('Received:')
+					jestExpect(stringified).toMatch("Received:")
 					jestExpect(stringified).toContain(lessChange)
-					jestExpect(stringified).never.toMatch('+ Received')
+					jestExpect(stringified).never.toMatch("+ Received")
 				end)
 
-				it('expected is more', function()
-					local stringified = printSnapshotAndReceived(
-						moreQuoted,
-						lessQuoted,
-						less,
-						true
-					)
+				it("expected is more", function()
+					local stringified = printSnapshotAndReceived(moreQuoted, lessQuoted, less, true)
 
-					jestExpect(stringified).toMatch('Received:')
+					jestExpect(stringified).toMatch("Received:")
 					jestExpect(stringified).toMatch(less)
-					jestExpect(stringified).never.toMatch('+ Received')
+					jestExpect(stringified).never.toMatch("+ Received")
 					jestExpect(stringified).never.toContain(lessChange)
 				end)
 
-				it('received is more', function()
-					local stringified = printSnapshotAndReceived(
-						lessQuoted,
-						moreQuoted,
-						more,
-						true
-					)
+				it("received is more", function()
+					local stringified = printSnapshotAndReceived(lessQuoted, moreQuoted, more, true)
 
-					jestExpect(stringified).toMatch('Snapshot:')
+					jestExpect(stringified).toMatch("Snapshot:")
 					jestExpect(stringified).toMatch(less)
-					jestExpect(stringified).never.toMatch('- Snapshot')
+					jestExpect(stringified).never.toMatch("- Snapshot")
 					jestExpect(stringified).never.toContain(lessChange)
 				end)
 			end)
 		end)
 
-		describe('isLineDiffable', function()
-			describe('false', function()
-				it('asymmetric matcher', function()
+		describe("isLineDiffable", function()
+			describe("false", function()
+				it("asymmetric matcher", function()
 					local expected = nil
-					local received = {asymmetricMatch = function(self) end}
+					local received = { asymmetricMatch = function(self) end }
 
 					jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 				end)
 
-				it('boolean', function()
+				it("boolean", function()
 					local expected = true
 					local received = false
 
 					jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 				end)
 
-				it('date', function()
+				it("date", function()
 					local expected = DateTime.fromUniversalTime(2019, 9, 19)
 					local received = DateTime.fromUniversalTime(2019, 9, 20)
 
 					jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 				end)
 
-				it('error', function()
+				it("error", function()
 					local expected = Error('Cannot spread fragment "NameAndAppearances" within itself.')
 					local received = Error('Cannot spread fragment "NameAndAppearancesAndFriends" within itself.')
 
 					jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 				end)
 
-				it('function', function()
+				it("function", function()
 					-- ROBLOX deviation: changed undefined to nil
 					local expected = nil
 					local received = function() end
@@ -864,53 +837,53 @@ return function()
 					jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 				end)
 
-				it('number', function()
+				it("number", function()
 					local expected = -0
-					local received = 0/0
+					local received = 0 / 0
 
 					jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 				end)
 			end)
 
-			describe('true', function()
-				it('array', function()
+			describe("true", function()
+				it("array", function()
 					local expected0 = {
 						code = 4011,
-						weight = 2.13
+						weight = 2.13,
 					}
 
 					local expected1 = {
 						code = 4019,
-						count = 4
+						count = 4,
 					}
 
-					local expected = {expected0, expected1}
+					local expected = { expected0, expected1 }
 
 					local received = {
-						Object.assign({_id = 'b14680dec683e744ada1f2fe08614086'}, expected0),
-						Object.assign({_id = '7fc63ff01769c4fa7d9279e97e307829'}, expected1)
+						Object.assign({ _id = "b14680dec683e744ada1f2fe08614086" }, expected0),
+						Object.assign({ _id = "7fc63ff01769c4fa7d9279e97e307829" }, expected1),
 					}
 
 					jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 				end)
 
-				it('object', function()
-					local type_ = 'img'
+				it("object", function()
+					local type_ = "img"
 					local expected = {
 						props = {
-							className = 'logo',
-							src = '/img/jest.png'
+							className = "logo",
+							src = "/img/jest.png",
 						},
-						type = type_
+						type = type_,
 					}
 
 					local received = {
 						props = {
-							alt = 'Jest logo',
-							class = 'logo',
-							src = '/img/jest.svg'
+							alt = "Jest logo",
+							class = "logo",
+							src = "/img/jest.svg",
 						},
-						type = type_
+						type = type_,
 					}
 
 					jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
@@ -918,137 +891,137 @@ return function()
 
 				-- ROBLOX deviation: test skipped because there is no distinction
 				-- between an empty array and an empty table in Lua
-				itSKIP('single line expected and received', function()
+				itSKIP("single line expected and received", function()
 					-- local expected = []
 					-- local received = {}
 
 					-- jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 				end)
 
-				it('single line expected and multi line received', function()
+				it("single line expected and multi line received", function()
 					local expected = {}
-					local received = {0}
+					local received = { 0 }
 
 					jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 				end)
 			end)
 		end)
 
-		it('multi line small change in one line and other is unchanged', function()
+		it("multi line small change in one line and other is unchanged", function()
 			local expected = "There is no route defined for key 'Settings'.\nMust be one of: 'Home'"
 			local received = "There is no route defined for key Settings.\nMust be one of: 'Home'"
 
 			jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 		end)
 
-		it('multi line small changes', function()
+		it("multi line small changes", function()
 			local expected = table.concat({
-				'    69 | ',
+				"    69 | ",
 				"    70 | test('assert.doesNotThrow', () => {",
-				'  > 71 |   assert.doesNotThrow(() => {',
-				'       |          ^',
+				"  > 71 |   assert.doesNotThrow(() => {",
+				"       |          ^",
 				"    72 |     throw Error('err!');",
-				'    73 |   });',
-				'    74 | });',
-				'    at Object.doesNotThrow (__tests__/assertionError.test.js:71:10)'
-			}, '\n')
+				"    73 |   });",
+				"    74 | });",
+				"    at Object.doesNotThrow (__tests__/assertionError.test.js:71:10)",
+			}, "\n")
 			local received = table.concat({
-				'    68 | ',
+				"    68 | ",
 				"    69 | test('assert.doesNotThrow', () => {",
-				'  > 70 |   assert.doesNotThrow(() => {',
-				'       |          ^',
+				"  > 70 |   assert.doesNotThrow(() => {",
+				"       |          ^",
 				"    71 |     throw Error('err!');",
-				'    72 |   });',
-				'    73 | });',
-				'    at Object.doesNotThrow (__tests__/assertionError.test.js:70:10)'
-			}, '\n')
+				"    72 |   });",
+				"    73 | });",
+				"    at Object.doesNotThrow (__tests__/assertionError.test.js:70:10)",
+			}, "\n")
 
 			jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 		end)
 
-		it('single line large changes', function()
-			local expected = 'Array length must be a finite positive integer'
-			local received = 'Invalid array length'
+		it("single line large changes", function()
+			local expected = "Array length must be a finite positive integer"
+			local received = "Invalid array length"
 
 			jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 		end)
 
-		describe('ignore indentation', function()
+		describe("ignore indentation", function()
 			-- ROBLOX deviation: changed $$typeof to typeof
-			local typeof_ = Symbol.for_('react.test.json')
+			local typeof_ = Symbol.for_("react.test.json")
 
 			-- ROBLOX deviation: test skipped because we don't have support for react elements
-			itSKIP('markup delete', function()
+			itSKIP("markup delete", function()
 				local received = {
 					["$$typeof"] = typeof_,
 					children = {
 						{
 							["$$typeof"] = typeof_,
-							children = {'Ignore indentation for most serialized objects'},
-							type = 'h3'
+							children = { "Ignore indentation for most serialized objects" },
+							type = "h3",
 						},
 						{
 							["$$typeof"] = typeof_,
 							children = {
-								'Call ',
+								"Call ",
 								{
 									["$$typeof"] = typeof_,
-									children = {'diffLinesUnified2'},
-									type = 'code'
+									children = { "diffLinesUnified2" },
+									type = "code",
 								},
-								' to compare without indentation'
+								" to compare without indentation",
 							},
-							type = 'p'
-						}
+							type = "p",
+						},
 					},
-					type = 'div'
+					type = "div",
 				}
 
 				local expected = {
 					["$$typeof"] = typeof_,
-					children = {received},
-					type = 'div'
+					children = { received },
+					type = "div",
 				}
 
 				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
 			-- ROBLOX deviation: test skipped because we don't have support for react elements
-			itSKIP('markup fall back', function()
-				-- // Because text has more than one adjacent line.
+			itSKIP("markup fall back", function()
+				-- Because text has more than one adjacent line.
 				local text = table.concat({
-					'for (key in foo) {',
-					'  if (Object.prototype.hasOwnProperty.call(foo, key)) {',
-					'    doSomething(key);',
-					'  }',
-					'}'
-				}, '\n')
+					"for (key in foo) {",
+					"  if (Object.prototype.hasOwnProperty.call(foo, key)) {",
+					"    doSomething(key);",
+					"  }",
+					"}",
+				}, "\n")
 
 				local expected = {
 					["$$typeof"] = typeof_,
-					children = {text = text},
+					children = { text = text },
 					props = {
-						className = 'language-js',
+						className = "language-js",
 					},
-					type = 'pre',
+					type = "pre",
 				}
 
 				local received = {
 					["$$typeof"] = typeof_,
-					children = {expected = expected},
-					type = 'div',
+					children = { expected = expected },
+					type = "div",
 				}
 
 				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
 			-- ROBLOX deviation: test skipped because we don't have support for react elements
-			itSKIP('markup insert', function()
-				local text = 'when'
+			itSKIP("markup insert", function()
+				local text = "when"
 				local expected = {
 					["$$typeof"] = typeof_,
-					children = {text = text},
-					type = 'th',
+					children = { text = text },
+					type = "th",
 				}
 
 				local received = {
@@ -1056,106 +1029,106 @@ return function()
 					children = {
 						{
 							["$$typeof"] = typeof_,
-							children = {text = text},
-							type = 'span',
+							children = { text = text },
+							type = "span",
 						},
 						{
 							["$$typeof"] = typeof_,
-							children = {'↓'},
+							children = { "↓" },
 							props = {
-								title = 'ascending from older to newer',
+								title = "ascending from older to newer",
 							},
-							type = 'abbr',
+							type = "abbr",
 						},
 					},
-					type = 'th',
+					type = "th",
 				}
 
 				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
-			describe('object', function()
-				local text = 'Ignore indentation in snapshot'
-				local time_ = '2019-11-11'
-				local type_ = 'CREATE_ITEM'
+			describe("object", function()
+				local text = "Ignore indentation in snapshot"
+				local time_ = "2019-11-11"
+				local type_ = "CREATE_ITEM"
 				local less = {
 					text = text,
 					time = time_,
-					type = type_
+					type = type_,
 				}
 				local more = {
 					payload = {
 						text = text,
-						time = time_
+						time = time_,
 					},
-					type = type_
+					type = type_,
 				}
 
-				it('delete', function()
+				it("delete", function()
 					jestExpect(testWithStringify(more, less, false)).toMatchSnapshot()
 				end)
 
-				it('insert', function()
+				it("insert", function()
 					jestExpect(testWithStringify(less, more, false)).toMatchSnapshot()
 				end)
 			end)
 		end)
 
-		describe('without serialize', function()
-			it('backtick single line expected and received', function()
-				local expected = 'var foo = `backtick`;'
-				local received = 'var foo = `back${x}tick`;'
+		describe("without serialize", function()
+			it("backtick single line expected and received", function()
+				local expected = "var foo = `backtick`;"
+				local received = "var foo = `back${x}tick`;"
 
 				jestExpect(testWithoutStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
-			it('backtick single line expected and multi line received', function()
-				local expected = 'var foo = `backtick`;'
-				local received = 'var foo = `back\ntick`;'
+			it("backtick single line expected and multi line received", function()
+				local expected = "var foo = `backtick`;"
+				local received = "var foo = `back\ntick`;"
 				jestExpect(testWithoutStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
-			it('has no common after clean up chaff multi line', function()
-				local expected = 'delete\ntwo'
-				local received = 'insert\n2'
-
-				jestExpect(testWithoutStringify(expected, received, false)).toMatchSnapshot()
-			end)
-
-			it('has no common after clean up chaff single line', function()
-				local expected = 'delete'
-				local received = 'insert'
+			it("has no common after clean up chaff multi line", function()
+				local expected = "delete\ntwo"
+				local received = "insert\n2"
 
 				jestExpect(testWithoutStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
-			it('prettier/pull/5590', function()
+			it("has no common after clean up chaff single line", function()
+				local expected = "delete"
+				local received = "insert"
+
+				jestExpect(testWithoutStringify(expected, received, false)).toMatchSnapshot()
+			end)
+
+			it("prettier/pull/5590", function()
 				local expected = table.concat({
-					'====================================options=====================================',
+					"====================================options=====================================",
 					'parsers: ["html"]',
-					'printWidth: 80',
-					'                                                                                | printWidth',
-					'=====================================input======================================',
+					"printWidth: 80",
+					"                                                                                | printWidth",
+					"=====================================input======================================",
 					'<img src="test.png" alt=\'John "ShotGun" Nelson\'>',
-					'',
-					'=====================================output=====================================',
+					"",
+					"=====================================output=====================================",
 					'<img src="test.png" alt="John &quot;ShotGun&quot; Nelson" />',
-					'',
-					'================================================================================'
-				}, '\n')
+					"",
+					"================================================================================",
+				}, "\n")
 				local received = table.concat({
-					'====================================options=====================================',
+					"====================================options=====================================",
 					'parsers: ["html"]',
-					'printWidth: 80',
-					'                                                                                | printWidth',
-					'=====================================input======================================',
+					"printWidth: 80",
+					"                                                                                | printWidth",
+					"=====================================input======================================",
 					'<img src="test.png" alt=\'John "ShotGun" Nelson\'>',
-					'',
-					'=====================================output=====================================',
+					"",
+					"=====================================output=====================================",
 					'<img src="test.png" alt=\'John "ShotGun" Nelson\' />',
-					'',
-					'================================================================================'
-				}, '\n')
+					"",
+					"================================================================================",
+				}, "\n")
 
 				jestExpect(testWithoutStringify(expected, received, false)).toMatchSnapshot()
 			end)

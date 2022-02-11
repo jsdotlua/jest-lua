@@ -22,12 +22,12 @@ local PLUGINS = {
 	jestMockSerializer,
 	plugins.AsymmetricMatcher,
 	-- ROBLOX deviation: Roblox Instance matchers
-	plugins.RobloxInstance
+	plugins.RobloxInstance,
 }
 
 local originalPLUGINS = Array.from(PLUGINS)
 
--- // Prepend to list so the last added is the first tested.
+-- Prepend to list so the last added is the first tested.
 local function addSerializer(plugin_)
 	table.insert(PLUGINS, 1, plugin_)
 end
@@ -45,5 +45,5 @@ end
 return {
 	addSerializer = addSerializer,
 	getSerializers = getSerializers,
-	resetSerializers = resetSerializers
+	resetSerializers = resetSerializers,
 }

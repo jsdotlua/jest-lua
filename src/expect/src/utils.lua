@@ -32,16 +32,13 @@ type GetPath = {
 	hasEndProp: boolean?,
 	lastTraversedObject: any,
 	traversedPath: Array<string>,
-	value: any?
+	value: any?,
 }
 
 -- ROBLOX deviation: helper function moved to RobloxShared and no longer needed here
 -- local hasPropertyInObject = RobloxShared.expect.hasPropertyInObject
 
-local function getPath(
-	object: { [string]: any},
-	propertyPath
-): GetPath
+local function getPath(object: { [string]: any }, propertyPath): GetPath
 	if not Array.isArray(propertyPath) then
 		propertyPath = pathAsArray(propertyPath)
 	end
@@ -52,7 +49,9 @@ local function getPath(
 
 		-- We need this code block in Lua since attempting object[prop] on a non-table
 		-- will throw an error
-		local ok, res = pcall(function() return object[prop] end)
+		local ok, res = pcall(function()
+			return object[prop]
+		end)
 
 		local newObject = res
 
@@ -63,7 +62,7 @@ local function getPath(
 			return {
 				hasEndProp = false,
 				lastTraversedObject = object,
-				traversedPath = {}
+				traversedPath = {},
 			}
 		end
 
@@ -89,7 +88,7 @@ local function getPath(
 	return {
 		lastTraversedObject = nil,
 		traversedPath = {},
-		value = object
+		value = object,
 	}
 end
 
@@ -127,9 +126,12 @@ local function typeEquality(a: any, b: any): boolean | nil
 		return nil
 	end
 
-	if getmetatable(a) and getmetatable(b) and
-		getmetatable(a).__index and getmetatable(b).__index and
-		getmetatable(a).__index == getmetatable(b).__index
+	if
+		getmetatable(a)
+		and getmetatable(b)
+		and getmetatable(a).__index
+		and getmetatable(b).__index
+		and getmetatable(a).__index == getmetatable(b).__index
 	then
 		return nil
 	end
@@ -172,10 +174,7 @@ end
 -- end
 -- ROBLOX deviation END
 
-local function sparseArrayEquality(
-	a: any,
-	b: any
-): boolean | nil
+local function sparseArrayEquality(a: any, b: any): boolean | nil
 	if not Array.isArray(a) or not Array.isArray(b) then
 		return nil
 	end
@@ -183,21 +182,15 @@ local function sparseArrayEquality(
 	local aKeys = Object.keys(a)
 	local bKeys = Object.keys(b)
 
-	return
-		--[[
+	return  --[[
 			ROBLOX TODO: (ADO-1217) replace the line below
 			once Map/Set functionality is implemented
 
 			--equals(a, b, {iterableEquality, typeEquality}, true) and
-		]]
-		equals(a, b, {typeEquality}, true) and
-		equals(aKeys, bKeys)
+		]]equals(a, b, { typeEquality }, true) and equals(aKeys, bKeys)
 end
 
-local function partition<T>(
-	items: Array<T>,
-	predicate: (T) -> boolean
-): { [number]: Array<T> }
+local function partition<T>(items: Array<T>, predicate: (T) -> boolean): { [number]: Array<T> }
 	local result = { {}, {} }
 
 	for _, item in ipairs(items) do
@@ -209,12 +202,12 @@ end
 
 function pathAsArray(propertyPath: string): Array<any>
 	-- will match everything that's not a dot or a bracket, and "" for consecutive dots.
-	local pattern = RegExp('[^.[\\]]+|(?=(?:\\.)(?:\\.|$))') -- ROBLOX TODO: add 'g' flag when supported
+	local pattern = RegExp("[^.[\\]]+|(?=(?:\\.)(?:\\.|$))") -- ROBLOX TODO: add 'g' flag when supported
 	local properties: Array<string | number> = {}
 
 	-- Because the regex won't match a dot in the beginning of the path, if present.
-	if propertyPath:sub(1, 1) == '.' then
-		table.insert(properties, '')
+	if propertyPath:sub(1, 1) == "." then
+		table.insert(properties, "")
 	end
 
 	--[[
@@ -273,10 +266,9 @@ end
 local MULTILINE_REGEXP = "[\r\n]"
 
 local function isOneline(expected: any, received: any): boolean
-	return typeof(expected) == "string" and
-		typeof(received) == "string" and
-		(not received:match(MULTILINE_REGEXP) or
-			not expected:match(MULTILINE_REGEXP))
+	return typeof(expected) == "string"
+		and typeof(received) == "string"
+		and (not received:match(MULTILINE_REGEXP) or not expected:match(MULTILINE_REGEXP))
 end
 
 --[[
@@ -299,5 +291,5 @@ return {
 	pathAsArray = pathAsArray,
 	isError = isError,
 	emptyObject = emptyObject,
-	isOneline = isOneline
+	isOneline = isOneline,
 }

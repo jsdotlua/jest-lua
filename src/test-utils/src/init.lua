@@ -24,5 +24,5 @@ local alignedAnsiStyleSerializer = require(CurrentModule.alignedAnsiStyleSeriali
 ]]
 
 return {
-	alignedAnsiStyleSerializer = alignedAnsiStyleSerializer
+	alignedAnsiStyleSerializer = alignedAnsiStyleSerializer,
 }

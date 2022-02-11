@@ -8,7 +8,6 @@
 --  *
 --  */
 
-
 local CurrentModule = script
 local Packages = CurrentModule.Parent
 
@@ -73,11 +72,11 @@ local makeThrowingMatcher, _validateResult
 ]]
 type JestMatcherError_matcherResult = {
 	pass: boolean,
-	message: string
+	message: string,
 }
 
 type JestAssertionError = {
-	matcherResult: JestMatcherError_matcherResult?
+	matcherResult: JestMatcherError_matcherResult?,
 }
 -- ROBLOX deviation END
 
@@ -87,7 +86,7 @@ type JestAssertionError = {
 ]]
 
 local function expect_(_self, actual: any, ...): any
-	local rest: Array<any> = {...}
+	local rest: Array<any> = { ... }
 
 	if #rest ~= 0 then
 		error("Expect takes at most one argument.")
@@ -96,8 +95,8 @@ local function expect_(_self, actual: any, ...): any
 	local allMatchers = getMatchers()
 	local expectation = {
 		never = {},
-		rejects = {never = {}},
-		resolves = {never = {}}
+		rejects = { never = {} },
+		resolves = { never = {} },
 	}
 
 	for name, matcher in pairs(allMatchers) do
@@ -106,8 +105,8 @@ local function expect_(_self, actual: any, ...): any
 			original code:
 			const promiseMatcher = getPromiseMatcher(name, matcher) || matcher;
 		]]
-		expectation[name] = makeThrowingMatcher(matcher, false, '', actual)
-		expectation.never[name] = makeThrowingMatcher(matcher, true, '', actual)
+		expectation[name] = makeThrowingMatcher(matcher, false, "", actual)
+		expectation.never[name] = makeThrowingMatcher(matcher, true, "", actual)
 
 		--[[
 			ROBLOX deviation: skipped code
@@ -119,11 +118,7 @@ local function expect_(_self, actual: any, ...): any
 end
 
 local function getMessage(message: (() -> string)?)
-	return if message
-		then
-			message()
-		else
-			matcherUtils.RECEIVED_COLOR("No message was specified for this matcher.")
+	return if message then message() else matcherUtils.RECEIVED_COLOR("No message was specified for this matcher.")
 end
 
 --[[
@@ -150,30 +145,29 @@ function makeThrowingMatcher(
 		}, matcherUtils)
 
 		local matcherContext = {
-			-- // When throws is disabled, the matcher will not throw errors during test
-			-- // execution but instead add them to the global matcher state. If a
-			-- // matcher throws, test execution is normally stopped immediately. The
-			-- // snapshot matcher uses it because we want to log all snapshot
-			-- // failures in a test.
-			dontThrow = function() throws = false end,
+			-- When throws is disabled, the matcher will not throw errors during test
+			-- execution but instead add them to the global matcher state. If a
+			-- matcher throws, test execution is normally stopped immediately. The
+			-- snapshot matcher uses it because we want to log all snapshot
+			-- failures in a test.
+			dontThrow = function()
+				throws = false
+			end,
 			equals = equals,
 			error = err,
 			isNot = isNot,
 			promise = promise,
-			utils = utils
+			utils = utils,
 		}
 		Object.assign(matcherContext, getState())
 
-		local function processResult(
-			result: SyncExpectationResult,
-			asyncError: JestAssertionError?
-		)
+		local function processResult(result: SyncExpectationResult, asyncError: JestAssertionError?)
 			_validateResult(result)
 
 			getState().assertionCalls = getState().assertionCalls + 1
 
 			if (result.pass and isNot) or (not result.pass and not isNot) then
-				-- // XOR
+				-- XOR
 				local message = getMessage(result.message)
 				local error_
 
@@ -187,9 +181,9 @@ function makeThrowingMatcher(
 					error_.message = message
 				end
 
-				-- // Passing the result of the matcher with the error so that a custom
-				-- // reporter could access the actual and expected objects of the result
-				-- // for example in order to display a custom visual diff
+				-- Passing the result of the matcher with the error so that a custom
+				-- reporter could access the actual and expected objects of the result
+				-- for example in order to display a custom visual diff
 				error_.matcherResult = Object.assign({}, result, { message = message })
 
 				if throws then
@@ -230,17 +224,17 @@ end
 
 function _validateResult(result: any)
 	if
-		typeof(result) ~= "table" or
-		typeof(result.pass) ~= "boolean" or
-		(result.message and
-			typeof(result.message) ~= "string" and
-			typeof(result.message) ~= "function")
+		typeof(result) ~= "table"
+		or typeof(result.pass) ~= "boolean"
+		or (result.message and typeof(result.message) ~= "string" and typeof(result.message) ~= "function")
 	then
-		error("Unexpected return from a matcher function.\n" ..
-			"Matcher functions should " ..
-			"return an object in the following format:\n" ..
-			"  {message?: string | function, pass: boolean}\n" ..
-			matcherUtils.stringify(result) .. " was returned"
+		error(
+			"Unexpected return from a matcher function.\n"
+				.. "Matcher functions should "
+				.. "return an object in the following format:\n"
+				.. "  {message?: string | function, pass: boolean}\n"
+				.. matcherUtils.stringify(result)
+				.. " was returned"
 		)
 	end
 end
@@ -277,7 +271,7 @@ Expect.stringMatching = stringMatching
 	original code lines: 376 - 416
 ]]
 
--- // add default jest matchers
+-- add default jest matchers
 setMatchers(matchers, true, Expect)
 setMatchers(spyMatchers, true, Expect)
 setMatchers(toThrowMatchers, true, Expect)
@@ -297,7 +291,6 @@ Expect.setState = setState
 -- ROBLOX deviation: skipped
 -- Expect.extractExpectedAssertionsErrors = extractExpectedAssertionsErrors
 
-
 -- ROBLOX TODO: ADO-1554 clean up the following deviations and move them to the
 -- appropriate locations
 -- ROBLOX deviation START: for now we extend the snapshot matchers in the Expect file instead
@@ -307,11 +300,11 @@ local toMatchSnapshot = JestSnapshot.toMatchSnapshot
 local toThrowErrorMatchingSnapshot = JestSnapshot.toThrowErrorMatchingSnapshot
 setMatchers({
 	toMatchSnapshot = toMatchSnapshot,
-	toThrowErrorMatchingSnapshot = toThrowErrorMatchingSnapshot
+	toThrowErrorMatchingSnapshot = toThrowErrorMatchingSnapshot,
 }, false, Expect)
 -- ROBLOX deviation END
 
-setmetatable(Expect, {__call = expect_})
+setmetatable(Expect, { __call = expect_ })
 
 -- ROBLOX deviation START: exporting types without a namespace prefix
 export type MatcherState = JestMatcherState

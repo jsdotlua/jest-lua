@@ -61,23 +61,53 @@ local mock = JestMock.new()
 
 return {
 	-- Mock functions
-	fn = function(...) return mock:fn(...) end,
-	clearAllMocks = function() return mock:clearAllMocks() end,
-	resetAllMocks = function() return mock:resetAllMocks() end,
+	fn = function(...)
+		return mock:fn(...)
+	end,
+	clearAllMocks = function()
+		return mock:clearAllMocks()
+	end,
+	resetAllMocks = function()
+		return mock:resetAllMocks()
+	end,
 	_mock = mock,
 	-- Mock timers
-	useFakeTimers = function() return fakeTimers:useFakeTimers() end,
-	useRealTimers = function() return fakeTimers:useRealTimers() end,
-	runAllTicks = function() return fakeTimers:runAllTicks() end,
-	runAllTimers = function() return fakeTimers:runAllTimers() end,
-	advanceTimersByTime = function(msToRun) fakeTimers:advanceTimersByTime(msToRun) end,
-	runTimersToTime = function(msToRun) fakeTimers:advanceTimersByTime(msToRun) end,
-	runOnlyPendingTimers = function() fakeTimers:runOnlyPendingTimers() end,
-	advanceTimerstoNextTimer = function(steps) fakeTimers:advanceTimerstoNextTimer(steps) end,
-	clearAllTimers = function() fakeTimers:clearAllTimers() end,
-	getTimerCount = function() fakeTimers:getTimerCount() end,
-	setSystemTime = function(now) fakeTimers:setSystemTime(now) end,
-	getRealSystemTime = function() fakeTimers:getRealSystemTime() end,
+	useFakeTimers = function()
+		return fakeTimers:useFakeTimers()
+	end,
+	useRealTimers = function()
+		return fakeTimers:useRealTimers()
+	end,
+	runAllTicks = function()
+		return fakeTimers:runAllTicks()
+	end,
+	runAllTimers = function()
+		return fakeTimers:runAllTimers()
+	end,
+	advanceTimersByTime = function(msToRun)
+		fakeTimers:advanceTimersByTime(msToRun)
+	end,
+	runTimersToTime = function(msToRun)
+		fakeTimers:advanceTimersByTime(msToRun)
+	end,
+	runOnlyPendingTimers = function()
+		fakeTimers:runOnlyPendingTimers()
+	end,
+	advanceTimerstoNextTimer = function(steps)
+		fakeTimers:advanceTimerstoNextTimer(steps)
+	end,
+	clearAllTimers = function()
+		fakeTimers:clearAllTimers()
+	end,
+	getTimerCount = function()
+		fakeTimers:getTimerCount()
+	end,
+	setSystemTime = function(now)
+		fakeTimers:setSystemTime(now)
+	end,
+	getRealSystemTime = function()
+		fakeTimers:getRealSystemTime()
+	end,
 	testEnv = {
 		delay = fakeTimers.delayOverride,
 		tick = fakeTimers.tickOverride,
@@ -85,5 +115,5 @@ return {
 		os = fakeTimers.osOverride,
 		-- require = requireOverride,
 	},
-	_fakeTimers = fakeTimers
+	_fakeTimers = fakeTimers,
 }

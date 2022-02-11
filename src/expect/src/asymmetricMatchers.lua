@@ -41,16 +41,10 @@ local iterableEquality = Utils.iterableEquality
 local subsetEquality = Utils.subsetEquality
 -- local emptyObject = require(CurrentModule.utils).emptyObject
 
-local utils = Object.freeze(
-	Object.assign(
-		{},
-		matcherUtils,
-		{
-			iterableEquality = iterableEquality,
-			subsetEquality = subsetEquality,
-  		}
-	));
-
+local utils = Object.freeze(Object.assign({}, matcherUtils, {
+	iterableEquality = iterableEquality,
+	subsetEquality = subsetEquality,
+}))
 
 local AsymmetricMatcher = {}
 AsymmetricMatcher.__index = AsymmetricMatcher
@@ -67,15 +61,11 @@ end
 
 type State_ = MatcherState
 function AsymmetricMatcher:getMatcherContext(): State_
-	return Object.assign(
-		{},
-		getState(),
-		{
-			equals = equals,
-			isNot = self.inverse,
-			utils = utils
-		}
-	)
+	return Object.assign({}, getState(), {
+		equals = equals,
+		isNot = self.inverse,
+		utils = utils,
+	})
 end
 
 --[[
@@ -99,8 +89,8 @@ setmetatable(Any, AsymmetricMatcher)
 function Any.new(sample: any)
 	if typeof(sample) ~= "table" and typeof(sample) ~= "string" then
 		error(
-			"any() expects to be passed a typename string or a prototype class. " ..
-			"Please pass one or use anything() to match any object."
+			"any() expects to be passed a typename string or a prototype class. "
+				.. "Please pass one or use anything() to match any object."
 		)
 	end
 	local self = AsymmetricMatcher.new(sample)
@@ -113,16 +103,10 @@ function Any:asymmetricMatch(other: any): boolean
 	local selfType = getType(self.sample)
 	local otherType = getType(other)
 	-- compare metatable to check instance of Lua prototypical class
-	if
-		(selfType == "table" and otherType == "table") or
-		(selfType == "error" and otherType == "error")
-	then
+	if (selfType == "table" and otherType == "table") or (selfType == "error" and otherType == "error") then
 		return instanceof(other, self.sample)
-	-- check type matches type provided by string
-	elseif
-		selfType == "string" and
-		self.sample == otherType
-	then
+		-- check type matches type provided by string
+	elseif selfType == "string" and self.sample == otherType then
 		return true
 	end
 	return false
@@ -159,7 +143,7 @@ function Anything:toString(): string
 	return "Anything"
 end
 
--- // No getExpectedType method, because it matches either null or undefined.
+-- No getExpectedType method, because it matches either null or undefined.
 
 function Anything:toAsymmetricMatcher(): string
 	return "Anything"
@@ -177,27 +161,19 @@ end
 
 function ArrayContaining:asymmetricMatch(other: { any })
 	if not Array.isArray(self.sample) then
-		error(string.format(
-			"You must provide an array to %s, not '%s'.",
-			self:toString(),
-			typeof(self.sample))
-		)
+		error(string.format("You must provide an array to %s, not '%s'.", self:toString(), typeof(self.sample)))
 	end
 
 	local result = false
 	if #self.sample == 0 then
 		result = true
-	elseif Array.isArray(other) and
-		Array.every(self.sample,
-			function(item)
-				return Array.some(
-					other,
-					function(another)
-						return equals(item, another)
-					end
-				)
-			end
-		)
+	elseif
+		Array.isArray(other)
+		and Array.every(self.sample, function(item)
+			return Array.some(other, function(another)
+				return equals(item, another)
+			end)
+		end)
 	then
 		result = true
 	end
@@ -232,20 +208,13 @@ end
 function ObjectContaining:asymmetricMatch(other: { any })
 	-- ROBLOX deviation: check for type table instead of object
 	if typeof(self.sample) ~= "table" then
-		error(string.format(
-			"You must provide an object to %s, not '%s'.",
-			self:toString(),
-			typeof(self.sample))
-		)
+		error(string.format("You must provide an object to %s, not '%s'.", self:toString(), typeof(self.sample)))
 	end
 
 	local result = true
 
 	for property, value in pairs(self.sample) do
-		if
-			not hasProperty(other, property) or
-			not equals(value, other[property])
-		then
+		if not hasProperty(other, property) or not equals(value, other[property]) then
 			result = false
 			break
 		end
@@ -279,7 +248,7 @@ function StringContaining.new(sample: string, inverse: boolean?)
 end
 
 function StringContaining:asymmetricMatch(other: string): boolean
-	local result = isA('string', other) and other:find(self.sample, 1, true)
+	local result = isA("string", other) and other:find(self.sample, 1, true)
 
 	if self.inverse then
 		return not result
@@ -314,13 +283,13 @@ end
 
 function StringMatching:asymmetricMatch(other: string): boolean
 	local result = false
-	if isA('string', other) then
+	if isA("string", other) then
 		-- Lua pattern case
-		if isA('string', self.sample) then
+		if isA("string", self.sample) then
 			-- ROBLOX deviation: escape chalk sequences if necessary
 			self.sample = string.gsub(self.sample, string.char(27) .. "%[", string.char(27) .. "%%[")
 			result = other:find(self.sample)
-		-- Regex case
+			-- Regex case
 		else
 			result = self.sample:test(other)
 		end
@@ -345,14 +314,34 @@ end
 
 return {
 	AsymmetricMatcher = AsymmetricMatcher,
-	any = function(expectedObject: any) return Any.new(expectedObject) end,
-	anything = function() return Anything.new() end,
-	arrayContaining = function(sample: { any }) return ArrayContaining.new(sample) end,
-	arrayNotContaining = function(sample: { any }) return ArrayContaining.new(sample, true) end,
-	objectContaining = function(sample: any) return ObjectContaining.new(sample) end,
-	objectNotContaining = function(sample: any) return ObjectContaining.new(sample, true) end,
-	stringContaining = function(expected: string) return StringContaining.new(expected) end,
-	stringNotContaining = function(expected: string) return StringContaining.new(expected, true) end,
-	stringMatching = function(expected: string | RegExp) return StringMatching.new(expected) end,
-	stringNotMatching = function(expected: string | RegExp) return StringMatching.new(expected, true) end,
+	any = function(expectedObject: any)
+		return Any.new(expectedObject)
+	end,
+	anything = function()
+		return Anything.new()
+	end,
+	arrayContaining = function(sample: { any })
+		return ArrayContaining.new(sample)
+	end,
+	arrayNotContaining = function(sample: { any })
+		return ArrayContaining.new(sample, true)
+	end,
+	objectContaining = function(sample: any)
+		return ObjectContaining.new(sample)
+	end,
+	objectNotContaining = function(sample: any)
+		return ObjectContaining.new(sample, true)
+	end,
+	stringContaining = function(expected: string)
+		return StringContaining.new(expected)
+	end,
+	stringNotContaining = function(expected: string)
+		return StringContaining.new(expected, true)
+	end,
+	stringMatching = function(expected: string | RegExp)
+		return StringMatching.new(expected)
+	end,
+	stringNotMatching = function(expected: string | RegExp)
+		return StringMatching.new(expected, true)
+	end,
 }

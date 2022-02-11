@@ -29,8 +29,8 @@ return function()
 
 	it("Any.asymmetricMatch()", function()
 		-- ROBLOX deviation: no primitive constructors in lua, we just supply a primitive
-		for _, test in ipairs(
-			{
+		for _, test in
+			ipairs({
 				any("string"):asymmetricMatch("jest"),
 				any("number"):asymmetricMatch(1),
 				any("function"):asymmetricMatch(function() end),
@@ -39,8 +39,8 @@ return function()
 				any("table"):asymmetricMatch({}),
 				-- ROBLOX deviation: typeof(nil) is nil in Lua, not object, so test below is omitted
 				-- any("table"):asymmetricMatch(nil),
-			}
-		) do
+			})
+		do
 			expect(test).to.equal(true)
 		end
 	end)
@@ -118,25 +118,27 @@ return function()
 		expect(any("number"):toAsymmetricMatcher()).to.equal("Any<number>")
 	end)
 
-	it('Any.toAsymmetricMatcher() with function', function()
-		expect(any("function"):toAsymmetricMatcher()).to.equal('Any<function>')
+	it("Any.toAsymmetricMatcher() with function", function()
+		expect(any("function"):toAsymmetricMatcher()).to.equal("Any<function>")
 	end)
 
 	it("Any throws when called with empty constructor", function()
-		expect(function() any() end).to.throw()
+		expect(function()
+			any()
+		end).to.throw()
 	end)
 
 	it("Anything matches any type", function()
-		for _, test in ipairs(
-			{
+		for _, test in
+			ipairs({
 				anything():asymmetricMatch("jest"),
 				anything():asymmetricMatch(1),
 				anything():asymmetricMatch(function() end),
 				anything():asymmetricMatch(true),
-				anything():asymmetricMatch({x = 1}),
-				anything():asymmetricMatch({1, 2}),
-			}
-		) do
+				anything():asymmetricMatch({ x = 1 }),
+				anything():asymmetricMatch({ 1, 2 }),
+			})
+		do
 			expect(test).to.equal(true)
 		end
 	end)
@@ -151,68 +153,68 @@ return function()
 	end)
 
 	it("ArrayContaining matches", function()
-		for _, test in ipairs(
-			{
+		for _, test in
+			ipairs({
 				arrayContaining({}):asymmetricMatch("jest"),
-				arrayContaining({"foo"}):asymmetricMatch({"foo"}),
-				arrayContaining({"foo"}):asymmetricMatch({"foo", "bar"}),
+				arrayContaining({ "foo" }):asymmetricMatch({ "foo" }),
+				arrayContaining({ "foo" }):asymmetricMatch({ "foo", "bar" }),
 				arrayContaining({}):asymmetricMatch({}),
-			}
-		) do
+			})
+		do
 			expect(test).to.equal(true)
 		end
 	end)
 
 	it("ArrayContaining does not match", function()
-		expect(arrayContaining({"foo"}):asymmetricMatch({"bar"})).to.equal(false)
+		expect(arrayContaining({ "foo" }):asymmetricMatch({ "bar" })).to.equal(false)
 	end)
 
 	it("ArrayContaining throws for non-arrays", function()
 		expect(function()
-			arrayContaining('foo'):asymmetricMatch({})
+			arrayContaining("foo"):asymmetricMatch({})
 		end).to.throw()
 		-- ROBLOX deviation: additional test for non-arraylike tables
 		expect(function()
-			arrayContaining({x = 1}):asymmetricMatch({})
+			arrayContaining({ x = 1 }):asymmetricMatch({})
 		end).to.throw()
 	end)
 
 	it("ArrayNotContaining matches", function()
-		expect(arrayNotContaining({"foo"}):asymmetricMatch({"bar"})).to.equal(true)
+		expect(arrayNotContaining({ "foo" }):asymmetricMatch({ "bar" })).to.equal(true)
 	end)
 
 	it("ArrayNotContaining does not match", function()
-		for _, test in ipairs(
-			{
+		for _, test in
+			ipairs({
 				arrayNotContaining({}):asymmetricMatch("jest"),
-				arrayNotContaining({"foo"}):asymmetricMatch({"foo"}),
-				arrayNotContaining({"foo"}):asymmetricMatch({"foo", "bar"}),
+				arrayNotContaining({ "foo" }):asymmetricMatch({ "foo" }),
+				arrayNotContaining({ "foo" }):asymmetricMatch({ "foo", "bar" }),
 				arrayNotContaining({}):asymmetricMatch({}),
-			}
-		) do
+			})
+		do
 			expect(test).to.equal(false)
 		end
 	end)
 
 	it("ArrayNotContaining throws for non-arrays", function()
 		expect(function()
-			arrayNotContaining('foo'):asymmetricMatch({})
+			arrayNotContaining("foo"):asymmetricMatch({})
 		end).to.throw()
 		-- ROBLOX deviation: additional test for non-arraylike tables
 		expect(function()
-			arrayNotContaining({x = 1}):asymmetricMatch({})
+			arrayNotContaining({ x = 1 }):asymmetricMatch({})
 		end).to.throw()
 	end)
 
 	it("ObjectContaining matches", function()
-		for _, test in ipairs(
-			{
+		for _, test in
+			ipairs({
 				objectContaining({}):asymmetricMatch("jest"),
-				objectContaining({foo = "foo"}):asymmetricMatch({foo = "foo", jest = "jest"}),
+				objectContaining({ foo = "foo" }):asymmetricMatch({ foo = "foo", jest = "jest" }),
 				-- ROBLOX deviation: can't have nil values in table
-				objectContaining({foo = "undefined"}):asymmetricMatch({foo = "undefined"}),
-				objectContaining({first = objectContaining({second = {}})}):asymmetricMatch({
-					first = {second = {}},
+				objectContaining({ foo = "undefined" }):asymmetricMatch({ foo = "undefined" }),
+				objectContaining({ first = objectContaining({ second = {} }) }):asymmetricMatch({
+					first = { second = {} },
 				}),
 				-- ROBLOX deviation start: skipping - Lua doesn't have buffer type
 				-- objectContaining({foo = Buffer.from('foo')}):asymmetricMatch({
@@ -220,25 +222,25 @@ return function()
 				-- 	jest = 'jest',
 				-- }),
 				-- ROBLOX deviation end
-			}
-		) do
+			})
+		do
 			expect(test).to.equal(true)
 		end
 	end)
 
 	it("ObjectContaining does not match", function()
-		for _, test in ipairs(
-			{
-				objectContaining({foo = "foo"}):asymmetricMatch({bar = "bar"}),
-				objectContaining({foo = "foo"}):asymmetricMatch({foo = "foox"}),
+		for _, test in
+			ipairs({
+				objectContaining({ foo = "foo" }):asymmetricMatch({ bar = "bar" }),
+				objectContaining({ foo = "foo" }):asymmetricMatch({ foo = "foox" }),
 				-- ROBLOX deviation: can't have nil values in table
-				objectContaining({foo = "undefined"}):asymmetricMatch({}),
+				objectContaining({ foo = "undefined" }):asymmetricMatch({}),
 				objectContaining({
 					answer = 42,
-					foo = {bar = 'baz', foobar = 'qux'},
-				  }):asymmetricMatch({foo = {bar = 'baz'}}),
-			}
-		) do
+					foo = { bar = "baz", foobar = "qux" },
+				}):asymmetricMatch({ foo = { bar = "baz" } }),
+			})
+		do
 			expect(test).to.equal(false)
 		end
 	end)
@@ -246,9 +248,7 @@ return function()
 	it("ObjectContaining matches defined properties", function()
 		local definedPropertyObject = {}
 		definedPropertyObject.foo = "bar"
-		expect(
-			objectContaining({foo = "bar"}):asymmetricMatch(definedPropertyObject)
-		).to.equal(true)
+		expect(objectContaining({ foo = "bar" }):asymmetricMatch(definedPropertyObject)).to.equal(true)
 	end)
 
 	-- ROBLOX deviation: omitted prototype properties test, same as the others in Lua
@@ -259,23 +259,23 @@ return function()
 		end).to.throw()
 	end)
 
-	it('ObjectContaining does not mutate the sample', function()
-		local sample = {foo = {bar = {}}};
-		local sample_json = HttpService:JSONEncode(sample);
+	it("ObjectContaining does not mutate the sample", function()
+		local sample = { foo = { bar = {} } }
+		local sample_json = HttpService:JSONEncode(sample)
 		-- ROBLOX deviation: skipping expect
 		-- expect({foo = {bar = {}}}).toEqual(objectContaining(sample));
 		objectContaining(sample)
 
-		expect(HttpService:JSONEncode(sample)).to.equal(sample_json);
-	end);
+		expect(HttpService:JSONEncode(sample)).to.equal(sample_json)
+	end)
 
-	it('ObjectNotContaining matches', function()
+	it("ObjectNotContaining matches", function()
 		for _, test in
 			ipairs({
-				objectNotContaining({ foo = 'foo' }):asymmetricMatch({ bar = 'bar' }),
-				objectNotContaining({ foo = 'foo' }):asymmetricMatch({ foo = 'foox' }),
+				objectNotContaining({ foo = "foo" }):asymmetricMatch({ bar = "bar" }),
+				objectNotContaining({ foo = "foo" }):asymmetricMatch({ foo = "foox" }),
 				-- ROBLOX deviation: can't have nil values in table
-				objectNotContaining({ foo = 'undefined' }):asymmetricMatch({}),
+				objectNotContaining({ foo = "undefined" }):asymmetricMatch({}),
 				objectNotContaining({
 					first = objectNotContaining({ second = {} }),
 				}):asymmetricMatch({ first = { second = {} } }),
@@ -285,8 +285,8 @@ return function()
 				objectNotContaining({ first = { second = {} } }):asymmetricMatch({
 					first = { second = {}, third = {} },
 				}),
-				objectNotContaining({ foo = 'foo', jest = 'jest' }):asymmetricMatch({
-					foo = 'foo',
+				objectNotContaining({ foo = "foo", jest = "jest" }):asymmetricMatch({
+					foo = "foo",
 				}),
 			})
 		do
@@ -295,25 +295,25 @@ return function()
 	end)
 
 	it("ObjectNotContaining does not match", function()
-		for _, test in ipairs(
-			{
-				objectNotContaining({}):asymmetricMatch('jest'),
-				objectNotContaining({foo = "foo"}):asymmetricMatch({
+		for _, test in
+			ipairs({
+				objectNotContaining({}):asymmetricMatch("jest"),
+				objectNotContaining({ foo = "foo" }):asymmetricMatch({
 					foo = "foo",
-					jest = "jest"
+					jest = "jest",
 				}),
 				-- ROBLOX deviation: can't have nil values in table
-				objectNotContaining({foo = "undefined"}):asymmetricMatch({foo = "undefined"}),
-				objectNotContaining({first = {second = {}}}):asymmetricMatch({
-					first = {second = {}},
+				objectNotContaining({ foo = "undefined" }):asymmetricMatch({ foo = "undefined" }),
+				objectNotContaining({ first = { second = {} } }):asymmetricMatch({
+					first = { second = {} },
 				}),
 				objectNotContaining({
-					first = objectContaining({second = {}}),
-				}):asymmetricMatch({first = {second = {}}}),
+					first = objectContaining({ second = {} }),
+				}):asymmetricMatch({ first = { second = {} } }),
 				objectNotContaining({}):asymmetricMatch(nil),
-    			objectNotContaining({}):asymmetricMatch({}),
-			}
-		) do
+				objectNotContaining({}):asymmetricMatch({}),
+			})
+		do
 			expect(test).to.equal(false)
 		end
 	end)
@@ -322,17 +322,17 @@ return function()
 		for _, ref in
 			ipairs({
 				{ {}, nil },
-				{ { foo = 'foo' }, { foo = 'foo', jest = 'jest' } },
-				{ { foo = 'foo', jest = 'jest' }, { foo = 'foo' } },
+				{ { foo = "foo" }, { foo = "foo", jest = "jest" } },
+				{ { foo = "foo", jest = "jest" }, { foo = "foo" } },
 				-- ROBLOX deviation: can't have nil values in table
-				{ { foo = 'undefined' }, { foo = 'undefined' } },
+				{ { foo = "undefined" }, { foo = "undefined" } },
 				-- ROBLOX deviation: can't have nil values in table
-				{ { foo = 'undefined' }, {} },
+				{ { foo = "undefined" }, {} },
 				{ { first = { second = {} } }, { first = { second = {} } } },
 				{ { first = objectContaining({ second = {} }) }, { first = { second = {} } } },
 				{ { first = objectNotContaining({ second = {} }) }, { first = { second = {} } } },
 				-- ROBLOX deviation: can't have nil values in table
-				{ {}, { foo = 'undefined' } },
+				{ {}, { foo = "undefined" } },
 			})
 		do
 			local sample, received = table.unpack(ref, 1, 2)
@@ -355,7 +355,7 @@ return function()
 
 	it("StringContaining throws if expected value is not string", function()
 		expect(function()
-			stringContaining({1}):asymmetricMatch("queen")
+			stringContaining({ 1 }):asymmetricMatch("queen")
 		end).to.throw()
 	end)
 
@@ -370,7 +370,7 @@ return function()
 
 	it("StringNotContaining throws if expected value is not string", function()
 		expect(function()
-			stringNotContaining({1}):asymmetricMatch("queen")
+			stringNotContaining({ 1 }):asymmetricMatch("queen")
 		end).to.throw()
 	end)
 
@@ -378,9 +378,9 @@ return function()
 		expect(stringNotContaining("en*"):asymmetricMatch(1)).to.equal(true)
 	end)
 
-	it('StringMatching matches string against regexp', function()
-		expect(stringMatching(RegExp("en")):asymmetricMatch('queen')).to.equal(true)
-		expect(stringMatching(RegExp("en")):asymmetricMatch('queue')).to.equal(false)
+	it("StringMatching matches string against regexp", function()
+		expect(stringMatching(RegExp("en")):asymmetricMatch("queen")).to.equal(true)
+		expect(stringMatching(RegExp("en")):asymmetricMatch("queue")).to.equal(false)
 	end)
 
 	-- ROBLOX deviation: Lua pattern test not included in upstream
@@ -396,7 +396,7 @@ return function()
 
 	it("StringMatching throws if expected value is neither string nor regexp", function()
 		expect(function()
-			stringMatching({1}):asymmetricMatch("queen")
+			stringMatching({ 1 }):asymmetricMatch("queen")
 		end).to.throw()
 	end)
 
@@ -408,9 +408,9 @@ return function()
 		expect(stringMatching("nil"):asymmetricMatch(nil)).to.equal(false)
 	end)
 
-	it('StringNotMatching matches string against regexp', function()
-		expect(stringNotMatching(RegExp("en")):asymmetricMatch('queen')).to.equal(false)
-		expect(stringNotMatching(RegExp("en")):asymmetricMatch('queue')).to.equal(true)
+	it("StringNotMatching matches string against regexp", function()
+		expect(stringNotMatching(RegExp("en")):asymmetricMatch("queen")).to.equal(false)
+		expect(stringNotMatching(RegExp("en")):asymmetricMatch("queue")).to.equal(true)
 	end)
 
 	-- ROBLOX deviation: Lua pattern test not included in upstream
@@ -426,7 +426,7 @@ return function()
 
 	it("StringNotMatching throws if expected value is neither string nor regexp", function()
 		expect(function()
-			stringNotMatching({1}):asymmetricMatch("queen")
+			stringNotMatching({ 1 }):asymmetricMatch("queen")
 		end).to.throw()
 	end)
 

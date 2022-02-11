@@ -14,7 +14,7 @@ local Object = LuauPolyfill.Object
 local String = LuauPolyfill.String
 local Symbol = LuauPolyfill.Symbol
 
-type Record<T, V> = {[T]: V}
+type Record<T, V> = { [T]: V }
 
 local PrettyFormat = require(Packages.PrettyFormat)
 local prettyFormat = PrettyFormat.format
@@ -54,7 +54,7 @@ local getObjectsDifference
 -- ROBLOX deviation end
 
 local function getCommonMessage(message: string, options: DiffOptions?)
-	local commonColor = normalizeDiffOptions(options)['commonColor']
+	local commonColor = normalizeDiffOptions(options)["commonColor"]
 	return commonColor(message)
 end
 
@@ -63,7 +63,7 @@ local prettyFormatPlugins = PrettyFormat.plugins
 local PLUGINS = {
 	prettyFormatPlugins.AsymmetricMatcher,
 	-- ROBLOX deviation: Roblox Instance matchers
-	prettyFormatPlugins.RobloxInstance
+	prettyFormatPlugins.RobloxInstance,
 }
 local FORMAT_OPTIONS = {
 	plugins = PLUGINS,
@@ -93,22 +93,21 @@ local function diff(a: any, b: any, options: DiffOptions?): string?
 			-- Do not know expected type of user-defined asymmetric matcher.
 			return nil
 		end
-		if typeof(a.getExpectedType) ~= 'function' then
+		if typeof(a.getExpectedType) ~= "function" then
 			-- For example, expect.anything() matches either null or undefined
 			return nil
 		end
 		expectedType = a:getExpectedType()
 		-- Primitive types boolean and number omit difference below.
 		-- For example, omit difference for expect.stringMatching(regexp)
-		omitDifference = expectedType == 'string'
+		omitDifference = expectedType == "string"
 	end
 
 	if expectedType ~= getType(b) then
 		return string.format(
-			'  Comparing two different types of values.' ..
-			' Expected %s but ' ..
-			'received %s.',
-			chalk.green(expectedType), chalk.red(getType(b))
+			"  Comparing two different types of values." .. " Expected %s but " .. "received %s.",
+			chalk.green(expectedType),
+			chalk.red(getType(b))
 		)
 	end
 
@@ -116,43 +115,35 @@ local function diff(a: any, b: any, options: DiffOptions?): string?
 		return nil
 	end
 
-	if aType == 'string' then
-		return diffLinesUnified(string.split(a, '\n'), string.split(b, '\n'), options)
-	elseif aType == 'boolean' or aType == 'number'then
+	if aType == "string" then
+		return diffLinesUnified(string.split(a, "\n"), string.split(b, "\n"), options)
+	elseif aType == "boolean" or aType == "number" then
 		return comparePrimitive(a, b, options)
-	-- ROBLOX deviation: omitted, no ordered tables in lua
-	-- elseif aType == 'table' then
-	-- 	return compareObjects(sortTable(a), sortTable(b), options)
+		-- ROBLOX deviation: omitted, no ordered tables in lua
+		-- elseif aType == 'table' then
+		-- 	return compareObjects(sortTable(a), sortTable(b), options)
 	end
 	return compareObjects(a, b, options)
 end
 
-function comparePrimitive(
-	a: number | boolean,
-	b: number | boolean,
-	options: DiffOptions?
-)
+function comparePrimitive(a: number | boolean, b: number | boolean, options: DiffOptions?)
 	local aFormat = prettyFormat(a, FORMAT_OPTIONS)
 	local bFormat = prettyFormat(b, FORMAT_OPTIONS)
 	if aFormat == bFormat then
 		return getCommonMessage(NO_DIFF_MESSAGE, options)
 	end
-	return diffLinesUnified(string.split(aFormat, '\n'), string.split(bFormat, '\n'), options)
+	return diffLinesUnified(string.split(aFormat, "\n"), string.split(bFormat, "\n"), options)
 end
 
 -- ROBLOX deviation: omitted, no ordered tables in lua
 
-function compareObjects(
-	a,
-	b,
-	options: DiffOptions?
-)
+function compareObjects(a, b, options: DiffOptions?)
 	local difference
 	local hasThrown = false
 
 	local ok, _ = pcall(function()
 		local formatOptions = getFormatOptions(FORMAT_OPTIONS, options)
-    	difference = getObjectsDifference(a, b, formatOptions, options)
+		difference = getObjectsDifference(a, b, formatOptions, options)
 		-- local aCompare = prettyFormat(a, FORMAT_OPTIONS_0)
 		-- local bCompare = prettyFormat(b, FORMAT_OPTIONS_0)
 
@@ -174,12 +165,12 @@ function compareObjects(
 		hasThrown = true
 	end
 
-	local noDiffMessage = getCommonMessage(NO_DIFF_MESSAGE, options);
+	local noDiffMessage = getCommonMessage(NO_DIFF_MESSAGE, options)
 	-- If the comparison yields no results, compare again but this time
 	-- without calling `toJSON`. It's also possible that toJSON might throw.
 	if difference == nil or difference == noDiffMessage then
-		local formatOptions = getFormatOptions(FALLBACK_FORMAT_OPTIONS, options);
-    	difference = getObjectsDifference(a, b, formatOptions, options);
+		local formatOptions = getFormatOptions(FALLBACK_FORMAT_OPTIONS, options)
+		difference = getObjectsDifference(a, b, formatOptions, options)
 		-- local aCompare = prettyFormat(a, FALLBACK_FORMAT_OPTIONS_0)
 		-- local bCompare = prettyFormat(b, FALLBACK_FORMAT_OPTIONS_0)
 
@@ -199,7 +190,7 @@ function compareObjects(
 		-- end
 
 		if difference ~= noDiffMessage and not hasThrown then
-			difference = getCommonMessage(SIMILAR_MESSAGE, options) .. '\n\n' .. difference
+			difference = getCommonMessage(SIMILAR_MESSAGE, options) .. "\n\n" .. difference
 		end
 	end
 
@@ -226,15 +217,14 @@ function getObjectsDifference(
 		local aDisplay = prettyFormat(a, formatOptions)
 		local bDisplay = prettyFormat(b, formatOptions)
 		return diffLinesUnified2(
-			String.split(aDisplay, '\n'),
-			String.split(bDisplay, '\n'),
-			String.split(aCompare, '\n'),
-			String.split(bCompare, '\n'),
+			String.split(aDisplay, "\n"),
+			String.split(bDisplay, "\n"),
+			String.split(aCompare, "\n"),
+			String.split(bCompare, "\n"),
 			options
 		)
 	end
 end
-
 
 return {
 	diffLinesRaw = diffLinesRaw,

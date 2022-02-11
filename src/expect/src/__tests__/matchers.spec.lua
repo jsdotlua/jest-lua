@@ -40,7 +40,9 @@ return function()
 	end)
 
 	it("should throw if passed two arguments", function()
-		jestExpect(function() jestExpect("foo", "bar") end).toThrow("Expect takes at most one argument")
+		jestExpect(function()
+			jestExpect("foo", "bar")
+		end).toThrow("Expect takes at most one argument")
 	end)
 
 	describe(".toBe()", function()
@@ -50,7 +52,7 @@ return function()
 			jestExpect(1).never.toBe(2)
 			jestExpect(1).toBe(1)
 			jestExpect(nil).toBe(nil)
-			jestExpect(0/0).toBe(0/0)
+			jestExpect(0 / 0).toBe(0 / 0)
 			--[[
 				ROBLOX deviation: skipped since BigInt doesn't exist in Luau
 				original code:
@@ -68,32 +70,36 @@ return function()
 			{DateTime.fromUniversalTime(2020, 2, 20), DateTime.fromUniversalTime(2020, 2, 20)},
 		]]
 
-		for _, testCase in ipairs({
-			{1, 2},
-			{true, false},
-			{function() end, function() end},
-			{{}, {}},
-			{{a = 1}, {a = 1}},
-			{{a = 1}, {a = 5}},
-			{
-				{a = function () end, b = 2},
-				{a = jestExpect.any("function"), b = 2}
-			},
-			{{a = false, b = 2}, {b = 2}},
-			{DateTime.fromUniversalTime(2020, 2, 21), DateTime.fromUniversalTime(2020, 2, 20)},
-			{"received", "expected"},
-			{Symbol.for_("received"), Symbol.for_("expected")},
-			{"abc", "cde"},
-			{"painless JavaScript testing", "delightful JavaScript testing"},
-			{"", "compare one-line string to empty string"},
-			{"with \ntrailing space", "without trailing space"},
-			{"four\n4\nline\nstring", "3\nline\nstring"},
-			{-math.huge, math.huge}
-		}) do
+		for _, testCase in
+			ipairs({
+				{ 1, 2 },
+				{ true, false },
+				{ function() end, function() end },
+				{ {}, {} },
+				{ { a = 1 }, { a = 1 } },
+				{ { a = 1 }, { a = 5 } },
+				{
+					{ a = function() end, b = 2 },
+					{ a = jestExpect.any("function"), b = 2 },
+				},
+				{ { a = false, b = 2 }, { b = 2 } },
+				{ DateTime.fromUniversalTime(2020, 2, 21), DateTime.fromUniversalTime(2020, 2, 20) },
+				{ "received", "expected" },
+				{ Symbol.for_("received"), Symbol.for_("expected") },
+				{ "abc", "cde" },
+				{ "painless JavaScript testing", "delightful JavaScript testing" },
+				{ "", "compare one-line string to empty string" },
+				{ "with \ntrailing space", "without trailing space" },
+				{ "four\n4\nline\nstring", "3\nline\nstring" },
+				{ -math.huge, math.huge },
+			})
+		do
 			local a = testCase[1]
 			local b = testCase[2]
 			it("fails for: " .. stringify(a) .. " and " .. stringify(b), function()
-				jestExpect(function() jestExpect(a).toBe(b) end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(a).toBe(b)
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -110,11 +116,18 @@ return function()
 			  });
 		]]
 
-		for _, testCase in ipairs({
-			false, 1, "a", {}
-		}) do
+		for _, testCase in
+			ipairs({
+				false,
+				1,
+				"a",
+				{},
+			})
+		do
 			it("fails for " .. stringify(testCase) .. " with .never", function()
-				jestExpect(function() jestExpect(testCase :: any).never.toBe(testCase :: any) end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(testCase :: any).never.toBe(testCase :: any)
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -131,33 +144,35 @@ return function()
 		-- ROBLOX deviation: we can't test nil as part of the loop above because the for loop
 		-- wouldn't iterate over a nil entry so we include the test separately
 		it("fails for nil with .never", function()
-			jestExpect(function() jestExpect(nil).never.toBe(nil) end).toThrowErrorMatchingSnapshot()
+			jestExpect(function()
+				jestExpect(nil).never.toBe(nil)
+			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it("does not crash on circular references", function()
 			local obj = {}
 			obj.circular = obj
 
-			jestExpect(function() jestExpect(obj).toBe({}) end).toThrowErrorMatchingSnapshot()
+			jestExpect(function()
+				jestExpect(obj).toBe({})
+			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		-- ROBLOX TODO: assertion error currently returns strings, not an object
 		itSKIP("assertion error matcherResult property contains matcher name, expected and actual values", function()
-			local actual = {a = 1}
-			local expected = {a = 2}
+			local actual = { a = 1 }
+			local expected = { a = 2 }
 
 			local ok, error_ = pcall(function()
 				jestExpect(actual).toBe(expected)
 			end)
 
 			if not ok then
-				jestExpect(error_.message).toEqual(
-					jestExpect.objectContaining({
-						actual = actual,
-						expected = expected,
-						name = "toBe"
-					})
-				)
+				jestExpect(error_.message).toEqual(jestExpect.objectContaining({
+					actual = actual,
+					expected = expected,
+					name = "toBe",
+				}))
 			end
 		end)
 	end)
@@ -181,12 +196,12 @@ return function()
 		setmetatable(TestClassA, {
 			__tostring = function(self)
 				return "TestClassObject"
-			end
+			end,
 		})
 		function TestClassA.new(a, b)
 			local self = {
 				a = a,
-				b = b
+				b = b,
 			}
 			return setmetatable(self, TestClassA)
 		end
@@ -196,12 +211,12 @@ return function()
 		setmetatable(TestClassB, {
 			__tostring = function(self)
 				return "TestClassObject"
-			end
+			end,
 		})
 		function TestClassB.new(a, b)
 			local self = {
 				a = a,
-				b = b
+				b = b,
 			}
 			return setmetatable(self, TestClassB)
 		end
@@ -216,19 +231,19 @@ return function()
 			self.b = b
 		end)
 
-		itSKIP('does not ignore keys with undefined values', function()
+		itSKIP("does not ignore keys with undefined values", function()
 			jestExpect({
 				a = nil,
 				b = 2,
-			}).never.toStrictEqual({b = 2})
+			}).never.toStrictEqual({ b = 2 })
 		end)
 
-		itSKIP('does not ignore keys with undefined values inside an array', function()
-			jestExpect({{a = nil}}).never.toStrictEqual({{}})
+		itSKIP("does not ignore keys with undefined values inside an array", function()
+			jestExpect({ { a = nil } }).never.toStrictEqual({ {} })
 		end)
 
-		itSKIP('does not ignore keys with undefined values deep inside an object', function()
-			jestExpect({{a = {{a = nil}}}}).never.toStrictEqual({{a = {{}}}})
+		itSKIP("does not ignore keys with undefined values deep inside an object", function()
+			jestExpect({ { a = { { a = nil } } } }).never.toStrictEqual({ { a = { {} } } })
 		end)
 
 		-- ROBLOX deviation START: skipped since Lua doesn't support holes in a table
@@ -238,87 +253,86 @@ return function()
 		-- end)
 		-- ROBLOX deviation END
 
-		it('passes when comparing same type', function()
-			jestExpect({
-				test = TestClassA.new(1, 2)
-			}).toStrictEqual({test = TestClassA.new(1, 2)})
-		end)
-
-		it('matches the expected snapshot when it fails', function()
-			jestExpect(function()
-				jestExpect({
-					test = 2
-				}).toStrictEqual({test = TestClassA.new(1, 2)})
-			end).toThrowErrorMatchingSnapshot()
-
-			jestExpect(function()
-				jestExpect({
-					test = TestClassA.new(1, 2)
-				}).never.toStrictEqual({ test = TestClassA.new(1, 2)})
-			end).toThrowErrorMatchingSnapshot()
-		end)
-
-		it('displays substring diff', function()
-			local expected =
-				'Another caveat is that Jest will not typecheck your tests.'
-			local received =
-				'Because TypeScript support in Babel is just transpilation, Jest will not type-check your tests as they run.'
-			jestExpect(function()
-				jestExpect(received).toStrictEqual(expected)
-			end).toThrowErrorMatchingSnapshot()
-		end)
-
-		it('displays substring diff for multiple lines', function()
-			local expected = table.concat({
-				'    69 | ',
-				"    70 | test('assert.doesNotThrow', () => {",
-				'  > 71 |   assert.doesNotThrow(() => {',
-				'       |          ^',
-				"    72 |     throw Error('err!');",
-				'    73 |   });',
-				'    74 | });',
-				'    at Object.doesNotThrow (__tests__/assertionError.test.js:71:10)',
-			}, '\n')
-			local received = table.concat({
-				'    68 | ',
-				"    69 | test('assert.doesNotThrow', () => {",
-				'  > 70 |   assert.doesNotThrow(() => {',
-				'       |          ^',
-				"    71 |     throw Error('err!');",
-				'    72 |   });',
-				'    73 | });',
-				'    at Object.doesNotThrow (__tests__/assertionError.test.js:70:10)',
-			}, '\n')
-			jestExpect(function()
-				jestExpect(received).toStrictEqual(expected)
-			end).toThrowErrorMatchingSnapshot()
-		end)
-
-		it('does not pass for different types', function()
+		it("passes when comparing same type", function()
 			jestExpect({
 				test = TestClassA.new(1, 2),
-			}).never.toStrictEqual({test = TestClassB.new(1, 2)})
+			}).toStrictEqual({ test = TestClassA.new(1, 2) })
 		end)
 
-		it('does not simply compare constructor names', function()
+		it("matches the expected snapshot when it fails", function()
+			jestExpect(function()
+				jestExpect({
+					test = 2,
+				}).toStrictEqual({ test = TestClassA.new(1, 2) })
+			end).toThrowErrorMatchingSnapshot()
+
+			jestExpect(function()
+				jestExpect({
+					test = TestClassA.new(1, 2),
+				}).never.toStrictEqual({ test = TestClassA.new(1, 2) })
+			end).toThrowErrorMatchingSnapshot()
+		end)
+
+		it("displays substring diff", function()
+			local expected = "Another caveat is that Jest will not typecheck your tests."
+			local received =
+				"Because TypeScript support in Babel is just transpilation, Jest will not type-check your tests as they run."
+			jestExpect(function()
+				jestExpect(received).toStrictEqual(expected)
+			end).toThrowErrorMatchingSnapshot()
+		end)
+
+		it("displays substring diff for multiple lines", function()
+			local expected = table.concat({
+				"    69 | ",
+				"    70 | test('assert.doesNotThrow', () => {",
+				"  > 71 |   assert.doesNotThrow(() => {",
+				"       |          ^",
+				"    72 |     throw Error('err!');",
+				"    73 |   });",
+				"    74 | });",
+				"    at Object.doesNotThrow (__tests__/assertionError.test.js:71:10)",
+			}, "\n")
+			local received = table.concat({
+				"    68 | ",
+				"    69 | test('assert.doesNotThrow', () => {",
+				"  > 70 |   assert.doesNotThrow(() => {",
+				"       |          ^",
+				"    71 |     throw Error('err!');",
+				"    72 |   });",
+				"    73 | });",
+				"    at Object.doesNotThrow (__tests__/assertionError.test.js:70:10)",
+			}, "\n")
+			jestExpect(function()
+				jestExpect(received).toStrictEqual(expected)
+			end).toThrowErrorMatchingSnapshot()
+		end)
+
+		it("does not pass for different types", function()
+			jestExpect({
+				test = TestClassA.new(1, 2),
+			}).never.toStrictEqual({ test = TestClassB.new(1, 2) })
+		end)
+
+		it("does not simply compare constructor names", function()
 			local c = TestClassC.new(1, 2)
 			local d = TestClassD.new(1, 2)
 			-- ROBLOX deviation: instead of comparing constructor name we compare tostring values
 			jestExpect(tostring(c)).toEqual(tostring(d))
-			jestExpect({test = c}).never.toStrictEqual({test = d})
+			jestExpect({ test = c }).never.toStrictEqual({ test = d })
 		end)
 
-		itSKIP('passes for matching sparse arrays', function()
+		itSKIP("passes for matching sparse arrays", function()
 			-- jestExpect({, 1}).toStrictEqual({, 1})
 		end)
 
-		itSKIP('does not pass when sparseness of arrays do not match', function()
+		itSKIP("does not pass when sparseness of arrays do not match", function()
 			-- jestExpect({, 1}).never.toStrictEqual({nil, 1})
 			-- jestExpect({nil, 1}).never.toStrictEqual({, 1})
 			-- jestExpect({, , , 1}).never.toStrictEqual({, 1})
 		end)
 
-		itSKIP('does not pass when equally sparse arrays have different values', function()
+		itSKIP("does not pass when equally sparse arrays have different values", function()
 			-- jestExpect({, 1}).never.toStrictEqual({, 2})
 		end)
 
@@ -349,7 +363,7 @@ return function()
 			  );
 			});
 		]]
- 	end)
+	end)
 
 	--[[
 			ROBLOX deviation: omitted test cases that become redundant in our Lua translation i.e.
@@ -369,137 +383,141 @@ return function()
 
 	]]
 	describe(".toEqual()", function()
-		for _, testCase in ipairs({
-			{true, false},
-			{1, 2},
-			{0, Number.MIN_SAFE_INTEGER},
-			{Number.MIN_SAFE_INTEGER, 0},
-			{0, 1},
-			{{a = 1}, {a = 2}},
-			{{a = 5}, {b = 6}},
-			{Object.freeze({foo = {bar = 1}}), {foo = {}}},
-			{'banana', 'apple'},
-			{'1\u{00A0}234,57\u{00A0}$', '1 234,57 $'},
-			{
-				'type TypeName<T> = T extends Function ? "function" : "object";',
-				'type TypeName<T> = T extends Function\n? "function"\n: "object";',
-			},
-			{{1}, {2}},
-			{{1, 2}, {2, 1}},
-			{{}, Set.new({})},
-			{Set.new({1, 2}), Set.new({})},
-			{Set.new({1, 2}), Set.new({1, 2, 3})},
-			{Set.new({{1}, {2}}), Set.new({{1}, {2}, {3}})},
-			{Set.new({{1}, {2}}), Set.new({{1}, {2}, {2}})},
-			{
-				Set.new({Set.new({1}), Set.new({2})}),
-				Set.new({Set.new({1}), Set.new({3})})
-			},
-			{{1, 2}, {}},
-			{{1, 2}, {1, 2, 3}},
-			{{{1}, {2}}, {{1}, {2}, {3}}},
-			{{{1}, {2}}, {{1}, {2}, {2}}},
-			{
-				{{1}, {2}},
-				{{1}, {3}},
-			},
-			{
-				{[1] = 'one', [2] ='two'},
-				{[1] = 'one'},
-			},
-			{{a = 0}, {b = 0}},
-			{{v = 1}, {v = 2}},
-			{{[{"v"}] = 1}, {[{"v"}] = 2}},
-			{
-				{[{1}] = {[{1}] = "one"}},
-				{[{1}] = {[{1}] = "two"}}
-			},
-			{
-				{["1"] = {["2"] = {a = 99}}},
-				{["1"] = {["2"] = {a = 11}}}
-			},
-			{{97, 98, 99}, {97, 98, 100}},
-			{{a = 1, b = 2}, jestExpect.objectContaining({a = 2})},
-			{false, jestExpect.objectContaining({a = 2})},
-			{{1, 3}, jestExpect.arrayContaining({1, 2})},
-			{1, jestExpect.arrayContaining({1, 2})},
-			{'abd', jestExpect.stringContaining('bc')},
-			{'abd', jestExpect.stringMatching('bc')},
-			{nil, jestExpect.anything()},
-			{nil, jestExpect.any("function")},
-			{
-				'Eve',
+		for _, testCase in
+			ipairs({
+				{ true, false },
+				{ 1, 2 },
+				{ 0, Number.MIN_SAFE_INTEGER },
+				{ Number.MIN_SAFE_INTEGER, 0 },
+				{ 0, 1 },
+				{ { a = 1 }, { a = 2 } },
+				{ { a = 5 }, { b = 6 } },
+				{ Object.freeze({ foo = { bar = 1 } }), { foo = {} } },
+				{ "banana", "apple" },
+				{ "1\u{00A0}234,57\u{00A0}$", "1 234,57 $" },
 				{
-					asymmetricMatch = function(self, who)
-						return who == 'Alice' or who == 'Bob'
-					end
+					'type TypeName<T> = T extends Function ? "function" : "object";',
+					'type TypeName<T> = T extends Function\n? "function"\n: "object";',
 				},
-			},
-			{
+				{ { 1 }, { 2 } },
+				{ { 1, 2 }, { 2, 1 } },
+				{ {}, Set.new({}) },
+				{ Set.new({ 1, 2 }), Set.new({}) },
+				{ Set.new({ 1, 2 }), Set.new({ 1, 2, 3 }) },
+				{ Set.new({ { 1 }, { 2 } }), Set.new({ { 1 }, { 2 }, { 3 } }) },
+				{ Set.new({ { 1 }, { 2 } }), Set.new({ { 1 }, { 2 }, { 2 } }) },
 				{
-					target = {
-						nodeType = 1,
-						value = 'a',
+					Set.new({ Set.new({ 1 }), Set.new({ 2 }) }),
+					Set.new({ Set.new({ 1 }), Set.new({ 3 }) }),
+				},
+				{ { 1, 2 }, {} },
+				{ { 1, 2 }, { 1, 2, 3 } },
+				{ { { 1 }, { 2 } }, { { 1 }, { 2 }, { 3 } } },
+				{ { { 1 }, { 2 } }, { { 1 }, { 2 }, { 2 } } },
+				{
+					{ { 1 }, { 2 } },
+					{ { 1 }, { 3 } },
+				},
+				{
+					{ [1] = "one", [2] = "two" },
+					{ [1] = "one" },
+				},
+				{ { a = 0 }, { b = 0 } },
+				{ { v = 1 }, { v = 2 } },
+				{ { [{ "v" }] = 1 }, { [{ "v" }] = 2 } },
+				{
+					{ [{ 1 }] = { [{ 1 }] = "one" } },
+					{ [{ 1 }] = { [{ 1 }] = "two" } },
+				},
+				{
+					{ ["1"] = { ["2"] = { a = 99 } } },
+					{ ["1"] = { ["2"] = { a = 11 } } },
+				},
+				{ { 97, 98, 99 }, { 97, 98, 100 } },
+				{ { a = 1, b = 2 }, jestExpect.objectContaining({ a = 2 }) },
+				{ false, jestExpect.objectContaining({ a = 2 }) },
+				{ { 1, 3 }, jestExpect.arrayContaining({ 1, 2 }) },
+				{ 1, jestExpect.arrayContaining({ 1, 2 }) },
+				{ "abd", jestExpect.stringContaining("bc") },
+				{ "abd", jestExpect.stringMatching("bc") },
+				{ nil, jestExpect.anything() },
+				{ nil, jestExpect.any("function") },
+				{
+					"Eve",
+					{
+						asymmetricMatch = function(self, who)
+							return who == "Alice" or who == "Bob"
+						end,
 					},
 				},
 				{
-					target = {
-						nodeType = 1,
-						value = 'b',
+					{
+						target = {
+							nodeType = 1,
+							value = "a",
+						},
+					},
+					{
+						target = {
+							nodeType = 1,
+							value = "b",
+						},
 					},
 				},
-			},
-			{
 				{
-					nodeName = 'div',
-					nodeType = 1,
+					{
+						nodeName = "div",
+						nodeType = 1,
+					},
+					{
+						nodeName = "p",
+						nodeType = 1,
+					},
 				},
 				{
-					nodeName = 'p',
-					nodeType = 1,
+					{
+						[Symbol.for_("foo")] = 1,
+						[Symbol.for_("bar")] = 2,
+					},
+					{
+						[Symbol.for_("foo")] = jestExpect.any("number"),
+						[Symbol.for_("bar")] = 1,
+					},
 				},
-			},
-			{
+				-- ROBLOX deviation START: no sparse arrays in Lua
+				-- {
+				-- 	-- eslint-disable-next-line no-sparse-arrays
+				-- 	{, , 1, ,},
+				-- 	-- eslint-disable-next-line no-sparse-arrays
+				-- 	{, , 2, ,},
+				-- },
+				-- ROBLOX deviation END
 				{
-					[Symbol.for_('foo')] = 1,
-					[Symbol.for_('bar')] = 2,
+					Object.assign({}, { [4294967295] = 1 }),
+					Object.assign({}, { [4294967295] = 2 }), -- issue 11056
 				},
 				{
-					[Symbol.for_('foo')] = jestExpect.any("number"),
-					[Symbol.for_('bar')] = 1,
+					-- eslint-disable-next-line no-useless-computed-key
+					Object.assign({}, { ["-0"] = 1 }),
+					-- eslint-disable-next-line no-useless-computed-key
+					Object.assign({}, { ["0"] = 1 }), -- issue 11056: also check (-0, 0)
 				},
-			},
-			-- ROBLOX deviation START: no sparse arrays in Lua
-			-- {
-			-- 	-- eslint-disable-next-line no-sparse-arrays
-			-- 	{, , 1, ,},
-			-- 	-- eslint-disable-next-line no-sparse-arrays
-			-- 	{, , 2, ,},
-			-- },
-			-- ROBLOX deviation END
-			{
-				Object.assign({}, {[4294967295] = 1}),
-				Object.assign({}, {[4294967295] = 2}), -- issue 11056
-			},
-			{
-				-- eslint-disable-next-line no-useless-computed-key
-				Object.assign({}, {['-0'] = 1}),
-				-- eslint-disable-next-line no-useless-computed-key
-				Object.assign({}, {['0'] = 1}), -- issue 11056: also check (-0, 0)
-			},
-			{
-				Object.assign({}, {a = 1}),
-				Object.assign({}, {b = 1}), -- issue 11056: also check strings
-			},
-			{
-				Object.assign({}, {[Symbol()] = 1}),
-				Object.assign({}, {[Symbol()] = 1}), -- issue 11056: also check symbols
-			},
-		}) do
+				{
+					Object.assign({}, { a = 1 }),
+					Object.assign({}, { b = 1 }), -- issue 11056: also check strings
+				},
+				{
+					Object.assign({}, { [Symbol()] = 1 }),
+					Object.assign({}, { [Symbol()] = 1 }), -- issue 11056: also check symbols
+				},
+			})
+		do
 			local a = testCase[1]
 			local b = testCase[2]
 			it("{pass: false} expect(" .. stringify(a) .. ").toEqual(" .. stringify(b) .. ")", function()
-				jestExpect(function() jestExpect(a).toEqual(b) end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(a).toEqual(b)
+				end).toThrowErrorMatchingSnapshot()
 				jestExpect(a).never.toEqual(b)
 			end)
 		end
@@ -520,96 +538,97 @@ return function()
 			});
 		]]
 
-		for _, testCase in ipairs({
-			{true, true},
-			{1, 1},
-			{0/0, 0/0},
-			{0, 0},
-			{'abc', 'abc'},
-			{{1}, {1}},
-			{
-				{1, 2},
-				{1, 2},
-			},
-			{{}, {}},
-			{{a = 99}, {a = 99}},
-			{Set.new({}), Set.new({})},
-			{Set.new({1, 2}), Set.new({1, 2})},
-			{Set.new({1, 2}), Set.new({2, 1})},
-			{
-				Set.new({Set.new({{1}}), Set.new({{2}})}),
-				Set.new({Set.new({{2}}), Set.new({{1}})})
-			},
-			{
-				Set.new({{1}, {2}, {3}, {3}}),
-				Set.new({{3}, {3}, {2}, {1}})
-			},
-			{
-				Set.new({{a = 1}, {b = 2}}),
-				Set.new({{b = 2}, {a = 1}})
-			},
-			{
+		for _, testCase in
+			ipairs({
+				{ true, true },
+				{ 1, 1 },
+				{ 0 / 0, 0 / 0 },
+				{ 0, 0 },
+				{ "abc", "abc" },
+				{ { 1 }, { 1 } },
 				{
-					[1] = 'one',
-					[2] = 'two',
+					{ 1, 2 },
+					{ 1, 2 },
+				},
+				{ {}, {} },
+				{ { a = 99 }, { a = 99 } },
+				{ Set.new({}), Set.new({}) },
+				{ Set.new({ 1, 2 }), Set.new({ 1, 2 }) },
+				{ Set.new({ 1, 2 }), Set.new({ 2, 1 }) },
+				{
+					Set.new({ Set.new({ { 1 } }), Set.new({ { 2 } }) }),
+					Set.new({ Set.new({ { 2 } }), Set.new({ { 1 } }) }),
 				},
 				{
-					[1] = 'one',
-					[2] = 'two',
-				}
-			},
-			{
-				{
-					[1] = {"one"},
-					[2] = {"two"}
+					Set.new({ { 1 }, { 2 }, { 3 }, { 3 } }),
+					Set.new({ { 3 }, { 3 }, { 2 }, { 1 } }),
 				},
 				{
-					[2] = {"two"},
-					[1] = {"one"}
-				},
-			},
-			{
-				{[1] = {[2] = {a = 99}}},
-				{[1] = {[2] = {a = 99}}}
-			},
-			{{97, 98, 99}, {97, 98, 99}},
-			{{a = 1, b = 2}, jestExpect.objectContaining({a = 1})},
-			{{1, 2, 3}, jestExpect.arrayContaining({2, 3})},
-			{'abcd', jestExpect.stringContaining('bc')},
-			{'abcd', jestExpect.stringMatching('bc')},
-			{true, jestExpect.anything()},
-			{function() end, jestExpect.any("function")},
-			{
-				{
-					a = 1,
-					b = function() end,
-					c = true,
+					Set.new({ { a = 1 }, { b = 2 } }),
+					Set.new({ { b = 2 }, { a = 1 } }),
 				},
 				{
-					a = 1,
-					b = jestExpect.any("function"),
-					c = jestExpect.anything(),
-				},
-			},
-			{
-				'Alice',
-				{
-					asymmetricMatch = function(self, who)
-						return who == 'Alice' or who == 'Bob'
-					end
-				},
-			},
-			{
-				{
-					nodeName = 'div',
-					nodeType = 1,
+					{
+						[1] = "one",
+						[2] = "two",
+					},
+					{
+						[1] = "one",
+						[2] = "two",
+					},
 				},
 				{
-					nodeName = 'div',
-					nodeType = 1,
+					{
+						[1] = { "one" },
+						[2] = { "two" },
+					},
+					{
+						[2] = { "two" },
+						[1] = { "one" },
+					},
 				},
-			},
-			--[[
+				{
+					{ [1] = { [2] = { a = 99 } } },
+					{ [1] = { [2] = { a = 99 } } },
+				},
+				{ { 97, 98, 99 }, { 97, 98, 99 } },
+				{ { a = 1, b = 2 }, jestExpect.objectContaining({ a = 1 }) },
+				{ { 1, 2, 3 }, jestExpect.arrayContaining({ 2, 3 }) },
+				{ "abcd", jestExpect.stringContaining("bc") },
+				{ "abcd", jestExpect.stringMatching("bc") },
+				{ true, jestExpect.anything() },
+				{ function() end, jestExpect.any("function") },
+				{
+					{
+						a = 1,
+						b = function() end,
+						c = true,
+					},
+					{
+						a = 1,
+						b = jestExpect.any("function"),
+						c = jestExpect.anything(),
+					},
+				},
+				{
+					"Alice",
+					{
+						asymmetricMatch = function(self, who)
+							return who == "Alice" or who == "Bob"
+						end,
+					},
+				},
+				{
+					{
+						nodeName = "div",
+						nodeType = 1,
+					},
+					{
+						nodeName = "div",
+						nodeType = 1,
+					},
+				},
+				--[[
 				ROBLOX deviation: no sparse arrays in Lua
 				original code:
 				[
@@ -625,12 +644,15 @@ return function()
 				  [, , 1, undefined, ,], // same length but hole replaced by undefined
 				],
 			]]
-		}) do
+			})
+		do
 			local a = testCase[1]
 			local b = testCase[2]
 			it("{pass: true} expect(" .. stringify(a) .. ").never.toEqual(" .. stringify(b) .. ")", function()
 				jestExpect(a).toEqual(b)
-				jestExpect(function() jestExpect(a).never.toEqual(b) end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(a).never.toEqual(b)
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -659,24 +681,24 @@ return function()
 		]=]
 
 		-- ROBLOX TODO: assertion error currently returns strings, not an object
-		itSKIP('assertion error matcherResult property contains matcher name, expected and actual values', function()
-			local actual = {a = 1}
-			local expected = {a = 2}
-			local ok, error_ = pcall(function() jestExpect(actual).toEqual(expected) end)
+		itSKIP("assertion error matcherResult property contains matcher name, expected and actual values", function()
+			local actual = { a = 1 }
+			local expected = { a = 2 }
+			local ok, error_ = pcall(function()
+				jestExpect(actual).toEqual(expected)
+			end)
 
 			if not ok then
-				jestExpect(error_.matcherResult).toEqual(
-					jestExpect.objectContaining({
-						actual = actual,
-						expected = expected,
-						name = 'toEqual',
-					})
-				)
+				jestExpect(error_.matcherResult).toEqual(jestExpect.objectContaining({
+					actual = actual,
+					expected = expected,
+					name = "toEqual",
+				}))
 			end
 		end)
 
-		it('symbol based keys in arrays are processed correctly', function()
-			local mySymbol = Symbol('test')
+		it("symbol based keys in arrays are processed correctly", function()
+			local mySymbol = Symbol("test")
 			local actual1 = {}
 			actual1[mySymbol] = 3
 			local actual2 = {}
@@ -689,7 +711,7 @@ return function()
 		end)
 
 		-- ROBLOX deviation: test omitted because it's not applicable to Lua translation
-		itSKIP('non-enumerable members should be skipped during equal', function()
+		itSKIP("non-enumerable members should be skipped during equal", function()
 			-- local actual = {
 			-- 	x = 3,
 			-- }
@@ -701,7 +723,7 @@ return function()
 		end)
 
 		-- ROBLOX deviation: test omitted because it's not applicable to Lua translation
-		itSKIP('non-enumerable symbolic members should be skipped during equal', function()
+		itSKIP("non-enumerable symbolic members should be skipped during equal", function()
 			-- local actual = {
 			-- 	x = 3,
 			-- }
@@ -713,8 +735,8 @@ return function()
 			-- expect(actual).toEqual({x = 3})
 		end)
 
-		describe('cyclic object equality', function()
-			it('properties with the same circularity are equal', function()
+		describe("cyclic object equality", function()
+			it("properties with the same circularity are equal", function()
 				local a = {}
 				a.x = a
 				local b = {}
@@ -730,9 +752,9 @@ return function()
 				jestExpect(d).toEqual(c)
 			end)
 
-			it('properties with different circularity are not equal', function()
+			it("properties with different circularity are not equal", function()
 				local a = {}
-				a.x = {y = a}
+				a.x = { y = a }
 				local b = {}
 				local bx = {}
 				b.x = bx
@@ -748,7 +770,7 @@ return function()
 				jestExpect(d).never.toEqual(c)
 			end)
 
-			it('are not equal if circularity is not on the same property', function()
+			it("are not equal if circularity is not on the same property", function()
 				local a = {}
 				local b = {}
 				a.a = a
@@ -758,7 +780,7 @@ return function()
 				jestExpect(b).never.toEqual(a)
 
 				local c = {}
-				c.x = {x = c}
+				c.x = { x = c }
 				local d = {}
 				d.x = d
 				jestExpect(c).never.toEqual(d)
@@ -772,7 +794,9 @@ return function()
 		local A = {}
 		A.__index = A
 		setmetatable(A, {
-			__tostring = function(self) return "A" end
+			__tostring = function(self)
+				return "A"
+			end,
 		})
 		function A.new()
 			local self = {}
@@ -783,7 +807,9 @@ return function()
 		local B = {}
 		B.__index = B
 		setmetatable(B, {
-			__tostring = function(self) return "B" end
+			__tostring = function(self)
+				return "B"
+			end,
 		})
 		function B.new()
 			local self = {}
@@ -800,47 +826,46 @@ return function()
 		-- E extends D
 		local E = extends(D, "E", function(self) end)
 
-		it('throws if expected is not a table', function()
+		it("throws if expected is not a table", function()
 			jestExpect(function()
 				jestExpect(A.new()).toBeInstanceOf(1)
 			end).toThrow(
-				"[1mMatcher error[22m: [32mexpected[39m value must be a prototype class\n\n" ..
-				"Expected has type:  number\n" ..
-				"Expected has value: [32m1[39m"
+				"[1mMatcher error[22m: [32mexpected[39m value must be a prototype class\n\n"
+					.. "Expected has type:  number\n"
+					.. "Expected has value: [32m1[39m"
 			)
 		end)
 
-		it('does not throw if received is not a table', function()
+		it("does not throw if received is not a table", function()
 			jestExpect(function()
 				jestExpect(1).toBeInstanceOf(A)
 			end).toThrow(
-				"[2mexpect([22m[31mreceived[39m[2m).[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n" ..
-				"Expected constructor: [32mA[39m\n\n" ..
-				"Received value has no prototype\n" ..
-				"Received value: [31m1[39m"
+				"[2mexpect([22m[31mreceived[39m[2m).[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n"
+					.. "Expected constructor: [32mA[39m\n\n"
+					.. "Received value has no prototype\n"
+					.. "Received value: [31m1[39m"
 			)
 		end)
 
-		it('does not throw if received does not have metatable', function ()
+		it("does not throw if received does not have metatable", function()
 			jestExpect(function()
 				jestExpect({}).toBeInstanceOf(A)
 			end).toThrow(
-				"[2mexpect([22m[31mreceived[39m[2m).[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n" ..
-				"Expected constructor: [32mA[39m\n\n" ..
-				"Received value has no prototype\n" ..
-				"Received value: [31m{}[39m"
+				"[2mexpect([22m[31mreceived[39m[2m).[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n"
+					.. "Expected constructor: [32mA[39m\n\n"
+					.. "Received value has no prototype\n"
+					.. "Received value: [31m{}[39m"
 			)
 
 			jestExpect({}).never.toBeInstanceOf(A)
-
 		end)
 
 		it("passing A.new() and A", function()
 			jestExpect(function()
 				jestExpect(A.new()).never.toBeInstanceOf(A)
 			end).toThrow(
-				"[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n" ..
-				"Expected constructor: never [32mA[39m\n"
+				"[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n"
+					.. "Expected constructor: never [32mA[39m\n"
 			)
 
 			jestExpect(A.new()).toBeInstanceOf(A)
@@ -850,9 +875,9 @@ return function()
 			jestExpect(function()
 				jestExpect(C.new()).never.toBeInstanceOf(B)
 			end).toThrow(
-				"[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n" ..
-				"Expected constructor: never [32mB[39m\n" ..
-				"Received constructor:       [31mC[39m extends [32mB[39m"
+				"[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n"
+					.. "Expected constructor: never [32mB[39m\n"
+					.. "Received constructor:       [31mC[39m extends [32mB[39m"
 			)
 
 			jestExpect(C.new()).toBeInstanceOf(B)
@@ -862,9 +887,9 @@ return function()
 			jestExpect(function()
 				jestExpect(E.new()).never.toBeInstanceOf(B)
 			end).toThrow(
-				"[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n" ..
-				"Expected constructor: never [32mB[39m\n" ..
-				"Received constructor:       [31mE[39m extends … extends [32mB[39m"
+				"[2mexpect([22m[31mreceived[39m[2m).[22mnever[2m.[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n"
+					.. "Expected constructor: never [32mB[39m\n"
+					.. "Received constructor:       [31mE[39m extends … extends [32mB[39m"
 			)
 
 			jestExpect(E.new()).toBeInstanceOf(B)
@@ -874,9 +899,9 @@ return function()
 			jestExpect(function()
 				jestExpect(A.new()).toBeInstanceOf(B)
 			end).toThrow(
-				"[2mexpect([22m[31mreceived[39m[2m).[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n" ..
-				"Expected constructor: [32mB[39m\n" ..
-				"Received constructor: [31mA[39m"
+				"[2mexpect([22m[31mreceived[39m[2m).[22mtoBeInstanceOf[2m([22m[32mexpected[39m[2m)[22m\n\n"
+					.. "Expected constructor: [32mB[39m\n"
+					.. "Received constructor: [31mA[39m"
 			)
 
 			jestExpect(A.new()).never.toBeInstanceOf(B)
@@ -885,51 +910,67 @@ return function()
 
 	describe(".toBeTruthy(), .toBeFalsy()", function()
 		-- ROBLOX deviation: can't pass in nil as an argument because it's identical to no argument
-		it('does not accept arguments', function()
-			jestExpect(function() jestExpect(0).toBeTruthy(1) end).toThrowErrorMatchingSnapshot(
-			)
+		it("does not accept arguments", function()
+			jestExpect(function()
+				jestExpect(0).toBeTruthy(1)
+			end).toThrowErrorMatchingSnapshot()
 
-			jestExpect(function()jestExpect(0).never.toBeFalsy(1) end).toThrowErrorMatchingSnapshot(
-			)
+			jestExpect(function()
+				jestExpect(0).never.toBeFalsy(1)
+			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		-- ROBLOX deviation: 0, '' and nan are falsy in JS but truthy in Lua so we will treat them as truthy
-		for _, testCase in ipairs({
-			{},
-			true,
-			1,
-			'a',
-			0.5,
-			function() end,
-			math.huge,
-			0,
-			'',
-			0/0
-		}) do
-			it(string.format('%s is truthy', stringify(testCase)), function()
+		for _, testCase in
+			ipairs({
+				{},
+				true,
+				1,
+				"a",
+				0.5,
+				function() end,
+				math.huge,
+				0,
+				"",
+				0 / 0,
+			})
+		do
+			it(string.format("%s is truthy", stringify(testCase)), function()
 				jestExpect(testCase).toBeTruthy()
 				jestExpect(testCase).never.toBeFalsy()
 
-				jestExpect(function() jestExpect(testCase :: any).never.toBeTruthy() end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(testCase :: any).never.toBeTruthy()
+				end).toThrowErrorMatchingSnapshot()
 
-				jestExpect(function() jestExpect(testCase :: any).toBeFalsy() end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(testCase :: any).toBeFalsy()
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
-		it('nil is falsy', function()
+		it("nil is falsy", function()
 			jestExpect(nil).toBeFalsy()
 			jestExpect(nil).never.toBeTruthy()
 
-			jestExpect(function() jestExpect(nil).toBeTruthy() end).toThrowErrorMatchingSnapshot()
-			jestExpect(function() jestExpect(nil).never.toBeFalsy() end).toThrowErrorMatchingSnapshot()
+			jestExpect(function()
+				jestExpect(nil).toBeTruthy()
+			end).toThrowErrorMatchingSnapshot()
+			jestExpect(function()
+				jestExpect(nil).never.toBeFalsy()
+			end).toThrowErrorMatchingSnapshot()
 		end)
 
-		it('false is falsy', function()
+		it("false is falsy", function()
 			jestExpect(false).toBeFalsy()
 			jestExpect(false).never.toBeTruthy()
 
-			jestExpect(function() jestExpect(false).toBeTruthy() end).toThrowErrorMatchingSnapshot()
-			jestExpect(function() jestExpect(false).never.toBeFalsy() end).toThrowErrorMatchingSnapshot()
+			jestExpect(function()
+				jestExpect(false).toBeTruthy()
+			end).toThrowErrorMatchingSnapshot()
+			jestExpect(function()
+				jestExpect(false).never.toBeFalsy()
+			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		--[[
@@ -949,57 +990,71 @@ return function()
 	end)
 
 	describe(".toBeNan()", function()
-		it('{pass: true} expect(nan).toBeNan()', function()
-			for index, testCase in ipairs({
-				math.sqrt(-1),
-				math.huge - math.huge,
-				0 / 0
-			}) do
+		it("{pass: true} expect(nan).toBeNan()", function()
+			for index, testCase in
+				ipairs({
+					math.sqrt(-1),
+					math.huge - math.huge,
+					0 / 0,
+				})
+			do
 				jestExpect(testCase).toBeNan()
-				jestExpect(function() jestExpect(testCase :: any).never.toBeNan() end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(testCase :: any).never.toBeNan()
+				end).toThrowErrorMatchingSnapshot()
 			end
 		end)
 
-		it('throws', function()
-			for index, testCase in ipairs({
-				1,
-				'',
-				{},
-				0.2,
-				0,
-				math.huge,
-				-math.huge
-			}) do
-				jestExpect(function() jestExpect(testCase :: any).toBeNan() end).toThrowErrorMatchingSnapshot()
+		it("throws", function()
+			for index, testCase in
+				ipairs({
+					1,
+					"",
+					{},
+					0.2,
+					0,
+					math.huge,
+					-math.huge,
+				})
+			do
+				jestExpect(function()
+					jestExpect(testCase :: any).toBeNan()
+				end).toThrowErrorMatchingSnapshot()
 				jestExpect(testCase).never.toBeNan()
 			end
 		end)
 
 		-- ROBLOX deviation: tests our alias
 		it("aliased as toBeNaN()", function()
-			jestExpect(0/0).toBeNaN()
+			jestExpect(0 / 0).toBeNaN()
 		end)
 	end)
 
 	describe(".toBeNil()", function()
-		for _, testCase in ipairs({
-			{},
-			true,
-			1,
-			'a',
-			0.5,
-			function() end,
-			math.huge
-		}) do
-			it('fails for ' .. stringify(testCase), function()
+		for _, testCase in
+			ipairs({
+				{},
+				true,
+				1,
+				"a",
+				0.5,
+				function() end,
+				math.huge,
+			})
+		do
+			it("fails for " .. stringify(testCase), function()
 				jestExpect(testCase).never.toBeNil()
 
-				jestExpect(function() jestExpect(testCase :: any).toBeNil() end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(testCase :: any).toBeNil()
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
 		it("fails for null with .not", function()
-			jestExpect(function() jestExpect(nil).never.toBeNil() end).toThrowErrorMatchingSnapshot()
+			jestExpect(function()
+				jestExpect(nil).never.toBeNil()
+			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it("pass for null", function()
@@ -1013,20 +1068,26 @@ return function()
 	end)
 
 	describe(".toBeDefined() .toBeUndefined()", function()
-		for _, testCase in ipairs({
-			{},
-			true,
-			1,
-			'a',
-			0.5,
-			function() end,
-			math.huge
-		}) do
-			it(stringify(testCase) .. ' is defined', function()
+		for _, testCase in
+			ipairs({
+				{},
+				true,
+				1,
+				"a",
+				0.5,
+				function() end,
+				math.huge,
+			})
+		do
+			it(stringify(testCase) .. " is defined", function()
 				jestExpect(testCase).toBeDefined()
 
-				jestExpect(function() jestExpect(testCase :: any).never.toBeDefined() end).toThrowErrorMatchingSnapshot()
-				jestExpect(function() jestExpect(testCase :: any).toBeUndefined() end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(testCase :: any).never.toBeDefined()
+				end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(testCase :: any).toBeUndefined()
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -1059,17 +1120,18 @@ return function()
 		end)
 	end)
 
-	describe(".toBeGreaterThan(), .toBeLessThan(), " ..
-		".toBeGreaterThanOrEqual(), .toBeLessThanOrEqual()", function()
-		for _, testCase in ipairs({
-			{1, 2},
-			{-math.huge, math.huge},
-			{Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER},
-			{0x11, 0x22},
-			{tonumber("11", 2), tonumber("111", 2)},
-			{tonumber("11", 8), tonumber("22", 8)},
-			{0.1, 0.2}
-		}) do
+	describe(".toBeGreaterThan(), .toBeLessThan(), " .. ".toBeGreaterThanOrEqual(), .toBeLessThanOrEqual()", function()
+		for _, testCase in
+			ipairs({
+				{ 1, 2 },
+				{ -math.huge, math.huge },
+				{ Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER },
+				{ 0x11, 0x22 },
+				{ tonumber("11", 2), tonumber("111", 2) },
+				{ tonumber("11", 8), tonumber("22", 8) },
+				{ 0.1, 0.2 },
+			})
+		do
 			local small = testCase[1]
 			local big = testCase[2]
 			it(string.format("{pass: true} expect(%s).toBeLessThan(%s)", small, big), function()
@@ -1143,13 +1205,15 @@ return function()
 			ROBLOX deviation: skipped since BigInt doesn't exist in Luau
 			original code lines 1278 - 1372
 		]]
-		for _, testCase in ipairs({
-			{1, 1},
-			{Number.MIN_SAFE_INTEGER, Number.MIN_SAFE_INTEGER},
-			{Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER},
-			{math.huge, math.huge},
-			{-math.huge, -math.huge}
-		}) do
+		for _, testCase in
+			ipairs({
+				{ 1, 1 },
+				{ Number.MIN_SAFE_INTEGER, Number.MIN_SAFE_INTEGER },
+				{ Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER },
+				{ math.huge, math.huge },
+				{ -math.huge, -math.huge },
+			})
+		do
 			local n1 = testCase[1]
 			local n2 = testCase[2]
 
@@ -1196,19 +1260,23 @@ return function()
 			-- )
 		end)
 
-		for _, testCase in ipairs({
-			{{1, 2, 3, 4}, 1},
-			{{"a", "b", "c", "d"}, "a"},
-			{{Symbol.for_("a")}, Symbol.for_("a")},
-			{"abcdef", "abc"},
-			{"11112111", "2"},
-			{Set.new({"abc", "def"}), "abc"},
-			{{0, 1}, 1}
-		}) do
+		for _, testCase in
+			ipairs({
+				{ { 1, 2, 3, 4 }, 1 },
+				{ { "a", "b", "c", "d" }, "a" },
+				{ { Symbol.for_("a") }, Symbol.for_("a") },
+				{ "abcdef", "abc" },
+				{ "11112111", "2" },
+				{ Set.new({ "abc", "def" }), "abc" },
+				{ { 0, 1 }, 1 },
+			})
+		do
 			it(string.format("'%s' contains '%s'", stringify(testCase[1]), stringify(testCase[2])), function()
 				jestExpect(testCase[1]).toContain(testCase[2])
 
-				jestExpect(function() jestExpect(testCase[1]).never.toContain(testCase[2]) end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(testCase[1]).never.toContain(testCase[2])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -1217,14 +1285,18 @@ return function()
 			original code lines 1461 - 1470
 		]]
 
-		for _, testCase in ipairs({
-			{{1, 2, 3}, 4},
-			{{{}, {}}, {}}
-		}) do
+		for _, testCase in
+			ipairs({
+				{ { 1, 2, 3 }, 4 },
+				{ { {}, {} }, {} },
+			})
+		do
 			it(string.format("'%s' does not contain '%s'", stringify(testCase[1]), stringify(testCase[2])), function()
 				jestExpect(testCase[1]).never.toContain(testCase[2])
 
-				jestExpect(function() jestExpect(testCase[1]).toContain(testCase[2]) end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(testCase[1]).toContain(testCase[2])
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -1234,21 +1306,25 @@ return function()
 		]]
 
 		it("error cases", function()
-			jestExpect(function() jestExpect(nil).toContain(1) end).toThrowErrorMatchingSnapshot()
-			jestExpect(function() jestExpect('-0').toContain(-0) end).toThrowErrorMatchingSnapshot()
+			jestExpect(function()
+				jestExpect(nil).toContain(1)
+			end).toThrowErrorMatchingSnapshot()
+			jestExpect(function()
+				jestExpect("-0").toContain(-0)
+			end).toThrowErrorMatchingSnapshot()
 			-- ROBLOX deviation START: Lua specific case for `nil`
 			jestExpect(function()
-				jestExpect('nil').toContain(nil)
+				jestExpect("nil").toContain(nil)
 			end).toThrowErrorMatchingSnapshot()
 			-- ROBLOX deviation END
 			jestExpect(function()
-				jestExpect('null').toContain(nil)
+				jestExpect("null").toContain(nil)
 			end).toThrowErrorMatchingSnapshot()
 			jestExpect(function()
-				jestExpect('undefined').toContain(nil)
+				jestExpect("undefined").toContain(nil)
 			end).toThrowErrorMatchingSnapshot()
 			jestExpect(function()
-				jestExpect('false').toContain(false)
+				jestExpect("false").toContain(false)
 			end).toThrowErrorMatchingSnapshot()
 			-- ROBLOX deviation START: skipped since BigInt doesn't exist in Luau
 			-- jestExpect(function()
@@ -1257,87 +1333,119 @@ return function()
 			-- ROBLOX deviation END
 		end)
 
-		for _, testCase in ipairs({
-			{{1, 2, 3, 4}, 1},
-			{{'a', 'b', 'c', 'd'}, 'a'},
-			{{Symbol.for_("a")}, Symbol.for_("a")},
-			{{{a = 'b'}, {a = 'c'}}, {a = 'b'}},
-			{Set.new({1, 2, 3, 4}), 1},
-			{{0, 1}, 1},
-			{{{1, 2}, {3, 4}}, {3, 4}}
-		}) do
-			it(string.format("'%s' contains a value equal to '%s'", stringify(testCase[1]), stringify(testCase[2])), function()
-				jestExpect(testCase[1]).toContainEqual(testCase[2])
+		for _, testCase in
+			ipairs({
+				{ { 1, 2, 3, 4 }, 1 },
+				{ { "a", "b", "c", "d" }, "a" },
+				{ { Symbol.for_("a") }, Symbol.for_("a") },
+				{ { { a = "b" }, { a = "c" } }, { a = "b" } },
+				{ Set.new({ 1, 2, 3, 4 }), 1 },
+				{ { 0, 1 }, 1 },
+				{ { { 1, 2 }, { 3, 4 } }, { 3, 4 } },
+			})
+		do
+			it(
+				string.format("'%s' contains a value equal to '%s'", stringify(testCase[1]), stringify(testCase[2])),
+				function()
+					jestExpect(testCase[1]).toContainEqual(testCase[2])
 
-				jestExpect(function() jestExpect(testCase[1]).never.toContainEqual(testCase[2]) end).toThrowErrorMatchingSnapshot()
-			end)
+					jestExpect(function()
+						jestExpect(testCase[1]).never.toContainEqual(testCase[2])
+					end).toThrowErrorMatchingSnapshot()
+				end
+			)
 		end
 
-		for _, testCase in ipairs({
-			{{{a = 'b'}, {a = 'c'}}, {a = 'd'}}
-		}) do
-			it(string.format("'%s' does not contain a value equal to '%s'", stringify(testCase[1]), stringify(testCase[2])), function()
-				jestExpect(testCase[1]).never.toContainEqual(testCase[2])
+		for _, testCase in
+			ipairs({
+				{ { { a = "b" }, { a = "c" } }, { a = "d" } },
+			})
+		do
+			it(
+				string.format(
+					"'%s' does not contain a value equal to '%s'",
+					stringify(testCase[1]),
+					stringify(testCase[2])
+				),
+				function()
+					jestExpect(testCase[1]).never.toContainEqual(testCase[2])
 
-				jestExpect(function() jestExpect(testCase[1]).toContainEqual(testCase[2]) end).toThrowErrorMatchingSnapshot()
-			end)
+					jestExpect(function()
+						jestExpect(testCase[1]).toContainEqual(testCase[2])
+					end).toThrowErrorMatchingSnapshot()
+				end
+			)
 		end
 
 		it("error cases for toContainEqual", function()
-			jestExpect(function() jestExpect(nil).toContainEqual(1) end).toThrowErrorMatchingSnapshot()
+			jestExpect(function()
+				jestExpect(nil).toContainEqual(1)
+			end).toThrowErrorMatchingSnapshot()
 		end)
 	end)
 
 	describe(".toBeCloseTo", function()
-		for _, testCase in ipairs({
-			{0, 0},
-			{0, 0.001},
-			{1.23, 1.229},
-			{1.23, 1.226},
-			{1.23, 1.225},
-			{1.23, 1.234},
-			{math.huge, math.huge},
-			{-math.huge, -math.huge}
-		}) do
+		for _, testCase in
+			ipairs({
+				{ 0, 0 },
+				{ 0, 0.001 },
+				{ 1.23, 1.229 },
+				{ 1.23, 1.226 },
+				{ 1.23, 1.225 },
+				{ 1.23, 1.234 },
+				{ math.huge, math.huge },
+				{ -math.huge, -math.huge },
+			})
+		do
 			local n1 = testCase[1]
 			local n2 = testCase[2]
 			it(string.format("{pass: true} expect(%s).toBeCloseTo(%s)", n1, n2), function()
 				jestExpect(n1).toBeCloseTo(n2)
 
-				jestExpect(function() jestExpect(n1).never.toBeCloseTo(n2) end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(n1).never.toBeCloseTo(n2)
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
-		for _, testCase in ipairs({
-			{0, 0.01},
-			{1, 1.23},
-			{1.23, 1.2249999},
-			{math.huge, -math.huge},
-			{math.huge, 1.23},
-			{-math.huge, -1.23}
-		}) do
+		for _, testCase in
+			ipairs({
+				{ 0, 0.01 },
+				{ 1, 1.23 },
+				{ 1.23, 1.2249999 },
+				{ math.huge, -math.huge },
+				{ math.huge, 1.23 },
+				{ -math.huge, -1.23 },
+			})
+		do
 			local n1 = testCase[1]
 			local n2 = testCase[2]
 			it(string.format("{pass: false} expect(%s).toBeCloseTo(%s)", n1, n2), function()
 				jestExpect(n1).never.toBeCloseTo(n2)
 
-				jestExpect(function() jestExpect(n1).toBeCloseTo(n2) end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(n1).toBeCloseTo(n2)
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
-		for _, testCase in ipairs({
-			{0, 0.1, 0},
-			{0, 0.0001, 3},
-			{0, 0.000004, 5},
-			{2.0000002, 2, 5}
-		}) do
+		for _, testCase in
+			ipairs({
+				{ 0, 0.1, 0 },
+				{ 0, 0.0001, 3 },
+				{ 0, 0.000004, 5 },
+				{ 2.0000002, 2, 5 },
+			})
+		do
 			local n1 = testCase[1]
 			local n2 = testCase[2]
 			local p = testCase[3]
 			it(string.format("{pass: true} expect(%s).toBeCloseTo(%s, %s)", n1, n2, p), function()
 				jestExpect(n1).toBeCloseTo(n2, p)
 
-				jestExpect(function() jestExpect(n1).never.toBeCloseTo(n2, p) end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(n1).never.toBeCloseTo(n2, p)
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -1345,15 +1453,19 @@ return function()
 			it("promise empty isNot false received", function()
 				local precision = 3
 				local expected = 0
-				local received = ''
+				local received = ""
 
-				jestExpect(function() jestExpect(received).toBeCloseTo(expected, precision) end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(received).toBeCloseTo(expected, precision)
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it("promise empty isNot true expected", function()
 				local received = 0.1
 				-- expected is undefined
-				jestExpect(function() jestExpect(received).never.toBeCloseTo() end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(received).never.toBeCloseTo()
+				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			-- ROBLOX deviation: omitted promise rejects and resolve tests
@@ -1361,11 +1473,13 @@ return function()
 	end)
 
 	describe(".toMatch()", function()
-		for _, testCase in ipairs({
-			{'foo', 'foo'},
-			{'Foo bar', '[fF][oO][oO]'}, -- case insensitive match
-			{'Foo bar', RegExp('^Foo', 'i')} -- ROBLOX TODO: change to ^foo when "i" flag is working
-		}) do
+		for _, testCase in
+			ipairs({
+				{ "foo", "foo" },
+				{ "Foo bar", "[fF][oO][oO]" }, -- case insensitive match
+				{ "Foo bar", RegExp("^Foo", "i") }, -- ROBLOX TODO: change to ^foo when "i" flag is working
+			})
+		do
 			local n1 = testCase[1]
 			local n2 = testCase[2]
 			it(string.format("{pass: true} expect(%s).toMatch(%s)", n1, tostring(n2)), function()
@@ -1373,61 +1487,83 @@ return function()
 			end)
 		end
 
-		for _, testCase in ipairs({
-			{'bar', 'foo'},
-			{'bar', RegExp('foo')}
-		}) do
+		for _, testCase in
+			ipairs({
+				{ "bar", "foo" },
+				{ "bar", RegExp("foo") },
+			})
+		do
 			local n1 = testCase[1]
 			local n2 = testCase[2]
 			it(string.format("throws: [%s, %s]", n1, tostring(n2)), function()
-				jestExpect(function() jestExpect(n1).toMatch(n2) end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(n1).toMatch(n2)
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
-		for _, testCase in ipairs({
-			{1, 'foo'},
-			{{}, 'foo'},
-			{true, 'foo'},
-			{RegExp('foo', 'i'), 'foo'},
-			{function() end, 'foo'},
-			{nil, 'foo'}
-		}) do
+		for _, testCase in
+			ipairs({
+				{ 1, "foo" },
+				{ {}, "foo" },
+				{ true, "foo" },
+				{ RegExp("foo", "i"), "foo" },
+				{ function() end, "foo" },
+				{ nil, "foo" },
+			})
+		do
 			local n1 = testCase[1]
 			local n2 = testCase[2]
-			it(string.format("throws if non String actual value passed: [%s, %s]", stringify(n1), stringify(n2)), function()
-				jestExpect(function() jestExpect(n1).toMatch(n2) end).toThrowErrorMatchingSnapshot()
-			end)
+			it(
+				string.format("throws if non String actual value passed: [%s, %s]", stringify(n1), stringify(n2)),
+				function()
+					jestExpect(function()
+						jestExpect(n1).toMatch(n2)
+					end).toThrowErrorMatchingSnapshot()
+				end
+			)
 		end
 
-		for _, testCase in ipairs({
-			{'foo', 1},
-			{'foo', {}},
-			{'foo', true},
-			{'foo', function() end},
-			{'foo', nil}
-		}) do
+		for _, testCase in
+			ipairs({
+				{ "foo", 1 },
+				{ "foo", {} },
+				{ "foo", true },
+				{ "foo", function() end },
+				{ "foo", nil },
+			})
+		do
 			local n1 = testCase[1]
 			local n2 = testCase[2]
-			it(string.format("throws if non String/RegExp expected value passed: [%s, %s]", stringify(n1), stringify(n2)), function()
-				jestExpect(function() jestExpect(n1).toMatch(n2) end).toThrowErrorMatchingSnapshot()
-			end)
+			it(
+				string.format(
+					"throws if non String/RegExp expected value passed: [%s, %s]",
+					stringify(n1),
+					stringify(n2)
+				),
+				function()
+					jestExpect(function()
+						jestExpect(n1).toMatch(n2)
+					end).toThrowErrorMatchingSnapshot()
+				end
+			)
 		end
 
 		-- ROBLOX deviation: we use toContain here as in our translation toMatch is
 		-- used for patterns and toContain is used for explicit string matching
 		it("escapes strings properly", function()
-			jestExpect('this?: throws').toContain('this?: throws')
+			jestExpect("this?: throws").toContain("this?: throws")
 		end)
 
-		it('does not maintain RegExp state between calls', function()
-			local regex = RegExp("[fF]\\d+", 'i') -- ROBLOX TODO: change to [f] when "i" flag is working
+		it("does not maintain RegExp state between calls", function()
+			local regex = RegExp("[fF]\\d+", "i") -- ROBLOX TODO: change to [f] when "i" flag is working
 
-			jestExpect('f123').toMatch(regex)
-			jestExpect('F456').toMatch(regex)
+			jestExpect("f123").toMatch(regex)
+			jestExpect("F456").toMatch(regex)
 			-- ROBLOX deviation: omitted expect call for RegExp state
 		end)
 
-		it('tests regex logic', function()
+		it("tests regex logic", function()
 			jestExpect("Cristopher").never.toMatch("Stop")
 			jestExpect("Cristopher").toMatch("stop")
 			jestExpect("Cristopher").never.toMatch(RegExp("Stop"))
@@ -1437,19 +1573,17 @@ return function()
 
 	describe(".toHaveLength", function()
 		-- ROBLOX deviation: {function() end, 0} is omitted, can't get the argument count of a function in Lua
-		for _, testCase in ipairs({
-			{{1, 2}, 2},
-			{{}, 0},
-			{{'a', 'b'}, 2},
-			{'', 0}
-		}) do
+		for _, testCase in
+			ipairs({
+				{ { 1, 2 }, 2 },
+				{ {}, 0 },
+				{ { "a", "b" }, 2 },
+				{ "", 0 },
+			})
+		do
 			local received = testCase[1]
 			local length = testCase[2]
-			local testname = string.format(
-				'{pass: true} expect(%s).toHaveLength(%s)',
-				stringify(received),
-				length
-			)
+			local testname = string.format("{pass: true} expect(%s).toHaveLength(%s)", stringify(received), length)
 			it(testname, function()
 				jestExpect(received).toHaveLength(length)
 				jestExpect(function()
@@ -1460,28 +1594,23 @@ return function()
 
 		-- ROBLOX deviation: custom test to allow for Lua objects with a length value
 		local obj = { length = 12 }
-		it(string.format(
-			'{pass: false} expect(%s).toHaveLength(12)',
-			stringify(obj)
-		), function()
+		it(string.format("{pass: false} expect(%s).toHaveLength(12)", stringify(obj)), function()
 			jestExpect(obj).toHaveLength(12)
 		end)
 
 		-- ROBLOX deviation: omitted function test, no argument count of function in lua
-		for _, testCase in ipairs({
-			{{1, 2}, 3},
-			{{}, 1},
-			{{'a', 'b'}, 99},
-			{'abc', 66},
-			{'', 1}
-		}) do
+		for _, testCase in
+			ipairs({
+				{ { 1, 2 }, 3 },
+				{ {}, 1 },
+				{ { "a", "b" }, 99 },
+				{ "abc", 66 },
+				{ "", 1 },
+			})
+		do
 			local received = testCase[1]
 			local length = testCase[2]
-			local testname = string.format(
-				'{pass: false} expect(%s).toHaveLength(%s)',
-				stringify(received),
-				length
-			)
+			local testname = string.format("{pass: false} expect(%s).toHaveLength(%s)", stringify(received), length)
 			it(testname, function()
 				jestExpect(received).never.toHaveLength(length)
 				jestExpect(function()
@@ -1490,9 +1619,9 @@ return function()
 			end)
 		end
 
-		it('error cases', function()
+		it("error cases", function()
 			jestExpect(function()
-				jestExpect({a = 9}).toHaveLength(1)
+				jestExpect({ a = 9 }).toHaveLength(1)
 			end).toThrowErrorMatchingSnapshot()
 			jestExpect(function()
 				jestExpect(0).toHaveLength(1)
@@ -1502,43 +1631,43 @@ return function()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
-		describe('matcher error expected length', function()
-			it('not number', function()
-				local expected = '3'
-				local received = 'abc'
+		describe("matcher error expected length", function()
+			it("not number", function()
+				local expected = "3"
+				local received = "abc"
 				jestExpect(function()
 					jestExpect(received).never.toHaveLength(expected)
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			-- ROBLOX deviation: remove promise rejects/resolves in the following tests for now
-			it('number inf', function()
+			it("number inf", function()
 				local expected = math.huge
-				local received = 'abc'
+				local received = "abc"
 				jestExpect(function()
 					jestExpect(received).toHaveLength(expected)
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
-			it('number nan', function()
-				local expected = 0/0
-				local received = 'abc'
+			it("number nan", function()
+				local expected = 0 / 0
+				local received = "abc"
 				jestExpect(function()
 					jestExpect(received).never.toHaveLength(expected)
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
-			it('number float', function()
+			it("number float", function()
 				local expected = 0.5
-				local received = 'abc'
+				local received = "abc"
 				jestExpect(function()
 					jestExpect(received).toHaveLength(expected)
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
-			it('number negative integer', function()
+			it("number negative integer", function()
 				local expected = -3
-				local received = 'abc'
+				local received = "abc"
 				jestExpect(function()
 					jestExpect(received).never.toHaveLength(expected)
 				end).toThrowErrorMatchingSnapshot()
@@ -1547,109 +1676,137 @@ return function()
 	end)
 
 	describe(".toHaveProperty()", function()
-		local pathDiff = {'children', 1}
+		local pathDiff = { "children", 1 }
 
 		local receivedDiffSingle = {
-			children = {'"That cartoon"'},
+			children = { '"That cartoon"' },
 			props = nil,
-			type = 'p'
+			type = "p",
 		}
 
 		local valueDiffSingle = '"That cat cartoon"'
 
 		local receivedDiffMultiple = {
 			children = {
-				'Roses are red.\nViolets are blue.\nTesting with Jest is good for you.'
+				"Roses are red.\nViolets are blue.\nTesting with Jest is good for you.",
 			},
 			props = nil,
-			type = 'pre'
+			type = "pre",
 		}
 
-		local valueDiffMultiple = 'Roses are red, violets are blue.\nTesting with Jest\nIs good for you.'
+		local valueDiffMultiple = "Roses are red, violets are blue.\nTesting with Jest\nIs good for you."
 
-		for _, testCase in ipairs({
-			{{a = {b = {c = {d = 1}}}}, 'a.b.c.d', 1},
-			{{a = {b = {c = {d = 1}}}}, {'a', 'b', 'c', 'd'}, 1},
-			{{['a.b.c.d'] = 1}, {'a.b.c.d'}, 1},
-			{{a = {b = {1, 2, 3}}}, {'a', 'b', 2}, 2},
-			{{a = {b = {1, 2, 3}}}, {'a', 'b', 2}, jestExpect.any("number")},
-			{{a = 0}, 'a', 0},
-			{{a = {b = false}}, 'a.b', false},
-			--[[
+		for _, testCase in
+			ipairs({
+				{ { a = { b = { c = { d = 1 } } } }, "a.b.c.d", 1 },
+				{ { a = { b = { c = { d = 1 } } } }, { "a", "b", "c", "d" }, 1 },
+				{ { ["a.b.c.d"] = 1 }, { "a.b.c.d" }, 1 },
+				{ { a = { b = { 1, 2, 3 } } }, { "a", "b", 2 }, 2 },
+				{ { a = { b = { 1, 2, 3 } } }, { "a", "b", 2 }, jestExpect.any("number") },
+				{ { a = 0 }, "a", 0 },
+				{ { a = { b = false } }, "a.b", false },
+				--[[
 				ROBLOX deviation: we omit the following test case since it isn't behavior
 				we can easily support and maintain consistency with in Lua. The test
 				case also looks like it is slated for removal in upstream in the next
 				major breaking change
 				{{a = {}}, 'a.b', nil}
 			]]
-			{{a = {b = {c = 5}}}, 'a.b', {c = 5}},
-			-- ROBLOX TODO: enable following tests
-			{{a = {b = {{c = {{d = 1}}}}}}, 'a.b[1].c[1].d', 1},
-			{{a = {b = {{c = {d = {{e = 1}, {f = 2}}}}}}}, 'a.b[1].c.d[2].f', 2},
-			{{a = {b = {{{c = {{d = 1}}}}}}}, 'a.b[1][1].c[1].d', 1},
-			{Object.assign({}, {property = 1}), 'property', 1},
-			-- ROBLOX deviation: len isn't a property of an object like it is in JS
-			{'', 'len', jestExpect.any("function")}
-		}) do
+				{ { a = { b = { c = 5 } } }, "a.b", { c = 5 } },
+				-- ROBLOX TODO: enable following tests
+				{ { a = { b = { { c = { { d = 1 } } } } } }, "a.b[1].c[1].d", 1 },
+				{ { a = { b = { { c = { d = { { e = 1 }, { f = 2 } } } } } } }, "a.b[1].c.d[2].f", 2 },
+				{ { a = { b = { { { c = { { d = 1 } } } } } } }, "a.b[1][1].c[1].d", 1 },
+				{ Object.assign({}, { property = 1 }), "property", 1 },
+				-- ROBLOX deviation: len isn't a property of an object like it is in JS
+				{ "", "len", jestExpect.any("function") },
+			})
+		do
 			local obj = testCase[1]
 			local keyPath = testCase[2]
 			local value = testCase[3]
 
-			it(string.format("{pass: true} expect(%s).toHaveProperty(%s, %s)",
-				stringify(obj), stringify(keyPath), stringify(value)), function()
+			it(
+				string.format(
+					"{pass: true} expect(%s).toHaveProperty(%s, %s)",
+					stringify(obj),
+					stringify(keyPath),
+					stringify(value)
+				),
+				function()
 					jestExpect(obj).toHaveProperty(keyPath, value)
-					jestExpect(function() jestExpect(obj).never.toHaveProperty(keyPath, value) end).toThrowErrorMatchingSnapshot()
-			end)
+					jestExpect(function()
+						jestExpect(obj).never.toHaveProperty(keyPath, value)
+					end).toThrowErrorMatchingSnapshot()
+				end
+			)
 		end
 
 		-- ROBLOX deviation: we omit two test cases where the property to check for
 		-- is undefined in upstream and we do not support checking for nil in
 		-- toHaveProperty
-		for _, testCase in ipairs({
-			{{a = {b = {c = {d = 1}}}}, 'a.b.ttt.d', 1},
-			{{a = {b = {c = {d = 1}}}}, 'a.b.c.d', 2},
-			{{['a.b.c.d'] = 1}, 'a.b.c.d', 2},
-			{{['a.b.c.d'] = 1}, {'a.b.c.d'}, 2},
-			{receivedDiffSingle, pathDiff, valueDiffSingle},
-			{receivedDiffMultiple, pathDiff, valueDiffMultiple},
-			{{a = {b = {c = {d = 1}}}}, {'a', 'b', 'c', 'd'}, 2},
-			{{a = {b = {c = {}}}}, 'a.b.c.d', 1},
-			{{a = 1}, 'a.b.c.d', 5},
-			{{}, 'a', 'test'},
-			--{{a = {b = 3}}, 'a.b', nil},
-			{1, 'a.b.c', 'test'},
-			{'abc', 'a.b.c', {a = 5}},
-			{{a = {b = {c = 5}}}, 'a.b', {c = 4}},
-			-- {{a = {}}, 'a.b', nil}
-		}) do
+		for _, testCase in
+			ipairs({
+				{ { a = { b = { c = { d = 1 } } } }, "a.b.ttt.d", 1 },
+				{ { a = { b = { c = { d = 1 } } } }, "a.b.c.d", 2 },
+				{ { ["a.b.c.d"] = 1 }, "a.b.c.d", 2 },
+				{ { ["a.b.c.d"] = 1 }, { "a.b.c.d" }, 2 },
+				{ receivedDiffSingle, pathDiff, valueDiffSingle },
+				{ receivedDiffMultiple, pathDiff, valueDiffMultiple },
+				{ { a = { b = { c = { d = 1 } } } }, { "a", "b", "c", "d" }, 2 },
+				{ { a = { b = { c = {} } } }, "a.b.c.d", 1 },
+				{ { a = 1 }, "a.b.c.d", 5 },
+				{ {}, "a", "test" },
+				--{{a = {b = 3}}, 'a.b', nil},
+				{ 1, "a.b.c", "test" },
+				{ "abc", "a.b.c", { a = 5 } },
+				{ { a = { b = { c = 5 } } }, "a.b", { c = 4 } },
+				-- {{a = {}}, 'a.b', nil}
+			})
+		do
 			local obj = testCase[1]
 			local keyPath = testCase[2]
 			local value = testCase[3]
 
-			it(string.format("{pass: false} expect(%s).toHaveProperty(%s, %s)",
-				stringify(obj), stringify(keyPath), stringify(value)), function()
-				jestExpect(function() jestExpect(obj).toHaveProperty(keyPath, value) end).toThrowErrorMatchingSnapshot()
+			it(
+				string.format(
+					"{pass: false} expect(%s).toHaveProperty(%s, %s)",
+					stringify(obj),
+					stringify(keyPath),
+					stringify(value)
+				),
+				function()
+					jestExpect(function()
+						jestExpect(obj).toHaveProperty(keyPath, value)
+					end).toThrowErrorMatchingSnapshot()
 
-				jestExpect(obj).never.toHaveProperty(keyPath, value)
-			end)
+					jestExpect(obj).never.toHaveProperty(keyPath, value)
+				end
+			)
 		end
 
-		for _, testCase in ipairs({
-			{{a = {b = {c = {d = 1}}}}, 'a.b.c.d'},
-			{{a = {b = {c = {d = 1}}}}, {'a', 'b', 'c', 'd'}},
-			{{['a.b.c.d'] = 1}, {'a.b.c.d'}},
-			{{a = {b = {1, 2, 3}}}, {'a', 'b', 2}},
-			{{a = 0}, 'a'},
-			{{a = {b = false}}, 'a.b'},
-		}) do
+		for _, testCase in
+			ipairs({
+				{ { a = { b = { c = { d = 1 } } } }, "a.b.c.d" },
+				{ { a = { b = { c = { d = 1 } } } }, { "a", "b", "c", "d" } },
+				{ { ["a.b.c.d"] = 1 }, { "a.b.c.d" } },
+				{ { a = { b = { 1, 2, 3 } } }, { "a", "b", 2 } },
+				{ { a = 0 }, "a" },
+				{ { a = { b = false } }, "a.b" },
+			})
+		do
 			local obj = testCase[1]
 			local keyPath = testCase[2]
 
-			it(string.format("{pass: true} expect(%s).toHaveProperty(%s)",
-				stringify(obj), stringify(keyPath)), function()
+			it(
+				string.format("{pass: true} expect(%s).toHaveProperty(%s)", stringify(obj), stringify(keyPath)),
+				function()
 					jestExpect(obj).toHaveProperty(keyPath)
-					jestExpect(function() jestExpect(obj).never.toHaveProperty(keyPath) end).toThrowErrorMatchingSnapshot()
-			end)
+					jestExpect(function()
+						jestExpect(obj).never.toHaveProperty(keyPath)
+					end).toThrowErrorMatchingSnapshot()
+				end
+			)
 		end
 
 		--[[
@@ -1679,18 +1836,22 @@ return function()
 			});
 		]]
 
-		for _, testCase in ipairs({
-			{nil, 'a.b'},
-			{nil, 'a'},
-			{{a = {b = {}}}, nil},
-			{{a = {b = {}}}, 1},
-			{{}, {}}
-		}) do
+		for _, testCase in
+			ipairs({
+				{ nil, "a.b" },
+				{ nil, "a" },
+				{ { a = { b = {} } }, nil },
+				{ { a = { b = {} } }, 1 },
+				{ {}, {} },
+			})
+		do
 			local obj = testCase[1]
 			local keyPath = testCase[2]
 
 			it(string.format("{error} expect(%s).toHaveProperty(%s)", stringify(obj), stringify(keyPath)), function()
-				jestExpect(function() jestExpect(obj).toHaveProperty(keyPath) end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(obj).toHaveProperty(keyPath)
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 	end)
@@ -1704,7 +1865,9 @@ return function()
 				it(string.format("{pass: true} expect(%s).toMatchObject(%s)", stringify(n1), stringify(n2)), function()
 					jestExpect(n1).toMatchObject(n2)
 
-					jestExpect(function() jestExpect(n1).never.toMatchObject(n2) end).toThrowErrorMatchingSnapshot()
+					jestExpect(function()
+						jestExpect(n1).never.toMatchObject(n2)
+					end).toThrowErrorMatchingSnapshot()
 				end)
 			end
 		end
@@ -1717,145 +1880,156 @@ return function()
 				it(string.format("{pass: false} expect(%s).toMatchObject(%s)", stringify(n1), stringify(n2)), function()
 					jestExpect(n1).never.toMatchObject(n2)
 
-					jestExpect(function() jestExpect(n1).toMatchObject(n2) end).toThrowErrorMatchingSnapshot()
+					jestExpect(function()
+						jestExpect(n1).toMatchObject(n2)
+					end).toThrowErrorMatchingSnapshot()
 				end)
 			end
 		end
 
-		describe('circular references', function()
-			describe('simple circular references', function()
-				local circularObjA1 = {a = 'hello'}
+		describe("circular references", function()
+			describe("simple circular references", function()
+				local circularObjA1 = { a = "hello" }
 				circularObjA1.ref = circularObjA1
 
-				local circularObjB = {a = 'world'}
+				local circularObjB = { a = "world" }
 				circularObjB.ref = circularObjB
 
-				local circularObjA2 = {a = 'hello'}
+				local circularObjA2 = { a = "hello" }
 				circularObjA2.ref = circularObjA2
 
 				local primitiveInsteadOfRef = {}
-				primitiveInsteadOfRef.ref = 'not a ref'
+				primitiveInsteadOfRef.ref = "not a ref"
 
 				testNotToMatchSnapshots({
-					{circularObjA1, {}},
-					{circularObjA2, circularObjA1}
+					{ circularObjA1, {} },
+					{ circularObjA2, circularObjA1 },
 				})
 
 				testToMatchSnapshots({
-					{{}, circularObjA1},
-					{circularObjA1, circularObjB},
-					{primitiveInsteadOfRef, circularObjA1}
+					{ {}, circularObjA1 },
+					{ circularObjA1, circularObjB },
+					{ primitiveInsteadOfRef, circularObjA1 },
 				})
 			end)
 
 			describe("transitive circular references", function()
-				local transitiveCircularObjA1 = {a = 'hello'}
-				transitiveCircularObjA1.nestedObj = {parentObj = transitiveCircularObjA1}
+				local transitiveCircularObjA1 = { a = "hello" }
+				transitiveCircularObjA1.nestedObj = { parentObj = transitiveCircularObjA1 }
 
-				local transitiveCircularObjA2 = {a = 'hello'}
+				local transitiveCircularObjA2 = { a = "hello" }
 				transitiveCircularObjA2.nestedObj = {
-					parentObj = transitiveCircularObjA2
+					parentObj = transitiveCircularObjA2,
 				}
 
-				local transitiveCircularObjB = {a = 'world'}
+				local transitiveCircularObjB = { a = "world" }
 				transitiveCircularObjB.nestedObj = {
-					parentObj = transitiveCircularObjB
+					parentObj = transitiveCircularObjB,
 				}
 
 				local primitiveInsteadOfRef = {}
 				primitiveInsteadOfRef.nestedObj = {
-					parentObj = 'not the parent ref'
+					parentObj = "not the parent ref",
 				}
 
 				testNotToMatchSnapshots({
-					{transitiveCircularObjA1, {}},
-					{transitiveCircularObjA2, transitiveCircularObjA1}
+					{ transitiveCircularObjA1, {} },
+					{ transitiveCircularObjA2, transitiveCircularObjA1 },
 				})
 
 				testToMatchSnapshots({
-					{{}, transitiveCircularObjA1},
-					{transitiveCircularObjB, transitiveCircularObjA1},
-					{primitiveInsteadOfRef, transitiveCircularObjA1}
+					{ {}, transitiveCircularObjA1 },
+					{ transitiveCircularObjB, transitiveCircularObjA1 },
+					{ primitiveInsteadOfRef, transitiveCircularObjA1 },
 				})
 			end)
 		end)
 
 		testNotToMatchSnapshots({
-			{{a = 'b', c = 'd'}, {a = 'b'}},
+			{ { a = "b", c = "d" }, { a = "b" } },
 			{
-				{a = 'b', c = 'd'},
-				{a = 'b', c = 'd'}
+				{ a = "b", c = "d" },
+				{ a = "b", c = "d" },
 			},
 			{
-				{a = 'b', t = {x = {r = 'r'}, z = 'z'}},
-				{a = 'b', t = {z = 'z'}}
+				{ a = "b", t = { x = { r = "r" }, z = "z" } },
+				{ a = "b", t = { z = "z" } },
 			},
-			{{a = 'b', t = {x = {r = 'r'}, z = 'z'}}, {t = {x = {r = 'r'}}}},
-			{{a = {3, 4, 5}, b = 'b'}, {a = {3, 4, 5}}},
-			{{a = {3, 4, 5, 'v'}, b = 'b'}, {a = {3, 4, 5, 'v'}}},
-			{{a = 1, c = 2}, {a = jestExpect.any("number")}},
-			{{a = {x = 'x', y = 'y'}}, {a = {x = jestExpect.any("string")}}},
-			{Set.new({1, 2}), Set.new({1, 2})},
-			{Set.new({1, 2}), Set.new({2, 1})},
-			{{a = DateTime.fromUniversalTime(2015, 11, 30), b = 'b'}, {a = DateTime.fromUniversalTime(2015, 11, 30)}},
+			{ { a = "b", t = { x = { r = "r" }, z = "z" } }, { t = { x = { r = "r" } } } },
+			{ { a = { 3, 4, 5 }, b = "b" }, { a = { 3, 4, 5 } } },
+			{ { a = { 3, 4, 5, "v" }, b = "b" }, { a = { 3, 4, 5, "v" } } },
+			{ { a = 1, c = 2 }, { a = jestExpect.any("number") } },
+			{ { a = { x = "x", y = "y" } }, { a = { x = jestExpect.any("string") } } },
+			{ Set.new({ 1, 2 }), Set.new({ 1, 2 }) },
+			{ Set.new({ 1, 2 }), Set.new({ 2, 1 }) },
+			{
+				{ a = DateTime.fromUniversalTime(2015, 11, 30), b = "b" },
+				{
+					a = DateTime.fromUniversalTime(2015, 11, 30),
+				},
+			},
 			-- {{a = nil, b = 'b'}, {a = nil}}, -- funky test
-			{{a = "undefined", b = 'b'}, {a = "undefined"}},
-			{{a = {{a = 'a', b = 'b'}}}, {a = {{a = 'a'}}}},
+			{ { a = "undefined", b = "b" }, { a = "undefined" } },
+			{ { a = { { a = "a", b = "b" } } }, { a = { { a = "a" } } } },
 			{
-				{1, 2},
-				{1, 2}
+				{ 1, 2 },
+				{ 1, 2 },
 			},
-			{{}, {}},
+			{ {}, {} },
 			{
-				{a = 'b', c = 'd', [Symbol.for_('jest')] = 'jest'},
-				{a = 'b', [Symbol.for_('jest')] = 'jest'}
+				{ a = "b", c = "d", [Symbol.for_("jest")] = "jest" },
+				{ a = "b", [Symbol.for_("jest")] = "jest" },
 			},
 			{
-				{a = 'b', c = 'd', [Symbol.for_('jest')] = 'jest'},
-				{a = 'b', c = 'd', [Symbol.for_('jest')] = 'jest'}
-			}
+				{ a = "b", c = "d", [Symbol.for_("jest")] = "jest" },
+				{ a = "b", c = "d", [Symbol.for_("jest")] = "jest" },
+			},
 		}, "")
 
 		testToMatchSnapshots({
-			{{a = 'b', c = 'd'}, {e = 'b'}},
+			{ { a = "b", c = "d" }, { e = "b" } },
 			{
-				{a = 'b', c = 'd'},
-				{a = 'b!', c = 'd'}
+				{ a = "b", c = "d" },
+				{ a = "b!", c = "d" },
 			},
-			{{a = 'a', c = 'd'}, {a = jestExpect.any("number")}},
+			{ { a = "a", c = "d" }, { a = jestExpect.any("number") } },
 			{
-				{a = 'b', t = {x = {r = 'r'}, z = 'z'}},
-				{a = 'b', t = {z = {3}}},
+				{ a = "b", t = { x = { r = "r" }, z = "z" } },
+				{ a = "b", t = { z = { 3 } } },
 			},
-			{{a = 'b', t = {x = {r = 'r'}, z = 'z'}}, {t = {l = {r = 'r'}}}},
-			{{a = {3, 4, 5}, b = 'b'}, {a = {3, 4, 5, 6}}},
-			{{a = {3, 4, 5}, b = 'b'}, {a = {3, 4}}},
-			{{a = {3, 4, 'v'}, b = 'b'}, {a = {'v'}}},
-			{{a = {3, 4, 5}, b = 'b'}, {a = {b = 4}}},
-			{{a = {3, 4, 5}, b = 'b'}, {a = {b = jestExpect.any("string")}}},
+			{ { a = "b", t = { x = { r = "r" }, z = "z" } }, { t = { l = { r = "r" } } } },
+			{ { a = { 3, 4, 5 }, b = "b" }, { a = { 3, 4, 5, 6 } } },
+			{ { a = { 3, 4, 5 }, b = "b" }, { a = { 3, 4 } } },
+			{ { a = { 3, 4, "v" }, b = "b" }, { a = { "v" } } },
+			{ { a = { 3, 4, 5 }, b = "b" }, { a = { b = 4 } } },
+			{ { a = { 3, 4, 5 }, b = "b" }, { a = { b = jestExpect.any("string") } } },
 			{
-				{1, 2},
-				{1, 3},
+				{ 1, 2 },
+				{ 1, 3 },
 			},
-			{{0}, {-0}},
-			{Set.new({1, 2}), Set.new({2})}
+			{ { 0 }, { -0 } },
+			{ Set.new({ 1, 2 }), Set.new({ 2 }) },
 		})
 
-		for _, testCase in ipairs({
-			{nil, {}},
-			{4, {}},
-			{'44', {}},
-			{true, {}},
-			{{}, nil},
-			{{}, 4},
-			{{}, 'some string'},
-			{{}, true},
-		}) do
+		for _, testCase in
+			ipairs({
+				{ nil, {} },
+				{ 4, {} },
+				{ "44", {} },
+				{ true, {} },
+				{ {}, nil },
+				{ {}, 4 },
+				{ {}, "some string" },
+				{ {}, true },
+			})
+		do
 			local n1 = testCase[1]
 			local n2 = testCase[2]
 
 			it(string.format("throws expect(%s).toMatchObject(%s)", stringify(n1), stringify(n2)), function()
-				jestExpect(function() jestExpect(n1).toMatchObject(n2) end).toThrowErrorMatchingSnapshot()
+				jestExpect(function()
+					jestExpect(n1).toMatchObject(n2)
+				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
 
@@ -1864,15 +2038,17 @@ return function()
 			a.ref = a
 
 			local b = {}
-			setmetatable(b, {__index = a})
-			b.other = 'child'
+			setmetatable(b, { __index = a })
+			b.other = "child"
 
-			local matcher = {other = 'child'}
+			local matcher = { other = "child" }
 			matcher.ref = matcher
 
 			jestExpect(b).never.toMatchObject(matcher)
 
-			jestExpect(function() jestExpect(b).toMatchObject(matcher) end).toThrowErrorMatchingSnapshot()
+			jestExpect(function()
+				jestExpect(b).toMatchObject(matcher)
+			end).toThrowErrorMatchingSnapshot()
 		end)
 	end)
 end

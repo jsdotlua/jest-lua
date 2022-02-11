@@ -15,7 +15,7 @@ local chalk = require(Packages.ChalkLua)
 -- ROBLOX deviation: omitting prettyFormat import
 
 local function serialize(val: string): string
-	-- // Return the string itself, not escaped nor enclosed in double quote marks.
+	-- Return the string itself, not escaped nor enclosed in double quote marks.
 	local ansiLookupTable = {
 		[chalk.inverse.open] = "<i>",
 		[chalk.inverse.close] = "</i>",
@@ -30,7 +30,7 @@ local function serialize(val: string): string
 		[chalk.green.close] = "</>",
 		[chalk.red.close] = "</>",
 		[chalk.yellow.close] = "</>",
-		[chalk.bgYellow.close] = "</>"
+		[chalk.bgYellow.close] = "</>",
 	}
 
 	return val:gsub(ansiRegex, function(match)
@@ -48,5 +48,5 @@ end
 
 return {
 	serialize = serialize,
-	test = test
+	test = test,
 }

@@ -18,7 +18,7 @@ type Printer = Types.Printer
 local chalk = require(Packages.ChalkLua)
 
 -- ROBLOX deviation: this regex attempts to match both ansi16 and ansi256 regexes
-local ansiRegex = string.char(27).. "%[%d+;?5?;?%d*m"
+local ansiRegex = string.char(27) .. "%[%d+;?5?;?%d*m"
 
 local ansiLookupTable = {
 	[chalk.red.close] = "</>",
@@ -46,7 +46,7 @@ local ansiLookupTable = {
 	[chalk.bgYellow.open] = "<bgYellow>",
 	[chalk.inverse.open] = "<inverse>",
 	[chalk.dim.open] = "<dim>",
-	[chalk.bold.open] = "<bold>"
+	[chalk.bold.open] = "<bold>",
 }
 
 local function toHumanReadableAnsi(text: string)
@@ -63,14 +63,7 @@ local function test(val: any)
 	return typeof(val) == "string" and val:match(ansiRegex)
 end
 
-local function serialize(
-	val: string,
-	config: Config,
-	indentation: string,
-	depth: number,
-	refs: Refs,
-	printer: Printer
-)
+local function serialize(val: string, config: Config, indentation: string, depth: number, refs: Refs, printer: Printer)
 	return printer(toHumanReadableAnsi(val), config, indentation, depth, refs)
 end
 
@@ -78,5 +71,5 @@ return {
 	test = test,
 	serialize = serialize,
 	-- ROBLOX deviation: exporting ansiRegex since we don't have a separate module for it
-	ansiRegex = ansiRegex
+	ansiRegex = ansiRegex,
 }

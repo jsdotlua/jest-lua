@@ -6,7 +6,6 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-
 return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
@@ -74,8 +73,8 @@ return function()
 		end)
 
 		it("object contain readonly symbol key object", function()
-			local expected = {b = 2}
-			local received = {b = 1}
+			local expected = { b = 2 }
+			local received = { b = 1 }
 			-- ROBLOX deviation: test modified from upstream so we don't have to deal
 			-- with non-deterministic ordering of keys
 			local symbolKey = Symbol("key")
@@ -125,8 +124,8 @@ return function()
 		-- ROBLOX TODO: Implement these tests once we have asymmetricMatcher (ADO-1247)
 		describe("asymmetricMatcher", function()
 			it("minimal test", function()
-				local expected = {a = jestExpect.any("number"), b = 2}
-				local received = {a = 1, b = 1}
+				local expected = { a = jestExpect.any("number"), b = 2 }
+				local received = { a = 1, b = 1 }
 				jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 			end)
 
@@ -134,7 +133,7 @@ return function()
 				local expected = {
 					a = jestExpect.any("number"),
 					b = jestExpect.anything(),
-					c = jestExpect.arrayContaining({1, 3}),
+					c = jestExpect.arrayContaining({ 1, 3 }),
 					d = "jest is awesome",
 					e = "jest is awesome",
 					f = {
@@ -150,7 +149,7 @@ return function()
 				local received = {
 					a = 1,
 					b = "anything",
-					c = {1, 2, 3},
+					c = { 1, 2, 3 },
 					d = jestExpect.stringContaining("jest"),
 					e = jestExpect.stringMatching("jest"),
 					f = jestExpect.objectContaining({
@@ -214,14 +213,14 @@ return function()
 			end)
 
 			it("array", function()
-				local expected : Array<any> = {1, jestExpect.any("number"), 3}
-				local received : Array<any> = {1, 2, 2}
+				local expected: Array<any> = { 1, jestExpect.any("number"), 3 }
+				local received: Array<any> = { 1, 2, 2 }
 				jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 			end)
 
 			it("object in array", function()
-				local expected : Array<any> = {1, {a = 1, b = jestExpect.any("number")}, 3}
-				local received : Array<any> = {1, {a = 1, b = 2}, 2}
+				local expected: Array<any> = { 1, { a = 1, b = jestExpect.any("number") }, 3 }
+				local received: Array<any> = { 1, { a = 1, b = 2 }, 2 }
 				jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 			end)
 
@@ -257,18 +256,18 @@ return function()
 				local expected: any = {
 					a = 3,
 				}
-				expected.nested = {b = jestExpect.any("number"), parent = expected}
+				expected.nested = { b = jestExpect.any("number"), parent = expected }
 				local received: any = {
 					a = 2,
 				}
-				received.nested = {b = 2, parent = received}
+				received.nested = { b = 2, parent = received }
 				jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 			end)
 
 			it("circular array", function()
-				local expected: Array<any> = {1, jestExpect.any("number"), 3}
+				local expected: Array<any> = { 1, jestExpect.any("number"), 3 }
 				table.insert(expected, expected)
-				local received: Array<any> = {1, 2, 2}
+				local received: Array<any> = { 1, 2, 2 }
 				table.insert(received, received)
 				jestExpect(testDiffOrStringify(expected, received)).toMatchSnapshot()
 			end)

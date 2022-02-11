@@ -26,33 +26,45 @@ return function()
 
 	-- ROBLOX TODO: the mocked delay and tick aren't in the environment of polyfilled functions
 	-- unskip and fix when we can figure this out
-	describeSKIP('FakeTimers', function()
-		describe('construction', function()
-			it('installs delay mock', function()
+	describeSKIP("FakeTimers", function()
+		describe("construction", function()
+			it("installs delay mock", function()
 				jestExpect(setTimeout).never.toBeNil()
 			end)
 
-			it('installs clearTimeout mock', function()
+			it("installs clearTimeout mock", function()
 				jestExpect(clearTimeout).never.toBeNil()
 			end)
 		end)
 
 		-- ROBLOX deviation: omitted runAllTicks, not implemented
 
-		describe('runAllTimers', function()
-			it('runs all ticks, in order', function()
+		describe("runAllTimers", function()
+			it("runs all ticks, in order", function()
 				timers:useFakeTimers()
 
 				local runOrder = {}
-				local mock1 = jest.fn(function() table.insert(runOrder, 'mock1') end)
-				local mock2 = jest.fn(function() table.insert(runOrder, 'mock2') end)
-				local mock3 = jest.fn(function() table.insert(runOrder, 'mock3') end)
-				local mock4 = jest.fn(function() table.insert(runOrder, 'mock4') end)
-				local mock5 = jest.fn(function() table.insert(runOrder, 'mock5') end)
-				local mock6 = jest.fn(function() table.insert(runOrder, 'mock6') end)
+				local mock1 = jest.fn(function()
+					table.insert(runOrder, "mock1")
+				end)
+				local mock2 = jest.fn(function()
+					table.insert(runOrder, "mock2")
+				end)
+				local mock3 = jest.fn(function()
+					table.insert(runOrder, "mock3")
+				end)
+				local mock4 = jest.fn(function()
+					table.insert(runOrder, "mock4")
+				end)
+				local mock5 = jest.fn(function()
+					table.insert(runOrder, "mock5")
+				end)
+				local mock6 = jest.fn(function()
+					table.insert(runOrder, "mock6")
+				end)
 
 				setTimeout(mock1, 100)
-				setTimeout(mock2, 0/0)
+				setTimeout(mock2, 0 / 0)
 				setTimeout(mock3, 0)
 				setTimeout(mock4, 200)
 				setTimeout(mock5, math.huge)
@@ -60,12 +72,12 @@ return function()
 
 				timers:runAllTimers()
 				jestExpect(runOrder).toEqual({
-					'mock2',
-					'mock3',
-					'mock5',
-					'mock6',
-					'mock1',
-					'mock4',
+					"mock2",
+					"mock3",
+					"mock5",
+					"mock6",
+					"mock1",
+					"mock4",
 				})
 			end)
 		end)

@@ -11,7 +11,7 @@ export type Colors = {
 	content: { close: string, open: string },
 	prop: { close: string, open: string },
 	tag: { close: string, open: string },
-	value: { close: string, open: string }
+	value: { close: string, open: string },
 }
 type Indent = (string) -> string
 export type Refs = { [number]: any }
@@ -33,7 +33,7 @@ type ThemeReceived = {
 	value: string?,
 }
 
-export type CompareKeys = ((a: string, b: string) -> number) | nil;
+export type CompareKeys = ((a: string, b: string) -> number) | nil
 
 export type Options = {
 	callToJSON: boolean,
@@ -83,26 +83,12 @@ export type Config = {
 	spacingOuter: string,
 }
 
-export type Printer = (
-	any,
-	Config,
-	string,
-	number,
-	Refs,
-	boolean?
-) -> string
+export type Printer = (any, Config, string, number, Refs, boolean?) -> string
 
 type Test = (any) -> boolean
 
 export type NewPlugin = {
-	serialize: (
-		any,
-		Config,
-		string,
-		number,
-		Refs,
-		Printer
-	) -> string,
+	serialize: (any, Config, string, number, Refs, Printer) -> string,
 	test: Test,
 }
 
@@ -113,13 +99,7 @@ type PluginOptions = {
 }
 
 export type OldPlugin = {
-	print: (
-		any,
-		Print,
-		Indent,
-		PluginOptions,
-		Colors
-	) -> string,
+	print: (any, Print, Indent, PluginOptions, Colors) -> string,
 	test: Test,
 }
 

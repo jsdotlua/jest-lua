@@ -10,7 +10,7 @@
 
 local snapshots = {}
 
-snapshots['toThrow asymmetric any-Class fail isNot false 1'] = [=[
+snapshots["toThrow asymmetric any-Class fail isNot false 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -22,7 +22,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrow asymmetric any-Class fail isNot true 1'] = [=[
+snapshots["toThrow asymmetric any-Class fail isNot true 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -34,7 +34,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrow asymmetric anything fail isNot true 1'] = [=[
+snapshots["toThrow asymmetric anything fail isNot true 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -47,7 +47,7 @@ Received message: <r>"apple"</>
 ]=]
 
 -- ROBLOX deviation: output has anonymous instead of asymmetricMatch
-snapshots['toThrow asymmetric no-symbol fail isNot false 1'] = [=[
+snapshots["toThrow asymmetric no-symbol fail isNot false 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -60,7 +60,7 @@ Received message: <r>"apple"</>
 ]=]
 
 -- ROBLOX deviation: output has anonymous instead of asymmetricMatch
-snapshots['toThrow asymmetric no-symbol fail isNot true 1'] = [=[
+snapshots["toThrow asymmetric no-symbol fail isNot true 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -72,7 +72,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrow asymmetric objectContaining fail isNot false 1'] = [=[
+snapshots["toThrow asymmetric objectContaining fail isNot false 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -84,7 +84,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrow asymmetric objectContaining fail isNot true 1'] = [=[
+snapshots["toThrow asymmetric objectContaining fail isNot true 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -96,7 +96,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrow error class did not throw at all 1'] = [=[
+snapshots["toThrow error class did not throw at all 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -105,7 +105,7 @@ Expected constructor: <g>Err</>
 Received function never threw
 ]=]
 
-snapshots['toThrow error class threw, but class did not match (error) 1'] = [=[
+snapshots["toThrow error class threw, but class did not match (error) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -117,7 +117,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrow error class threw, but class did not match (non-error falsey) 1'] = [=[
+snapshots["toThrow error class threw, but class did not match (non-error falsey) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -125,10 +125,10 @@ Expected constructor: <g>Err2</>
 
 Received value: <r>"nil"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:217
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:214
 ]=]
 
-snapshots['toThrow error class threw, but class should not match (error subclass) 1'] = [=[
+snapshots["toThrow error class threw, but class should not match (error subclass) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -140,7 +140,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrow error class threw, but class should not match (error subsubclass) 1'] = [=[
+snapshots["toThrow error class threw, but class should not match (error subsubclass) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -152,7 +152,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrow error class threw, but class should not match (error) 1'] = [=[
+snapshots["toThrow error class threw, but class should not match (error) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -163,7 +163,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrow error-message fail isNot false 1'] = [=[
+snapshots["toThrow error-message fail isNot false 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -172,7 +172,7 @@ Received message: <r>"banana"</>
 
 ]=]
 
-snapshots['toThrow error-message fail isNot true 1'] = [=[
+snapshots["toThrow error-message fail isNot true 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -180,7 +180,7 @@ Expected message: never <g>"Invalid array length"</>
 
 ]=]
 
-snapshots['toThrow error-message fail multiline diff highlight incorrect expected space 1'] = [=[
+snapshots["toThrow error-message fail multiline diff highlight incorrect expected space 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -193,16 +193,16 @@ snapshots['toThrow error-message fail multiline diff highlight incorrect expecte
 
 ]=]
 
-snapshots['toThrow expected is undefined threw, but should not have (non-error falsey) 1'] = [=[
+snapshots["toThrow expected is undefined threw, but should not have (non-error falsey) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>()</>
 
 Thrown value: <r>"nil"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:486
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:481
 ]=]
 
-snapshots['toThrow invalid actual 1'] = [=[
+snapshots["toThrow invalid actual 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>()</>
 
@@ -212,7 +212,7 @@ Received has type:  string
 Received has value: <r>"a string"</>
 ]=]
 
-snapshots['toThrow invalid arguments 1'] = [=[
+snapshots["toThrow invalid arguments 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -222,7 +222,7 @@ Expected has type:  number
 Expected has value: <g>111</>
 ]=]
 
-snapshots['toThrow regexp did not throw at all 1'] = [=[
+snapshots["toThrow regexp did not throw at all 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -231,7 +231,7 @@ Expected pattern: <g>/apple/</>
 Received function never threw
 ]=]
 
-snapshots['toThrow regexp threw, but message did not match (error) 1'] = [=[
+snapshots["toThrow regexp threw, but message did not match (error) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -242,17 +242,17 @@ Received message: <r>"apple"</>
 ]=]
 
 -- ROBLOX deviation: we print "0" instead of 0
-snapshots['toThrow regexp threw, but message did not match (non-error falsey) 1'] = [=[
+snapshots["toThrow regexp threw, but message did not match (non-error falsey) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
 
 Expected pattern: <g>/^[123456789]\d*/</>
 Received value:   <r>"0"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:148
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:147
 ]=]
 
-snapshots['toThrow regexp threw, but message should not match (error) 1'] = [=[
+snapshots["toThrow regexp threw, but message should not match (error) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -263,17 +263,17 @@ Received message:       <r>"Invalid</><i> array </i><r>length</>"
 ]=]
 
 -- ROBLOX deviation: we print "404" instead of 404
-snapshots['toThrow regexp threw, but message should not match (non-error truthy) 1'] = [=[
+snapshots["toThrow regexp threw, but message should not match (non-error truthy) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>(</><g>expected</><d>)</>
 
 Expected pattern: never <g>/^[123456789]\d*/</>
 Received value:         <r>"404"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:166
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:165
 ]=]
 
-snapshots['toThrow substring did not throw at all 1'] = [=[
+snapshots["toThrow substring did not throw at all 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -282,7 +282,7 @@ Expected substring: <g>"apple"</>
 Received function never threw
 ]=]
 
-snapshots['toThrow substring threw, but message did not match (error) 1'] = [=[
+snapshots["toThrow substring threw, but message did not match (error) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -293,17 +293,17 @@ Received message:   <r>"apple"</>
 ]=]
 
 -- ROBLOX deviation: we include the stack trace even when catching a "primitive" error()
-snapshots['toThrow substring threw, but message did not match (non-error falsey) 1'] = [=[
+snapshots["toThrow substring threw, but message did not match (non-error falsey) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
 
 Expected substring: <g>"Server Error"</>
 Received value:     <r>""</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:88
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:87
 ]=]
 
-snapshots['toThrow substring threw, but message should not match (error) 1'] = [=[
+snapshots["toThrow substring threw, but message should not match (error) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>(</><g>expected</><d>)</>
 
@@ -313,17 +313,17 @@ Received message:         <r>"Invalid </><i>array</i><r> length</>"
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrow substring threw, but message should not match (non-error truthy) 1'] = [=[
+snapshots["toThrow substring threw, but message should not match (non-error truthy) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>(</><g>expected</><d>)</>
 
 Expected substring: never <g>"Server Error"</>
 Received value:           <r>"Internal Server Error"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:110
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:109
 ]=]
 
-snapshots['toThrowError asymmetric any-Class fail isNot false 1'] = [=[
+snapshots["toThrowError asymmetric any-Class fail isNot false 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -335,7 +335,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrowError asymmetric any-Class fail isNot true 1'] = [=[
+snapshots["toThrowError asymmetric any-Class fail isNot true 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -347,7 +347,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrowError asymmetric anything fail isNot true 1'] = [=[
+snapshots["toThrowError asymmetric anything fail isNot true 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -360,7 +360,7 @@ Received message: <r>"apple"</>
 ]=]
 
 -- ROBLOX deviation: output has anonymous instead of asymmetricMatch
-snapshots['toThrowError asymmetric no-symbol fail isNot false 1'] = [=[
+snapshots["toThrowError asymmetric no-symbol fail isNot false 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -373,7 +373,7 @@ Received message: <r>"apple"</>
 ]=]
 
 -- ROBLOX deviation: output has anonymous instead of asymmetricMatch
-snapshots['toThrowError asymmetric no-symbol fail isNot true 1'] = [=[
+snapshots["toThrowError asymmetric no-symbol fail isNot true 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -385,7 +385,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrowError asymmetric objectContaining fail isNot false 1'] = [=[
+snapshots["toThrowError asymmetric objectContaining fail isNot false 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -397,7 +397,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrowError asymmetric objectContaining fail isNot true 1'] = [=[
+snapshots["toThrowError asymmetric objectContaining fail isNot true 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -409,7 +409,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrowError error class did not throw at all 1'] = [=[
+snapshots["toThrowError error class did not throw at all 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -418,7 +418,7 @@ Expected constructor: <g>Err</>
 Received function never threw
 ]=]
 
-snapshots['toThrowError error class threw, but class did not match (error) 1'] = [=[
+snapshots["toThrowError error class threw, but class did not match (error) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -430,7 +430,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrowError error class threw, but class did not match (non-error falsey) 1'] = [=[
+snapshots["toThrowError error class threw, but class did not match (non-error falsey) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -438,10 +438,10 @@ Expected constructor: <g>Err2</>
 
 Received value: <r>"nil"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:217
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:214
 ]=]
 
-snapshots['toThrowError error class threw, but class should not match (error subclass) 1'] = [=[
+snapshots["toThrowError error class threw, but class should not match (error subclass) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -453,7 +453,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrowError error class threw, but class should not match (error subsubclass) 1'] = [=[
+snapshots["toThrowError error class threw, but class should not match (error subsubclass) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -465,7 +465,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrowError error class threw, but class should not match (error) 1'] = [=[
+snapshots["toThrowError error class threw, but class should not match (error) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -476,7 +476,7 @@ Received message: <r>"apple"</>
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrowError error-message fail isNot false 1'] = [=[
+snapshots["toThrowError error-message fail isNot false 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -485,7 +485,7 @@ Received message: <r>"banana"</>
 
 ]=]
 
-snapshots['toThrowError error-message fail isNot true 1'] = [=[
+snapshots["toThrowError error-message fail isNot true 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -493,7 +493,7 @@ Expected message: never <g>"Invalid array length"</>
 
 ]=]
 
-snapshots['toThrowError error-message fail multiline diff highlight incorrect expected space 1'] = [=[
+snapshots["toThrowError error-message fail multiline diff highlight incorrect expected space 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -506,16 +506,16 @@ snapshots['toThrowError error-message fail multiline diff highlight incorrect ex
 
 ]=]
 
-snapshots['toThrowError expected is undefined threw, but should not have (non-error falsey) 1'] = [=[
+snapshots["toThrowError expected is undefined threw, but should not have (non-error falsey) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrowError<d>()</>
 
 Thrown value: <r>"nil"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:486
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:481
 ]=]
 
-snapshots['toThrowError invalid actual 1'] = [=[
+snapshots["toThrowError invalid actual 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrowError<d>()</>
 
@@ -525,7 +525,7 @@ Received has type:  string
 Received has value: <r>"a string"</>
 ]=]
 
-snapshots['toThrowError invalid arguments 1'] = [=[
+snapshots["toThrowError invalid arguments 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -535,7 +535,7 @@ Expected has type:  number
 Expected has value: <g>111</>
 ]=]
 
-snapshots['toThrowError regexp did not throw at all 1'] = [=[
+snapshots["toThrowError regexp did not throw at all 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -544,7 +544,7 @@ Expected pattern: <g>/apple/</>
 Received function never threw
 ]=]
 
-snapshots['toThrowError regexp threw, but message did not match (error) 1'] = [=[
+snapshots["toThrowError regexp threw, but message did not match (error) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -555,17 +555,17 @@ Received message: <r>"apple"</>
 ]=]
 
 -- ROBLOX deviation: we print "0" instead of 0
-snapshots['toThrowError regexp threw, but message did not match (non-error falsey) 1'] = [=[
+snapshots["toThrowError regexp threw, but message did not match (non-error falsey) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrowError<d>(</><g>expected</><d>)</>
 
 Expected pattern: <g>/^[123456789]\d*/</>
 Received value:   <r>"0"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:148
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:147
 ]=]
 
-snapshots['toThrowError regexp threw, but message should not match (error) 1'] = [=[
+snapshots["toThrowError regexp threw, but message should not match (error) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -576,17 +576,17 @@ Received message:       <r>"Invalid</><i> array </i><r>length</>"
 ]=]
 
 -- ROBLOX deviation: we print "404" instead of 404
-snapshots['toThrowError regexp threw, but message should not match (non-error truthy) 1'] = [=[
+snapshots["toThrowError regexp threw, but message should not match (non-error truthy) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrowError<d>(</><g>expected</><d>)</>
 
 Expected pattern: never <g>/^[123456789]\d*/</>
 Received value:         <r>"404"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:166
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:165
 ]=]
 
-snapshots['toThrowError substring did not throw at all 1'] = [=[
+snapshots["toThrowError substring did not throw at all 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -595,7 +595,7 @@ Expected substring: <g>"apple"</>
 Received function never threw
 ]=]
 
-snapshots['toThrowError substring threw, but message did not match (error) 1'] = [=[
+snapshots["toThrowError substring threw, but message did not match (error) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -606,17 +606,17 @@ Received message:   <r>"apple"</>
 ]=]
 
 -- ROBLOX deviation: we include the stack trace even when catching a "primitive" error()
-snapshots['toThrowError substring threw, but message did not match (non-error falsey) 1'] = [=[
+snapshots["toThrowError substring threw, but message did not match (non-error falsey) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrowError<d>(</><g>expected</><d>)</>
 
 Expected substring: <g>"Server Error"</>
 Received value:     <r>""</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:88
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:87
 ]=]
 
-snapshots['toThrowError substring threw, but message should not match (error) 1'] = [=[
+snapshots["toThrowError substring threw, but message should not match (error) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrowError<d>(</><g>expected</><d>)</>
 
@@ -626,14 +626,14 @@ Received message:         <r>"Invalid </><i>array</i><r> length</>"
       at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
-snapshots['toThrowError substring threw, but message should not match (non-error truthy) 1'] = [=[
+snapshots["toThrowError substring threw, but message should not match (non-error truthy) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrowError<d>(</><g>expected</><d>)</>
 
 Expected substring: never <g>"Server Error"</>
 Received value:           <r>"Internal Server Error"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:110
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:109
 ]=]
 
 return snapshots

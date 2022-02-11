@@ -19,36 +19,32 @@ return function()
 	local diffStringsRaw = require(CurrentModule).diffStringsRaw
 
 	local function arrayEquals(a1, a2)
-		return #a1 == #a2 and
-			Array.every(
-				a1,
-				function(element, index)
-					return element[1] == a2[index][1] and
-						element[2] == a2[index][2]
-				end
-			)
+		return #a1 == #a2
+			and Array.every(a1, function(element, index)
+				return element[1] == a2[index][1] and element[2] == a2[index][2]
+			end)
 	end
 
-	describe('diffStringsRaw', function()
-		it('one-line with cleanup', function()
+	describe("diffStringsRaw", function()
+		it("one-line with cleanup", function()
 			local expected = {
-				Diff.new(DIFF_EQUAL, 'change '),
-				Diff.new(DIFF_DELETE, 'from'),
-				Diff.new(DIFF_INSERT, 'to'),
+				Diff.new(DIFF_EQUAL, "change "),
+				Diff.new(DIFF_DELETE, "from"),
+				Diff.new(DIFF_INSERT, "to"),
 			}
-			local received = diffStringsRaw('change from', 'change to', true)
+			local received = diffStringsRaw("change from", "change to", true)
 			expect(arrayEquals(received, expected)).to.equal(true)
 		end)
 
-		it('one-line without cleanup', function()
+		it("one-line without cleanup", function()
 			local expected = {
-				Diff.new(DIFF_EQUAL, 'change '),
-				Diff.new(DIFF_DELETE, 'fr'),
-				Diff.new(DIFF_INSERT, 't'),
-				Diff.new(DIFF_EQUAL, 'o'),
-				Diff.new(DIFF_DELETE, 'm'),
+				Diff.new(DIFF_EQUAL, "change "),
+				Diff.new(DIFF_DELETE, "fr"),
+				Diff.new(DIFF_INSERT, "t"),
+				Diff.new(DIFF_EQUAL, "o"),
+				Diff.new(DIFF_DELETE, "m"),
 			}
-			local received = diffStringsRaw('change from', 'change to', false)
+			local received = diffStringsRaw("change from", "change to", false)
 			expect(arrayEquals(received, expected)).to.equal(true)
 		end)
 	end)

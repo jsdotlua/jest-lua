@@ -69,14 +69,12 @@ local serialize = utils.serialize
 
 -- ROBLOX deviation: omitted Chalk and DiffOptionsColor types
 
-local function getSnapshotColorForChalkInstance(
-	chalkInstance
-)
+local function getSnapshotColorForChalkInstance(chalkInstance)
 	local level = chalkInstance.level
 
 	if level == 3 then
-		return chalkInstance.rgb(aForeground3[1], aForeground3[2], aForeground3[3]) ..
-			chalkInstance.bgRgb(aBackground3[1], aBackground3[2], aBackground3[3])
+		return chalkInstance.rgb(aForeground3[1], aForeground3[2], aForeground3[3])
+			.. chalkInstance.bgRgb(aBackground3[1], aBackground3[2], aBackground3[3])
 	end
 
 	if level == 2 then
@@ -86,36 +84,33 @@ local function getSnapshotColorForChalkInstance(
 	return chalkInstance.magenta .. chalk.bgYellowBright
 end
 
-local function getReceivedColorForChalkInstance(
-	chalkInstance
-)
+local function getReceivedColorForChalkInstance(chalkInstance)
 	local level = chalkInstance.level
 
 	if level == 3 then
-		return chalkInstance.rgb(bForeground3[1], bForeground3[2], bForeground3[3]) ..
-			chalkInstance.bgRgb(bBackground3[1], bBackground3[2], bBackground3[3])
+		return chalkInstance.rgb(bForeground3[1], bForeground3[2], bForeground3[3])
+			.. chalkInstance.bgRgb(bBackground3[1], bBackground3[2], bBackground3[3])
 	end
 
 	if level == 2 then
 		return chalkInstance.ansi256(bForeground2) .. chalkInstance.bgAnsi256(bBackground2)
 	end
 
-	return chalkInstance.cyan .. chalk.bgWhiteBright -- // also known as teal
+	return chalkInstance.cyan .. chalk.bgWhiteBright -- also known as teal
 end
 
 local aSnapshotColor = getSnapshotColorForChalkInstance(chalk)
 local bReceivedColor = getReceivedColorForChalkInstance(chalk)
 
-local function noColor(string_: string) return string_ end
+local function noColor(string_: string)
+	return string_
+end
 
 local HINT_ARG = "hint"
 local SNAPSHOT_ARG = "snapshot"
 local PROPERTIES_ARG = "properties"
 
-local function matcherHintFromConfig(
-	matchSnapshotConfig,
-	isUpdatable: boolean
-): string
+local function matcherHintFromConfig(matchSnapshotConfig, isUpdatable: boolean): string
 	local context = matchSnapshotConfig.context
 	local hint = matchSnapshotConfig.hint
 	local inlineSnapshot = matchSnapshotConfig.inlineSnapshot
@@ -124,7 +119,7 @@ local function matcherHintFromConfig(
 
 	local options: JestMatcherUtils.MatcherHintOptions = {
 		isNot = context.isNot,
-		promise = context.promise
+		promise = context.promise,
 	}
 	if isUpdatable then
 		options.receivedColor = bReceivedColor
@@ -164,18 +159,19 @@ local function matcherHintFromConfig(
 	return matcherHint(matcherName, nil, expectedArgument, options)
 end
 
--- // Given array of diffs, return string:
--- // * include common substrings
--- // * exclude change substrings which have opposite op
--- // * include change substrings which have argument op
--- //   with change color only if there is a common substring
+-- Given array of diffs, return string:
+-- * include common substrings
+-- * exclude change substrings which have opposite op
+-- * include change substrings which have argument op
+--   with change color only if there is a common substring
 local function joinDiffs(
 	-- ROBLOX deviation: changed Array<Diff> to Array<any>
 	diffs: Array<any>,
 	op: number,
 	hasCommon: boolean
 ): string
-	return Array.reduce(diffs,
+	return Array.reduce(
+		diffs,
 		-- ROBLOX deviation: Diff changed to any
 		function(reduced: string, diff: any): string
 			local retval = reduced
@@ -204,11 +200,7 @@ local function isLineDiffable(received: any): boolean
 	end
 
 	-- ROBLOX deviation: type changed from "date" to "DateTime"
-	if
-		receivedType == "DateTime" or
-		receivedType == "function" or
-		receivedType == "regexp"
-	then
+	if receivedType == "DateTime" or receivedType == "function" or receivedType == "regexp" then
 		return false
 	end
 
@@ -216,10 +208,7 @@ local function isLineDiffable(received: any): boolean
 		return false
 	end
 
-	if
-		receivedType == "table" and
-		typeof(received.asymmetricMatch) == "function"
-	then
+	if receivedType == "table" and typeof(received.asymmetricMatch) == "function" then
 		return false
 	end
 
@@ -237,7 +226,7 @@ end
 local function printPropertiesAndReceived(
 	properties: any,
 	received: any,
-	expand: boolean -- // CLI options: true if `--expand` or false if `--no-expand`
+	expand: boolean -- CLI options: true if `--expand` or false if `--no-expand`
 ): string
 	local aAnnotation = "Expected properties"
 	local bAnnotation = "Received value"
@@ -253,28 +242,28 @@ local function printPropertiesAndReceived(
 				bColor = RECEIVED_COLOR,
 				changeLineTrailingSpaceColor = chalk.bgYellow,
 				commonLineTrailingSpaceColor = chalk.bgYellow,
-				emptyFirstOrLastLinePlaceholder = utf8.char(8629), -- // U+21B5
+				emptyFirstOrLastLinePlaceholder = utf8.char(8629), -- U+21B5
 				expand = expand,
-				includeChangeCounts = true
+				includeChangeCounts = true,
 			}
 		)
 	end
 
 	local printLabel = getLabelPrinter(aAnnotation, bAnnotation)
-	return printLabel(aAnnotation) ..
-		printExpected(properties) ..
-		"\n" ..
-		printLabel(bAnnotation) ..
-		printReceived(received)
+	return printLabel(aAnnotation)
+		.. printExpected(properties)
+		.. "\n"
+		.. printLabel(bAnnotation)
+		.. printReceived(received)
 end
 
 local MAX_DIFF_STRING_LENGTH = 20000
 
 local function printSnapshotAndReceived(
-	a: string, -- // snapshot without extra line breaks
-	b: string, -- // received serialized but without extra line breaks
+	a: string, -- snapshot without extra line breaks
+	b: string, -- received serialized but without extra line breaks
 	received: any,
-	expand: boolean -- // CLI options: true if `--expand` or false if `--no-expand`
+	expand: boolean -- CLI options: true if `--expand` or false if `--no-expand`
 ): string
 	local aAnnotation = "Snapshot"
 	local bAnnotation = "Received"
@@ -287,55 +276,42 @@ local function printSnapshotAndReceived(
 		bColor = bColor,
 		changeLineTrailingSpaceColor = noColor,
 		commonLineTrailingSpaceColor = chalk.bgYellow,
-		emptyFirstOrLastLinePlaceholder = utf8.char(8629), -- // U+21B5
+		emptyFirstOrLastLinePlaceholder = utf8.char(8629), -- U+21B5
 		expand = expand,
-		includeChangeCounts = true
+		includeChangeCounts = true,
 	}
 
 	if typeof(received) == "string" then
-		if
-			#a >= 2 and
-			String.startsWith(a, '"') and
-			String.endsWith(a, '"') and
-			b == prettyFormat(received)
-		then
-			-- // If snapshot looks like default serialization of a string
-			-- // and received is string which has default serialization.
+		if #a >= 2 and String.startsWith(a, '"') and String.endsWith(a, '"') and b == prettyFormat(received) then
+			-- If snapshot looks like default serialization of a string
+			-- and received is string which has default serialization.
 			if not a:find("\n") and not b:find("\n") then
-				-- // If neither string is multiline,
-				-- // display as labels and quoted strings.
+				-- If neither string is multiline,
+				-- display as labels and quoted strings.
 				local aQuoted = a
 				local bQuoted = b
 
-				if
-					#a - 2 <= MAX_DIFF_STRING_LENGTH and
-					#b - 2 <= MAX_DIFF_STRING_LENGTH
-				then
+				if #a - 2 <= MAX_DIFF_STRING_LENGTH and #b - 2 <= MAX_DIFF_STRING_LENGTH then
 					local diffs = diffStringsRaw(string.sub(a, 2, -2), string.sub(b, 2, -2), true)
-					local hasCommon = Array.some(diffs, function(diff) return diff[1] == DIFF_EQUAL end)
+					local hasCommon = Array.some(diffs, function(diff)
+						return diff[1] == DIFF_EQUAL
+					end)
 					aQuoted = '"' .. joinDiffs(diffs, DIFF_DELETE, hasCommon) .. '"'
 					bQuoted = '"' .. joinDiffs(diffs, DIFF_INSERT, hasCommon) .. '"'
 				end
 
 				local printLabel = getLabelPrinter(aAnnotation, bAnnotation)
-				return printLabel(aAnnotation) ..
-					aColor(aQuoted) ..
-					"\n" ..
-					printLabel(bAnnotation) ..
-					bColor(bQuoted)
+				return printLabel(aAnnotation) .. aColor(aQuoted) .. "\n" .. printLabel(bAnnotation) .. bColor(bQuoted)
 			end
 
-			-- // Else either string is multiline, so display as unquoted strings.
-			a = deserializeString(a) -- // hypothetical expected string
-			b = received -- // not serialized
+			-- Else either string is multiline, so display as unquoted strings.
+			a = deserializeString(a) -- hypothetical expected string
+			b = received -- not serialized
 		end
 
-		-- // Else expected had custom serialization or was not a string
-		-- // or received has custom serialization.
-		if
-			#a <= MAX_DIFF_STRING_LENGTH and
-			#b <= MAX_DIFF_STRING_LENGTH
-		then
+		-- Else expected had custom serialization or was not a string
+		-- or received has custom serialization.
+		if #a <= MAX_DIFF_STRING_LENGTH and #b <= MAX_DIFF_STRING_LENGTH then
 			return diffStringsUnified(a, b, options)
 		else
 			return diffLinesUnified(a:split("\n"), b:split("\n"), options)
@@ -346,33 +322,29 @@ local function printSnapshotAndReceived(
 		local aLines2 = a:split("\n")
 		local bLines2 = b:split("\n")
 
-		-- // Fall through to fix a regression for custom serializers
-		-- // like jest-snapshot-serializer-raw that ignore the indent option.
+		-- Fall through to fix a regression for custom serializers
+		-- like jest-snapshot-serializer-raw that ignore the indent option.
 		local b0 = serialize(received, 0)
 		if b0 ~= b then
 			local aLines0 = dedentLines(aLines2)
 
 			if aLines0 ~= nil then
-				-- // Compare lines without indentation.
+				-- Compare lines without indentation.
 				local bLines0 = b0:split("\n")
 
 				return diffLinesUnified2(aLines2, bLines2, aLines0, bLines0, options)
 			end
 		end
 
-		-- // Fall back because:
-		-- // * props include a multiline string
-		-- // * text has more than one adjacent line
-		-- // * markup does not close
+		-- Fall back because:
+		-- * props include a multiline string
+		-- * text has more than one adjacent line
+		-- * markup does not close
 		return diffLinesUnified(aLines2, bLines2, options)
 	end
 
 	local printLabel = getLabelPrinter(aAnnotation, bAnnotation)
-	return printLabel(aAnnotation) ..
-		aColor(a) ..
-		"\n" ..
-		printLabel(bAnnotation) ..
-		bColor(b)
+	return printLabel(aAnnotation) .. aColor(a) .. "\n" .. printLabel(bAnnotation) .. bColor(b)
 end
 
 return {
@@ -388,5 +360,5 @@ return {
 	printExpected = printExpected,
 	printReceived = printReceived,
 	printPropertiesAndReceived = printPropertiesAndReceived,
-	printSnapshotAndReceived = printSnapshotAndReceived
+	printSnapshotAndReceived = printSnapshotAndReceived,
 }

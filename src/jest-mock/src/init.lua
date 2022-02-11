@@ -96,18 +96,17 @@ type MockFunctionConfig = {
 	mockName: string,
 	specificReturnValues: Array<any>,
 	-- ROBLOX deviation: specificMockImpls defined as Array<any> for now but should be Array<Function> if/when Luau supports general function type
-	specificMockImpls: Array<any>
-};
-
-export type ModuleMocker = {
-	isMockFunction: (_self:ModuleMocker, fn:any)->boolean,
-	fn: (_self:ModuleMocker, implementation:any) -> (),
-	clearAllMocks: (_self:ModuleMocker)->(),
-	resetAllMocks: (_self:ModuleMocker)->(),
-	restoreAllMocks: (_self:ModuleMocker)->(),
-	mocked: <T>(_self:ModuleMocker, item: T, _deep: boolean?)->MaybeMocked<T> | MaybeMockedDeep<T>,
+	specificMockImpls: Array<any>,
 }
 
+export type ModuleMocker = {
+	isMockFunction: (_self: ModuleMocker, fn: any) -> boolean,
+	fn: (_self: ModuleMocker, implementation: any) -> (),
+	clearAllMocks: (_self: ModuleMocker) -> (),
+	resetAllMocks: (_self: ModuleMocker) -> (),
+	restoreAllMocks: (_self: ModuleMocker) -> (),
+	mocked: <T>(_self: ModuleMocker, item: T, _deep: boolean?) -> MaybeMocked<T> | MaybeMockedDeep<T>,
+}
 
 ModuleMockerClass.__index = ModuleMockerClass
 function ModuleMockerClass.new()
@@ -184,10 +183,10 @@ function ModuleMockerClass:_makeComponent(metadata: any, restore)
 			end
 			table.insert(mockState.calls, args)
 
-			-- // Create and record an "incomplete" mock result immediately upon
-			-- // calling rather than waiting for the mock to return. This avoids
-			-- // issues caused by recursion where results can be recorded in the
-			-- // wrong order.
+			-- Create and record an "incomplete" mock result immediately upon
+			-- calling rather than waiting for the mock to return. This avoids
+			-- issues caused by recursion where results can be recorded in the
+			-- wrong order.
 			local mockResult = {
 				type = "incomplete",
 				value = nil,
@@ -247,7 +246,7 @@ function ModuleMockerClass:_makeComponent(metadata: any, restore)
 		f.mock = setmetatable({}, {
 			__index = function(tbl, key)
 				return self:_ensureMockState(f)[key]
-			end
+			end,
 			-- ROBLOX deviation: for now we don't have newindex defined as we don't have any use cases
 			-- but it should look something like the following
 			-- __newindex = function(table, key, value)
@@ -280,22 +279,22 @@ function ModuleMockerClass:_makeComponent(metadata: any, restore)
 		-- ROBLOX deviation: omitted mockResolvedValue and mockRejectedValue
 
 		f.mockImplementationOnce = function(fn)
-			-- // next function call will use this mock implementation return value
-			-- // or default mock implementation return value
+			-- next function call will use this mock implementation return value
+			-- or default mock implementation return value
 			local mockConfig = self:_ensureMockConfig(f)
 			table.insert(mockConfig.specificMockImpls, fn)
 			return f
 		end
 
 		f.mockImplementation = function(fn)
-			-- // next function call will use mock implementation return value
+			-- next function call will use mock implementation return value
 			local mockConfig = self:_ensureMockConfig(f)
 			mockConfig.mockImpl = fn
 			return f
 		end
 
 		f.mockReturnValueOnce = function(value)
-			-- // next function call will return this value or default return value
+			-- next function call will return this value or default return value
 			return f.mockImplementationOnce(function()
 				return value
 			end)
@@ -304,7 +303,7 @@ function ModuleMockerClass:_makeComponent(metadata: any, restore)
 		-- ROBLOX deviation: omitted mockResolvedValueOnce and mockRejectedValueOnce
 
 		f.mockReturnValue = function(value)
-			-- // next function call will return specified return value or this one
+			-- next function call will return specified return value or this one
 			return f.mockImplementation(function()
 				return value
 			end)
@@ -402,7 +401,7 @@ end
 ]]
 
 function ModuleMockerClass.mocked<T>(_self: ModuleMocker, item: T, _deep: boolean?): MaybeMocked<T> | MaybeMockedDeep<T>
-	return item :: any;
+	return item :: any
 end
 
 exports.ModuleMocker = ModuleMockerClass
@@ -417,5 +416,3 @@ local mocked = JestMock.mocked
 exports.mocked = mocked
 
 return exports
-
-

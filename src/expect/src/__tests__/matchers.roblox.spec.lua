@@ -108,8 +108,8 @@ return function()
 	it("tests toStrictEqual matcher with example class", function()
 		jestExpect(CustomClass.new()).never.toBe(CustomClass.new()) -- not the same table
 		jestExpect(CustomClass.new()).toStrictEqual(CustomClass.new()) -- not the same table, but same shape and same class
-		jestExpect(CustomClass.new()).never.toStrictEqual({ foo = true}) -- same shape but not same class
-		jestExpect(CustomClass.new()).toEqual({ foo = true}) -- same shape
+		jestExpect(CustomClass.new()).never.toStrictEqual({ foo = true }) -- same shape but not same class
+		jestExpect(CustomClass.new()).toEqual({ foo = true }) -- same shape
 	end)
 
 	-- test case taken from Jest docs
@@ -117,21 +117,21 @@ return function()
 	LaCroix.__index = LaCroix
 	function LaCroix.new(flavor)
 		return setmetatable({
-			flavor = flavor
+			flavor = flavor,
 		}, LaCroix)
 	end
 
-	it('the La Croix cans on my desk are not semantically the same', function()
-		jestExpect(LaCroix.new('lemon')).toEqual({flavor = 'lemon'})
-		jestExpect(LaCroix.new('lemon')).never.toStrictEqual({flavor = 'lemon'})
+	it("the La Croix cans on my desk are not semantically the same", function()
+		jestExpect(LaCroix.new("lemon")).toEqual({ flavor = "lemon" })
+		jestExpect(LaCroix.new("lemon")).never.toStrictEqual({ flavor = "lemon" })
 	end)
 
 	it("tests the set polyfill", function()
-		jestExpect(Set.new({1, 2, 5})).toEqual(Set.new{2, 5, 1})
-		jestExpect(Set.new({1, 2, 6})).never.toEqual(Set.new{1, 2, 5})
-		jestExpect(Set.new({{1, 2}, {3, 4}})).toEqual(Set.new{{3, 4}, {1, 2}})
-		jestExpect(Set.new({{1, 2}, {3, 4}})).never.toEqual(Set.new{{1, 2}, {3, 5}})
-		jestExpect(Set.new({"a"})).toContain("a")
+		jestExpect(Set.new({ 1, 2, 5 })).toEqual(Set.new({ 2, 5, 1 }))
+		jestExpect(Set.new({ 1, 2, 6 })).never.toEqual(Set.new({ 1, 2, 5 }))
+		jestExpect(Set.new({ { 1, 2 }, { 3, 4 } })).toEqual(Set.new({ { 3, 4 }, { 1, 2 } }))
+		jestExpect(Set.new({ { 1, 2 }, { 3, 4 } })).never.toEqual(Set.new({ { 1, 2 }, { 3, 5 } }))
+		jestExpect(Set.new({ "a" })).toContain("a")
 	end)
 
 	describe("chalk tests", function()
@@ -195,7 +195,7 @@ return function()
 			it("matches properties of instance", function()
 				jestExpect(screenGui).toMatchInstance({
 					Name = "Root",
-					ClassName = "ScreenGui"
+					ClassName = "ScreenGui",
 				})
 			end)
 
@@ -204,8 +204,8 @@ return function()
 					["ScrollingFrame"] = {
 						Size = UDim2.new(0, 400, 0, 600),
 						Position = UDim2.new(0.5, 0, 0.5, 0),
-						TopImage = "rbxassetid://29050676"
-					}
+						TopImage = "rbxassetid://29050676",
+					},
 				})
 			end)
 
@@ -218,22 +218,22 @@ return function()
 						MidImage = "rbxassetid://29050676",
 						["Example: binding"] = {
 							["Bottom Border"] = {
-								AbsoluteRotation = 0
-							}
+								AbsoluteRotation = 0,
+							},
 						},
 						["Example: changed-signal"] = {
 							["Bottom Border"] = {
-								ClassName = "Frame"
-							}
-						}
-					}
+								ClassName = "Frame",
+							},
+						},
+					},
 				})
 			end)
 
 			it("does not match properties of instance", function()
 				jestExpect(function()
 					jestExpect(screenGui).toMatchInstance({
-						ClassName = "Frame"
+						ClassName = "Frame",
 					})
 				end).toThrowErrorMatchingSnapshot()
 			end)
@@ -247,10 +247,10 @@ return function()
 							AbsolutePosition = Vector2.new(100, 100),
 							["Example: wrongname"] = {
 								["Bottom Border"] = {
-									ClassName = "Frame"
-								}
-							}
-						}
+									ClassName = "Frame",
+								},
+							},
+						},
 					})
 				end).toThrowErrorMatchingSnapshot()
 			end)
@@ -260,8 +260,8 @@ return function()
 					jestExpect(screenGui).toMatchInstance({
 						AbsolutePosition = jestExpect.any("Vector3"),
 						["ScrollingFrame"] = {
-							MidImage = jestExpect.stringMatching("foobar")
-						}
+							MidImage = jestExpect.stringMatching("foobar"),
+						},
 					})
 				end).toThrowErrorMatchingSnapshot()
 			end)
@@ -276,7 +276,7 @@ return function()
 				local frame = Instance.new("Frame")
 				frame.Position = UDim2.fromOffset(math.random(0, 100), math.random(0, 100))
 				jestExpect(frame).toMatchSnapshot({
-					Position = jestExpect.any("UDim2")
+					Position = jestExpect.any("UDim2"),
 				})
 			end)
 		end)

@@ -2,7 +2,7 @@
 
 local snapshots = {}
 
-snapshots['common substrings regression 1'] = [=[
+snapshots["common substrings regression 1"] = [=[
 
 Table {
   "I",
@@ -44,7 +44,7 @@ Table {
 }
 ]=]
 
-snapshots['common substrings wrapping 1'] = [=[
+snapshots["common substrings wrapping 1"] = [=[
 
 Table {
   "When engineers ",

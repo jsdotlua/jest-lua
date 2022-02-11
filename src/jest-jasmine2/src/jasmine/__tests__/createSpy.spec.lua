@@ -22,9 +22,9 @@ return function()
 			TestClass.prototype = {}
 
 			beforeEach(function()
-				setmetatable(TestClass, {__call = function() end})
+				setmetatable(TestClass, { __call = function() end })
 				TestClass.prototype.someFunction = {}
-				setmetatable(TestClass.prototype.someFunction, {__call = function() end})
+				setmetatable(TestClass.prototype.someFunction, { __call = function() end })
 				TestClass.prototype.someFunction.bob = "test"
 			end)
 
@@ -54,13 +54,17 @@ return function()
 				TestClass.prototype.someFunction["and"] = "turkey"
 				expect(function()
 					createSpy("TestClass.prototype", TestClass.prototype.someFunction)
-				end).to.throw("Jasmine spies would overwrite the 'and', 'andAlso' and 'calls' properties on the object being spied upon")
+				end).to.throw(
+					"Jasmine spies would overwrite the 'and', 'andAlso' and 'calls' properties on the object being spied upon"
+				)
 
 				TestClass.prototype.someFunction["and"] = nil
 				TestClass.prototype.someFunction["andAlso"] = "turkey"
 				expect(function()
 					createSpy("TestClass.prototype", TestClass.prototype.someFunction)
-				end).to.throw("Jasmine spies would overwrite the 'and', 'andAlso' and 'calls' properties on the object being spied upon")
+				end).to.throw(
+					"Jasmine spies would overwrite the 'and', 'andAlso' and 'calls' properties on the object being spied upon"
+				)
 			end)
 
 			-- ROBLOX TODO: ADO-1475

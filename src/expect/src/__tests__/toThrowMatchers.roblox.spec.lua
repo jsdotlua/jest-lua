@@ -23,9 +23,8 @@ return function()
 
 		local CustomError = extends(Error, "CustomError", function(self, message)
 			self.message = message
-			self.name = 'Error'
-			self.stack = '  at jestExpect' ..
-				' (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)'
+			self.name = "Error"
+			self.stack = "  at jestExpect" .. " (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)"
 		end)
 
 		it("works well for single errors", function()
@@ -58,32 +57,48 @@ return function()
 
 		it("prints the stack trace for Lua Error error", function()
 			jestExpect(function()
-				jestExpect(function() test1() end).never.toThrow()
+				jestExpect(function()
+					test1()
+				end).never.toThrow()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it("prints the stack trace for Lua string error", function()
 			jestExpect(function()
-				jestExpect(function() test2() end).never.toThrow()
+				jestExpect(function()
+					test2()
+				end).never.toThrow()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it("prints the stack trace for Lua string error 2", function()
 			jestExpect(function()
-				jestExpect(function() test2() end).toThrow("wrong information")
+				jestExpect(function()
+					test2()
+				end).toThrow("wrong information")
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it("matches Error", function()
-			jestExpect(function() error(Error("error msg")) end).toThrow(Error("error msg"))
-			jestExpect(function() error(CustomError("error msg")) end).toThrow(CustomError("error msg"))
-			jestExpect(function() error(CustomError("error msg")) end).toThrow(Error("error msg"))
+			jestExpect(function()
+				error(Error("error msg"))
+			end).toThrow(Error("error msg"))
+			jestExpect(function()
+				error(CustomError("error msg"))
+			end).toThrow(CustomError("error msg"))
+			jestExpect(function()
+				error(CustomError("error msg"))
+			end).toThrow(Error("error msg"))
 			-- this would match in upstream Jest even though it is somewhat nonsensical
-			jestExpect(function() error(Error("error msg")) end).toThrow(CustomError("error msg"))
+			jestExpect(function()
+				error(Error("error msg"))
+			end).toThrow(CustomError("error msg"))
 		end)
 
 		it("matches empty Error", function()
-			jestExpect(function() error(Error()) end).toThrow(Error())
+			jestExpect(function()
+				error(Error())
+			end).toThrow(Error())
 		end)
 
 		-- ROBLOX deviation: sanity check test case
@@ -95,14 +110,16 @@ return function()
 
 			-- 2 lines in stack trace
 			jestExpect(function()
-				jestExpect(function() func2() end).never.toThrow()
+				jestExpect(function()
+					func2()
+				end).never.toThrow()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it("toThrow should fail if expected is a string and thrown message is a table", function()
 			jestExpect(function()
 				jestExpect(function()
-					error({message = {key = "value"}})
+					error({ message = { key = "value" } })
 				end).toThrow("string")
 			end).toThrowErrorMatchingSnapshot()
 		end)

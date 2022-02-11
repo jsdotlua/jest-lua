@@ -2,7 +2,7 @@
 
 local snapshots = {}
 
-snapshots['joinAlignedDiffsExpand first line is empty common 1'] = [=[
+snapshots["joinAlignedDiffsExpand first line is empty common 1"] = [=[
 
   ↵
   common 2 preceding A
@@ -35,7 +35,7 @@ snapshots['joinAlignedDiffsExpand first line is empty common 1'] = [=[
   common 5 following C
 ]=]
 
-snapshots['joinAlignedDiffsNoExpand patch 0 with context 1 and change at start and end 1'] = [=[
+snapshots["joinAlignedDiffsNoExpand patch 0 with context 1 and change at start and end 1"] = [=[
 
 - delete
   common following delete
@@ -43,7 +43,7 @@ snapshots['joinAlignedDiffsNoExpand patch 0 with context 1 and change at start a
 + insert
 ]=]
 
-snapshots['joinAlignedDiffsNoExpand patch 0 with context 5 and first line is empty common 1'] = [=[
+snapshots["joinAlignedDiffsNoExpand patch 0 with context 5 and first line is empty common 1"] = [=[
 
   ↵
   common 2 preceding A
@@ -76,7 +76,7 @@ snapshots['joinAlignedDiffsNoExpand patch 0 with context 5 and first line is emp
   common 5 following C
 ]=]
 
-snapshots['joinAlignedDiffsNoExpand patch 1 with context 4 and last line is empty common 1'] = [=[
+snapshots["joinAlignedDiffsNoExpand patch 1 with context 4 and last line is empty common 1"] = [=[
 
 @@ -1,24 +1,24 @@
 
@@ -109,7 +109,7 @@ snapshots['joinAlignedDiffsNoExpand patch 1 with context 4 and last line is empt
   ↵
 ]=]
 
-snapshots['joinAlignedDiffsNoExpand patch 2 with context 3 1'] = [=[
+snapshots["joinAlignedDiffsNoExpand patch 2 with context 3 1"] = [=[
 
 @@ -1,8 +1,7 @@
 
@@ -140,7 +140,7 @@ snapshots['joinAlignedDiffsNoExpand patch 2 with context 3 1'] = [=[
   common 3 following C
 ]=]
 
-snapshots['joinAlignedDiffsNoExpand patch 3 with context 2 and omit excess common at start 1'] = [=[
+snapshots["joinAlignedDiffsNoExpand patch 3 with context 2 and omit excess common at start 1"] = [=[
 
 @@ -2,6 +2,5 @@
   common 2 preceding A

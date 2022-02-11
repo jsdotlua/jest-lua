@@ -24,14 +24,14 @@ return function()
 		end)
 
 		it("takes a name", function()
-			local spyStrategy = SpyStrategy.new({name = 'foo'})
+			local spyStrategy = SpyStrategy.new({ name = "foo" })
 
 			expect(spyStrategy.identity).to.equal("foo")
 		end)
 
 		it("stubs an original function, if provided", function()
 			local originalFn = createSpy("original")
-			local spyStrategy = SpyStrategy.new({fn = originalFn})
+			local spyStrategy = SpyStrategy.new({ fn = originalFn })
 
 			spyStrategy:exec()
 
@@ -42,19 +42,19 @@ return function()
 
 		it("allows an original function to be called, passed through the params and returns it's value", function()
 			local originalFn = createSpy("original").andAlso:returnValue(42)
-			local spyStrategy = SpyStrategy.new({fn = originalFn})
+			local spyStrategy = SpyStrategy.new({ fn = originalFn })
 
 			spyStrategy:callThrough()
-			local returnValue = spyStrategy:exec(1, {'foo'})
+			local returnValue = spyStrategy:exec(1, { "foo" })
 
 			expect(originalFn.calls:any()).to.equal(true)
-			expect(equals(originalFn.calls:mostRecent().args, {1, {'foo'}})).to.equal(true)
+			expect(equals(originalFn.calls:mostRecent().args, { 1, { "foo" } })).to.equal(true)
 			expect(returnValue).to.equal(42)
 		end)
 
 		it("can return a specified value when executed", function()
 			local originalFn = createSpy("original")
-			local spyStrategy = SpyStrategy.new({fn = originalFn})
+			local spyStrategy = SpyStrategy.new({ fn = originalFn })
 			local returnValue
 
 			spyStrategy:returnValue(17)
@@ -66,7 +66,7 @@ return function()
 
 		it("can return specified values in order specified when executed", function()
 			local originalFn = createSpy("original")
-			local spyStrategy = SpyStrategy.new({fn = originalFn})
+			local spyStrategy = SpyStrategy.new({ fn = originalFn })
 
 			spyStrategy:returnValues("value1", "value2", "value3")
 
@@ -79,7 +79,7 @@ return function()
 
 		it("allows an exception to be thrown when executed", function()
 			local originalFn = createSpy("original")
-			local spyStrategy = SpyStrategy.new({fn = originalFn})
+			local spyStrategy = SpyStrategy.new({ fn = originalFn })
 
 			spyStrategy:throwError("bar")
 
@@ -92,9 +92,9 @@ return function()
 
 		-- ROBLOX deviation: test skipped because its translation is identical to the
 		-- one above
-		itSKIP('allows a string to be thrown, wrapping it into an exception when executed', function()
-			local originalFn = createSpy('original')
-			local spyStrategy = SpyStrategy.new({fn = originalFn})
+		itSKIP("allows a string to be thrown, wrapping it into an exception when executed", function()
+			local originalFn = createSpy("original")
+			local spyStrategy = SpyStrategy.new({ fn = originalFn })
 
 			spyStrategy:throwError("bar")
 
@@ -107,13 +107,15 @@ return function()
 
 		it("allows a non-Error to be thrown when executed", function()
 			local originalFn = createSpy("original")
-			local spyStrategy = SpyStrategy.new({fn = originalFn})
+			local spyStrategy = SpyStrategy.new({ fn = originalFn })
 
-			spyStrategy:throwError({code = "ESRCH"})
+			spyStrategy:throwError({ code = "ESRCH" })
 
-			local ok, err = pcall(function() spyStrategy:exec() end)
+			local ok, err = pcall(function()
+				spyStrategy:exec()
+			end)
 			expect(ok).to.equal(false)
-			expect(equals(err, {code = "ESRCH"})).to.equal(true)
+			expect(equals(err, { code = "ESRCH" })).to.equal(true)
 
 			expect(originalFn.calls:any()).to.equal(false)
 		end)
@@ -121,7 +123,7 @@ return function()
 		it("allows a fake function to be called instead", function()
 			local originalFn = createSpy("original")
 			local fakeFn = createSpy("fake").andAlso:returnValue(67)
-			local spyStrategy = SpyStrategy.new({fn = originalFn})
+			local spyStrategy = SpyStrategy.new({ fn = originalFn })
 			local returnValue
 
 			spyStrategy:callFake(fakeFn)
@@ -133,14 +135,13 @@ return function()
 
 		it("allows a fake async function to be called instead", function()
 			local originalFn = createSpy("original")
-			local fakeFn = createSpy("fake").andAlso:callFake(
-				function()
-					return Promise.new(function(resolve, reject)
-						resolve(67)
-					end)
+			local fakeFn = createSpy("fake").andAlso:callFake(function()
+				return Promise.new(function(resolve, reject)
+					resolve(67)
 				end)
+			end)
 
-			local spyStrategy = SpyStrategy.new({fn = originalFn})
+			local spyStrategy = SpyStrategy.new({ fn = originalFn })
 
 			--[[
 				deviation: we use a Promise library to model the functionality
@@ -192,7 +193,7 @@ return function()
 		it("allows a return to plan stubbing after another strategy", function()
 			local originalFn = createSpy("original")
 			local fakeFn = createSpy("fake").andAlso:returnValue(67)
-			local spyStrategy = SpyStrategy.new({fn = originalFn})
+			local spyStrategy = SpyStrategy.new({ fn = originalFn })
 			local returnValue
 
 			spyStrategy:callFake(fakeFn)
@@ -210,7 +211,7 @@ return function()
 		it("returns the spy after changing the strategy", function()
 			local spy = {}
 			local spyFn = createSpy("spyFn").andAlso:returnValue(spy)
-			local spyStrategy = SpyStrategy.new({getSpy = spyFn})
+			local spyStrategy = SpyStrategy.new({ getSpy = spyFn })
 
 			expect(spyStrategy:callThrough()).to.equal(spy)
 			expect(spyStrategy:returnValue()).to.equal(spy)

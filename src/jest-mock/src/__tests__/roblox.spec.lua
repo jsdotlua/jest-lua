@@ -16,9 +16,9 @@ return function()
 		local myMock = moduleMocker:fn()
 		jestExpect(myMock()).toBeNil()
 
-		myMock.mockReturnValueOnce(10).mockReturnValueOnce('x').mockReturnValue(true)
+		myMock.mockReturnValueOnce(10).mockReturnValueOnce("x").mockReturnValue(true)
 		jestExpect(myMock()).toBe(10)
-		jestExpect(myMock()).toBe('x')
+		jestExpect(myMock()).toBe("x")
 		jestExpect(myMock()).toBe(true)
 		jestExpect(myMock()).toBe(true)
 	end)
@@ -30,7 +30,9 @@ return function()
 
 	it("returns a function as the second return value", function()
 		local mock, mockFn = moduleMocker:fn()
-		mock.mockImplementationOnce(function(a, b) return a .. b end)
+		mock.mockImplementationOnce(function(a, b)
+			return a .. b
+		end)
 		mock.mockReturnValue(true)
 
 		jestExpect(typeof(mockFn)).toBe("function")
