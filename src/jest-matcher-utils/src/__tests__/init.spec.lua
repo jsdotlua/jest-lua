@@ -81,11 +81,9 @@ return function()
 				end,
 			}
 
-			jestExpect(stringify(evil)).toBe('{"toJSON": [Function anonymous]}')
-			-- ROBLOX deviation: PrettyFormat returns [Function anonymous] since we
-			-- can't get function information
+			jestExpect(stringify(evil)).toBe('{"toJSON": [Function toJSON]}')
 			jestExpect(stringify({ a = { b = { evil = evil } } })).toBe(
-				'{"a": {"b": {"evil": {"toJSON": [Function anonymous]}}}}'
+				'{"a": {"b": {"evil": {"toJSON": [Function toJSON]}}}}'
 			)
 
 			-- ROBLOX deviation: we use a table with a __call metamethod to mimic a
@@ -93,7 +91,7 @@ return function()
 			local Evil = {}
 			setmetatable(Evil, { __call = function() end })
 			Evil.toJSON = evil.toJSON
-			jestExpect(stringify(Evil)).toBe('{"toJSON": [Function anonymous]}')
+			jestExpect(stringify(Evil)).toBe('{"toJSON": [Function toJSON]}')
 		end)
 
 		it("toJSON errors when comparing two objects", function()

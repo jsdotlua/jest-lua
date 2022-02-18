@@ -51,7 +51,7 @@ snapshots["toThrow asymmetric no-symbol fail isNot false 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrow<d>(</><g>expected</><d>)</>
 
-Expected asymmetric matcher: <g>{"asymmetricMatch": [Function anonymous]}</>
+Expected asymmetric matcher: <g>{"asymmetricMatch": [Function asymmetricMatch]}</>
 
 Received name:    <r>"Error"</>
 Received message: <r>"apple"</>
@@ -64,7 +64,7 @@ snapshots["toThrow asymmetric no-symbol fail isNot true 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>(</><g>expected</><d>)</>
 
-Expected asymmetric matcher: never <g>{"asymmetricMatch": [Function anonymous]}</>
+Expected asymmetric matcher: never <g>{"asymmetricMatch": [Function asymmetricMatch]}</>
 
 Received name:    <r>"Error"</>
 Received message: <r>"apple"</>
@@ -364,7 +364,7 @@ snapshots["toThrowError asymmetric no-symbol fail isNot false 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toThrowError<d>(</><g>expected</><d>)</>
 
-Expected asymmetric matcher: <g>{"asymmetricMatch": [Function anonymous]}</>
+Expected asymmetric matcher: <g>{"asymmetricMatch": [Function asymmetricMatch]}</>
 
 Received name:    <r>"Error"</>
 Received message: <r>"apple"</>
@@ -377,7 +377,7 @@ snapshots["toThrowError asymmetric no-symbol fail isNot true 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrowError<d>(</><g>expected</><d>)</>
 
-Expected asymmetric matcher: never <g>{"asymmetricMatch": [Function anonymous]}</>
+Expected asymmetric matcher: never <g>{"asymmetricMatch": [Function asymmetricMatch]}</>
 
 Received name:    <r>"Error"</>
 Received message: <r>"apple"</>

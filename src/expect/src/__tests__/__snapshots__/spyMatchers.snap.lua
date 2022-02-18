@@ -2406,7 +2406,7 @@ snapshots["toHaveReturned throw matcher error if received is spy 1"] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock function
 
 Received has type:  table
-Received has value: <r>{"calls": {"all": [Function anonymous], "count": [Function anonymous]}}</>
+Received has value: <r>{"calls": {"all": [Function all], "count": [Function count]}}</>
 ]=]
 
 snapshots["toHaveReturnedTimes .not only accepts a number argument 1"] = [=[
@@ -2598,7 +2598,7 @@ snapshots["toHaveReturnedTimes throw matcher error if received is spy 1"] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock function
 
 Received has type:  table
-Received has value: <r>{"calls": {"all": [Function anonymous], "count": [Function anonymous]}}</>
+Received has value: <r>{"calls": {"all": [Function all], "count": [Function count]}}</>
 ]=]
 
 snapshots["toHaveReturnedWith a call that throws is not considered to have returned 1"] = [=[
@@ -2878,7 +2878,7 @@ snapshots["toReturn throw matcher error if received is spy 1"] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock function
 
 Received has type:  table
-Received has value: <r>{"calls": {"all": [Function anonymous], "count": [Function anonymous]}}</>
+Received has value: <r>{"calls": {"all": [Function all], "count": [Function count]}}</>
 ]=]
 
 snapshots["toReturnTimes .not only accepts a number argument 1"] = [=[
@@ -3070,7 +3070,7 @@ snapshots["toReturnTimes throw matcher error if received is spy 1"] = [=[
 <b>Matcher error</>: <r>received</> value must be a mock function
 
 Received has type:  table
-Received has value: <r>{"calls": {"all": [Function anonymous], "count": [Function anonymous]}}</>
+Received has value: <r>{"calls": {"all": [Function all], "count": [Function count]}}</>
 ]=]
 
 snapshots["toReturnWith a call that throws is not considered to have returned 1"] = [=[

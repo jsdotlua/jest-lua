@@ -29,3 +29,6 @@ Packages/*
 
 # Selene
 roblox.toml
+
+# Editor files
+.idea

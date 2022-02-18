@@ -123,15 +123,14 @@ Expected: <g>[Function anonymous]</>
 Received: serializes to the same string
 ]=]
 
---deviation: changed from a to anonymous
-snapshots['.toBe() fails for: {"a": [Function anonymous], "b": 2} and {"a": Any<function>, "b": 2} 1'] = [=[
+snapshots['.toBe() fails for: {"a": [Function a], "b": 2} and {"a": Any<function>, "b": 2} 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 <d>If it should pass with deep equality, replace "toBe" with "toEqual"</>
 
 Expected: <g>{"a": Any<function>, "b": 2}</>
-Received: <r>{"a": [Function anonymous], "b": 2}</>
+Received: <r>{"a": [Function a], "b": 2}</>
 ]=]
 
 snapshots['.toBe() fails for: {"a": 1} and {"a": 1} 1'] = [=[
@@ -256,7 +255,7 @@ Received: <r>1</>
 
 Expected precision:    2
 Expected difference: < <g>0.005</>
-Received difference:   <r>0.23</>
+Received difference:   <r>0.22999999999999998</>
 ]=]
 
 snapshots[".toBeCloseTo {pass: false} expect(1.23).toBeCloseTo(1.2249999) 1"] = [=[
@@ -268,7 +267,7 @@ Received: <r>1.23</>
 
 Expected precision:    2
 Expected difference: < <g>0.005</>
-Received difference:   <r>0.0050001</>
+Received difference:   <r>0.005000099999999952</>
 ]=]
 
 snapshots[".toBeCloseTo {pass: false} expect(inf).toBeCloseTo(-inf) 1"] = [=[
@@ -311,18 +310,16 @@ Expected: never <g>0</>
 
 ]=]
 
--- ROBLOX deviation: upstream's printing of the expected value is 0.000004 but Lua
--- prints such a value in exponential format by default so we follow the convention
-snapshots[".toBeCloseTo {pass: true} expect(0).toBeCloseTo(4e-06, 5) 1"] = [=[
+snapshots[".toBeCloseTo {pass: true} expect(0).toBeCloseTo(0.000004, 5) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toBeCloseTo<d>(</><g>expected</><d>, </>precision<d>)</>
 
-Expected: never <g>4e-06</>
+Expected: never <g>0.000004</>
 Received:       <r>0</>
 
 Expected precision:          5
-Expected difference: never < <g>5e-6</>
-Received difference:         <r>4e-6</>
+Expected difference: never < <g>0.000005</>
+Received difference:         <r>0.000004</>
 ]=]
 
 snapshots[".toBeCloseTo {pass: true} expect(0).toBeCloseTo(0.0001, 3) 1"] = [=[
@@ -370,7 +367,7 @@ Received:       <r>1.23</>
 
 Expected precision:          2
 Expected difference: never < <g>0.005</>
-Received difference:         <r>0.0049999999999999</>
+Received difference:         <r>0.004999999999999893</>
 ]=]
 
 snapshots[".toBeCloseTo {pass: true} expect(1.23).toBeCloseTo(1.226) 1"] = [=[
@@ -382,7 +379,7 @@ Received:       <r>1.23</>
 
 Expected precision:          2
 Expected difference: never < <g>0.005</>
-Received difference:         <r>0.004</>
+Received difference:         <r>0.0040000000000000036</>
 ]=]
 
 snapshots[".toBeCloseTo {pass: true} expect(1.23).toBeCloseTo(1.229) 1"] = [=[
@@ -394,7 +391,7 @@ Received:       <r>1.23</>
 
 Expected precision:          2
 Expected difference: never < <g>0.005</>
-Received difference:         <r>0.00099999999999989</>
+Received difference:         <r>0.0009999999999998899</>
 ]=]
 
 snapshots[".toBeCloseTo {pass: true} expect(1.23).toBeCloseTo(1.234) 1"] = [=[
@@ -406,7 +403,7 @@ Received:       <r>1.23</>
 
 Expected precision:          2
 Expected difference: never < <g>0.005</>
-Received difference:         <r>0.004</>
+Received difference:         <r>0.0040000000000000036</>
 ]=]
 
 snapshots[".toBeCloseTo {pass: true} expect(2.0000002).toBeCloseTo(2, 5) 1"] = [=[
@@ -418,7 +415,7 @@ Received:       <r>2.0000002</>
 
 Expected precision:          5
 Expected difference: never < <g>5e-6</>
-Received difference:         <r>2.0000000011677e-7</>
+Received difference:         <r>2.0000000011677344e-7</>
 ]=]
 
 snapshots[".toBeCloseTo {pass: true} expect(inf).toBeCloseTo(inf) 1"] = [=[
@@ -484,40 +481,40 @@ Expected: never <= <g>1</>
 Received:          <r>1</>
 ]=]
 
-snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [9.007199254741e+15, 9.007199254741e+15] 1"] =
+snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [9007199254740991, 9007199254740991] 1"] =
 	[=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toBeGreaterThanOrEqual<d>(</><g>expected</><d>)</>
 
-Expected: never >= <g>9.007199254741e+15</>
-Received:          <r>9.007199254741e+15</>
+Expected: never >= <g>9007199254740991</>
+Received:          <r>9007199254740991</>
 ]=]
 
-snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [9.007199254741e+15, 9.007199254741e+15] 2"] =
+snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [9007199254740991, 9007199254740991] 2"] =
 	[=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toBeLessThanOrEqual<d>(</><g>expected</><d>)</>
 
-Expected: never <= <g>9.007199254741e+15</>
-Received:          <r>9.007199254741e+15</>
+Expected: never <= <g>9007199254740991</>
+Received:          <r>9007199254740991</>
 ]=]
 
-snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [-9.007199254741e+15, -9.007199254741e+15] 1"] =
+snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [-9007199254740991, -9007199254740991] 1"] =
 	[=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toBeGreaterThanOrEqual<d>(</><g>expected</><d>)</>
 
-Expected: never >= <g>-9.007199254741e+15</>
-Received:          <r>-9.007199254741e+15</>
+Expected: never >= <g>-9007199254740991</>
+Received:          <r>-9007199254740991</>
 ]=]
 
-snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [-9.007199254741e+15, -9.007199254741e+15] 2"] =
+snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [-9007199254740991, -9007199254740991] 2"] =
 	[=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toBeLessThanOrEqual<d>(</><g>expected</><d>)</>
 
-Expected: never <= <g>-9.007199254741e+15</>
-Received:          <r>-9.007199254741e+15</>
+Expected: never <= <g>-9007199254740991</>
+Received:          <r>-9007199254740991</>
 ]=]
 
 snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() equal numbers: [inf, inf] 1"] =
@@ -826,76 +823,76 @@ Expected: <= <g>3</>
 Received:    <r>7</>
 ]=]
 
-snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9.007199254741e+15, 9.007199254741e+15] 1"] =
+snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9007199254740991, 9007199254740991] 1"] =
 	[=[
 
 <d>expect(</><r>received</><d>).</>toBeGreaterThan<d>(</><g>expected</><d>)</>
 
-Expected: > <g>9.007199254741e+15</>
-Received:   <r>-9.007199254741e+15</>
+Expected: > <g>9007199254740991</>
+Received:   <r>-9007199254740991</>
 ]=]
 
-snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9.007199254741e+15, 9.007199254741e+15] 2"] =
+snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9007199254740991, 9007199254740991] 2"] =
 	[=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toBeLessThan<d>(</><g>expected</><d>)</>
 
-Expected: never < <g>9.007199254741e+15</>
-Received:         <r>-9.007199254741e+15</>
+Expected: never < <g>9007199254740991</>
+Received:         <r>-9007199254740991</>
 ]=]
 
-snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9.007199254741e+15, 9.007199254741e+15] 3"] =
+snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9007199254740991, 9007199254740991] 3"] =
 	[=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toBeGreaterThan<d>(</><g>expected</><d>)</>
 
-Expected: never > <g>-9.007199254741e+15</>
-Received:         <r>9.007199254741e+15</>
+Expected: never > <g>-9007199254740991</>
+Received:         <r>9007199254740991</>
 ]=]
 
-snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9.007199254741e+15, 9.007199254741e+15] 4"] =
+snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9007199254740991, 9007199254740991] 4"] =
 	[=[
 
 <d>expect(</><r>received</><d>).</>toBeLessThan<d>(</><g>expected</><d>)</>
 
-Expected: < <g>-9.007199254741e+15</>
-Received:   <r>9.007199254741e+15</>
+Expected: < <g>-9007199254740991</>
+Received:   <r>9007199254740991</>
 ]=]
 
-snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9.007199254741e+15, 9.007199254741e+15] 5"] =
+snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9007199254740991, 9007199254740991] 5"] =
 	[=[
 
 <d>expect(</><r>received</><d>).</>toBeGreaterThanOrEqual<d>(</><g>expected</><d>)</>
 
-Expected: >= <g>9.007199254741e+15</>
-Received:    <r>-9.007199254741e+15</>
+Expected: >= <g>9007199254740991</>
+Received:    <r>-9007199254740991</>
 ]=]
 
-snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9.007199254741e+15, 9.007199254741e+15] 6"] =
+snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9007199254740991, 9007199254740991] 6"] =
 	[=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toBeLessThanOrEqual<d>(</><g>expected</><d>)</>
 
-Expected: never <= <g>9.007199254741e+15</>
-Received:          <r>-9.007199254741e+15</>
+Expected: never <= <g>9007199254740991</>
+Received:          <r>-9007199254740991</>
 ]=]
 
-snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9.007199254741e+15, 9.007199254741e+15] 7"] =
+snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9007199254740991, 9007199254740991] 7"] =
 	[=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toBeGreaterThanOrEqual<d>(</><g>expected</><d>)</>
 
-Expected: never >= <g>-9.007199254741e+15</>
-Received:          <r>9.007199254741e+15</>
+Expected: never >= <g>-9007199254740991</>
+Received:          <r>9007199254740991</>
 ]=]
 
-snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9.007199254741e+15, 9.007199254741e+15] 8"] =
+snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [-9007199254740991, 9007199254740991] 8"] =
 	[=[
 
 <d>expect(</><r>received</><d>).</>toBeLessThanOrEqual<d>(</><g>expected</><d>)</>
 
-Expected: <= <g>-9.007199254741e+15</>
-Received:    <r>9.007199254741e+15</>
+Expected: <= <g>-9007199254740991</>
+Received:    <r>9007199254740991</>
 ]=]
 
 snapshots[".toBeGreaterThan(), .toBeLessThan(), .toBeGreaterThanOrEqual(), .toBeLessThanOrEqual() throws: [9, 18] 1"] =
@@ -1563,11 +1560,11 @@ Expected: <g>"1<i> </i>234,57<i> </i>$"</>
 Received: <r>"1<i> </i>234,57<i> </i>$"</>
 ]=]
 
-snapshots['.toEqual() {pass: false} expect("Eve").toEqual({"asymmetricMatch": [Function anonymous]}) 1'] = [=[
+snapshots['.toEqual() {pass: false} expect("Eve").toEqual({"asymmetricMatch": [Function asymmetricMatch]}) 1'] = [=[
 
 <d>expect(</><r>received</><d>).</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
 
-Expected: <g>{"asymmetricMatch": [Function anonymous]}</>
+Expected: <g>{"asymmetricMatch": [Function asymmetricMatch]}</>
 Received: <r>"Eve"</>
 ]=]
 
@@ -1796,11 +1793,11 @@ Expected: <g>1</>
 Received: <r>0</>
 ]=]
 
-snapshots[".toEqual() {pass: false} expect(0).toEqual(-9.007199254741e+15) 1"] = [=[
+snapshots[".toEqual() {pass: false} expect(0).toEqual(-9007199254740991) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
 
-Expected: <g>-9.007199254741e+15</>
+Expected: <g>-9007199254740991</>
 Received: <r>0</>
 ]=]
 
@@ -1820,12 +1817,12 @@ Expected: <g>ArrayContaining {1, 2}</>
 Received: <r>1</>
 ]=]
 
-snapshots[".toEqual() {pass: false} expect(-9.007199254741e+15).toEqual(0) 1"] = [=[
+snapshots[".toEqual() {pass: false} expect(-9007199254740991).toEqual(0) 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
 
 Expected: <g>0</>
-Received: <r>-9.007199254741e+15</>
+Received: <r>-9007199254740991</>
 ]=]
 
 snapshots['.toEqual() {pass: false} expect({"1": {"2": {"a": 99}}}).toEqual({"1": {"2": {"a": 11}}}) 1'] = [=[
@@ -2048,11 +2045,12 @@ Expected: <g>Anything</>
 Received: <r>nil</>
 ]=]
 
-snapshots['.toEqual() {pass: true} expect("Alice").never.toEqual({"asymmetricMatch": [Function anonymous]}) 1'] = [=[
+snapshots['.toEqual() {pass: true} expect("Alice").never.toEqual({"asymmetricMatch": [Function asymmetricMatch]}) 1'] =
+	[=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
 
-Expected: never <g>{"asymmetricMatch": [Function anonymous]}</>
+Expected: never <g>{"asymmetricMatch": [Function asymmetricMatch]}</>
 Received:       <r>"Alice"</>
 ]=]
 
@@ -2112,13 +2110,13 @@ Expected: never <g>Any<function></>
 Received:       <r>[Function anonymous]</>
 ]=]
 
-snapshots['.toEqual() {pass: true} expect({"a": 1, "b": [Function anonymous], "c": true}).never.toEqual({"a": 1, "b": Any<function>, "c": Anything}) 1'] =
+snapshots['.toEqual() {pass: true} expect({"a": 1, "b": [Function b], "c": true}).never.toEqual({"a": 1, "b": Any<function>, "c": Anything}) 1'] =
 	[=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
 
 Expected: never <g>{"a": 1, "b": Any<function>, "c": Anything}</>
-Received:       <r>{"a": 1, "b": [Function anonymous], "c": true}</>
+Received:       <r>{"a": 1, "b": [Function b], "c": true}</>
 ]=]
 
 snapshots['.toEqual() {pass: true} expect({"a": 1, "b": 2}).never.toEqual(ObjectContaining {"a": 1}) 1'] = [=[

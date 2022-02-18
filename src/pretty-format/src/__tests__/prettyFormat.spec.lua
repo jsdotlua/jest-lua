@@ -658,7 +658,7 @@ return function()
 					}
 				end,
 				value = false,
-			})).toEqual('Table {\n  "toJSON": [Function anonymous],\n}')
+			})).toEqual('Table {\n  "toJSON": [Function toJSON],\n}')
 		end)
 
 		it("calls toJSON on Sets", function()
@@ -691,9 +691,7 @@ return function()
 			end
 			jestExpect(prettyFormat(set, {
 				callToJSON = false,
-			})).toEqual(
-				'Set {\n  Table {\n    "apple": "banana",\n    "toJSON": [Function anonymous' .. "],\n  },\n}"
-			)
+			})).toEqual('Set {\n  Table {\n    "apple": "banana",\n    "toJSON": [Function toJSON' .. "],\n  },\n}")
 
 			-- ROBLOX deviation: as of right now, calling prettyFormat on an object
 			-- that has toJSON as a mocked function won't print the expected
@@ -732,7 +730,7 @@ return function()
 			jestExpect(prettyFormat(set, {
 				callToJSON = false,
 			})).toEqual(
-				'Table {\n  Table {\n    "apple": "banana",\n    "toJSON": [Function anonymous' .. "],\n  },\n}"
+				'Table {\n  Table {\n    "apple": "banana",\n    "toJSON": [Function toJSON' .. "],\n  },\n}"
 			)
 		end)
 
