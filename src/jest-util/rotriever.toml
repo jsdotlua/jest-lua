@@ -1,5 +1,5 @@
 [package]
-name = "JestJasmine2"
+name = "JestUtil"
 version = { workspace = true }
 license = { workspace = true }
 author = "Roblox"
@@ -8,8 +8,10 @@ files = ["*", "!**/__tests__/**"]
 
 [dependencies]
 LuauPolyfill = { workspace = true }
+Promise = { workspace = true }
+ChalkLua = { workspace = true }
+Expect = { path = "../expect" }
+JestTypes = { path = "../jest-types" }
 
 [dev_dependencies]
-Expect = { path = "../expect" }
-Promise = { workspace = true }
-RobloxShared = { path = "../roblox-shared" }
+Jest = { path = "../jest" }
