@@ -1,0 +1,20 @@
+[package]
+name = "JestEach"
+version = { workspace = true }
+license = { workspace = true }
+author = "Roblox"
+content_root = "src"
+files = ["*", "!**/__tests__/**"]
+
+[dependencies]
+ChalkLua = { workspace = true }
+LuauPolyfill = { workspace = true }
+RegExp = { workspace = true }
+JestGetType = { path = "../jest-get-type" }
+JestTypes = { path = "../jest-types" }
+JestUtil = { path = "../jest-util" }
+PrettyFormat = { path = "../pretty-format" }
+
+[dev_dependencies]
+Jest = { path = "../jest" }
+Expect = { path = "../expect" }

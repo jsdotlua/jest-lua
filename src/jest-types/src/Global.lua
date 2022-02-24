@@ -53,7 +53,9 @@ export type Table = Array<Row>
 export type ArrayTable = Table | Row
 export type TemplateTable = TemplateStringsArray
 export type TemplateData = Array<any>
-export type EachTable = ArrayTable | TemplateTable
+
+-- ROBLOX deviation: Template literals are represented as a string
+export type EachTable = ArrayTable | TemplateTable | string
 
 export type TestCallback = BlockFn | TestFn | ConcurrentTestFn
 

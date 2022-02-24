@@ -43,7 +43,7 @@ return function()
 			jestExpect(installCommonGlobals(myGlobal, {})).toBe(myGlobal)
 		end)
 
-		it("turns a V8 global object into a Node global object", function()
+		itSKIP("turns a V8 global object into a Node global object", function()
 			local myGlobal = installCommonGlobals(getGlobal(), {})
 			jestExpect(myGlobal.process).toBeDefined()
 			jestExpect(myGlobal.DTRACE_NET_SERVER_CONNECTION).toBeDefined()

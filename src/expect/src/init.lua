@@ -210,11 +210,11 @@ function makeThrowingMatcher(
 
 		if not ok then
 			if typeof(result) == "table" and typeof(result.message) == "string" then
-				local errorTable = Error(result.message)
+				local errorTable = Error.new(result.message)
 				errorTable.stack = preservedStack
 				error(errorTable)
 			else
-				local errorTable = Error(result)
+				local errorTable = Error.new(result)
 				errorTable.stack = preservedStack
 				error(errorTable)
 			end

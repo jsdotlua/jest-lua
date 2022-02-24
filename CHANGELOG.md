@@ -5,6 +5,8 @@
 * :sparkles: Realigned package versions to v27.4.7 ([#135](https://github.com/Roblox/jest-roblox/pull/135))
 * :sparkles: Port `jest-environment` ([#139](https://github.com/Roblox/jest-roblox/pull/139))
 * :hammer_and_wrench: Apply `stylua` to the whole repo and enable check on CI ([#147](https://github.com/Roblox/jest-roblox/pull/147))
+* :sparkles: Port `jest-each` ([#145](https://github.com/Roblox/jest-roblox/pull/145))
+  * Support array like tables
 
 
 ## 2.3.1 (2021-11-30)
