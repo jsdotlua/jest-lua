@@ -10,8 +10,11 @@ local Packages = script.Parent.Parent
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
+local Object = LuauPolyfill.Object
 local String = LuauPolyfill.String
 type Array<T> = LuauPolyfill.Array<T>
+
+local NIL = require(script.Parent.nilPlaceholder)
 
 local exports = {}
 
@@ -114,12 +117,42 @@ function applyArguments<EachCallback>(
 	else
 		argumentCount = 0 -- ROBLOX CHECK: jest.fn()?
 	end
+
+	-- ROBLOX deviation START: add logic to unpack and convert NIL placeholders
+	local replaceNilPlaceholders
+	function replaceNilPlaceholders(val: any): any
+		if val == NIL then
+			return nil
+		elseif Array.isArray(val) then
+			return Array.map(val, function(item)
+				return replaceNilPlaceholders(item)
+			end)
+		elseif typeof(val) == "table" then
+			Array.forEach(Object.keys(val), function(key)
+				val[key] = replaceNilPlaceholders(val[key])
+			end)
+			return val
+		end
+
+		return val
+	end
+
+	local unpackTable
+	function unpackTable(obj: Array<any>, i_: number?, ...: any)
+		local i = if i_ ~= nil then i_ else #obj
+		if i == 0 then
+			return ...
+		end
+		return unpackTable(obj, i - 1, replaceNilPlaceholders(obj[i]), ...)
+	end
+	-- ROBLOX deviation END
+
 	return if supportsDone and #params < argumentCount
 		then function(done: Global_DoneFn)
-			return test(table.unpack(params), done)
+			return test(unpackTable(params), done)
 		end
 		else function()
-			return test(table.unpack(params))
+			return test(unpackTable(params))
 		end
 end
 return exports

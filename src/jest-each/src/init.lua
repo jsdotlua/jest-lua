@@ -10,11 +10,14 @@
 local Packages = script.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
+local Boolean = LuauPolyfill.Boolean
 local Error = LuauPolyfill.Error
 local Object = LuauPolyfill.Object
 type Object = LuauPolyfill.Object
 
 type ReturnType<T> = any
+
+local NIL = require(script.nilPlaceholder)
 
 local exports = {}
 
@@ -38,7 +41,7 @@ local function install(
 	local data = if select("#", ...) > 0 then { ... } else {}
 
 	local bindingWithArray = #data == 0
-	local bindingWithTemplate = Array.isArray(table_) and (table_ :: any).raw
+	local bindingWithTemplate = Array.isArray(table_) and Boolean.toJSBoolean((table_ :: any).raw)
 	if not bindingWithArray and not bindingWithTemplate then
 		error(Error.new("`.each` must only be called with an Array or Tagged Template Literal."))
 	end
@@ -119,24 +122,49 @@ local function install(
 	}
 end
 
--- ROBLOX deviation: handle template data
+-- ROBLOX deviation START: handle template data
 local function maybeHandleTemplateString(table_: any): Global_EachTable
 	if typeof(table_) == "string" then
-		-- ROBLOX TODO: implement parsing of template
-		error("TaggedTemplates are not supported yet")
-		-- return setmetatable(
-		-- 	{},
-		-- 	{
-		-- 		__index = {
-		-- 			raw = table_,
-		-- 		},
-		-- 	}
-		-- ) :: any,
-		-- 	table_
+		local templateString = table_ :: string
+		local raw = templateString
+		local strings = {}
+		local expressions = {}
+		local startIndex = 1
+		local endIndex = 1
+		local expressionStarted = false
+		for i = 1, #templateString do
+			local current = string.sub(templateString, i, i)
+			local next = if i < #templateString then string.sub(templateString, i + 1, i + 1) else nil
+			if i == #templateString then
+				if expressionStarted then
+					error("expression not closed")
+				end
+				table.insert(strings, string.sub(templateString, startIndex))
+			elseif not expressionStarted and current == "$" then
+				if next == "{" then
+					expressionStarted = true
+					endIndex = i - 1
+				end
+			elseif expressionStarted and current == "}" then
+				local str = string.sub(templateString, startIndex, endIndex)
+				local exp = string.sub(templateString, endIndex + 3, i - 1)
+				table.insert(strings, str)
+				table.insert(expressions, exp)
+				startIndex = i + 1
+				expressionStarted = false
+			end
+		end
+
+		return (setmetatable(strings, {
+			__index = {
+				raw = raw,
+			},
+		}) :: any) :: Global_EachTable
 	else
 		return table_
 	end
 end
+-- ROBLOX deviation END
 
 -- ROBLOX deviation: wrap in function to pass jests methods (it, describe, etc)
 local each = function(jestMethods_: Object?)
@@ -173,5 +201,7 @@ end
 exports.bind = bind
 
 exports.default = each
+
+exports.NIL = NIL
 
 return exports

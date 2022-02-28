@@ -12,9 +12,10 @@ return function()
 	local Array = LuauPolyfill.Array
 	local Number = LuauPolyfill.Number
 	local NaN = Number.NaN
-	local Object = LuauPolyfill.Object
 	type Array<T> = LuauPolyfill.Array<T>
 	type Object = LuauPolyfill.Object
+
+	local NIL = require(script.Parent.Parent.nilPlaceholder)
 
 	local HttpService = game:GetService("HttpService")
 
@@ -205,13 +206,13 @@ return function()
 
 				it("calls global with title containing param values when using printf format", function()
 					local globalTestMocks = getGlobalTestMocks()
-					-- ROBLOX deviation: using Object.None instead of nil to represent null/undefined
+					-- ROBLOX deviation: using NIL instead of nil to represent null/undefined
 					local eachObject = each.withGlobal(globalTestMocks)({
 						{
 							"hello",
 							1 :: any,
-							Object.None :: any,
-							Object.None :: any,
+							NIL :: any,
+							NIL :: any,
 							1.2 :: any,
 							{ foo = "bar" } :: any,
 							function() end :: any,
@@ -222,8 +223,8 @@ return function()
 						{
 							"world",
 							1 :: any,
-							Object.None :: any,
-							Object.None :: any,
+							NIL :: any,
+							NIL :: any,
 							1.2 :: any,
 							{ baz = "qux" } :: any,
 							function() end :: any,
@@ -239,7 +240,7 @@ return function()
 					jestExpect(globalMock).toHaveBeenCalledTimes(2)
 					-- ROBLOX deviation: stringified values representation differs with JS
 					jestExpect(globalMock).toHaveBeenCalledWith(
-						("expected string: %% %%s hello 1 Object.None Object.None 1.2 %s Function [] inf nan 1"):format(
+						("expected string: %% %%s hello 1 nil nil 1.2 %s Function [] inf nan 1"):format(
 							HttpService:JSONEncode({ foo = "bar" })
 						),
 						expectFunction,
@@ -247,7 +248,7 @@ return function()
 					)
 					-- ROBLOX deviation: stringified values representation differs with JS
 					jestExpect(globalMock).toHaveBeenCalledWith(
-						("expected string: %% %%s world 1 Object.None Object.None 1.2 %s Function [] inf nan 2"):format(
+						("expected string: %% %%s world 1 nil nil 1.2 %s Function [] inf nan 2"):format(
 							HttpService:JSONEncode({ baz = "qux" })
 						),
 						expectFunction,
@@ -377,13 +378,13 @@ return function()
 
 				it("calls global with title containing object property when using $variable", function()
 					local globalTestMocks = getGlobalTestMocks()
-					-- ROBLOX deviation: using Object.None instead of nil to represent null/undefined
+					-- ROBLOX deviation: using NIL instead of nil to represent null/undefined
 					local eachObject = each.withGlobal(globalTestMocks)({
 						{
 							a = "hello",
 							b = 1,
-							c = Object.None,
-							d = Object.None,
+							c = NIL,
+							d = NIL,
 							e = 1.2,
 							f = { key = "foo" },
 							g = function() end,
@@ -394,8 +395,8 @@ return function()
 						{
 							a = "world",
 							b = 1,
-							c = Object.None,
-							d = Object.None,
+							c = NIL,
+							d = NIL,
 							e = 1.2,
 							f = { key = "bar" },
 							g = function() end,
@@ -411,13 +412,13 @@ return function()
 					jestExpect(globalMock).toHaveBeenCalledTimes(2)
 					-- ROBLOX deviation: stringified values representation differs with JS
 					jestExpect(globalMock).toHaveBeenCalledWith(
-						'expected string: % %s hello 1 Object.None Object.None 1.2 {"key": "foo"} foo [Function g] {} inf nan 1',
+						'expected string: % %s hello 1 nil nil 1.2 {"key": "foo"} foo [Function g] {} inf nan 1',
 						expectFunction,
 						nil
 					)
 					-- ROBLOX deviation: stringified values representation differs with JS
 					jestExpect(globalMock).toHaveBeenCalledWith(
-						'expected string: % %s world 1 Object.None Object.None 1.2 {"key": "bar"} bar [Function g] {} inf nan 2',
+						'expected string: % %s world 1 nil nil 1.2 {"key": "bar"} bar [Function g] {} inf nan 2',
 						expectFunction,
 						nil
 					)

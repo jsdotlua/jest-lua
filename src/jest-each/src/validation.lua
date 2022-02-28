@@ -14,8 +14,6 @@ local Error = LuauPolyfill.Error
 local String = LuauPolyfill.String
 type Array<T> = LuauPolyfill.Array<T>
 
-local RegExp = require(Packages.RegExp)
-
 type unknown = any --[[ ROBLOX FIXME: adding `unknown` type alias to make it easier to use Luau unknown equivalent when supported ]]
 
 local exports = {}
@@ -74,24 +72,33 @@ function isEmptyString(str: string | unknown)
 end
 
 local function validateTemplateTableArguments(headings: Array<string>, data: TemplateData): ()
-	local missingData = #data % #headings
+	-- ROBLOX deviation START: dealing with arrays instead of a variadic list of values, error if any has less or more elements
+	Array.forEach(data, function(array, index)
+		local countDifference = #headings - #array
+		local missingData = if countDifference >= 0 then countDifference else (countDifference - #headings)
 
-	if missingData > 0 then
-		error(
-			Error.new(
-				"Not enough arguments supplied for given headings:\n"
-					.. tostring(EXPECTED_COLOR(Array.join(headings, " | ")))
-					.. "\n\n"
-					.. "Received:\n"
-					.. tostring(RECEIVED_COLOR(pretty(data)))
-					.. "\n\n"
-					.. ("Missing %s %s"):format(
-						RECEIVED_COLOR(tostring(missingData)),
-						pluralize("argument", missingData)
+		if missingData ~= 0 then
+			error(
+				Error.new(
+					("%s arguments supplied for given headings:\n"):format(
+						if countDifference > 0 then "Not enough" else "Too many"
 					)
+						.. tostring(EXPECTED_COLOR(Array.join(headings, " | ")))
+						.. "\n\n"
+						.. "Received:\n"
+						.. tostring(RECEIVED_COLOR(pretty(data)))
+						.. "\n\n"
+						.. ("%s %s %s in row %d"):format(
+							if countDifference > 0 then "Missing" else "Remove",
+							RECEIVED_COLOR(tostring(missingData)),
+							pluralize("argument", missingData),
+							index
+						)
+				)
 			)
-		)
-	end
+		end
+	end)
+	-- ROBLOX deviation END
 end
 exports.validateTemplateTableArguments = validateTemplateTableArguments
 
@@ -99,32 +106,47 @@ function pluralize(word: string, count: number)
 	return word .. (if count == 1 then "" else "s")
 end
 
+-- ROBLOX deviation: does not work the same as upstream (single lines supported/preferred)
 local START_OF_LINE = "^"
-local NEWLINE = "\\n"
-local HEADING = "\\s*[^\\s]+\\s*"
-local PIPE = "\\|"
-local REPEATABLE_HEADING = ("(%s%s)*"):format(PIPE, HEADING)
-local HEADINGS_FORMAT = RegExp(START_OF_LINE .. NEWLINE .. HEADING .. REPEATABLE_HEADING .. NEWLINE)
+-- local NEWLINE = "\n"
+local HEADING = "s*[^%.*]+s*"
+-- local PIPE = "|"
+-- local REPEATABLE_HEADING = ("(%s%s)*"):format(PIPE, HEADING)
+-- local HEADINGS_FORMAT = START_OF_LINE .. NEWLINE .. HEADING .. REPEATABLE_HEADING .. NEWLIN
+local END_OF_LINE = "$"
+local HEADINGS_FORMAT = START_OF_LINE .. HEADING .. END_OF_LINE
+-- ROBLOX deviation END
 
 local function extractValidTemplateHeadings(headings: string): string
-	local matches
-	for match in headings:gmatch(HEADINGS_FORMAT) do
-		if matches == nil then
-			matches = {}
-		end
-		table.insert(matches, match)
+	-- ROBLOX deviation START: get lines with value, return the first one, check for spaces in headings
+	local match = headings:match(HEADINGS_FORMAT)
+	local matches, hasEmptySpacesInHeading
+	if match then
+		matches = Array.filter(String.split(match, "\n"), function(line)
+			return String.trim(line) ~= ""
+		end)
 	end
-	if matches == nil then
+	if matches and #matches > 0 then
+		local headings_ = Array.map(String.split(matches[1], "|"), function(heading)
+			return String.trim(heading)
+		end)
+		hasEmptySpacesInHeading = Array.some(headings_, function(heading)
+			return heading:match("%s") ~= nil
+		end)
+	end
+
+	if match == nil or hasEmptySpacesInHeading then
 		error(
 			Error.new(
 				"Table headings do not conform to expected format:\n\n"
-					.. tostring(EXPECTED_COLOR("heading1 | headingN"))
+					.. EXPECTED_COLOR("heading1 | headingN")
 					.. "\n\n"
 					.. "Received:\n\n"
-					.. tostring(RECEIVED_COLOR(pretty(headings)))
+					.. RECEIVED_COLOR(pretty(headings))
 			)
 		)
 	end
+	-- ROBLOX deviation END
 	return matches[1]
 end
 exports.extractValidTemplateHeadings = extractValidTemplateHeadings

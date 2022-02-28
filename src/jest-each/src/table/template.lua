@@ -36,7 +36,7 @@ local function default(title: string, headings: Headings, row: Global_Row): Each
 	local templates = convertTableToTemplates(table_, headings)
 	return Array.map(templates, function(template, index)
 		return {
-			arguments = { template },
+			arguments = { Object.assign({}, template) },
 			title = interpolateVariables(title, template, index),
 		}
 	end)
@@ -44,14 +44,13 @@ end
 
 exports.default = default
 
-function convertRowToTable(row: Global_Row, headings: Headings): Global_Table
-	return Array.map(Array.from({ length = #row / #headings }), function(_, index: number)
-		return Array.slice(row, index * #headings, index * #headings + #headings)
-	end)
+function convertRowToTable(row: Global_Row, _headings: Headings): Global_Table
+	-- ROBLOX deviation: rows are already formatted as arrays (because there are no tagged templates)
+	return row
 end
 
-function convertTableToTemplates(table: Global_Table, headings: Headings): Templates
-	return Array.map(table, function(row)
+function convertTableToTemplates(table_: Global_Table, headings: Headings): Templates
+	return Array.map(table_, function(row)
 		return Array.reduce(row, function(acc, value, index)
 			return Object.assign(acc, { [headings[index]] = value })
 		end, {})

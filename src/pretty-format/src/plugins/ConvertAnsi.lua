@@ -72,4 +72,6 @@ return {
 	serialize = serialize,
 	-- ROBLOX deviation: exporting ansiRegex since we don't have a separate module for it
 	ansiRegex = ansiRegex,
+	-- ROBLOX deviation: exporting toHumanReadableAnsi
+	toHumanReadableAnsi = toHumanReadableAnsi,
 }

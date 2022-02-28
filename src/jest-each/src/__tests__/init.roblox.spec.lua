@@ -8,8 +8,9 @@
  ]]
 return function()
 	local Packages = script.Parent.Parent.Parent
-	local Object = require(Packages.LuauPolyfill).Object
 	local jestExpect = require(Packages.Dev.Expect)
+
+	local NIL = require(script.Parent.Parent.nilPlaceholder)
 
 	local each = require(script.Parent.Parent).default({ it = it })
 
@@ -24,8 +25,8 @@ return function()
 		end)
 
 		-- ROBLOX COMMENT: no upstream test.
-		describe("replaces Object.None", function()
-			each({ { Object.None } }).it("properly converts %s to nil before running the tests", function(value: any)
+		describe("replaces NIL", function()
+			each({ { NIL } }).it("properly converts %s to nil before running the tests", function(value: any)
 				jestExpect(value).toBe(nil)
 			end)
 		end)
@@ -33,7 +34,7 @@ return function()
 	describe("concurrent", function()
 		-- ROBLOX TODO: skipping tests as concurrent is not available
 		-- describe(".add", function()
-		-- 	each({ { 0, 0, 0 }, { 0, 1, 1 }, { 1, 1, 2 } }).test:concurrent(
+		-- 	each({ { 0, 0, 0 }, { 0, 1, 1 }, { 1, 1, 2 } }).test.concurrent(
 		-- 		"returns the result of adding %s to %s",
 		-- 		function(a, b, expected)
 		-- 			return Promise.resolve():andThen(function()
@@ -44,20 +45,27 @@ return function()
 		-- end)
 	end)
 	describe("template", function()
-		-- ROBLOX TODO: feature pending
-		-- describe(".add", function()
-		-- 	each([[
+		describe(".add", function()
+			each("a | b | expected", { 0, 0, 0 }, { 0, 1, 1 }, { 1, 1, 2 }).it(
+				"returns $expected when given $a and $b",
+				function(ref)
+					local a: number, b: number, expected = ref.a, ref.b, ref.expected
+					jestExpect(a + b).toBe(expected)
+				end
+			)
+		end)
 
-		-- 		a    | b    | expected
-		-- 		${0} | ${0} | ${0}
-		-- 		${0} | ${1} | ${1}
-		-- 		${1} | ${1} | ${2}
-		-- 	]]):it("returns $expected when given $a and $b", function(ref)
-		-- 		local a: number, b: number, expected = ref.a, ref.b, ref.expected
-		-- 		jestExpect(a + b).toBe(expected)
-		-- 	end)
-		-- end)
+		-- ROBLOX COMMENT: no upstream test.
+		describe("templates replaces NIL", function()
+			each("expected", { NIL }).it(
+				"templates properly convert $expected to nil before running the tests",
+				function(ref)
+					jestExpect(ref.expected).toBe(nil)
+				end
+			)
+		end)
 	end)
+
 	it("throws an error when not called with the right number of arguments", function()
 		jestExpect(function()
 			return each(

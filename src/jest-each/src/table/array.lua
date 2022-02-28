@@ -12,7 +12,6 @@ local Packages = script.Parent.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
-local Object = LuauPolyfill.Object
 type Array<T> = LuauPolyfill.Array<T>
 
 local RegExp = require(Packages.RegExp)
@@ -73,12 +72,8 @@ local function default(title: string, arrayTable: Global_ArrayTable): EachTests
 		end)
 	end
 	return Array.map(normaliseTable(arrayTable), function(row, index)
-		-- ROBLOX deviation: make sure Object.None is transformed to nil before running the tests
 		return {
 			arguments = Array.map(row, function(element)
-				if element == Object.None then
-					return nil
-				end
 				return element
 			end),
 			title = formatTitle(title, row, index),
