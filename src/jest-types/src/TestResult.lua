@@ -12,9 +12,9 @@ type Array<T> = LuauPolyfill.Array<T>
 
 export type Milliseconds = number
 
-type Status = "passed" | "failed" | "skipped" | "pending" | "todo" | "disabled"
+export type Status = "passed" | "failed" | "skipped" | "pending" | "todo" | "disabled"
 
-type Callsite = { column: number, line: number }
+export type Callsite = { column: number, line: number }
 
 -- this is here to make it possible to avoid huge dependency trees just for types
 export type AssertionResult = {

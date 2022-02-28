@@ -1,0 +1,15 @@
+[package]
+name = "JestTestResult"
+version = { workspace = true }
+license = { workspace = true }
+author = { workspace = true }
+content_root = "src"
+files = ["*", "!**/__tests__/**"]
+
+[dependencies]
+LuauPolyfill = { workspace = true }
+JestTypes = { path = "../jest-types" }
+
+[dev_dependencies]
+Jest = { path = "../jest" }
+Expect = { path = "../expect" }

@@ -97,6 +97,8 @@ local TestResultModule = require(script.TestResult)
 export type TestResult_Milliseconds = TestResultModule.Milliseconds
 export type TestResult_AssertionResult = TestResultModule.AssertionResult
 export type TestResult_SerializableError = TestResultModule.SerializableError
+export type TestResult_Callsite = TestResultModule.Callsite
+export type TestResult_Status = TestResultModule.Status
 
 local TransformModule = require(script.Transform)
 export type TransformTypes_TransformResult = TransformModule.TransformResult

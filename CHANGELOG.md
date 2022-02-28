@@ -1,6 +1,7 @@
 # Jest Roblox Changelog
 
 ## Unreleased Changes
+* :sparkles: Port `jest-test-result` ([#155](https://github.com/Roblox/jest-roblox/pull/155))
 * :sparkles: Port `jest-types` ([#137](https://github.com/Roblox/jest-roblox/pull/137))
 * :sparkles: Realigned package versions to v27.4.7 ([#135](https://github.com/Roblox/jest-roblox/pull/135))
 * :sparkles: Port `jest-environment` ([#139](https://github.com/Roblox/jest-roblox/pull/139))
