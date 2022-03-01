@@ -8,7 +8,7 @@
  ]]
 
 --[=[
-	ROBLOX deviation: not ported as it doesn't seems necessary in Lua
+	ROBLOX deviation: not ported as it doesn't seem necessary in Lua
 
 local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent

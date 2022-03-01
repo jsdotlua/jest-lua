@@ -17,13 +17,24 @@ local typesModule = require(Packages.JestTypes)
 type Config_Path = typesModule.Config_Path
 
 local function createDirectory(path: Config_Path): ()
-	local _FileSystemService = getFileSystemService()
+	local FileSystemService = getFileSystemService()
 
 	local ok, result, hasReturned = pcall(function()
-		-- fs:mkdirSync(path, { recursive = true })
+		-- ROBLOX deviation: using FileSystemService instead of fs
+		FileSystemService:CreateDirectories(path)
 	end)
 	if not ok then
 		local e = result
+		-- ROBLOX deviation START: additional error handling for AccessDenied case
+		if e:find("Error%(13%): Access Denied%. Path is outside of sandbox%.") then
+			error(
+				"Provided path is invalid: you likely need to provide a different argument to --fs.readwrite.\n"
+					.. "You may need to pass in `--fs.readwrite=$PWD`"
+			)
+		end
+		-- ROBLOX deviation END
+
+		-- ROBLOX FIXME: investigate how to catch directory exists error
 		if e.code ~= "EEXIST" then
 			error(e)
 		end

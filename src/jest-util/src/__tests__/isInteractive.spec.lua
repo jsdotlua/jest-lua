@@ -12,7 +12,7 @@ return function()
 	local Packages = CurrentModule.Parent
 	local isInteractive = require(CurrentModule.isInteractive).default
 
-	local jestExpect = require(Packages.Expect)
+	local jestExpect = require(Packages.Dev.Expect)
 	-- ROBLOX deviation START: no equivalent in Lua. Always returning false
 	describe("isInteractive", function()
 		it("Returns false", function()

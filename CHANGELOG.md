@@ -9,6 +9,7 @@
 * :sparkles: Port `jest-each` ([#145](https://github.com/Roblox/jest-roblox/pull/145) [#158](https://github.com/Roblox/jest-roblox/pull/158))
   * Support array like tables
   * Support template like tables
+* :sparkles: Port `jest-util` and `picomatch` ([#144](https://github.com/Roblox/jest-roblox/pull/144) [#154](https://github.com/Roblox/jest-roblox/pull/154))
 
 
 ## 2.3.1 (2021-11-30)

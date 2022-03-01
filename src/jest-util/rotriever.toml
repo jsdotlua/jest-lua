@@ -10,8 +10,10 @@ files = ["*", "!**/__tests__/**"]
 LuauPolyfill = { workspace = true }
 Promise = { workspace = true }
 ChalkLua = { workspace = true }
-Expect = { path = "../expect" }
+RegExp = { workspace = true }
 JestTypes = { path = "../jest-types" }
+Picomatch = { path = "../picomatch" }
 
 [dev_dependencies]
 Jest = { path = "../jest" }
+Expect = { path = "../expect" }

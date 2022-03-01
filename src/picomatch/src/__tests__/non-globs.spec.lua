@@ -1,0 +1,70 @@
+-- ROBLOX upstream: https://github.com/micromatch/picomatch/tree/2.3.1/test/non-globs.js
+
+return function()
+	local CurrentModule = script.Parent
+	local PicomatchModule = CurrentModule.Parent
+
+	local support = require(CurrentModule.support)
+	local isMatch = require(PicomatchModule).isMatch
+	describe("non-globs", function()
+		beforeAll(function()
+			return support.resetPathSep()
+		end)
+
+		afterAll(function()
+			return support.resetPathSep()
+		end)
+
+		afterEach(function()
+			return support.resetPathSep()
+		end)
+
+		it("should match non-globs", function()
+			assert(not isMatch("/ab", "/a"))
+			assert(not isMatch("a/a", "a/b"))
+			assert(not isMatch("a/a", "a/c"))
+			assert(not isMatch("a/b", "a/c"))
+			assert(not isMatch("a/c", "a/b"))
+			assert(not isMatch("aaa", "aa"))
+			assert(not isMatch("ab", "/a"))
+			assert(not isMatch("ab", "a"))
+			assert(isMatch("/a", "/a"))
+			assert(isMatch("/a/", "/a/"))
+			assert(isMatch("/a/a", "/a/a"))
+			assert(isMatch("/a/a/", "/a/a/"))
+			assert(isMatch("/a/a/a", "/a/a/a"))
+			assert(isMatch("/a/a/a/", "/a/a/a/"))
+			assert(isMatch("/a/a/a/a", "/a/a/a/a"))
+			assert(isMatch("/a/a/a/a/a", "/a/a/a/a/a"))
+			assert(isMatch("a", "a"))
+			assert(isMatch("a/", "a/"))
+			assert(isMatch("a/a", "a/a"))
+			assert(isMatch("a/a/", "a/a/"))
+			assert(isMatch("a/a/a", "a/a/a"))
+			assert(isMatch("a/a/a/", "a/a/a/"))
+			assert(isMatch("a/a/a/a", "a/a/a/a"))
+			assert(isMatch("a/a/a/a/a", "a/a/a/a/a"))
+		end)
+
+		it("should match literal dots", function()
+			assert(isMatch(".", "."))
+			assert(isMatch("..", ".."))
+			assert(not isMatch("...", ".."))
+			assert(isMatch("...", "..."))
+			assert(isMatch("....", "...."))
+			assert(not isMatch("....", "..."))
+		end)
+
+		it("should handle escaped characters as literals", function()
+			assert(not isMatch("abc", "abc\\*"))
+			assert(isMatch("abc*", "abc\\*"))
+		end)
+
+		itFIXME("should match windows paths", function()
+			support.windowsPathSep()
+			assert(isMatch("aaa\\bbb", "aaa/bbb"))
+			assert(isMatch("aaa/bbb", "aaa/bbb"))
+			support.resetPathSep()
+		end)
+	end)
+end

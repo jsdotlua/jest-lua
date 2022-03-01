@@ -7,9 +7,6 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
---[=[
- 	ROBLOX deviation: not ported as it doesn't seems necessary in Lua
-
 local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
@@ -33,29 +30,19 @@ local function convertDescriptorToString<T>(descriptor: T): T | string
 	end
 
 	if typeof(descriptor) ~= "function" then
-		error(Error.new("describe expects a class, function, number, or string."))
+		-- ROBLOX deviation: remove "class" from error message
+		error(Error.new("describe expects a function, number, or string."))
 	end
 
-	if descriptor.name ~= nil then
-		return descriptor.name
+	-- ROBLOX deviation START: using Lua specific implementation for retrieving function name
+	local name = String.trim(debug.info(descriptor :: any, "n"))
+
+	if name ~= nil and name ~= "" then
+		return name
 	end
 
-	-- Fallback for old browsers, pardon Flow
-	local stringified = tostring(descriptor)
-	local typeDescriptorMatch = stringified:match(
-		error("not implemented") --[[ ROBLOX TODO: Unhandled node for type: RegExpLiteral ]] --[[ /class|function/ ]]
-	)
-	local indexOfNameSpace =
-		-- @ts-expect-error: typeDescriptorMatch exists
-		typeDescriptorMatch.index + #typeDescriptorMatch[1]
-	local indexOfNameAfterSpace = stringified:search(
-		error("not implemented") --[[ ROBLOX TODO: Unhandled node for type: RegExpLiteral ]] --[[ /\(|\{/ ]]
-	)
-	local name = stringified:sub(indexOfNameSpace, indexOfNameAfterSpace + 1)
-	return String.trim(name)
+	return "[Function anonymous]"
+	-- ROBLOX deviation END
 end
 exports.default = convertDescriptorToString
 return exports
-]=]
-
-return {}

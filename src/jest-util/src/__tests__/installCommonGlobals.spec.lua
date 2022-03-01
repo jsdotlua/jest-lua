@@ -16,7 +16,7 @@ return function()
 	local Object = LuauPolyfill.Object
 
 	local jest = require(Packages.Dev.Jest)
-	local jestExpect = require(Packages.Expect)
+	local jestExpect = require(Packages.Dev.Expect)
 
 	-- local vmModule = require(Packages.vm)
 	-- local createContext = vmModule.createContext
@@ -35,7 +35,7 @@ return function()
 		beforeEach(function()
 			fake = jest.fn() -- @ts-expect-error
 			_G.DTRACE_NET_SERVER_CONNECTION = fake
-			installCommonGlobals = require(script.Parent.Parent.installCommonGlobals).default
+			installCommonGlobals = require(script.Parent.Parent.installCommonGlobals)().default
 		end)
 
 		it("returns the passed object", function()
@@ -43,7 +43,7 @@ return function()
 			jestExpect(installCommonGlobals(myGlobal, {})).toBe(myGlobal)
 		end)
 
-		itSKIP("turns a V8 global object into a Node global object", function()
+		it("turns a V8 global object into a Node global object", function()
 			local myGlobal = installCommonGlobals(getGlobal(), {})
 			jestExpect(myGlobal.process).toBeDefined()
 			jestExpect(myGlobal.DTRACE_NET_SERVER_CONNECTION).toBeDefined()

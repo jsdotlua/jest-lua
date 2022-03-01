@@ -15,7 +15,7 @@ return function()
 	local ErrorWithStack = require(CurrentModule.ErrorWithStack).default
 
 	local jest = require(Packages.Dev.Jest)
-	local jestExpect = require(Packages.Expect)
+	local jestExpect = require(Packages.Dev.Expect)
 
 	describe("ErrorWithStack", function()
 		local message = "💩 something went wrong"

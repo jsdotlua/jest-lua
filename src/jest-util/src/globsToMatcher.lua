@@ -19,15 +19,7 @@ type Map<K, V> = LuauPolyfill.Map<K, V>
 
 local exports = {}
 
--- ROBLOX TODO: implement alongside relevant picomatch parts
-local picomatch = function(...): Matcher
-	return setmetatable({}, {
-		__call = function()
-			return false
-		end,
-	}) :: any
-end
--- error("not implemented") --[[ ROBLOX TODO: Unhandled node for type: TSImportEqualsDeclaration ]] --[[ import picomatch = require('picomatch'); ]]
+local picomatch = require(Packages.Picomatch)
 local typesModule = require(Packages.JestTypes)
 type Config_Path = typesModule.Config_Path
 type Config_Glob = typesModule.Config_Glob
@@ -42,7 +34,8 @@ type CallableMatcher = typeof(setmetatable({
 	end,
 }))
 
-type Matcher = (str: Config_Path) -> boolean | CallableMatcher
+type MatcherFn = (str: Config_Path) -> boolean
+type Matcher = CallableMatcher
 -- ROBLOX deviation END
 
 local globsToMatchersMap = Map.new() :: Map<string, { isMatch: Matcher, negated: boolean }>
@@ -66,7 +59,7 @@ local picomatchOptions = { dot = true }
  * isMatch('pizza.js'); // true
  * isMatch('pizza.test.js'); // false
  ]]
-local function globsToMatcher(globs: Array<Config_Glob>): Matcher
+local function globsToMatcher(globs: Array<Config_Glob>): MatcherFn
 	if #globs == 0 then
 		-- Since there were no globs given, we can simply have a fast path here and
 		-- return with a very simple function.
@@ -74,9 +67,10 @@ local function globsToMatcher(globs: Array<Config_Glob>): Matcher
 			return false
 		end
 	end
+
 	local matchers = Array.map(globs, function(glob)
-		if not Boolean.toJSBoolean(globsToMatchersMap:has(glob)) then
-			local isMatch = picomatch(glob, picomatchOptions, true)
+		if not globsToMatchersMap:has(glob) then
+			local isMatch = picomatch(glob, picomatchOptions, true) :: Matcher
 
 			local matcher = {
 				isMatch = isMatch,
@@ -88,7 +82,7 @@ local function globsToMatcher(globs: Array<Config_Glob>): Matcher
 			globsToMatchersMap:set(glob, matcher)
 		end
 
-		return globsToMatchersMap:get(glob) :: any
+		return globsToMatchersMap:get(glob) :: { isMatch: Matcher, negated: boolean }
 	end)
 
 	return function(path)

@@ -13,13 +13,12 @@ return function()
 	local Packages = CurrentModule.Parent
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Array = LuauPolyfill.Array
-	local Object = LuauPolyfill.Object
 	local Number = LuauPolyfill.Number
 	local Set = LuauPolyfill.Set
 	local Symbol = LuauPolyfill.Symbol
 
 	local jest = require(Packages.Dev.Jest)
-	local jestExpect = require(Packages.Expect)
+	local jestExpect = require(Packages.Dev.Expect)
 
 	local deepCyclicCopy = require(script.Parent.Parent.deepCyclicCopy).default
 	it("returns the same value for primitive or function values", function()
@@ -54,9 +53,7 @@ return function()
 
 	it("copies symbols", function()
 		local symbol = Symbol("foo")
-		print("Symbol: ", symbol)
 		local obj = { [symbol] = 42 }
-		print(#Object.keys(obj))
 		jestExpect(deepCyclicCopy(obj)[symbol]).toBe(42)
 	end)
 

@@ -7,7 +7,7 @@ local Error = LuauPolyfill.Error
 
 local function getFileSystemService()
 	local success, result = pcall(function()
-		return game:GetService("FileSystemService")
+		return _G.__MOCK_FILE_SYSTEM__ or game:GetService("FileSystemService")
 	end)
 
 	if not success then
