@@ -46,14 +46,16 @@ return function()
 
 		it("prints a sparse array with items", function()
 			-- eslint-disable-next-line no-sparse-arrays
-			local val = { 1, nil, nil, 4 }
+			-- ROBLOX Luau FIXME: Luau needs to support mixed arrays
+			local val = { 1 :: any, nil, nil, 4 }
 			jestExpect(prettyFormat(val)).toEqual("Table {\n  1,\n  ,\n  ,\n  4,\n}")
 		end)
 
 		-- ROBLOX deviation start: skipping test as Lua doesn't support sparse arrays with value surrounded by holes
 		itSKIP("prints a sparse array with value surrounded by holes", function()
 			-- eslint-disable-next-line no-sparse-arrays
-			local val = { nil, 5, nil, nil }
+			-- ROBLOX Luau FIXME: Luau needs to support mixed arrays
+			local val = { nil :: any, 5, nil, nil }
 			jestExpect(prettyFormat(val)).toEqual("Table {\n  ,\n  5,\n  ,\n}")
 		end)
 		-- ROBLOX deviation end
@@ -61,7 +63,8 @@ return function()
 		-- ROBLOX deviation start: skipping test as Lua doesn't provide a way to differentiate between nil value a no value provided
 		itSKIP("prints a sparse array also containing undefined values", function()
 			-- eslint-disable-next-line no-sparse-arrays
-			local val = { 1, nil, nil, nil, nil, 4 }
+			-- ROBLOX Luau FIXME: Luau needs to support mixed arrays
+			local val = { 1 :: any, nil, nil, nil, nil, 4 }
 			jestExpect(prettyFormat(val)).toEqual("Table {\n  1,\n  ,\n  nil,\n  nil,\n  ,\n  4,\n}")
 		end)
 		-- ROBLOX deviation end
@@ -133,7 +136,8 @@ return function()
 
 		it("prints a table with non-string keys", function()
 			local val = {
-				[false] = "boolean",
+				-- ROBLOX FIXME Luau: Luau should support mixed index arrays indexers
+				[false :: any] = "boolean",
 				["false"] = "string",
 				[0] = "number",
 				["0"] = "string",
@@ -369,11 +373,14 @@ return function()
 			local val = {
 				{
 					id = "8658c1d0-9eda-4a90-95e1-8001e8eb6036",
-					text = "Add alternative serialize API for pretty-format plugins",
+					-- ROBLOX FIXME Luau: Luau should infer val as { id: string, text: string?, type: string } without this explicit nil field
+					text = "Add alternative serialize API for pretty-format plugins" :: string?,
 					type = "ADD_TODO",
 				},
 				{
 					id = "8658c1d0-9eda-4a90-95e1-8001e8eb6036",
+					-- ROBLOX FIXME Luau: Luau should infer val as { id: string, text: string?, type: string } without this explicit nil field
+					text = nil,
 					type = "TOGGLE_TODO",
 				},
 			}
@@ -526,10 +533,11 @@ return function()
 			local options = {
 				plugins = {
 					{
-						print = function()
+						-- ROBLOX TODO: TS shouldn't allow this, contribute fix upstream
+						print = function(_, _print, _indent, _pluginOptions, _colors)
 							return ""
 						end,
-						test = function()
+						test = function(_: any): boolean
 							error("Where is the error?")
 						end,
 					},
@@ -546,10 +554,11 @@ return function()
 			local options = {
 				plugins = {
 					{
+						-- ROBLOX TODO: TS shouldn't allow this, contribute fix upstream
 						print = function()
 							error("Where is the error?")
-						end,
-						test = function()
+						end :: any,
+						test = function(_: any): boolean
 							return true
 						end,
 					},
@@ -566,10 +575,11 @@ return function()
 			local options = {
 				plugins = {
 					{
+						-- ROBLOX TODO: TS shouldn't allow this, contribute fix upstream
 						serialize = function()
 							error("Where is the error?")
-						end,
-						test = function()
+						end :: any,
+						test = function(_: any): boolean
 							return true
 						end,
 					},
@@ -662,8 +672,8 @@ return function()
 		end)
 
 		it("calls toJSON on Sets", function()
-			local set = Set.new()
-			set.toJSON = function()
+			local set = Set.new();
+			(set :: any).toJSON = function()
 				return "map"
 			end
 			jestExpect(prettyFormat(set)).toEqual('"map"')
@@ -685,8 +695,8 @@ return function()
 					return "1"
 				end,
 			}
-			local set = Set.new({ value })
-			set.toJSON = function()
+			local set = Set.new({ value });
+			(set :: any).toJSON = function()
 				return "map"
 			end
 			jestExpect(prettyFormat(set, {
@@ -704,14 +714,14 @@ return function()
 			value = { apple = "banana", toJSON = jest.fn(function()
 				return "1"
 			end) }
-			set = Set.new({ value })
-			set.toJSON = jest.fn(function()
+			set = Set.new({ value });
+			(set :: any).toJSON = jest.fn(function()
 				return "map"
 			end)
 			prettyFormat(set, {
 				callToJSON = false,
 			})
-			jestExpect(set.toJSON).never.toBeCalled()
+			jestExpect((set :: any).toJSON).never.toBeCalled()
 			jestExpect(value.toJSON).never.toBeCalled()
 		end)
 

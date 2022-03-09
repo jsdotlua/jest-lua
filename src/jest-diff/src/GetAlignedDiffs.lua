@@ -38,16 +38,29 @@ local function concatenateRelevantDiffs(op: number, diffs: Array<Diff>, changeCo
 	end, "")
 end
 
+export type ChangeBuffer = {
+	op: number,
+	line: Array<Diff>,
+	lines: Array<Diff>,
+	changeColor: DiffOptionsColor,
+	pushSubstring: (self: ChangeBuffer, substring: string) -> (),
+	pushLine: (self: ChangeBuffer) -> (),
+	isLineEmpty: (self: ChangeBuffer) -> boolean,
+	pushDiff: (self: ChangeBuffer, diff: Diff) -> (),
+	align: (self: ChangeBuffer, diff: Diff) -> (),
+	moveLinesTo: (self: ChangeBuffer, lines: Array<Diff>) -> (),
+}
+
 -- Encapsulate change lines until either a common newline or the end.
 local ChangeBuffer = {}
 ChangeBuffer.__index = ChangeBuffer
-function ChangeBuffer.new(op: number, changeColor)
-	local self = {}
+function ChangeBuffer.new(op: number, changeColor: DiffOptionsColor): ChangeBuffer
+	local self = (setmetatable({}, ChangeBuffer) :: any) :: ChangeBuffer
 	self.op = op
 	self.line = {}
 	self.lines = {}
 	self.changeColor = changeColor
-	setmetatable(self, ChangeBuffer)
+
 	return self
 end
 
@@ -62,15 +75,15 @@ function ChangeBuffer:pushLine(): ()
 	-- If line has multiple diffs, then assume it has a common diff,
 	-- therefore change diffs have change color;
 	-- otherwise then it has line color only.
-	local to_push
-	if #self.line ~= 1 then
-		to_push = Diff.new(self.op, concatenateRelevantDiffs(self.op, self.line, self.changeColor))
-	elseif self.line[1][1] == self.op then
-		to_push = self.line[1] -- can use instance
-	else
-		to_push = Diff.new(self.op, self.line[1][2]) -- was common diff
-	end
-	table.insert(self.lines, to_push)
+	table.insert(
+		self.lines,
+		if #self.line ~= 1
+			then Diff.new(self.op, concatenateRelevantDiffs(self.op, self.line, self.changeColor))
+			else
+				if self.line[1][1] == self.op
+					then self.line[1] -- can use instance
+					else Diff.new(self.op, self.line[1][2]) -- was common diff
+	)
 	self.line = {}
 end
 
@@ -213,7 +226,8 @@ end
 return function(diffs: Array<Diff>, changeColor: DiffOptionsColor): Array<Diff>
 	local deleteBuffer = ChangeBuffer.new(DIFF_DELETE, changeColor)
 	local insertBuffer = ChangeBuffer.new(DIFF_INSERT, changeColor)
-	local commonBuffer = CommonBuffer.new(deleteBuffer, insertBuffer)
+	-- ROBLOX FIXME Luau: another issue with normalization: Property 'deleteBuffer' is not compatible
+	local commonBuffer = CommonBuffer.new(deleteBuffer, insertBuffer) :: any
 
 	for _, diff in ipairs(diffs) do
 		local case = diff[1]

@@ -18,7 +18,8 @@ return function()
 	local identity = function(s)
 		return s
 	end
-	local changeColor = function(s)
+	-- ROBLOX FIXME Luau: Luau should know s is string since changeColor var gets assigned to options, which gets passed to a function that types that table's field as DiffOptionsColor = (string) -> string
+	local changeColor = function(s: string)
 		return "<i>" .. s .. "</i>"
 	end
 	local options = {

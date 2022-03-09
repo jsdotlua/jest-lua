@@ -285,7 +285,8 @@ function printPlugin(plugin_: Plugin, val: any, config: Config, indentation: str
 	return printed
 end
 
-local function findPlugin(plugins: Plugins, val: any)
+-- ROBLOX FIXME Luau: should infer this function a Plugin | nil, with no warnings
+local function findPlugin(plugins: Plugins, val: any): Plugin | nil
 	for _, p in ipairs(plugins) do
 		local ok, ret = pcall(p.test, val)
 		if not ok then
@@ -355,14 +356,14 @@ end
 -- ROBLOX deviation: color formatting omitted
 
 -- ROBLOX deviation: replaced most get methods to reduce code repetition
-local function getOption(options, opt)
+local function getOption(options: OptionsReceived?, opt): any
 	if options and options[opt] ~= nil then
 		return options[opt]
 	end
 	return DEFAULT_OPTIONS[opt]
 end
 
-local function getIndent(options)
+local function getIndent(options: OptionsReceived?)
 	if options and options.min then
 		return ""
 	end
@@ -373,14 +374,14 @@ local function getIndent(options)
 	return createIndent(number)
 end
 
-local function getSpacingInner(options)
+local function getSpacingInner(options: OptionsReceived?)
 	if options and options.min then
 		return " "
 	end
 	return "\n"
 end
 
-local function getSpacingOuter(options)
+local function getSpacingOuter(options: OptionsReceived?)
 	if options and options.min then
 		return ""
 	end

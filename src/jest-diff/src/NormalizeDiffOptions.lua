@@ -53,9 +53,7 @@ local function getCompareKeys(compareKeys: CompareKeys?): CompareKeys
 	return if compareKeys and typeof(compareKeys) == "function" then compareKeys else OPTIONS_DEFAULT.compareKeys
 end
 
--- omitting return type due to CLI-37948
--- (E001) Type 'nil | number' could not be converted to 'number'
-local function getContextLines(contextLines: number?)
+local function getContextLines(contextLines: number?): number
 	if typeof(contextLines) == "number" and Number.isSafeInteger(contextLines) and contextLines >= 0 then
 		return contextLines
 	end
@@ -64,7 +62,8 @@ end
 
 -- Pure function returns options with all properties.
 local function normalizeDiffOptions(options_: DiffOptions?): DiffOptionsNormalized
-	local options = options_ or {}
+	-- ROBLOX FIXME Luau: needs a normalization fix to avoid Key 'compareKeys' is missing from '{  }' in the type 'DiffOptions | {  }'
+	local options = if options_ then options_ else {} :: DiffOptions
 	return Object.assign({}, OPTIONS_DEFAULT, options, {
 		compareKeys = getCompareKeys(options.compareKeys),
 		contextLines = getContextLines(options.contextLines),

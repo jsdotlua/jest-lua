@@ -49,12 +49,15 @@ type MatcherHintColor = (string) -> string -- subset of Chalk type
 
 export type MatcherHintOptions = {
 	comment: string?,
+	-- ROBLOX TODO? should be MatcherHintColor like in upstream, but requires modeling Chalk differently
 	expectedColor: MatcherHintColor?,
 	isDirectExpectCall: boolean?,
 	isNot: boolean?,
 	promise: string?,
-	receivedColor: MatcherHintColor?,
+	-- ROBLOX TODO? should be MatcherHintColor like in upstream, but requires modeling Chalk differently
+	receivedColor: string?,
 	secondArgument: string?,
+	-- ROBLOX TODO? should be MatcherHintColor like in upstream, but requires modeling Chalk differently
 	secondArgumentColor: MatcherHintColor?,
 }
 

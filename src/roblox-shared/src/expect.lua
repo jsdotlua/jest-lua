@@ -10,6 +10,7 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local toJSBoolean = LuauPolyfill.Boolean.toJSBoolean
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
+type Object = LuauPolyfill.Object
 
 type Array<T> = LuauPolyfill.Array<T>
 type Table = { [any]: any }
@@ -361,12 +362,8 @@ end
 -- ROBLOX TODO: (LUAU) Add seenReferences type annotation once Luau can
 -- recognize that the seenReferences or {} is sufficient to make seenReferences
 -- non-nil
-local function getObjectSubset(
-	object: any,
-	subset: any,
-	seenReferences --: { [any]: boolean }?
-): any
-	seenReferences = seenReferences or {}
+local function getObjectSubset(object: any, subset: any, seenReferences_: { [Object]: boolean }?): any
+	local seenReferences = if seenReferences_ then seenReferences_ else {}
 
 	if Array.isArray(object) then
 		if Array.isArray(subset) and #subset == #object then

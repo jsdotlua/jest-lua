@@ -8,8 +8,12 @@
 --  */
 
 local CurrentModule = script.Parent
-
+local Packages = CurrentModule.Parent
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Object = LuauPolyfill.Object
+local Array = LuauPolyfill.Array
 local Types = require(CurrentModule.Types)
+type CompareKeys = Types.CompareKeys
 type Config = Types.Config
 type Refs = Types.Refs
 type Printer = Types.Printer
@@ -31,28 +35,26 @@ local function printTableEntries(
 	indentation: string,
 	depth: number,
 	refs: Refs,
-	printer: Printer
+	printer: Printer,
+	separator_: string?
 ): string
+	local separator = if separator_ then separator_ else ": "
 	local result = ""
 
-	-- ROBLOX deviation: rewritten with a for ... pairs instead of an iterator
-	local keys = {}
-	for k, _ in pairs(t) do
-		table.insert(keys, k)
-	end
-
-	local compareKeys = if typeof(config.compareKeys) == "function"
-		then function(a, b)
-			return config.compareKeys(a, b) < 0
-		end
-		else function(a, b)
-			return type(a) .. tostring(a) < type(b) .. tostring(b)
-		end
-
-	table.sort(keys, compareKeys)
+	-- ROBLOX TODO: remove this inline if-expression and function once Array.sort() fix merges
+	local keys = Array.sort(
+		Object.keys(t),
+		if config.compareKeys ~= nil and config.compareKeys ~= Object.None
+			then config.compareKeys
+			else function(a, b)
+				return if type(a) .. tostring(a) < type(b) .. tostring(b)
+					then -1
+					else if type(a) .. tostring(a) == type(b) .. tostring(b) then 0 else 1
+			end
+	)
 
 	if #keys > 0 then
-		result = result .. config.spacingOuter
+		result ..= config.spacingOuter
 
 		local indentationNext = indentation .. config.indent
 
@@ -62,7 +64,7 @@ local function printTableEntries(
 			local name = printer(k, config, indentationNext, depth, refs)
 			local value = printer(v, config, indentationNext, depth, refs)
 
-			result = result .. indentationNext .. name .. ": " .. value
+			result ..= indentationNext .. name .. separator .. value
 
 			if i < #keys then
 				result = result .. "," .. config.spacingInner
@@ -71,7 +73,7 @@ local function printTableEntries(
 			end
 		end
 
-		result = result .. config.spacingOuter .. indentation
+		result ..= config.spacingOuter .. indentation
 	end
 
 	return result

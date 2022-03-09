@@ -63,14 +63,13 @@ local DIFF_EQUAL = 0
 --  * @param {string} text Text to be deleted, inserted, or retained.
 --  * @constructor
 --  */
+-- ROBLOX FIXME Luau: Luau can't represent [1]: number, [2]: string
+export type Diff = Array<any>
 local Diff = {}
 Diff.__index = Diff
-function Diff.new(op: number, text: string)
-	local self = { op, text }
-	setmetatable(self, Diff)
-	return self
+function Diff.new(op: number, text: string): Diff
+	return (setmetatable({ op :: any, text }, Diff) :: any) :: Diff
 end
-export type Diff = typeof(Diff.new(0, ""))
 
 --[[
 * Determine the common prefix of two strings.
@@ -170,10 +169,11 @@ local function _diff_commonOverlap(text1: string, text2: string): number
 		if found == nil then
 			return best
 		end
-		length = length + found - 1
+		-- ROBLOX FIXME Luau: narrowing/type state should make this cast unnecessary
+		length += (found :: number - 1)
 		if found == 1 or strsub(text1, text_length - length + 1) == strsub(text2, 1, length) then
 			best = length
-			length = length + 1
+			length += 1
 		end
 	end
 	return best
@@ -389,12 +389,12 @@ _diff_cleanupSemanticLossless = function(diffs: Array<Diff>)
 				if #bestEquality2 > 0 then
 					diffs[pointer + 1][2] = bestEquality2
 				else
-					tremove(diffs, pointer + 1, 1)
-					pointer = pointer - 1
+					tremove(diffs, pointer + 1)
+					pointer -= 1
 				end
 			end
 		end
-		pointer = pointer + 1
+		pointer += 1
 	end
 end
 

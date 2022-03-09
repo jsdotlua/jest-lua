@@ -12,7 +12,7 @@ return function()
 
 	local jestExpect = require(Packages.Dev.Expect)
 
-	local prettyFormatResult = function(val: string)
+	local prettyFormatResult = function(val: any)
 		return prettyFormat(val, {
 			plugins = { RobloxInstance },
 		})

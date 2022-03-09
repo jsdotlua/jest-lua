@@ -22,7 +22,8 @@ return function()
 
 	local prettyFormatResult = function(val: string)
 		return prettyFormat(val, {
-			plugins = { ConvertAnsi },
+			-- ROBLOX FIXME Luau: not sure why, possibly down to normalization again
+			plugins = { ConvertAnsi :: any },
 		})
 	end
 

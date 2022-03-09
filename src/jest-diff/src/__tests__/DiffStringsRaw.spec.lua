@@ -9,21 +9,13 @@
 return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
-
-	local Array = require(Packages.LuauPolyfill).Array
+	local jestExpect = require(Packages.Dev.Expect)
 
 	local DIFF_DELETE = require(CurrentModule).DIFF_DELETE
 	local DIFF_EQUAL = require(CurrentModule).DIFF_EQUAL
 	local DIFF_INSERT = require(CurrentModule).DIFF_INSERT
 	local Diff = require(CurrentModule).Diff
 	local diffStringsRaw = require(CurrentModule).diffStringsRaw
-
-	local function arrayEquals(a1, a2)
-		return #a1 == #a2
-			and Array.every(a1, function(element, index)
-				return element[1] == a2[index][1] and element[2] == a2[index][2]
-			end)
-	end
 
 	describe("diffStringsRaw", function()
 		it("one-line with cleanup", function()
@@ -33,7 +25,7 @@ return function()
 				Diff.new(DIFF_INSERT, "to"),
 			}
 			local received = diffStringsRaw("change from", "change to", true)
-			expect(arrayEquals(received, expected)).to.equal(true)
+			jestExpect(received).toEqual(expected)
 		end)
 
 		it("one-line without cleanup", function()
@@ -45,7 +37,7 @@ return function()
 				Diff.new(DIFF_DELETE, "m"),
 			}
 			local received = diffStringsRaw("change from", "change to", false)
-			expect(arrayEquals(received, expected)).to.equal(true)
+			jestExpect(received).toEqual(expected)
 		end)
 	end)
 end

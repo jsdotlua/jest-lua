@@ -1,4 +1,3 @@
---!nocheck
 -- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-each/src/table/template.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -37,7 +36,8 @@ local function default(title: string, headings: Headings, row: Global_Row): Each
 	return Array.map(templates, function(template, index)
 		return {
 			arguments = { Object.assign({}, template) },
-			title = interpolateVariables(title, template, index),
+			-- ROBLOX FIXME Luau: analyze should know this is Template because of the Array.map() generic's callbackFn
+			title = interpolateVariables(title, template :: Template, index),
 		}
 	end)
 end

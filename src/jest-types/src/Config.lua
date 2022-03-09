@@ -66,9 +66,7 @@ export type CoverageReporterName = string --[[ ROBLOX TODO: Unhandled node for t
 
 -- ROBLOX FIXME: add default generic type <K = CoverageReporterName>
 -- ROBLOX TODO: Unhandled node for type: TSConditionalType ]] --[[ K extends CoverageReporterName ? ReportOptions[K] extends never ? never : [K, Partial<ReportOptions[K]>] : never
-export type CoverageReporterWithOptions<K> =
-	Array<string | Object> --[[ [K, Partial<ReportOptions[K]>] ]]
-	| nil
+export type CoverageReporterWithOptions<K> = Array<string | Object> --[[ [K, Partial<ReportOptions[K]>] ]] | nil
 
 export type CoverageReporters = Array<CoverageReporterName | CoverageReporterWithOptions<CoverageReporterName>>
 

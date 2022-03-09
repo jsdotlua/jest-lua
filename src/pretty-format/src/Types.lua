@@ -70,7 +70,8 @@ export type OptionsReceived = PrettyFormatOptions
 export type Config = {
 	callToJSON: boolean,
 	compareKeys: CompareKeys,
-	colors: Colors,
+	-- ROBLOX deviation: we don't support colors?
+	colors: Colors?,
 	escapeRegex: boolean,
 	escapeString: boolean,
 	indent: string,
@@ -99,7 +100,8 @@ type PluginOptions = {
 }
 
 export type OldPlugin = {
-	print: (any, Print, Indent, PluginOptions, Colors) -> string,
+	-- ROBLOX deviation: we don't support colors?
+	print: (any, Print, Indent, PluginOptions, Colors?) -> string,
 	test: Test,
 }
 

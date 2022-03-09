@@ -17,7 +17,7 @@ local String = LuauPolyfill.String
 
 type Array<T> = LuauPolyfill.Array<T>
 
-local chalk = require(Packages.ChalkLua)
+local chalk = (require(Packages.ChalkLua) :: any) :: Chalk
 
 local getObjectSubset = require(Packages.RobloxShared).expect.getObjectSubset
 
@@ -25,8 +25,8 @@ local JestDiff = require(Packages.JestDiff)
 local DIFF_DELETE = JestDiff.DIFF_DELETE
 local DIFF_EQUAL = JestDiff.DIFF_EQUAL
 local DIFF_INSERT = JestDiff.DIFF_INSERT
--- local Diff = JestDiff.Diff
--- local DiffOptionsColor = JestDiff.DiffOptionsColor
+type Diff = JestDiff.Diff
+type DiffOptionsColor = JestDiff.DiffOptionsColor
 local diffLinesUnified = JestDiff.diffLinesUnified
 local diffLinesUnified2 = JestDiff.diffLinesUnified2
 local diffStringsRaw = JestDiff.diffStringsRaw
@@ -40,7 +40,7 @@ local JestMatcherUtils = require(Packages.JestMatcherUtils)
 local BOLD_WEIGHT = JestMatcherUtils.BOLD_WEIGHT
 local EXPECTED_COLOR = JestMatcherUtils.EXPECTED_COLOR
 local INVERTED_COLOR = JestMatcherUtils.INVERTED_COLOR
--- local MatcherHintOptions = JestMatcherUtils.MatcherHintOptions
+type MatcherHintOptions = JestMatcherUtils.MatcherHintOptions
 local RECEIVED_COLOR = JestMatcherUtils.RECEIVED_COLOR
 local getLabelPrinter = JestMatcherUtils.getLabelPrinter
 local matcherHint = JestMatcherUtils.matcherHint
@@ -58,7 +58,8 @@ local bForeground2 = colors.bForeground2
 local bForeground3 = colors.bForeground3
 
 local dedentLines = require(CurrentModule.dedentLines)
--- ROBLOX deviation: omitted external MatchSnapshotConfig type
+local types = require(CurrentModule.types)
+type MatchSnapshotConfig = types.MatchSnapshotConfig
 
 local utils = require(CurrentModule.utils)
 local deserializeString = utils.deserializeString
@@ -68,8 +69,11 @@ local serialize = utils.serialize
 -- ROBLOX deviation: omitted chalk type
 
 -- ROBLOX deviation: omitted Chalk and DiffOptionsColor types
+export type Chalk = any
 
-local function getSnapshotColorForChalkInstance(chalkInstance)
+-- ROBLOX FIXME: these *should* return a function, but they don't. we're misaligned on types and implementation here
+local function getSnapshotColorForChalkInstance(chalkInstance: Chalk): any --: DiffOptionsColor
+	-- return function(_: string): string
 	local level = chalkInstance.level
 
 	if level == 3 then
@@ -82,9 +86,12 @@ local function getSnapshotColorForChalkInstance(chalkInstance)
 	end
 
 	return chalkInstance.magenta .. chalk.bgYellowBright
+	-- end
 end
 
-local function getReceivedColorForChalkInstance(chalkInstance)
+-- ROBLOX FIXME: these *should* return a function, but they don't. we're misaligned on types and implementation here
+local function getReceivedColorForChalkInstance(chalkInstance: Chalk): any --: DiffOptionsColor
+	-- return function(_: string): string
 	local level = chalkInstance.level
 
 	if level == 3 then
@@ -97,6 +104,7 @@ local function getReceivedColorForChalkInstance(chalkInstance)
 	end
 
 	return chalkInstance.cyan .. chalk.bgWhiteBright -- also known as teal
+	-- end
 end
 
 local aSnapshotColor = getSnapshotColorForChalkInstance(chalk)
@@ -110,14 +118,14 @@ local HINT_ARG = "hint"
 local SNAPSHOT_ARG = "snapshot"
 local PROPERTIES_ARG = "properties"
 
-local function matcherHintFromConfig(matchSnapshotConfig, isUpdatable: boolean): string
+local function matcherHintFromConfig(matchSnapshotConfig: MatchSnapshotConfig, isUpdatable: boolean): string
 	local context = matchSnapshotConfig.context
 	local hint = matchSnapshotConfig.hint
 	local inlineSnapshot = matchSnapshotConfig.inlineSnapshot
 	local matcherName = matchSnapshotConfig.matcherName
 	local properties = matchSnapshotConfig.properties
 
-	local options: JestMatcherUtils.MatcherHintOptions = {
+	local options: MatcherHintOptions = {
 		isNot = context.isNot,
 		promise = context.promise,
 	}
@@ -173,7 +181,7 @@ local function joinDiffs(
 	return Array.reduce(
 		diffs,
 		-- ROBLOX deviation: Diff changed to any
-		function(reduced: string, diff: any): string
+		function(reduced: string, diff: Diff): string
 			local retval = reduced
 			if diff[1] == DIFF_EQUAL then
 				retval = reduced .. diff[2]
@@ -240,8 +248,9 @@ local function printPropertiesAndReceived(
 				aColor = EXPECTED_COLOR,
 				bAnnotation = bAnnotation,
 				bColor = RECEIVED_COLOR,
-				changeLineTrailingSpaceColor = chalk.bgYellow,
-				commonLineTrailingSpaceColor = chalk.bgYellow,
+				-- ROBLOX FIXME: our types and implementation are seriously misaligned
+				changeLineTrailingSpaceColor = chalk.bgYellow :: any,
+				commonLineTrailingSpaceColor = chalk.bgYellow :: any,
 				emptyFirstOrLastLinePlaceholder = utf8.char(8629), -- U+21B5
 				expand = expand,
 				includeChangeCounts = true,
@@ -274,8 +283,9 @@ local function printSnapshotAndReceived(
 		aColor = aColor,
 		bAnnotation = bAnnotation,
 		bColor = bColor,
-		changeLineTrailingSpaceColor = noColor,
-		commonLineTrailingSpaceColor = chalk.bgYellow,
+		-- ROBLOX FIXME: our types and implementation are seriously misaligned
+		changeLineTrailingSpaceColor = noColor :: any,
+		commonLineTrailingSpaceColor = chalk.bgYellow :: any,
 		emptyFirstOrLastLinePlaceholder = utf8.char(8629), -- U+21B5
 		expand = expand,
 		includeChangeCounts = true,

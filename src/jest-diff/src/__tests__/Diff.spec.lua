@@ -13,6 +13,7 @@ return function()
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Array = LuauPolyfill.Array
 	local Object = LuauPolyfill.Object
+	type Object = LuauPolyfill.Object
 
 	local chalk = require(Packages.ChalkLua)
 
@@ -42,12 +43,12 @@ return function()
 	end
 
 	-- ROBLOX deviation: added a table copy method to set options
-	local function tableCopy(t)
+	local function tableCopy<T>(t: T & Object): T
 		local copy = {}
-		for key, value in pairs(t) do
+		for key, value in pairs((t :: any) :: Object) do
 			copy[key] = value
 		end
-		return copy
+		return (copy :: any) :: T
 	end
 
 	-- Use in toBe assertions for comparison lines.
@@ -540,7 +541,7 @@ Options:
 				and Number.isSafeInteger(contextLines)
 				and contextLines >= 0
 
-			local numLines = "nil"
+			local numLines
 			if typeof(contextLines) == "number" then
 				numLines = contextLines
 			end
@@ -915,7 +916,7 @@ Options:
 			end)
 
 			it("diff middle dot", function()
-				local replaceSpacesWithMiddleDot = function(s)
+				local replaceSpacesWithMiddleDot = function(s: string)
 					return string.rep("·", #s)
 				end
 				local options = {

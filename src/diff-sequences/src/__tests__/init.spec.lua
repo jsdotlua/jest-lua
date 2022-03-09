@@ -1,5 +1,4 @@
 -- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/diff-sequences/src/__tests__/index.test.ts
---!nocheck
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -160,19 +159,15 @@ return function()
 	end
 
 	local function assertCommonItems(
-		a: Array<any> | string,
-		b: Array<any> | string,
+		a_: Array<any> | string,
+		b_: Array<any> | string,
 		nCommon: number,
 		aCommon: number,
 		bCommon: number
 	)
 		-- ROBLOX deviation: lua does not allow string indexing, so we convert string inputs to arrays
-		if type(a) == "string" then
-			a = stringToArray(a)
-		end
-		if type(b) == "string" then
-			b = stringToArray(b)
-		end
+		local a = if type(a_) == "string" then stringToArray(a_) else a_
+		local b = if type(b_) == "string" then stringToArray(b_) else b_
 
 		while nCommon ~= 0 do
 			if a[aCommon + 1] ~= b[bCommon + 1] then
@@ -227,14 +222,10 @@ return function()
 	end
 
 	-- Return array of items in a longest common subsequence of array-like objects.
-	local function findCommonItems(a: Array<any> | string, b: Array<any> | string): Array<any>
+	local function findCommonItems(a_: Array<any> | string, b_: Array<any> | string): Array<any>
 		-- ROBLOX deviation: lua does not allow string indexing, so we convert string inputs to arrays
-		if type(a) == "string" then
-			a = stringToArray(a)
-		end
-		if type(b) == "string" then
-			b = stringToArray(b)
-		end
+		local a = if type(a_) == "string" then stringToArray(a_) else a_
+		local b = if type(b_) == "string" then stringToArray(b_) else b_
 
 		local aLength = #a
 		local bLength = #b

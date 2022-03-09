@@ -46,6 +46,7 @@ local prettyFormat = PrettyFormat.format
 local getSerializers = require(CurrentModule.plugins).getSerializers
 
 local types = require(CurrentModule.types)
+type SnapshotData = types.SnapshotData
 
 local SNAPSHOT_VERSION = "1"
 -- local SNAPSHOT_VERSION_REGEXP = "^// Jest Snapshot v(.+),"
@@ -128,13 +129,13 @@ end
 local function getSnapshotData(
 	snapshotPath: ConfigPath,
 	update: ConfigSnapshotUpdateState
-): { data: types.SnapshotData, dirty: boolean }
+): { data: SnapshotData, dirty: boolean }
 	local data = {}
 	local dirty = false
 
 	-- ROBLOX deviation: snapshots in Jest Roblox are ModuleScripts, so we require them to load them
 	pcall(function()
-		data = require(snapshotPath)
+		data = require(snapshotPath) :: any
 	end)
 	-- ROBLOX deviation: omitted validateSnapshotVersion for now since we will have our own
 	-- snapshot versioning
@@ -223,9 +224,9 @@ end
 
 local function ensureDirectoryExists(filePath: string)
 	-- ROBLOX deviation: gets path of parent directory, GetScriptFilePath can only be called on ModuleScripts
-	local path = filePath:split("/")
-	path = table.pack(table.unpack(path, 1, #path - 1))
-	path = table.concat(path, "/")
+	local pathComponents = filePath:split("/")
+	pathComponents = table.pack(table.unpack(pathComponents, 1, #pathComponents - 1))
+	local path = table.concat(pathComponents, "/")
 	local ok, err = pcall(function()
 		if not FileSystemService:Exists(path) then
 			FileSystemService:CreateDirectories(path)
@@ -242,14 +243,15 @@ end
 
 function normalizeNewLines(string_: string)
 	string_ = string.gsub(string_, "\r\n", "\n")
-	return string.gsub(string_, "\r", "\n")
+	local result = string.gsub(string_, "\r", "\n")
+	return result
 end
 
 -- ROBLOX deviation: taken from http://notebook.kulchenko.com/algorithms/alphanumeric-natural-sorting-for-humans-in-lua
 -- as an approximation of naturalCompare for now
 local function alphanumsort(o)
 	local function padnum(d)
-		return ("%03d%s"):format(#d, d)
+		return ("%03d%s"):format(string.len(d), d)
 	end
 	table.sort(o, function(a, b)
 		return tostring(a):gsub("%d+", padnum) < tostring(b):gsub("%d+", padnum)
@@ -258,7 +260,7 @@ local function alphanumsort(o)
 end
 
 -- ROBLOX deviation: saves a valid Roblox ModuleScript
-local function saveSnapshotFile(snapshotData: types.SnapshotData, snapshotPath: ConfigPath)
+local function saveSnapshotFile(snapshotData: SnapshotData, snapshotPath: ConfigPath)
 	local snapshots = {
 		writeSnapshotVersion(),
 		"local exports = {}",
@@ -338,8 +340,8 @@ function deepMerge(target: any, source: any): any
 end
 
 -- ROBLOX deviation: added to handle file paths in snapshot/State
-local function robloxGetParent(path: string, level): string
-	level = level or 0
+local function robloxGetParent(path: string, level_: number?): string
+	local level = if level_ then level_ else 0
 
 	local isUnixPath = string.sub(path, 1, 1) == "/"
 	local t = {}

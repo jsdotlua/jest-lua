@@ -54,6 +54,7 @@ local printReceived = printSnapshot.printReceived
 local printSnapshotAndReceived = printSnapshot.printSnapshotAndReceived
 
 local types = require(CurrentModule.types)
+type MatchSnapshotConfig = types.MatchSnapshotConfig
 
 local utils = require(CurrentModule.utils)
 
@@ -68,9 +69,9 @@ local NOT_SNAPSHOT_MATCHERS = "Snapshot matchers cannot be used with " .. BOLD_W
 
 -- Display name in report when matcher fails same as in snapshot file,
 -- but with optional hint argument in bold weight.
-local function printSnapshotName(concatenatedBlockNames: string, hint: string, count: number): string
-	concatenatedBlockNames = concatenatedBlockNames or ""
-	hint = hint or ""
+local function printSnapshotName(concatenatedBlockNames_: string?, hint_: string?, count: number): string
+	local concatenatedBlockNames = if concatenatedBlockNames_ then concatenatedBlockNames_ else ""
+	local hint = if hint_ then hint_ else ""
 	local hasNames = concatenatedBlockNames:len() ~= 0
 	local hasHint = #hint ~= 0
 
@@ -158,7 +159,7 @@ end
 
 -- ROBLOX TODO: ADO-1552 add toMatchInlineSnapshot
 
-function _toMatchSnapshot(config: types.MatchSnapshotConfig)
+function _toMatchSnapshot(config: MatchSnapshotConfig)
 	local context = config.context
 	local hint = config.hint
 	local inlineSnapshot = config.inlineSnapshot
@@ -227,12 +228,9 @@ function _toMatchSnapshot(config: types.MatchSnapshotConfig)
 		)
 	end
 
-	local fullTestName
-	if currentTestName and hint then
-		fullTestName = currentTestName .. ": " .. hint
-	else
-		fullTestName = currentTestName or "" -- future BREAKING change: || hint
-	end
+	local fullTestName = if currentTestName and hint
+		then currentTestName .. ": " .. hint :: string
+		else currentTestName or "" -- future BREAKING change: || hint
 
 	if typeof(properties) == "table" then
 		-- ROBLOX deviation: Roblox Instance matchers
@@ -262,12 +260,9 @@ function _toMatchSnapshot(config: types.MatchSnapshotConfig)
 		if not propertyPass then
 			local key = snapshotState:fail(fullTestName, received)
 			local matched = key:match("(%d+)$")
-			local count
-			if matched == nil then
-				count = 1
-			else
-				count = tonumber(matched)
-			end
+			-- ROBLOX deviation START: no way for Luau to know if matched is non-nil then tonumber(matched) is guaranteed to be non-nil
+			local count = if matched == nil then 1 else tonumber(matched) :: number
+			-- ROBLOX deviation END
 
 			local message = function()
 				return matcherHintFromConfig(config, false)

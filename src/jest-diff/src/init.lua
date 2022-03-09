@@ -29,7 +29,9 @@ local getType = require(Packages.JestGetType).getType
 local DIFF_DELETE = require(CurrentModule.CleanupSemantic).DIFF_DELETE
 local DIFF_EQUAL = require(CurrentModule.CleanupSemantic).DIFF_EQUAL
 local DIFF_INSERT = require(CurrentModule.CleanupSemantic).DIFF_INSERT
-local Diff = require(CurrentModule.CleanupSemantic).Diff
+local CleanupSemantic = require(CurrentModule.CleanupSemantic)
+local Diff = CleanupSemantic.Diff
+export type Diff = CleanupSemantic.Diff
 
 local normalizeDiffOptions = require(CurrentModule.NormalizeDiffOptions).normalizeDiffOptions
 
@@ -44,7 +46,8 @@ local NO_DIFF_MESSAGE = require(CurrentModule.Constants).NO_DIFF_MESSAGE
 local SIMILAR_MESSAGE = require(CurrentModule.Constants).SIMILAR_MESSAGE
 
 local Types = require(CurrentModule.types)
-type DiffOptions = Types.DiffOptions
+export type DiffOptions = Types.DiffOptions
+export type DiffOptionsColor = Types.DiffOptionsColor
 
 -- ROBLOX deviation start: predefine functions
 local comparePrimitive

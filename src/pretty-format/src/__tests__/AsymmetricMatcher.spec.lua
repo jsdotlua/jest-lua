@@ -187,11 +187,15 @@ return function()
 		-- Tests assume that no strings in val contain multiple adjacent spaces!
 		it("non-default: 0 spaces", function()
 			options.indent = 0
-			expect(prettyFormat(val, options)).to.equal(result:gsub("  ", ""))
+			expect(
+				-- ROBLOX FIXME Luau: workaround bizarre false positive that doesn't repro in isolation: TypeError: Argument count mismatch. Function expects 1 argument, but 2 are specified
+				prettyFormat(val, options)
+			).to.equal(result:gsub("  ", "") :: any)
 		end)
 		it("non-default: 4 spaces", function()
 			options.indent = 4
-			expect(prettyFormat(val, options)).to.equal(result:gsub("  ", "    "))
+			-- ROBLOX FIXME Luau: workaround bizarre false positive that doesn't repro in isolation: TypeError: Argument count mismatch. Function expects 1 argument, but 2 are specified
+			expect(prettyFormat(val, options)).to.equal(result:gsub("  ", "    ") :: any)
 		end)
 	end)
 
@@ -241,7 +245,8 @@ return function()
 					{
 						-- ++depth === 3
 						properties = "not printed",
-					},
+						-- ROBLOX FIXME Luau: Luau needs to support mixed arrays
+					} :: any,
 				}),
 				jestExpect.objectContaining({
 					-- ++depth === 2

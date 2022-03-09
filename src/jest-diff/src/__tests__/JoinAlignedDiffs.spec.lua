@@ -9,6 +9,8 @@
 return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
+	local LuauPolyfill = require(Packages.LuauPolyfill)
+	local Object = LuauPolyfill.Object
 
 	local jestExpect = require(Packages.Dev.Expect)
 
@@ -23,7 +25,10 @@ return function()
 	local noColor = require(CurrentModule.NormalizeDiffOptions).noColor
 	local normalizeDiffOptions = require(CurrentModule.NormalizeDiffOptions).normalizeDiffOptions
 
-	local changeColor = function(s)
+	-- To align columns so people can review snapshots confidently:
+
+	-- 1. Use options to omit line colors.
+	local changeColor = function(s: string)
 		return "<i>" .. s .. "</i>"
 	end
 	local optionsNoColor = {
@@ -36,6 +41,7 @@ return function()
 	}
 
 	beforeAll(function()
+		-- 2. Add string serializer to omit double quote marks.
 		jestExpect.addSnapshotSerializer({
 			serialize = function(val: string)
 				return val
@@ -98,58 +104,40 @@ return function()
 	end)
 
 	describe("joinAlignedDiffsNoExpand", function()
-		-- ROBLOX deviation: added a table copy method to set options
-		local function tableCopy(t)
-			local copy = {}
-			for key, value in pairs(t) do
-				copy[key] = value
-			end
-			return copy
-		end
-
 		it("patch 0 with context 1 and change at start and end", function()
-			local options = tableCopy(optionsNoColor)
-			for key, value in pairs(optionsNoColor) do
-				options[key] = value
-			end
-			options["contextLines"] = 1
-			options["expand"] = false
-			options = normalizeDiffOptions(options)
+			local options = normalizeDiffOptions(
+				Object.assign({}, optionsNoColor, { contextLines = 1, expand = false })
+			)
 
 			jestExpect(joinAlignedDiffsNoExpand(diffsChangeStartEnd, options)).toMatchSnapshot()
 		end)
 
 		it("patch 0 with context 5 and first line is empty common", function()
-			local options = tableCopy(optionsNoColor)
-			options["expand"] = false
-			options = normalizeDiffOptions(options)
+			local options = normalizeDiffOptions(Object.assign({}, optionsNoColor, { expand = false }))
 
 			jestExpect(joinAlignedDiffsNoExpand(diffsCommonStartEnd, options)).toMatchSnapshot()
 		end)
 
 		it("patch 1 with context 4 and last line is empty common", function()
-			local options = tableCopy(optionsNoColor)
-			options["contextLines"] = 4
-			options["expand"] = false
-			options = normalizeDiffOptions(options)
+			local options = normalizeDiffOptions(
+				Object.assign({}, optionsNoColor, { contextLines = 4, expand = false })
+			)
 
 			jestExpect(joinAlignedDiffsNoExpand(diffsCommonStartEnd, options)).toMatchSnapshot()
 		end)
 
 		it("patch 2 with context 3", function()
-			local options = tableCopy(optionsNoColor)
-			options["contextLines"] = 3
-			options["expand"] = false
-			options = normalizeDiffOptions(options)
+			local options = normalizeDiffOptions(
+				Object.assign({}, optionsNoColor, { contextLines = 3, expand = false })
+			)
 
 			jestExpect(joinAlignedDiffsNoExpand(diffsCommonStartEnd, options)).toMatchSnapshot()
 		end)
 
 		it("patch 3 with context 2 and omit excess common at start", function()
-			local options = tableCopy(optionsNoColor)
-			options["contextLines"] = 2
-			options["expand"] = false
-			options = normalizeDiffOptions(options)
+			local options = normalizeDiffOptions(
+				Object.assign({}, optionsNoColor, { contextLines = 2, expand = false })
+			)
 
 			jestExpect(joinAlignedDiffsNoExpand(diffsCommonStartEnd, options)).toMatchSnapshot()
 		end)

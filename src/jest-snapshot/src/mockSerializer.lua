@@ -7,9 +7,22 @@
 -- *
 -- */
 
+local CurrentModule = script.Parent
+local Packages = CurrentModule.Parent
 -- ROBLOX deviation: omitted external type NewPlugin
+local PrettyFormat = require(Packages.PrettyFormat)
+type Config = PrettyFormat.Config
+type Printer = PrettyFormat.Printer
+type Refs = PrettyFormat.Refs
 
-local function serialize(val, config, indentation, depth, refs, printer): string
+local function serialize(
+	val: any,
+	config: Config,
+	indentation: string,
+	depth: number,
+	refs: Refs,
+	printer: Printer
+): string
 	-- Serialize a non-default name, even if config.printFunctionName is false.
 	local name = val.getMockName()
 	local nameString = ""
@@ -50,7 +63,7 @@ local function serialize(val, config, indentation, depth, refs, printer): string
 	return "[MockFunction" .. nameString .. "]" .. callsString
 end
 
-local function test(val)
+local function test(val: any): boolean
 	-- ROBLOX deviation: add a table check to prevent access errors on non-tables
 	return val and typeof(val) == "table" and val._isMockFunction
 end

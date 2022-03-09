@@ -17,12 +17,13 @@ return function()
 
 	-- ROBLOX deviation: omitting imports for styles
 	local ansiRegex = require(Packages.PrettyFormat).plugins.ConvertAnsi.ansiRegex
-	local chalk = require(Packages.ChalkLua)
+	local chalk = (require(Packages.ChalkLua) :: any) :: Chalk
 	local format = require(Packages.PrettyFormat).default
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.Expect) :: any
 
 	local printSnapshot = require(CurrentModule.printSnapshot)
+	type Chalk = printSnapshot.Chalk
 	local getReceivedColorForChalkInstance = printSnapshot.getReceivedColorForChalkInstance
 	local getSnapshotColorForChalkInstance = printSnapshot.getSnapshotColorForChalkInstance
 	local noColor = printSnapshot.noColor
@@ -429,7 +430,7 @@ return function()
 						isNot = false,
 						promise = "",
 						snapshotState = {
-							fail = function(_, fullTestName)
+							fail = function(_, fullTestName: string)
 								return fullTestName .. " 1"
 							end,
 						},
@@ -857,7 +858,8 @@ return function()
 						count = 4,
 					}
 
-					local expected = { expected0, expected1 }
+					-- ROBLOX FIXME Luau: luau need to support mixed arrays
+					local expected = { expected0 :: any, expected1 }
 
 					local received = {
 						Object.assign({ _id = "b14680dec683e744ada1f2fe08614086" }, expected0),
@@ -963,7 +965,8 @@ return function()
 						{
 							["$$typeof"] = typeof_,
 							children = {
-								"Call ",
+								-- ROBLOX FIXME Luau: Luau needs to support mixed arrays
+								"Call " :: any,
 								{
 									["$$typeof"] = typeof_,
 									children = { "diffLinesUnified2" },
@@ -1027,11 +1030,12 @@ return function()
 				local received = {
 					["$$typeof"] = typeof_,
 					children = {
+						-- ROBLOX FIXME Luau: Luau needs to support mixed arrays
 						{
 							["$$typeof"] = typeof_,
 							children = { text = text },
 							type = "span",
-						},
+						} :: any,
 						{
 							["$$typeof"] = typeof_,
 							children = { "↓" },

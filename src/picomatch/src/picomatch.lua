@@ -95,8 +95,9 @@ function picomatch_(
 
 	local opts = options or {}
 	local posix = utils.isWindows(options)
-	local regex: RegExp & { state: any } = if isState
-		then picomatch.compileRe(glob, options)
+	-- ROBLOX Luau FIXME: needs normalization to avoid Type 'RegExp' could not be converted into 'RegExp & {| state: any? |}'
+	local regex: RegExp & { state: any? } = if isState
+		then picomatch.compileRe(glob, options) :: any
 		else picomatch.makeRe(glob, options, false, true)
 
 	local state = regex.state

@@ -9,7 +9,8 @@
 
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
-
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Boolean = LuauPolyfill.Boolean
 local Types = require(CurrentModule.Types)
 type Config = Types.Config
 type Refs = Types.Refs
@@ -60,7 +61,7 @@ local function toHumanReadableAnsi(text: string)
 end
 
 local function test(val: any)
-	return typeof(val) == "string" and val:match(ansiRegex)
+	return typeof(val) == "string" and Boolean.toJSBoolean(val:match(ansiRegex))
 end
 
 local function serialize(val: string, config: Config, indentation: string, depth: number, refs: Refs, printer: Printer)
