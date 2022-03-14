@@ -1,0 +1,36 @@
+[package]
+name = "JestCircus"
+version = { workspace = true }
+license = { workspace = true }
+authors = [
+	"Chris Trześniewski <k.trzesniewski@gmail.com>",
+	"Ignacio Falk <flakolefluk@gmail.com>",
+	"Ishan Mundra <imundra@roblox.com>",
+	"Matt Hargett <plaztiksyke@gmail.com>",
+	"Olivier Trepanier <otrepanier@roblox.com>",
+	"Raymond Ng <raymondng@berkeley.edu>",
+]
+content_root = "src"
+files = ["*", "!**/__tests__/**", "!**/__mocks__/**"]
+
+[dependencies]
+LuauPolyfill = { workspace = true }
+Promise = { workspace = true }
+RegExp = { workspace = true }
+Promise = { workspace = true }
+ChalkLua = { workspace = true }
+JestTypes = { path = "../jest-types" }
+JestMatcherUtils = { path = "../jest-matcher-utils" }
+JestMessageUtil = { path = "../jest-message-util" }
+PrettyFormat = { path = "../pretty-format" }
+JestEach = { path = "../jest-each" }
+JestUtil = { path = "../jest-util" }
+JestTestResult = { path = "../jest-test-result" }
+JestEnvironment = { path = "../jest-environment" }
+JestSnapshot = { path = "../jest-snapshot" }
+Expect = { path = "../expect" }
+RobloxShared = { path = "../roblox-shared" }
+
+[dev_dependencies]
+Jest = { path = "../jest" }
+JestSnapshotSerializerRaw = { path = "../jest-snapshot-serializer-raw" }

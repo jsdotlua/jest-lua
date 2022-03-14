@@ -65,8 +65,7 @@ export type ModuleWrapper = (
 	...any --[[ ROBLOX CHECK: check correct type of elements. Upstream type: <Array<Global.Global[keyof Global.Global]>> ]]
 ) -> any
 
--- ROBLOX TODO: add default generic. <Timer = any>
-export type JestEnvironment<Timer> = {
+export type JestEnvironment<Timer = any> = {
 	global: Global_Global,
 	-- ROBLOX deviation START: no modern/legacy timers
 	-- fakeTimers: LegacyFakeTimers<Timer> | nil,

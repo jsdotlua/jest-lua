@@ -50,8 +50,8 @@ export type Hook = {
 }
 
 export type EventHandler =
-	((event: AsyncEvent, state: State) -> () | Promise<void>)
-	| ((event: SyncEvent, state: State) -> void)
+	((self: any, event: AsyncEvent, state: State) -> (void | Promise<void>))
+	| ((self: any, event: SyncEvent, state: State) -> void)
 
 export type Event = SyncEvent | AsyncEvent
 

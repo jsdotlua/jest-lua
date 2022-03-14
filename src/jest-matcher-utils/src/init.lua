@@ -22,7 +22,8 @@ local JestDiff = require(Packages.JestDiff)
 local DIFF_DELETE = JestDiff.DIFF_DELETE
 local DIFF_EQUAL = JestDiff.DIFF_EQUAL
 local DIFF_INSERT = JestDiff.DIFF_INSERT
--- ROBLOX deviation: omitted Diff and DiffOptions imports because we don't have translations
+type Diff = JestDiff.Diff
+type ImportDiffOptions = JestDiff.DiffOptions
 local diffDefault = JestDiff.diff
 local diffStringsRaw = JestDiff.diffStringsRaw
 local diffStringsUnified = JestDiff.diffStringsUnified
@@ -61,7 +62,7 @@ export type MatcherHintOptions = {
 	secondArgumentColor: MatcherHintColor?,
 }
 
--- ROBLOX deviation: omitted DiffOptions since it's not currently present in jest-diff
+export type DiffOptions = ImportDiffOptions
 
 local EXPECTED_COLOR = chalk.green
 local RECEIVED_COLOR = chalk.red
@@ -270,12 +271,8 @@ end
 -- * exclude change substrings which have opposite op
 -- * include change substrings which have argument op
 --   with inverse highlight only if there is a common substring
-function getCommonAndChangedSubstrings(
-	diffs, -- ROBLOX deviation: omitted type annotation for diffs
-	op: number,
-	hasCommonDiff: boolean
-): string
-	return Array.reduce(diffs, function(reduced: string, diff): string
+function getCommonAndChangedSubstrings(diffs: Array<Diff>, op: number, hasCommonDiff: boolean): string
+	return Array.reduce(diffs, function(reduced: string, diff: Diff): string
 		if diff[1] == DIFF_EQUAL then
 			return reduced .. diff[2]
 		elseif diff[1] ~= op then

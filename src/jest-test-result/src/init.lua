@@ -29,7 +29,8 @@ export type Status = typesModule.Status
 export type Suite = typesModule.Suite
 export type Test = typesModule.Test
 export type TestEvents = typesModule.TestEvents
-export type TestFileEvent<T> = typesModule.TestFileEvent<T>
+-- ROBLOX FIXME: find a way to keep the generic param and it's default value when re-exporting
+export type TestFileEvent = typesModule.TestFileEvent
 export type TestResult = typesModule.TestResult
 export type TestResultsProcessor = typesModule.TestResultsProcessor
 export type TestCaseResult = typesModule.TestCaseResult

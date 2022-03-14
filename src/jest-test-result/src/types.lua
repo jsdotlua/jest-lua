@@ -217,9 +217,13 @@ export type TestEvents = {
 	["test-case-result"]: Array<Config_Path | AssertionResult>,
 }
 
-export type TestFileEvent<T> = (
+-- ROBLOX deviation START: unroll `keyof TestEvents` as this operation is not supported in Luau
+type KeyOfTestEvents = "test-file-start" | "test-file-success" | "test-file-failure" | "test-case-result"
+
+export type TestFileEvent<T = KeyOfTestEvents> = (
 	eventName: T,
 	args: any --[[ ROBLOX TODO: Unhandled node for type: TSIndexedAccessType ]] --[[ TestEvents[T] ]]
 ) -> unknown
+-- ROBLOX deviation END
 
 return {}

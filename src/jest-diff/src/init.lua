@@ -26,12 +26,12 @@ local chalk = require(Packages.ChalkLua)
 
 local getType = require(Packages.JestGetType).getType
 
-local DIFF_DELETE = require(CurrentModule.CleanupSemantic).DIFF_DELETE
-local DIFF_EQUAL = require(CurrentModule.CleanupSemantic).DIFF_EQUAL
-local DIFF_INSERT = require(CurrentModule.CleanupSemantic).DIFF_INSERT
-local CleanupSemantic = require(CurrentModule.CleanupSemantic)
-local Diff = CleanupSemantic.Diff
-export type Diff = CleanupSemantic.Diff
+local cleanupSemanticModule = require(CurrentModule.CleanupSemantic)
+local DIFF_DELETE = cleanupSemanticModule.DIFF_DELETE
+local DIFF_EQUAL = cleanupSemanticModule.DIFF_EQUAL
+local DIFF_INSERT = cleanupSemanticModule.DIFF_INSERT
+local Diff = cleanupSemanticModule.Diff
+export type Diff = cleanupSemanticModule.Diff
 
 local normalizeDiffOptions = require(CurrentModule.NormalizeDiffOptions).normalizeDiffOptions
 
@@ -42,12 +42,12 @@ local diffLinesUnified2 = require(CurrentModule.DiffLines).diffLinesUnified2
 local diffStringsRaw = require(CurrentModule.PrintDiffs).diffStringsRaw
 local diffStringsUnified = require(CurrentModule.PrintDiffs).diffStringsUnified
 
+local typesModule = require(CurrentModule.types)
+export type DiffOptions = typesModule.DiffOptions
+export type DiffOptionsColor = typesModule.DiffOptionsColor
+
 local NO_DIFF_MESSAGE = require(CurrentModule.Constants).NO_DIFF_MESSAGE
 local SIMILAR_MESSAGE = require(CurrentModule.Constants).SIMILAR_MESSAGE
-
-local Types = require(CurrentModule.types)
-export type DiffOptions = Types.DiffOptions
-export type DiffOptionsColor = Types.DiffOptionsColor
 
 -- ROBLOX deviation start: predefine functions
 local comparePrimitive

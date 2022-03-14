@@ -19,7 +19,11 @@ local exports = {}
 export type ErrorWithStack = Error & {}
 local ErrorWithStack = setmetatable({}, { __index = Error })
 ErrorWithStack.__index = ErrorWithStack
-function ErrorWithStack.new(message: string | nil, callsite: (...any) -> (...unknown), stackLimit: number?)
+function ErrorWithStack.new(
+	message: string | nil,
+	callsite: (...any) -> () | unknown,
+	stackLimit: number?
+): ErrorWithStack
 	-- Ensure we have a large stack length so we get full details.
 	local originalStackLimit = Error["stackTraceLimit"]
 	if stackLimit ~= nil and stackLimit ~= 0 then
@@ -34,7 +38,7 @@ function ErrorWithStack.new(message: string | nil, callsite: (...any) -> (...unk
 		Error["captureStackTrace"](self, callsite)
 	end
 	Error["stackTraceLimit"] = originalStackLimit
-	return self
+	return (self :: any) :: ErrorWithStack
 end
 exports.default = ErrorWithStack
 return exports
