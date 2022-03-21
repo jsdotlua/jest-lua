@@ -103,7 +103,7 @@ You can check strings against [Lua string patterns](https://developer.roblox.com
 
 ```lua
 it('there is no I in team', function()
-	expect('team').not.toMatch('I')
+	expect('team').never.toMatch('I')
 end)
 
 it('but there is a "stop" in Christoph', function()
