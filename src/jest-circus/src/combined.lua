@@ -39,6 +39,7 @@ do
 	type Circus_TestEntry = typesModule.Circus_TestEntry
 	type Circus_HookType = typesModule.Circus_HookType
 	type Circus_DescribeBlock = typesModule.Circus_DescribeBlock
+	type Circus_BlockMode = typesModule.Circus_BlockMode
 	--[[
 		ROBLOX deviation: merged into this file to avoid circular dependencies
 		original code:
@@ -68,7 +69,8 @@ do
 				event.hook.seenDone = false
 				break
 			elseif event.name == "start_describe_definition" then
-				local blockName, mode = event.blockName, event.mode
+				-- ROBLOX FIXME Luau: requires "type states" feature. need to explicitely type as Circus_BlockMode as Luau doesn't correctly infer the union of singleton types
+				local blockName, mode: Circus_BlockMode = event.blockName, event.mode
 				local currentDescribeBlock, currentlyRunningTest =
 					state.currentDescribeBlock, state.currentlyRunningTest
 
@@ -171,7 +173,8 @@ do
 			elseif event.name == "add_test" then
 				local currentDescribeBlock, currentlyRunningTest, hasStarted =
 					state.currentDescribeBlock, state.currentlyRunningTest, state.hasStarted
-				local asyncError, fn, mode, name, timeout =
+				-- ROBLOX FIXME Luau: requires "type states" feature. need to explicitely type as Circus_BlockMode as Luau doesn't correctly infer the union of singleton types.
+				local asyncError, fn, mode: Circus_BlockMode, name, timeout =
 					event.asyncError, event.fn, event.mode, event.testName, event.timeout
 
 				if currentlyRunningTest ~= nil then

@@ -7,6 +7,7 @@ local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Error = LuauPolyfill.Error
 local Object = LuauPolyfill.Object
+type Array<T> = LuauPolyfill.Array<T>
 type Object = LuauPolyfill.Object
 
 local RegExp = require(Packages.RegExp)
@@ -47,14 +48,14 @@ end
 -- ROBLOX deviation START: defining picomatch as callable table
 local picomatch_
 local picomatch = setmetatable({}, {
-	__call = function(_self: any, glob, options, returnState: boolean?)
+	__call = function(_self: any, glob: any, options: Object?, returnState: boolean?)
 		return picomatch_(glob, options, returnState)
 	end,
 })
 
 function picomatch_(
-	glob,
-	options,
+	glob: any,
+	options: Object?,
 	returnState_: boolean?
 ): typeof(setmetatable({ state = {} :: any }, {
 	__call = function(_self: any, str: string, returnObject: boolean?): any
@@ -93,7 +94,7 @@ function picomatch_(
 		error(Error.new("TypeError: Expected pattern to be a non-empty string"))
 	end
 
-	local opts = options or {}
+	local opts = options or {} :: Object
 	local posix = utils.isWindows(options)
 	-- ROBLOX Luau FIXME: needs normalization to avoid Type 'RegExp' could not be converted into 'RegExp & {| state: any? |}'
 	local regex: RegExp & { state: any? } = if isState
