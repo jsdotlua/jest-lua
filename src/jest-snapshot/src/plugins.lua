@@ -21,6 +21,7 @@ local plugins = require(Packages.PrettyFormat).plugins
 local PLUGINS = {
 	jestMockSerializer,
 	plugins.AsymmetricMatcher,
+	plugins.ReactElement,
 	-- ROBLOX deviation: Roblox Instance matchers
 	plugins.RobloxInstance,
 }

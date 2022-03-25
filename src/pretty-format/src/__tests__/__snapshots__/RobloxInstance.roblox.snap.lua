@@ -93,6 +93,12 @@ exports[ [=[Instance serializes Folder 1]=] ] = [=[
       \"Name\": \"ConvertAnsi.spec\",
       \"Parent\": \"__tests__\" [Folder],
     },
+    \"ReactElement.spec\": ModuleScript {
+      \"Archivable\": true,
+      \"ClassName\": \"ModuleScript\",
+      \"Name\": \"ReactElement.spec\",
+      \"Parent\": \"__tests__\" [Folder],
+    },
     \"RobloxInstance.roblox.spec\": ModuleScript {
       \"Archivable\": true,
       \"ClassName\": \"ModuleScript\",
@@ -123,6 +129,12 @@ exports[ [=[Instance serializes Folder 1]=] ] = [=[
       \"Name\": \"roblox.spec\",
       \"Parent\": \"__tests__\" [Folder],
     },
+    \"setPrettyPrint\": ModuleScript {
+      \"Archivable\": true,
+      \"ClassName\": \"ModuleScript\",
+      \"Name\": \"setPrettyPrint\",
+      \"Parent\": \"__tests__\" [Folder],
+    },
   },
   \"plugins\": Folder {
     \"Archivable\": true,
@@ -141,11 +153,35 @@ exports[ [=[Instance serializes Folder 1]=] ] = [=[
       \"Name\": \"ConvertAnsi\",
       \"Parent\": \"plugins\" [Folder],
     },
+    \"ReactElement\": ModuleScript {
+      \"Archivable\": true,
+      \"ClassName\": \"ModuleScript\",
+      \"Name\": \"ReactElement\",
+      \"Parent\": \"plugins\" [Folder],
+    },
     \"RobloxInstance\": ModuleScript {
       \"Archivable\": true,
       \"ClassName\": \"ModuleScript\",
       \"Name\": \"RobloxInstance\",
       \"Parent\": \"plugins\" [Folder],
+    },
+    \"lib\": Folder {
+      \"Archivable\": true,
+      \"ClassName\": \"Folder\",
+      \"Name\": \"lib\",
+      \"Parent\": \"plugins\" [Folder],
+      \"escapeHTML\": ModuleScript {
+        \"Archivable\": true,
+        \"ClassName\": \"ModuleScript\",
+        \"Name\": \"escapeHTML\",
+        \"Parent\": \"lib\" [Folder],
+      },
+      \"markup\": ModuleScript {
+        \"Archivable\": true,
+        \"ClassName\": \"ModuleScript\",
+        \"Name\": \"markup\",
+        \"Parent\": \"lib\" [Folder],
+      },
     },
   },
 }"
