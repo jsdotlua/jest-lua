@@ -11,13 +11,11 @@ local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Boolean = LuauPolyfill.Boolean
+local RobloxShared = require(Packages.RobloxShared)
+type Writeable = RobloxShared.Writeable
 local exports = {}
 
--- ROBLOX FIXME START: added types and objects that do not exist in Luau
-type NodeJS_WriteStream = any
--- ROBLOX FIXME END
-
-local function clearLine(stream: NodeJS_WriteStream): ()
+local function clearLine(stream: Writeable): ()
 	if Boolean.toJSBoolean(stream.isTTY) then
 		stream:write("\x1b[999D\x1b[K")
 	end

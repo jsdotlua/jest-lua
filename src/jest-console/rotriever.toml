@@ -1,18 +1,19 @@
 [package]
-name = "JestUtil"
+name = "JestConsole"
 version = { workspace = true }
 license = { workspace = true }
-author = "Roblox"
+author = { workspace = true }
 content_root = "src"
 files = ["*", "!**/__tests__/**"]
 
 [dependencies]
 LuauPolyfill = { workspace = true }
-Promise = { workspace = true }
-ChalkLua = { workspace = true }
-RegExp = { workspace = true }
 JestTypes = { path = "../jest-types" }
-Picomatch = { path = "../picomatch" }
+ChalkLua = { workspace = true }
+JestUtil = { path = "../jest-util" }
+JestMessageUtil = { path = "../jest-message-util" }
+JestMock = { path = "../jest-mock" }
+JestEach = { path = "../jest-each" }
 RobloxShared = { path = "../roblox-shared" }
 
 [dev_dependencies]

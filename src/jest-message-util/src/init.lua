@@ -13,6 +13,7 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
 local String = LuauPolyfill.String
 local Boolean = LuauPolyfill.Boolean.toJSBoolean
+type Array<T> = LuauPolyfill.Array<T>
 
 -- local chalk = require(Packages.ChalkLua)
 
@@ -21,8 +22,13 @@ local formatStackTrace, getStackTraceLines --, separateMessageFromStack
 
 -- ROBLOX deviation: omitting imports since they're mostly fs related
 
--- ROBLOX deviation: omitting type StackTraceConfig
-type StackTraceOptions = { noStackTrace: boolean, noCodeFrame: boolean? }
+-- ROBLOX deviation: static definition for StackTraceConfig
+export type StackTraceConfig = {
+	rootDir: string,
+	testMatch: Array<string>,
+}
+
+export type StackTraceOptions = { noStackTrace: boolean, noCodeFrame: boolean? }
 
 --[[
 	ROBLOX deviation: rewrote regex patterns and split up patterns for alternations

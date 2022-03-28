@@ -7,10 +7,6 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
--- ROBLOX FIXME START: added types and objects that do not exist in Luau
-type NodeJS_WriteStream = any
--- ROBLOX FIXME END
-
 local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent
 local exports = {}
@@ -19,14 +15,17 @@ local chalk = require(Packages.ChalkLua)
 local clearLine = require(script.Parent.clearLine).default
 local isInteractive = require(script.Parent.isInteractive).default
 
-local function print(stream: NodeJS_WriteStream): ()
+local RobloxShared = require(Packages.RobloxShared)
+type Writeable = RobloxShared.Writeable
+
+local function print(stream: Writeable): ()
 	if isInteractive then
 		stream:write(chalk.bold.dim("Determining test suites to run..."))
 	end
 end
 exports.print = print
 
-local function remove(stream: NodeJS_WriteStream): ()
+local function remove(stream: Writeable): ()
 	if isInteractive then
 		clearLine(stream)
 	end

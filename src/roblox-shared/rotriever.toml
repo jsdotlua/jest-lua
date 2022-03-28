@@ -9,6 +9,7 @@ files = ["*", "!**/__tests__/**"]
 [dependencies]
 JestGetType = { path = "../jest-get-type" }
 LuauPolyfill = { workspace = true }
+JestMock = { path = "../jest-mock" }
 
 [dev_dependencies]
 Expect = { path = "../expect" }
