@@ -46,12 +46,21 @@ local function getType(element: any)
 	if typeof(type_) == "string" then
 		return type_
 	end
+	-- ROBLOX deviation START: functions can't have properties in Lua
 	if typeof(type_) == "function" then
-		return (function()
-			local ref = Boolean.toJSBoolean(type_.displayName) and type_.displayName or type_.name
-			return Boolean.toJSBoolean(ref) and ref
-		end)() or "Unknown"
+		local typeName = debug.info(type_, "n")
+		return if Boolean.toJSBoolean(typeName) then typeName else "Unknown"
 	end
+	if typeof(type_) == "table" then
+		local metatable = getmetatable(type_)
+		if metatable ~= nil and typeof(metatable.__call) == "function" then
+			return if Boolean.toJSBoolean(type_.displayName)
+				then type_.displayName
+				elseif Boolean.toJSBoolean(type_.name) then type_.name
+				else "Unknown"
+		end
+	end
+	-- ROBLOX deviation END
 
 	if ReactIs.isFragment(element) then
 		return "React.Fragment"
@@ -73,12 +82,15 @@ local function getType(element: any)
 			end
 
 			-- ROBLOX deviation START: check if type_.render is callable table
-			local functionName = if typeof(type_.render) == "table"
-				then if Boolean.toJSBoolean(type_.render.displayName)
-					then type_.render.displayName
-					elseif Boolean.toJSBoolean(type_.render.name) then type_.render.name
+			local functionName = if typeof(type_.render) == "function"
+					and Boolean.toJSBoolean(debug.info(type_.render, "n"))
+				then debug.info(type_.render, "n")
+				else if typeof(type_.render) == "table"
+					then if Boolean.toJSBoolean(type_.render.displayName)
+						then type_.render.displayName
+						elseif Boolean.toJSBoolean(type_.render.name) then type_.render.name
+						else ""
 					else ""
-				else ""
 			-- ROBLOX deviation END
 
 			return if functionName ~= "" then "ForwardRef(" .. functionName .. ")" else "ForwardRef"
@@ -87,8 +99,12 @@ local function getType(element: any)
 		if ReactIs.isMemo(element) then
 			local functionName = if Boolean.toJSBoolean(type_.displayName)
 				then type_.displayName
-				elseif Boolean.toJSBoolean(type_.type.displayName) then type_.type.displayName
-				elseif Boolean.toJSBoolean(type_.type.name) then type_.type.name
+				elseif
+					typeof(type_.type) == "table" -- ROBLOX deviation: can't index functions in Lua
+					and Boolean.toJSBoolean(type_.type.displayName)
+				then type_.type.displayName
+				elseif typeof(type_.type) == "function" and Boolean.toJSBoolean(debug.info(type_.type, "n")) then
+					debug.info(type_.type, "n")
 				else ""
 
 			return if functionName ~= "" then "Memo(" .. functionName .. ")" else "Memo"

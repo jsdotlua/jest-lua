@@ -25,6 +25,7 @@ local AsymmetricMatcher = require(CurrentModule.plugins.AsymmetricMatcher)
 local ConvertAnsi = require(CurrentModule.plugins.ConvertAnsi)
 local RobloxInstance = require(CurrentModule.plugins.RobloxInstance)
 local ReactElement = require(CurrentModule.plugins.ReactElement)
+local ReactTestComponent = require(CurrentModule.plugins.ReactTestComponent)
 
 local JestGetType = require(Packages.JestGetType)
 local getType = JestGetType.getType
@@ -452,6 +453,7 @@ local plugins = {
 	AsymmetricMatcher = AsymmetricMatcher,
 	ConvertAnsi = ConvertAnsi,
 	ReactElement = ReactElement,
+	ReactTestComponent = ReactTestComponent,
 	-- ROBLOX deviation: Roblox Instance matchers
 	RobloxInstance = RobloxInstance,
 }

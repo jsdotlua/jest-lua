@@ -69,11 +69,16 @@ function printProps(
 				printed = "{" .. printed .. "}"
 			end
 
+			-- ROBLOX deviation: keys can be of type table. eg. when using ReactRoblox.Change
+			local key_ = if typeof(key) == "table"
+				then (if key.name then key.name else printer(key, config, indentationNext, depth, refs))
+				else key
+
 			return config.spacingInner
 				.. indentation
 				.. colors.prop.open
 				.. colors.prop.open
-				.. key
+				.. key_
 				.. colors.prop.close
 				.. "="
 				.. colors.value.open
@@ -131,7 +136,7 @@ exports.printComment = printComment
 -- Too bad, so sad: the traditional (but unnecessary) space
 -- in a self-closing tagColor requires a second test of printedProps.
 function printElement(
-	type: string,
+	type_: string,
 	printedProps: string,
 	printedChildren: string,
 	config: Config,
@@ -143,7 +148,7 @@ function printElement(
 	-- ROBLOX deviation END
 	return tagColor.open
 		.. "<"
-		.. type
+		.. type_
 		.. (if Boolean.toJSBoolean(printedProps)
 			then tagColor.close .. printedProps .. config.spacingOuter .. indentation .. tagColor.open
 			else printedProps)
@@ -156,19 +161,19 @@ function printElement(
 				.. indentation
 				.. tagColor.open
 				.. "</"
-				.. type
+				.. type_
 			else (if Boolean.toJSBoolean(printedProps) and not Boolean.toJSBoolean(config.min) then "" else " ") .. "/")
 		.. ">"
 		.. tagColor.close
 end
 exports.printElement = printElement
 
-function printElementAsLeaf(type: string, config: Config): string
+function printElementAsLeaf(type_: string, config: Config): string
 	-- ROBLOX deviation START: adding default value as we don't support colors
 	local colors = config.colors or DEFAULT_COLORS
 	local tagColor = colors.tag
 	-- ROBLOX deviation END
-	return tagColor.open .. "<" .. type .. tagColor.close .. " …" .. tagColor.open .. " />" .. tagColor.close
+	return tagColor.open .. "<" .. type_ .. tagColor.close .. " …" .. tagColor.open .. " />" .. tagColor.close
 end
 exports.printElementAsLeaf = printElementAsLeaf
 

@@ -116,11 +116,23 @@ exports[ [=[Instance serializes Folder 1]=] ] = [=[
         \"Name\": \"RobloxInstance.roblox.snap\",
         \"Parent\": \"__snapshots__\" [Folder],
       },
+      \"react.snap\": ModuleScript {
+        \"Archivable\": true,
+        \"ClassName\": \"ModuleScript\",
+        \"Name\": \"react.snap\",
+        \"Parent\": \"__snapshots__\" [Folder],
+      },
     },
     \"prettyFormat.spec\": ModuleScript {
       \"Archivable\": true,
       \"ClassName\": \"ModuleScript\",
       \"Name\": \"prettyFormat.spec\",
+      \"Parent\": \"__tests__\" [Folder],
+    },
+    \"react.spec\": ModuleScript {
+      \"Archivable\": true,
+      \"ClassName\": \"ModuleScript\",
+      \"Name\": \"react.spec\",
       \"Parent\": \"__tests__\" [Folder],
     },
     \"roblox.spec\": ModuleScript {
@@ -157,6 +169,12 @@ exports[ [=[Instance serializes Folder 1]=] ] = [=[
       \"Archivable\": true,
       \"ClassName\": \"ModuleScript\",
       \"Name\": \"ReactElement\",
+      \"Parent\": \"plugins\" [Folder],
+    },
+    \"ReactTestComponent\": ModuleScript {
+      \"Archivable\": true,
+      \"ClassName\": \"ModuleScript\",
+      \"Name\": \"ReactTestComponent\",
       \"Parent\": \"plugins\" [Folder],
     },
     \"RobloxInstance\": ModuleScript {

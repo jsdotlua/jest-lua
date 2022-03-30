@@ -22,6 +22,7 @@ local PLUGINS = {
 	jestMockSerializer,
 	plugins.AsymmetricMatcher,
 	plugins.ReactElement,
+	plugins.ReactTestComponent,
 	-- ROBLOX deviation: Roblox Instance matchers
 	plugins.RobloxInstance,
 }
