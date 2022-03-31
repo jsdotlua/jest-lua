@@ -11,8 +11,8 @@ LuauPolyfill = { workspace = true }
 Promise = { workspace = true }
 ChalkLua = { workspace = true }
 RegExp = { workspace = true }
+Picomatch = { workspace = true }
 JestTypes = { path = "../jest-types" }
-Picomatch = { path = "../picomatch" }
 RobloxShared = { path = "../roblox-shared" }
 
 [dev_dependencies]

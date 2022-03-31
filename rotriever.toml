@@ -11,3 +11,4 @@ Promise = "github.com/evaera/roblox-lua-promise@3.1.0"
 React = { git = "https://github.com/roblox/roact-alignment.git", rev = "master" }
 ReactIs = { git = "https://github.com/roblox/roact-alignment.git", rev = "master" }
 ReactTestRenderer = { git = "https://github.com/roblox/roact-alignment.git", rev = "master" }
+Picomatch = "github.com/Roblox/picomatch-lua@0.1.0"
