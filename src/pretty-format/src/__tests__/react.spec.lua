@@ -218,7 +218,7 @@ return function()
 		})
 		Cat.displayName = "CatDisplayName"
 		assertPrintedJSX(
-			React.createElement("Mouse", { prop = React.createElement(Cat, { foo = "bar" }) }),
+			React.createElement("Mouse", { prop = React.createElement(Cat :: any, { foo = "bar" }) }),
 			'<Mouse\n  prop={\n    <CatDisplayName\n      foo="bar"\n    />\n  }\n/>'
 		)
 	end)
@@ -310,7 +310,9 @@ return function()
 		local val = {
 			React.createElement("dt", nil, "jest"),
 			React.createElement("dd", nil, "to talk in a playful manner"),
-			React.createElement("dd", { style = { color = "#99424F" } }, "painless JavaScript testing"),
+			-- FIXME luau: luau wants to align the props interface for these
+			-- elements, but will only accept nil because of the first element
+			React.createElement("dd", { style = { color = "#99424F" } } :: any, "painless JavaScript testing"),
 		}
 		local expected = Array.join({
 			"Table {",
@@ -458,13 +460,15 @@ return function()
 					React.createElement("em", nil, "playful"), -- ++depth === 3
 					" manner"
 				),
+				-- FIXME luau: it looks like luau infers a prop interface from
+				-- the first element and fails to coerce the second one to match
 				React.createElement( -- ++ depth === 2
 					"dd",
 					{
 						id = "jest-2",
 						style = { -- ++depth === 3
 							color = "#99424F",
-						},
+						} :: any,
 					},
 					React.createElement("em", nil, "painless"), -- ++depth === 3
 					" JavaScript testing"
