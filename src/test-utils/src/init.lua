@@ -9,6 +9,7 @@
 local CurrentModule = script
 
 local alignedAnsiStyleSerializer = require(CurrentModule.alignedAnsiStyleSerializer)
+local configModule = require(CurrentModule.config)
 
 --[[
 	ROBLOX deviation: ommiting ConditionalTest and config imports
@@ -25,4 +26,6 @@ local alignedAnsiStyleSerializer = require(CurrentModule.alignedAnsiStyleSeriali
 
 return {
 	alignedAnsiStyleSerializer = alignedAnsiStyleSerializer,
+	makeGlobalConfig = configModule.makeGlobalConfig,
+	makeProjectConfig = configModule.makeProjectConfig,
 }

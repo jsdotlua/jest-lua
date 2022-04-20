@@ -1,5 +1,5 @@
 [package]
-name = "TestUtils"
+name = "Path"
 version = { workspace = true }
 license = { workspace = true }
 author = "Roblox"
@@ -7,7 +7,7 @@ content_root = "src"
 files = ["*", "!**/__tests__/**"]
 
 [dependencies]
-PrettyFormat = { path = "../pretty-format" }
-ChalkLua = { workspace = true }
-JestTypes = { path = "../jest-types" }
 LuauPolyfill = { workspace = true }
+
+[dev_dependencies]
+Expect = { path = "../expect" }

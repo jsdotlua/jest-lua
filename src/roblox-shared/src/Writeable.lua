@@ -10,7 +10,7 @@ Writeable.__index = Writeable
 
 function Writeable.new(options: { write: (data: string) -> () }): Writeable
 	local self = setmetatable({}, Writeable)
-	self._writeFn = if typeof(options.write) == "function" then options.write else print
+	self._writeFn = if options ~= nil and typeof(options.write) == "function" then options.write else print
 	self.isTTY = false
 	return (self :: any) :: Writeable
 end

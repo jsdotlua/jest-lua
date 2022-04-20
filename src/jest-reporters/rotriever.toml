@@ -1,0 +1,27 @@
+[package]
+name = "JestReporters"
+version = { workspace = true }
+license = { workspace = true }
+author = { workspace = true }
+content_root = "src"
+files = ["*", "!**/__tests__/**"]
+
+[dependencies]
+LuauPolyfill = { workspace = true }
+# ROBLOX FIXME
+# We need a separate version of LuauPolyfill which exposes setInterval and clearInterval
+# and we can't use only the newest version as Roact uses v0.3.1 and this results in Symbols not being the same
+LuauPolyfillNew = { git = "https://github.com/roblox/luau-polyfill", rev = "main" }
+ChalkLua = { workspace = true }
+JestTypes = { path = "../jest-types" }
+JestTestResult = { path = '../jest-test-result' }
+JestUtil = { path = '../jest-util' }
+TestUtils = { path = '../test-utils' }
+JestConsole = { path = '../jest-console' }
+JestMock = { path = '../jest-mock' }
+RobloxShared = { path = '../roblox-shared' }
+Path = { path = '../path' }
+
+[dev_dependencies]
+Jest = { path = "../jest" }
+Expect = { path = "../expect" }

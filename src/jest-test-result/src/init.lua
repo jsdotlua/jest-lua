@@ -24,6 +24,7 @@ export type FormattedTestResults = typesModule.FormattedTestResults
 export type Milliseconds = typesModule.Milliseconds
 export type RuntimeTransformResult = typesModule.RuntimeTransformResult
 export type SerializableError = typesModule.SerializableError
+export type Snapshot = typesModule.Snapshot
 export type SnapshotSummary = typesModule.SnapshotSummary
 export type Status = typesModule.Status
 export type Suite = typesModule.Suite

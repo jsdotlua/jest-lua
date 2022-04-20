@@ -121,6 +121,16 @@ export type Suite = { title: string, suites: Array<Suite>, tests: Array<Assertio
 
 export type TestCaseResult = AssertionResult
 
+export type Snapshot = {
+	added: number,
+	fileDeleted: boolean,
+	matched: number,
+	unchecked: number,
+	uncheckedKeys: Array<string>,
+	unmatched: number,
+	updated: number,
+}
+
 export type TestResult = {
 	console: ConsoleBuffer?,
 	coverage: any?, -- [[ ROBLOX TODO: convert any to CoverageMapData when type is available ]]
@@ -135,15 +145,7 @@ export type TestResult = {
 	openHandles: Array<Error>,
 	perfStats: { end_: Milliseconds, runtime: Milliseconds, slow: boolean, start: Milliseconds },
 	skipped: boolean,
-	snapshot: {
-		added: number,
-		fileDeleted: boolean,
-		matched: number,
-		unchecked: number,
-		uncheckedKeys: Array<string>,
-		unmatched: number,
-		updated: number,
-	},
+	snapshot: Snapshot,
 	testExecError: SerializableError?,
 	testFilePath: Config_Path,
 	testResults: Array<AssertionResult>,
