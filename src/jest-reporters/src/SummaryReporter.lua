@@ -84,13 +84,16 @@ local SummaryReporter = setmetatable({}, { __index = BaseReporter }) :: any
 SummaryReporter.__index = SummaryReporter
 SummaryReporter.filename = "SummaryReporter"
 
-function SummaryReporter.new(globalConfig: Config_GlobalConfig, _process: any): SummaryReporter
+function SummaryReporter.new(globalConfig: Config_GlobalConfig, _process: any?): SummaryReporter
 	local self = setmetatable((BaseReporter.new(_process) :: any) :: SummaryReporterPrivate, SummaryReporter)
 
-	npm_lifecycle_script = _process.env.npm_lifecycle_script
-	npm_lifecycle_event = _process.env.npm_lifecycle_event
-	npm_config_user_agent = _process.env.npm_config_user_agent
-
+	-- ROBLOX deviation START: _process can be nil
+	if _process then
+		npm_lifecycle_script = _process.env.npm_lifecycle_script
+		npm_lifecycle_event = _process.env.npm_lifecycle_event
+		npm_config_user_agent = _process.env.npm_config_user_agent
+	end
+	-- ROBLOX deviation END
 	self._globalConfig = globalConfig
 	self._estimatedTime = 0
 
@@ -222,7 +225,9 @@ function SummaryReporter:_getTestSummary(contexts: Set<Context>, globalConfig: C
 	elseif globalConfig.testNamePattern ~= nil then
 		nameInfo = chalk.dim(" with tests matching ") .. ('"%s"'):format(globalConfig.testNamePattern)
 	end
-	local contextInfo = if contexts.size > 1 then chalk.dim(" in ") + contexts.size + chalk.dim(" projects") else ""
+	local contextInfo = if contexts.size > 1
+		then chalk.dim(" in ") .. tostring(contexts.size) .. chalk.dim(" projects")
+		else ""
 	return chalk.dim("Ran all test suites") .. testInfo .. nameInfo .. contextInfo .. chalk.dim(".")
 end
 

@@ -7,7 +7,9 @@ content_root = "src"
 files = ["*", "!**/__tests__/**"]
 
 [dependencies]
+LuauPolyfill = { workspace = true }
 Expect = { path = "../expect" }
 Jest = { path = "../jest" }
 TestEZ = { path = "../TestEZ" }
+TestEZJestAdapter = { path = "../TestEZJestAdapter" }
 JestSnapshot = { path = "../jest-snapshot" }

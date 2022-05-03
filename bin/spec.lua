@@ -4,8 +4,16 @@ local JestGlobals = require(Workspace.JestGlobals.JestGlobals)
 local TestEZ = JestGlobals.TestEZ
 
 -- Run all tests, collect results, and report to stdout.
-TestEZ.TestBootstrap:run({ Workspace }, TestEZ.Reporters.TextReporter, {
-	extraEnvironment = JestGlobals.testEnv,
-})
+TestEZ.TestBootstrap:run(
+	{ Workspace },
+	TestEZ.Reporters.pipe({
+		TestEZ.Reporters.TextReporterQuiet,
+		TestEZ.Reporters.JestDefaultReporter,
+		TestEZ.Reporters.JestSummaryReporter,
+	}),
+	{
+		extraEnvironment = JestGlobals.testEnv,
+	}
+)
 
 return nil

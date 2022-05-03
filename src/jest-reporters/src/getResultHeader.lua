@@ -31,7 +31,7 @@ local utilsModule = require(CurrentModule.utils)
 local formatTestPath = utilsModule.formatTestPath
 local printDisplayName = utilsModule.printDisplayName
 
--- ROBLOX deviation START: Lua Chalk doesn't support chainable calls. Using nested calls instead
+-- ROBLOX deviation START chalk_chainable: Lua Chalk doesn't support chainable calls. Using nested calls instead
 -- Explicitly reset for these messages since they can get written out in the
 -- middle of error logging
 local LONG_TEST_COLOR = function(...)
@@ -40,14 +40,19 @@ end
 local FAIL_TEXT = "FAIL"
 local PASS_TEXT = "PASS"
 
-local FAIL = if chalk.supportsColor == true
+--[[
+	ROBLOX deviation START chalk_supportsColor: chalk.supportsColor isn't defined so we'll assume
+	it supports colors unless it is explicitly set to false
+]]
+local FAIL = if chalk.supportsColor == nil or chalk.supportsColor == true
 	then chalk.reset(chalk.inverse(chalk.bold(chalk.red(string.format(" %s ", FAIL_TEXT)))))
 	else FAIL_TEXT
 
-local PASS = if chalk.supportsColor == true
+local PASS = if chalk.supportsColor == nil or chalk.supportsColor == true
 	then chalk.reset(chalk.inverse(chalk.bold(chalk.green(string.format(" %s ", PASS_TEXT)))))
 	else PASS_TEXT
--- ROBLOX deviation END
+-- ROBLOX deviation END chalk_supportsColor
+-- ROBLOX deviation END chalk_chainable
 
 exports.default = function(result: TestResult, globalConfig: Config_GlobalConfig, projectConfig: Config_ProjectConfig?)
 	local testPath = result.testFilePath
@@ -58,7 +63,7 @@ exports.default = function(result: TestResult, globalConfig: Config_GlobalConfig
 	if result.numFailingTests == nil then
 		result.numFailingTests = 0
 	end
-	local status = result.numFailingTests > 0 or if result.testExecError ~= nil then FAIL else PASS
+	local status = if result.numFailingTests > 0 or result.testExecError ~= nil then FAIL else PASS
 	local testDetail = {}
 
 	if result.perfStats ~= nil and Boolean.toJSBoolean(result.perfStats.slow) then

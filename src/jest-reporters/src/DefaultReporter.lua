@@ -36,7 +36,6 @@ type Config_Path = jestTypesModule.Config_Path
 
 local jestUtilModule = require(Packages.JestUtil)
 local clearLine = jestUtilModule.clearLine
-local isInteractive = jestUtilModule.isInteractive
 
 local BaseReporter = require(CurrentModule.BaseReporter).default
 local statusModule = require(CurrentModule.Status)
@@ -102,6 +101,8 @@ type DefaultReporterPrivate = DefaultReporter & {
 	__clearStatus: (self: DefaultReporter) -> (),
 	__printStatus: (self: DefaultReporter) -> (),
 	_process: NodeProcessMock,
+	-- ROBLOX deviation: we need to store _isInteractive per reporter to not override isInteractive globally
+	_isInteractive: boolean,
 }
 
 -- ROBLOX FIXME LUAU: Casting to any to prevent unwanted type narrowing
@@ -113,17 +114,36 @@ DefaultReporter.filename = "DefaultReporter"
 -- ROBLOX deviation: Added _process arg to mock global node process for testing
 function DefaultReporter.new(globalConfig: Config_GlobalConfig, _process: NodeProcessMock?): DefaultReporter
 	local self = setmetatable((BaseReporter.new(_process) :: any) :: DefaultReporterPrivate, DefaultReporter)
+	-- ROBLOX deviation: we need to store _isInteractive per reporter to not override isInteractive globally
+	self._isInteractive = jestUtilModule.isInteractive
 
 	-- ROBLOX deviation START: Added for tests otherwise isInteractive = false
 	if _process ~= nil and _process.env.IS_INTERACTIVE ~= nil then
-		isInteractive = _process.env.IS_INTERACTIVE
+		self._isInteractive = _process.env.IS_INTERACTIVE
 	end
 	-- ROBLOX deviation END
 
 	-- ROBLOX deviation START: Need a copy of stdout/stderr write since
 	-- they get overwritten in _wrapStdio.
-	local _stdoutWrite = if _process and _process.stdout then _process.stdout.write else Writeable.new()
-	local _stderrWrite = if _process and _process.stderr then _process.stderr.write else Writeable.new()
+	local function defaultWrite()
+		local writable = Writeable.new()
+
+		return function(_self: Writeable, message: string)
+			writable:write(message)
+		end
+	end
+	--[[
+		ROBLOX FIXME Luau START: added explicit type declaration.
+		Otherwise Luau can't seem to unify 2 function type declaration
+		and infers this as an union of function types which is not considered callable by CLI's analyze
+	]]
+	local _stdoutWrite: (Writeable, string) -> () = if _process and _process.stdout
+		then _process.stdout.write
+		else defaultWrite()
+	local _stderrWrite: (Writeable, string) -> () = if _process and _process.stderr
+		then _process.stderr.write
+		else defaultWrite()
+	-- ROBLOX FIXME Luau END
 	-- ROBLOX deviation END
 
 	self._globalConfig = globalConfig
@@ -195,7 +215,8 @@ function DefaultReporter:forceFlushBufferedOutput(): ()
 end
 
 function DefaultReporter:__clearStatus(): ()
-	if isInteractive then
+	-- ROBLOX deviation: we need to store _isInteractive per reporter to not override isInteractive globally
+	if self._isInteractive then
 		if self._globalConfig.useStderr then
 			self:_err(self._clear)
 		else
@@ -208,7 +229,8 @@ function DefaultReporter:__printStatus(): ()
 	local ref = self._status:get()
 	local content, clear = ref.content, ref.clear
 	self._clear = clear
-	if isInteractive then
+	-- ROBLOX deviation: we need to store _isInteractive per reporter to not override isInteractive globally
+	if self._isInteractive then
 		if self._globalConfig.useStderr then
 			self:_err(content)
 		else
