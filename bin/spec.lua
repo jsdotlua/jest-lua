@@ -7,7 +7,6 @@ local TestEZ = JestGlobals.TestEZ
 TestEZ.TestBootstrap:run(
 	{ Workspace },
 	TestEZ.Reporters.pipe({
-		TestEZ.Reporters.TextReporterQuiet,
 		TestEZ.Reporters.JestDefaultReporter,
 		TestEZ.Reporters.JestSummaryReporter,
 	}),

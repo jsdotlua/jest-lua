@@ -17,6 +17,7 @@ local JEST_TEST_CONTEXT = "__JEST_TEST_CONTEXT__"
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Error = LuauPolyfill.Error
 local instanceof = LuauPolyfill.instanceof
+local AssertionError = require(Packages.RobloxShared).AssertionError
 
 local getType = require(Packages.JestGetType).getType
 
@@ -130,15 +131,13 @@ local function toMatchSnapshot(...)
 				end
 			end
 
-			error(
-				Error(
-					matcherErrorMessage(
-						matcherHint(matcherName, nil, PROPERTIES_ARG, options),
-						"Expected " .. EXPECTED_COLOR("properties") .. " must be an object",
-						printedWithType
-					)
-				)
-			)
+			error(AssertionError.new({
+				message = matcherErrorMessage(
+					matcherHint(matcherName, nil, PROPERTIES_ARG, options),
+					"Expected " .. EXPECTED_COLOR("properties") .. " must be an object",
+					printedWithType
+				),
+			}))
 		end
 
 		-- Future breaking change: Snapshot hint must be a string
@@ -210,22 +209,22 @@ function _toMatchSnapshot(config: MatchSnapshotConfig)
 	local snapshotState = context.snapshotState
 
 	if isNot then
-		error(Error(matcherErrorMessage(matcherHintFromConfig(config, false), NOT_SNAPSHOT_MATCHERS)))
+		error(AssertionError.new({
+			message = matcherErrorMessage(matcherHintFromConfig(config, false), NOT_SNAPSHOT_MATCHERS),
+		}))
 	end
 
 	if snapshotState == nil then
 		-- Because the state is the problem, this is not a matcher error.
 		-- Call generic stringify from jest-matcher-utils package
 		-- because uninitialized snapshot state does not need snapshot serializers.
-		error(
-			Error(
-				matcherHintFromConfig(config, false)
-					.. "\n\n"
-					.. "Snapshot state must be initialized"
-					.. "\n\n"
-					.. printWithType("Snapshot state", snapshotState, stringify)
-			)
-		)
+		error(AssertionError.new({
+			message = matcherHintFromConfig(config, false)
+				.. "\n\n"
+				.. "Snapshot state must be initialized"
+				.. "\n\n"
+				.. printWithType("Snapshot state", snapshotState, stringify),
+		}))
 	end
 
 	local fullTestName = if currentTestName and hint
@@ -236,17 +235,15 @@ function _toMatchSnapshot(config: MatchSnapshotConfig)
 		-- ROBLOX deviation: Roblox Instance matchers
 		-- allow property matchers against received Instance values
 		if received == nil or (typeof(received) ~= "table" and getType(received) ~= "Instance") then
-			error(
-				Error(
-					matcherErrorMessage(
-						matcherHintFromConfig(config, false),
-						RECEIVED_COLOR("received")
-							.. " value must be an object when the matcher has "
-							.. EXPECTED_COLOR("properties"),
-						printWithType("Received", received, printReceived)
-					)
-				)
-			)
+			error(AssertionError.new({
+				message = matcherErrorMessage(
+					matcherHintFromConfig(config, false),
+					RECEIVED_COLOR("received")
+						.. " value must be an object when the matcher has "
+						.. EXPECTED_COLOR("properties"),
+					printWithType("Received", received, printReceived)
+				),
+			}))
 		end
 
 		local propertyPass = context.equals(received, properties, {
@@ -390,20 +387,20 @@ function _toThrowErrorMatchingSnapshot(config: types.MatchSnapshotConfig, fromPr
 		if typeof(received) ~= "function" then
 			local options: JestMatcherUtils.MatcherHintOptions = { isNot = isNot, promise = promise }
 
-			error(
-				Error(
-					matcherErrorMessage(
-						matcherHint(matcherName, nil, "", options),
-						RECEIVED_COLOR("received") .. " value must be a function",
-						printWithType("Received", received, printReceived)
-					)
-				)
-			)
+			error(AssertionError.new({
+				message = matcherErrorMessage(
+					matcherHint(matcherName, nil, "", options),
+					RECEIVED_COLOR("received") .. " value must be a function",
+					printWithType("Received", received, printReceived)
+				),
+			}))
 		end
 	end
 
 	if isNot then
-		error(Error(matcherErrorMessage(matcherHintFromConfig(config, false), NOT_SNAPSHOT_MATCHERS)))
+		error(AssertionError.new({
+			message = matcherErrorMessage(matcherHintFromConfig(config, false), NOT_SNAPSHOT_MATCHERS),
+		}))
 	end
 
 	local error_
@@ -421,7 +418,7 @@ function _toThrowErrorMatchingSnapshot(config: types.MatchSnapshotConfig, fromPr
 
 	if error_ == nil then
 		-- Because the received value is a function, this is not a matcher error.
-		error(Error(matcherHintFromConfig(config, false) .. "\n\n" .. DID_NOT_THROW))
+		error(AssertionError.new({ message = matcherHintFromConfig(config, false) .. "\n\n" .. DID_NOT_THROW }))
 	end
 
 	-- ROBLOX deviation: instead of being able to set received = error.message in our

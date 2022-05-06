@@ -12,14 +12,14 @@ local Packages = CurrentModule.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
+local instanceof = LuauPolyfill.instanceof
 
 type Record<K, T> = { [K]: T }
 
 local exports = {}
--- ROBLOX deviation START: not using dedicated AssertionError
--- local AssertionError = require(Packages.assert).AssertionError
-type AssertionError = LuauPolyfill.Error
--- ROBLOX deviation END
+local RobloxShared = require(Packages.RobloxShared)
+local AssertionError = RobloxShared.AssertionError
+type AssertionError = RobloxShared.AssertionError
 local chalk = require(Packages.ChalkLua)
 local typesModule = require(Packages.JestTypes)
 type Circus_Event = typesModule.Circus_Event
@@ -187,28 +187,9 @@ function assertionErrorMessage(error_, options: DiffOptions)
 		.. trimmedStack
 end
 
-function isAssertionError(
-	error_: Circus_TestError
-): boolean --[[ ROBLOX FIXME: change to TSTypePredicate equivalent if supported ]] --[[ error is AssertionErrorWithStack ]]
-	-- ROBLOX TODO: implement custom logic for assertion errors checking
-	warn("isAssertionError is not implemented")
-	return true
-
-	-- return error and instanceof(AssertionError)
-
-	-- (function()
-	-- 	if Boolean.toJSBoolean(error_) then
-	-- 		return (function()
-	-- 			local ref = (function()
-	-- 				local ref = error("not implemented") --[[ ROBLOX TODO: Unhandled node for type: BinaryExpression ]] --[[ error instanceof AssertionError ]]
-	-- 				return Boolean.toJSBoolean(ref) and ref
-	-- 			end)() or error_.name == AssertionError.name
-	-- 			return Boolean.toJSBoolean(ref) and ref
-	-- 		end)() or error_.code == "ERR_ASSERTION"
-	-- 	else
-	-- 		return error_
-	-- 	end
-	-- end)()
+function isAssertionError(error_: Circus_TestError): boolean
+	return error_
+		and (instanceof(error_, AssertionError) or error_.name == AssertionError.name or error_.code == "ERR_ASSERTION")
 end
 
 function buildHintString(hint: string): string

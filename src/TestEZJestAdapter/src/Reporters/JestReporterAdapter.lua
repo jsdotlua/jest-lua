@@ -3,6 +3,7 @@ local JestTestResult = require(Packages.JestTestResult)
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
 local Set = LuauPolyfill.Set
+local String = LuauPolyfill.String
 
 type Array<T> = LuauPolyfill.Array<T>
 
@@ -28,6 +29,7 @@ type TestEZResult = {
 	children: Array<TestEZResult>,
 	errors: Array<string>,
 	status: TestEZStatus,
+	startTime: number?,
 }
 
 type PlanNode = {
@@ -127,7 +129,7 @@ local function getFailureMessages(node: TestEZResult): Array<string>
 		failureMessages = Array.concat(
 			failureMessages,
 			Array.map(node.errors, function(err)
-				return chalk.red(chalk.bold("  ● " .. getTestFailurePath(node))) .. "\n\n" .. err
+				return chalk.red(chalk.bold("  ● " .. getTestFailurePath(node))) .. "\n\n" .. String.trim(err)
 			end)
 		)
 		for _, child in ipairs(node.children) do
@@ -152,7 +154,7 @@ local function testNodeToTestResult(node: TestEZResult): TestResult
 			total = 0,
 			uncheckedKeys = {},
 		},
-		failureMessage = if #failureMessages > 0 then Array.join(failureMessages, "\n") else nil,
+		failureMessage = if #failureMessages > 0 then "\n" .. Array.join(failureMessages, "\n\n") .. "\n" else nil,
 		testFilePath = getTestFilePath(node),
 		numFailingTests = countResults(testResult, "failed"),
 		numPassingTests = countResults(testResult, "passed"),
@@ -198,7 +200,7 @@ local function testNodeToAggregatedResults(node: TestEZResult): AggregatedResult
 			unmatched = 0,
 			updated = 0,
 		},
-		startTime = DateTime.now().UnixTimestampMillis,
+		startTime = node.startTime or DateTime.now().UnixTimestampMillis,
 		success = false,
 		testResults = {},
 		wasInterrupted = false,

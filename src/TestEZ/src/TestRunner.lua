@@ -49,6 +49,14 @@ function TestRunner.runPlan(plan)
 		snapshotState = nil,
 	}
 
+	-- ROBLOX deviation START: adding startTime so that jest reporters can report time elapsed for tests
+	local fenv = getfenv()
+	-- ROBLOX NOTE: additional check as DateTime only exists in Luau and not in native Lua
+	if fenv.DateTime then
+		session.results.startTime = fenv.DateTime.now().UnixTimestampMillis
+	end
+	-- ROBLOX deviation END
+
 	TestRunner.runPlanNode(session, plan, lifecycleHooks)
 
 	_G[JEST_TEST_CONTEXT] = nil

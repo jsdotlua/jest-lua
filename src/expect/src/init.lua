@@ -12,9 +12,11 @@ local CurrentModule = script
 local Packages = CurrentModule.Parent
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
-local Error = LuauPolyfill.Error
 local Object = LuauPolyfill.Object
 type Array<T> = LuauPolyfill.Array<T>
+
+local RobloxShared = require(Packages.RobloxShared)
+local AssertionError = RobloxShared.AssertionError
 
 local matcherUtils = require(Packages.JestMatcherUtils)
 
@@ -187,7 +189,7 @@ function makeThrowingMatcher(
 				error_.matcherResult = Object.assign({}, result, { message = message })
 
 				if throws then
-					error(Error(message))
+					error(AssertionError.new({ message = message }))
 				else
 					table.insert(getState().suppressedErrors, error)
 				end
@@ -210,11 +212,11 @@ function makeThrowingMatcher(
 
 		if not ok then
 			if typeof(result) == "table" and typeof(result.message) == "string" then
-				local errorTable = Error.new(result.message)
+				local errorTable = AssertionError.new({ message = result.message })
 				errorTable.stack = preservedStack
 				error(errorTable)
 			else
-				local errorTable = Error.new(result)
+				local errorTable = AssertionError.new(result)
 				errorTable.stack = preservedStack
 				error(errorTable)
 			end

@@ -761,7 +761,7 @@ exports[ [=[tests stack traces for calls within pcalls 1]=] ] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>()</>
 
-Error name:    <r>"Error"</>
+Error name:    <r>"AssertionError"</>
 Error message: <r>"<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
 
 Expected: <g>2</>

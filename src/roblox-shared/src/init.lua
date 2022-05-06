@@ -10,4 +10,10 @@ local WriteableModule = require(CurrentModule.Writeable)
 exports.Writeable = WriteableModule.Writeable
 export type Writeable = WriteableModule.Writeable
 
+local AssertionErrorModule = require(CurrentModule.AssertionError)
+
+export type AssertionError = AssertionErrorModule.AssertionError
+
+exports.AssertionError = AssertionErrorModule.AssertionError
+
 return exports

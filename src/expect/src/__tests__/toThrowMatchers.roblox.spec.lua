@@ -9,6 +9,8 @@ return function()
 		local Error = LuauPolyfill.Error
 		local extends = LuauPolyfill.extends
 
+		local AssertionError = require(Packages.RobloxShared).AssertionError
+
 		local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 
 		local jestExpect = require(CurrentModule)
@@ -55,6 +57,14 @@ return function()
 			error2()
 		end
 
+		local function error3()
+			error(AssertionError.new({ message = "" }))
+		end
+
+		local function test3()
+			error3()
+		end
+
 		it("prints the stack trace for Lua Error error", function()
 			jestExpect(function()
 				jestExpect(function()
@@ -76,6 +86,14 @@ return function()
 				jestExpect(function()
 					test2()
 				end).toThrow("wrong information")
+			end).toThrowErrorMatchingSnapshot()
+		end)
+
+		it("prints the stack trace for Lua AssertionError error", function()
+			jestExpect(function()
+				jestExpect(function()
+					test3()
+				end).never.toThrow()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
