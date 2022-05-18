@@ -5,10 +5,10 @@ license = "Apache2"
 
 [workspace.dependencies]
 ChalkLua = "github.com/roblox/chalk-lua@0.1.2"
-LuauPolyfill = "github.com/roblox/luau-polyfill@0.3.1"
+LuauPolyfill = "github.com/roblox/luau-polyfill@0.3.2"
 RegExp = "github.com/roblox/luau-regexp@0.2.0"
 Promise = "github.com/roblox/roblox-lua-promise@3.3.0"
-React = { git = "https://github.com/roblox/roact-alignment.git", rev = "v17.0.1-rc.11" }
-ReactIs = { git = "https://github.com/roblox/roact-alignment.git", rev = "v17.0.1-rc.11" }
-ReactTestRenderer = { git = "https://github.com/roblox/roact-alignment.git", rev = "v17.0.1-rc.11" }
+React = "github.com/roblox/roact-alignment@17.0.1-rc.11"
+ReactIs = "github.com/roblox/roact-alignment@17.0.1-rc.11"
+ReactTestRenderer = "github.com/roblox/roact-alignment@17.0.1-rc.11"
 Picomatch = "github.com/Roblox/picomatch-lua@0.2.0"

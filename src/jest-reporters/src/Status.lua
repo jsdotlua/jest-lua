@@ -14,15 +14,9 @@ local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local String = LuauPolyfill.String
 local setTimeout = LuauPolyfill.setTimeout
---[[
-	ROBLOX FIXME START:
-	We need a separate version of LuauPolyfill which exposes setInterval and clearInterval
-	and we can't use only the newest version as Roact uses v0.3.1 and this results in Symbols not being the same
-]]
-local LuauPolyfillNew = require(Packages.LuauPolyfillNew)
-local setInterval = LuauPolyfillNew.setInterval
-local clearInterval = LuauPolyfillNew.clearInterval
--- ROBLOX FIXME END
+local setInterval = LuauPolyfill.setInterval
+local clearInterval = LuauPolyfill.clearInterval
+
 type Array<T> = LuauPolyfill.Array<T>
 
 local exports = {}

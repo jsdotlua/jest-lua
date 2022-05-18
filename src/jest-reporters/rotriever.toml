@@ -8,10 +8,6 @@ files = ["*", "!**/__tests__/**"]
 
 [dependencies]
 LuauPolyfill = { workspace = true }
-# ROBLOX FIXME
-# We need a separate version of LuauPolyfill which exposes setInterval and clearInterval
-# and we can't use only the newest version as Roact uses v0.3.1 and this results in Symbols not being the same
-LuauPolyfillNew = { git = "https://github.com/roblox/luau-polyfill", rev = "main" }
 ChalkLua = { workspace = true }
 JestTypes = { path = "../jest-types" }
 JestTestResult = { path = '../jest-test-result' }
