@@ -1,16 +1,22 @@
 # Jest Roblox Changelog
 
-## Unreleased Changes
+## 2.4.0 (2022-05-16)
+* :sparkles: Added adapters for Jest reporters ([#179](https://github.com/Roblox/jest-roblox/pull/179))
+  * Added ability to pipe together reporters
+* :sparkles: Added ReactTestComponent serializer ([#174](https://github.com/Roblox/jest-roblox/pull/174))
+* :sparkles: Added React element serializer ([#170](https://github.com/Roblox/jest-roblox/pull/170))
+* :sparkles: Port `jest-reporters` ([#167](https://github.com/Roblox/jest-roblox/pull/167))
+* :sparkles: Port `jest-console` ([#157](https://github.com/Roblox/jest-roblox/pull/157))
 * :sparkles: Port `jest-test-result` ([#155](https://github.com/Roblox/jest-roblox/pull/155))
 * :sparkles: Port `jest-types` ([#137](https://github.com/Roblox/jest-roblox/pull/137))
 * :sparkles: Realigned package versions to v27.4.7 ([#135](https://github.com/Roblox/jest-roblox/pull/135))
 * :sparkles: Port `jest-environment` ([#139](https://github.com/Roblox/jest-roblox/pull/139))
-* :hammer_and_wrench: Apply `stylua` to the whole repo and enable check on CI ([#147](https://github.com/Roblox/jest-roblox/pull/147))
 * :sparkles: Port `jest-each` ([#145](https://github.com/Roblox/jest-roblox/pull/145) [#158](https://github.com/Roblox/jest-roblox/pull/158))
   * Support array like tables
   * Support template like tables
 * :sparkles: Port `jest-util` and `picomatch` ([#144](https://github.com/Roblox/jest-roblox/pull/144) [#154](https://github.com/Roblox/jest-roblox/pull/154))
-
+* :bug: Clean up assertion errors warning ([#181](https://github.com/Roblox/jest-roblox/pull/181))
+* :hammer_and_wrench: Apply `stylua` to the whole repo and enable check on CI ([#147](https://github.com/Roblox/jest-roblox/pull/147))
 
 ## 2.3.1 (2021-11-30)
 * :bug: Fix error reporters not outputting captured errors when using non-default reporters ([#131](https://github.com/Roblox/jest-roblox/pull/131))

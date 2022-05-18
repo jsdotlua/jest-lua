@@ -36,7 +36,7 @@ Table {
 ]=]
 ```
 
-The snapshot artifact should be committed alongside code changes, and reviewed as part of your code review process. Jest Roblox uses [pretty-format](https://github.com/Roblox/jest-roblox/tree/master/src/Submodules/pretty-format) to make snapshots human-readable during code review. On subsequent test runs, Jest Roblox will compare the rendered output with the previous snapshot. If they match, the test will pass. If they don't match, either the test runner found a bug in your code that should be fixed, or the implementation has changed and the snapshot needs to be updated.
+The snapshot artifact should be committed alongside code changes, and reviewed as part of your code review process. Jest Roblox uses [pretty-format](https://github.com/Roblox/jest-roblox/tree/master/src/pretty-format) to make snapshots human-readable during code review. On subsequent test runs, Jest Roblox will compare the rendered output with the previous snapshot. If they match, the test will pass. If they don't match, either the test runner found a bug in your code that should be fixed, or the implementation has changed and the snapshot needs to be updated.
 
 ### Updating Snapshots
 
