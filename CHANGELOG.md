@@ -1,6 +1,9 @@
 # Jest Roblox Changelog
 
-## 2.4.0 (2022-05-16)
+## 2.4.1 (2022-05-19)
+* :bug: Fix custom throwing matchers failing when throwing strings ([#186](https://github.com/Roblox/jest-roblox/pull/186))
+
+## 2.4.0 (2022-05-18)
 * :sparkles: Added adapters for Jest reporters ([#179](https://github.com/Roblox/jest-roblox/pull/179))
   * Added ability to pipe together reporters
 * :sparkles: Added ReactTestComponent serializer ([#174](https://github.com/Roblox/jest-roblox/pull/174))

@@ -147,5 +147,26 @@ return function()
 			local mock = jest.fn()
 			jestExpect(mock).never.toThrow()
 		end)
+
+		jestExpect.extend({
+			toErrorString = function(self)
+				error("I am erroring!")
+			end,
+			toErrorTable = function(self)
+				error({ message = "I am erroring!" })
+			end,
+		})
+
+		it("works for custom throwing matchers that throw strings", function()
+			jestExpect(function()
+				jestExpect(true).toErrorString()
+			end).toThrow("I am erroring!")
+		end)
+
+		it("works for custom throwing matchers that throw tables", function()
+			jestExpect(function()
+				jestExpect(true).toErrorTable()
+			end).toThrow("I am erroring!")
+		end)
 	end)
 end

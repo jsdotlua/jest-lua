@@ -216,7 +216,7 @@ function makeThrowingMatcher(
 				errorTable.stack = preservedStack
 				error(errorTable)
 			else
-				local errorTable = AssertionError.new(result)
+				local errorTable = AssertionError.new({ message = result })
 				errorTable.stack = preservedStack
 				error(errorTable)
 			end
