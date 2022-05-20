@@ -44,7 +44,7 @@ exports[ [=[Lua toThrowMatcher tests prints the stack trace for Lua AssertionErr
 Error name:    <r>"AssertionError"</>
 Error message: <r>""</>
 
-      LoadedCode.JestRoblox._Workspace.RobloxShared.RobloxShared.AssertionError:379 function new
+      LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.AssertionError.AssertionError:376 function new
       LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:61 function error3
       LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:65 function test3
       LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:95

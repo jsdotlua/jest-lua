@@ -16,7 +16,7 @@ Message:
 
 Difference:
 
-[2mCompared values have no visual difference.[22mLoadedCode.JestRoblox._Workspace.RobloxShared.RobloxShared.",
+[2mCompared values have no visual difference.[22mLoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
   },
 }
 ]=]
@@ -40,7 +40,7 @@ Difference:
 [2m  Table {[22m
 [32m-   \"foo\": \"foo\",[39m
 [31m+   \"foo\": \"fooBar\",[39m
-[2m  }[22mLoadedCode.JestRoblox._Workspace.RobloxShared.RobloxShared.",
+[2m  }[22mLoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
   },
 }
 ]=]
@@ -64,7 +64,7 @@ Difference:
 [2m  Table {[22m
 [32m-   \"foo\": \"foo\",[39m
 [31m+   \"foo\": \"fooBar\",[39m
-[2m  }[22mLoadedCode.JestRoblox._Workspace.RobloxShared.RobloxShared.",
+[2m  }[22mLoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
   },
 }
 ]=]
@@ -82,7 +82,7 @@ Table {
 
 Difference:
 
-[2mCompared values have no visual difference.[22mLoadedCode.JestRoblox._Workspace.RobloxShared.RobloxShared.",
+[2mCompared values have no visual difference.[22mLoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
   },
 }
 ]=]
@@ -100,7 +100,7 @@ Table {
 
 Difference:
 
-[2mCompared values have no visual difference.[22mLoadedCode.JestRoblox._Workspace.RobloxShared.RobloxShared.",
+[2mCompared values have no visual difference.[22mLoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
   },
 }
 ]=]
@@ -118,7 +118,7 @@ Table {
 
 Difference:
 
-[2mCompared values have no visual difference.[22mLoadedCode.JestRoblox._Workspace.RobloxShared.RobloxShared.",
+[2mCompared values have no visual difference.[22mLoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
   },
 }
 ]=]
@@ -136,7 +136,7 @@ Table {
 
 Difference:
 
-[2mCompared values have no visual difference.[22mLoadedCode.JestRoblox._Workspace.RobloxShared.RobloxShared.",
+[2mCompared values have no visual difference.[22mLoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
   },
 }
 ]=]
@@ -154,7 +154,7 @@ Table {
 
 Difference:
 
-[2mCompared values have no visual difference.[22mLoadedCode.JestRoblox._Workspace.RobloxShared.RobloxShared.",
+[2mCompared values have no visual difference.[22mLoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
   },
 }
 ]=]
@@ -172,7 +172,7 @@ Table {
 
 Difference:
 
-[2mCompared values have no visual difference.[22mLoadedCode.JestRoblox._Workspace.RobloxShared.RobloxShared.",
+[2mCompared values have no visual difference.[22mLoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
   },
 }
 ]=]
@@ -196,7 +196,7 @@ Difference:
 [2m  Table {[22m
 [32m-   \"foo\": \"foo\",[39m
 [31m+   \"foo\": \"fooBar\",[39m
-[2m  }[22mLoadedCode.JestRoblox._Workspace.RobloxShared.RobloxShared.",
+[2m  }[22mLoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
   },
 }
 ]=]
@@ -220,7 +220,7 @@ Difference:
 [2m  Table {[22m
 [32m-   \"foo\": \"foo\",[39m
 [31m+   \"foo\": \"fooBar\",[39m
-[2m  }[22mLoadedCode.JestRoblox._Workspace.RobloxShared.RobloxShared.",
+[2m  }[22mLoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
   },
 }
 ]=]

@@ -9,7 +9,7 @@ return function()
 		local Error = LuauPolyfill.Error
 		local extends = LuauPolyfill.extends
 
-		local AssertionError = require(Packages.RobloxShared).AssertionError
+		local AssertionError = LuauPolyfill.AssertionError
 
 		local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 

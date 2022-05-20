@@ -8,7 +8,8 @@ return function()
 	local typesModule = require(Packages.JestTypes)
 	type Circus_TestEntry = typesModule.Circus_TestEntry
 
-	local AssertionError = require(Packages.RobloxShared).AssertionError
+	local LuauPolyfill = require(Packages.LuauPolyfill)
+	local AssertionError = LuauPolyfill.AssertionError
 
 	local jestExpect = require(Packages.Expect)
 

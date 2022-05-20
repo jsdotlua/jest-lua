@@ -17,9 +17,8 @@ local instanceof = LuauPolyfill.instanceof
 type Record<K, T> = { [K]: T }
 
 local exports = {}
-local RobloxShared = require(Packages.RobloxShared)
-local AssertionError = RobloxShared.AssertionError
-type AssertionError = RobloxShared.AssertionError
+local AssertionError = LuauPolyfill.AssertionError
+type AssertionError = LuauPolyfill.AssertionError
 local chalk = require(Packages.ChalkLua)
 local typesModule = require(Packages.JestTypes)
 type Circus_Event = typesModule.Circus_Event
