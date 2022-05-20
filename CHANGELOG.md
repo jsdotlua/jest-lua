@@ -1,7 +1,10 @@
 # Jest Roblox Changelog
 
-## 2.4.1 (2022-05-19)
+## 2.4.1 (2022-05-20)
+* :hammer_and_wrench: Disable `chalk-lua` when running in Studio environment
+* :hammer_and_wrench: Extract `AssertionError` to `LuauPolyfill` ([#186](https://github.com/Roblox/jest-roblox/pull/185]))
 * :bug: Fix custom throwing matchers failing when throwing strings ([#186](https://github.com/Roblox/jest-roblox/pull/186))
+* :bug: Fix Jest reporters not reporting test failure to `TestService` ([#188](https://github.com/Roblox/jest-roblox/pull/188))
 
 ## 2.4.0 (2022-05-18)
 * :sparkles: Added adapters for Jest reporters ([#179](https://github.com/Roblox/jest-roblox/pull/179))
@@ -137,14 +140,12 @@ expect().toReturn() also aliased as expect().toHaveReturned()
 expect().toReturnTimes() also aliased as expect().toHaveReturnedTimes()
 expect().toReturnWith() also aliased as expect().toHaveReturnedWith()
 ```
-
 * :sparkles: Added basic `JestMock` functionality
   * The `jest` object can be imported from `Globals` and has the following methods:
     * `.fn()`
     * `.clearAllMocks()`
     * `.resetAllMocks()`
     * `.restoreAllMocks()`
-
 * :hammer_and_wrench: Added `Error` type to `JestGetType` ([#45](https://github.com/Roblox/jest-roblox/pull/45))
 * :bug: Bugfix in `.toMatch` where strings go into the RegEx check ([#41](https://github.com/Roblox/jest-roblox/pull/41))
 * :bug: Bugfix for `.toThrow` not matching `Error` object with same message ([#44](https://github.com/Roblox/jest-roblox/pull/44))
