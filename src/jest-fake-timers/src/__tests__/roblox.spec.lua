@@ -8,6 +8,10 @@ return function()
 
 	local jest = require(Packages.Dev.Jest)
 	local timers = jest._fakeTimers
+	local delay = timers.delayOverride
+	local tick = timers.tickOverride
+	local os = timers.osOverride
+	local DateTime = timers.dateTimeOverride
 
 	afterEach(function()
 		timers:useRealTimers()

@@ -5,9 +5,11 @@ local Packages = CurrentModule.Parent
 
 local JestMock = require(Packages.JestMock).ModuleMocker
 local JestFakeTimers = require(Packages.JestFakeTimers)
+local Runtime = require(Packages.JestRuntime)
 
 local fakeTimers = JestFakeTimers.new()
 local mock = JestMock.new()
+local runtime = Runtime.new()
 
 -- ROBLOX TODO: putting require override here for now
 -- ROBLOX TODO: ADO-1475
@@ -60,7 +62,9 @@ local mock = JestMock.new()
 -- end
 
 return {
-	-- Mock functions
+	-- ROBLOX NOTE: Stateless Jest Object API. Still used in tests across this
+	-- project so I'm leaving it for now. I think the proper way with our require
+	-- override now is to require JestGlobals and use the Jest 	Object API there.
 	fn = function(...)
 		return mock:fn(...)
 	end,
@@ -113,7 +117,9 @@ return {
 		tick = fakeTimers.tickOverride,
 		DateTime = fakeTimers.dateTimeOverride,
 		os = fakeTimers.osOverride,
-		-- require = requireOverride,
 	},
 	_fakeTimers = fakeTimers,
+	require = function(scriptInstance: ModuleScript)
+		return runtime:requireModuleOrMock(scriptInstance)
+	end,
 }

@@ -46,7 +46,7 @@ local toThrowMatchers = require(CurrentModule.toThrowMatchers).matchers
 
 local Types = require(CurrentModule.types)
 type AsyncExpectationResult = Types.AsyncExpectationResult
-type Expect = Types.Expect_
+export type Expect = Types.Expect_
 type ExpectationResult = Types.ExpectationResult
 type JestMatcherState = Types.MatcherState
 type MatcherInterface<R> = Types.Matchers_<R>

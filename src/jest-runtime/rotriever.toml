@@ -1,0 +1,18 @@
+[package]
+name = "JestRuntime"
+version = { workspace = true }
+license = { workspace = true }
+author = { workspace = true }
+content_root = "src"
+files = ["*", "!**/__tests__/**"]
+
+[dependencies]
+LuauPolyfill = { workspace = true }
+JestTypes = { path = "../jest-types" }
+JestMock = { path = '../jest-mock' }
+JestGlobals = { path = '../jest-globals' }
+Expect = { path = "../expect" }
+JestFakeTimers = { path = "../jest-fake-timers" }
+JestSnapshot = { path = "../jest-snapshot" }
+
+[dev_dependencies]
