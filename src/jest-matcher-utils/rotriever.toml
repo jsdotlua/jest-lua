@@ -15,7 +15,6 @@ LuauPolyfill = { workspace = true }
 RegExp = { workspace = true }
 
 [dev_dependencies]
-Expect = { path = "../expect" }
 RobloxShared = { path = "../roblox-shared" }
-Jest = { path = "../jest" }
+JestGlobals = { path = "../jest-globals" }
 TestUtils = { path = "../test-utils" }

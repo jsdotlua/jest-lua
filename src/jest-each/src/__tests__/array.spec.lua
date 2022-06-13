@@ -19,8 +19,9 @@ return function()
 
 	local HttpService = game:GetService("HttpService")
 
-	local jest = require(Packages.Dev.Jest)
-	local jestExpect = require(Packages.Dev.Expect)
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jest = JestGlobals.jest
+	local jestExpect = JestGlobals.expect
 
 	local pretty = require(Packages.PrettyFormat).default
 	local each = require(script.Parent.Parent).default()

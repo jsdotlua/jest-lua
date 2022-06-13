@@ -2,9 +2,9 @@ return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
-	local jestExpect = require(Packages.Dev.Expect)
-
-	local jest = require(CurrentModule)
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local jest = JestGlobals.jest
 
 	describe("Jest Object", function()
 		describe("methods are initialized", function()

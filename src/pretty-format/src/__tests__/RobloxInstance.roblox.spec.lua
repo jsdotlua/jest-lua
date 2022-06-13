@@ -10,7 +10,7 @@ return function()
 
 	local InstanceSubset = require(Packages.RobloxShared).RobloxInstance.InstanceSubset
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	local prettyFormatResult = function(val: any)
 		return prettyFormat(val, {

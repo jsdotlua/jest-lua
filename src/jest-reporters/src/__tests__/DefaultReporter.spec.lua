@@ -10,9 +10,9 @@ return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
-	local jestExpect = require(Packages.Dev.Expect)
-	local jest = require(Packages.Dev.Jest)
-	local timers = jest._fakeTimers
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local jest = JestGlobals.jest
 	local ModuleMocker = require(Packages.JestMock).ModuleMocker
 	local moduleMocker = ModuleMocker.new()
 
@@ -54,7 +54,7 @@ return function()
 	}
 
 	beforeEach(function()
-		timers:useFakeTimers()
+		jest.useFakeTimers()
 		stdoutWrite:mockClear()
 		stderrWrite:mockClear()
 	end)
@@ -67,7 +67,7 @@ return function()
 		reporter:onTestStart(testCase)
 		reporter:onTestResult(testCase, testResult, aggregatedResults)
 		reporter:onRunComplete()
-		timers:runAllTimers()
+		jest.runAllTimers()
 		jestExpect(stdoutWrite).toHaveBeenCalled()
 	end)
 
@@ -77,7 +77,7 @@ return function()
 		reporter:onTestStart(testCase)
 		reporter:onTestResult(testCase, testResult, aggregatedResults)
 		reporter:onRunComplete()
-		timers:runAllTimers()
+		jest.runAllTimers()
 		jestExpect(stdoutWrite).never.toHaveBeenCalled()
 	end)
 end

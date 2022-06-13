@@ -9,7 +9,7 @@ return function()
 	local CurrentModule = script.Parent
 	local Packages = CurrentModule.Parent.Parent
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 	local Writeable = require(Packages.RobloxShared).Writeable
 
 	local chalk = require(Packages.ChalkLua)

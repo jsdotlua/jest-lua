@@ -1,17 +1,14 @@
---!nocheck
 -- ROBLOX NOTE: no upstream
 return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
 
-	local jest = require(Packages.Dev.Jest)
-	local timers = jest._fakeTimers
-	local delay = timers.delayOverride
-	local tick = timers.tickOverride
-	local os = timers.osOverride
-	local DateTime = timers.dateTimeOverride
+	local jest = JestGlobals.jest
+	local FakeTimers = require(CurrentModule)
+	local timers = FakeTimers.new()
 
 	afterEach(function()
 		timers:useRealTimers()
@@ -20,11 +17,11 @@ return function()
 	describe("FakeTimers", function()
 		describe("construction", function()
 			it("installs delay mock", function()
-				jestExpect(delay).never.toBeNil()
+				jestExpect(timers.delayOverride).never.toBeNil()
 			end)
 
 			it("installs tick mock", function()
-				jestExpect(tick).never.toBeNil()
+				jestExpect(timers.tickOverride).never.toBeNil()
 			end)
 		end)
 
@@ -52,14 +49,14 @@ return function()
 					table.insert(runOrder, "mock6")
 				end)
 
-				delay(100, mock1)
-				delay(0, mock2)
-				delay(0, mock3)
-				delay(200, mock4)
-				delay(3, mock5)
-				delay(4, mock6)
+				timers.delayOverride(100, mock1)
+				timers.delayOverride(0, mock2)
+				timers.delayOverride(0, mock3)
+				timers.delayOverride(200, mock4)
+				timers.delayOverride(3, mock5)
+				timers.delayOverride(4, mock6)
 				timers:runAllTimers()
-				jestExpect(os.clock()).toEqual(200)
+				jestExpect(timers.osOverride.clock()).toEqual(200)
 				jestExpect(runOrder).toEqual({
 					"mock2",
 					"mock3",
@@ -82,7 +79,7 @@ return function()
 			it("does nothing when no timers have been scheduled", function()
 				timers:useFakeTimers()
 
-				jestExpect(os.clock()).toEqual(0)
+				jestExpect(timers.osOverride.clock()).toEqual(0)
 				timers:runAllTimers()
 			end)
 
@@ -90,7 +87,7 @@ return function()
 				timers:useFakeTimers()
 
 				local fn = jest.fn()
-				delay(0, fn)
+				timers.delayOverride(0, fn)
 				jestExpect(fn).toHaveBeenCalledTimes(0)
 
 				timers:runAllTimers()
@@ -104,7 +101,7 @@ return function()
 				timers:useFakeTimers()
 
 				local fn = jest.fn()
-				delay(0, function()
+				timers.delayOverride(0, function()
 					fn("mockArg1", "mockArg2")
 				end)
 
@@ -132,29 +129,29 @@ return function()
 					table.insert(runOrder, "mock4")
 				end)
 
-				delay(100, mock1)
-				delay(0, mock2)
-				delay(0, mock3)
-				delay(200, mock4)
+				timers.delayOverride(100, mock1)
+				timers.delayOverride(0, mock2)
+				timers.delayOverride(0, mock3)
+				timers.delayOverride(200, mock4)
 
 				-- Move forward to t=50
 				timers:advanceTimersByTime(50)
-				jestExpect(os.clock()).toEqual(50)
+				jestExpect(timers.osOverride.clock()).toEqual(50)
 				jestExpect(runOrder).toEqual({ "mock2", "mock3" })
 
 				-- Move forward to t=60
 				timers:advanceTimersByTime(10)
-				jestExpect(os.clock()).toEqual(60)
+				jestExpect(timers.osOverride.clock()).toEqual(60)
 				jestExpect(runOrder).toEqual({ "mock2", "mock3" })
 
 				-- Move forward to t=100
 				timers:advanceTimersByTime(40)
-				jestExpect(os.clock()).toEqual(100)
+				jestExpect(timers.osOverride.clock()).toEqual(100)
 				jestExpect(runOrder).toEqual({ "mock2", "mock3", "mock1" })
 
 				-- Move forward to t=200
 				timers:advanceTimersByTime(100)
-				jestExpect(os.clock()).toEqual(200)
+				jestExpect(timers.osOverride.clock()).toEqual(200)
 				jestExpect(runOrder).toEqual({ "mock2", "mock3", "mock1", "mock4" })
 			end)
 
@@ -182,24 +179,24 @@ return function()
 					table.insert(runOrder, "mock4")
 				end)
 
-				delay(100, mock1)
-				delay(0, mock2)
-				delay(0, mock3)
-				delay(200, mock4)
+				timers.delayOverride(100, mock1)
+				timers.delayOverride(0, mock2)
+				timers.delayOverride(0, mock3)
+				timers.delayOverride(200, mock4)
 
 				timers:advanceTimersToNextTimer()
 				-- Move forward to t=0
-				jestExpect(os.clock()).toEqual(0)
+				jestExpect(timers.osOverride.clock()).toEqual(0)
 				jestExpect(runOrder).toEqual({ "mock2", "mock3" })
 
 				timers:advanceTimersToNextTimer()
 				-- Move forward to t=100
-				jestExpect(os.clock()).toEqual(100)
+				jestExpect(timers.osOverride.clock()).toEqual(100)
 				jestExpect(runOrder).toEqual({ "mock2", "mock3", "mock1" })
 
 				timers:advanceTimersToNextTimer()
 				-- Move forward to t=200
-				jestExpect(os.clock()).toEqual(200)
+				jestExpect(timers.osOverride.clock()).toEqual(200)
 				jestExpect(runOrder).toEqual({ "mock2", "mock3", "mock1", "mock4" })
 			end)
 
@@ -220,21 +217,21 @@ return function()
 					table.insert(runOrder, "mock4")
 				end)
 
-				delay(100, mock1)
-				delay(0, mock2)
-				delay(0, mock3)
-				delay(200, mock4)
-				delay(400, mock4)
-				delay(600, mock4)
+				timers.delayOverride(100, mock1)
+				timers.delayOverride(0, mock2)
+				timers.delayOverride(0, mock3)
+				timers.delayOverride(200, mock4)
+				timers.delayOverride(400, mock4)
+				timers.delayOverride(600, mock4)
 
 				-- Move forward to t=100
 				timers:advanceTimersToNextTimer(2)
-				jestExpect(os.clock()).toEqual(100)
+				jestExpect(timers.osOverride.clock()).toEqual(100)
 				jestExpect(runOrder).toEqual({ "mock2", "mock3", "mock1" })
 
 				-- Move forward to t=600
 				timers:advanceTimersToNextTimer(3)
-				jestExpect(os.clock()).toEqual(600)
+				jestExpect(timers.osOverride.clock()).toEqual(600)
 				jestExpect(runOrder).toEqual({
 					"mock2",
 					"mock3",
@@ -262,16 +259,16 @@ return function()
 					table.insert(runOrder, "mock4")
 				end)
 
-				delay(0, mock1)
-				delay(25, function()
+				timers.delayOverride(0, mock1)
+				timers.delayOverride(25, function()
 					mock2()
-					delay(50, mock3)
+					timers.delayOverride(50, mock3)
 				end)
-				delay(100, mock4)
+				timers.delayOverride(100, mock4)
 
 				-- Move forward to t=75
 				timers:advanceTimersToNextTimer(3)
-				jestExpect(os.clock()).toEqual(75)
+				jestExpect(timers.osOverride.clock()).toEqual(75)
 				jestExpect(runOrder).toEqual({ "mock1", "mock2", "mock3" })
 			end)
 
@@ -286,7 +283,7 @@ return function()
 				timers:useFakeTimers()
 
 				local mock1 = jest.fn()
-				delay(0, mock1)
+				timers.delayOverride(0, mock1)
 
 				timers:reset()
 				timers:runAllTimers()
@@ -297,16 +294,16 @@ return function()
 				timers:useFakeTimers()
 
 				local mock1 = jest.fn()
-				delay(100, mock1)
+				timers.delayOverride(100, mock1)
 				timers:advanceTimersByTime(50)
-				jestExpect(os.clock()).toEqual(50)
+				jestExpect(timers.osOverride.clock()).toEqual(50)
 
 				timers:reset()
-				jestExpect(os.clock()).toEqual(0)
-				delay(100, mock1)
+				jestExpect(timers.osOverride.clock()).toEqual(0)
+				timers.delayOverride(100, mock1)
 
 				timers:advanceTimersByTime(50)
-				jestExpect(os.clock()).toEqual(50)
+				jestExpect(timers.osOverride.clock()).toEqual(50)
 				jestExpect(mock1).toHaveBeenCalledTimes(0)
 			end)
 		end)
@@ -335,14 +332,14 @@ return function()
 					table.insert(runOrder, "mock6")
 				end)
 
-				delay(100, mock1)
-				delay(0, mock2)
-				delay(0, mock3)
-				delay(200, mock4)
-				delay(3, mock5)
-				delay(4, mock6)
+				timers.delayOverride(100, mock1)
+				timers.delayOverride(0, mock2)
+				timers.delayOverride(0, mock3)
+				timers.delayOverride(200, mock4)
+				timers.delayOverride(3, mock5)
+				timers.delayOverride(4, mock6)
 				timers:runOnlyPendingTimers()
-				jestExpect(os.clock()).toEqual(200)
+				jestExpect(timers.osOverride.clock()).toEqual(200)
 				jestExpect(runOrder).toEqual({
 					"mock2",
 					"mock3",
@@ -356,18 +353,18 @@ return function()
 
 		describe("useRealTimers, useFakeTimers", function()
 			it("resets native timer APIs", function()
-				local nativeDelay = delay.getMockImplementation()
-				local nativeTick = tick.getMockImplementation()
+				local nativeDelay = timers.delayOverride.getMockImplementation()
+				local nativeTick = timers.tickOverride.getMockImplementation()
 
 				timers:useFakeTimers()
-				local fakeDelay = delay.getMockImplementation()
-				local fakeTick = tick.getMockImplementation()
+				local fakeDelay = timers.delayOverride.getMockImplementation()
+				local fakeTick = timers.tickOverride.getMockImplementation()
 				jestExpect(fakeDelay).never.toBe(nativeDelay)
 				jestExpect(fakeTick).never.toBe(nativeTick)
 
 				timers:useRealTimers()
-				local realDelay = delay.getMockImplementation()
-				local realTick = tick.getMockImplementation()
+				local realDelay = timers.delayOverride.getMockImplementation()
+				local realTick = timers.tickOverride.getMockImplementation()
 				jestExpect(realDelay).toBe(nativeDelay)
 				jestExpect(realTick).toBe(nativeTick)
 			end)
@@ -377,9 +374,9 @@ return function()
 			it("returns the correct count", function()
 				timers:useFakeTimers()
 
-				delay(0, function() end)
-				delay(0, function() end)
-				delay(10, function() end)
+				timers.delayOverride(0, function() end)
+				timers.delayOverride(0, function() end)
+				timers.delayOverride(10, function() end)
 
 				jestExpect(timers:getTimerCount()).toEqual(3)
 
@@ -397,28 +394,28 @@ return function()
 	describe("DateTime", function()
 		describe("construction", function()
 			it("installs DateTime mock", function()
-				jestExpect(DateTime).never.toBeNil()
-				jestExpect(DateTime.now()).never.toBeNil()
+				jestExpect(timers.dateTimeOverride).never.toBeNil()
+				jestExpect(timers.dateTimeOverride.now()).never.toBeNil()
 			end)
 
 			it("DateTime constructors pass through", function()
 				timers:useFakeTimers()
 
-				jestExpect(DateTime.now()).never.toBeNil()
-				jestExpect(DateTime.fromUnixTimestamp()).never.toBeNil()
-				jestExpect(DateTime.fromUnixTimestampMillis()).never.toBeNil()
-				jestExpect(DateTime.fromUniversalTime()).never.toBeNil()
-				jestExpect(DateTime.fromLocalTime()).never.toBeNil()
-				jestExpect(DateTime.fromIsoDate("2020-01-02T10:30:45Z")).never.toBeNil()
+				jestExpect(timers.dateTimeOverride.now()).never.toBeNil()
+				jestExpect(timers.dateTimeOverride.fromUnixTimestamp()).never.toBeNil()
+				jestExpect(timers.dateTimeOverride.fromUnixTimestampMillis()).never.toBeNil()
+				jestExpect(timers.dateTimeOverride.fromUniversalTime()).never.toBeNil()
+				jestExpect(timers.dateTimeOverride.fromLocalTime()).never.toBeNil()
+				jestExpect(timers.dateTimeOverride.fromIsoDate("2020-01-02T10:30:45Z")).never.toBeNil()
 			end)
 		end)
 
 		it("affected by timers", function()
 			timers:useFakeTimers()
 
-			local time_ = DateTime.now().UnixTimestamp
+			local time_ = timers.dateTimeOverride.now().UnixTimestamp
 			timers:advanceTimersByTime(100)
-			jestExpect(DateTime.now().UnixTimestamp).toEqual(time_ + 100)
+			jestExpect(timers.dateTimeOverride.now().UnixTimestamp).toEqual(time_ + 100)
 		end)
 
 		describe("setSystemTime", function()
@@ -426,14 +423,14 @@ return function()
 				timers:useFakeTimers()
 
 				timers:setSystemTime(0)
-				jestExpect(DateTime.now()).toEqual(DateTime.fromUnixTimestamp(0))
+				jestExpect(timers.dateTimeOverride.now()).toEqual(timers.dateTimeOverride.fromUnixTimestamp(0))
 			end)
 
 			it("DateTime object", function()
 				timers:useFakeTimers()
 
-				timers:setSystemTime(DateTime.fromUniversalTime(1971))
-				jestExpect(DateTime.now()).toEqual(DateTime.fromUniversalTime(1971))
+				timers:setSystemTime(timers.dateTimeOverride.fromUniversalTime(1971))
+				jestExpect(timers.dateTimeOverride.now()).toEqual(timers.dateTimeOverride.fromUniversalTime(1971))
 			end)
 		end)
 
@@ -442,20 +439,20 @@ return function()
 				timers:useFakeTimers()
 
 				timers:setSystemTime(0)
-				jestExpect(DateTime.now()).never.toEqual(timers:getRealSystemTime())
+				jestExpect(timers.dateTimeOverride.now()).never.toEqual(timers:getRealSystemTime())
 			end)
 		end)
 
 		describe("useRealTimers, useFakeTimers", function()
 			it("resets native timer APIs", function()
-				local nativeDateTime = DateTime.now.getMockImplementation()
+				local nativeDateTime = timers.dateTimeOverride.now.getMockImplementation()
 
 				timers:useFakeTimers()
-				local fakeDateTime = DateTime.now.getMockImplementation()
+				local fakeDateTime = timers.dateTimeOverride.now.getMockImplementation()
 				jestExpect(fakeDateTime).never.toBe(nativeDateTime)
 
 				timers:useRealTimers()
-				local realDateTime = DateTime.now.getMockImplementation()
+				local realDateTime = timers.dateTimeOverride.now.getMockImplementation()
 				jestExpect(realDateTime).toBe(nativeDateTime)
 			end)
 		end)
@@ -465,11 +462,11 @@ return function()
 				timers:useFakeTimers()
 
 				timers:setSystemTime(0)
-				local fakeTime = DateTime.now()
-				jestExpect(DateTime.now()).toEqual(fakeTime)
+				local fakeTime = timers.dateTimeOverride.now()
+				jestExpect(timers.dateTimeOverride.now()).toEqual(fakeTime)
 
 				timers:reset()
-				jestExpect(DateTime.now()).never.toEqual(fakeTime)
+				jestExpect(timers.dateTimeOverride.now()).never.toEqual(fakeTime)
 			end)
 		end)
 	end)
@@ -478,31 +475,31 @@ return function()
 		describe("construction", function()
 			it("installs os mock", function()
 				jestExpect(os).never.toBeNil()
-				jestExpect(os.time).never.toBeNil()
-				jestExpect(os.clock).never.toBeNil()
+				jestExpect(timers.osOverride.time).never.toBeNil()
+				jestExpect(timers.osOverride.clock).never.toBeNil()
 			end)
 
 			it("os methods pass through", function()
 				timers:useFakeTimers()
 
-				jestExpect(os.difftime(2, 1)).toBe(1)
-				jestExpect(os.date).never.toBeNil()
+				jestExpect(timers.osOverride.difftime(2, 1)).toBe(1)
+				jestExpect(timers.osOverride.date).never.toBeNil()
 			end)
 		end)
 
-		describe("os.time", function()
+		describe("timers.osOverride.time", function()
 			it("returns correct value", function()
 				timers:useFakeTimers()
 
 				timers:setSystemTime(1586982482)
-				jestExpect(os.time()).toBe(1586982482)
+				jestExpect(timers.osOverride.time()).toBe(1586982482)
 			end)
 
 			it("returns correct value when passing in table", function()
 				timers:useFakeTimers()
 
 				timers:setSystemTime(100)
-				jestExpect(os.time({
+				jestExpect(timers.osOverride.time({
 					year = 1970,
 					month = 1,
 					day = 1,
@@ -515,36 +512,36 @@ return function()
 			it("affected by timers", function()
 				timers:useFakeTimers()
 
-				local time_ = os.time()
+				local time_ = timers.osOverride.time()
 				timers:advanceTimersByTime(100)
-				jestExpect(os.time()).toBe(time_ + 100)
+				jestExpect(timers.osOverride.time()).toBe(time_ + 100)
 			end)
 		end)
 
-		describe("os.clock", function()
+		describe("timers.osOverride.clock", function()
 			it("affected by timers", function()
 				timers:useFakeTimers()
 
-				jestExpect(os.clock()).toBe(0)
+				jestExpect(timers.osOverride.clock()).toBe(0)
 				timers:advanceTimersByTime(100)
-				jestExpect(os.clock()).toBe(100)
+				jestExpect(timers.osOverride.clock()).toBe(100)
 			end)
 		end)
 
 		describe("useRealTimers, useFakeTimers", function()
 			it("resets native timer APIs", function()
-				local nativeOsTime = os.time.getMockImplementation()
-				local nativeOsClock = os.clock.getMockImplementation()
+				local nativeOsTime = timers.osOverride.time.getMockImplementation()
+				local nativeOsClock = timers.osOverride.clock.getMockImplementation()
 
 				timers:useFakeTimers()
-				local fakeOsTime = os.time.getMockImplementation()
-				local fakeOsClock = os.clock.getMockImplementation()
+				local fakeOsTime = timers.osOverride.time.getMockImplementation()
+				local fakeOsClock = timers.osOverride.clock.getMockImplementation()
 				jestExpect(fakeOsTime).never.toBe(nativeOsTime)
 				jestExpect(fakeOsClock).never.toBe(nativeOsClock)
 
 				timers:useRealTimers()
-				local realOsTime = os.time.getMockImplementation()
-				local realOsClock = os.clock.getMockImplementation()
+				local realOsTime = timers.osOverride.time.getMockImplementation()
+				local realOsClock = timers.osOverride.clock.getMockImplementation()
 				jestExpect(realOsTime).toBe(nativeOsTime)
 				jestExpect(realOsClock).toBe(nativeOsClock)
 			end)
@@ -555,11 +552,11 @@ return function()
 				timers:useFakeTimers()
 
 				timers:setSystemTime(0)
-				local fakeTime = os.time()
-				jestExpect(os.time()).toEqual(fakeTime)
+				local fakeTime = timers.osOverride.time()
+				jestExpect(timers.osOverride.time()).toEqual(fakeTime)
 
 				timers:reset()
-				jestExpect(os.time()).never.toEqual(fakeTime)
+				jestExpect(timers.osOverride.time()).never.toEqual(fakeTime)
 			end)
 		end)
 	end)
@@ -569,7 +566,7 @@ return function()
 			timers:useFakeTimers()
 
 			timers:setSystemTime(100)
-			jestExpect(tick()).toBe(100)
+			jestExpect(timers.tickOverride()).toBe(100)
 		end)
 
 		it("affected by timers", function()
@@ -578,7 +575,7 @@ return function()
 			timers:setSystemTime(0)
 			timers:advanceTimersByTime(100)
 
-			jestExpect(tick()).toBe(100)
+			jestExpect(timers.tickOverride()).toBe(100)
 		end)
 	end)
 
@@ -589,25 +586,25 @@ return function()
 		local mock2 = jest.fn()
 		local mock3 = jest.fn()
 
-		jestExpect(delay).never.toHaveBeenCalled()
+		jestExpect(timers.delayOverride).never.toHaveBeenCalled()
 
-		delay(0, mock1)
-		delay(25, function()
+		timers.delayOverride(0, mock1)
+		timers.delayOverride(25, function()
 			mock2()
-			delay(50, mock3)
-			tick()
-			DateTime.now()
+			timers.delayOverride(50, mock3)
+			timers.tickOverride()
+			timers.dateTimeOverride.now()
 		end)
 
-		jestExpect(delay).toHaveBeenCalledTimes(2)
-		jestExpect(tick).never.toHaveBeenCalled()
-		jestExpect(DateTime.now).never.toHaveBeenCalled()
+		jestExpect(timers.delayOverride).toHaveBeenCalledTimes(2)
+		jestExpect(timers.tickOverride).never.toHaveBeenCalled()
+		jestExpect(timers.dateTimeOverride.now).never.toHaveBeenCalled()
 
 		timers:runAllTimers()
-		jestExpect(delay).toHaveBeenCalledTimes(3)
-		jestExpect(tick).toHaveBeenCalledTimes(1)
-		jestExpect(delay).toHaveBeenLastCalledWith(50, mock3)
-		jestExpect(DateTime.now).toHaveBeenCalledTimes(1)
+		jestExpect(timers.delayOverride).toHaveBeenCalledTimes(3)
+		jestExpect(timers.tickOverride).toHaveBeenCalledTimes(1)
+		jestExpect(timers.delayOverride).toHaveBeenLastCalledWith(50, mock3)
+		jestExpect(timers.dateTimeOverride.now).toHaveBeenCalledTimes(1)
 	end)
 
 	describe("recursive timer", function()
@@ -620,15 +617,15 @@ return function()
 			loopFn = function()
 				if loop > 0 then
 					loop = loop - 1
-					delay(10, loopFn)
+					timers.delayOverride(10, loopFn)
 				end
 			end
 
-			delay(0, loopFn)
-			jestExpect(delay).toHaveBeenCalledTimes(1)
+			timers.delayOverride(0, loopFn)
+			jestExpect(timers.delayOverride).toHaveBeenCalledTimes(1)
 
 			timers:runAllTimers()
-			jestExpect(delay).toHaveBeenCalledTimes(6)
+			jestExpect(timers.delayOverride).toHaveBeenCalledTimes(6)
 		end)
 
 		it("runOnlyPendingTimers", function()
@@ -636,30 +633,30 @@ return function()
 
 			local loopFn = function() end
 			loopFn = function()
-				delay(10, loopFn)
+				timers.delayOverride(10, loopFn)
 			end
 
 			local mockFn = jest.fn()
 
-			delay(0, loopFn)
-			delay(0, mockFn)
-			delay(100, mockFn)
-			jestExpect(delay).toHaveBeenCalledTimes(3)
+			timers.delayOverride(0, loopFn)
+			timers.delayOverride(0, mockFn)
+			timers.delayOverride(100, mockFn)
+			jestExpect(timers.delayOverride).toHaveBeenCalledTimes(3)
 			jestExpect(timers:getTimerCount()).toBe(3)
 			jestExpect(mockFn).toHaveBeenCalledTimes(0)
-			jestExpect(os.clock()).toBe(0)
+			jestExpect(timers.osOverride.clock()).toBe(0)
 
 			timers:runOnlyPendingTimers()
-			jestExpect(delay).toHaveBeenCalledTimes(4)
+			jestExpect(timers.delayOverride).toHaveBeenCalledTimes(4)
 			jestExpect(timers:getTimerCount()).toBe(1)
 			jestExpect(mockFn).toHaveBeenCalledTimes(2)
-			jestExpect(os.clock()).toBe(100)
+			jestExpect(timers.osOverride.clock()).toBe(100)
 
 			timers:runOnlyPendingTimers()
-			jestExpect(delay).toHaveBeenCalledTimes(5)
+			jestExpect(timers.delayOverride).toHaveBeenCalledTimes(5)
 			jestExpect(timers:getTimerCount()).toBe(1)
 			jestExpect(mockFn).toHaveBeenCalledTimes(2)
-			jestExpect(os.clock()).toBe(100)
+			jestExpect(timers.osOverride.clock()).toBe(100)
 		end)
 
 		it("advanceTimersByTime", function()
@@ -668,15 +665,15 @@ return function()
 			local runOrder = {}
 			local loopFn = function() end
 			loopFn = function()
-				table.insert(runOrder, os.clock())
-				delay(10, loopFn)
+				table.insert(runOrder, timers.osOverride.clock())
+				timers.delayOverride(10, loopFn)
 			end
 
-			delay(0, loopFn)
-			delay(51, function()
-				table.insert(runOrder, os.clock())
+			timers.delayOverride(0, loopFn)
+			timers.delayOverride(51, function()
+				table.insert(runOrder, timers.osOverride.clock())
 			end)
-			jestExpect(delay).toHaveBeenCalledTimes(2)
+			jestExpect(timers.delayOverride).toHaveBeenCalledTimes(2)
 
 			timers:advanceTimersByTime(1)
 			jestExpect(runOrder).toEqual({ 0 })
@@ -687,11 +684,11 @@ return function()
 
 			timers:advanceTimersByTime(20)
 			jestExpect(runOrder).toEqual({ 0, 10, 20, 30 })
-			jestExpect(os.clock()).toBe(31)
+			jestExpect(timers.osOverride.clock()).toBe(31)
 
 			timers:advanceTimersByTime(24)
 			jestExpect(runOrder).toEqual({ 0, 10, 20, 30, 40, 50, 51 })
-			jestExpect(os.clock()).toBe(55)
+			jestExpect(timers.osOverride.clock()).toBe(55)
 		end)
 
 		it("advanceTimersToNextTimer", function()
@@ -700,13 +697,13 @@ return function()
 			local runOrder = {}
 			local loopFn = function() end
 			loopFn = function()
-				table.insert(runOrder, os.clock())
-				delay(10, loopFn)
+				table.insert(runOrder, timers.osOverride.clock())
+				timers.delayOverride(10, loopFn)
 			end
 
-			delay(0, loopFn)
-			delay(0, function()
-				table.insert(runOrder, os.clock())
+			timers.delayOverride(0, loopFn)
+			timers.delayOverride(0, function()
+				table.insert(runOrder, timers.osOverride.clock())
 			end)
 
 			timers:advanceTimersToNextTimer()
@@ -722,65 +719,65 @@ return function()
 			timers:useFakeTimers()
 
 			local runOrder = {}
-			delay(0, function()
+			timers.delayOverride(0, function()
 				table.insert(runOrder, 0)
-				delay(10, function()
+				timers.delayOverride(10, function()
 					table.insert(runOrder, 10)
 				end)
 			end)
-			delay(100, function()
+			timers.delayOverride(100, function()
 				table.insert(runOrder, 100)
 			end)
 
 			timers:runOnlyPendingTimers()
 			jestExpect(runOrder).toEqual({ 0, 100 })
-			jestExpect(os.clock()).toBe(100)
+			jestExpect(timers.osOverride.clock()).toBe(100)
 
 			timers:runAllTimers()
 			jestExpect(runOrder).toEqual({ 0, 100, 10 })
-			jestExpect(os.clock()).toBe(100)
+			jestExpect(timers.osOverride.clock()).toBe(100)
 		end)
 
 		it("run timers in order", function()
 			timers:useFakeTimers()
 
 			local runOrder = {}
-			delay(0, function()
+			timers.delayOverride(0, function()
 				table.insert(runOrder, 0)
-				delay(10, function()
+				timers.delayOverride(10, function()
 					table.insert(runOrder, 10)
 				end)
 			end)
-			delay(100, function()
+			timers.delayOverride(100, function()
 				table.insert(runOrder, 100)
 			end)
 
 			timers:runAllTimers()
 			jestExpect(runOrder).toEqual({ 0, 10, 100 })
-			jestExpect(os.clock()).toBe(100)
+			jestExpect(timers.osOverride.clock()).toBe(100)
 		end)
 
 		it("runOnlyPendingTimers", function()
 			timers:useFakeTimers()
 
 			local runOrder = {}
-			delay(0, function()
+			timers.delayOverride(0, function()
 				table.insert(runOrder, 0)
-				delay(10, function()
+				timers.delayOverride(10, function()
 					table.insert(runOrder, 10)
 				end)
 			end)
-			delay(100, function()
+			timers.delayOverride(100, function()
 				table.insert(runOrder, 100)
 			end)
 
 			timers:runOnlyPendingTimers()
 			jestExpect(runOrder).toEqual({ 0, 100 })
-			jestExpect(os.clock()).toBe(100)
+			jestExpect(timers.osOverride.clock()).toBe(100)
 
 			timers:runOnlyPendingTimers()
 			jestExpect(runOrder).toEqual({ 0, 100, 10 })
-			jestExpect(os.clock()).toBe(100)
+			jestExpect(timers.osOverride.clock()).toBe(100)
 		end)
 	end)
 end

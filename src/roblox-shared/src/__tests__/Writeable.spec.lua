@@ -7,7 +7,7 @@ return function()
 	local Writeable = require(CurrentModule.Parent.Writeable).Writeable
 
 	local ModuleMocker = require(Packages.JestMock).ModuleMocker
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	local moduleMocker = ModuleMocker.new()
 	local mockWrite = moduleMocker:fn()

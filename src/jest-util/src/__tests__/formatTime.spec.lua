@@ -11,7 +11,7 @@ return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	local formatTime = require(script.Parent.Parent.formatTime).default
 	it("defaults to milliseconds", function()

@@ -16,7 +16,7 @@ return function()
 
 	local AsymmetricMatcher = plugins.AsymmetricMatcher
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	-- ROBLOX deviation: don't need fnNameFor
 

@@ -17,7 +17,7 @@ return function()
 	local Object = LuauPolyfill.Object
 	local Symbol = LuauPolyfill.Symbol
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	local React = require(Packages.Dev.React)
 	type ReactElement = React.ReactElement

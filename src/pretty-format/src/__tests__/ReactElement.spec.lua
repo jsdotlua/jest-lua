@@ -19,7 +19,7 @@ return function()
 	local plugins = PrettyFormat.plugins
 	local setPrettyPrint = require(script.Parent.setPrettyPrint).default
 	local ReactElement = plugins.ReactElement
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	-- ROBLOX deviation: define `ReturnType` type until Luau starts to support it
 	type ReturnType<T> = any

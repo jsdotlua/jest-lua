@@ -10,9 +10,9 @@ files = ["*", "!**/__tests__/**"]
 LuauPolyfill = { workspace = true }
 JestTypes = { path = "../jest-types" }
 JestMock = { path = '../jest-mock' }
-JestGlobals = { path = '../jest-globals' }
 Expect = { path = "../expect" }
 JestFakeTimers = { path = "../jest-fake-timers" }
 JestSnapshot = { path = "../jest-snapshot" }
 
 [dev_dependencies]
+JestGlobals = { path = '../jest-globals' }

@@ -17,7 +17,7 @@ return function()
 
 	local chalk = require(Packages.ChalkLua)
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 	local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 
 	local Number = require(Packages.LuauPolyfill).Number

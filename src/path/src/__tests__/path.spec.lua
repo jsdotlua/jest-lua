@@ -3,7 +3,7 @@ return function()
 	local Packages = CurrentModule.Parent
 
 	local path = require(CurrentModule).path
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	describe("path.normalize normalizes the given path", function()
 		local normalizeTests = {

@@ -15,13 +15,13 @@ return function()
 	local setTimeout = LuauPolyfill.setTimeout
 	local clearTimeout = LuauPolyfill.clearTimeout
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
 
-	local jest = require(Packages.Dev.Jest)
-	local timers = jest._fakeTimers
+	local jest = JestGlobals.jest
 
 	afterEach(function()
-		timers:useRealTimers()
+		jest.useRealTimers()
 	end)
 
 	-- ROBLOX TODO: the mocked delay and tick aren't in the environment of polyfilled functions
@@ -41,7 +41,7 @@ return function()
 
 		describe("runAllTimers", function()
 			it("runs all ticks, in order", function()
-				timers:useFakeTimers()
+				jest.useFakeTimers()
 
 				local runOrder = {}
 				local mock1 = jest.fn(function()
@@ -70,7 +70,7 @@ return function()
 				setTimeout(mock5, math.huge)
 				setTimeout(mock6, -math.huge)
 
-				timers:runAllTimers()
+				jest.runAllTimers()
 				jestExpect(runOrder).toEqual({
 					"mock2",
 					"mock3",

@@ -13,7 +13,7 @@ return function()
 	local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).default
 	local runTest = require(script.Parent.Parent.__mocks__.testUtils).runTest
 
-	local jestExpect = require(Packages.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	it("tests are not marked done until their parent afterAll runs", function()
 		local stdout = runTest([[

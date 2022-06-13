@@ -17,5 +17,4 @@ RobloxShared = { path = "../roblox-shared" }
 [dev_dependencies]
 React = { workspace = true }
 ReactTestRenderer = { workspace = true }
-Expect = { path = "../expect" }
-Jest = { path = "../jest" }
+JestGlobals = { path = "../jest-globals" }

@@ -16,7 +16,7 @@ JestSnapshot = { path = "../jest-snapshot" }
 RobloxShared = { path = "../roblox-shared" }
 
 [dev_dependencies]
-Jest = { path = "../jest" }
+JestGlobals = { path = "../jest-globals" }
 JestMock = { path = "../jest-mock" }
 TestUtils = { path = "../test-utils" }
 ChalkLua = { workspace = true }

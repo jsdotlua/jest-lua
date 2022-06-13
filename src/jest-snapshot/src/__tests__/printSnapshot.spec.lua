@@ -20,7 +20,7 @@ return function()
 	local chalk = (require(Packages.ChalkLua) :: any) :: Chalk
 	local format = require(Packages.PrettyFormat).default
 
-	local jestExpect = require(Packages.Dev.Expect) :: any
+	local jestExpect = require(Packages.Dev.JestGlobals).expect :: any
 
 	local printSnapshot = require(CurrentModule.printSnapshot)
 	type Chalk = printSnapshot.Chalk

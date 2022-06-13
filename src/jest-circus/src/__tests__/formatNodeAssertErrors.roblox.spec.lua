@@ -11,7 +11,7 @@ return function()
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local AssertionError = LuauPolyfill.AssertionError
 
-	local jestExpect = require(Packages.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	local formatNodeAssertErrors = require(SrcModule.formatNodeAssertErrors).default
 

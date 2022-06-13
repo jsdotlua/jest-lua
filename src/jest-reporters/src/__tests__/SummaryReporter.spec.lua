@@ -15,7 +15,7 @@ return function()
 	local Object = LuauPolyfill.Object
 	local Set = LuauPolyfill.Set
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 	local Writeable = require(Packages.RobloxShared).Writeable
 
 	local SummaryReporter

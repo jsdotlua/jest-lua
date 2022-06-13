@@ -11,5 +11,4 @@ LuauPolyfill = { workspace = true }
 JestTypes = { path = "../jest-types" }
 
 [dev_dependencies]
-Jest = { path = "../jest" }
-Expect = { path = "../expect" }
+JestGlobals = { path = "../jest-globals" }

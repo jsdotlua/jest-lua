@@ -18,7 +18,7 @@ return function()
 	local Error = LuauPolyfill.Error
 	type Array<T> = LuauPolyfill.Array<T>
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	local diff = require(CurrentModule)
 

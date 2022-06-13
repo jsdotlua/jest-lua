@@ -35,6 +35,10 @@ export type FakeTimers = {
 	setSystemTime: (self: FakeTimers, now: any) -> (),
 	getRealSystemTime: (self: FakeTimers) -> (),
 	getTimerCount: (self: FakeTimers) -> number,
+	delayOverride: typeof(delay),
+	tickOverride: typeof(tick),
+	dateTimeOverride: typeof(DateTime),
+	osOverride: typeof(os),
 }
 
 local FakeTimers = {}

@@ -3,50 +3,63 @@
 return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
+
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
+
 	local JestRuntime = require(CurrentModule)
+	-- ROBLOX TODO: using RuntimePrivate type until better approach is found
+	type JestRuntime = JestRuntime.RuntimePrivate
 	type Jest = JestRuntime.Jest
 
-	local runtime = JestRuntime.new()
+	local _runtime: JestRuntime?
 
-	local requireOverride = function(scriptInstance: ModuleScript)
-		return runtime:requireModuleOrMock(scriptInstance)
+	local function getRuntime(): JestRuntime
+		assert(_runtime)
+		return _runtime
 	end
 
-	local jestGlobals = requireOverride(Packages.JestGlobals)
-	local jestExpect = jestGlobals.expect
-	-- not sure how to work this require overrides out for typechecker
-	-- define Jest in JestGlobals package maybe and type the init table?
-	local jest = (jestGlobals.jest :: any) :: Jest
+	local requireOverride = function(scriptInstance: ModuleScript)
+		return getRuntime():requireModuleOrMock(scriptInstance)
+	end
+
+	beforeAll(function()
+		_runtime = JestRuntime.new()
+	end)
+
+	afterAll(function()
+		getRuntime():teardown()
+		_runtime = nil
+	end)
 
 	describe("JestRuntime", function()
 		it("requireModuleOrMock loads a module and caches it", function()
-			local LuauPolyfill1 = requireOverride(Packages.LuauPolyfill)
-			local LuauPolyfill2 = requireOverride(Packages.LuauPolyfill)
-			jestExpect(LuauPolyfill1).toBe(LuauPolyfill2)
+			local testFile1 = requireOverride(script.Parent.runtimeTestFile)
+			local testFile2 = requireOverride(script.Parent.runtimeTestFile)
+			jestExpect(testFile1).toBe(testFile2)
 		end)
 
 		it("isolateModules returns a new module instance", function()
-			local LuauPolyfill1 = requireOverride(Packages.LuauPolyfill)
-			local LuauPolyfill2
-			jest.isolateModules(function()
-				LuauPolyfill2 = requireOverride(Packages.LuauPolyfill)
+			local testFile1 = requireOverride(script.Parent.runtimeTestFile)
+			local testFile2
+			getRuntime():isolateModules(function()
+				testFile2 = requireOverride(script.Parent.runtimeTestFile)
 			end)
-			local LuauPolyfill3 = requireOverride(Packages.LuauPolyfill)
-			jestExpect(LuauPolyfill1).never.toBe(LuauPolyfill2)
-			jestExpect(LuauPolyfill1).toBe(LuauPolyfill3)
-			jestExpect(LuauPolyfill2).never.toBe(LuauPolyfill3)
+			local LuauPolyfill3 = requireOverride(script.Parent.runtimeTestFile)
+			jestExpect(testFile1).never.toBe(testFile2)
+			jestExpect(testFile1).toBe(LuauPolyfill3)
+			jestExpect(testFile2).never.toBe(LuauPolyfill3)
 		end)
 
 		it("separate isolateModules calls return different module instances", function()
-			local LuauPolyfill1
-			local LuauPolyfill2
-			jest.isolateModules(function()
-				LuauPolyfill1 = requireOverride(Packages.LuauPolyfill)
+			local testFile1
+			local testFile2
+			getRuntime():isolateModules(function()
+				testFile1 = requireOverride(script.Parent.runtimeTestFile)
 			end)
-			jest.isolateModules(function()
-				LuauPolyfill2 = requireOverride(Packages.LuauPolyfill)
+			getRuntime():isolateModules(function()
+				testFile2 = requireOverride(script.Parent.runtimeTestFile)
 			end)
-			jestExpect(LuauPolyfill1).never.toBe(LuauPolyfill2)
+			jestExpect(testFile1).never.toBe(testFile2)
 		end)
 	end)
 end

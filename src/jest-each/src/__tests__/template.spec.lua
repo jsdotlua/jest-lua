@@ -16,8 +16,9 @@ return function()
 
 	local NIL = require(script.Parent.Parent.nilPlaceholder)
 
-	local jest = require(Packages.Dev.Jest)
-	local jestExpect = require(Packages.Dev.Expect)
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jest = JestGlobals.jest
+	local jestExpect = JestGlobals.expect
 
 	local each = require(script.Parent.Parent).default()
 	local function noop() end

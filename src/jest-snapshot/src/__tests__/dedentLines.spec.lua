@@ -14,7 +14,7 @@ return function()
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Symbol = LuauPolyfill.Symbol
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	local PrettyFormat = require(Packages.PrettyFormat)
 	local format = PrettyFormat.format

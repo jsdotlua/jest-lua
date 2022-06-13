@@ -7,7 +7,7 @@ return function()
 
 	local chalk = require(Packages.Dev.ChalkLua)
 
-	local jestExpect = require(CurrentModule)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	local AsymmetricMatchers = require(CurrentModule.asymmetricMatchers)
 	local stringContaining = AsymmetricMatchers.stringContaining

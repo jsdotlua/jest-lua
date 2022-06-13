@@ -15,7 +15,7 @@ return function()
 	local Symbol = LuauPolyfill.Symbol
 	local isPromise = require(CurrentModule.isPromise).default
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	describe("foo", function()
 		describe("not a Promise: ", function()

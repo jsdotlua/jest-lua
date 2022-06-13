@@ -13,7 +13,7 @@ return function()
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Symbol = LuauPolyfill.Symbol
 
-	local jestExpect = require(Packages.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	local JestTypesModule = require(Packages.JestTypes)
 	type Circus_HookType = JestTypesModule.Circus_HookType

@@ -5,7 +5,7 @@ return function()
 	local SrcModule = CurrentModule.Parent
 	local Packages = SrcModule.Parent
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	local initModule = require(SrcModule)
 

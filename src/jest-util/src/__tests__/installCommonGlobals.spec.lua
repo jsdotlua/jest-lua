@@ -15,8 +15,9 @@ return function()
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Object = LuauPolyfill.Object
 
-	local jest = require(Packages.Dev.Jest)
-	local jestExpect = require(Packages.Dev.Expect)
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jest = JestGlobals.jest
+	local jestExpect = JestGlobals.expect
 
 	-- local vmModule = require(Packages.vm)
 	-- local createContext = vmModule.createContext

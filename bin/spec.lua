@@ -14,5 +14,7 @@ TestEZ.TestBootstrap:run(
 		extraEnvironment = JestGlobals.testEnv,
 	}
 )
+-- ROBLOX TODO: after converting jest-runner this should be included there
+JestGlobals.runtime:teardown()
 
 return nil

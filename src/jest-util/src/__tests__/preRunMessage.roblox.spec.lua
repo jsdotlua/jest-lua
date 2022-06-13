@@ -5,8 +5,9 @@ return function()
 	local SrcModule = CurrentModule.Parent
 	local Packages = SrcModule.Parent
 
-	local jest = require(Packages.Dev.Jest)
-	local jestExpect = require(Packages.Dev.Expect)
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jest = JestGlobals.jest
+	local jestExpect = JestGlobals.expect
 
 	local preRunMessageModule = require(SrcModule.preRunMessage)
 	local print_, remove = preRunMessageModule.print, preRunMessageModule.remove

@@ -142,7 +142,7 @@ return function()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
-		local jest = require(Packages.Dev.Jest)
+		local jest = require(Packages.Dev.JestGlobals).jest
 		it("makes sure that jest.fn() is callable", function()
 			local mock = jest.fn()
 			jestExpect(mock).never.toThrow()

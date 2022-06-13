@@ -9,7 +9,7 @@
 return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	local DIFF_DELETE = require(CurrentModule).DIFF_DELETE
 	local DIFF_EQUAL = require(CurrentModule).DIFF_EQUAL

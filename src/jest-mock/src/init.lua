@@ -101,7 +101,7 @@ type MockFunctionConfig = {
 
 export type ModuleMocker = {
 	isMockFunction: (_self: ModuleMocker, fn: any) -> boolean,
-	fn: (_self: ModuleMocker, implementation: any) -> (),
+	fn: (_self: ModuleMocker, implementation: (...any) -> ...any) -> (MockFn, (...any) -> ...any),
 	clearAllMocks: (_self: ModuleMocker) -> (),
 	resetAllMocks: (_self: ModuleMocker) -> (),
 	restoreAllMocks: (_self: ModuleMocker) -> (),
@@ -359,8 +359,9 @@ function ModuleMockerClass:isMockFunction(fn: any)
 	return typeof(fn) == "table" and fn._isMockFunction == true
 end
 
--- ROBLOX TODO: type as fn(implementation: (...) -> any): JestMock.Mock<any, any> once ... syntax is supported
-function ModuleMockerClass:fn(implementation)
+-- ROBLOX TODO: type return type as JestMock.Mock<any, any> when Mock type is implemented properly
+type MockFn = (...any) -> ...any
+function ModuleMockerClass:fn(implementation: (...any) -> ...any): (MockFn, (...any) -> ...any)
 	local length = 0
 	local fn = self:_makeComponent({ length = length, type = "function" })
 	if implementation then

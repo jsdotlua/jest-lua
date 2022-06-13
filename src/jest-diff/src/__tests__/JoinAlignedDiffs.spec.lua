@@ -12,7 +12,7 @@ return function()
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Object = LuauPolyfill.Object
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	local DIFF_DELETE = require(CurrentModule.CleanupSemantic).DIFF_DELETE
 	local DIFF_EQUAL = require(CurrentModule.CleanupSemantic).DIFF_EQUAL

@@ -16,5 +16,4 @@ JestUtil = { path = "../jest-util" }
 PrettyFormat = { path = "../pretty-format" }
 
 [dev_dependencies]
-Jest = { path = "../jest" }
-Expect = { path = "../expect" }
+JestGlobals = { path = "../jest-globals" }

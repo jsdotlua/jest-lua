@@ -12,7 +12,7 @@ return function()
 	local Packages = CurrentModule.Parent
 
 	local ModuleMocker = require(CurrentModule).ModuleMocker
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	local moduleMocker
 	beforeEach(function()

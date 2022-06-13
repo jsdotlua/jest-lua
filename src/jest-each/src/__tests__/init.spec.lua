@@ -2,7 +2,7 @@
 return function()
 	local Packages = script.Parent.Parent.Parent
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 	local ConvertAnsi = require(Packages.PrettyFormat).plugins.ConvertAnsi
 
 	beforeAll(function()

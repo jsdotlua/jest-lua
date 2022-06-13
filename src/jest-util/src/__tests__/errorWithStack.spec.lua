@@ -14,8 +14,9 @@ return function()
 	local Error = LuauPolyfill.Error
 	local ErrorWithStack = require(CurrentModule.ErrorWithStack).default
 
-	local jest = require(Packages.Dev.Jest)
-	local jestExpect = require(Packages.Dev.Expect)
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jest = JestGlobals.jest
+	local jestExpect = JestGlobals.expect
 
 	describe("ErrorWithStack", function()
 		local message = "💩 something went wrong"

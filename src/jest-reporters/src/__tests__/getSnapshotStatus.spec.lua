@@ -10,7 +10,7 @@ return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 	local getSnapshotStatus = require(CurrentModule.getSnapshotStatus).default
 
 	it("Retrieves the snapshot status", function()

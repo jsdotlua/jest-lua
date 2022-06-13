@@ -19,5 +19,4 @@ RobloxShared = { path = '../roblox-shared' }
 Path = { path = '../path' }
 
 [dev_dependencies]
-Jest = { path = "../jest" }
-Expect = { path = "../expect" }
+JestGlobals = { path = "../jest-globals" }

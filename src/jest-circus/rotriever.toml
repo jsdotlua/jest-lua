@@ -32,5 +32,5 @@ Expect = { path = "../expect" }
 RobloxShared = { path = "../roblox-shared" }
 
 [dev_dependencies]
-Jest = { path = "../jest" }
+JestGlobals = { path = "../jest-globals" }
 JestSnapshotSerializerRaw = { path = "../jest-snapshot-serializer-raw" }

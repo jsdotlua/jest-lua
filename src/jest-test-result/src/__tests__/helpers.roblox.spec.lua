@@ -4,7 +4,7 @@ return function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 	local makeEmptyAggregatedTestResult = require(CurrentModule.helpers).makeEmptyAggregatedTestResult
 	local buildFailureTestResult = require(CurrentModule.helpers).buildFailureTestResult
 	local createEmptyTestResult = require(CurrentModule.helpers).createEmptyTestResult

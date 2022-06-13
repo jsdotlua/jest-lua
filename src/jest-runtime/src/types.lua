@@ -11,7 +11,7 @@ type ModuleMocker = moduleMockerModule.ModuleMocker
 
 type unknown = any
 
-export type MockFactory = () -> unknown
+export type MockFactory = () -> ...unknown
 
 export type Jest = {
 	-- autoMockOn: () -> Jest,

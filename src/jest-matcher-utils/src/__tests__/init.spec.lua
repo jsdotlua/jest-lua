@@ -21,7 +21,7 @@ return function()
 
 	local prettyFormat = require(Packages.PrettyFormat).format
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 	local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 
 	local JestMatcherUtils = require(CurrentModule)

@@ -16,5 +16,4 @@ ChalkLua = { workspace = true }
 LuauPolyfill = { workspace = true }
 
 [dev_dependencies]
-Jest = { path = "../jest" }
-Expect = { path = "../expect" }
+JestGlobals = { path = "../jest-globals" }

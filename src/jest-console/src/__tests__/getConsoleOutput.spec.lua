@@ -9,7 +9,7 @@ return function()
 	local CurrentModule = script.Parent
 	local Packages = CurrentModule.Parent.Parent
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 	local jestTypesModule = require(Packages.JestTypes)
 	type GlobalConfig = jestTypesModule.Config_GlobalConfig
 
@@ -77,7 +77,7 @@ return function()
 	-- local getConsoleOutput = require(CurrentModule.Parent.getConsoleOutput)
 
 	-- local ModuleMocker = require(Packages.JestMock).ModuleMocker
-	-- local jestExpect = require(Packages.Dev.Expect)
+	-- local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	-- local typesModule = require(CurrentModule.Parent.types)
 	-- type LogType = typesModule.LogType

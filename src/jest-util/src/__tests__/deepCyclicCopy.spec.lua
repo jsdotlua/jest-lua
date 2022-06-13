@@ -17,8 +17,9 @@ return function()
 	local Set = LuauPolyfill.Set
 	local Symbol = LuauPolyfill.Symbol
 
-	local jest = require(Packages.Dev.Jest)
-	local jestExpect = require(Packages.Dev.Expect)
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jest = JestGlobals.jest
+	local jestExpect = JestGlobals.expect
 
 	local deepCyclicCopy = require(script.Parent.Parent.deepCyclicCopy).default
 	it("returns the same value for primitive or function values", function()

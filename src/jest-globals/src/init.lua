@@ -6,23 +6,37 @@ local Packages = script.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Object = LuauPolyfill.Object
 
-local expect = require(Packages.Expect)
-
-local jest = require(Packages.Jest)
-local jestSnapshot = require(Packages.JestSnapshot)
+local Jest = require(Packages.Jest)
+local testEnv = Jest.testEnv
+local runtime = Jest.runtime
 
 local TestEZ = require(Packages.TestEZ)
 local TestEZJestAdapter = require(Packages.TestEZJestAdapter)
 
-return {
-	expect = expect,
-	jest = jest,
-	testEnv = jest.testEnv,
-	jestSnapshot = {
-		toMatchSnapshot = jestSnapshot.toMatchSnapshot,
-		toThrowErrorMatchingSnapshot = jestSnapshot.toThrowErrorMatchingSnapshot,
+type Jest = any
+local importedExpect = require(Packages.Expect)
+
+type JestGlobals = {
+	jest: Jest,
+	expect: typeof(importedExpect),
+
+	jestSnapshot: {
+		toMatchSnapshot: (...any) -> any,
+		toThrowErrorMatchingSnapshot: (...any) -> any,
 	},
-	TestEZ = Object.assign({}, TestEZ, {
-		Reporters = Object.assign({}, TestEZ.Reporters, TestEZJestAdapter.Reporters),
-	}),
+	testEnv: typeof(testEnv),
+	runtime: typeof(runtime),
+	TestEZ: typeof(TestEZ) & {
+		reporters: typeof(TestEZ.Reporters) & typeof(TestEZJestAdapter.Reporters),
+	},
 }
+
+return (
+		{
+			testEnv = testEnv,
+			runtime = runtime,
+			TestEZ = Object.assign({}, TestEZ, {
+				Reporters = Object.assign({}, TestEZ.Reporters, TestEZJestAdapter.Reporters),
+			}),
+		} :: any
+	) :: JestGlobals

@@ -11,7 +11,7 @@ return function()
 	local SrcModule = CurrentModule.Parent
 	local Packages = SrcModule.Parent
 
-	local jestExpect = require(Packages.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	local typesModule = require(Packages.JestTypes)
 

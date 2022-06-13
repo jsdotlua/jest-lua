@@ -12,7 +12,7 @@ return function()
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Array = LuauPolyfill.Array
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	local chalk = require(Packages.ChalkLua)
 	local BufferedConsoleModule = require(CurrentModule.Parent.BufferedConsole)

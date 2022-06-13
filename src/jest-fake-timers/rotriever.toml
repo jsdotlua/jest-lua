@@ -12,5 +12,4 @@ JestGetType = { path = "../jest-get-type" }
 JestMock = { path = "../jest-mock" }
 
 [dev_dependencies]
-Expect = { path = "../expect" }
-Jest = { path = "../jest" }
+JestGlobals = { path = "../jest-globals" }

@@ -11,16 +11,6 @@ type unknown = any
 
 local Packages = script.Parent
 
-local typesModule = require(script.types)
-export type Jest = typesModule.Jest
-type MockFactory = typesModule.MockFactory
-
-local jestSnapshot = require(Packages.JestSnapshot)
-local jestExpect = require(Packages.Expect)
-type Expect = jestExpect.Expect
-local JestFakeTimers = require(Packages.JestFakeTimers)
-type FakeTimers = JestFakeTimers.FakeTimers
-
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Map = LuauPolyfill.Map
 local Object = LuauPolyfill.Object
@@ -28,14 +18,46 @@ local setTimeout = LuauPolyfill.setTimeout
 type Map<T, U> = LuauPolyfill.Map<T, U>
 type Array<T> = LuauPolyfill.Array<T>
 
-local moduleMockerModule = require(Packages.JestMock)
-local ModuleMocker = moduleMockerModule.ModuleMocker
-type ModuleMocker = moduleMockerModule.ModuleMocker
+--[[
+	ROBLOX deviation: skipped lines 8-45
+	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L8-L45
+]]
 
 local jestTypesModule = require(Packages.JestTypes)
 type Config_Path = jestTypesModule.Config_Path
--- ROBLOX TODO: not implemented yet
--- type Global_TestFrameworkGlobals = jestTypesModule.Global_TestFrameworkGlobals
+-- ROBLOX deviation: Global_TestFrameworkGlobals not implemented yet
+type Global_TestFrameworkGlobals = {}
+
+--[[
+	ROBLOX deviation: skipped lines 47-49
+	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L47-L49
+]]
+
+local moduleMockerModule = require(Packages.JestMock)
+-- ROBLOX deviation: not implemented yet
+-- type MockFunctionMetadata = moduleMockerModule.MockFunctionMetadata
+type ModuleMocker = moduleMockerModule.ModuleMocker
+-- ROBLOX deviation (addition): importing ModuleMocker class instead of injecting it via runTests
+local ModuleMocker = moduleMockerModule.ModuleMocker
+
+--[[
+	ROBLOX deviation: skipped lines 51-64
+	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L51-L64
+]]
+
+-- ROBLOX deviation: adding mocked ResolveModuleConfig type until implemented
+type ResolveModuleConfig = any
+
+-- ROBLOX deviation START: additional dependencies
+local typesModule = require(script.types)
+export type Jest = typesModule.Jest
+type MockFactory = typesModule.MockFactory
+
+local jestExpectModule = require(Packages.Expect)
+type Expect = jestExpectModule.Expect
+local JestFakeTimers = require(Packages.JestFakeTimers)
+type FakeTimers = JestFakeTimers.FakeTimers
+-- ROBLOX deviation END
 
 type JestGlobals = {
 	expect: any,
@@ -49,239 +71,212 @@ type JestGlobalsWithJest = JestGlobals & {
 	jest: Jest,
 }
 
+--[[
+	ROBLOX deviation: skipped lines 74-175
+	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L74-L175
+]]
+
 export type Runtime = {
-	jestGlobals: JestGlobals?,
 	-- ROBLOX TODO: not implemented yet
 	-- setGlobalsForRuntime: (self: Runtime, globals: JestGlobals) -> (),
-	getGlobalsFromEnvironment: (self: Runtime) -> JestGlobals,
+	getGlobalsFromEnvironment: (self: RuntimePrivate) -> JestGlobals,
+	teardown: (self: RuntimePrivate) -> (),
+	requireModuleOrMock: (self: RuntimePrivate, scriptInstance: ModuleScript) -> any,
 	-- ROBLOX TODO: not implemented yet
-	-- teardown: (self: Runtime) -> (),
-	requireModuleOrMock: (self: Runtime, scriptInstance: ModuleScript) -> any,
-	-- ROBLOX TODO: not implemented yet
-	-- requireMock: (self: Runtime, from: Config_Path, scriptInstance: ModuleScript) -> any,
+	-- requireMock: (self: RuntimePrivate, from: Config_Path, scriptInstance: ModuleScript) -> any,
 	requireModule: (
-		self: Runtime,
+		self: RuntimePrivate,
 		from: string,
 		scriptInstance: ModuleScript,
 		options: any?,
-		isRequireActual: boolean
+		isRequireActual: boolean?
 	) -> any,
-	isolateModules: (self: Runtime, fn: MockFactory) -> (),
-	clearAllMocks: (self: Runtime) -> (),
-	resetAllMocks: (self: Runtime) -> (),
-	restoreAllMocks: (self: Runtime) -> (),
+	isolateModules: (self: RuntimePrivate, fn: MockFactory) -> (),
+	resetModules: (self: RuntimePrivate) -> (),
+	clearAllMocks: (self: RuntimePrivate) -> (),
+	resetAllMocks: (self: RuntimePrivate) -> (),
+	restoreAllMocks: (self: RuntimePrivate) -> (),
 	-- ROBLOX TODO START: not implemented yet
 	-- setMock: (
-	-- 	self: Runtime,
+	-- 	self: RuntimePrivate,
 	-- 	from: string,
 	-- 	scriptInstance: ModuleScript,
 	-- 	mockFactory: MockFactory,
 	-- 	options: ({ virtual: boolean? })?
 	-- ) -> any,
-	-- _generateMock: (self: Runtime, from: Config_Path, scriptInstance: ModuleScript) -> unknown,
+	-- _generateMock: (self: RuntimePrivate, from: Config_Path, scriptInstance: ModuleScript) -> unknown,
 	-- ROBLOX TODO END
-	_createJestObjectFor: (self: Runtime, from: Config_Path) -> Jest,
+	_createJestObjectFor: (self: RuntimePrivate, from: Config_Path) -> Jest,
 }
 
-type RuntimePrivate = Runtime & {
-	_moduleMocker: ModuleMocker,
-	_fakeTimersImplementation: FakeTimers,
+export type RuntimePrivate = Runtime & {
+	--[[
+		ROBLOX deviation: skipped lines 178-181
+		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L178-L181
+	]]
+
+	--[[
+		ROBLOX deviation START: There's no actual Jest Environment so we are just
+		mocking some values in here for now.
+	]]
 	_environment: {
-		fakeTimersModern: boolean,
+		fakeTimersModern: FakeTimers,
 	},
+	-- ROBLOX deviation END
+	_explicitShouldMock: Map<ModuleScript, boolean>,
+	-- ROBLOX TODO START: not implemented yet
+	-- _explicitShouldMockModule: Map<string, boolean>,
+	-- ROBLOX TODO END
+	-- ROBLOX deviation: no Legacy/Modern timers
+	_fakeTimersImplementation: FakeTimers,
+
+	--[[
+		ROBLOX deviation: skipped lines 189-197
+		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L189-L197
+	]]
+
+	_isolatedMockRegistry: Map<ModuleScript, any>?,
+	-- ROBLOX TODO START: not implemented yet
+	-- _moduleMockRegistry: Map<string, VMModule>,
+	-- _moduleMockFactories: Map<string, () -> unknown>,
+	-- ROBLOX TODO END
+	_moduleMocker: ModuleMocker,
+	_isolatedModuleRegistry: Map<ModuleScript, any>?,
+	_moduleRegistry: Map<ModuleScript, any>,
+
+	--[[
+		ROBLOX deviation: skipped lines 204-226
+		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L204-L226
+	]]
+
+	jestGlobals: JestGlobals?,
+
+	--[[
+		ROBLOX deviation: skipped lines 228-229
+		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L228-L229
+	]]
+	isTornDown: boolean,
+
+	-- ROBLOX deviation START: additional types
 	_jestObject: Jest,
 	_cleanupFns: Array<() -> ()>,
-	-- ROBLOX TODO START: not implemented yet
-	-- _explicitShouldMock: Map<ModuleScript, boolean>,
-	-- _mockMetaDataCache: Map<string, unknown>,
-	-- _mockFactories: Map<ModuleScript, any>,
-	-- ROBLOX TODO END
-	_moduleRegistry: Map<ModuleScript, any>,
-	-- ROBLOX TODO: not implemented yet
-	-- _mockRegistry: Map<ModuleScript, any>,
-	_isolatedModuleRegistry: Map<ModuleScript, any>?,
-	_isolatedMockRegistry: Map<ModuleScript, any>?,
-	-- ROBLOX TODO: not implemented yet
-	-- _shouldAutoMock: boolean,
 	_shouldMock: (
+		self: RuntimePrivate,
 		from: string,
 		scriptInstance: ModuleScript,
 		explicitShouldMock: Map<ModuleScript, boolean>,
-		options: any --[[ ResolveModuleConfig ]]
+		options: ResolveModuleConfig
 	) -> boolean,
+	-- ROBLOX deviation END
 }
 
-local Runtime = {}
+type RuntimeStatic = RuntimePrivate & {
+	new: () -> RuntimePrivate,
+	__index: RuntimeStatic,
+}
+
+local Runtime = {} :: RuntimeStatic
 Runtime.__index = Runtime
+--[[
+	ROBLOX deviation: skipped lines 326-418
+	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L326-L418
+	static methods not implemented yet
+]]
 
-function Runtime.new(): Runtime
-	local self = setmetatable(({} :: any) :: RuntimePrivate, Runtime)
+-- ROBLOX deviation: no arguments for constructor
+function Runtime.new(): RuntimePrivate
+	local self = (setmetatable({}, Runtime) :: any) :: RuntimePrivate
 
-	self.jestGlobals = nil
-	self._fakeTimersImplementation = JestFakeTimers.new()
+	self.isTornDown = false
 
-	-- ROBLOX DEVIATION start: There's no actual Jest Environment so we are just
-	-- mocking some values in here for now.
+	--[[
+		ROBLOX deviation: skipped lines 241-244
+		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L241-L244
+	]]
+
+	--[[
+		ROBLOX deviation START: There's no actual Jest Environment so we are just
+		mocking some values in here for now.
+	]]
 	self._environment = {
-		fakeTimersModern = true,
+		fakeTimersModern = JestFakeTimers.new(),
 	}
-	-- ROBLOX DEVIATION end
+	-- ROBLOX deviation END
+	self._explicitShouldMock = Map.new()
 
-	-- ROBLOX DEVIATION start: instantiate the module mocker here
+	--[[
+		ROBLOX deviation: skipped lines 247-258
+		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L247-L258
+	]]
+	-- ROBLOX deviation START: instantiate the module mocker here
 	-- instead of being passed in as an arg from runTest
 	self._moduleMocker = ModuleMocker.new()
-	-- ROBLOX DEVIATION end
-
-	-- ROBLOX DEVIATION start: normally a jest object gets created for each
-	-- test file and inserted into a cache, an instance gets injected into each
-	-- test module. Currently this implementation is global across all tests.
-	self._jestObject = self:_createJestObjectFor("global")
-	-- ROBLOX DEVIATION end
-
-	-- ROBLOX DEVIATION start: added to hold references to all the clean up
-	-- functions from loaded modules. Will be used in Runtime.teardown
-	self._cleanupFns = {}
-	-- ROBLOX DEVIATION end
-
-	-- ROBLOX TODO START: not implemented yet
-	-- self._explicitShouldMock = Map.new()
-	-- self._mockMetaDataCache = Map.new()
-	-- self._mockFactories = Map.new()
-	-- self._mockRegistry = Map.new()
-	-- ROBLOX TODO END
-	self._moduleRegistry = Map.new()
+	-- ROBLOX deviation END
 	self._isolatedModuleRegistry = nil
-	-- ROBLOX TODO START: not implemented yet
-	-- self._isolatedMockRegistry = nil
-	-- self._shouldAutoMock = true
-	-- ROBLOX TODO END
+	self._isolatedMockRegistry = nil
+	self._moduleRegistry = Map.new()
 
-	return (self :: any) :: Runtime
+	--[[
+		ROBLOX deviation: skipped lines 263-280
+		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L263-L280
+	]]
+
+	-- ROBLOX deviation: no Legacy/Modern timers
+	self._fakeTimersImplementation = self._environment.fakeTimersModern
+
+	--[[
+		ROBLOX deviation: skipped lines 287-323
+		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L287-L323
+	]]
+
+	--[[
+		ROBLOX deviation START: normally a jest object gets created for each
+		test file and inserted into a cache, an instance gets injected into each
+		test module. Currently this implementation is global across all tests.
+	]]
+	self._jestObject = self:_createJestObjectFor("global")
+	-- ROBLOX deviation END
+
+	--[[
+		ROBLOX deviation START: added to hold references to all the clean up
+		functions from loaded modules. Is used in Runtime.teardown
+	]]
+	self._cleanupFns = {}
+	-- ROBLOX deviation END
+
+	return self
 end
 
--- ROBLOX NOTE: Need to figure out where to plug in teardown
--- ROBLOX TODO START: not implemented yet
--- function Runtime:teardown(): ()
--- 	self.restoreAllMocks()
--- 	self.resetAllMocks()
--- 	self.resetModules()
+--[[
+	ROBLOX deviation: skipped lines 420-744
+	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L420-L744
+]]
 
--- 	-- ROBLOX DEVIATION start: call all the cleanup functions returned from loadmodule
--- 	for _, fn in ipairs(self.cleanupFns) do
--- 		fn()
--- 	end
--- 	-- ROBLOX DEVIATION end
-
--- 	self._explicitShouldMock:clear()
--- 	self._mockMetaDataCache:clear()
--- 	self._mockFactories:clear()
--- 	self._mockRegistry:clear()
--- 	self._moduleRegistry:clear()
--- 	self._isolatedModuleRegistry = nil
--- 	self._isolatedMockRegistry = nil
--- end
-
--- ROBLOX NOTE: Used in jestAdapter + jestAdapterInit in real jest
--- function Runtime:setGlobalsForRuntime(globals: JestGlobals): ()
--- 	self.jestGlobals = globals
--- end
--- ROBLOX TODO END
-
-function Runtime:getGlobalsFromEnvironment(): JestGlobals
-	if self.jestGlobals then
-		return table.clone(self.jestGlobals)
-	end
-
-	return {
-		expect = jestExpect,
-		jestSnapshot = {
-			toMatchSnapshot = jestSnapshot.toMatchSnapshot,
-			toThrowErrorMatchingSnapshot = jestSnapshot.toThrowErrorMatchingSnapshot,
-		},
-	}
-end
-
-function Runtime:requireModuleOrMock(scriptInstance: ModuleScript)
-	local from = ""
-
-	if scriptInstance == script or scriptInstance == script.Parent then
-		-- ROBLOX NOTE: Need to cast require because analyze cannot figure out
-		-- scriptInstance path
-		return (require :: any)(scriptInstance)
-	end
-
-	if scriptInstance.Name == "JestGlobals" then
-		-- ROBLOX DEVIATION start: We don't have to worry about two different
-		-- module systems so I'm leaving out getGlobalsForCjs + getGlobalsForEsm
-		local globals = self:getGlobalsFromEnvironment()
-		return Object.assign(globals, {
-			jest = self._jestObject,
-		}) :: JestGlobalsWithJest
-		-- ROBLOX DEVIATION end
-	end
-
-	--[[ ROBLOX COMMENT: try-catch block conversion ]]
-	local ok, result = xpcall(function()
-		if self:_shouldMock(from, scriptInstance, self._explicitShouldMock, {
-			conditions = nil,
-		}) then
-			error("mocking is not implemented in JestRuntime yet")
-			-- return self:requireMock(from, scriptInstance)
-		else
-			return self:requireModule(from, scriptInstance)
-		end
-	end, function(e: unknown)
-		error(e)
-	end)
-	if ok and result ~= nil then
-		return result
-	end
-
-	-- for typechecker
-	return {}
-end
-
--- ROBLOX TODO START: not implemented yet
--- function Runtime:requireMock(from: Config_Path, scriptInstance: ModuleScript): any
--- 	from = ""
-
--- 	if self._isolatedMockRegistry ~= nil and self._isolateMockRegistry:has(scriptInstance) then
--- 		return self._isolatedMockRegistry:get(scriptInstance)
--- 	elseif self._mockRegistry:has(scriptInstance) then
--- 		return self._mockRegistry:get(scriptInstance)
--- 	end
-
--- 	local mockRegistry = (self._isolateMockRegistry or self._mockRegistry) :: Map<ModuleScript, any>
-
--- 	if self._mockFactories:has(scriptInstance) then
--- 		local module = self._mockFactories:get(scriptInstance)
--- 		mockRegistry:set(scriptInstance, module)
--- 		return module
--- 	end
-
--- 	-- ROBLOX DEVIATION start: mock modules / files are not currently supported
--- 	-- bunch of commented out code here
--- 	-- ROBLOX DEVIATION end
-
--- 	mockRegistry:set(scriptInstance, self:_generateMock(from, scriptInstance))
--- 	return mockRegistry:get(scriptInstance)
--- end
--- ROBLOX TODO END
-
-function Runtime:requireModule(from: string, scriptInstance: ModuleScript, options: any?, isRequireActual: boolean): any
+function Runtime:requireModule(
+	from: string,
+	scriptInstance: ModuleScript,
+	options: any?,
+	isRequireActual: boolean?
+): any
+	--[[
+		ROBLOX deviation: skipped lines 752-802
+		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L752-L802
+	]]
 	local moduleRegistry
 
+	-- ROBLOX deviation: skipped isInternal check
 	if self._isolatedModuleRegistry ~= nil then
 		moduleRegistry = self._isolatedModuleRegistry
 	else
 		moduleRegistry = self._moduleRegistry
 	end
 
-	if moduleRegistry:has(scriptInstance) then
-		return moduleRegistry:get(scriptInstance)
+	local module = moduleRegistry:get(scriptInstance)
+	if module then
+		return module
 	end
 
-	-- ROBLOX DEVIATION start: Roblox require override functionality here
+	-- ROBLOX deviation START: Roblox require override functionality here
 	local moduleResult
 
 	-- Narrowing this type here lets us appease the type checker while still
@@ -311,13 +306,60 @@ function Runtime:requireModule(from: string, scriptInstance: ModuleScript, optio
 			)
 		)
 	end
-	-- ROBLOX DEVIATION end
+	-- ROBLOX deviation END
 
 	moduleRegistry:set(scriptInstance, moduleResult)
 	return moduleResult
 end
 
-function Runtime.isolateModules(self: RuntimePrivate, fn: () -> ()): ()
+--[[
+	ROBLOX deviation: skipped lines 849-997
+	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L849-L997
+]]
+
+function Runtime:requireModuleOrMock(scriptInstance: ModuleScript)
+	local from = ""
+
+	if scriptInstance == script or scriptInstance == script.Parent then
+		-- ROBLOX NOTE: Need to cast require because analyze cannot figure out scriptInstance path
+		return (require :: any)(scriptInstance)
+	end
+
+	-- ROBLOX deviation START: we need to make sure LuauPolyfill is only loaded once
+	if scriptInstance.Name == "LuauPolyfill" then
+		return (require :: any)(scriptInstance)
+	end
+	-- ROBLOX deviation END
+
+	if scriptInstance.Name == "JestGlobals" then
+		--[[
+			ROBLOX deviation START: We don't have to worry about two different
+			module systems so I'm leaving out getGlobalsForCjs + getGlobalsForEsm
+		]]
+		local globals = self:getGlobalsFromEnvironment()
+		return Object.assign({}, globals, {
+			jest = self._jestObject,
+		}) :: JestGlobalsWithJest
+		-- ROBLOX deviation END
+	end
+
+	local ok, result = pcall(function()
+		if self:_shouldMock(from, scriptInstance, self._explicitShouldMock, {
+			conditions = nil,
+		}) then
+			error("mocking is not implemented in JestRuntime yet")
+			-- return self:requireMock(from, scriptInstance)
+		else
+			return self:requireModule(from, scriptInstance)
+		end
+	end)
+	if not ok then
+		error(result)
+	end
+	return result
+end
+
+function Runtime:isolateModules(fn: () -> ()): ()
 	if self._isolatedModuleRegistry ~= nil or self._isolatedMockRegistry ~= nil then
 		error("isolateModules cannot be nested inside another isolateModules.")
 	end
@@ -346,68 +388,121 @@ function Runtime.isolateModules(self: RuntimePrivate, fn: () -> ()): ()
 	end
 end
 
-function Runtime:clearAllMocks(): ()
-	self._moduleMocker.clearAllMocks()
+function Runtime:resetModules(): ()
+	if self._isolatedModuleRegistry then
+		self._isolatedModuleRegistry:clear()
+	end
+	if self._isolatedMockRegistry then
+		self._isolatedMockRegistry:clear()
+	end
+	self._isolatedModuleRegistry = nil
+	self._isolatedMockRegistry = nil
+	-- ROBLOX TODO: not implemented yet
+	-- self._mockRegistry:clear();
+	self._moduleRegistry:clear()
+	--[[
+		ROBLOX deviation: skipped lines 1068-1089
+		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L1068-L1089
+	]]
+end
+
+--[[
+	ROBLOX deviation: skipped lines 1092-1179
+	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L1092-L1179
+]]
+
+function Runtime:restoreAllMocks(): ()
+	self._moduleMocker:restoreAllMocks()
 end
 
 function Runtime:resetAllMocks(): ()
-	self._moduleMocker.resetAllMocks()
+	self._moduleMocker:resetAllMocks()
 end
 
-function Runtime:restoreAllMocks(): ()
-	self._moduleMocker.restoreAllMocks()
+function Runtime:clearAllMocks(): ()
+	self._moduleMocker:clearAllMocks()
 end
 
--- ROBLOX TODO START: not implemented yet
--- function Runtime:setMock(
--- 	from: string,
--- 	scriptInstance: ModuleScript,
--- 	mockFactory: () -> unknown,
--- 	options: ({ virtual: boolean? })?
--- ): ()
--- 	-- ROBLOX DEVIATION start: not sure what a virtual mock is at this point so leaving it out
--- 	-- if options ~= nil and options.virtual = true then
--- 	-- 	self._virtualMocks.set(moduleName, true)
--- 	-- end
--- 	-- ROBLOX DEVIATION end
--- 	self._explicitShouldMock:set(scriptInstance, true)
--- 	self._mockFactories:set(scriptInstance, mockFactory)
--- end
--- ROBLOX TODO END
+function Runtime:teardown(): ()
+	self:restoreAllMocks()
+	self:resetAllMocks()
+	self:resetModules()
+
+	-- ROBLOX TODO START: not implemented yet
+	-- self._internalModuleRegistry:clear();
+	-- self._mainModule = nil;
+	-- self._mockFactories:clear();
+	-- self._moduleMockFactories:clear();
+	-- self._mockMetaDataCache:clear();
+	-- self._shouldMockModuleCache:clear();
+	-- self._shouldUnmockTransitiveDependenciesCache:clear();
+	-- ROBLOX TODO END
+	self._explicitShouldMock:clear()
+	-- ROBLOX TODO START: not implemented yet
+	-- self._explicitShouldMockModule:clear();
+	-- self._transitiveShouldMock:clear();
+	-- self._virtualMocks:clear();
+	-- self._virtualModuleMocks:clear();
+	-- self._cacheFS:clear();
+	-- self._unmockList = nil;
+
+	-- self._sourceMapRegistry:clear();
+
+	-- self._fileTransforms:clear();
+	-- self._fileTransformsMutex:clear();
+	-- self.jestObjectCaches:clear();
+
+	-- self._v8CoverageResult = {};
+	-- self._v8CoverageInstrumenter = nil;
+	-- self._moduleImplementation = nil;
+	-- ROBLOX TODO END
+
+	-- ROBLOX deviation START: additional cleanup logic for modules loaded with debug.loadmodule
+	for _, cleanup in ipairs(self._cleanupFns) do
+		cleanup()
+	end
+	-- ROBLOX deviation END
+
+	self.isTornDown = true
+end
+
+--[[
+	ROBLOX deviation: skipped lines 1226-1684
+	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L1226-L1684
+]]
 
 function Runtime:_shouldMock(
 	from: string,
 	scriptInstance: ModuleScript,
 	explicitShouldMock: Map<ModuleScript, boolean>,
-	options: any --[[ ResolveModuleConfig ]]
+	options: ResolveModuleConfig
 ): boolean
-	-- if explicitShouldMock:has(scriptInstance) then
-	-- 	return explicitShouldMock:get(scriptInstance) :: boolean
-	-- end
-	-- ROBLOX DEVIATION: bunch of code would be here if I hadn't ripped it out
+	--[[
+		ROBLOX deviation: skipped lines 1692-1754
+		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L1692-L1754
+	]]
+	-- ROBLOX deviation: returning false for now
 	return false
 end
 
--- ROBLOX TODO START: not implemented yet
--- function Runtime:_generateMock(from: Config_Path, scriptInstance: ModuleScript): any
--- 	-- get module from cache or require
--- 	return {}
--- end
--- ROBLOX TODO END
+--[[
+	ROBLOX deviation: skipped lines 1757-1813
+	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L1757-L1813
+]]
 
 function Runtime:_createJestObjectFor(from: Config_Path): Jest
 	from = from or ""
-	local jestObject = {}
+	local jestObject = {} :: Jest
 
 	-- ROBLOX TODO START: not implemented yet
 	-- local function disableAutomock(): Jest
 	-- 	self._shouldAutoMock = false
-	-- 	return jestObject :: Jest
+	-- 	return jestObject
 	-- end
 
 	-- local function enableAutomock(): Jest
 	-- 	self._shouldAutoMock = true
-	-- 	return jestObject :: Jest
+	-- 	return jestObject
 	-- end
 
 	-- local function setMockFactory(
@@ -416,7 +511,7 @@ function Runtime:_createJestObjectFor(from: Config_Path): Jest
 	-- 	options: { virtual: boolean? }?
 	-- ): Jest
 	-- 	self:setMock(from, scriptInstance, mockFactory, options)
-	-- 	return jestObject :: Jest
+	-- 	return jestObject
 	-- end
 
 	-- local function mock(scriptInstance: ModuleScript, mockFactory: MockFactory, options: any): Jest
@@ -430,7 +525,7 @@ function Runtime:_createJestObjectFor(from: Config_Path): Jest
 	-- 	-- 	{ conditions = self.cjsConditions }
 	-- 	-- )
 	-- 	self._explicitShouldMock:set(scriptInstance, true)
-	-- 	return jestObject :: Jest
+	-- 	return jestObject
 	-- end
 
 	-- local mockModule: any --[[ ROBLOX TODO: Unhandled node for type: TSIndexedAccessType ]] --[[ Jest['unstable_mockModule'] ]]
@@ -445,17 +540,17 @@ function Runtime:_createJestObjectFor(from: Config_Path): Jest
 
 	local function clearAllMocks(): Jest
 		self:clearAllMocks()
-		return jestObject :: Jest
+		return jestObject
 	end
 
 	local function resetAllMocks(): Jest
 		self:resetAllMocks()
-		return jestObject :: Jest
+		return jestObject
 	end
 
 	local function restoreAllMocks(): Jest
 		self:restoreAllMocks()
-		return jestObject :: Jest
+		return jestObject
 	end
 
 	local function _getFakeTimers(): FakeTimers
@@ -464,31 +559,37 @@ function Runtime:_createJestObjectFor(from: Config_Path): Jest
 
 	local function useFakeTimers(): Jest
 		self._fakeTimersImplementation:useFakeTimers()
-		return jestObject :: Jest
+		return jestObject
 	end
 
 	local function useRealTimers(): Jest
 		_getFakeTimers():useRealTimers()
-		return jestObject :: Jest
+		return jestObject
 	end
 
 	local function resetModules(): Jest
 		self:resetModules()
-		return jestObject :: Jest
+		return jestObject
 	end
 
 	local function isolateModules(fn: () -> ()): Jest
 		self:isolateModules(fn)
-		return jestObject :: Jest
+		return jestObject
 	end
 
-	local fn = function(implementation: any): ModuleMocker
+	local fn = function(implementation: any)
 		return self._moduleMocker:fn(implementation)
 	end
 	-- ROBLOX TODO: not implemented yet
 	-- local spyOn = self._moduleMocker.spyOn:bind(self._moduleMocker)
 
 	Object.assign(jestObject, {
+		advanceTimersByTime = function(msToRun: number)
+			_getFakeTimers():advanceTimersByTime(msToRun)
+		end,
+		advanceTimersToNextTimer = function(steps: number?)
+			_getFakeTimers():advanceTimersToNextTimer(steps)
+		end,
 		-- ROBLOX TODO START: not implemented yet
 		-- autoMockOff = disableAutomock,
 		-- autoMockOn = enableAutomock,
@@ -546,6 +647,8 @@ function Runtime:_createJestObjectFor(from: Config_Path): Jest
 		runOnlyPendingTimers = function()
 			return _getFakeTimers():runOnlyPendingTimers()
 		end,
+		-- ROBLOX TODO: remove when we don't need to manually inject fake timers into tests
+		jestTimers = _getFakeTimers(),
 		-- ROBLOX TODO START: not implemented yet
 		-- setMock = function(scriptInstance: ModuleScript, mock: unknown)
 		-- 	return setMockFactory(scriptInstance, function()
@@ -573,6 +676,50 @@ function Runtime:_createJestObjectFor(from: Config_Path): Jest
 
 	return jestObject :: Jest
 end
--- ROBLOX DEVIATION end
+
+--[[
+	ROBLOX deviation: skipped lines 2029-2124
+	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L2029-L2124
+]]
+
+function Runtime:getGlobalsFromEnvironment(): JestGlobals
+	if self.jestGlobals then
+		return table.clone(self.jestGlobals)
+	end
+
+	local jestSnapshot = self:requireModuleOrMock(Packages.JestSnapshot)
+	local jestExpect = self:requireModuleOrMock(Packages.Expect)
+
+	return {
+		--[[
+			ROBLOX deviation: skipped for now
+			* afterAll
+			* afterEach
+			* beforeAll
+			* beforeEach
+			* describe
+		]]
+		expect = jestExpect,
+		--[[
+			ROBLOX deviation: skipped for now
+			* fdescribe
+			* fit
+			* it
+			* test
+			* xdescribe
+			* xit
+			* xtest
+		]]
+		jestSnapshot = {
+			toMatchSnapshot = jestSnapshot.toMatchSnapshot,
+			toThrowErrorMatchingSnapshot = jestSnapshot.toThrowErrorMatchingSnapshot,
+		},
+	}
+end
+
+--[[
+	ROBLOX deviation: skipped lines 2148-2183
+	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L2148-L2183
+]]
 
 return Runtime

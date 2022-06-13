@@ -13,4 +13,4 @@ JestEnvironment = { path = "../jest-environment" }
 JestRuntime = { path = "../jest-runtime" }
 
 [dev_dependencies]
-Expect = { path = "../expect" }
+JestGlobals = { path = "../jest-globals" }

@@ -14,8 +14,9 @@ return function()
 
 	local equals = require(Packages.Dev.RobloxShared).expect.equals
 
-	local jest = require(Packages.Dev.Jest)
-	local jestExpect = require(Packages.Dev.Expect)
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jest = JestGlobals.jest
+	local jestExpect = JestGlobals.expect
 
 	describe("Replaceable", function()
 		describe("constructor", function()

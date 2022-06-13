@@ -16,7 +16,7 @@ return function()
 	-- ROBLOX deviation: omitted INVERTED_COLOR import because it doesn't have an
 	-- actual implementation yet
 
-	local jestExpect = require(Packages.Dev.Expect)
+	local jestExpect = require(Packages.Dev.JestGlobals).expect
 	local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 
 	local LuauPolyfill = require(Packages.LuauPolyfill)
