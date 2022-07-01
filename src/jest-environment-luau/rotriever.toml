@@ -1,0 +1,15 @@
+[package]
+name = "JestEnvironmentLuau"
+version = { workspace = true }
+license = { workspace = true }
+author = "Roblox"
+content_root = "src"
+files = ["*", "!**/__tests__/**"]
+
+[dependencies]
+LuauPolyfill = { workspace = true }
+Promise = { workspace = true }
+JestFakeTimers = { path = "../jest-fake-timers" }
+JestMock = { path = "../jest-mock" }
+JestTypes = { path = "../jest-types" }
+JestEnvironment = { path = "../jest-environment" }

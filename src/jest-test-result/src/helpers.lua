@@ -67,7 +67,7 @@ local function buildFailureTestResult(testPath: Config_Path, err: SerializableEr
 		numPendingTests = 0,
 		numTodoTests = 0,
 		openHandles = {},
-		perfStats = { end_ = 0, runtime = 0, slow = false, start = 0 },
+		perfStats = { ["end"] = 0, runtime = 0, slow = false, start = 0 },
 		skipped = false,
 		snapshot = {
 			added = 0,
@@ -146,7 +146,7 @@ local function createEmptyTestResult(): TestResult
 		numPendingTests = 0,
 		numTodoTests = 0,
 		openHandles = {},
-		perfStats = { end_ = 0, runtime = 0, slow = false, start = 0 },
+		perfStats = { ["end"] = 0, runtime = 0, slow = false, start = 0 },
 		skipped = false,
 		snapshot = {
 			added = 0,

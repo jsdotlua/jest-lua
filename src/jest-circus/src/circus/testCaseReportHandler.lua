@@ -7,7 +7,7 @@
  ]]
 
 local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
+local Packages = CurrentModule.Parent.Parent
 local exports = {}
 local testResultModule = require(Packages.JestTestResult)
 type TestFileEvent = testResultModule.TestFileEvent
@@ -18,7 +18,7 @@ local makeSingleTestResult = utilsModule.makeSingleTestResult
 local parseSingleTestResult = utilsModule.parseSingleTestResult
 
 local function testCaseReportHandler(testPath: string, sendMessageToJest: TestFileEvent)
-	return function(event: Circus_Event): ()
+	return function(_self, event: Circus_Event): ()
 		if event.name == "test_done" then
 			local testResult = makeSingleTestResult(event.test)
 			local testCaseResult = parseSingleTestResult(testResult)

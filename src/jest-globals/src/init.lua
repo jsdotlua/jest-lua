@@ -16,6 +16,9 @@ local TestEZJestAdapter = require(Packages.TestEZJestAdapter)
 type Jest = any
 local importedExpect = require(Packages.Expect)
 
+local jestTypesModule = require(Packages.JestTypes)
+type TestFrameworkGlobals = jestTypesModule.Global_TestFrameworkGlobals
+
 type JestGlobals = {
 	jest: Jest,
 	expect: typeof(importedExpect),
@@ -29,7 +32,7 @@ type JestGlobals = {
 	TestEZ: typeof(TestEZ) & {
 		reporters: typeof(TestEZ.Reporters) & typeof(TestEZJestAdapter.Reporters),
 	},
-}
+} & TestFrameworkGlobals
 
 return (
 		{

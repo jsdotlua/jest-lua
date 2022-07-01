@@ -13,9 +13,18 @@ local Symbol = LuauPolyfill.Symbol
 local WeakMap = LuauPolyfill.WeakMap
 local console = LuauPolyfill.console
 local TypeError = Error
-type Object = LuauPolyfill.Object
 type Array<T> = LuauPolyfill.Array<T>
+type Object = LuauPolyfill.Object
+type Symbol = LuauPolyfill.Symbol
+
 local Promise = require(Packages.Promise)
+type Promise<T> = LuauPolyfill.Promise<T>
+
+type PropertyKey = string | number | Symbol
+type EventName = PropertyKey
+
+-- ROBLOX deviation: use `unknown` type until Luau starts to support it
+type unknown = any
 
 local HttpService = game:GetService("HttpService")
 
@@ -224,18 +233,18 @@ function isMetaEvent(eventName)
 	return eventName == listenerAdded or eventName == listenerRemoved
 end
 
-type Emittery = {
+export type Emittery = {
 	new: (options: Object?) -> Emittery,
 	logIfDebugEnabled: (self: Emittery, type_: any, eventName: any, eventData: any) -> any,
-	on: (self: Emittery, eventNames: any, listener: any) -> any,
+	on: (self: Emittery, eventNames: any, listener: any) -> Emittery_UnsubscribeFn,
 	off: (self: Emittery, eventNames: any, listener: any) -> any,
 	once: (self: Emittery, eventNames: any) -> any,
 	events: (self: Emittery, eventNames: any) -> any,
-	emit: (self: Emittery, eventName: any, eventData: any, allowMetaEvents: any) -> any,
+	emit: (self: Emittery, eventName: any, eventData: any, allowMetaEvents: any?) -> any,
 	emitSerial: (self: Emittery, eventName: any, eventData: any, allowMetaEvents: any) -> any,
 	onAny: (self: Emittery, listener: any) -> any,
 	anyEvent: (self: Emittery) -> any,
-	offAny: (self: Emittery, listener: any) -> any,
+	offAny: (self: Emittery, listener: any) -> Emittery_UnsubscribeFn,
 	clearListeners: (self: Emittery, eventNames: any) -> any,
 	listenerCount: (self: Emittery, eventNames: any) -> any,
 	bindMethods: (self: Emittery, target: any, methodNames: any) -> any,
@@ -651,5 +660,25 @@ Emittery.listenerAdded = listenerAdded
 Emittery.listenerRemoved = listenerRemoved
 -- ROBLOX deviation END
 exports.default = Emittery
+
+--[[*
+Removes an event subscription.
+]]
+export type Emittery_UnsubscribeFn = () -> ()
+
+--[[*
+The data provided as `eventData` when listening for `Emittery.listenerAdded` or `Emittery.listenerRemoved`.
+]]
+export type Emittery_ListenerChangedData = {
+	--[[*
+	The listener that was added or removed.
+	]]
+	listener: (eventData: unknown?) -> (...Promise<nil>),
+
+	--[[*
+	The name of the event that was added or removed if `.on()` or `.off()` was used, or `undefined` if `.onAny()` or `.offAny()` was used.
+	]]
+	eventName: EventName?,
+}
 
 return exports

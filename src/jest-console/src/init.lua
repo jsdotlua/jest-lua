@@ -27,7 +27,9 @@ local CustomConsoleModule = require(CurrentModule.CustomConsole)
 exports.CustomConsole = CustomConsoleModule.default
 export type CustomConsole = CustomConsoleModule.CustomConsole
 
-exports.NullConsole = require(CurrentModule.NullConsole).default
+local NullConsoleModule = require(CurrentModule.NullConsole)
+exports.NullConsole = NullConsoleModule.default
+export type NullConsole = NullConsoleModule.NullConsole
 exports.getConsoleOutput = require(CurrentModule.getConsoleOutput).default
 
 local typesModule = require(CurrentModule.types)

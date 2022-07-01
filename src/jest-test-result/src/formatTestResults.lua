@@ -53,7 +53,7 @@ local function formatTestResult(
 			coverage = if codeCoverageFormatter ~= nil
 				then codeCoverageFormatter(testResult.coverage, reporter)
 				else testResult.coverage,
-			endTime = testResult.perfStats.end_,
+			endTime = testResult.perfStats["end"],
 			message = if testResult.failureMessage ~= nil then testResult.failureMessage else "",
 			name = testResult.testFilePath,
 			startTime = testResult.perfStats.start,

@@ -67,7 +67,7 @@ return function()
 				numPendingTests = 0,
 				numTodoTests = 0,
 				openHandles = {},
-				perfStats = { end_ = 0, runtime = 0, slow = false, start = 0 },
+				perfStats = { ["end"] = 0, runtime = 0, slow = false, start = 0 },
 				skipped = false,
 				snapshot = {
 					added = 0,
@@ -95,7 +95,7 @@ return function()
 				numPendingTests = 0,
 				numTodoTests = 0,
 				openHandles = {},
-				perfStats = { end_ = 0, runtime = 0, slow = false, start = 0 },
+				perfStats = { ["end"] = 0, runtime = 0, slow = false, start = 0 },
 				skipped = false,
 				snapshot = {
 					added = 0,

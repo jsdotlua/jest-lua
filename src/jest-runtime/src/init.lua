@@ -72,13 +72,22 @@ type JestGlobalsWithJest = JestGlobals & {
 }
 
 --[[
-	ROBLOX deviation: skipped lines 74-175
-	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L74-L175
+	ROBLOX deviation: skipped lines 74-92
+	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L74-L92
+]]
+
+type Module = any
+type InitialModule = any
+type ModuleRegistry = Map<ModuleScript, InitialModule | Module>
+
+--[[
+	ROBLOX deviation: skipped lines 97-175
+	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L97-L175
 ]]
 
 export type Runtime = {
 	-- ROBLOX TODO: not implemented yet
-	-- setGlobalsForRuntime: (self: Runtime, globals: JestGlobals) -> (),
+	setGlobalsForRuntime: (self: RuntimePrivate, globals: JestGlobals) -> (),
 	getGlobalsFromEnvironment: (self: RuntimePrivate) -> JestGlobals,
 	teardown: (self: RuntimePrivate) -> (),
 	requireModuleOrMock: (self: RuntimePrivate, scriptInstance: ModuleScript) -> any,
@@ -86,11 +95,21 @@ export type Runtime = {
 	-- requireMock: (self: RuntimePrivate, from: Config_Path, scriptInstance: ModuleScript) -> any,
 	requireModule: (
 		self: RuntimePrivate,
-		from: string,
-		scriptInstance: ModuleScript,
+		-- ROBLOX deviation: accept ModuleScript instead of string
+		from: ModuleScript,
+		-- ROBLOX deviation: accept ModuleScript instead of string
+		scriptInstance: ModuleScript?,
 		options: any?,
 		isRequireActual: boolean?
 	) -> any,
+	-- ROBLOX deviation: no default param <T = unknown>
+	requireInternalModule: <T>(
+		self: RuntimePrivate,
+		-- ROBLOX deviation: accept ModuleScript instead of string
+		from: ModuleScript,
+		-- ROBLOX deviation: accept ModuleScript instead of string
+		to: ModuleScript?
+	) -> T,
 	isolateModules: (self: RuntimePrivate, fn: MockFactory) -> (),
 	resetModules: (self: RuntimePrivate) -> (),
 	clearAllMocks: (self: RuntimePrivate) -> (),
@@ -129,6 +148,7 @@ export type RuntimePrivate = Runtime & {
 	-- ROBLOX TODO END
 	-- ROBLOX deviation: no Legacy/Modern timers
 	_fakeTimersImplementation: FakeTimers,
+	_internalModuleRegistry: ModuleRegistry,
 
 	--[[
 		ROBLOX deviation: skipped lines 189-197
@@ -141,8 +161,8 @@ export type RuntimePrivate = Runtime & {
 	-- _moduleMockFactories: Map<string, () -> unknown>,
 	-- ROBLOX TODO END
 	_moduleMocker: ModuleMocker,
-	_isolatedModuleRegistry: Map<ModuleScript, any>?,
-	_moduleRegistry: Map<ModuleScript, any>,
+	_isolatedModuleRegistry: ModuleRegistry?,
+	_moduleRegistry: ModuleRegistry,
 
 	--[[
 		ROBLOX deviation: skipped lines 204-226
@@ -162,7 +182,8 @@ export type RuntimePrivate = Runtime & {
 	_cleanupFns: Array<() -> ()>,
 	_shouldMock: (
 		self: RuntimePrivate,
-		from: string,
+		-- ROBLOX deviation: accept ModuleScript instead of string
+		from: ModuleScript,
 		scriptInstance: ModuleScript,
 		explicitShouldMock: Map<ModuleScript, boolean>,
 		options: ResolveModuleConfig
@@ -203,10 +224,13 @@ function Runtime.new(): RuntimePrivate
 	}
 	-- ROBLOX deviation END
 	self._explicitShouldMock = Map.new()
+	-- ROBLOX deviation: not implemented yet
+	-- self._explicitShouldMockModule = Map.new()
+	self._internalModuleRegistry = Map.new()
 
 	--[[
-		ROBLOX deviation: skipped lines 247-258
-		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L247-L258
+		ROBLOX deviation: skipped lines 249-258
+		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L249-L258
 	]]
 	-- ROBLOX deviation START: instantiate the module mocker here
 	-- instead of being passed in as an arg from runTest
@@ -253,19 +277,28 @@ end
 ]]
 
 function Runtime:requireModule(
-	from: string,
-	scriptInstance: ModuleScript,
+	from: ModuleScript,
+	_scriptInstance: ModuleScript?,
 	options: any?,
 	isRequireActual: boolean?
 ): any
+	-- ROBLOX deviation START
+	local scriptInstance = if _scriptInstance == nil then from else _scriptInstance
+	-- ROBLOX deviation END
+
+	local isInternal = if typeof(options) == "table" and options.isInternalModule ~= nil
+		then options.isInternalModule
+		else false
 	--[[
-		ROBLOX deviation: skipped lines 752-802
-		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L752-L802
+		ROBLOX deviation: skipped lines 753-802
+		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L753-L802
 	]]
-	local moduleRegistry
+	local moduleRegistry: ModuleRegistry
 
 	-- ROBLOX deviation: skipped isInternal check
-	if self._isolatedModuleRegistry ~= nil then
+	if isInternal then
+		moduleRegistry = self._internalModuleRegistry
+	elseif self._isolatedModuleRegistry ~= nil then
 		moduleRegistry = self._isolatedModuleRegistry
 	else
 		moduleRegistry = self._moduleRegistry
@@ -312,13 +345,43 @@ function Runtime:requireModule(
 	return moduleResult
 end
 
+-- ROBLOX deviation: no default param <T = unknown>
+function Runtime:requireInternalModule<T>(
+	-- ROBLOX deviation: accept ModuleScript instead of string
+	from: ModuleScript,
+	-- ROBLOX deviation: accept ModuleScript instead of string
+	to: ModuleScript?
+): T
+	-- ROBLOX deviation START: `to` not handled yet
+	-- if Boolean.toJSBoolean(to) then
+	-- 		local require_ = (if nativeModule.createRequire ~= nil
+	-- 				then nativeModule.createRequire
+	-- 				else nativeModule.createRequireFromPath)(from)
+	-- 		if Boolean.toJSBoolean(INTERNAL_MODULE_REQUIRE_OUTSIDE_OPTIMIZED_MODULES:has(to)) then
+	-- 				return require_(to)
+	-- 		end
+	-- 		local outsideJestVmPath = decodePossibleOutsideJestVmPath(to)
+	-- 		if Boolean.toJSBoolean(outsideJestVmPath) then
+	-- 				return require_(outsideJestVmPath)
+	-- 		end
+	-- end
+	-- ROBLOX deviation END
+	return self:requireModule(from, to, {
+		isInternalModule = true,
+		-- supportsDynamicImport = esmIsAvailable,
+		-- supportsExportNamespaceFrom = false,
+		-- supportsStaticESM = false,
+		-- supportsTopLevelAwait = false,
+	})
+end
+
 --[[
-	ROBLOX deviation: skipped lines 849-997
-	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L849-L997
+	ROBLOX deviation: skipped lines 872-997
+	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#872-L997
 ]]
 
 function Runtime:requireModuleOrMock(scriptInstance: ModuleScript)
-	local from = ""
+	local from = scriptInstance
 
 	if scriptInstance == script or scriptInstance == script.Parent then
 		-- ROBLOX NOTE: Need to cast require because analyze cannot figure out scriptInstance path
@@ -428,8 +491,8 @@ function Runtime:teardown(): ()
 	self:resetAllMocks()
 	self:resetModules()
 
+	self._internalModuleRegistry:clear()
 	-- ROBLOX TODO START: not implemented yet
-	-- self._internalModuleRegistry:clear();
 	-- self._mainModule = nil;
 	-- self._mockFactories:clear();
 	-- self._moduleMockFactories:clear();
@@ -472,7 +535,8 @@ end
 ]]
 
 function Runtime:_shouldMock(
-	from: string,
+	-- ROBLOX deviation: accept ModuleScript instead of string
+	from: ModuleScript,
 	scriptInstance: ModuleScript,
 	explicitShouldMock: Map<ModuleScript, boolean>,
 	options: ResolveModuleConfig
@@ -490,8 +554,9 @@ end
 	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L1757-L1813
 ]]
 
-function Runtime:_createJestObjectFor(from: Config_Path): Jest
-	from = from or ""
+function Runtime:_createJestObjectFor(_from: Config_Path): Jest
+	-- ROBLOX deviation: from not used
+	-- from = from or ""
 	local jestObject = {} :: Jest
 
 	-- ROBLOX TODO START: not implemented yet
@@ -718,8 +783,17 @@ function Runtime:getGlobalsFromEnvironment(): JestGlobals
 end
 
 --[[
-	ROBLOX deviation: skipped lines 2148-2183
-	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L2148-L2183
+	ROBLOX deviation: skipped lines 2148-2158
+	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L2148-L2158
+]]
+
+function Runtime:setGlobalsForRuntime(globals: JestGlobals): ()
+	self.jestGlobals = globals
+end
+
+--[[
+	ROBLOX deviation: skipped lines 2165-2183
+	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L2165-L2183
 ]]
 
 return Runtime

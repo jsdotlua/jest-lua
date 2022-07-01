@@ -8,7 +8,7 @@
 
 type unknown = any --[[ ROBLOX FIXME: adding `unknown` type alias to make it easier to use Luau unknown equivalent when supported ]]
 local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
+local Packages = CurrentModule.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
@@ -88,7 +88,7 @@ local getState = stateModule.getState
 local function takesDoneCallback(
 	fn: Circus_AsyncFn
 ): boolean --[[ ROBLOX FIXME: change to TSTypePredicate equivalent if supported ]] --[[ fn is Global.DoneTakingTestFn ]]
-	return debug.info(fn, "a") > 0
+	return debug.info(fn, "a") > 1
 end
 
 -- ROBLOX deviation START: generator functions are not supported in Lua
@@ -476,7 +476,7 @@ function makeTestResults(describeBlock: Circus_DescribeBlock): Circus_TestResult
 
 	for _, child in ipairs(describeBlock.children) do
 		if child.type == "describeBlock" then
-			Array.concat(testResults, makeTestResults(child))
+			testResults = Array.concat(testResults, makeTestResults(child))
 		elseif child.type == "test" then
 			table.insert(testResults, makeSingleTestResult(child))
 		end

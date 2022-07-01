@@ -8,7 +8,7 @@
  ]]
 
 local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
+local Packages = CurrentModule.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Boolean = LuauPolyfill.Boolean
 type Promise<T> = LuauPolyfill.Promise<T>

@@ -48,7 +48,10 @@ export type EachTests = Array<{
 }>
 
 -- type TestFn = (done?: Global.DoneFn) => Promise<any> | void | undefined;
-type GlobalCallback = (testName: string, fn: Global_ConcurrentTestFn, timeout: number?) -> ()
+type GlobalCallbackFn = ((testName: string, fn: Global_ConcurrentTestFn, timeout: number?) -> ())
+type GlobalCallback = GlobalCallbackFn | typeof(setmetatable({}, {
+	__call = function(_, testName: string, fn: Global_ConcurrentTestFn, timeout: number?): () end,
+}))
 
 -- ROBLOX TODO: add type constraint <EachCallback extends Global.TestCallback>
 local function default<EachCallback>(cb_: GlobalCallback?, supportsDone_: boolean?)
@@ -68,13 +71,17 @@ local function default<EachCallback>(cb_: GlobalCallback?, supportsDone_: boolea
 
 				return Array.forEach(tests, function(row)
 					-- ROBLOX FIXME Luau: supports done is known to be a boolean at this point
-					return cb(row.title, applyArguments(supportsDone, row.arguments, test), timeout)
+					return (cb :: GlobalCallbackFn)(
+						row.title,
+						applyArguments(supportsDone, row.arguments, test),
+						timeout
+					)
 				end) :: any
 			end)
 
 			if not ok then
 				local error_ = ErrorWithStack.new(result.message, eachBind)
-				return cb(title, function()
+				return (cb :: GlobalCallbackFn)(title, function()
 					error(error_)
 				end)
 			end

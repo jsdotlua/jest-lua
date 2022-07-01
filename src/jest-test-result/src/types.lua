@@ -143,7 +143,7 @@ export type TestResult = {
 	numPendingTests: number,
 	numTodoTests: number,
 	openHandles: Array<Error>,
-	perfStats: { end_: Milliseconds, runtime: Milliseconds, slow: boolean, start: Milliseconds },
+	perfStats: { ["end"]: Milliseconds, runtime: Milliseconds, slow: boolean, start: Milliseconds },
 	skipped: boolean,
 	snapshot: Snapshot,
 	testExecError: SerializableError?,
@@ -209,7 +209,7 @@ export type SnapshotSummary = {
 
 export type Test = { context: Context, duration: number?, path: Config_Path }
 
-type Context = { config: Config_ProjectConfig, hasteFS: HasteFS, moduleMap: ModuleMap, resolver: Resolver }
+export type Context = { config: Config_ProjectConfig, hasteFS: HasteFS, moduleMap: ModuleMap, resolver: Resolver }
 
 -- Typings for `sendMessageToJest` events
 export type TestEvents = {

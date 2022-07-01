@@ -9,7 +9,7 @@
 local exports = {}
 local CurrentModule = script.Parent
 local SrcModule = CurrentModule.Parent
-local Packages = SrcModule.Parent
+local Packages = SrcModule.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local console = LuauPolyfill.console
 
@@ -52,8 +52,6 @@ function testEventHandler(_self, event, state)
 		console.log("")
 		console.log(("unhandledErrors: %d"):format(#state.unhandledErrors))
 	end
-	-- ROBLOX FIXME Luau: can't express with type a function that can either return promise of void (no value)
-	return nil
 end
 
 exports.default = testEventHandler

@@ -192,7 +192,8 @@ function SnapshotState:clear(): ()
 end
 
 function SnapshotState.save(self: SnapshotState): SaveStatus
-	local hasExternalSnapshots = #Object.keys(self._snapshotData)
+	-- ROBLOX deviation: checking if there is more than 0 keys as `0` is considered truthy in L
+	local hasExternalSnapshots = #Object.keys(self._snapshotData) > 0
 	local hasInlineSnapshots = #self._inlineSnapshots > 0
 	local isEmpty = not hasExternalSnapshots and not hasInlineSnapshots
 
@@ -214,18 +215,17 @@ function SnapshotState.save(self: SnapshotState): SaveStatus
 		)
 	end
 
-	-- ROBLOX deviation: SnapshotState._snapshotPath stores the path in the DOM of the snapshot
-	-- and not the filesystem path
-	-- CoreScriptSyncService:GetScriptFilePath is used to convert the test ModuleScript
-	-- into its filesystem location
-	local snapshotPath = getParent(CoreScriptSyncService:GetScriptFilePath(_G[JEST_TEST_CONTEXT].instance), 1)
-		-- gets path of parent directory, GetScriptFilePath can only be called on ModuleScripts
-		.. "/__snapshots__/"
-		.. _G[JEST_TEST_CONTEXT].instance.Name:match("(.*)%.spec")
-		.. ".snap.lua"
-
-	if (self._dirty or self._uncheckedKeys.size) and not isEmpty then
+	if (self._dirty or self._uncheckedKeys.size > 0) and not isEmpty then
 		if hasExternalSnapshots then
+			-- ROBLOX deviation: SnapshotState._snapshotPath stores the path in the DOM of the snapshot
+			-- and not the filesystem path
+			-- CoreScriptSyncService:GetScriptFilePath is used to convert the test ModuleScript
+			-- into its filesystem location
+			local snapshotPath = getParent(CoreScriptSyncService:GetScriptFilePath(self._snapshotPath), 1)
+				-- gets path of parent directory, GetScriptFilePath can only be called on ModuleScripts
+				.. "/__snapshots__/"
+				.. _G[JEST_TEST_CONTEXT].instance.Name:match("(.*)%.spec")
+				.. ".snap.lua"
 			saveSnapshotFile(self._snapshotData, snapshotPath)
 		end
 		if hasInlineSnapshots then
@@ -233,7 +233,7 @@ function SnapshotState.save(self: SnapshotState): SaveStatus
 			error(Error("Jest-Roblox: inline snapshot testing is not currently supported"))
 		end
 		status.saved = true
-	elseif not hasExternalSnapshots and require(snapshotPath) :: any then
+	elseif not hasExternalSnapshots and self._snapshotPath ~= nil then
 		-- ROBLOX deviation: omitted part of code dealing with unlinking file until we have
 		-- robust final solution for I/O. This may not even be needed in our translation?
 		if self._updateSnapshot == "all" then

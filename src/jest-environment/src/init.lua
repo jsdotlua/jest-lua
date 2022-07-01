@@ -21,7 +21,7 @@ local exports = {}
 -- ROBLOX deviation START: module not available
 -- local vmModule = require(rootWorkspace.vm)
 -- type Context = vmModule.Context
-type Context = any
+type Context = Object
 -- ROBLOX deviation END
 
 local FakeTimersModule = require(Packages.JestFakeTimers)
@@ -49,8 +49,9 @@ type ModuleMocker = jestMockModule.ModuleMocker
 
 export type EnvironmentContext = {
 	console: Console,
-	docblockPragmas: Record<string, string | Array<string>>,
-	testPath: Config_Path,
+	-- docblockPragmas: Record<string, string | Array<string>>,
+	-- ROBLOX deviation: accept ModuleScript instead of string
+	testPath: ModuleScript,
 }
 
 -- Different Order than https://nodejs.org/api/modules.html#modules_the_module_wrapper , however needs to be in the form [jest-transform]ScriptTransformer accepts
@@ -66,6 +67,7 @@ export type ModuleWrapper = (
 ) -> any
 
 export type JestEnvironment<Timer = any> = {
+	new: (config: Config_ProjectConfig, context: EnvironmentContext?) -> JestEnvironment<Timer>,
 	global: Global_Global,
 	-- ROBLOX deviation START: no modern/legacy timers
 	-- fakeTimers: LegacyFakeTimers<Timer> | nil,
@@ -73,9 +75,9 @@ export type JestEnvironment<Timer = any> = {
 	fakeTimers: FakeTimers | nil,
 	-- ROBLOX deviation END
 	moduleMocker: ModuleMocker | nil,
-	getVmContext: () -> (Context | nil),
-	setup: () -> Promise<void>,
-	teardown: () -> Promise<void>,
+	getVmContext: (self: JestEnvironment<Timer>) -> (Context | nil),
+	setup: (self: JestEnvironment<Timer>) -> Promise<void>,
+	teardown: (self: JestEnvironment<Timer>) -> Promise<void>,
 	handleTestEvent: Circus_EventHandler?,
 	exportConditions: (() -> Array<string>)?,
 }

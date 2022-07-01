@@ -30,6 +30,8 @@ JestEnvironment = { path = "../jest-environment" }
 JestSnapshot = { path = "../jest-snapshot" }
 Expect = { path = "../expect" }
 RobloxShared = { path = "../roblox-shared" }
+JestRuntime = { path = "../jest-runtime" }
+Throat = { path = "../throat" }
 
 [dev_dependencies]
 JestGlobals = { path = "../jest-globals" }

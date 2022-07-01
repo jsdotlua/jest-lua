@@ -49,9 +49,8 @@ export type Hook = {
 	timeout: number | nil,
 }
 
-export type EventHandler =
-	((self: any, event: AsyncEvent, state: State) -> (void | Promise<void>))
-	| ((self: any, event: SyncEvent, state: State) -> void)
+-- ROBLOX deviation: combined both possible function signatures into one so that it's considered callable by Luau analyze
+export type EventHandler = ((self: any, event: AsyncEvent | SyncEvent, state: State) -> (...Promise<void>))
 
 export type Event = SyncEvent | AsyncEvent
 

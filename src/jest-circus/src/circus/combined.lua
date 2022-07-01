@@ -12,7 +12,7 @@
 local exports = {}
 
 local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
+local Packages = CurrentModule.Parent.Parent
 
 local typesModule = require(Packages.JestTypes)
 type Circus_EventHandler = typesModule.Circus_EventHandler
@@ -264,17 +264,21 @@ do
 				-- function to the parent process and register handlers there instead, but
 				-- i'm not sure if this is works. For now i just replicated whatever
 				-- jasmine was doing -- dabramov
-				state.parentProcess = event.parentProcess
-				invariant(state.parentProcess)
-				state.originalGlobalErrorHandlers = injectGlobalErrorHandlers(state.parentProcess)
+				-- ROBLOX deviation START: no access to parent process and global error handlers in Luau
+				-- state.parentProcess = event.parentProcess
+				-- invariant(state.parentProcess)
+				-- state.originalGlobalErrorHandlers = injectGlobalErrorHandlers(state.parentProcess)
+				-- ROBLOX deviation END
 				if Boolean.toJSBoolean(event.testNamePattern) then
 					state.testNamePattern = RegExp.new(event.testNamePattern, "i")
 				end
 				break
 			elseif event.name == "teardown" then
-				invariant(state.originalGlobalErrorHandlers)
-				invariant(state.parentProcess)
-				restoreGlobalErrorHandlers(state.parentProcess, state.originalGlobalErrorHandlers)
+				-- ROBLOX deviation START: no access to parent process and global error handlers in Luau
+				-- invariant(state.originalGlobalErrorHandlers)
+				-- invariant(state.parentProcess)
+				-- restoreGlobalErrorHandlers(state.parentProcess, state.originalGlobalErrorHandlers)
+				-- ROBLOX deviation END
 				break
 			elseif event.name == "error" then
 				-- It's very likely for long-running async tests to throw errors. In this

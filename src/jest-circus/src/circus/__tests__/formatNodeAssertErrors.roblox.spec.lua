@@ -3,7 +3,7 @@
 return function()
 	local CurrentModule = script.Parent
 	local SrcModule = CurrentModule.Parent
-	local Packages = SrcModule.Parent
+	local Packages = SrcModule.Parent.Parent
 
 	local typesModule = require(Packages.JestTypes)
 	type Circus_TestEntry = typesModule.Circus_TestEntry

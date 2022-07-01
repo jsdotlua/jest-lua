@@ -9,7 +9,7 @@
 return function()
 	local CurrentModule = script.Parent
 	local SrcModule = CurrentModule.Parent
-	local Packages = SrcModule.Parent
+	local Packages = SrcModule.Parent.Parent
 	local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).default
 	local runTest = require(script.Parent.Parent.__mocks__.testUtils).runTest
 

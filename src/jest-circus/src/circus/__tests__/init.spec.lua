@@ -1,6 +1,6 @@
 -- ROBLOX upstream: no upstream
 return function()
-	local Packages = script.Parent.Parent.Parent
+	local Packages = script.Parent.Parent.Parent.Parent
 
 	local jestExpect = require(Packages.Dev.JestGlobals).expect
 

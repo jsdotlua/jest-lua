@@ -2,7 +2,7 @@
 
 -- ROBLOX deviation: moved implementation from `state.lua` to avoid cyclic dependencies
 local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
+local Packages = CurrentModule.Parent.Parent
 
 local typesModule = require(Packages.JestTypes)
 type Circus_State = typesModule.Circus_State

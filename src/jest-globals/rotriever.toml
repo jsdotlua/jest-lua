@@ -13,3 +13,4 @@ Jest = { path = "../jest" }
 TestEZ = { path = "../TestEZ" }
 TestEZJestAdapter = { path = "../TestEZJestAdapter" }
 JestSnapshot = { path = "../jest-snapshot" }
+JestTypes = { path = "../jest-types" }

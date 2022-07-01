@@ -9,7 +9,7 @@
 return function()
 	local CurrentModule = script.Parent
 	local SrcModule = CurrentModule.Parent
-	local Packages = SrcModule.Parent
+	local Packages = SrcModule.Parent.Parent
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Symbol = LuauPolyfill.Symbol
 

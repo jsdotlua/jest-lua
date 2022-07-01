@@ -1,0 +1,6 @@
+{
+    "name": "JestEnvironmentLuau",
+    "tree": {
+        "$path": "src"
+    }
+}
