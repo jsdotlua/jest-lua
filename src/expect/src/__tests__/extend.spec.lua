@@ -69,7 +69,7 @@ return function()
 			end
 			local message = if pass
 				then function()
-					string.format(
+					return string.format(
 						"expected %s not to be within range %s - %s",
 						tostring(actual),
 						tostring(floor),

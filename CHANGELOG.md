@@ -1,5 +1,11 @@
 # Jest Roblox Changelog
 
+## 2.5.0 alpha 0 (2022-06-30)
+* :sparkles: Port `jest-runner` ([#197](https://github.com/Roblox/jest-roblox/pull/197))
+* :sparkles: Port `jest-runtime` ([#178](https://github.com/Roblox/jest-roblox/pull/178))
+* :sparkles: Create `jest-environment-luau`, based on `jest-environment-node` ([#197](https://github.com/Roblox/jest-roblox/pull/197))
+* :hammer_and_wrench: Add integration test of ported libraries, using jest's runner to run tests. ([#197](https://github.com/Roblox/jest-roblox/pull/197))
+
 ## 2.4.1 (2022-05-20)
 * :hammer_and_wrench: Disable `chalk-lua` when running in Studio environment
 * :hammer_and_wrench: Extract `AssertionError` to `LuauPolyfill` ([#186](https://github.com/Roblox/jest-roblox/pull/185]))
