@@ -13,7 +13,6 @@ JestMock = { path = '../jest-mock' }
 Expect = { path = "../expect" }
 JestFakeTimers = { path = "../jest-fake-timers" }
 JestSnapshot = { path = "../jest-snapshot" }
-JestCircus = { path = "../jest-circus" }
 
 [dev_dependencies]
 JestGlobals = { path = '../jest-globals' }
