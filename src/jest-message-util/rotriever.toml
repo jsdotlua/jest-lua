@@ -8,3 +8,11 @@ files = ["*", "!**/__tests__/**"]
 
 [dependencies]
 LuauPolyfill = { workspace = true }
+ChalkLua = { workspace = true }
+RegExp = { workspace = true }
+JestTypes = { path = "../jest-types"}
+PrettyFormat = { path = "../pretty-format"}
+
+[dev_dependencies]
+JestGlobals = { path = "../jest-globals" }
+JestSnapshotSerializerRaw = { path = "../jest-snapshot-serializer-raw" }

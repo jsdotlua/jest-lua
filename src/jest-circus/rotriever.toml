@@ -17,7 +17,6 @@ files = ["*", "!**/__tests__/**", "!**/__mocks__/**"]
 LuauPolyfill = { workspace = true }
 Promise = { workspace = true }
 RegExp = { workspace = true }
-Promise = { workspace = true }
 ChalkLua = { workspace = true }
 JestTypes = { path = "../jest-types" }
 JestMatcherUtils = { path = "../jest-matcher-utils" }

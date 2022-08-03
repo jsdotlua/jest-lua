@@ -10,7 +10,6 @@
 type unknown = any
 local Packages = script.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
-local Array = LuauPolyfill.Array
 local console = LuauPolyfill.console
 local setTimeout = LuauPolyfill.setTimeout
 local setImmediate = setTimeout
@@ -18,17 +17,7 @@ local Promise = require(Packages.Promise)
 type Promise<T> = LuauPolyfill.Promise<T>
 
 -- ROBLOX deviation START: additional function to construct file path from ModuleScript
-local function getTestFilePath(module: ModuleScript): string
-	local path = {}
-
-	local curr: Instance? = module
-
-	while curr do
-		table.insert(path, 1, curr.Name)
-		curr = curr.Parent
-	end
-	return Array.join(path, "/")
-end
+local getRelativePath = require(Packages.RobloxShared).getRelativePath
 -- ROBLOX deviation END
 
 local exports = {}
@@ -356,8 +345,7 @@ local function runTestInternal(
 				slow = testRuntime / 1000 > config.slowTestThreshold,
 				start = start,
 			}
-			-- ROBLOX TODO: get proper file path
-			result.testFilePath = getTestFilePath(path)
+			result.testFilePath = getRelativePath(path, config.rootDir)
 			result.console = testConsole:getBuffer()
 			result.skipped = testCount == result.numPendingTests
 			result.displayName = config.displayName

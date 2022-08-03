@@ -121,6 +121,7 @@ local function testNodeToTest(node: TestEZResult): Test
 		context = { config = { rootDir = "/" } :: any },
 		duration = 0,
 		path = getTestFilePath(node),
+		script = node.planNode.instance :: ModuleScript,
 	}
 end
 

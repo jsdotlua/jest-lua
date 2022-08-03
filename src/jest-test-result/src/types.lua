@@ -25,7 +25,7 @@ type CoverageMapData = any
 -- ROBLOX deviation END
 
 -- ROBLOX TODO: once jest-console package is available
--- local consoleModule = require(Packages["@jest"].console)
+-- local consoleModule = require(Packages.JestConsole)
 type ConsoleBuffer = any -- [[ consoleModule.ConsoleBuffer ]]
 
 local typesModule = require(Packages.JestTypes)
@@ -207,9 +207,16 @@ export type SnapshotSummary = {
 	updated: number,
 }
 
-export type Test = { context: Context, duration: number?, path: Config_Path }
+export type Test = { context: Context, duration: number?, path: Config_Path, script: ModuleScript }
 
-export type Context = { config: Config_ProjectConfig, hasteFS: HasteFS, moduleMap: ModuleMap, resolver: Resolver }
+export type Context = {
+	config: Config_ProjectConfig,
+	-- ROBLOX deviation START: no supported
+	-- hasteFS: HasteFS,
+	-- moduleMap: ModuleMap,
+	-- resolver: Resolver,
+	-- ROBLOX deviation END
+}
 
 -- Typings for `sendMessageToJest` events
 export type TestEvents = {

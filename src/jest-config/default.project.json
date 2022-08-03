@@ -1,0 +1,6 @@
+{
+    "name": "JestConfig",
+    "tree": {
+        "$path": "src"
+    }
+}

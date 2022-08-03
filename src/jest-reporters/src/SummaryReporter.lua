@@ -165,9 +165,12 @@ function SummaryReporter:_printSnapshotSummary(snapshots: SnapshotSummary, globa
 		local client = if Boolean.toJSBoolean(isYarn) then "yarn" else "npm"
 		local scriptUsesJest = typeof(npm_lifecycle_script) == "string"
 			and Boolean.toJSBoolean(string.match(npm_lifecycle_script or "", "jest"))
-		if globalConfig.watch or globalConfig.watchAll then
-			updateCommand = "press `u`"
-		elseif Boolean.toJSBoolean(event) and scriptUsesJest then
+		-- ROBLOX deviation START: not supported
+		-- if globalConfig.watch or globalConfig.watchAll then
+		-- 	updateCommand = "press `u`"
+		-- else
+		-- ROBLOX deviation END
+		if Boolean.toJSBoolean(event) and scriptUsesJest then
 			updateCommand = ("run `%s -u`"):format(client .. " " .. prefix .. event .. (isYarn and "" or " --"))
 		else
 			updateCommand = "re-run jest with `-u`"
@@ -199,8 +202,11 @@ end
 
 function SummaryReporter:_getTestSummary(contexts: Set<Context>, globalConfig: Config_GlobalConfig)
 	local function getMatchingTestsInfo()
-		local prefix = Boolean.toJSBoolean(globalConfig.findRelatedTests) and " related to files matching "
-			or " matching "
+		-- ROBLOX deviation START: not supported: findRelatedTests
+		-- local prefix = Boolean.toJSBoolean(globalConfig.findRelatedTests) and " related to files matching "
+		-- 	or " matching "
+		local prefix = " matching"
+		-- ROBLOX deviation END
 		-- ROBLOX deviation START: testPathPatternToRegExp not implemented (and not needed I don't think)
 		return chalk.dim(prefix)
 		-- ROBLOX deviation END
@@ -208,8 +214,10 @@ function SummaryReporter:_getTestSummary(contexts: Set<Context>, globalConfig: C
 	local testInfo = ""
 	if globalConfig.runTestsByPath then
 		testInfo = chalk.dim(" within paths")
-	elseif Boolean.toJSBoolean(globalConfig.onlyChanged) then
-		testInfo = chalk.dim(" related to changed files")
+		-- ROBLOX deviation START: not supported
+		-- elseif Boolean.toJSBoolean(globalConfig.onlyChanged) then
+		-- 	testInfo = chalk.dim(" related to changed files")
+		-- ROBLOX deviation END
 	elseif Boolean.toJSBoolean(globalConfig.testPathPattern) then
 		testInfo = getMatchingTestsInfo()
 	end

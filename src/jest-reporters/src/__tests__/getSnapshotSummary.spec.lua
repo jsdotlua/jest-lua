@@ -23,7 +23,7 @@ return function()
 	type Config_GlobalConfig = typesModule.Config_GlobalConfig
 
 	local UPDATE_COMMAND = "press --u"
-	local globalConfig = { rootDir = "root" }
+	local globalConfig = { rootDir = Packages }
 
 	it("creates a snapshot summary", function()
 		local snapshots = {

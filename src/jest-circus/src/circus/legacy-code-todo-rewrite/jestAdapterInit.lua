@@ -59,17 +59,9 @@ end
 local getState = expectModule.getState
 local setState = expectModule.setState
 local bind = require(Packages.JestEach).bind
--- ROBLOX TODO START: implement
-local formatExecError = function(err, ...)
-	return tostring(err)
-end
-local formatResultsErrors = function(res, ...)
-	return tostring(res)
-end
--- local jest_message_utilModule = require(Packages.JestMessageUtil)
--- local formatExecError = jest_message_utilModule.formatExecError
--- local formatResultsErrors = jest_message_utilModule.formatResultsErrors
--- ROBLOX TODO END
+local jest_message_utilModule = require(Packages.JestMessageUtil)
+local formatExecError = jest_message_utilModule.formatExecError
+local formatResultsErrors = jest_message_utilModule.formatResultsErrors
 -- ROBLOX TODO START: not implemented yet
 local jest_snapshotModule = require(Packages.JestSnapshot)
 local SnapshotState = jest_snapshotModule.SnapshotState
@@ -258,8 +250,10 @@ local function initialize(
 			]]
 			{
 				expand = expand,
-				prettierPath = config.prettierPath,
-				snapshotFormat = config.snapshotFormat,
+				-- ROBLOX deviation START: not supported
+				-- prettierPath = config.prettierPath,
+				-- snapshotFormat = config.snapshotFormat,
+				-- ROBLOX deviation END
 				updateSnapshot = updateSnapshot,
 			} :: any
 		)
@@ -331,7 +325,13 @@ local function runAndTransformResultsToJestFormat(
 			}
 		end)
 
-		local failureMessage = formatResultsErrors(assertionResults, config, globalConfig, testPath)
+		local failureMessage = formatResultsErrors(
+			assertionResults,
+			config,
+			-- ROBLOX FIXME Luau: Config_GlobalConfig contains noStackTrace and noCodeFrame is optional in StackTraceOptions so it should be fine
+			(globalConfig :: any) :: { noStackTrace: boolean, noCodeFrame: boolean? },
+			testPath
+		)
 		local testExecError
 
 		if #runResult.unhandledErrors ~= 0 then
@@ -343,7 +343,12 @@ local function runAndTransformResultsToJestFormat(
 				.. "\n\n"
 				.. Array.join(
 					Array.map(runResult.unhandledErrors, function(err)
-						return formatExecError(err, config, globalConfig)
+						return formatExecError(
+							err,
+							config,
+							-- ROBLOX FIXME Luau: Config_GlobalConfig contains noStackTrace and noCodeFrame is optional in StackTraceOptions so it should be fine
+							(globalConfig :: any) :: { noStackTrace: boolean, noCodeFrame: boolean? }
+						)
 					end),
 					"\n"
 				)

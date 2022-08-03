@@ -41,17 +41,21 @@ type ModuleMocker = moduleMockerModule.ModuleMocker
 local ModuleMocker = moduleMockerModule.ModuleMocker
 
 --[[
-	ROBLOX deviation: skipped lines 51-64
-	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L51-L64
+	ROBLOX deviation: skipped lines 51-59
+	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/index.ts#L51-L59
 ]]
+
+local typesModule = require(script.types)
+
+export type Context = typesModule.Context
 
 -- ROBLOX deviation: adding mocked ResolveModuleConfig type until implemented
 type ResolveModuleConfig = any
 
 -- ROBLOX deviation START: additional dependencies
-local typesModule = require(script.types)
-export type Jest = typesModule.Jest
-type MockFactory = typesModule.MockFactory
+local _typesModule = require(script._types)
+export type Jest = _typesModule.Jest
+type MockFactory = _typesModule.MockFactory
 
 local jestExpectModule = require(Packages.Expect)
 type Expect = jestExpectModule.Expect

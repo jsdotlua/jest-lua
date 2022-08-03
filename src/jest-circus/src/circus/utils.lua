@@ -541,7 +541,7 @@ local function addErrorToEachTestUnderDescribe(
 	asyncError: Circus_Exception
 ): ()
 	for _, child in ipairs(describeBlock.children) do
-		if child.type == "descibeBlock" then
+		if child.type == "describeBlock" then
 			-- ROBLOX FIXME Luau: analyze should narrow the child type here
 			addErrorToEachTestUnderDescribe((child :: Circus_DescribeBlock), error_, asyncError)
 		elseif child.type == "test" then

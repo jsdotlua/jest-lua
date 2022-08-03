@@ -71,6 +71,12 @@ function formatNodeAssertErrors(_self: any, event: Circus_Event, state: Circus_S
 
 				if originalError == nil then
 					error_ = asyncError
+					-- ROBLOX deviation START: additional logic to handle Promise library error
+				elseif originalError.kind == "ExecutionError" then
+					error_ = originalError
+					error_.message = error_.error
+					error_.stack = error_.trace
+					-- ROBLOX deviation END
 				elseif not Boolean.toJSBoolean(originalError.stack) then
 					error_ = asyncError
 

@@ -12,7 +12,7 @@ return function()
 	describe("testPathPatternToRegExp", function()
 		it("should execute without error", function()
 			jestExpect(testPathPatternToRegExp).toBeDefined()
-			jestExpect(testPathPatternToRegExp).toEqual({})
+			jestExpect(typeof(testPathPatternToRegExp.default)).toEqual("function")
 		end)
 	end)
 end

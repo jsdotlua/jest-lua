@@ -39,7 +39,11 @@ return function()
 				buffer = {}
 			end
 
-			local output = getConsoleOutput(buffer :: ConsoleBuffer, { rootDir = "root", testMatch = {} }, globalConfig)
+			local output = getConsoleOutput(
+				buffer :: ConsoleBuffer,
+				{ rootDir = Packages, testMatch = {} },
+				globalConfig
+			)
 			jestExpect(output).toMatch("console.log")
 			jestExpect(output).toMatch("Hello world!")
 		end)
@@ -55,7 +59,11 @@ return function()
 				buffer = {}
 			end
 
-			local output = getConsoleOutput(buffer :: ConsoleBuffer, { rootDir = "root", testMatch = {} }, globalConfig)
+			local output = getConsoleOutput(
+				buffer :: ConsoleBuffer,
+				{ rootDir = Packages, testMatch = {} },
+				globalConfig
+			)
 			jestExpect(output).toMatch("console.log")
 			jestExpect(output).toMatch("Hello world!")
 			jestExpect(output).toMatch("console.error")

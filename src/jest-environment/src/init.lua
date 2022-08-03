@@ -16,8 +16,6 @@ type NodeModule = Object
 type Record<T, U> = { [T]: U }
 type void = nil
 
-local exports = {}
-
 -- ROBLOX deviation START: module not available
 -- local vmModule = require(rootWorkspace.vm)
 -- type Context = vmModule.Context
@@ -81,30 +79,6 @@ export type JestEnvironment<Timer = any> = {
 	handleTestEvent: Circus_EventHandler?,
 	exportConditions: (() -> Array<string>)?,
 }
-
-local JestEnvironment = {}
-JestEnvironment.__index = JestEnvironment
-
-function JestEnvironment:getVmContext()
-	error("not implemented method")
-end
-
-function JestEnvironment:setup()
-	error("not implemented method")
-end
-
-function JestEnvironment:teardown()
-	error("not implemented method")
-end
-
-function JestEnvironment:handleTestEvent()
-	error("not implemented method")
-end
-
-function JestEnvironment:exportConditions()
-	error("not implemented method")
-end
-exports.JestEnvironment = JestEnvironment
 
 export type Module = NodeModule
 
@@ -348,4 +322,4 @@ export type Jest = {
 	]]
 	setSystemTime: (now: (number | DateTime)?) -> (),
 }
-return exports
+return {}

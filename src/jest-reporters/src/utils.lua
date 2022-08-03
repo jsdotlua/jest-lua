@@ -139,11 +139,14 @@ function relativePath(
 	-- this function can be called with ProjectConfigs or GlobalConfigs. GlobalConfigs
 	-- do not have config.cwd, only config.rootDir. Try using config.cwd, fallback
 	-- to config.rootDir. (Also, some unit just use config.rootDir, which is ok)
-	testPath = path:relative(
-		Boolean.toJSBoolean((config :: Config_ProjectConfig).cwd) and (config :: Config_ProjectConfig).cwd
-			or config.rootDir,
-		testPath
-	)
+	-- ROBLOX FIXME START
+	testPath = testPath
+	-- path:relative(
+	-- 	Boolean.toJSBoolean((config :: Config_ProjectConfig).cwd) and (config :: Config_ProjectConfig).cwd
+	-- 		or config.rootDir,
+	-- 	testPath
+	-- )
+	-- ROBLOX FIXME END
 	local dirname = path:dirname(testPath)
 	local basename = path:basename(testPath)
 	return { basename = basename, dirname = dirname }

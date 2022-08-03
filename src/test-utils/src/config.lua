@@ -74,7 +74,9 @@ local DEFAULT_GLOBAL_CONFIG: Config_GlobalConfig = {
 local DEFAULT_PROJECT_CONFIG: Config_ProjectConfig = {
 	automock = false,
 	cache = false,
-	cacheDirectory = "/test_cache_dir/",
+	-- ROBLOX deviation START: caching not supported
+	-- cacheDirectory = "/test_cache_dir/",
+	-- ROBLOX deviation END
 	clearMocks = false,
 	coveragePathIgnorePatterns = {},
 	cwd = "/test_root_dir/",

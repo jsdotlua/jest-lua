@@ -36,10 +36,8 @@ local throat = throatModule.default
 type ThroatLateBound<TResult, TArgs> = throatModule.ThroatLateBound<TResult, TArgs>
 local test_resultModule = require(Packages.JestTestResult)
 type SerializableError = test_resultModule.SerializableError
--- ROBLOX deviation START: inline Test type to use ModuleScript for path
 type Context = test_resultModule.Context
-export type Test = { context: Context, path: ModuleScript }
--- ROBLOX deviation END
+export type Test = test_resultModule.Test
 export type TestEvents = test_resultModule.TestEvents
 export type TestFileEvent = test_resultModule.TestFileEvent
 type TestResult = test_resultModule.TestResult
@@ -182,10 +180,14 @@ function TestRunner:_createInBandTestRun(
 							if onStart ~= nil then
 								onStart(test):expect()
 								return runTest(
-									test.path,
+									-- ROBLOX deviation: using `script` instead of `path`
+									test.script,
 									self._globalConfig,
 									test.context.config,
-									test.context.resolver,
+									-- ROBLOX deviation START: resolver no supported
+									nil,
+									-- test.context.resolver,
+									-- ROBLOX deviation END
 									self._context,
 									nil
 								)
@@ -199,10 +201,14 @@ function TestRunner:_createInBandTestRun(
 								end
 								self.eventEmitter:emit("test-file-start", { test }):expect()
 								return runTest(
-									test.path,
+									-- ROBLOX deviation: using `script` instead of `path`
+									test.script,
 									self._globalConfig,
 									test.context.config,
-									test.context.resolver,
+									-- ROBLOX deviation START: resolver no supported
+									nil,
+									-- test.context.resolver,
+									-- ROBLOX deviation END
 									self._context,
 									sendMessageToJest
 								)

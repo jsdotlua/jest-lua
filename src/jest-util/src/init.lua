@@ -28,6 +28,7 @@ exports.deepCyclicCopy = require(script.deepCyclicCopy).default
 exports.convertDescriptorToString = require(script.convertDescriptorToString).default
 local specialCharsModule = require(script.specialChars)
 Object.assign(exports, specialCharsModule)
+exports.specialChars = specialCharsModule
 -- ROBLOX deviation START: additional assignments for Lua type inferrence to work
 exports.ARROW = specialCharsModule.ARROW
 exports.ICONS = specialCharsModule.ICONS
@@ -35,11 +36,10 @@ exports.CLEAR = specialCharsModule.CLEAR
 -- ROBLOX deviation END
 -- ROBLOX deviation: not ported as it doesn't seem necessary in Lua
 -- exports.replacePathSepForGlob = require(script.replacePathSepForGlob).default
--- ROBLOX deviation: not ported as it doesn't seem necessary in Lua
--- exports.testPathPatternToRegExp = require(script.testPathPatternToRegExp).default
+exports.testPathPatternToRegExp = require(script.testPathPatternToRegExp).default
 exports.globsToMatcher = require(script.globsToMatcher).default
 local preRunMessageModule = require(script.preRunMessage)
-Object.assign(exports, preRunMessageModule)
+exports.preRunMessage = preRunMessageModule
 -- ROBLOX deviation START: additional assignments for Lua type inferrence to work
 exports.print = preRunMessageModule.print
 exports.remove = preRunMessageModule.remove

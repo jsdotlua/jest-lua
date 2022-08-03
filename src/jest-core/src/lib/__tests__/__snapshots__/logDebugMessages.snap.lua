@@ -1,0 +1,12 @@
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-core/src/lib/__tests__/__snapshots__/logDebugMessages.test.ts.snap
+-- Jest Snapshot v1, https://goo.gl/fbAQLP
+
+local exports = {}
+
+exports["prints the config object 1"] = [[
+
+{"version":"27.4.7","configs":{"haste":[],"clearMocks":false,"moduleLoader":"/test_module_loader_path","slowTestThreshold":5,"resetMocks":false,"modulePaths":[],"roots":["path/to/dir/test"],"testPathIgnorePatterns":[],"globals":[],"extraGlobals":[],"resetModules":false,"prettierPath":"prettier","injectGlobals":true,"name":"test_name","setupFilesAfterEnv":[],"snapshotSerializers":[],"forceCoverageMatch":[],"moduleDirectories":[],"testRunner":"myRunner","skipFilter":false,"automock":false,"cwd":"/test_root_dir/","testURL":"http =//localhost","rootDir":"/path/to/dir","coveragePathIgnorePatterns":[],"transform":[],"extensionsToTreatAsEsm":[],"testLocationInResults":false,"modulePathIgnorePatterns":[],"testMatch":[],"setupFiles":[],"errorOnDeprecated":false,"transformIgnorePatterns":[],"runner":"jest-runner","testRegex":["\\.test\\.js$"],"watchPathIgnorePatterns":[],"detectOpenHandles":false,"skipNodeResolution":false,"snapshotFormat":[],"moduleNameMapper":[],"restoreMocks":false,"cache":false,"moduleFileExtensions":["js"],"testEnvironment":null,"timers":"real","testEnvironmentOptions":[],"detectLeaks":false},"globalConfig":{"coverageDirectory":"coverage","reporters":[],"snapshotFormat":[],"silent":false,"testNamePattern":"","listTests":false,"coverageProvider":"babel","projects":[],"testPathPattern":"","bail":0,"json":false,"collectCoverageFrom":[],"notify":false,"onlyFailures":false,"rootDir":"/test_root_dir/","useStderr":false,"changedSince":"","verbose":false,"updateSnapshot":"none","watch":true,"findRelatedTests":false,"runTestsByPath":false,"testFailureExitCode":1,"logHeapUsage":false,"lastCommit":false,"changedFilesWithAncestor":false,"watchAll":false,"maxWorkers":2,"onlyChanged":false,"testTimeout":5000,"detectOpenHandles":false,"forceExit":false,"watchman":false,"expand":false,"coverageThreshold":{"global":[]},"noStackTrace":false,"errorOnDeprecated":false,"watchPlugins":[],"maxConcurrency":5,"collectCoverage":false,"coverageReporters":[],"detectLeaks":false,"passWithNoTests":false,"nonFlagArgs":[],"testSequencer":"@jest/test-sequencer","skipFilter":false,"notifyMode":"failure-change"}}
+
+]]
+
+return exports

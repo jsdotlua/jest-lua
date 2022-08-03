@@ -59,9 +59,11 @@ export type ReporterOnStartOptions = { estimatedTime: number, showStatus: boolea
 
 export type Context = {
 	config: Config_ProjectConfig,
-	hasteFS: HasteFS,
-	moduleMap: ModuleMap,
-	resolver: Resolver,
+	-- ROBLOX deviation START: no supported
+	-- hasteFS: HasteFS,
+	-- moduleMap: ModuleMap,
+	-- resolver: Resolver,
+	-- ROBLOX deviation END
 }
 
 export type Test = { context: Context, duration: number?, path: Config_Path }

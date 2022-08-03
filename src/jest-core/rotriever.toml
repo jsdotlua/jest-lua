@@ -1,0 +1,31 @@
+[package]
+name = "JestCore"
+version = { workspace = true }
+license = { workspace = true }
+author = { workspace = true }
+content_root = "src"
+files = ["*", "!**/__tests__/**"]
+
+[dependencies]
+LuauPolyfill = { workspace = true }
+Promise = { workspace = true }
+ChalkLua = { workspace = true }
+RegExp = { workspace = true }
+JestConfig = { path = "../jest-config" }
+JestConsole = { path = "../jest-console" }
+JestTestResult = { path = "../jest-test-result" }
+JestTypes = { path = "../jest-types" }
+JestRuntime = { path = "../jest-runtime" }
+JestRunner = { path = "../jest-runner" }
+JestReporters = { path = "../jest-reporters" }
+JestUtil = { path = "../jest-util" }
+JestMessageUtil = { path = "../jest-message-util" }
+JestSnapshot = { path = "../jest-snapshot" }
+PrettyFormat = { path = "../pretty-format" }
+RobloxShared = { path = "../roblox-shared" }
+Emittery = { path = "../emittery" }
+
+[dev_dependencies]
+JestGlobals = { path = "../jest-globals" }
+JestSnapshotSerializerRaw = { path = "../jest-snapshot-serializer-raw" }
+TestUtils = { path = "../test-utils" }

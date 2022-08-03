@@ -1,43 +1,23 @@
--- ROBLOX NOTE: Not paired with upstream. Just using for the "Jest Object" type
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-runtime/src/types.ts
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
+--[[*
+ * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ ]]
 
-local JestFakeTimers = require(Packages.JestFakeTimers)
-type FakeTimers = JestFakeTimers.FakeTimers
+local Packages = script.Parent.Parent
+local typesModule = require(Packages.JestTypes)
+type Config_ProjectConfig = typesModule.Config_ProjectConfig
 
-local moduleMockerModule = require(Packages.JestMock)
-type ModuleMocker = moduleMockerModule.ModuleMocker
-
-type unknown = any
-
-export type MockFactory = () -> ...unknown
-
-export type Jest = {
-	-- autoMockOn: () -> Jest,
-	-- autoMockOff: () -> Jest,
-	-- disableAutomock: () -> Jest,
-	-- enableAutomock: () -> Jest,
-	setMockFactory: (scriptInstance: ModuleScript, mockFactory: MockFactory, options: { virtual: boolean? }?) -> Jest,
-	-- mock: (scriptInstance: ModuleScript, mockFactory: MockFactory, options: any) -> Jest,
-	clearAllMocks: () -> Jest,
-	resetAllMocks: () -> Jest,
-	restoreAllMocks: () -> Jest,
-	_getFakeTimers: () -> FakeTimers,
-	useFakeTimers: () -> Jest,
-	useRealTimers: () -> Jest,
-	resetModules: () -> Jest,
-	isolateModules: (fn: () -> ()) -> Jest,
-	fn: () -> ModuleMocker,
-	-- genMockFromModule: (scriptInstance: ModuleScript) -> any,
-	getRealSystemTime: () -> (),
-	getTimerCount: () -> number,
-	runAllTicks: () -> (),
-	runAllTimers: () -> (),
-	runOnlyPendingTimers: () -> (),
-	-- setMock: (scriptInstance: ModuleScript, mock: unknown, options: { virtual: boolean? }?) -> Jest,
-	setSystemTime: (now: (number | DateTime)?) -> Jest,
-	setTimeout: any,
+export type Context = {
+	config: Config_ProjectConfig,
+	-- ROBLOX deviation START: no supported
+	-- hasteFS: HasteFS,
+	-- moduleMap: ModuleMap,
+	-- resolver: Resolver,
+	-- ROBLOX deviation END
 }
 
 return {}

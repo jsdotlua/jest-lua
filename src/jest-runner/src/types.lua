@@ -20,10 +20,8 @@ local environmentModule = require(Packages.JestEnvironment)
 type JestEnvironment = environmentModule.JestEnvironment
 local test_resultModule = require(Packages.JestTestResult)
 type SerializableError = test_resultModule.SerializableError
--- ROBLOX deviation START: inline Test type to use ModuleScript for path
 type Context = test_resultModule.Context
-type Test = { context: Context, path: ModuleScript }
--- ROBLOX deviation END
+type Test = test_resultModule.Test
 type TestFileEvent = test_resultModule.TestFileEvent
 type TestResult = test_resultModule.TestResult
 local typesModule = require(Packages.JestTypes)
