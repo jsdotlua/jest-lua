@@ -13,28 +13,49 @@ return function()
 	local jestExpect = require(Packages.Dev.JestGlobals).expect
 
 	local path = require(Packages.Path).path
+	-- ROBLOX deviation START: not needed
 	-- local chalk = require(Packages.ChalkLua)
+	-- ROBLOX deviation END
+	-- ROBLOX deviation START: use inline implementation of stripAnsi
 	local stripAnsi = function(text: string)
 		return string.gsub(text, "[\27\155][][()#;?%d]*[A-PRZcf-ntqry=><~]", "")
 	end
 	-- local stripAnsi = require(Packages["strip-ansi"])
+	-- ROBLOX deviation END
 	local makeProjectConfig = require(Packages.TestUtils).makeProjectConfig
 	local utilsModule = require(CurrentModule.utils)
 	local printDisplayName = utilsModule.printDisplayName
 	local trimAndFormatPath = utilsModule.trimAndFormatPath
 	local wrapAnsiString = utilsModule.wrapAnsiString
 
+	-- ROBLOX deviation START: this should be added in global jest config
+	local ConvertAnsi = require(Packages.Dev.PrettyFormat).plugins.ConvertAnsi
+	local JestSnapshotSerializerRaw = require(Packages.Dev.JestSnapshotSerializerRaw)
+
+	beforeAll(function()
+		jestExpect.addSnapshotSerializer({
+			serialize = ConvertAnsi.serialize,
+			test = ConvertAnsi.test,
+		})
+		jestExpect.addSnapshotSerializer(JestSnapshotSerializerRaw)
+	end)
+
+	afterAll(function()
+		jestExpect.resetSnapshotSerializers()
+	end)
+	-- ROBLOX deviation END
+
 	describe("wrapAnsiString()", function()
 		-- ROBLOX deviation START: Not needed since we don't have a console width
 		-- it("wraps a long string containing ansi chars", function()
-		-- 	local string = ("abcde %s 1234456"):format(chalk.red("red-bold"))
-		-- 		.. ("%s "):format(chalk:dim("bcd"))
+		-- 	local string_ = ("abcde %s 1234456"):format(chalk.red("red-bold"))
+		-- 		.. ("%s "):format(chalk.dim("bcd"))
 		-- 		.. "123ttttttththththththththththththththththththththth"
 		-- 		.. ("tetetetetettetetetetetetetete%s"):format(chalk.underline("stnhsnthsnth"))
 		-- 		.. "ssot"
 
-		-- 	jestExpect(wrapAnsiString(string, 10)).toMatchSnapshot()
-		-- 	jestExpect(stripAnsi(wrapAnsiString(string, 10))).toMatchSnapshot()
+		-- 	jestExpect(wrapAnsiString(string_, 10)).toMatchSnapshot()
+		-- 	jestExpect(stripAnsi(wrapAnsiString(string_, 10))).toMatchSnapshot()
 		-- end)
 		-- ROBLOX deviation END
 

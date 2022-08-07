@@ -127,7 +127,7 @@ local function verifyDirectoryExists(
 	if typeof(path) ~= "Instance" then
 		error(
 			createConfigError(
-				("  Directory %s in the %s option was not found."):format(chalk.bold(path), chalk.bold(key))
+				("  Directory %s in the %s option was not found."):format(chalk.bold(tostring(path)), chalk.bold(key))
 			)
 		)
 	end

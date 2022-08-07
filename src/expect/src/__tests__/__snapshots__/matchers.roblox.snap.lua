@@ -762,10 +762,10 @@ exports[ [=[tests stack traces for calls within pcalls 1]=] ] = [=[
 <d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>()</>
 
 Error name:    <r>"AssertionError"</>
-Error message: <r>"<d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
-
-Expected: <g>2</>
-Received: <r>4</>"</>
+Error message: <r>"<d>expect(</><r>received</><r><d>).</>toBe<d>(</><g>expected</><r><d>) -- Object.is equality</></>
+<r></>
+<r>Expected: <g>2</><r></>
+<r>Received: <r>4</><r>"</>
 
       LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:167
       LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:156

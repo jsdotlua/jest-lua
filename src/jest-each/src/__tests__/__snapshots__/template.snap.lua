@@ -47,17 +47,17 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-    1,
-  },
-  Table {
-    1,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>  Table {</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 2
 ]=]
@@ -68,12 +68,12 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 1
 ]=]
@@ -130,17 +130,17 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-    1,
-  },
-  Table {
-    1,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>  Table {</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 2
 ]=]
@@ -152,12 +152,12 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 1
 ]=]
@@ -214,17 +214,17 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-    1,
-  },
-  Table {
-    1,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>  Table {</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 2
 ]=]
@@ -236,12 +236,12 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 1
 ]=]
@@ -297,17 +297,17 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-    1,
-  },
-  Table {
-    1,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>  Table {</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 2
 ]=]
@@ -318,12 +318,12 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 1
 ]=]
@@ -379,17 +379,17 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-    1,
-  },
-  Table {
-    1,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>  Table {</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 2
 ]=]
@@ -400,12 +400,12 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 1
 ]=]
@@ -461,17 +461,17 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-    1,
-  },
-  Table {
-    1,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>  Table {</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 2
 ]=]
@@ -482,12 +482,12 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 1
 ]=]
@@ -543,17 +543,17 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-    1,
-  },
-  Table {
-    1,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>  Table {</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 2
 ]=]
@@ -564,12 +564,12 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 1
 ]=]
@@ -625,17 +625,17 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-    1,
-  },
-  Table {
-    1,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>  Table {</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 2
 ]=]
@@ -646,12 +646,12 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 1
 ]=]
@@ -707,17 +707,17 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-    1,
-  },
-  Table {
-    1,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>  Table {</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 2
 ]=]
@@ -728,12 +728,12 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 1
 ]=]
@@ -792,17 +792,17 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-    1,
-  },
-  Table {
-    1,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>  Table {</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 2
 ]=]
@@ -814,12 +814,12 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 1
 ]=]
@@ -880,17 +880,17 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-    1,
-  },
-  Table {
-    1,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>  Table {</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 2
 ]=]
@@ -902,12 +902,12 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 1
 ]=]
@@ -968,17 +968,17 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-    1,
-  },
-  Table {
-    1,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>  Table {</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 2
 ]=]
@@ -990,12 +990,12 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 1
 ]=]
@@ -1051,17 +1051,17 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-    1,
-  },
-  Table {
-    1,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>  Table {</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 2
 ]=]
@@ -1072,12 +1072,12 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 1
 ]=]
@@ -1133,17 +1133,17 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-    1,
-  },
-  Table {
-    1,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>  Table {</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 2
 ]=]
@@ -1154,12 +1154,12 @@ Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
-<red>Table {
-  Table {
-    0,
-    1,
-  },
-}</>
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
 
 Missing <red>1</> argument in row 1
 ]=]

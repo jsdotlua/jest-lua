@@ -196,11 +196,11 @@ snapshots["falls back to not call toJSON if it throws and then objects have diff
 <d>  }</>
 ]=]
 
--- ROBLOX deviation: edited to say 'Table' and 'Function anonymous', ordering changed, unescaped backticks
+-- ROBLOX deviation: edited to say 'Table' and 'Function anonymous', ordering changed
 snapshots["falls back to not call toJSON if serialization has no differences but then objects have differences 1"] = [=[
 
-<d>Compared values serialize to the same structure.
-Printing internal object structure without calling `toJSON` instead.</>
+<d>Compared values serialize to the same structure.</>
+<d>Printing internal object structure without calling `toJSON` instead.</>
 
 <g>- Expected  - 1</>
 <r>+ Received  + 1</>

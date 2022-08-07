@@ -1,34 +1,34 @@
 -- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-reporters/src/__tests__/__snapshots__/utils.test.ts.snap
+-- Jest Snapshot v1, https://goo.gl/fbAQLP
+
 local snapshots = {}
 
-snapshots[tostring("printDisplayName should correctly print the displayName when color and name are valid values 1")] =
-	'"[0m[7m[32m hello [39m[27m[0m"'
+snapshots["printDisplayName should correctly print the displayName when color and name are valid values 1"] =
+	[["</><inverse><green> hello </></></>"]]
 
-snapshots[tostring("printDisplayName should default displayName color to white when color is not a valid value 1")] =
-	'"[0m[7m[37m hello [39m[27m[0m"'
+snapshots["printDisplayName should default displayName color to white when color is not a valid value 1"] =
+	[["</><inverse><white> hello </></></>"]]
 
-snapshots[tostring("printDisplayName should default displayName color to white when displayName is a string 1")] =
-	'"[0m[7m[37m hello [39m[27m[0m"'
+snapshots["printDisplayName should default displayName color to white when displayName is a string 1"] =
+	[["</><inverse><white> hello </></></>"]]
 
-snapshots[tostring("trimAndFormatPath() does not trim anything 1")] =
-	'"[2m1234567890/1234567890/[22m[1m1234.js[22m"'
+snapshots["trimAndFormatPath() does not trim anything 1"] = [["<dim>1234567890/1234567890/</><bold>1234.js</>"]]
 
-snapshots[tostring("trimAndFormatPath() split at the path.sep index 1")] = '"[2m.../[22m[1m1234.js[22m"'
+snapshots["trimAndFormatPath() split at the path.sep index 1"] = [["<dim>.../</><bold>1234.js</>"]]
 
-snapshots[tostring("trimAndFormatPath() trims dirname (longer line width) 1")] =
-	'"[2m...890/1234567890/[22m[1m1234.js[22m"'
+snapshots["trimAndFormatPath() trims dirname (longer line width) 1"] = [["<dim>...890/1234567890/</><bold>1234.js</>"]]
 
-snapshots[tostring("trimAndFormatPath() trims dirname 1")] = '"[2m...234567890/[22m[1m1234.js[22m"'
+snapshots["trimAndFormatPath() trims dirname 1"] = [["<dim>...234567890/</><bold>1234.js</>"]]
 
-snapshots[tostring("trimAndFormatPath() trims dirname and basename 1")] = '"[1m...1234.js[22m"'
+snapshots["trimAndFormatPath() trims dirname and basename 1"] = [["<bold>...1234.js</>"]]
 
-snapshots[tostring("wrapAnsiString() returns the string unaltered if given a terminal width of zero 1")] =
-	'"This string shouldn\'t cause you any trouble"'
+snapshots["wrapAnsiString() returns the string unaltered if given a terminal width of zero 1"] =
+	[["This string shouldn't cause you any trouble"]]
 
-snapshots[tostring("wrapAnsiString() returns the string unaltered if given a terminal width of zero 2")] =
-	'"This string shouldn\'t cause you any trouble"'
+snapshots["wrapAnsiString() returns the string unaltered if given a terminal width of zero 2"] =
+	[["This string shouldn't cause you any trouble"]]
 
-snapshots[tostring("wrapAnsiString() wraps a long string containing ansi chars 1")] = [[
+snapshots["wrapAnsiString() wraps a long string containing ansi chars 1"] = [[
 
 "abcde <red><bold>red-
 bold</></> 12344
@@ -45,7 +45,7 @@ snthsnth</>ss
 ot"
 ]]
 
-snapshots[tostring("wrapAnsiString() wraps a long string containing ansi chars 2")] = [[
+snapshots["wrapAnsiString() wraps a long string containing ansi chars 2"] = [[
 
 "abcde red-
 bold 12344

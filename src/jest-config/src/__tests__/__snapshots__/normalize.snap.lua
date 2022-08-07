@@ -1,27 +1,28 @@
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-config/src/__tests__/__snapshots__/normalize.test.ts.snap
 -- Jest Snapshot v1, https://goo.gl/fbAQLP
 
 local exports = {}
 
 exports["rootDir throws error when rootDir is string 1"] = [[
 
-"<red><bold><bold>● </>Validation Error</>:
-
-  Directory <bold>rootDir</> in the <bold>rootDir</> option was not found.
-
-  <bold>Configuration Documentation:</>
-  https://jestjs.io/docs/configuration
-</>"
+"<red><bold><bold>● </><bold>Validation Error</>:</>
+<red></>
+<red>  Directory <bold>rootDir</> in the <bold>rootDir</> option was not found.</>
+<red></>
+<red>  <bold>Configuration Documentation:</></>
+<red>  https://jestjs.io/docs/configuration</>
+<red></>"
 ]]
 
 exports["rootDir throws error when rootDir is table 1"] = [[
 
-"<red><bold><bold>● </>Validation Error</>:
-
-  Directory <bold>TABLE</> in the <bold>rootDir</> option was not found.
-
-  <bold>Configuration Documentation:</>
-  https://jestjs.io/docs/configuration
-</>"
+"<red><bold><bold>● </><bold>Validation Error</>:</>
+<red></>
+<red>  Directory <bold>TABLE</> in the <bold>rootDir</> option was not found.</>
+<red></>
+<red>  <bold>Configuration Documentation:</></>
+<red>  https://jestjs.io/docs/configuration</>
+<red></>"
 ]]
 
 exports["Upgrade help logs a warning when `scriptPreprocessor` and/or `preprocessorIgnorePatterns` are used 1"] = [[
@@ -52,6 +53,7 @@ exports["displayName generates a default color for the runner jest-runner-tslint
 exports["displayName generates a default color for the runner undefined 1"] = [["white"]]
 
 exports["displayName should throw an error when displayName is is an empty object 1"] = [[
+
 "<red><bold><bold>● </><bold>Validation Error</>:</>
 <red></>
 <red>  Option \"<bold>displayName</>\" must be of type:</>
@@ -68,6 +70,7 @@ exports["displayName should throw an error when displayName is is an empty objec
 ]]
 
 exports["displayName should throw an error when displayName is missing color 1"] = [[
+
 "<red><bold><bold>● </><bold>Validation Error</>:</>
 <red></>
 <red>  Option \"<bold>displayName</>\" must be of type:</>
@@ -84,6 +87,7 @@ exports["displayName should throw an error when displayName is missing color 1"]
 ]]
 
 exports["displayName should throw an error when displayName is missing name 1"] = [[
+
 "<red><bold><bold>● </><bold>Validation Error</>:</>
 <red></>
 <red>  Option \"<bold>displayName</>\" must be of type:</>
@@ -100,6 +104,7 @@ exports["displayName should throw an error when displayName is missing name 1"] 
 ]]
 
 exports["displayName should throw an error when displayName is using invalid values 1"] = [[
+
 "<red><bold><bold>● </><bold>Validation Error</>:</>
 <red></>
 <red>  Option \"<bold>displayName</>\" must be of type:</>
@@ -174,13 +179,13 @@ exports["preset throws when preset not found 1"] = [[
 
 exports["rootDir throws if the options is missing a rootDir property 1"] = [[
 
-<red><bold><bold>● </><bold>Validation Error</>:</>
+"<red><bold><bold>● </><bold>Validation Error</>:</>
 <red></>
 <red>  Configuration option <bold>rootDir</> must be specified.</>
 <red></>
 <red>  <bold>Configuration Documentation:</></>
 <red>  https://jestjs.io/docs/configuration</>
-<red></>
+<red></>"
 ]]
 
 exports["runner throw error when a runner is not found 1"] = [[
@@ -228,6 +233,7 @@ exports["testEnvironment throws on invalid environment names 1"] = [[
 ]]
 
 exports["testMatch throws if testRegex and testMatch are both specified 1"] = [[
+
 "<red><bold><bold>● </><bold>Validation Error</>:</>
 <red></>
 <red>  Configuration options <bold>testMatch</> and <bold>testRegex</> cannot be used together.</>
@@ -244,6 +250,7 @@ exports["testPathPattern --testPathPattern ignores invalid regular expressions a
 	[["<red>  Invalid testPattern a( supplied. Running all tests instead.</>"]]
 
 exports["testTimeout should throw an error if timeout is a negative number 1"] = [[
+
 "<red><bold><bold>● </><bold>Validation Error</>:</>
 <red></>
 <red>  Option \"<bold>testTimeout</>\" must be a natural number.</>

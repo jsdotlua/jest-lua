@@ -67,6 +67,7 @@ return function()
 	end
 	-- ROBLOX deviation END
 
+	-- ROBLOX deviation START: not used
 	-- jest.mock("graceful-fs", function()
 	-- 	local realFs = jest.requireActual("fs")
 	-- 	return Object.assign({}, realFs, {
@@ -82,11 +83,15 @@ return function()
 	-- 		end,
 	-- 	})
 	-- end)
+	-- ROBLOX deviation END
 
+	-- ROBLOX deviation START: rootDir needs to be an Instance
 	-- local rootDir = path:resolve(__dirname, "test_root")
 	local rootDir = script.Parent.test_root
-	local testRegex = "/" .. "__testtests__" .. "/"
-	local testMatch = { "**/__testtests__/**/*" }
+	-- ROBLOX deviation END
+	-- ROBLOX deviation START: not used
+	-- local testRegex = "/" .. "__testtests__" .. "/"
+	-- local testMatch = { "**/__testtests__/**/*" }
 	-- local maxWorkers = 1
 	-- local function toPaths(tests: Array<Test>)
 	-- 	return Array.map(tests, function(ref)
@@ -94,6 +99,7 @@ return function()
 	-- 		return path
 	-- 	end)
 	-- end
+	-- ROBLOX deviation END
 	local findMatchingTests: (config: Config_ProjectConfig) -> Promise<SearchResult>
 
 	describe("SearchSource", function()
@@ -164,12 +170,12 @@ return function()
 			end)
 
 			-- ROBLOX deviation START: no process.platform support
-			itSKIP("supports win32 separators", function()
-				if process.platform == "win32" then
-					local path = "\\path\\to\\__tests__\\test.lua"
-					jestExpect(searchSource:isTestFilePath(path)).toEqual(true)
-				end
-			end)
+			-- it("supports win32 separators", function()
+			-- 	if process.platform == "win32" then
+			-- 		local path = "\\path\\to\\__tests__\\test.lua"
+			-- 		jestExpect(searchSource:isTestFilePath(path)).toEqual(true)
+			-- 	end
+			-- end)
 			-- ROBLOX deviation END
 		end)
 
@@ -326,51 +332,51 @@ return function()
 					:expect()
 			end)
 
-			-- ROBLOX NOTE: only lua extensions are supported in Luau version
-			itSKIP("finds tests with default file extensions using testRegex", function()
-				return Promise.resolve()
-					:andThen(function()
-						local config = normalize(
-							{ name = name, rootDir = rootDir, testMatch = nil, testRegex = testRegex },
-							{} :: Config_Argv
-						):expect().options
-						return findMatchingTests(config):andThen(function(data)
-							-- ROBLOX deviation START: use scripts to calculate relative path
-							local relPaths = Array.map(toScripts(data.tests), function(absPath)
-								return pathRelative(rootDir, absPath)
-							end)
-							-- ROBLOX deviation END
-							jestExpect(Array.sort(relPaths)).toEqual({
-								path.normalize("__testtests__/test.js"),
-								path.normalize("__testtests__/test.jsx"),
-							})
-						end)
-					end)
-					:expect()
-			end)
+			-- ROBLOX deviation START: only lua extensions are supported in Luau version
+			-- it("finds tests with default file extensions using testRegex", function()
+			-- 	return Promise.resolve()
+			-- 		:andThen(function()
+			-- 			local config = normalize(
+			-- 				{ name = name, rootDir = rootDir, testMatch = nil, testRegex = testRegex },
+			-- 				{} :: Config_Argv
+			-- 			):expect().options
+			-- 			return findMatchingTests(config):andThen(function(data)
+			-- 				-- ROBLOX deviation START: use scripts to calculate relative path
+			-- 				local relPaths = Array.map(toScripts(data.tests), function(absPath)
+			-- 					return pathRelative(rootDir, absPath)
+			-- 				end)
+			-- 				-- ROBLOX deviation END
+			-- 				jestExpect(Array.sort(relPaths)).toEqual({
+			-- 					path.normalize("__testtests__/test.js"),
+			-- 					path.normalize("__testtests__/test.jsx"),
+			-- 				})
+			-- 			end)
+			-- 		end)
+			-- 		:expect()
+			-- end)
 
-			-- ROBLOX NOTE: only lua extensions are supported in Luau version
-			itSKIP("finds tests with default file extensions using testMatch", function()
-				return Promise.resolve()
-					:andThen(function()
-						local config = normalize(
-							{ name = name, rootDir = rootDir, testMatch = testMatch, testRegex = "" },
-							{} :: Config_Argv
-						):expect().options
-						return findMatchingTests(config):andThen(function(data)
-							-- ROBLOX deviation START: use scripts to calculate relative path
-							local relPaths = Array.map(toScripts(data.tests), function(absPath)
-								return pathRelative(rootDir, absPath)
-							end)
-							-- ROBLOX deviation END
-							jestExpect(Array.sort(relPaths)).toEqual({
-								path.normalize("__testtests__/test.js"),
-								path.normalize("__testtests__/test.jsx"),
-							})
-						end)
-					end)
-					:expect()
-			end)
+			-- it("finds tests with default file extensions using testMatch", function()
+			-- 	return Promise.resolve()
+			-- 		:andThen(function()
+			-- 			local config = normalize(
+			-- 				{ name = name, rootDir = rootDir, testMatch = testMatch, testRegex = "" },
+			-- 				{} :: Config_Argv
+			-- 			):expect().options
+			-- 			return findMatchingTests(config):andThen(function(data)
+			-- 				-- ROBLOX deviation START: use scripts to calculate relative path
+			-- 				local relPaths = Array.map(toScripts(data.tests), function(absPath)
+			-- 					return pathRelative(rootDir, absPath)
+			-- 				end)
+			-- 				-- ROBLOX deviation END
+			-- 				jestExpect(Array.sort(relPaths)).toEqual({
+			-- 					path.normalize("__testtests__/test.js"),
+			-- 					path.normalize("__testtests__/test.jsx"),
+			-- 				})
+			-- 			end)
+			-- 		end)
+			-- 		:expect()
+			-- end)
+			-- ROBLOX deviation END
 
 			it("finds tests with parentheses in their rootDir when using testMatch", function()
 				return Promise.resolve()
@@ -395,128 +401,125 @@ return function()
 					:expect()
 			end)
 
-			-- ROBLOX NOTE: only lua extensions are supported in Luau version
-			itSKIP("finds tests with similar but custom file extensions", function()
-				return Promise.resolve()
-					:andThen(function()
-						local config = normalize({
-							moduleFileExtensions = { "js", "jsx" },
-							name = name,
-							rootDir = rootDir,
-							testMatch = testMatch,
-						}, {} :: Config_Argv):expect().options
-						return findMatchingTests(config):andThen(function(data)
-							-- ROBLOX deviation START: use scripts to calculate relative path
-							local relPaths = Array.map(toScripts(data.tests), function(absPath)
-								return pathRelative(rootDir, absPath)
-							end)
-							-- ROBLOX deviation END
-							jestExpect(Array.sort(relPaths)).toEqual({
-								path.normalize("__testtests__/test.js"),
-								path.normalize("__testtests__/test.jsx"),
-							})
-						end)
-					end)
-					:expect()
-			end)
+			-- ROBLOX deviation START: only lua extensions are supported in Luau version
+			-- it("finds tests with similar but custom file extensions", function()
+			-- 	return Promise.resolve()
+			-- 		:andThen(function()
+			-- 			local config = normalize({
+			-- 				moduleFileExtensions = { "js", "jsx" },
+			-- 				name = name,
+			-- 				rootDir = rootDir,
+			-- 				testMatch = testMatch,
+			-- 			}, {} :: Config_Argv):expect().options
+			-- 			return findMatchingTests(config):andThen(function(data)
+			-- 				-- ROBLOX deviation START: use scripts to calculate relative path
+			-- 				local relPaths = Array.map(toScripts(data.tests), function(absPath)
+			-- 					return pathRelative(rootDir, absPath)
+			-- 				end)
+			-- 				-- ROBLOX deviation END
+			-- 				jestExpect(Array.sort(relPaths)).toEqual({
+			-- 					path.normalize("__testtests__/test.js"),
+			-- 					path.normalize("__testtests__/test.jsx"),
+			-- 				})
+			-- 			end)
+			-- 		end)
+			-- 		:expect()
+			-- end)
 
-			-- ROBLOX NOTE: only lua extensions are supported in Luau version
-			itSKIP("finds tests with totally custom foobar file extensions", function()
-				return Promise.resolve()
-					:andThen(function()
-						local config = normalize({
-							moduleFileExtensions = { "js", "foobar" },
-							name = name,
-							rootDir = rootDir,
-							testMatch = testMatch,
-						}, {} :: Config_Argv):expect().options
-						return findMatchingTests(config):andThen(function(data)
-							-- ROBLOX deviation START: use scripts to calculate relative path
-							local relPaths = Array.map(toScripts(data.tests), function(absPath)
-								return pathRelative(rootDir, absPath)
-							end)
-							-- ROBLOX deviation END
-							jestExpect(Array.sort(relPaths)).toEqual({
-								path.normalize("__testtests__/test.foobar"),
-								path.normalize("__testtests__/test.js"),
-							})
-						end)
-					end)
-					:expect()
-			end)
+			-- it("finds tests with totally custom foobar file extensions", function()
+			-- 	return Promise.resolve()
+			-- 		:andThen(function()
+			-- 			local config = normalize({
+			-- 				moduleFileExtensions = { "js", "foobar" },
+			-- 				name = name,
+			-- 				rootDir = rootDir,
+			-- 				testMatch = testMatch,
+			-- 			}, {} :: Config_Argv):expect().options
+			-- 			return findMatchingTests(config):andThen(function(data)
+			-- 				-- ROBLOX deviation START: use scripts to calculate relative path
+			-- 				local relPaths = Array.map(toScripts(data.tests), function(absPath)
+			-- 					return pathRelative(rootDir, absPath)
+			-- 				end)
+			-- 				-- ROBLOX deviation END
+			-- 				jestExpect(Array.sort(relPaths)).toEqual({
+			-- 					path.normalize("__testtests__/test.foobar"),
+			-- 					path.normalize("__testtests__/test.js"),
+			-- 				})
+			-- 			end)
+			-- 		end)
+			-- 		:expect()
+			-- end)
 
-			-- ROBLOX NOTE: only lua extensions are supported in Luau version
-			itSKIP("finds tests with many kinds of file extensions", function()
-				return Promise.resolve()
-					:andThen(function()
-						local config = normalize({
-							moduleFileExtensions = { "js", "jsx" },
-							name = name,
-							rootDir = rootDir,
-							testMatch = testMatch,
-						}, {} :: Config_Argv):expect().options
-						return findMatchingTests(config):andThen(function(data)
-							-- ROBLOX deviation START: use scripts to calculate relative path
-							local relPaths = Array.map(toScripts(data.tests), function(absPath)
-								return pathRelative(rootDir, absPath)
-							end)
-							-- ROBLOX deviation END
-							jestExpect(Array.sort(relPaths)).toEqual({
-								path.normalize("__testtests__/test.js"),
-								path.normalize("__testtests__/test.jsx"),
-							})
-						end)
-					end)
-					:expect()
-			end)
+			-- it("finds tests with many kinds of file extensions", function()
+			-- 	return Promise.resolve()
+			-- 		:andThen(function()
+			-- 			local config = normalize({
+			-- 				moduleFileExtensions = { "js", "jsx" },
+			-- 				name = name,
+			-- 				rootDir = rootDir,
+			-- 				testMatch = testMatch,
+			-- 			}, {} :: Config_Argv):expect().options
+			-- 			return findMatchingTests(config):andThen(function(data)
+			-- 				-- ROBLOX deviation START: use scripts to calculate relative path
+			-- 				local relPaths = Array.map(toScripts(data.tests), function(absPath)
+			-- 					return pathRelative(rootDir, absPath)
+			-- 				end)
+			-- 				-- ROBLOX deviation END
+			-- 				jestExpect(Array.sort(relPaths)).toEqual({
+			-- 					path.normalize("__testtests__/test.js"),
+			-- 					path.normalize("__testtests__/test.jsx"),
+			-- 				})
+			-- 			end)
+			-- 		end)
+			-- 		:expect()
+			-- end)
 
-			-- ROBLOX NOTE: only lua extensions are supported in Luau version
-			itSKIP("finds tests using a regex only", function()
-				return Promise.resolve()
-					:andThen(function()
-						local config = normalize(
-							{ name = name, rootDir = rootDir, testMatch = nil, testRegex = testRegex },
-							{} :: Config_Argv
-						):expect().options
-						return findMatchingTests(config):andThen(function(data)
-							-- ROBLOX deviation START: use scripts to calculate relative path
-							local relPaths = Array.map(toScripts(data.tests), function(absPath)
-								return pathRelative(rootDir, absPath)
-							end)
-							-- ROBLOX deviation END
-							jestExpect(Array.sort(relPaths)).toEqual({
-								path.normalize("__testtests__/test.js"),
-								path.normalize("__testtests__/test.jsx"),
-							})
-						end)
-					end)
-					:expect()
-			end)
+			-- it("finds tests using a regex only", function()
+			-- 	return Promise.resolve()
+			-- 		:andThen(function()
+			-- 			local config = normalize(
+			-- 				{ name = name, rootDir = rootDir, testMatch = nil, testRegex = testRegex },
+			-- 				{} :: Config_Argv
+			-- 			):expect().options
+			-- 			return findMatchingTests(config):andThen(function(data)
+			-- 				-- ROBLOX deviation START: use scripts to calculate relative path
+			-- 				local relPaths = Array.map(toScripts(data.tests), function(absPath)
+			-- 					return pathRelative(rootDir, absPath)
+			-- 				end)
+			-- 				-- ROBLOX deviation END
+			-- 				jestExpect(Array.sort(relPaths)).toEqual({
+			-- 					path.normalize("__testtests__/test.js"),
+			-- 					path.normalize("__testtests__/test.jsx"),
+			-- 				})
+			-- 			end)
+			-- 		end)
+			-- 		:expect()
+			-- end)
 
-			-- ROBLOX NOTE: only lua extensions are supported in Luau version
-			itSKIP("finds tests using a glob only", function()
-				return Promise.resolve()
-					:andThen(function()
-						local config = normalize(
-							{ name = name, rootDir = rootDir, testMatch = testMatch, testRegex = "" },
-							{} :: Config_Argv
-						):expect().options
-						return findMatchingTests(config):andThen(function(data)
-							-- ROBLOX deviation START: use scripts to calculate relative path
-							local relPaths = Array.map(toScripts(data.tests), function(absPath)
-								return pathRelative(rootDir, absPath)
-							end)
-							-- ROBLOX deviation END
-							jestExpect(
-								Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
-							).toEqual({
-								path.normalize("__testtests__/test.js"),
-								path.normalize("__testtests__/test.jsx"),
-							})
-						end)
-					end)
-					:expect()
-			end)
+			-- it("finds tests using a glob only", function()
+			-- 	return Promise.resolve()
+			-- 		:andThen(function()
+			-- 			local config = normalize(
+			-- 				{ name = name, rootDir = rootDir, testMatch = testMatch, testRegex = "" },
+			-- 				{} :: Config_Argv
+			-- 			):expect().options
+			-- 			return findMatchingTests(config):andThen(function(data)
+			-- 				-- ROBLOX deviation START: use scripts to calculate relative path
+			-- 				local relPaths = Array.map(toScripts(data.tests), function(absPath)
+			-- 					return pathRelative(rootDir, absPath)
+			-- 				end)
+			-- 				-- ROBLOX deviation END
+			-- 				jestExpect(
+			-- 					Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
+			-- 				).toEqual({
+			-- 					path.normalize("__testtests__/test.js"),
+			-- 					path.normalize("__testtests__/test.jsx"),
+			-- 				})
+			-- 			end)
+			-- 		end)
+			-- 		:expect()
+			-- end)
+			-- ROBLOX deviation END
 		end)
 
 		-- ROBLOX deviation START: not supported

@@ -20,8 +20,6 @@ exports["printPropertiesAndReceived omit missing properties 1"] = [=[
 <d>  }</>
 ]=]
 
--- ROBLOX deviation: changed chalk encoding to stretch across multiple lines and
--- unescaped the backticks
 exports["pass false toMatchSnapshot New snapshot was not written (multi line) 1"] = [=[
 
 <d>expect(</><t>received</><d>).</>toMatchSnapshot<d>(</><b>hint</><d>)</>
@@ -33,11 +31,10 @@ New snapshot was <b>not written</>. The update flag must be explicitly passed to
 This is likely because this test is run in a continuous integration (CI) environment in which snapshots are not written by default.
 
 Received:
-<t>"To write or not to write,
-that is the question."</>
+<t>"To write or not to write,</>
+<t>that is the question."</>
 ]=]
 
--- ROBLOX deviation: unescaped the backticks
 exports["pass false toMatchSnapshot New snapshot was not written (single line) 1"] = [=[
 
 <d>expect(</><t>received</><d>).</>toMatchSnapshot<d>(</><b>hint</><d>)</>
@@ -51,7 +48,7 @@ This is likely because this test is run in a continuous integration (CI) environ
 Received: <t>"Write me if you can!"</>
 ]=]
 
--- ROBLOX deviation: Changed RangeError to Error and unescaped the backticks
+-- ROBLOX deviation: Changed RangeError to Error
 exports["pass false toMatchSnapshot with properties equals false isLineDiffable false 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toMatchSnapshot<d>(</><g>properties</><d>)</>
@@ -62,7 +59,7 @@ Expected properties: <g>{"name": "Error"}</>
 Received value:      <r>[Error: Invalid array length]</>
 ]=]
 
--- ROBLOX deviation: unescape the backticks and changed Object to Table
+-- ROBLOX deviation: changed Object to Table
 exports["pass false toMatchSnapshot with properties equals false isLineDiffable true 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toMatchSnapshot<d>(</><g>properties</><d>)</>
@@ -78,7 +75,7 @@ Snapshot name: `with properties 1`
 <d>  }</>
 ]=]
 
--- ROBLOX deviation: unescape the backticks and changed Object to Table
+-- ROBLOX deviation: changed Object to Table
 exports["pass false toMatchSnapshot with properties equals true 1"] = [=[
 
 <d>expect(</><t>received</><d>).</>toMatchSnapshot<d>(</>properties<d>, </><b>hint</><d>)</>
@@ -96,7 +93,6 @@ Snapshot name: `with properties: <b>change text value</> 1`
 <d>  }</>
 ]=]
 
--- ROBLOX deviation: unescaped the backticks
 exports["printSnapshotAndReceived backtick single line expected and received 1"] = [=[
 
 Snapshot: <m>"var foo = `backtick`;"</>
@@ -119,7 +115,6 @@ exports["printSnapshotAndReceived empty string received and expected multi line 
 <m>- string</>
 ]=]
 
--- ROBLOX deviation: unescaped backslashes
 exports["printSnapshotAndReceived escape backslash in multi line string 1"] = [=[
 
 <m>- Snapshot  - 1</>
@@ -130,14 +125,12 @@ exports["printSnapshotAndReceived escape backslash in multi line string 1"] = [=
 <t>+ <i>B</i>ack \ slash</>
 ]=]
 
--- ROBLOX deviation: unescaped backslashes
 exports["printSnapshotAndReceived escape backslash in single line string 1"] = [=[
 
 Snapshot: <m>"<i>f</i>orward / slash and back \\ slash"</>
 Received: <t>"<i>F</i>orward / slash and back \\ slash"</>
 ]=]
 
--- ROBLOX deviation: unescaped backslashes
 exports["printSnapshotAndReceived escape double quote marks in string 1"] = [=[
 
 Snapshot: <m>"What does \"<i>oo</i>bleck\" mean?"</>
@@ -259,13 +252,13 @@ exports["printSnapshotAndReceived ignore indentation object insert 1"] = [=[
 <d>  }</>
 ]=]
 
--- ROBLOX deviation: changed null to nil and Object to Table and chalk encoding to stretch across multiple lines
+-- ROBLOX deviation: changed null to nil and Object to Table
 exports["printSnapshotAndReceived isLineDiffable false asymmetric matcher 1"] = [=[
 
 Snapshot: <m>nil</>
-Received: <t>Table {
-  "asymmetricMatch": [Function],
-}</>
+Received: <t>Table {</>
+<t>  "asymmetricMatch": [Function],</>
+<t>}</>
 ]=]
 
 exports["printSnapshotAndReceived isLineDiffable false boolean 1"] = [=[
@@ -398,7 +391,6 @@ exports["printSnapshotAndReceived without serialize backtick single line expecte
 <t>+ tick`;</>
 ]=]
 
--- ROBLOX deviation: unescaped backticks and $
 exports["printSnapshotAndReceived without serialize backtick single line expected and received 1"] = [=[
 
 <m>- Snapshot  - 1</>

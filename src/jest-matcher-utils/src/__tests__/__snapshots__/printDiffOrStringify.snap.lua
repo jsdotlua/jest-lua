@@ -209,8 +209,8 @@ Received: <r>"single line"</>
 
 snapshots["printDiffOrStringify expected is multi line and received is empty 1"] = [=[
 
-Expected: <g>"multi
-line"</>
+Expected: <g>"multi</>
+<g>line"</>
 Received: <r>""</>
 ]=]
 

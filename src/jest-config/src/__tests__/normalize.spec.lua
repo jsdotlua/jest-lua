@@ -257,15 +257,14 @@ return function()
 	-- ROBLOX deviation END
 
 	describe("rootDir", function()
-		-- ROBLOX FIXME: doesn't serialize exactly the same
-		itFIXME("throws if the options is missing a rootDir property", function()
+		it("throws if the options is missing a rootDir property", function()
 			return Promise.resolve()
 				:andThen(function()
 					-- ROBLOX deviation START: no .rejects and .assertions
 					-- expect:assertions(1)
 					jestExpect(function()
 						normalize({}, {} :: Config_Argv):expect()
-					end).toThrowErrorMatchingSnapshot():expect()
+					end).toThrowErrorMatchingSnapshot()
 					-- ROBLOX deviation END
 				end)
 				:expect()
@@ -924,8 +923,7 @@ return function()
 				:expect()
 		end)
 
-		-- ROBLOX FIXME: doesn't serialize exactly the same
-		itFIXME("throws if testRegex and testMatch are both specified", function()
+		it("throws if testRegex and testMatch are both specified", function()
 			return Promise.resolve()
 				:andThen(function()
 					-- ROBLOX deviation START: no .rejects
@@ -1555,8 +1553,7 @@ return function()
 				{ displayName = { color = 2, name = {} }, description = "using invalid values" },
 			}
 		do
-			-- ROBLOX FIXME: doesn't serialize exactly the same
-			itFIXME("should throw an error when displayName is " .. ref.description, function()
+			it("should throw an error when displayName is " .. ref.description, function()
 				local displayName = ref.displayName
 				return Promise.resolve()
 					:andThen(function()
@@ -1609,8 +1606,7 @@ return function()
 				:expect()
 		end)
 
-		-- ROBLOX FIXME: doesn't serialize exactly the same
-		itFIXME("should throw an error if timeout is a negative number", function()
+		it("should throw an error if timeout is a negative number", function()
 			return Promise.resolve()
 				:andThen(function()
 					-- ROBLOX deviation START: no .rejects

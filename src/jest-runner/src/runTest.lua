@@ -81,9 +81,9 @@ local function freezeConsole(testConsole: BufferedConsole | CustomConsole | Null
 	local function fakeConsolePush(self: any, _type: LogType, message: LogMessage)
 		local _error_ = ErrorWithStack.new(
 			('%s\nAttempted to log "%s".'):format(
-				chalk:red(
+				chalk.red(
 					("%s Did you forget to wait for something async in your test?"):format(
-						chalk:bold("Cannot log after tests are done.")
+						chalk.bold("Cannot log after tests are done.")
 					)
 				),
 				message

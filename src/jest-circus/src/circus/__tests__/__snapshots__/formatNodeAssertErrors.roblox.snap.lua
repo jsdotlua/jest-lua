@@ -8,11 +8,11 @@ exports[ [=[formatNodeAssertErrors should format AssertionError with message 1]=
 Table {
   Table {
     "message": "[0mExpected value [0m  [32mnil[39m
-[0mReceived:
-[0m  [31mnil[39m[0m
-
-Message:
-  kaboom[0m
+[0mReceived:[0m
+[0m[0m  [31mnil[39m[0m[0m
+[0m[0m
+[0mMessage:[0m
+[0m  kaboom[0m
 
 Difference:
 
@@ -27,10 +27,10 @@ Table {
   Table {
     "message": "[2massert[22m[2m.deepEqual([22m[31mreceived[39m[2m, [22m[32mexpected[39m[2m)[22m
 
-[0mExpected value to deeply equal to:
-[0m  [32m{\"foo\": \"foo\"}[39m
-[0mReceived:
-[0m  [31m{\"foo\": \"fooBar\"}[39m
+[0mExpected value to deeply equal to:[0m
+[0m[0m  [32m{\"foo\": \"foo\"}[39m
+[0mReceived:[0m
+[0m[0m  [31m{\"foo\": \"fooBar\"}[39m
 
 Difference:
 
@@ -51,10 +51,10 @@ Table {
   Table {
     "message": "[2massert[22m[2m.deepStrictEqual([22m[31mreceived[39m[2m, [22m[32mexpected[39m[2m)[22m
 
-[0mExpected value to deeply and strictly equal to:
-[0m  [32m{\"foo\": \"foo\"}[39m
-[0mReceived:
-[0m  [31m{\"foo\": \"fooBar\"}[39m
+[0mExpected value to deeply and strictly equal to:[0m
+[0m[0m  [32m{\"foo\": \"foo\"}[39m
+[0mReceived:[0m
+[0m[0m  [31m{\"foo\": \"fooBar\"}[39m
 
 Difference:
 
@@ -75,10 +75,10 @@ Table {
   Table {
     "message": "[2massert[22m[2m.notDeepEqual([22m[31mreceived[39m[2m, [22m[32mexpected[39m[2m)[22m
 
-[0mExpected value not to deeply equal to:
-[0m  [32m{\"foo\": \"foo\"}[39m
-[0mReceived:
-[0m  [31m{\"foo\": \"foo\"}[39m
+[0mExpected value not to deeply equal to:[0m
+[0m[0m  [32m{\"foo\": \"foo\"}[39m
+[0mReceived:[0m
+[0m[0m  [31m{\"foo\": \"foo\"}[39m
 
 Difference:
 
@@ -93,10 +93,10 @@ Table {
   Table {
     "message": "[2massert[22m[2m.notDeepEqualUnequal([22m[31mreceived[39m[2m, [22m[32mexpected[39m[2m)[22m
 
-[0mExpected value notDeepEqualUnequal to:
-[0m  [32m{\"foo\": \"foo\"}[39m
-[0mReceived:
-[0m  [31m{\"foo\": \"foo\"}[39m
+[0mExpected value notDeepEqualUnequal to:[0m
+[0m[0m  [32m{\"foo\": \"foo\"}[39m
+[0mReceived:[0m
+[0m[0m  [31m{\"foo\": \"foo\"}[39m
 
 Difference:
 
@@ -111,10 +111,10 @@ Table {
   Table {
     "message": "[2massert[22m[2m.notDeepStrictEqual([22m[31mreceived[39m[2m, [22m[32mexpected[39m[2m)[22m
 
-[0mExpected value not to deeply and strictly equal to:
-[0m  [32m{\"foo\": \"foo\"}[39m
-[0mReceived:
-[0m  [31m{\"foo\": \"foo\"}[39m
+[0mExpected value not to deeply and strictly equal to:[0m
+[0m[0m  [32m{\"foo\": \"foo\"}[39m
+[0mReceived:[0m
+[0m[0m  [31m{\"foo\": \"foo\"}[39m
 
 Difference:
 
@@ -129,10 +129,10 @@ Table {
   Table {
     "message": "[2massert[22m[2m.notIdentical([22m[31mreceived[39m[2m, [22m[32mexpected[39m[2m)[22m
 
-[0mExpected value notIdentical to:
-[0m  [32m{\"foo\": \"foo\"}[39m
-[0mReceived:
-[0m  [31m{\"foo\": \"foo\"}[39m
+[0mExpected value notIdentical to:[0m
+[0m[0m  [32m{\"foo\": \"foo\"}[39m
+[0mReceived:[0m
+[0m[0m  [31m{\"foo\": \"foo\"}[39m
 
 Difference:
 
@@ -147,10 +147,10 @@ Table {
   Table {
     "message": "[2massert[22m[2m.notStrictEqual([22m[31mreceived[39m[2m, [22m[32mexpected[39m[2m)[22m
 
-[0mExpected value not be strictly equal to:
-[0m  [32m{\"foo\": \"foo\"}[39m
-[0mReceived:
-[0m  [31m{\"foo\": \"foo\"}[39m
+[0mExpected value not be strictly equal to:[0m
+[0m[0m  [32m{\"foo\": \"foo\"}[39m
+[0mReceived:[0m
+[0m[0m  [31m{\"foo\": \"foo\"}[39m
 
 Difference:
 
@@ -165,10 +165,10 @@ Table {
   Table {
     "message": "[2massert[22m[2m.notStrictEqualObject([22m[31mreceived[39m[2m, [22m[32mexpected[39m[2m)[22m
 
-[0mExpected value notStrictEqualObject to:
-[0m  [32m{\"foo\": \"foo\"}[39m
-[0mReceived:
-[0m  [31m{\"foo\": \"foo\"}[39m
+[0mExpected value notStrictEqualObject to:[0m
+[0m[0m  [32m{\"foo\": \"foo\"}[39m
+[0mReceived:[0m
+[0m[0m  [31m{\"foo\": \"foo\"}[39m
 
 Difference:
 
@@ -183,10 +183,10 @@ Table {
   Table {
     "message": "[2massert[22m[2m.strictEqual([22m[31mreceived[39m[2m, [22m[32mexpected[39m[2m)[22m
 
-[0mExpected value to strictly be equal to:
-[0m  [32m{\"foo\": \"foo\"}[39m
-[0mReceived:
-[0m  [31m{\"foo\": \"fooBar\"}[39m
+[0mExpected value to strictly be equal to:[0m
+[0m[0m  [32m{\"foo\": \"foo\"}[39m
+[0mReceived:[0m
+[0m[0m  [31m{\"foo\": \"fooBar\"}[39m
 
 Difference:
 
@@ -207,10 +207,10 @@ Table {
   Table {
     "message": "[2massert[22m[2m.strictEqualObject([22m[31mreceived[39m[2m, [22m[32mexpected[39m[2m)[22m
 
-[0mExpected value strictEqualObject to:
-[0m  [32m{\"foo\": \"foo\"}[39m
-[0mReceived:
-[0m  [31m{\"foo\": \"fooBar\"}[39m
+[0mExpected value strictEqualObject to:[0m
+[0m[0m  [32m{\"foo\": \"foo\"}[39m
+[0mReceived:[0m
+[0m[0m  [31m{\"foo\": \"fooBar\"}[39m
 
 Difference:
 

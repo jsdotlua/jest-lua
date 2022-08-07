@@ -1,5 +1,3 @@
--- ROBLOX NOTE: no upstream
-
 -- Jest Roblox Snapshot v1, http://roblox.github.io/jest-roblox/snapshot-testing
 
 local exports = {}
