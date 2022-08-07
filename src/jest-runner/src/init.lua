@@ -166,10 +166,11 @@ function TestRunner:_createInBandTestRun(
 		-- ROBLOX deviation: no process available in Luau
 		-- process.env.JEST_WORKER_ID = "1"
 		local mutex = throat(1) :: ThroatLateBound<nil, nil>
-		return Array.reduce(tests, function(promise, test: Test)
+		return Array.reduce(tests, function(promise: Promise<nil>, test: Test)
 			return mutex(function()
-				return promise
-					:andThen(function()
+				-- ROBLOX FIXME START: Promise type doesn't support changing return type with :andThen call
+				return (promise :: Promise<any>)
+					:andThen(function(): Promise<TestResult>
 						return Promise.resolve():andThen(function()
 							if watcher:isInterrupted() then
 								error(CancelRun.new())
@@ -215,7 +216,7 @@ function TestRunner:_createInBandTestRun(
 							end
 						end)
 					end)
-					:andThen(function(result)
+					:andThen(function(result: TestResult)
 						if onResult ~= nil then
 							return onResult(test, result)
 						else
@@ -228,7 +229,8 @@ function TestRunner:_createInBandTestRun(
 						else
 							return self.eventEmitter:emit("test-file-failure", { test :: any, err })
 						end
-					end)
+					end) :: Promise<nil>
+				-- ROBLOX FIXME END
 			end)
 		end, Promise.resolve())
 	end)

@@ -61,11 +61,28 @@ type CurrentTestList = {
 	get: (self: CurrentTestList) -> Array<{
 		testPath: Config_Path,
 		config: Config_ProjectConfig,
-	}>,
+	} | nil>,
 }
 
-local CurrentTestList = {}
-CurrentTestList.__index = CurrentTestList
+type CurrentTestListPrivate = {
+	add: (self: CurrentTestListPrivate, testPath: Config_Path, config: Config_ProjectConfig) -> (),
+	delete: (self: CurrentTestListPrivate, testPath: Config_Path) -> (),
+	get: (self: CurrentTestListPrivate) -> Array<{
+		testPath: Config_Path,
+		config: Config_ProjectConfig,
+	} | nil>,
+	_array: Array<{
+		testPath: Config_Path,
+		config: Config_ProjectConfig,
+	} | nil>,
+}
+
+type CurrentTestList_statics = {
+	new: () -> CurrentTestList,
+}
+
+local CurrentTestList = {} :: CurrentTestListPrivate & CurrentTestList_statics;
+(CurrentTestList :: any).__index = CurrentTestList
 
 function CurrentTestList.new(): CurrentTestList
 	local self = setmetatable({}, CurrentTestList)
@@ -93,7 +110,7 @@ end
 function CurrentTestList:get(): Array<{
 	testPath: Config_Path,
 	config: Config_ProjectConfig,
-}>
+} | nil>
 	return self._array
 end
 

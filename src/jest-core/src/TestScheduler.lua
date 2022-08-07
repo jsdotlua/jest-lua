@@ -619,9 +619,14 @@ function getEstimatedTime(timings: Array<number>, workers: number): number
 	local max = math.max(table.unpack(timings))
 	return if #timings <= workers
 		then max
-		else math.max(Array.reduce(timings, function(sum, time_)
-			return sum + time_
-		end) / workers, max)
+		else
+			math.max(Array.reduce(timings, function(
+				-- ROBLOX FIXME Luau: should be inferred from reduce's initial value
+				sum: number,
+				time_
+			)
+				return sum + time_
+			end) / workers, max)
 end
 
 return exports

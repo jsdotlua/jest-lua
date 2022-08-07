@@ -21,7 +21,11 @@ local typesModule = require(script.Parent.types)
 type TestRunData = typesModule.TestRunData
 
 local function getNoTestFound(testRunData: TestRunData, globalConfig: Config_GlobalConfig): string
-	local testFiles = Array.reduce(testRunData, function(current, testRun)
+	local testFiles = Array.reduce(testRunData, function(
+		-- ROBLOX FIXME Luau: should be inferred from reduce's initial value
+		current: number,
+		testRun
+	)
 		return current + (Boolean.toJSBoolean(testRun.matches.total) and testRun.matches.total or 0)
 	end, 0)
 	local dataMessage

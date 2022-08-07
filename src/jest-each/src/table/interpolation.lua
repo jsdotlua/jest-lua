@@ -62,7 +62,7 @@ end
 function replaceKeyPathWithValue(template: Template): (title: string, match: string) -> string
 	return function(title: string, match: string)
 		local newMatch = match:gsub("%$", "", 1) -- ROBLOX deviation: escape string
-		local keyPath = String.split(newMatch, "%.") -- ROBLOX deviation: escape string
+		local keyPath = String.split(newMatch, ".")
 		local value = getPath(template, keyPath)
 		if isPrimitive(value) then
 			return title:gsub(match, tostring(value), 1)

@@ -75,16 +75,19 @@ local function getTestFailurePath(fileNode: TestEZResult)
 	return path
 end
 
-local function getTestResult(node: TestEZResult, path: Array<string>)
+local function getTestResult(node: TestEZResult, path: Array<string>): AssertionResult
 	return {
 		ancestorTitles = path,
 		title = node.planNode.phrase,
 		fullName = ("%s/%s"):format(Array.join(path, "/"), node.planNode.phrase),
-		status = if node.status == "Success" then "passed" elseif node.status == "Failure" then "failed" else "pending",
+		status = (if node.status == "Success" then "passed" elseif node.status == "Failure" then "failed" else "pending") :: Status,
+		failureDetails = {},
+		failureMessages = node.errors,
+		numPassingAsserts = 0,
 	}
 end
 
-local function getTestResults(fileNode: TestEZResult, path_: Array<string>?)
+local function getTestResults(fileNode: TestEZResult, path_: Array<string>?): Array<AssertionResult>
 	local path = path_ or {}
 	return Array.reduce(fileNode.children, function(results, child)
 		if child.planNode.type == "It" then
@@ -97,7 +100,7 @@ local function getTestResults(fileNode: TestEZResult, path_: Array<string>?)
 	end, {})
 end
 
-local function getTestSuiteResults(fileNode: TestEZResult, path_: Array<string>?)
+local function getTestSuiteResults(fileNode: TestEZResult, path_: Array<string>?): Array<AssertionResult>
 	local path = path_ or {}
 	return Array.reduce(fileNode.children, function(results, child)
 		if child.planNode.isRoot then
@@ -110,7 +113,7 @@ local function getTestSuiteResults(fileNode: TestEZResult, path_: Array<string>?
 	end, {})
 end
 
-local function countResults(testResults: Array<AssertionResult>, status: Status)
+local function countResults(testResults: Array<AssertionResult>, status: Status): number
 	return #Array.filter(testResults, function(res)
 		return res.status == status
 	end)

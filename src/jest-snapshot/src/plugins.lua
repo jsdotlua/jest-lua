@@ -14,11 +14,13 @@ local Array = LuauPolyfill.Array
 
 local jestMockSerializer = require(CurrentModule.mockSerializer)
 
+local prettyFormat = require(Packages.PrettyFormat)
+type PrettyFormatPlugins = prettyFormat.Plugins
 local plugins = require(Packages.PrettyFormat).plugins
 -- ROBLOX deviation: omitting DOMCollection, DOMElement, Immutable, ReactElement, ReactTestComponent
 
 -- ROBLOX TODO: ADO-1182 Add more plugins here as we translate them
-local PLUGINS = {
+local PLUGINS: PrettyFormatPlugins = {
 	jestMockSerializer,
 	plugins.AsymmetricMatcher,
 	plugins.ReactElement,
@@ -27,7 +29,7 @@ local PLUGINS = {
 	plugins.RobloxInstance,
 }
 
-local originalPLUGINS = Array.from(PLUGINS)
+local originalPLUGINS: PrettyFormatPlugins = Array.from(PLUGINS) :: PrettyFormatPlugins
 
 -- Prepend to list so the last added is the first tested.
 local function addSerializer(plugin_)
@@ -41,7 +43,8 @@ end
 -- ROBLOX deviation: add resetSerializers to deal with resetting plugins since we don't
 -- have any of jest's test resetting implemented
 local function resetSerializers()
-	PLUGINS = Array.from(originalPLUGINS)
+	-- ROBLOX FIXME Luau: should be inferred from passed param
+	PLUGINS = Array.from(originalPLUGINS) :: PrettyFormatPlugins
 end
 
 return {

@@ -11,6 +11,7 @@ local Packages = script.Parent.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
+type Array<T> = LuauPolyfill.Array<T>
 
 local exports = {}
 
@@ -51,9 +52,14 @@ end
 
 function convertTableToTemplates(table_: Global_Table, headings: Headings): Templates
 	return Array.map(table_, function(row)
-		return Array.reduce(row, function(acc, value, index)
+		return Array.reduce(row, function(
+			-- ROBLOX FIXME Luau: should be inferred from reduce's initial value
+			acc: Template,
+			value,
+			index
+		)
 			return Object.assign(acc, { [headings[index]] = value })
-		end, {})
+		end, {} :: Template)
 	end)
 end
 

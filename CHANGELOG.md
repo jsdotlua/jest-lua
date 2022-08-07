@@ -1,5 +1,15 @@
 # Jest Roblox Changelog
 
+## Not released yet
+
+* :sparkles: Port `jest-config` ([#203](https://github.com/Roblox/jest-roblox/pull/203))
+* :sparkles: Port `jest-core` ([#203](https://github.com/Roblox/jest-roblox/pull/203))
+* :sparkles: Port `jest-validate` ([#203](https://github.com/Roblox/jest-roblox/pull/203))
+* :hammer_and_wrench: Adjust other modules to work with `jest-core` ([#203](https://github.com/Roblox/jest-roblox/pull/203))
+* :hammer_and_wrench: Update LuauPolyfill to [v0.4.1](https://github.com/Roblox/luau-polyfill/blob/v0.4.1/CHANGELOG.md#041) ([#215](https://github.com/Roblox/jest-roblox/pull/215))
+* :hammer_and_wrench: Update Roact to [v17.0.1-rc.13](https://github.com/Roblox/roact-alignment/tree/v17.0.1-rc.13) ([#215](https://github.com/Roblox/jest-roblox/pull/215))
+* :hammer_and_wrench: Update Picomatch to [v0.3.0](https://github.com/Roblox/picomatch-lua/blob/v0.3.0/CHANGELOG.md#030) ([#215](https://github.com/Roblox/jest-roblox/pull/215))
+
 ## 2.5.0 alpha 0 (2022-06-30)
 * :sparkles: Port `jest-runner` ([#197](https://github.com/Roblox/jest-roblox/pull/197))
 * :sparkles: Port `jest-runtime` ([#178](https://github.com/Roblox/jest-roblox/pull/178))

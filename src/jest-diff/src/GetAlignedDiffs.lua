@@ -28,7 +28,11 @@ type DiffOptionsColor = Types.DiffOptionsColor
 -- * include change strings which have argument op with changeColor
 -- * exclude change strings which have opposite op
 local function concatenateRelevantDiffs(op: number, diffs: Array<Diff>, changeColor: DiffOptionsColor): string
-	return Array.reduce(diffs, function(reduced, diff)
+	return Array.reduce(diffs, function(
+		-- ROBLOX FIXME Luau: should be inferred from reduce's initial value
+		reduced: string,
+		diff
+	)
 		if diff[1] == DIFF_EQUAL then
 			return reduced .. diff[2]
 		elseif diff[1] == op and #diff[2] ~= 0 then -- empty if change is newline

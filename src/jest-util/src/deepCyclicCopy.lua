@@ -15,6 +15,7 @@ local Object = LuauPolyfill.Object
 local Set = LuauPolyfill.Set
 local WeakMap = LuauPolyfill.WeakMap
 type Array<T> = LuauPolyfill.Array<T>
+type Object = LuauPolyfill.Object
 type Set<T> = LuauPolyfill.Set<T>
 type WeakMap<T, U> = LuauPolyfill.WeakMap<T, U>
 local exports = {}
@@ -29,7 +30,7 @@ export type DeepCyclicCopyOptions = { blacklist: Set<string>?, keepPrototype: bo
 
 function deepCyclicCopy<T>(value: T, options_: DeepCyclicCopyOptions?, cycles_: WeakMap<any, any>?): T
 	local options = options_ or { blacklist = EMPTY, keepPrototype = false }
-	local cycles = cycles_ or WeakMap.new()
+	local cycles: WeakMap<any, any> = if cycles_ then cycles_ else WeakMap.new()
 
 	if typeof(value) ~= "table" then
 		return value
@@ -43,7 +44,7 @@ function deepCyclicCopy<T>(value: T, options_: DeepCyclicCopyOptions?, cycles_: 
 end
 exports.default = deepCyclicCopy
 
-function deepCyclicCopyObject<T>(object: T, options: DeepCyclicCopyOptions, cycles: WeakMap<any, any>): T
+function deepCyclicCopyObject<T>(object: T & Object, options: DeepCyclicCopyOptions, cycles: WeakMap<any, any>): T
 	-- ROBLOX deviation START: prototypes are not supported
 	local newObject = {}
 	if options.keepPrototype then
@@ -52,7 +53,7 @@ function deepCyclicCopyObject<T>(object: T, options: DeepCyclicCopyOptions, cycl
 	-- ROBLOX deviation END
 
 	-- ROBLOX deviation START: no property descriptors in Lua
-	local descriptors = Array.reduce(Object.keys(object :: any), function(acc, key)
+	local descriptors = Array.reduce(Object.keys(object), function(acc, key)
 		acc[key] = {
 			value = (object :: any)[key],
 		}
@@ -68,7 +69,7 @@ function deepCyclicCopyObject<T>(object: T, options: DeepCyclicCopyOptions, cycl
 			return
 		end
 
-		local descriptor = descriptors[key]
+		local descriptor: Object = descriptors[key]
 		if typeof(descriptor.value) ~= "nil" then
 			descriptor.value = deepCyclicCopy(
 				descriptor.value,

@@ -162,10 +162,14 @@ function ReporterDispatcher:onRunComplete(contexts: Set<Context>, results: Aggre
 end
 
 function ReporterDispatcher:getErrors(): Array<Error>
-	return Array.reduce(self._reporters, function(list, reporter)
+	return Array.reduce(self._reporters, function(
+		-- ROBLOX FIXME Luau: should be inferred from reduce's initial value
+		list: Array<Error>,
+		reporter
+	)
 		local error_ = if reporter.getLastError ~= nil then reporter:getLastError() else nil
 		return if error_ ~= nil then Array.concat(list, error_) else list
-	end, {})
+	end, {} :: Array<Error>)
 end
 
 function ReporterDispatcher:hasErrors(): boolean

@@ -14,6 +14,7 @@ return function()
 	local NaN = Number.NaN
 	type Array<T> = LuauPolyfill.Array<T>
 	type Object = LuauPolyfill.Object
+	type Function = (...any) -> ...any
 
 	local NIL = require(script.Parent.Parent.nilPlaceholder)
 
@@ -160,10 +161,14 @@ return function()
 				it("throws an error when not called with an array", function()
 					local globalTestMocks = getGlobalTestMocks()
 					local eachObject = each.withGlobal(globalTestMocks)(nil :: any)
-					local testFunction = get(eachObject, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local testFunction = (get(eachObject, keyPath) :: any) :: Function
+					-- ROBLOX deviation END
 
 					testFunction("expected string", noop)
-					local globalMock = get(globalTestMocks, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local globalMock = (get(globalTestMocks, keyPath) :: any) :: typeof(jest.fn())
+					-- ROBLOX deviation END
 					jestExpect(function()
 						return globalMock.mock.calls[1][2](globalMock.mock.calls[1])
 					end).toThrowErrorMatchingSnapshot()
@@ -172,10 +177,14 @@ return function()
 				it("throws an error when called with an empty array", function()
 					local globalTestMocks = getGlobalTestMocks()
 					local eachObject = each.withGlobal(globalTestMocks)({})
-					local testFunction = get(eachObject, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local testFunction = (get(eachObject, keyPath) :: any) :: Function
+					-- ROBLOX deviation END
 
 					testFunction("expected string", noop)
-					local globalMock = get(globalTestMocks, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local globalMock = (get(globalTestMocks, keyPath) :: any) :: typeof(jest.fn())
+					-- ROBLOX deviation END
 
 					jestExpect(function()
 						return globalMock.mock.calls[1][2](globalMock.mock.calls[1])
@@ -185,10 +194,15 @@ return function()
 				it("calls global with given title", function()
 					local globalTestMocks = getGlobalTestMocks()
 					local eachObject = each.withGlobal(globalTestMocks)({ {} })
-					local testFunction = get(eachObject, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local testFunction = (get(eachObject, keyPath) :: any) :: Function
+					-- ROBLOX deviation END
 					testFunction("expected string", noop)
+					-- ROBLOX deviation END
 
-					local globalMock = get(globalTestMocks, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local globalMock = (get(globalTestMocks, keyPath) :: any) :: typeof(jest.fn())
+					-- ROBLOX deviation END
 					jestExpect(globalMock).toHaveBeenCalledTimes(1)
 					jestExpect(globalMock).toHaveBeenCalledWith("expected string", expectFunction, nil)
 				end)
@@ -196,10 +210,14 @@ return function()
 				it("calls global with given title when multiple tests cases exist", function()
 					local globalTestMocks = getGlobalTestMocks()
 					local eachObject = each.withGlobal(globalTestMocks)({ {}, {} })
-					local testFunction = get(eachObject, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local testFunction = (get(eachObject, keyPath) :: any) :: Function
+					-- ROBLOX deviation END
 					testFunction("expected string", noop)
 
-					local globalMock = get(globalTestMocks, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local globalMock = (get(globalTestMocks, keyPath) :: any) :: typeof(jest.fn())
+					-- ROBLOX deviation END
 					jestExpect(globalMock).toHaveBeenCalledTimes(2)
 					jestExpect(globalMock).toHaveBeenCalledWith("expected string", expectFunction, nil)
 					jestExpect(globalMock).toHaveBeenCalledWith("expected string", expectFunction, nil)
@@ -234,10 +252,14 @@ return function()
 							NaN :: any,
 						},
 					})
-					local testFunction = get(eachObject, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local testFunction = (get(eachObject, keyPath) :: any) :: Function
+					-- ROBLOX deviation END
 					testFunction("expected string: %% %%s %s %d %s %s %d %j %s %j %d %d %#", noop)
 
-					local globalMock = get(globalTestMocks, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local globalMock = (get(globalTestMocks, keyPath) :: any) :: typeof(jest.fn())
+					-- ROBLOX deviation END
 					jestExpect(globalMock).toHaveBeenCalledTimes(2)
 					-- ROBLOX deviation: stringified values representation differs with JS
 					jestExpect(globalMock).toHaveBeenCalledWith(
@@ -265,10 +287,14 @@ return function()
 							{ "hello" :: any, 1, 2, 3, 4, 5 },
 							{ "world" :: any, 1, 2, 3, 4, 5 },
 						})
-						local testFunction = get(eachObject, keyPath)
+						-- ROBLOX deviation START: couldn't infer type automatically
+						local testFunction = (get(eachObject, keyPath) :: any) :: Function
+						-- ROBLOX deviation END
 						testFunction("expected string: %s", noop)
 
-						local globalMock = get(globalTestMocks, keyPath)
+						-- ROBLOX deviation START: couldn't infer type automatically
+						local globalMock = (get(globalTestMocks, keyPath) :: any) :: typeof(jest.fn())
+						-- ROBLOX deviation END
 						jestExpect(globalMock).toHaveBeenCalledTimes(2)
 						jestExpect(globalMock).toHaveBeenCalledWith("expected string: hello", expectFunction, nil)
 						jestExpect(globalMock).toHaveBeenCalledWith("expected string: world", expectFunction, nil)
@@ -281,10 +307,14 @@ return function()
 						{ "string1", "pretty1", "string2", "pretty2" },
 						{ "string1", "pretty1", "string2", "pretty2" },
 					})
-					local testFunction = get(eachObject, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local testFunction = (get(eachObject, keyPath) :: any) :: Function
+					-- ROBLOX deviation END
 					testFunction("expected string: %s %p %s %p", noop)
 
-					local globalMock = get(globalTestMocks, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local globalMock = (get(globalTestMocks, keyPath) :: any) :: typeof(jest.fn())
+					-- ROBLOX deviation END
 					jestExpect(globalMock).toHaveBeenCalledTimes(2)
 					jestExpect(globalMock).toHaveBeenCalledWith(
 						("expected string: string1 %s string2 %s"):format(pretty("pretty1"), pretty("pretty2")),
@@ -306,10 +336,14 @@ return function()
 							{ "string1", "pretty1", "string2" },
 							{ "string1", "pretty1", "string2" },
 						})
-						local testFunction = get(eachObject, keyPath)
+						-- ROBLOX deviation START: couldn't infer type automatically
+						local testFunction = (get(eachObject, keyPath) :: any) :: Function
+						-- ROBLOX deviation END
 						testFunction("expected string: %s %p %s %p", noop)
 
-						local globalMock = get(globalTestMocks, keyPath)
+						-- ROBLOX deviation START: couldn't infer type automatically
+						local globalMock = (get(globalTestMocks, keyPath) :: any) :: typeof(jest.fn())
+						-- ROBLOX deviation END
 						jestExpect(globalMock).toHaveBeenCalledTimes(2)
 						jestExpect(globalMock).toHaveBeenCalledWith(
 							("expected string: string1 %s string2 %s"):format(pretty("pretty1"), "%p"),
@@ -333,10 +367,14 @@ return function()
 							"hello",
 							"world",
 						})
-						local testFunction = get(eachObject, keyPath)
+						-- ROBLOX deviation START: couldn't infer type automatically
+						local testFunction = (get(eachObject, keyPath) :: any) :: Function
+						-- ROBLOX deviation END
 						testFunction("expected string", testCallBack)
 
-						local globalMock = get(globalTestMocks, keyPath)
+						-- ROBLOX deviation START: couldn't infer type automatically
+						local globalMock = (get(globalTestMocks, keyPath) :: any) :: typeof(jest.fn())
+						-- ROBLOX deviation END
 						globalMock.mock.calls[1][2](globalMock.mock.calls[1])
 						jestExpect(testCallBack).toHaveBeenCalledTimes(1)
 						jestExpect(testCallBack).toHaveBeenCalledWith("hello")
@@ -354,10 +392,14 @@ return function()
 						{ "hello", "world" },
 						{ "joe", "bloggs" },
 					})
-					local testFunction = get(eachObject, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local testFunction = (get(eachObject, keyPath) :: any) :: Function
+					-- ROBLOX deviation END
 					testFunction("expected string", testCallBack)
 
-					local globalMock = get(globalTestMocks, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local globalMock = (get(globalTestMocks, keyPath) :: any) :: typeof(jest.fn())
+					-- ROBLOX deviation END
 					globalMock.mock.calls[1][2](globalMock.mock.calls[1])
 					jestExpect(testCallBack).toHaveBeenCalledTimes(1)
 					jestExpect(testCallBack).toHaveBeenCalledWith("hello", "world")
@@ -371,9 +413,13 @@ return function()
 					local globalTestMocks = getGlobalTestMocks()
 					local eachObject = each.withGlobal(globalTestMocks)({ { "hello" } })
 
-					local testFunction = get(eachObject, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local testFunction = (get(eachObject, keyPath) :: any) :: Function
+					-- ROBLOX deviation END
 					testFunction("some test", noop, 10000)
-					local globalMock = get(globalTestMocks, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local globalMock = (get(globalTestMocks, keyPath) :: any) :: typeof(jest.fn())
+					-- ROBLOX deviation END
 					jestExpect(globalMock).toHaveBeenCalledWith("some test", jestExpect.any("function"), 10000)
 				end)
 
@@ -406,10 +452,14 @@ return function()
 							j = NaN,
 						},
 					})
-					local testFunction = get(eachObject, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local testFunction = (get(eachObject, keyPath) :: any) :: Function
+					-- ROBLOX deviation END
 					testFunction("expected string: %% %%s $a $b $c $d $e $f $f.key $g $h $i $j $#", noop)
 
-					local globalMock = get(globalTestMocks, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local globalMock = (get(globalTestMocks, keyPath) :: any) :: typeof(jest.fn())
+					-- ROBLOX deviation END
 					jestExpect(globalMock).toHaveBeenCalledTimes(2)
 					-- ROBLOX deviation: stringified values representation differs with JS
 					jestExpect(globalMock).toHaveBeenCalledWith(
@@ -433,10 +483,14 @@ return function()
 							{ a = "hello", b = 1 },
 							{ a = "world", b = 1 },
 						})
-						local testFunction = get(eachObject, keyPath)
+						-- ROBLOX deviation START: couldn't infer type automatically
+						local testFunction = (get(eachObject, keyPath) :: any) :: Function
+						-- ROBLOX deviation END
 						testFunction("expected string: %p %# $a $b $#", noop)
 
-						local globalMock = get(globalTestMocks, keyPath)
+						-- ROBLOX deviation START: couldn't infer type automatically
+						local globalMock = (get(globalTestMocks, keyPath) :: any) :: typeof(jest.fn())
+						-- ROBLOX deviation END
 						jestExpect(globalMock).toHaveBeenCalledTimes(2)
 						jestExpect(globalMock).toHaveBeenCalledWith(
 							'expected string: {"a": "hello", "b": 1} 1 $a $b $#',
@@ -508,10 +562,14 @@ return function()
 				it("calls global with given title", function()
 					local globalTestMocks = getGlobalTestMocks()
 					local eachObject = each.withGlobal(globalTestMocks)({ {} })
-					local testFunction = get(eachObject, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local testFunction = (get(eachObject, keyPath) :: any) :: Function
+					-- ROBLOX deviation END
 					testFunction("expected string", noop)
 
-					local globalMock = get(globalTestMocks, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local globalMock = (get(globalTestMocks, keyPath) :: any) :: typeof(jest.fn())
+					-- ROBLOX deviation END
 					jestExpect(globalMock).toHaveBeenCalledTimes(1)
 					jestExpect(globalMock).toHaveBeenCalledWith("expected string", expectFunction, nil)
 				end)
@@ -519,10 +577,14 @@ return function()
 				it("calls global with given title when multiple tests cases exist", function()
 					local globalTestMocks = getGlobalTestMocks()
 					local eachObject = each.withGlobal(globalTestMocks)({ {}, {} })
-					local testFunction = get(eachObject, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local testFunction = (get(eachObject, keyPath) :: any) :: Function
+					-- ROBLOX deviation END
 					testFunction("expected string", noop)
 
-					local globalMock = get(globalTestMocks, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local globalMock = (get(globalTestMocks, keyPath) :: any) :: typeof(jest.fn())
+					-- ROBLOX deviation END
 					jestExpect(globalMock).toHaveBeenCalledTimes(2)
 					jestExpect(globalMock).toHaveBeenCalledWith("expected string", expectFunction, nil)
 				end)
@@ -533,10 +595,14 @@ return function()
 						{ "hello", 1 :: any },
 						{ "world", 2 :: any },
 					})
-					local testFunction = get(eachObject, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local testFunction = (get(eachObject, keyPath) :: any) :: Function
+					-- ROBLOX deviation END
 					testFunction("expected string: %s %s", function() end)
 
-					local globalMock = get(globalTestMocks, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local globalMock = (get(globalTestMocks, keyPath) :: any) :: typeof(jest.fn())
+					-- ROBLOX deviation END
 					jestExpect(globalMock).toHaveBeenCalledTimes(2)
 					jestExpect(globalMock).toHaveBeenCalledWith("expected string: hello 1", expectFunction, nil)
 					jestExpect(globalMock).toHaveBeenCalledWith("expected string: world 2", expectFunction, nil)
@@ -549,10 +615,14 @@ return function()
 						{ "world", "%i", 1991 :: any, "%p", { foo = "bar" } :: any },
 						{ "joe", "%d %d", 10 :: any, "%%s", { foo = "bar" } :: any },
 					})
-					local testFunction = get(eachObject, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local testFunction = (get(eachObject, keyPath) :: any) :: Function
+					-- ROBLOX deviation END
 					testFunction("expected string: %s %s %d %s %p", function() end)
 
-					local globalMock = get(globalTestMocks, keyPath)
+					-- ROBLOX deviation START: couldn't infer type automatically
+					local globalMock = (get(globalTestMocks, keyPath) :: any) :: typeof(jest.fn())
+					-- ROBLOX deviation END
 					jestExpect(globalMock).toHaveBeenCalledTimes(3)
 					jestExpect(globalMock).toHaveBeenCalledWith(
 						'expected string: hello %d 10 %s {"foo": "bar"}',

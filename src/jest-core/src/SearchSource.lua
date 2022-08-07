@@ -300,7 +300,8 @@ function SearchSource:_filterTestPathsWithStats(allPaths: Array<Test>, testPathP
 		total = #allPaths,
 	}
 
-	local testCases = Array.from(self._testPathCases) -- clone
+	-- ROBLOX FIXME Luau: should be inferred from passed param
+	local testCases = Array.from(self._testPathCases) :: typeof(self._testPathCases) -- clone
 	if testPathPattern ~= nil and Boolean.toJSBoolean(testPathPattern) then
 		local regex = testPathPatternToRegExp(testPathPattern)
 		table.insert(testCases, {

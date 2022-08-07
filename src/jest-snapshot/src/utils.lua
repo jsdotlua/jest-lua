@@ -292,7 +292,8 @@ local function saveSnapshotFile(snapshotData: SnapshotData, snapshotPath: Config
 end
 
 local function deepMergeArray(target: Array<any>, source: Array<any>)
-	local mergedOutput = Array.from(target)
+	-- ROBLOX FIXME Luau: should be inferred from reduce's initial value
+	local mergedOutput = Array.from(target) :: typeof(target)
 
 	for index, sourceElement in ipairs(source) do
 		local targetElement = mergedOutput[index]
