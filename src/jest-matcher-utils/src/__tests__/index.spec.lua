@@ -21,15 +21,12 @@ local chalk = require(Packages.ChalkLua)
 
 local prettyFormat = require(Packages.PrettyFormat).format
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
-local beforeAll = (JestGlobals.beforeAll :: any) :: Function
-local afterAll = (JestGlobals.afterAll :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
+local beforeAll = JestGlobals.beforeAll
+local afterAll = JestGlobals.afterAll
 
 local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 
@@ -291,7 +288,7 @@ describe("diff", function()
 		jestExpect(diff(1, 2)).toBe(nil)
 	end)
 
-	itSKIP("two bigints", function()
+	it.skip("two bigints", function()
 		--[[
 				ROBLOX deviation: skipped since BigInt doesn't exist in Luau
 				original code:

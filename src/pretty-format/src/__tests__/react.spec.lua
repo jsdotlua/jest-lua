@@ -16,13 +16,10 @@ local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 local Symbol = LuauPolyfill.Symbol
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
+local describe = JestGlobals.describe
+local it = JestGlobals.it
 local itFIXME = function(description: string, ...: any)
 	JestGlobals.it.todo(description)
 end
@@ -531,7 +528,7 @@ it("min option", function()
 end)
 
 -- ROBLOX deviation: hightlights not supported
-itSKIP("ReactElement plugin highlights syntax", function()
+it.skip("ReactElement plugin highlights syntax", function()
 	local jsx = React.createElement(
 		"Mouse",
 		{ prop = React.createElement("div", nil, "mouse", React.createElement("span", nil, "rat")) }
@@ -540,7 +537,7 @@ itSKIP("ReactElement plugin highlights syntax", function()
 end)
 
 -- ROBLOX deviation: hightlights not supported
-itSKIP("ReactTestComponent plugin highlights syntax", function()
+it.skip("ReactTestComponent plugin highlights syntax", function()
 	local jsx = React.createElement(
 		"Mouse",
 		{ prop = React.createElement("div", nil, "mouse", React.createElement("span", nil, "rat")) }
@@ -549,7 +546,7 @@ itSKIP("ReactTestComponent plugin highlights syntax", function()
 end)
 
 -- ROBLOX deviation: theme not supported
-itSKIP("throws if theme option is null", function()
+it.skip("throws if theme option is null", function()
 	local jsx = React.createElement("Mouse", { style = "color:red" }, "Hello, Mouse!")
 	jestExpect(function()
 		-- @ts-expect-error
@@ -558,7 +555,7 @@ itSKIP("throws if theme option is null", function()
 end)
 
 -- ROBLOX deviation: theme not supported
-itSKIP('throws if theme option is not of type "object"', function()
+it.skip('throws if theme option is not of type "object"', function()
 	-- jestExpect(function()
 	-- 	local jsx = React.createElement("Mouse", { style = "color:red" }, "Hello, Mouse!") -- @ts-expect-error
 	-- 	formatElement(jsx, { highlight = true, theme = "beautiful" })
@@ -566,7 +563,7 @@ itSKIP('throws if theme option is not of type "object"', function()
 end)
 
 -- ROBLOX deviation: theme not supported
-itSKIP("throws if theme option has value that is undefined in ansi-styles", function()
+it.skip("throws if theme option has value that is undefined in ansi-styles", function()
 	jestExpect(function()
 		local jsx = React.createElement("Mouse", { style = "color:red" }, "Hello, Mouse!")
 		formatElement(jsx, {
@@ -579,13 +576,13 @@ itSKIP("throws if theme option has value that is undefined in ansi-styles", func
 end)
 
 -- ROBLOX deviation: hightlights not supported
-itSKIP("ReactElement plugin highlights syntax with color from theme option", function()
+it.skip("ReactElement plugin highlights syntax with color from theme option", function()
 	local jsx = React.createElement("Mouse", { style = "color:red" }, "Hello, Mouse!")
 	jestExpect(formatElement(jsx, { highlight = true, theme = { value = "red" } })).toMatchSnapshot()
 end)
 
 -- ROBLOX deviation: hightlights not supported
-itSKIP("ReactTestComponent plugin highlights syntax with color from theme option", function()
+it.skip("ReactTestComponent plugin highlights syntax with color from theme option", function()
 	local jsx = React.createElement("Mouse", { style = "color:red" }, "Hello, Mouse!")
 	jestExpect(formatTestObject(renderer.create(jsx):toJSON(), { highlight = true, theme = { value = "red" } })).toMatchSnapshot()
 end)
@@ -663,7 +660,7 @@ it("ReactElement removes undefined props", function()
 end)
 
 -- ROBLOX deviation: theme not supported
-itSKIP("ReactTestComponent removes undefined props", function()
+it.skip("ReactTestComponent removes undefined props", function()
 	local jsx = React.createElement("Mouse", { abc = nil, xyz = true })
 	jestExpect(formatElement(jsx, { highlight = true, theme = { value = "red" } })).toMatchSnapshot()
 end)

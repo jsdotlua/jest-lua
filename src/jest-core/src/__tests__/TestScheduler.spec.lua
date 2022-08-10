@@ -10,11 +10,8 @@
 local Packages = script.Parent.Parent.Parent
 local Promise = require(Packages.Promise)
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
+local it = JestGlobals.it
 local jestExpect = JestGlobals.expect
 
 local SummaryReporter = require(Packages.JestReporters).SummaryReporter
@@ -96,7 +93,7 @@ it(".addReporter() .removeReporter()", function()
 end)
 
 -- ROBLOX deviation START: skipped as passing custom runner is not supported yet
-itSKIP("schedule tests run in parallel per default", function()
+it.skip("schedule tests run in parallel per default", function()
 	-- return Promise.resolve()
 	-- 	:andThen(function()
 	-- 		local scheduler = createTestScheduler({}, {}):expect()
@@ -121,7 +118,7 @@ itSKIP("schedule tests run in parallel per default", function()
 	-- 	:expect()
 end)
 
-itSKIP("schedule tests run in serial if the runner flags them", function()
+it.skip("schedule tests run in serial if the runner flags them", function()
 	-- return Promise.resolve()
 	-- 	:andThen(function()
 	-- 		local scheduler = createTestScheduler({}, {}):expect()
@@ -146,7 +143,7 @@ itSKIP("schedule tests run in serial if the runner flags them", function()
 	-- 	:expect()
 end)
 
-itSKIP("should bail after `n` failures", function()
+it.skip("should bail after `n` failures", function()
 	-- return Promise.resolve()
 	-- 	:andThen(function()
 	-- 		local scheduler = createTestScheduler({ bail = 2 }, {}):expect()
@@ -187,7 +184,7 @@ itSKIP("should bail after `n` failures", function()
 	-- 	:expect()
 end)
 
-itSKIP("should not bail if less than `n` failures", function()
+it.skip("should not bail if less than `n` failures", function()
 	-- return Promise.resolve()
 	-- 	:andThen(function()
 	-- 		local scheduler = createTestScheduler({ bail = 2 }, {}):expect()
@@ -228,7 +225,7 @@ itSKIP("should not bail if less than `n` failures", function()
 	-- 	:expect()
 end)
 
-itSKIP("should set runInBand to run in serial", function()
+it.skip("should set runInBand to run in serial", function()
 	-- return Promise.resolve()
 	-- 	:andThen(function()
 	-- 		local scheduler = createTestScheduler({}, {}):expect()
@@ -255,7 +252,7 @@ itSKIP("should set runInBand to run in serial", function()
 	-- 	:expect()
 end)
 
-itSKIP("should set runInBand to not run in serial", function()
+it.skip("should set runInBand to not run in serial", function()
 	-- return Promise.resolve()
 	-- 	:andThen(function()
 	-- 		local scheduler = createTestScheduler({}, {}):expect()

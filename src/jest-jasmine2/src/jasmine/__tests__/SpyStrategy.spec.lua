@@ -8,13 +8,10 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent.Parent
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local expect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
+local describe = JestGlobals.describe
+local it = JestGlobals.it
 
 local SpyStrategy = require(CurrentModule.SpyStrategy)
 local createSpy = require(CurrentModule.createSpy)
@@ -174,7 +171,7 @@ describe("SpyStrategy", function()
 
 	-- ROBLOX TODO: provide a translation of this test once we have a
 	-- translation for the spyRegistry file (and therefore can use spyOn)
-	itSKIP("throws an error when a non-function is passed to callFake strategy", function()
+	it.skip("throws an error when a non-function is passed to callFake strategy", function()
 		--[[
 				var originalFn = jasmine.createSpy('original'),
 			      spyStrategy = new jasmineUnderTest.SpyStrategy({ fn: originalFn });

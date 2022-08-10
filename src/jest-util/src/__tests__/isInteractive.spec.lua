@@ -11,12 +11,10 @@ local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 local isInteractive = require(CurrentModule.isInteractive).default
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
 
 -- ROBLOX deviation START: no equivalent in Lua. Always returning false
 describe("isInteractive", function()

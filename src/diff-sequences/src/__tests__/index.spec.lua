@@ -17,13 +17,10 @@ local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
 type Array<T> = LuauPolyfill.Array<T>
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
+local describe = JestGlobals.describe
+local it = JestGlobals.it
 
 local diff = require(CurrentModule)
 
@@ -56,7 +53,7 @@ describe("invalid arg", function()
 				diff(math.huge, 0, isCommon, foundSubsequence)
 			end).toThrow("aLength")
 		end)
-		itSKIP("Not a Number is not a safe integer", function()
+		it.skip("Not a Number is not a safe integer", function()
 			jestExpect(function()
 				diff(Number.NaN, 0, isCommon, foundSubsequence)
 			end).toThrow("aLength")

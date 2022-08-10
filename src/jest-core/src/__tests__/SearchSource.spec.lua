@@ -21,9 +21,9 @@ local JestGlobals = require(Packages.Dev.JestGlobals)
 -- local jest = JestGlobals.jest
 type Function = (...any) -> ...any
 
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local beforeEach = (JestGlobals.beforeEach :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
+local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
 
 -- local path = require(Packages.path)

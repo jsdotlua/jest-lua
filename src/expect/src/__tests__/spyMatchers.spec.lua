@@ -10,14 +10,11 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
-local beforeAll = (JestGlobals.beforeAll :: any) :: Function
-local afterAll = (JestGlobals.afterAll :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
+local beforeAll = JestGlobals.beforeAll
+local afterAll = JestGlobals.afterAll
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
@@ -343,7 +340,7 @@ for _, calledWith in ipairs({
 		end)
 
 		-- ROBLOX deviation: skipped test that relies on Immutable.js
-		itSKIP("works with Immutable.js objects", function() end)
+		it.skip("works with Immutable.js objects", function() end)
 
 		-- ROBLOX deviation: changed from array to table with keys as array
 		-- entries and value as true for quick lookup
@@ -926,7 +923,7 @@ for _, returnedWith in ipairs({
 		end)
 
 		-- ROBLOX deviation: skipped test that relies on Immutable.js
-		itSKIP("works with Immutable.js objects directly created", function() end)
+		it.skip("works with Immutable.js objects directly created", function() end)
 
 		it("a call that throws is not considered to have returned", function()
 			local fn = mock:fn(function()

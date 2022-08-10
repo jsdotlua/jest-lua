@@ -125,7 +125,7 @@ Expected constructor: <g>Err2</>
 
 Received value: <r>"nil"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:223
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:219
 ]=]
 
 snapshots["toThrow error class threw, but class should not match (error subclass) 1"] = [=[
@@ -199,7 +199,7 @@ snapshots["toThrow expected is undefined threw, but should not have (non-error f
 
 Thrown value: <r>"nil"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:490
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:486
 ]=]
 
 snapshots["toThrow invalid actual 1"] = [=[
@@ -249,7 +249,7 @@ snapshots["toThrow regexp threw, but message did not match (non-error falsey) 1"
 Expected pattern: <g>/^[123456789]\d*/</>
 Received value:   <r>"0"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:156
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:152
 ]=]
 
 snapshots["toThrow regexp threw, but message should not match (error) 1"] = [=[
@@ -270,7 +270,7 @@ snapshots["toThrow regexp threw, but message should not match (non-error truthy)
 Expected pattern: never <g>/^[123456789]\d*/</>
 Received value:         <r>"404"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:174
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:170
 ]=]
 
 snapshots["toThrow substring did not throw at all 1"] = [=[
@@ -300,7 +300,7 @@ snapshots["toThrow substring threw, but message did not match (non-error falsey)
 Expected substring: <g>"Server Error"</>
 Received value:     <r>""</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:96
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:92
 ]=]
 
 snapshots["toThrow substring threw, but message should not match (error) 1"] = [=[
@@ -320,7 +320,7 @@ snapshots["toThrow substring threw, but message should not match (non-error trut
 Expected substring: never <g>"Server Error"</>
 Received value:           <r>"Internal Server Error"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:118
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:114
 ]=]
 
 snapshots["toThrowError asymmetric any-Class fail isNot false 1"] = [=[
@@ -438,7 +438,7 @@ Expected constructor: <g>Err2</>
 
 Received value: <r>"nil"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:223
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:219
 ]=]
 
 snapshots["toThrowError error class threw, but class should not match (error subclass) 1"] = [=[
@@ -512,7 +512,7 @@ snapshots["toThrowError expected is undefined threw, but should not have (non-er
 
 Thrown value: <r>"nil"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:490
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:486
 ]=]
 
 snapshots["toThrowError invalid actual 1"] = [=[
@@ -562,7 +562,7 @@ snapshots["toThrowError regexp threw, but message did not match (non-error false
 Expected pattern: <g>/^[123456789]\d*/</>
 Received value:   <r>"0"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:156
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:152
 ]=]
 
 snapshots["toThrowError regexp threw, but message should not match (error) 1"] = [=[
@@ -583,7 +583,7 @@ snapshots["toThrowError regexp threw, but message should not match (non-error tr
 Expected pattern: never <g>/^[123456789]\d*/</>
 Received value:         <r>"404"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:174
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:170
 ]=]
 
 snapshots["toThrowError substring did not throw at all 1"] = [=[
@@ -613,7 +613,7 @@ snapshots["toThrowError substring threw, but message did not match (non-error fa
 Expected substring: <g>"Server Error"</>
 Received value:     <r>""</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:96
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:92
 ]=]
 
 snapshots["toThrowError substring threw, but message should not match (error) 1"] = [=[
@@ -633,7 +633,7 @@ snapshots["toThrowError substring threw, but message should not match (non-error
 Expected substring: never <g>"Server Error"</>
 Received value:           <r>"Internal Server Error"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:118
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:114
 ]=]
 
 return snapshots

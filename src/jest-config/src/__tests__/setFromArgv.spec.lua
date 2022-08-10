@@ -10,11 +10,9 @@
 local Packages = script.Parent.Parent.Parent
 local typesModule = require(Packages.JestTypes)
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local it = (JestGlobals.it :: any) :: Function
+local it = JestGlobals.it
 
 type Config_Argv = typesModule.Config_Argv
 type Config_InitialOptions = typesModule.Config_InitialOptions

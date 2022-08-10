@@ -9,11 +9,9 @@
 
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local it = (JestGlobals.it :: any) :: Function
+local it = JestGlobals.it
 
 --[[
 		ROBLOX deviation: not using micromatch. Inlining results of calls to micromatch

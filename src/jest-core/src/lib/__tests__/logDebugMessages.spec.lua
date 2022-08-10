@@ -15,12 +15,10 @@ local nodeUtils = RobloxShared.nodeUtils
 local JSON = nodeUtils.JSON
 type NodeJS_WriteStream = RobloxShared.NodeJS_WriteStream
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local it = (JestGlobals.it :: any) :: Function
-local beforeAll = (JestGlobals.beforeAll :: any) :: Function
-local afterAll = (JestGlobals.afterAll :: any) :: Function
+local it = JestGlobals.it
+local beforeAll = JestGlobals.beforeAll
+local afterAll = JestGlobals.afterAll
 local jestExpect = JestGlobals.expect
 
 local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).wrap

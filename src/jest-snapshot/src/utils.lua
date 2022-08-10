@@ -277,6 +277,7 @@ local function saveSnapshotFile(snapshotData: SnapshotData, snapshotPath: Config
 				.. escapeBacktickString(key)
 				.. "]=] ] = "
 				.. printBacktickString(normalizeNewLines(snapshotData[key]))
+				.. "\n"
 		)
 		-- ROBLOX deviation: we don't append a semicolon
 	end

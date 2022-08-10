@@ -9,14 +9,12 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local beforeAll = (JestGlobals.beforeAll :: any) :: Function
-local afterAll = (JestGlobals.afterAll :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
+local beforeAll = JestGlobals.beforeAll
+local afterAll = JestGlobals.afterAll
 
 local diffStringsUnified = require(CurrentModule.PrintDiffs).diffStringsUnified
 

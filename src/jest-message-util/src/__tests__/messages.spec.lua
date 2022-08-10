@@ -9,13 +9,11 @@
 
 local Packages = script.Parent.Parent.Parent
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
 local jestExpect = JestGlobals.expect
-local it = (JestGlobals.it :: any) :: Function
-local beforeEach = (JestGlobals.beforeEach :: any) :: Function
+local it = JestGlobals.it
+local beforeEach = JestGlobals.beforeEach
 
 -- ROBLOX deviation START: not used
 -- local readFileSync = require(Packages["graceful-fs"]).readFileSync

@@ -9,14 +9,11 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent.Parent
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local expect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
-local beforeEach = (JestGlobals.beforeEach :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
+local beforeEach = JestGlobals.beforeEach
 
 local createSpy = require(CurrentModule.createSpy)
 local SpyStrategy = require(CurrentModule.SpyStrategy)
@@ -42,7 +39,7 @@ describe("Spies", function()
 
 		-- ROBLOX deviation: test skipped because we don't implement the
 		-- env.createSpy function that would actually allow for this
-		itSKIP("should allow you to omit the name argument and only pass the originalFn argument", function()
+		it.skip("should allow you to omit the name argument and only pass the originalFn argument", function()
 			--[[
 					var fn = function test() {};
 					var spy = env.createSpy(fn);

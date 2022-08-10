@@ -9,11 +9,9 @@
 
 local Packages = script.Parent.Parent.Parent
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
 -- ROBLOX deviation START: collectHandles not ported yet
 -- local LuauPolyfill = require(Packages.LuauPolyfill)
 -- local Array = LuauPolyfill.Array

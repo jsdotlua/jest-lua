@@ -12,11 +12,9 @@ local Packages = SrcModule.Parent.Parent
 local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).default
 local runTest = require(script.Parent.Parent.__mocks__.testUtils).runTest
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local it = (JestGlobals.it :: any) :: Function
+local it = JestGlobals.it
 
 it("tests are not marked done until their parent afterAll runs", function()
 	local stdout = runTest([[

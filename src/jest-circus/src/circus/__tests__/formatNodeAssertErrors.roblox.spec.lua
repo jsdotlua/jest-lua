@@ -10,12 +10,10 @@ type Circus_TestEntry = typesModule.Circus_TestEntry
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local AssertionError = LuauPolyfill.AssertionError
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
 
 local formatNodeAssertErrors = require(SrcModule.formatNodeAssertErrors).default
 

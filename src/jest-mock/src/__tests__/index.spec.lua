@@ -11,14 +11,11 @@ local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
 local ModuleMocker = require(CurrentModule).ModuleMocker
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
-local beforeEach = (JestGlobals.beforeEach :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
+local beforeEach = JestGlobals.beforeEach
 
 local moduleMocker
 beforeEach(function()
@@ -174,7 +171,7 @@ describe("moduleMocker", function()
 
 			-- ROBLOX deviation: test is itSKIPped because we currently don't
 			-- implement this ability to inspect functionArity
-			itSKIP("maintains function arity", function()
+			it.skip("maintains function arity", function()
 				local mockFunctionArity1 = moduleMocker:fn(function(x)
 					return x
 				end)

@@ -18,13 +18,11 @@ local PrettyFormat = require(CurrentModule)
 local plugins = PrettyFormat.plugins
 local setPrettyPrint = require(script.Parent.setPrettyPrint).default
 local ReactElement = plugins.ReactElement
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local beforeEach = (JestGlobals.beforeEach :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
+local beforeEach = JestGlobals.beforeEach
 
 -- ROBLOX deviation: define `ReturnType` type until Luau starts to support it
 type ReturnType<T> = any

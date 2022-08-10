@@ -13,13 +13,11 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local Error = LuauPolyfill.Error
 local ErrorWithStack = require(CurrentModule.ErrorWithStack).default
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
 
 describe("ErrorWithStack", function()
 	local message = "💩 something went wrong"

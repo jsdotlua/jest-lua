@@ -10,14 +10,11 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
-local beforeAll = (JestGlobals.beforeAll :: any) :: Function
-local afterAll = (JestGlobals.afterAll :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
+local beforeAll = JestGlobals.beforeAll
+local afterAll = JestGlobals.afterAll
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local extends = LuauPolyfill.extends
@@ -126,6 +123,7 @@ describe(".toBe()", function()
 		false,
 		1,
 		"a",
+
 		{},
 	}) do
 		it("fails for " .. stringify(testCase) .. " with .never", function()
@@ -163,7 +161,7 @@ describe(".toBe()", function()
 	end)
 
 	-- ROBLOX TODO: assertion error currently returns strings, not an object
-	itSKIP("assertion error matcherResult property contains matcher name, expected and actual values", function()
+	it.skip("assertion error matcherResult property contains matcher name, expected and actual values", function()
 		local actual = { a = 1 }
 		local expected = { a = 2 }
 
@@ -235,18 +233,18 @@ describe(".toStrictEqual()", function()
 		self.b = b
 	end)
 
-	itSKIP("does not ignore keys with undefined values", function()
+	it.skip("does not ignore keys with undefined values", function()
 		jestExpect({
 			a = nil,
 			b = 2,
 		}).never.toStrictEqual({ b = 2 })
 	end)
 
-	itSKIP("does not ignore keys with undefined values inside an array", function()
+	it.skip("does not ignore keys with undefined values inside an array", function()
 		jestExpect({ { a = nil } }).never.toStrictEqual({ {} })
 	end)
 
-	itSKIP("does not ignore keys with undefined values deep inside an object", function()
+	it.skip("does not ignore keys with undefined values deep inside an object", function()
 		jestExpect({ { a = { { a = nil } } } }).never.toStrictEqual({ { a = { {} } } })
 	end)
 
@@ -326,17 +324,17 @@ describe(".toStrictEqual()", function()
 		jestExpect({ test = c }).never.toStrictEqual({ test = d })
 	end)
 
-	itSKIP("passes for matching sparse arrays", function()
+	it.skip("passes for matching sparse arrays", function()
 		-- jestExpect({, 1}).toStrictEqual({, 1})
 	end)
 
-	itSKIP("does not pass when sparseness of arrays do not match", function()
+	it.skip("does not pass when sparseness of arrays do not match", function()
 		-- jestExpect({, 1}).never.toStrictEqual({nil, 1})
 		-- jestExpect({nil, 1}).never.toStrictEqual({, 1})
 		-- jestExpect({, , , 1}).never.toStrictEqual({, 1})
 	end)
 
-	itSKIP("does not pass when equally sparse arrays have different values", function()
+	it.skip("does not pass when equally sparse arrays have different values", function()
 		-- jestExpect({, 1}).never.toStrictEqual({, 2})
 	end)
 
@@ -681,7 +679,7 @@ describe(".toEqual()", function()
 		]=]
 
 	-- ROBLOX TODO: assertion error currently returns strings, not an object
-	itSKIP("assertion error matcherResult property contains matcher name, expected and actual values", function()
+	it.skip("assertion error matcherResult property contains matcher name, expected and actual values", function()
 		local actual = { a = 1 }
 		local expected = { a = 2 }
 		local ok, error_ = pcall(function()
@@ -711,7 +709,7 @@ describe(".toEqual()", function()
 	end)
 
 	-- ROBLOX deviation: test omitted because it's not applicable to Lua translation
-	itSKIP("non-enumerable members should be skipped during equal", function()
+	it.skip("non-enumerable members should be skipped during equal", function()
 		-- local actual = {
 		-- 	x = 3,
 		-- }
@@ -723,7 +721,7 @@ describe(".toEqual()", function()
 	end)
 
 	-- ROBLOX deviation: test omitted because it's not applicable to Lua translation
-	itSKIP("non-enumerable symbolic members should be skipped during equal", function()
+	it.skip("non-enumerable symbolic members should be skipped during equal", function()
 		-- local actual = {
 		-- 	x = 3,
 		-- }
@@ -1227,7 +1225,7 @@ describe(".toContain(), .toContainEqual()", function()
 	--local typedArray = {0, 1}
 
 	-- ROBLOX deviation: skipped test with custom iterator
-	itSKIP("iterable", function()
+	it.skip("iterable", function()
 		-- const iterable = {
 		-- 	*[Symbol.iterator]() {
 		-- 		yield 1;
@@ -1271,6 +1269,7 @@ describe(".toContain(), .toContainEqual()", function()
 
 	for _, testCase in ipairs({
 		{ { 1, 2, 3 }, 4 },
+
 		{ { {}, {} }, {} },
 	}) do
 		it(string.format("'%s' does not contain '%s'", stringify(testCase[1]), stringify(testCase[2])), function()
@@ -1781,6 +1780,7 @@ describe(".toHaveProperty()", function()
 		{ nil, "a" },
 		{ { a = { b = {} } }, nil },
 		{ { a = { b = {} } }, 1 },
+
 		{ {}, {} },
 	}) do
 		local obj = testCase[1]

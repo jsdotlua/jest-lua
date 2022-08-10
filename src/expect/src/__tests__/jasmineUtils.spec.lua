@@ -17,13 +17,10 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local expect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
+local describe = JestGlobals.describe
+local it = JestGlobals.it
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Symbol = LuauPolyfill.Symbol
@@ -123,7 +120,7 @@ end)
 describe("set equality", function()
 	-- not yet supported, these tests should be moved to iterableEquality when that
 	-- is repurposed for the Set polyfill
-	itSKIP("basic sets", function()
+	it.skip("basic sets", function()
 		expect(equals(Set.new({ 1, 2 }), Set.new({ 3, 4 }))).toBe(false)
 		expect(equals(Set.new({ 1, 2 }), Set.new({ 1, 2 }))).toBe(true)
 		expect(equals(Set.new({ 2, 1 }), Set.new({ 1, 2 }))).toBe(true)

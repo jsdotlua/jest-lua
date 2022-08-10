@@ -10,11 +10,9 @@ local setImmediate = setTimeout
 local TypeError = Error
 type Object = LuauPolyfill.Object
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local it = (JestGlobals.it :: any) :: Function
+local it = JestGlobals.it
 local itFIXME = function(description: string, ...: any)
 	JestGlobals.it.todo(description)
 end

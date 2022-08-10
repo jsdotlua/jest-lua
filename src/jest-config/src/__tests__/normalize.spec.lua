@@ -21,15 +21,13 @@ local Promise = require(Packages.Promise)
 local RegExp = require(Packages.RegExp)
 type RegExp = RegExp.RegExp
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local beforeEach = (JestGlobals.beforeEach :: any) :: Function
-local afterEach = (JestGlobals.afterEach :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
+local beforeEach = JestGlobals.beforeEach
+local afterEach = JestGlobals.afterEach
 type jest_SpyInstance = any
 
 -- ROBLOX deviation START: not used
@@ -105,17 +103,17 @@ local getRelativePath = RobloxShared.getRelativePath
 -- ROBLOX deviation END
 local expectedPathAbs: string
 local expectedPathAbsAnother: string
-local virtualModuleRegexes: Array<RegExp>
-
-beforeEach(function()
-	virtualModuleRegexes = {
-		RegExp("jest-circus"),
-		RegExp("babel-jest"),
-	}
-	return virtualModuleRegexes
-end)
 
 -- ROBLOX deviation START: not used
+-- local virtualModuleRegexes: Array<RegExp>
+
+-- beforeEach(function()
+-- 	virtualModuleRegexes = {
+-- 		RegExp("jest-circus"),
+-- 		RegExp("babel-jest"),
+-- 	}
+-- end)
+
 -- local findNodeModule = jest.fn(function(name)
 -- 	if Array.some(virtualModuleRegexes, function(regex)
 -- 		return regex:test(name)

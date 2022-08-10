@@ -70,7 +70,7 @@ type Each<EachCallback> =
 	((table: EachTable, ...any) -> ((title: string, test: EachTestFn<EachCallback>, timeout: number?) -> ()))
 	| (() -> () -> ())
 
-export type HookBase = (testName: TestName, fn: TestFn, timeout: number?) -> ()
+export type HookBase = (fn: TestFn, timeout: number?) -> ()
 
 export type ItBase = typeof(setmetatable({} :: { each: Each<TestFn> }, {
 	__call = function(_, testName: TestName, fn: TestFn, timeout: number?): () end,
@@ -84,7 +84,13 @@ export type ItConcurrentBase = typeof(setmetatable({} :: { each: Each<Concurrent
 
 export type ItConcurrentExtended = ItConcurrentBase & { only: ItConcurrentBase, skip: ItConcurrentBase }
 
-export type ItConcurrent = It & { concurrent: ItConcurrentExtended }
+-- ROBLOX FIXME START Luau: inline It to make Luau analyze happy
+export type ItConcurrent =
+	ItBase
+	& { only: ItBase, skip: ItBase, todo: (testName: TestName) -> () }
+	& { concurrent: ItConcurrentExtended }
+-- export type ItConcurrent = It & { concurrent: ItConcurrentExtended }
+-- ROBLOX FIXME END
 
 export type DescribeBase = typeof(setmetatable({} :: { each: Each<BlockFn> }, {
 	__call = function(_, blockName: BlockName, blockFn: BlockFn): () end,

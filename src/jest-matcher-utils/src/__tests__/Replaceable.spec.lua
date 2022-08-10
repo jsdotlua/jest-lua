@@ -11,14 +11,11 @@ local Packages = CurrentModule.Parent
 
 local Replaceable = require(CurrentModule.Replaceable)
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
 local expect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
+local describe = JestGlobals.describe
+local it = JestGlobals.it
 
 describe("Replaceable", function()
 	describe("constructor", function()
@@ -36,7 +33,7 @@ describe("Replaceable", function()
 
 		-- ROBLOX deviation: test skipped because it tests a map that is identical
 		-- to the object test above in lua
-		itSKIP("init with Map", function()
+		it.skip("init with Map", function()
 			--[[
 					const replaceable = new Replaceable(
 						new Map([
@@ -74,7 +71,7 @@ describe("Replaceable", function()
 
 		-- ROBLOX deviation: test skipped because it tests a map that is identical
 		-- to the object test above in lua
-		itSKIP("get Map item", function()
+		it.skip("get Map item", function()
 			--[[
 					const replaceable = new Replaceable(
 						new Map([
@@ -102,7 +99,7 @@ describe("Replaceable", function()
 
 		-- ROBLOX deviation: test skipped because it tests a map that is identical
 		-- to the object test above in lua
-		itSKIP("set Map item", function()
+		it.skip("set Map item", function()
 			--[[
 					const replaceable = new Replaceable(
 						new Map([
@@ -180,7 +177,7 @@ describe("Replaceable", function()
 
 		-- ROBLOX deviation: test skipped because we don't have an enumerable
 		-- property in lua
-		itSKIP("forEach should ignore nonenumerable property", function()
+		it.skip("forEach should ignore nonenumerable property", function()
 			--[[
 					const symbolKey = Symbol('jest');
 					const symbolKey2 = Symbol('awesome');
@@ -216,7 +213,7 @@ describe("Replaceable", function()
 
 		-- ROBLOX deviation: test skipped because we don't have different object
 		-- types in Lua, we only have tables
-		itSKIP("should return false if two object types not equal", function()
+		it.skip("should return false if two object types not equal", function()
 			--[[
 				      expect(Replaceable.isReplaceable({a: 1}, [1, 2, 3])).toBe(false);
 				]]

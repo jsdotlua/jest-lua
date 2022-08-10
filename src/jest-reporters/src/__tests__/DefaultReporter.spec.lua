@@ -9,13 +9,11 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
 local jestExpect = JestGlobals.expect
-local it = (JestGlobals.it :: any) :: Function
-local beforeEach = (JestGlobals.beforeEach :: any) :: Function
+local it = JestGlobals.it
+local beforeEach = JestGlobals.beforeEach
 
 local ModuleMocker = require(Packages.JestMock).ModuleMocker
 local moduleMocker = ModuleMocker.new()

@@ -8,13 +8,10 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent.Parent
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local expect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
+local describe = JestGlobals.describe
+local it = JestGlobals.it
 
 local CallTracker = require(CurrentModule.CallTracker)
 
@@ -110,7 +107,7 @@ describe("CallTracker", function()
 
 	-- ROBLOX deviation: test skipped because jest's implementation of CallTracker
 	-- omits the saveArgumentsByValue function
-	itSKIP("allows object arguments to be shallow cloned", function()
+	it.skip("allows object arguments to be shallow cloned", function()
 		--[[
 			var callTracker = new jasmineUnderTest.CallTracker();
 			callTracker.saveArgumentsByValue();
@@ -132,7 +129,7 @@ describe("CallTracker", function()
 
 	-- ROBLOX deviation: test skipped because jest's implementation of CallTracker
 	-- omits the saveArgumentsByValue function
-	itSKIP("saves primitive arguments by value", function()
+	it.skip("saves primitive arguments by value", function()
 		--[[
 			var callTracker = new jasmineUnderTest.CallTracker(),
 				args = [undefined, null, false, '', /\s/, 0, 1.2, NaN];

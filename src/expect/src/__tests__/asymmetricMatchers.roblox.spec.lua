@@ -6,12 +6,10 @@ local Packages = CurrentModule.Parent
 
 local chalk = require(Packages.Dev.ChalkLua)
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
 
 local AsymmetricMatchers = require(CurrentModule.asymmetricMatchers)
 local stringContaining = AsymmetricMatchers.stringContaining

@@ -16,13 +16,10 @@ local Number = LuauPolyfill.Number
 local Set = LuauPolyfill.Set
 local Symbol = LuauPolyfill.Symbol
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
 local jestExpect = JestGlobals.expect
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
+local it = JestGlobals.it
 
 local deepCyclicCopy = require(script.Parent.Parent.deepCyclicCopy).default
 it("returns the same value for primitive or function values", function()
@@ -113,7 +110,7 @@ end)
 
 -- ROBLOX deviation START: prototypes are not supported
 do
-	itSKIP("does not keep the prototype by default when top level is object", function()
+	it.skip("does not keep the prototype by default when top level is object", function()
 		-- -- @ts-expect-error
 		-- local sourceObject = (function()
 		-- 	local self = {}
@@ -146,7 +143,7 @@ do
 		-- spy:mockRestore()
 	end)
 
-	itSKIP("does not keep the prototype by default when top level is array", function()
+	it.skip("does not keep the prototype by default when top level is array", function()
 		-- local spy = jest.spyOn(Array, "isArray"):mockImplementation(function()
 		-- 	return true
 		-- end) -- @ts-expect-error
@@ -162,7 +159,7 @@ do
 		-- spy:mockRestore()
 	end)
 
-	itSKIP("does not keep the prototype of arrays when keepPrototype = false", function()
+	it.skip("does not keep the prototype of arrays when keepPrototype = false", function()
 		-- local spy = jest.spyOn(Array, "isArray"):mockImplementation(function()
 		-- 	return true
 		-- end) -- @ts-expect-error
@@ -178,7 +175,7 @@ do
 		-- spy:mockRestore()
 	end)
 
-	itSKIP("keeps the prototype of arrays when keepPrototype = true", function()
+	it.skip("keeps the prototype of arrays when keepPrototype = true", function()
 		-- local spy = jest.spyOn(Array, "isArray"):mockImplementation(function()
 		-- 	return true
 		-- end) -- @ts-expect-error
@@ -193,7 +190,7 @@ do
 		-- spy:mockRestore()
 	end)
 
-	itSKIP("does not keep the prototype for objects when keepPrototype = false", function()
+	it.skip("does not keep the prototype for objects when keepPrototype = false", function()
 		-- -- @ts-expect-error
 		-- local sourceobject = (function()
 		-- 	local self = {}
@@ -226,7 +223,7 @@ do
 		-- spy:mockRestore()
 	end)
 
-	itSKIP("keeps the prototype for objects when keepPrototype = true", function()
+	it.skip("keeps the prototype for objects when keepPrototype = true", function()
 		-- -- @ts-expect-error
 		-- local sourceObject = (function()
 		-- 	local self = {}

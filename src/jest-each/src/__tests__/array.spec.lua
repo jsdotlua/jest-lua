@@ -23,8 +23,8 @@ local HttpService = game:GetService("HttpService")
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
 
 local pretty = require(Packages.PrettyFormat).default
 local each = require(script.Parent.Parent).default()

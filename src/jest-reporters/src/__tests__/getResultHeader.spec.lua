@@ -9,11 +9,9 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local it = (JestGlobals.it :: any) :: Function
+local it = JestGlobals.it
 
 local makeGlobalConfig = require(Packages.TestUtils).makeGlobalConfig
 local testResultModule = require(Packages.JestTestResult)

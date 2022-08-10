@@ -10,6 +10,7 @@ files = ["*", "!**/__tests__/**"]
 DiffSequences = { path = "../diff-sequences" }
 JestGetType = { path = "../jest-get-type" }
 PrettyFormat = { path = "../pretty-format" }
+JestTypes = { path = "../jest-types" }
 ChalkLua = { workspace = true }
 LuauPolyfill = { workspace = true }
 

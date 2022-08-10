@@ -10,13 +10,10 @@ local CurrentModule = script.Parent
 local SrcModule = CurrentModule.Parent
 local Packages = SrcModule.Parent.Parent
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
+local describe = JestGlobals.describe
+local it = JestGlobals.it
 
 local typesModule = require(Packages.JestTypes)
 
@@ -38,7 +35,7 @@ aliasCircusIt()
 
 describe("test/it error throwing", function()
 	-- ROBLOX FIXME START: we can't run circusTest insinde of circus's it
-	itSKIP("it doesn't throw an error with valid arguments", function()
+	it.skip("it doesn't throw an error with valid arguments", function()
 		jestExpect(function()
 			circusIt("test1", function() end)
 		end).never.toThrow()
@@ -71,7 +68,7 @@ describe("test/it error throwing", function()
 	end)
 
 	-- ROBLOX FIXME START: we can't run circusTest insinde of circus's it
-	itSKIP("test doesn't throw an error with valid arguments", function()
+	it.skip("test doesn't throw an error with valid arguments", function()
 		jestExpect(function()
 			circusTest("test5", function() end)
 		end).never.toThrow()

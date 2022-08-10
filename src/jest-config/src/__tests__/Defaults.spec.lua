@@ -7,11 +7,9 @@
  ]]
 
 local Packages = script.Parent.Parent.Parent
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local it = (JestGlobals.it :: any) :: Function
+local it = JestGlobals.it
 
 local defaults = require(script.Parent.Parent).defaults
 

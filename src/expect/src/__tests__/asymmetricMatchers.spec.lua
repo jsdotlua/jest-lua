@@ -10,11 +10,9 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local expect = JestGlobals.expect
-local test = (JestGlobals.test :: any) :: Function
+local test = JestGlobals.test
 
 local RegExp = require(Packages.RegExp)
 

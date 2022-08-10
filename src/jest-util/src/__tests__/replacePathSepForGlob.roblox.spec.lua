@@ -4,12 +4,10 @@ local CurrentModule = script.Parent
 local SrcModule = CurrentModule.Parent
 local Packages = SrcModule.Parent
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
 
 local replacePathSepForGlob = require(SrcModule.replacePathSepForGlob)
 

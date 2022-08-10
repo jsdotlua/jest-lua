@@ -2,12 +2,10 @@
 
 local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent.Parent
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
 
 local helpersModule = require(CurrentModule.Parent.helpers)
 local format = helpersModule.format

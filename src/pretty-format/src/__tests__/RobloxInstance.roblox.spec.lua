@@ -9,12 +9,10 @@ local RobloxInstance = PrettyFormat.plugins.RobloxInstance
 
 local InstanceSubset = require(Packages.RobloxShared).RobloxInstance.InstanceSubset
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
 
 local prettyFormatResult = function(val: any)
 	return prettyFormat(val, {

@@ -3,12 +3,9 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
+local it = JestGlobals.it
 
 local toMatchSnapshot = require(CurrentModule).toMatchSnapshot
 jestExpect.extend({
@@ -28,7 +25,7 @@ it("custom snapshot matchers", function()
 end)
 
 -- ROBLOX FIXME START: we can't call toMatchSnapshot and expect it to fail as this would affect the test state
-itSKIP("tests that a missing snapshot throws", function()
+it.skip("tests that a missing snapshot throws", function()
 	jestExpect(function()
 		jestExpect().toMatchSnapshot()
 	end).toThrow(

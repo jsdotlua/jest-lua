@@ -13,13 +13,10 @@ local Packages = CurrentModule.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Symbol = LuauPolyfill.Symbol
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
+local describe = JestGlobals.describe
+local it = JestGlobals.it
 
 local PrettyFormat = require(Packages.PrettyFormat)
 local format = PrettyFormat.format
@@ -59,7 +56,7 @@ describe("dedentLines non-null", function()
 	end)
 
 	-- ROBLOX deviation: test skipped because we don't have support for react elements
-	itSKIP("one line self-closing element", function()
+	it.skip("one line self-closing element", function()
 		local val = {
 			["$$typeof"] = typeof_,
 			children = nil,
@@ -92,7 +89,7 @@ describe("dedentLines non-null", function()
 	end)
 
 	-- ROBLOX deviation: test skipped because we don't have support for react elements
-	itSKIP("markup with props and text", function()
+	it.skip("markup with props and text", function()
 		local val = {
 			["$$typeof"] = typeof_,
 			children = {
@@ -119,7 +116,7 @@ describe("dedentLines non-null", function()
 	end)
 
 	-- ROBLOX deviation: test skipped because we don't have support for react elements
-	itSKIP("markup with components as props", function()
+	it.skip("markup with components as props", function()
 		-- https://daveceddia.com/pluggable-slots-in-react-components/
 		local val = {
 			["$$typeof"] = typeof_,
@@ -162,7 +159,7 @@ describe("dedentLines null", function()
 	end
 
 	-- ROBLOX deviation: test skipped because we don't have support for react elements
-	itSKIP("markup prop multi-line", function()
+	it.skip("markup prop multi-line", function()
 		local val = {
 			["$$typeof"] = typeof_,
 			children = nil,
@@ -178,7 +175,7 @@ describe("dedentLines null", function()
 	end)
 
 	-- ROBLOX deviation: test skipped because we don't have support for react elements
-	itSKIP("markup prop component with multi-line text", function()
+	it.skip("markup prop component with multi-line text", function()
 		-- https://daveceddia.com/pluggable-slots-in-react-components/
 		local val = {
 			["$$typeof"] = typeof_,
@@ -212,7 +209,7 @@ describe("dedentLines null", function()
 	end)
 
 	-- ROBLOX deviation: test skipped because we don't have support for react elements
-	itSKIP("markup text multi-line", function()
+	it.skip("markup text multi-line", function()
 		local text = table.concat({
 			"for (key in foo) {",
 			"  if (Object.prototype.hasOwnProperty.call(foo, key)) {",
@@ -240,7 +237,7 @@ describe("dedentLines null", function()
 	end)
 
 	-- ROBLOX deviation: test skipped because we don't have support for react elements
-	itSKIP("markup text multiple lines", function()
+	it.skip("markup text multiple lines", function()
 		local lines = {
 			"for (key in foo) {",
 			"  if (Object.prototype.hasOwnProperty.call(foo, key)) {",

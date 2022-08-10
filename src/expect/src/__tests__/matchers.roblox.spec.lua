@@ -3,14 +3,11 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
-local beforeAll = (JestGlobals.beforeAll :: any) :: Function
-local afterAll = (JestGlobals.afterAll :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
+local beforeAll = JestGlobals.beforeAll
+local afterAll = JestGlobals.afterAll
 
 local jestExpect = require(CurrentModule)
 
@@ -188,7 +185,7 @@ local nestedFnWithError = function(fn)
 end
 
 -- TODO: ADO-1716 unskip this test and determine how to reconcile behavior
-itSKIP("tests stack traces for calls within pcalls with Error polyfill", function()
+it.skip("tests stack traces for calls within pcalls with Error polyfill", function()
 	jestExpect(function()
 		jestExpect(function()
 			nestedFnWithError(function()
@@ -280,7 +277,7 @@ describe("Instance matchers", function()
 			jestExpect(screenGui).toMatchSnapshot()
 		end)
 
-		itSKIP("matches instance against snapshot with fuzzy values", function()
+		it.skip("matches instance against snapshot with fuzzy values", function()
 			local frame = Instance.new("Frame")
 			frame.Position = UDim2.fromOffset(math.random(0, 100), math.random(0, 100))
 			jestExpect(frame).toMatchSnapshot({

@@ -10,12 +10,10 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local expect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local test = (JestGlobals.test :: any) :: Function
+local describe = JestGlobals.describe
+local test = JestGlobals.test
 local testSKIP = JestGlobals.test.skip
 
 local LuauPolyfill = require(Packages.LuauPolyfill)

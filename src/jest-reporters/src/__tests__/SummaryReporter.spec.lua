@@ -14,13 +14,11 @@ local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 local Set = LuauPolyfill.Set
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local it = (JestGlobals.it :: any) :: Function
-local beforeEach = (JestGlobals.beforeEach :: any) :: Function
-local afterEach = (JestGlobals.afterEach :: any) :: Function
+local it = JestGlobals.it
+local beforeEach = JestGlobals.beforeEach
+local afterEach = JestGlobals.afterEach
 
 local Writeable = require(Packages.RobloxShared).Writeable
 

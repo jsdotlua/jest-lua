@@ -14,12 +14,10 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local Symbol = LuauPolyfill.Symbol
 local isPromise = require(CurrentModule.isPromise).default
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
 
 describe("foo", function()
 	describe("not a Promise: ", function()

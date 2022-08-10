@@ -19,15 +19,12 @@ local ansiRegex = require(Packages.PrettyFormat).plugins.ConvertAnsi.ansiRegex
 local chalk = (require(Packages.ChalkLua) :: any) :: Chalk
 local format = require(Packages.PrettyFormat).default
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local beforeAll = (JestGlobals.beforeAll :: any) :: Function
-local afterAll = (JestGlobals.afterAll :: any) :: Function
-local itSKIP = JestGlobals.it.skip
+local describe = JestGlobals.describe
+local it = JestGlobals.it
+local beforeAll = JestGlobals.beforeAll
+local afterAll = JestGlobals.afterAll
 
 local printSnapshot = require(CurrentModule.printSnapshot)
 type Chalk = printSnapshot.Chalk
@@ -179,7 +176,7 @@ describe("chalk", function()
 	end)
 
 	-- ROBLOX deviation: test skipped because we don't have level 1 support in chalk-lua
-	itSKIP("level 1", function()
+	it.skip("level 1", function()
 		-- ROBLOX deviation: we don't have a chalk instance so we set the level of
 		-- the imported chalk object
 		chalk.level = 1
@@ -209,7 +206,7 @@ describe("chalk", function()
 	end)
 
 	-- ROBLOX deviation: test skipped because we don't have level 1 support in chalk-lua
-	itSKIP("level 3", function()
+	it.skip("level 3", function()
 		-- ROBLOX deviation: we don't have a chalk instance so we set the level of
 		-- the imported chalk object
 		chalk.level = 3
@@ -298,7 +295,7 @@ describe("matcher error", function()
 
 		-- ROBLOX deviation: skipping this test, to work with the TestEZ runner, our implementation auto-initializes snapshot state
 		-- by default if it doesn't already exist
-		itSKIP("Snapshot state must be initialized", function()
+		it.skip("Snapshot state must be initialized", function()
 			-- local context = {
 			-- 	isNot = false,
 			-- 	promise = 'resolves',
@@ -630,7 +627,7 @@ describe("printSnapshotAndReceived", function()
 
 		-- ROBLOX deviation: test skipped because we do not have support for the
 		-- global flag in RegExp
-		itSKIP("regexp", function()
+		it.skip("regexp", function()
 			local expected = '\\(")'
 			local received = '\\(")'
 			jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
@@ -900,7 +897,7 @@ describe("printSnapshotAndReceived", function()
 
 			-- ROBLOX deviation: test skipped because there is no distinction
 			-- between an empty array and an empty table in Lua
-			itSKIP("single line expected and received", function()
+			it.skip("single line expected and received", function()
 				-- local expected = []
 				-- local received = {}
 
@@ -960,7 +957,7 @@ describe("printSnapshotAndReceived", function()
 		local typeof_ = Symbol.for_("react.test.json")
 
 		-- ROBLOX deviation: test skipped because we don't have support for react elements
-		itSKIP("markup delete", function()
+		it.skip("markup delete", function()
 			local received = {
 				["$$typeof"] = typeof_,
 				children = {
@@ -997,7 +994,7 @@ describe("printSnapshotAndReceived", function()
 		end)
 
 		-- ROBLOX deviation: test skipped because we don't have support for react elements
-		itSKIP("markup fall back", function()
+		it.skip("markup fall back", function()
 			-- Because text has more than one adjacent line.
 			local text = table.concat({
 				"for (key in foo) {",
@@ -1026,7 +1023,7 @@ describe("printSnapshotAndReceived", function()
 		end)
 
 		-- ROBLOX deviation: test skipped because we don't have support for react elements
-		itSKIP("markup insert", function()
+		it.skip("markup insert", function()
 			local text = "when"
 			local expected = {
 				["$$typeof"] = typeof_,

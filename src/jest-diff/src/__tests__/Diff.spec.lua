@@ -15,16 +15,16 @@ local Object = LuauPolyfill.Object
 type Object = LuauPolyfill.Object
 
 local chalk = require(Packages.ChalkLua)
+local JestTypes = require(Packages.JestTypes)
 
-type Function = (...any) -> ...any
+type Global_ItBase = JestTypes.Global_It
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
-local beforeAll = (JestGlobals.beforeAll :: any) :: Function
-local afterAll = (JestGlobals.afterAll :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
+local beforeAll = JestGlobals.beforeAll
+local afterAll = JestGlobals.afterAll
 
 local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 
@@ -957,7 +957,7 @@ describe("compare keys", function()
 	local a = { a = { d = 1, e = 1, f = 1 }, b = 1, c = 1 }
 	local b = { a = { d = 1, e = 2, f = 1 }, b = 1, c = 1 }
 	-- ROBLOX deviation start: skipping test in Lua we can't rely on the order of keys
-	itSKIP("keeps the object keys in their original order", function()
+	it.skip("keeps the object keys in their original order", function()
 		local function compareKeys()
 			return 0
 		end

@@ -23,7 +23,7 @@ type JestGlobals =
 -- ROBLOX deviation END
 
 error(Error.new(
-	-- ROBLOX deviation STAT: aligned message to make sense for jest-roblox
+	-- ROBLOX deviation START: aligned message to make sense for jest-roblox
 	"Do not import `JestGlobals` outside of the Jest test environment"
 	-- ROBLOX deviation END
 ))

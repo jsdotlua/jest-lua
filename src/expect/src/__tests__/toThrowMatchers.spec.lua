@@ -10,15 +10,11 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local describe = (JestGlobals.describe :: any) :: Function
-local describeSKIP = (JestGlobals.describe.skip :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
-local beforeAll = (JestGlobals.beforeAll :: any) :: Function
-local afterAll = (JestGlobals.afterAll :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
+local beforeAll = JestGlobals.beforeAll
+local afterAll = JestGlobals.afterAll
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Error = LuauPolyfill.Error
@@ -355,7 +351,7 @@ for _, toThrow in ipairs(matchers) do
 
 					-- ROBLOX deviation: skipped test because we have no undefined
 					-- type and nil does not match expect.anything()
-					itSKIP("isNot true", function()
+					it.skip("isNot true", function()
 						-- jestExpect(function() end).never[toThrow](expect.anything())
 						-- jestExpect(function()
 						-- 	error(nil)
@@ -368,7 +364,7 @@ for _, toThrow in ipairs(matchers) do
 					-- returning an Error with a stack trace for all
 					-- objects so that would not throw an error for
 					-- jestExpect.anything()
-					itSKIP("isNot false", function()
+					it.skip("isNot false", function()
 						jestExpect(function()
 							jestExpect(function()
 								error(nil)
@@ -479,7 +475,7 @@ for _, toThrow in ipairs(matchers) do
 		-- ROBLOX deviation: we skip the entire promise/async block for now since
 		-- we don't have promise/async functionality for matchers or
 		-- throwingMatchers in current release
-		describeSKIP("promise/async throws if Error-like object is returned", function()
+		describe.skip("promise/async throws if Error-like object is returned", function()
 			-- SKIP()
 		end)
 

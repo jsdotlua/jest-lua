@@ -16,14 +16,11 @@ local Set = LuauPolyfill.Set
 
 local RegExp = require(Packages.RegExp)
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
+local describe = JestGlobals.describe
+local it = JestGlobals.it
 
 local prettyFormat = require(CurrentModule).default
 
@@ -41,7 +38,7 @@ describe("prettyFormat()", function()
 	end)
 
 	-- ROBLOX deviation start: skipping test as Lua doesn't support sparse arrays with only holes
-	itSKIP("prints a sparse array with only holes", function()
+	it.skip("prints a sparse array with only holes", function()
 		-- eslint-disable-next-line no-sparse-arrays
 		local val = { nil, nil, nil, nil }
 		jestExpect(prettyFormat(val)).toEqual("Table {\n  ,\n  ,\n  ,\n}")
@@ -56,7 +53,7 @@ describe("prettyFormat()", function()
 	end)
 
 	-- ROBLOX deviation start: skipping test as Lua doesn't support sparse arrays with value surrounded by holes
-	itSKIP("prints a sparse array with value surrounded by holes", function()
+	it.skip("prints a sparse array with value surrounded by holes", function()
 		-- eslint-disable-next-line no-sparse-arrays
 		-- ROBLOX Luau FIXME: Luau needs to support mixed arrays
 		local val = { nil :: any, 5, nil, nil }
@@ -65,7 +62,7 @@ describe("prettyFormat()", function()
 	-- ROBLOX deviation end
 
 	-- ROBLOX deviation start: skipping test as Lua doesn't provide a way to differentiate between nil value a no value provided
-	itSKIP("prints a sparse array also containing undefined values", function()
+	it.skip("prints a sparse array also containing undefined values", function()
 		-- eslint-disable-next-line no-sparse-arrays
 		-- ROBLOX Luau FIXME: Luau needs to support mixed arrays
 		local val = { 1 :: any, nil, nil, nil, nil, 4 }
@@ -222,7 +219,7 @@ describe("prettyFormat()", function()
 	end)
 
 	-- ROBLOX deviation start: skipping test in Lua we can't rely on the order of keys
-	itSKIP("prints an object with keys in their original order", function()
+	it.skip("prints an object with keys in their original order", function()
 		-- eslint-disable-next-line sort-keys
 		local val = { b = 1, a = 2 }
 		local compareKeys = function()

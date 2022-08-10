@@ -14,15 +14,12 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local setTimeout = LuauPolyfill.setTimeout
 local clearTimeout = LuauPolyfill.clearTimeout
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
 local jestExpect = JestGlobals.expect
-local describe = (JestGlobals.describe :: any) :: Function
-local describeSKIP = (JestGlobals.describe.skip :: any) :: Function
-local it = (JestGlobals.it :: any) :: Function
-local afterEach = (JestGlobals.afterEach :: any) :: Function
+local describe = JestGlobals.describe
+local it = JestGlobals.it
+local afterEach = JestGlobals.afterEach
 
 afterEach(function()
 	jest.useRealTimers()
@@ -30,7 +27,7 @@ end)
 
 -- ROBLOX TODO: the mocked delay and tick aren't in the environment of polyfilled functions
 -- unskip and fix when we can figure this out
-describeSKIP("FakeTimers", function()
+describe.skip("FakeTimers", function()
 	describe("construction", function()
 		it("installs delay mock", function()
 			jestExpect(setTimeout).never.toBeNil()

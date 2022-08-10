@@ -10,12 +10,9 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local expect = JestGlobals.expect
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
+local it = JestGlobals.it
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
@@ -38,7 +35,7 @@ end)
 
 -- ROBLOX deviation: test skipped because Lua doesn't have functionality
 -- corresponding to these property descriptors
-itSKIP("convert accessor descriptor into value descriptor", function()
+it.skip("convert accessor descriptor into value descriptor", function()
 	--[[
 			const obj = {
 				set foo(_) {},
@@ -65,7 +62,7 @@ end)
 
 -- ROBLOX deviation: test skipped because Lua has no concept of enumerables and
 -- non-enumerables
-itSKIP("shuold not skips non-enumerables", function()
+it.skip("shuold not skips non-enumerables", function()
 	--[[
 			const obj = {};
 			Object.defineProperty(obj, 'foo', {enumerable: false, value: 'bar'});
@@ -84,7 +81,7 @@ itSKIP("shuold not skips non-enumerables", function()
 end)
 
 -- ROBLOX deviation: test skipped because Lua has no Symbol type
-itSKIP("copies symbols", function()
+it.skip("copies symbols", function()
 	--[[
 			const symbol = Symbol('foo');
   			const obj = {[symbol]: 42};
@@ -149,7 +146,7 @@ it("return same value for built-in object type except array, map and object", fu
 end)
 
 -- ROBLOX deviation START: test skipped because Lua has no Symbol type
-itSKIP("should copy object symbol key property", function()
+it.skip("should copy object symbol key property", function()
 	--[[
 			const symbolKey = Symbol.for('key');
 			expect(deepCyclicCopyReplaceable({[symbolKey]: 1})).toEqual({[symbolKey]: 1});
@@ -159,7 +156,7 @@ end)
 
 -- ROBLOX deviation START: test skipped because Lua doesn't have properties like
 -- 'configurable' and 'writable'
-itSKIP("should set writable, configurable to true", function()
+it.skip("should set writable, configurable to true", function()
 	--[[
 			const a = {};
 			Object.defineProperty(a, 'key', {

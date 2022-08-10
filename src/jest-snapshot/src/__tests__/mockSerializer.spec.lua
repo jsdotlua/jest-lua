@@ -13,13 +13,10 @@ local Packages = CurrentModule.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Symbol = LuauPolyfill.Symbol
 
-type Function = (...any) -> ...any
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
 local jestExpect = JestGlobals.expect
-local it = (JestGlobals.it :: any) :: Function
-local itSKIP = JestGlobals.it.skip
+local it = JestGlobals.it
 
 local prettyFormat = require(Packages.PrettyFormat).format
 
@@ -45,7 +42,7 @@ it("mock with 1 calls and non-default name via new in object", function()
 end)
 
 -- ROBLOX deviation: skipped because we don't have support for React elements in prettyFormat
-itSKIP("mock with 1 calls in React element", function()
+it.skip("mock with 1 calls in React element", function()
 	local fn = jest.fn()
 	fn("Mocking you!")
 	local val = {
