@@ -266,13 +266,11 @@ local function initialize(
 end
 exports.initialize = initialize
 
-local function runAndTransformResultsToJestFormat(
-	ref: {
-		config: Config_ProjectConfig,
-		globalConfig: Config_GlobalConfig,
-		testPath: string,
-	}
-): Promise<TestResult>
+local function runAndTransformResultsToJestFormat(ref: {
+	config: Config_ProjectConfig,
+	globalConfig: Config_GlobalConfig,
+	testPath: string,
+}): Promise<TestResult>
 	local config, globalConfig, testPath = ref.config, ref.globalConfig, ref.testPath
 
 	return Promise.resolve():andThen(function()

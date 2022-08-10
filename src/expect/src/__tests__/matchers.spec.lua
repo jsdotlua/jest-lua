@@ -78,30 +78,28 @@ describe(".toBe()", function()
 			{DateTime.fromUniversalTime(2020, 2, 20), DateTime.fromUniversalTime(2020, 2, 20)},
 		]]
 
-	for _, testCase in
-		ipairs({
-			{ 1, 2 },
-			{ true, false },
-			{ function() end, function() end },
-			{ {}, {} },
-			{ { a = 1 }, { a = 1 } },
-			{ { a = 1 }, { a = 5 } },
-			{
-				{ a = function() end, b = 2 },
-				{ a = jestExpect.any("function"), b = 2 },
-			},
-			{ { a = false, b = 2 }, { b = 2 } },
-			{ DateTime.fromUniversalTime(2020, 2, 21), DateTime.fromUniversalTime(2020, 2, 20) },
-			{ "received", "expected" },
-			{ Symbol.for_("received"), Symbol.for_("expected") },
-			{ "abc", "cde" },
-			{ "painless JavaScript testing", "delightful JavaScript testing" },
-			{ "", "compare one-line string to empty string" },
-			{ "with \ntrailing space", "without trailing space" },
-			{ "four\n4\nline\nstring", "3\nline\nstring" },
-			{ -math.huge, math.huge },
-		})
-	do
+	for _, testCase in ipairs({
+		{ 1, 2 },
+		{ true, false },
+		{ function() end, function() end },
+		{ {}, {} },
+		{ { a = 1 }, { a = 1 } },
+		{ { a = 1 }, { a = 5 } },
+		{
+			{ a = function() end, b = 2 },
+			{ a = jestExpect.any("function"), b = 2 },
+		},
+		{ { a = false, b = 2 }, { b = 2 } },
+		{ DateTime.fromUniversalTime(2020, 2, 21), DateTime.fromUniversalTime(2020, 2, 20) },
+		{ "received", "expected" },
+		{ Symbol.for_("received"), Symbol.for_("expected") },
+		{ "abc", "cde" },
+		{ "painless JavaScript testing", "delightful JavaScript testing" },
+		{ "", "compare one-line string to empty string" },
+		{ "with \ntrailing space", "without trailing space" },
+		{ "four\n4\nline\nstring", "3\nline\nstring" },
+		{ -math.huge, math.huge },
+	}) do
 		local a = testCase[1]
 		local b = testCase[2]
 		it("fails for: " .. stringify(a) .. " and " .. stringify(b), function()
@@ -124,14 +122,12 @@ describe(".toBe()", function()
 			  });
 		]]
 
-	for _, testCase in
-		ipairs({
-			false,
-			1,
-			"a",
-			{},
-		})
-	do
+	for _, testCase in ipairs({
+		false,
+		1,
+		"a",
+		{},
+	}) do
 		it("fails for " .. stringify(testCase) .. " with .never", function()
 			jestExpect(function()
 				jestExpect(testCase :: any).never.toBe(testCase :: any)
@@ -391,135 +387,133 @@ end)
 
 	]]
 describe(".toEqual()", function()
-	for _, testCase in
-		ipairs({
-			{ true, false },
-			{ 1, 2 },
-			{ 0, Number.MIN_SAFE_INTEGER },
-			{ Number.MIN_SAFE_INTEGER, 0 },
-			{ 0, 1 },
-			{ { a = 1 }, { a = 2 } },
-			{ { a = 5 }, { b = 6 } },
-			{ Object.freeze({ foo = { bar = 1 } }), { foo = {} } },
-			{ "banana", "apple" },
-			{ "1\u{00A0}234,57\u{00A0}$", "1 234,57 $" },
-			{
-				'type TypeName<T> = T extends Function ? "function" : "object";',
-				'type TypeName<T> = T extends Function\n? "function"\n: "object";',
-			},
+	for _, testCase in ipairs({
+		{ true, false },
+		{ 1, 2 },
+		{ 0, Number.MIN_SAFE_INTEGER },
+		{ Number.MIN_SAFE_INTEGER, 0 },
+		{ 0, 1 },
+		{ { a = 1 }, { a = 2 } },
+		{ { a = 5 }, { b = 6 } },
+		{ Object.freeze({ foo = { bar = 1 } }), { foo = {} } },
+		{ "banana", "apple" },
+		{ "1\u{00A0}234,57\u{00A0}$", "1 234,57 $" },
+		{
+			'type TypeName<T> = T extends Function ? "function" : "object";',
+			'type TypeName<T> = T extends Function\n? "function"\n: "object";',
+		},
+		{ { 1 }, { 2 } },
+		{ { 1, 2 }, { 2, 1 } },
+		{ {}, Set.new({}) },
+		{ Set.new({ 1, 2 }), Set.new({}) },
+		{ Set.new({ 1, 2 }), Set.new({ 1, 2, 3 }) },
+		{ Set.new({ { 1 }, { 2 } }), Set.new({ { 1 }, { 2 }, { 3 } }) },
+		{ Set.new({ { 1 }, { 2 } }), Set.new({ { 1 }, { 2 }, { 2 } }) },
+		{
+			Set.new({ Set.new({ 1 }), Set.new({ 2 }) }),
+			Set.new({ Set.new({ 1 }), Set.new({ 3 }) }),
+		},
+		{ { 1, 2 }, {} },
+		{ { 1, 2 }, { 1, 2, 3 } },
+		{ { { 1 }, { 2 } }, { { 1 }, { 2 }, { 3 } } },
+		{ { { 1 }, { 2 } }, { { 1 }, { 2 }, { 2 } } },
+		{
 			{ { 1 }, { 2 } },
-			{ { 1, 2 }, { 2, 1 } },
-			{ {}, Set.new({}) },
-			{ Set.new({ 1, 2 }), Set.new({}) },
-			{ Set.new({ 1, 2 }), Set.new({ 1, 2, 3 }) },
-			{ Set.new({ { 1 }, { 2 } }), Set.new({ { 1 }, { 2 }, { 3 } }) },
-			{ Set.new({ { 1 }, { 2 } }), Set.new({ { 1 }, { 2 }, { 2 } }) },
+			{ { 1 }, { 3 } },
+		},
+		{
+			{ [1] = "one", [2] = "two" },
+			{ [1] = "one" },
+		},
+		{ { a = 0 }, { b = 0 } },
+		{ { v = 1 }, { v = 2 } },
+		{ { [{ "v" }] = 1 }, { [{ "v" }] = 2 } },
+		{
+			{ [{ 1 }] = { [{ 1 }] = "one" } },
+			{ [{ 1 }] = { [{ 1 }] = "two" } },
+		},
+		{
+			{ ["1"] = { ["2"] = { a = 99 } } },
+			{ ["1"] = { ["2"] = { a = 11 } } },
+		},
+		{ { 97, 98, 99 }, { 97, 98, 100 } },
+		{ { a = 1, b = 2 }, jestExpect.objectContaining({ a = 2 }) },
+		{ false, jestExpect.objectContaining({ a = 2 }) },
+		{ { 1, 3 }, jestExpect.arrayContaining({ 1, 2 }) },
+		{ 1, jestExpect.arrayContaining({ 1, 2 }) },
+		{ "abd", jestExpect.stringContaining("bc") },
+		{ "abd", jestExpect.stringMatching("bc") },
+		{ nil, jestExpect.anything() },
+		{ nil, jestExpect.any("function") },
+		{
+			"Eve",
 			{
-				Set.new({ Set.new({ 1 }), Set.new({ 2 }) }),
-				Set.new({ Set.new({ 1 }), Set.new({ 3 }) }),
+				asymmetricMatch = function(self, who)
+					return who == "Alice" or who == "Bob"
+				end,
 			},
-			{ { 1, 2 }, {} },
-			{ { 1, 2 }, { 1, 2, 3 } },
-			{ { { 1 }, { 2 } }, { { 1 }, { 2 }, { 3 } } },
-			{ { { 1 }, { 2 } }, { { 1 }, { 2 }, { 2 } } },
+		},
+		{
 			{
-				{ { 1 }, { 2 } },
-				{ { 1 }, { 3 } },
-			},
-			{
-				{ [1] = "one", [2] = "two" },
-				{ [1] = "one" },
-			},
-			{ { a = 0 }, { b = 0 } },
-			{ { v = 1 }, { v = 2 } },
-			{ { [{ "v" }] = 1 }, { [{ "v" }] = 2 } },
-			{
-				{ [{ 1 }] = { [{ 1 }] = "one" } },
-				{ [{ 1 }] = { [{ 1 }] = "two" } },
-			},
-			{
-				{ ["1"] = { ["2"] = { a = 99 } } },
-				{ ["1"] = { ["2"] = { a = 11 } } },
-			},
-			{ { 97, 98, 99 }, { 97, 98, 100 } },
-			{ { a = 1, b = 2 }, jestExpect.objectContaining({ a = 2 }) },
-			{ false, jestExpect.objectContaining({ a = 2 }) },
-			{ { 1, 3 }, jestExpect.arrayContaining({ 1, 2 }) },
-			{ 1, jestExpect.arrayContaining({ 1, 2 }) },
-			{ "abd", jestExpect.stringContaining("bc") },
-			{ "abd", jestExpect.stringMatching("bc") },
-			{ nil, jestExpect.anything() },
-			{ nil, jestExpect.any("function") },
-			{
-				"Eve",
-				{
-					asymmetricMatch = function(self, who)
-						return who == "Alice" or who == "Bob"
-					end,
-				},
-			},
-			{
-				{
-					target = {
-						nodeType = 1,
-						value = "a",
-					},
-				},
-				{
-					target = {
-						nodeType = 1,
-						value = "b",
-					},
-				},
-			},
-			{
-				{
-					nodeName = "div",
+				target = {
 					nodeType = 1,
+					value = "a",
 				},
-				{
-					nodeName = "p",
+			},
+			{
+				target = {
 					nodeType = 1,
+					value = "b",
 				},
 			},
+		},
+		{
 			{
-				{
-					[Symbol.for_("foo")] = 1,
-					[Symbol.for_("bar")] = 2,
-				},
-				{
-					[Symbol.for_("foo")] = jestExpect.any("number"),
-					[Symbol.for_("bar")] = 1,
-				},
-			},
-			-- ROBLOX deviation START: no sparse arrays in Lua
-			-- {
-			-- 	-- eslint-disable-next-line no-sparse-arrays
-			-- 	{, , 1, ,},
-			-- 	-- eslint-disable-next-line no-sparse-arrays
-			-- 	{, , 2, ,},
-			-- },
-			-- ROBLOX deviation END
-			{
-				Object.assign({}, { [4294967295] = 1 }),
-				Object.assign({}, { [4294967295] = 2 }), -- issue 11056
+				nodeName = "div",
+				nodeType = 1,
 			},
 			{
-				-- eslint-disable-next-line no-useless-computed-key
-				Object.assign({}, { ["-0"] = 1 }),
-				-- eslint-disable-next-line no-useless-computed-key
-				Object.assign({}, { ["0"] = 1 }), -- issue 11056: also check (-0, 0)
+				nodeName = "p",
+				nodeType = 1,
+			},
+		},
+		{
+			{
+				[Symbol.for_("foo")] = 1,
+				[Symbol.for_("bar")] = 2,
 			},
 			{
-				Object.assign({}, { a = 1 }),
-				Object.assign({}, { b = 1 }), -- issue 11056: also check strings
+				[Symbol.for_("foo")] = jestExpect.any("number"),
+				[Symbol.for_("bar")] = 1,
 			},
-			{
-				Object.assign({}, { [Symbol()] = 1 }),
-				Object.assign({}, { [Symbol()] = 1 }), -- issue 11056: also check symbols
-			},
-		})
-	do
+		},
+		-- ROBLOX deviation START: no sparse arrays in Lua
+		-- {
+		-- 	-- eslint-disable-next-line no-sparse-arrays
+		-- 	{, , 1, ,},
+		-- 	-- eslint-disable-next-line no-sparse-arrays
+		-- 	{, , 2, ,},
+		-- },
+		-- ROBLOX deviation END
+		{
+			Object.assign({}, { [4294967295] = 1 }),
+			Object.assign({}, { [4294967295] = 2 }), -- issue 11056
+		},
+		{
+			-- eslint-disable-next-line no-useless-computed-key
+			Object.assign({}, { ["-0"] = 1 }),
+			-- eslint-disable-next-line no-useless-computed-key
+			Object.assign({}, { ["0"] = 1 }), -- issue 11056: also check (-0, 0)
+		},
+		{
+			Object.assign({}, { a = 1 }),
+			Object.assign({}, { b = 1 }), -- issue 11056: also check strings
+		},
+		{
+			Object.assign({}, { [Symbol()] = 1 }),
+			Object.assign({}, { [Symbol()] = 1 }), -- issue 11056: also check symbols
+		},
+	}) do
 		local a = testCase[1]
 		local b = testCase[2]
 		it("{pass: false} expect(" .. stringify(a) .. ").toEqual(" .. stringify(b) .. ")", function()
@@ -546,97 +540,96 @@ describe(".toEqual()", function()
 			});
 		]]
 
-	for _, testCase in
-		ipairs({
-			{ true, true },
-			{ 1, 1 },
-			{ 0 / 0, 0 / 0 },
-			{ 0, 0 },
-			{ "abc", "abc" },
-			{ { 1 }, { 1 } },
+	for _, testCase in ipairs({
+		{ true, true },
+		{ 1, 1 },
+		{ 0 / 0, 0 / 0 },
+		{ 0, 0 },
+		{ "abc", "abc" },
+		{ { 1 }, { 1 } },
+		{
+			{ 1, 2 },
+			{ 1, 2 },
+		},
+		{ {}, {} },
+		{ { a = 99 }, { a = 99 } },
+		{ Set.new({}), Set.new({}) },
+		{ Set.new({ 1, 2 }), Set.new({ 1, 2 }) },
+		{ Set.new({ 1, 2 }), Set.new({ 2, 1 }) },
+		{
+			Set.new({ Set.new({ { 1 } }), Set.new({ { 2 } }) }),
+			Set.new({ Set.new({ { 2 } }), Set.new({ { 1 } }) }),
+		},
+		{
+			Set.new({ { 1 }, { 2 }, { 3 }, { 3 } }),
+			Set.new({ { 3 }, { 3 }, { 2 }, { 1 } }),
+		},
+		{
+			Set.new({ { a = 1 }, { b = 2 } }),
+			Set.new({ { b = 2 }, { a = 1 } }),
+		},
+		{
 			{
-				{ 1, 2 },
-				{ 1, 2 },
-			},
-			{ {}, {} },
-			{ { a = 99 }, { a = 99 } },
-			{ Set.new({}), Set.new({}) },
-			{ Set.new({ 1, 2 }), Set.new({ 1, 2 }) },
-			{ Set.new({ 1, 2 }), Set.new({ 2, 1 }) },
-			{
-				Set.new({ Set.new({ { 1 } }), Set.new({ { 2 } }) }),
-				Set.new({ Set.new({ { 2 } }), Set.new({ { 1 } }) }),
-			},
-			{
-				Set.new({ { 1 }, { 2 }, { 3 }, { 3 } }),
-				Set.new({ { 3 }, { 3 }, { 2 }, { 1 } }),
-			},
-			{
-				Set.new({ { a = 1 }, { b = 2 } }),
-				Set.new({ { b = 2 }, { a = 1 } }),
-			},
-			{
-				{
-					[1] = "one",
-					[2] = "two",
-				},
-				{
-					[1] = "one",
-					[2] = "two",
-				},
+				[1] = "one",
+				[2] = "two",
 			},
 			{
-				{
-					[1] = { "one" },
-					[2] = { "two" },
-				},
-				{
-					[2] = { "two" },
-					[1] = { "one" },
-				},
+				[1] = "one",
+				[2] = "two",
+			},
+		},
+		{
+			{
+				[1] = { "one" },
+				[2] = { "two" },
 			},
 			{
-				{ [1] = { [2] = { a = 99 } } },
-				{ [1] = { [2] = { a = 99 } } },
+				[2] = { "two" },
+				[1] = { "one" },
 			},
-			{ { 97, 98, 99 }, { 97, 98, 99 } },
-			{ { a = 1, b = 2 }, jestExpect.objectContaining({ a = 1 }) },
-			{ { 1, 2, 3 }, jestExpect.arrayContaining({ 2, 3 }) },
-			{ "abcd", jestExpect.stringContaining("bc") },
-			{ "abcd", jestExpect.stringMatching("bc") },
-			{ true, jestExpect.anything() },
-			{ function() end, jestExpect.any("function") },
+		},
+		{
+			{ [1] = { [2] = { a = 99 } } },
+			{ [1] = { [2] = { a = 99 } } },
+		},
+		{ { 97, 98, 99 }, { 97, 98, 99 } },
+		{ { a = 1, b = 2 }, jestExpect.objectContaining({ a = 1 }) },
+		{ { 1, 2, 3 }, jestExpect.arrayContaining({ 2, 3 }) },
+		{ "abcd", jestExpect.stringContaining("bc") },
+		{ "abcd", jestExpect.stringMatching("bc") },
+		{ true, jestExpect.anything() },
+		{ function() end, jestExpect.any("function") },
+		{
 			{
-				{
-					a = 1,
-					b = function() end,
-					c = true,
-				},
-				{
-					a = 1,
-					b = jestExpect.any("function"),
-					c = jestExpect.anything(),
-				},
-			},
-			{
-				"Alice",
-				{
-					asymmetricMatch = function(self, who)
-						return who == "Alice" or who == "Bob"
-					end,
-				},
+				a = 1,
+				b = function() end,
+				c = true,
 			},
 			{
-				{
-					nodeName = "div",
-					nodeType = 1,
-				},
-				{
-					nodeName = "div",
-					nodeType = 1,
-				},
+				a = 1,
+				b = jestExpect.any("function"),
+				c = jestExpect.anything(),
 			},
-			--[[
+		},
+		{
+			"Alice",
+			{
+				asymmetricMatch = function(self, who)
+					return who == "Alice" or who == "Bob"
+				end,
+			},
+		},
+		{
+			{
+				nodeName = "div",
+				nodeType = 1,
+			},
+			{
+				nodeName = "div",
+				nodeType = 1,
+			},
+		},
+		--[[
 				ROBLOX deviation: no sparse arrays in Lua
 				original code:
 				[
@@ -652,8 +645,7 @@ describe(".toEqual()", function()
 				  [, , 1, undefined, ,], // same length but hole replaced by undefined
 				],
 			]]
-		})
-	do
+	}) do
 		local a = testCase[1]
 		local b = testCase[2]
 		it("{pass: true} expect(" .. stringify(a) .. ").never.toEqual(" .. stringify(b) .. ")", function()
@@ -929,20 +921,18 @@ describe(".toBeTruthy(), .toBeFalsy()", function()
 	end)
 
 	-- ROBLOX deviation: 0, '' and nan are falsy in JS but truthy in Lua so we will treat them as truthy
-	for _, testCase in
-		ipairs({
-			{},
-			true,
-			1,
-			"a",
-			0.5,
-			function() end,
-			math.huge,
-			0,
-			"",
-			0 / 0,
-		})
-	do
+	for _, testCase in ipairs({
+		{},
+		true,
+		1,
+		"a",
+		0.5,
+		function() end,
+		math.huge,
+		0,
+		"",
+		0 / 0,
+	}) do
 		it(string.format("%s is truthy", stringify(testCase)), function()
 			jestExpect(testCase).toBeTruthy()
 			jestExpect(testCase).never.toBeFalsy()
@@ -999,13 +989,11 @@ end)
 
 describe(".toBeNan()", function()
 	it("{pass: true} expect(nan).toBeNan()", function()
-		for index, testCase in
-			ipairs({
-				math.sqrt(-1),
-				math.huge - math.huge,
-				0 / 0,
-			})
-		do
+		for index, testCase in ipairs({
+			math.sqrt(-1),
+			math.huge - math.huge,
+			0 / 0,
+		}) do
 			jestExpect(testCase).toBeNan()
 			jestExpect(function()
 				jestExpect(testCase :: any).never.toBeNan()
@@ -1014,17 +1002,15 @@ describe(".toBeNan()", function()
 	end)
 
 	it("throws", function()
-		for index, testCase in
-			ipairs({
-				1,
-				"",
-				{},
-				0.2,
-				0,
-				math.huge,
-				-math.huge,
-			})
-		do
+		for index, testCase in ipairs({
+			1,
+			"",
+			{},
+			0.2,
+			0,
+			math.huge,
+			-math.huge,
+		}) do
 			jestExpect(function()
 				jestExpect(testCase :: any).toBeNan()
 			end).toThrowErrorMatchingSnapshot()
@@ -1039,17 +1025,15 @@ describe(".toBeNan()", function()
 end)
 
 describe(".toBeNil()", function()
-	for _, testCase in
-		ipairs({
-			{},
-			true,
-			1,
-			"a",
-			0.5,
-			function() end,
-			math.huge,
-		})
-	do
+	for _, testCase in ipairs({
+		{},
+		true,
+		1,
+		"a",
+		0.5,
+		function() end,
+		math.huge,
+	}) do
 		it("fails for " .. stringify(testCase), function()
 			jestExpect(testCase).never.toBeNil()
 
@@ -1076,17 +1060,15 @@ describe(".toBeNil()", function()
 end)
 
 describe(".toBeDefined() .toBeUndefined()", function()
-	for _, testCase in
-		ipairs({
-			{},
-			true,
-			1,
-			"a",
-			0.5,
-			function() end,
-			math.huge,
-		})
-	do
+	for _, testCase in ipairs({
+		{},
+		true,
+		1,
+		"a",
+		0.5,
+		function() end,
+		math.huge,
+	}) do
 		it(stringify(testCase) .. " is defined", function()
 			jestExpect(testCase).toBeDefined()
 
@@ -1129,17 +1111,15 @@ describe(".toBeDefined() .toBeUndefined()", function()
 end)
 
 describe(".toBeGreaterThan(), .toBeLessThan(), " .. ".toBeGreaterThanOrEqual(), .toBeLessThanOrEqual()", function()
-	for _, testCase in
-		ipairs({
-			{ 1, 2 },
-			{ -math.huge, math.huge },
-			{ Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER },
-			{ 0x11, 0x22 },
-			{ tonumber("11", 2), tonumber("111", 2) },
-			{ tonumber("11", 8), tonumber("22", 8) },
-			{ 0.1, 0.2 },
-		})
-	do
+	for _, testCase in ipairs({
+		{ 1, 2 },
+		{ -math.huge, math.huge },
+		{ Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER },
+		{ 0x11, 0x22 },
+		{ tonumber("11", 2), tonumber("111", 2) },
+		{ tonumber("11", 8), tonumber("22", 8) },
+		{ 0.1, 0.2 },
+	}) do
 		local small = testCase[1]
 		local big = testCase[2]
 		it(string.format("{pass: true} expect(%s).toBeLessThan(%s)", small, big), function()
@@ -1213,15 +1193,13 @@ describe(".toBeGreaterThan(), .toBeLessThan(), " .. ".toBeGreaterThanOrEqual(), 
 			ROBLOX deviation: skipped since BigInt doesn't exist in Luau
 			original code lines 1278 - 1372
 		]]
-	for _, testCase in
-		ipairs({
-			{ 1, 1 },
-			{ Number.MIN_SAFE_INTEGER, Number.MIN_SAFE_INTEGER },
-			{ Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER },
-			{ math.huge, math.huge },
-			{ -math.huge, -math.huge },
-		})
-	do
+	for _, testCase in ipairs({
+		{ 1, 1 },
+		{ Number.MIN_SAFE_INTEGER, Number.MIN_SAFE_INTEGER },
+		{ Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER },
+		{ math.huge, math.huge },
+		{ -math.huge, -math.huge },
+	}) do
 		local n1 = testCase[1]
 		local n2 = testCase[2]
 
@@ -1268,17 +1246,15 @@ describe(".toContain(), .toContainEqual()", function()
 		-- )
 	end)
 
-	for _, testCase in
-		ipairs({
-			{ { 1, 2, 3, 4 }, 1 },
-			{ { "a", "b", "c", "d" }, "a" },
-			{ { Symbol.for_("a") }, Symbol.for_("a") },
-			{ "abcdef", "abc" },
-			{ "11112111", "2" },
-			{ Set.new({ "abc", "def" }), "abc" },
-			{ { 0, 1 }, 1 },
-		})
-	do
+	for _, testCase in ipairs({
+		{ { 1, 2, 3, 4 }, 1 },
+		{ { "a", "b", "c", "d" }, "a" },
+		{ { Symbol.for_("a") }, Symbol.for_("a") },
+		{ "abcdef", "abc" },
+		{ "11112111", "2" },
+		{ Set.new({ "abc", "def" }), "abc" },
+		{ { 0, 1 }, 1 },
+	}) do
 		it(string.format("'%s' contains '%s'", stringify(testCase[1]), stringify(testCase[2])), function()
 			jestExpect(testCase[1]).toContain(testCase[2])
 
@@ -1293,12 +1269,10 @@ describe(".toContain(), .toContainEqual()", function()
 			original code lines 1461 - 1470
 		]]
 
-	for _, testCase in
-		ipairs({
-			{ { 1, 2, 3 }, 4 },
-			{ { {}, {} }, {} },
-		})
-	do
+	for _, testCase in ipairs({
+		{ { 1, 2, 3 }, 4 },
+		{ { {}, {} }, {} },
+	}) do
 		it(string.format("'%s' does not contain '%s'", stringify(testCase[1]), stringify(testCase[2])), function()
 			jestExpect(testCase[1]).never.toContain(testCase[2])
 
@@ -1341,17 +1315,15 @@ describe(".toContain(), .toContainEqual()", function()
 		-- ROBLOX deviation END
 	end)
 
-	for _, testCase in
-		ipairs({
-			{ { 1, 2, 3, 4 }, 1 },
-			{ { "a", "b", "c", "d" }, "a" },
-			{ { Symbol.for_("a") }, Symbol.for_("a") },
-			{ { { a = "b" }, { a = "c" } }, { a = "b" } },
-			{ Set.new({ 1, 2, 3, 4 }), 1 },
-			{ { 0, 1 }, 1 },
-			{ { { 1, 2 }, { 3, 4 } }, { 3, 4 } },
-		})
-	do
+	for _, testCase in ipairs({
+		{ { 1, 2, 3, 4 }, 1 },
+		{ { "a", "b", "c", "d" }, "a" },
+		{ { Symbol.for_("a") }, Symbol.for_("a") },
+		{ { { a = "b" }, { a = "c" } }, { a = "b" } },
+		{ Set.new({ 1, 2, 3, 4 }), 1 },
+		{ { 0, 1 }, 1 },
+		{ { { 1, 2 }, { 3, 4 } }, { 3, 4 } },
+	}) do
 		it(
 			string.format("'%s' contains a value equal to '%s'", stringify(testCase[1]), stringify(testCase[2])),
 			function()
@@ -1364,11 +1336,9 @@ describe(".toContain(), .toContainEqual()", function()
 		)
 	end
 
-	for _, testCase in
-		ipairs({
-			{ { { a = "b" }, { a = "c" } }, { a = "d" } },
-		})
-	do
+	for _, testCase in ipairs({
+		{ { { a = "b" }, { a = "c" } }, { a = "d" } },
+	}) do
 		it(
 			string.format("'%s' does not contain a value equal to '%s'", stringify(testCase[1]), stringify(testCase[2])),
 			function()
@@ -1389,18 +1359,16 @@ describe(".toContain(), .toContainEqual()", function()
 end)
 
 describe(".toBeCloseTo", function()
-	for _, testCase in
-		ipairs({
-			{ 0, 0 },
-			{ 0, 0.001 },
-			{ 1.23, 1.229 },
-			{ 1.23, 1.226 },
-			{ 1.23, 1.225 },
-			{ 1.23, 1.234 },
-			{ math.huge, math.huge },
-			{ -math.huge, -math.huge },
-		})
-	do
+	for _, testCase in ipairs({
+		{ 0, 0 },
+		{ 0, 0.001 },
+		{ 1.23, 1.229 },
+		{ 1.23, 1.226 },
+		{ 1.23, 1.225 },
+		{ 1.23, 1.234 },
+		{ math.huge, math.huge },
+		{ -math.huge, -math.huge },
+	}) do
 		local n1 = testCase[1]
 		local n2 = testCase[2]
 		it(string.format("{pass: true} expect(%s).toBeCloseTo(%s)", n1, n2), function()
@@ -1412,16 +1380,14 @@ describe(".toBeCloseTo", function()
 		end)
 	end
 
-	for _, testCase in
-		ipairs({
-			{ 0, 0.01 },
-			{ 1, 1.23 },
-			{ 1.23, 1.2249999 },
-			{ math.huge, -math.huge },
-			{ math.huge, 1.23 },
-			{ -math.huge, -1.23 },
-		})
-	do
+	for _, testCase in ipairs({
+		{ 0, 0.01 },
+		{ 1, 1.23 },
+		{ 1.23, 1.2249999 },
+		{ math.huge, -math.huge },
+		{ math.huge, 1.23 },
+		{ -math.huge, -1.23 },
+	}) do
 		local n1 = testCase[1]
 		local n2 = testCase[2]
 		it(string.format("{pass: false} expect(%s).toBeCloseTo(%s)", n1, n2), function()
@@ -1433,14 +1399,12 @@ describe(".toBeCloseTo", function()
 		end)
 	end
 
-	for _, testCase in
-		ipairs({
-			{ 0, 0.1, 0 },
-			{ 0, 0.0001, 3 },
-			{ 0, 0.000004, 5 },
-			{ 2.0000002, 2, 5 },
-		})
-	do
+	for _, testCase in ipairs({
+		{ 0, 0.1, 0 },
+		{ 0, 0.0001, 3 },
+		{ 0, 0.000004, 5 },
+		{ 2.0000002, 2, 5 },
+	}) do
 		local n1 = testCase[1]
 		local n2 = testCase[2]
 		local p = testCase[3]
@@ -1477,13 +1441,11 @@ describe(".toBeCloseTo", function()
 end)
 
 describe(".toMatch()", function()
-	for _, testCase in
-		ipairs({
-			{ "foo", "foo" },
-			{ "Foo bar", "[fF][oO][oO]" }, -- case insensitive match
-			{ "Foo bar", RegExp("^Foo", "i") }, -- ROBLOX TODO: change to ^foo when "i" flag is working
-		})
-	do
+	for _, testCase in ipairs({
+		{ "foo", "foo" },
+		{ "Foo bar", "[fF][oO][oO]" }, -- case insensitive match
+		{ "Foo bar", RegExp("^Foo", "i") }, -- ROBLOX TODO: change to ^foo when "i" flag is working
+	}) do
 		local n1 = testCase[1]
 		local n2 = testCase[2]
 		it(string.format("{pass: true} expect(%s).toMatch(%s)", n1, tostring(n2)), function()
@@ -1491,12 +1453,10 @@ describe(".toMatch()", function()
 		end)
 	end
 
-	for _, testCase in
-		ipairs({
-			{ "bar", "foo" },
-			{ "bar", RegExp("foo") },
-		})
-	do
+	for _, testCase in ipairs({
+		{ "bar", "foo" },
+		{ "bar", RegExp("foo") },
+	}) do
 		local n1 = testCase[1]
 		local n2 = testCase[2]
 		it(string.format("throws: [%s, %s]", n1, tostring(n2)), function()
@@ -1506,16 +1466,14 @@ describe(".toMatch()", function()
 		end)
 	end
 
-	for _, testCase in
-		ipairs({
-			{ 1, "foo" },
-			{ {}, "foo" },
-			{ true, "foo" },
-			{ RegExp("foo", "i"), "foo" },
-			{ function() end, "foo" },
-			{ nil, "foo" },
-		})
-	do
+	for _, testCase in ipairs({
+		{ 1, "foo" },
+		{ {}, "foo" },
+		{ true, "foo" },
+		{ RegExp("foo", "i"), "foo" },
+		{ function() end, "foo" },
+		{ nil, "foo" },
+	}) do
 		local n1 = testCase[1]
 		local n2 = testCase[2]
 		it(string.format("throws if non String actual value passed: [%s, %s]", stringify(n1), stringify(n2)), function()
@@ -1525,15 +1483,13 @@ describe(".toMatch()", function()
 		end)
 	end
 
-	for _, testCase in
-		ipairs({
-			{ "foo", 1 },
-			{ "foo", {} },
-			{ "foo", true },
-			{ "foo", function() end },
-			{ "foo", nil },
-		})
-	do
+	for _, testCase in ipairs({
+		{ "foo", 1 },
+		{ "foo", {} },
+		{ "foo", true },
+		{ "foo", function() end },
+		{ "foo", nil },
+	}) do
 		local n1 = testCase[1]
 		local n2 = testCase[2]
 		it(
@@ -1570,14 +1526,12 @@ end)
 
 describe(".toHaveLength", function()
 	-- ROBLOX deviation: {function() end, 0} is omitted, can't get the argument count of a function in Lua
-	for _, testCase in
-		ipairs({
-			{ { 1, 2 }, 2 },
-			{ {}, 0 },
-			{ { "a", "b" }, 2 },
-			{ "", 0 },
-		})
-	do
+	for _, testCase in ipairs({
+		{ { 1, 2 }, 2 },
+		{ {}, 0 },
+		{ { "a", "b" }, 2 },
+		{ "", 0 },
+	}) do
 		local received = testCase[1]
 		local length = testCase[2]
 		local testname = string.format("{pass: true} expect(%s).toHaveLength(%s)", stringify(received), length)
@@ -1596,15 +1550,13 @@ describe(".toHaveLength", function()
 	end)
 
 	-- ROBLOX deviation: omitted function test, no argument count of function in lua
-	for _, testCase in
-		ipairs({
-			{ { 1, 2 }, 3 },
-			{ {}, 1 },
-			{ { "a", "b" }, 99 },
-			{ "abc", 66 },
-			{ "", 1 },
-		})
-	do
+	for _, testCase in ipairs({
+		{ { 1, 2 }, 3 },
+		{ {}, 1 },
+		{ { "a", "b" }, 99 },
+		{ "abc", 66 },
+		{ "", 1 },
+	}) do
 		local received = testCase[1]
 		local length = testCase[2]
 		local testname = string.format("{pass: false} expect(%s).toHaveLength(%s)", stringify(received), length)
@@ -1693,32 +1645,30 @@ describe(".toHaveProperty()", function()
 
 	local valueDiffMultiple = "Roses are red, violets are blue.\nTesting with Jest\nIs good for you."
 
-	for _, testCase in
-		ipairs({
-			{ { a = { b = { c = { d = 1 } } } }, "a.b.c.d", 1 },
-			{ { a = { b = { c = { d = 1 } } } }, { "a", "b", "c", "d" }, 1 },
-			{ { ["a.b.c.d"] = 1 }, { "a.b.c.d" }, 1 },
-			{ { a = { b = { 1, 2, 3 } } }, { "a", "b", 2 }, 2 },
-			{ { a = { b = { 1, 2, 3 } } }, { "a", "b", 2 }, jestExpect.any("number") },
-			{ { a = 0 }, "a", 0 },
-			{ { a = { b = false } }, "a.b", false },
-			--[[
+	for _, testCase in ipairs({
+		{ { a = { b = { c = { d = 1 } } } }, "a.b.c.d", 1 },
+		{ { a = { b = { c = { d = 1 } } } }, { "a", "b", "c", "d" }, 1 },
+		{ { ["a.b.c.d"] = 1 }, { "a.b.c.d" }, 1 },
+		{ { a = { b = { 1, 2, 3 } } }, { "a", "b", 2 }, 2 },
+		{ { a = { b = { 1, 2, 3 } } }, { "a", "b", 2 }, jestExpect.any("number") },
+		{ { a = 0 }, "a", 0 },
+		{ { a = { b = false } }, "a.b", false },
+		--[[
 				ROBLOX deviation: we omit the following test case since it isn't behavior
 				we can easily support and maintain consistency with in Lua. The test
 				case also looks like it is slated for removal in upstream in the next
 				major breaking change
 				{{a = {}}, 'a.b', nil}
 			]]
-			{ { a = { b = { c = 5 } } }, "a.b", { c = 5 } },
-			-- ROBLOX TODO: enable following tests
-			{ { a = { b = { { c = { { d = 1 } } } } } }, "a.b[1].c[1].d", 1 },
-			{ { a = { b = { { c = { d = { { e = 1 }, { f = 2 } } } } } } }, "a.b[1].c.d[2].f", 2 },
-			{ { a = { b = { { { c = { { d = 1 } } } } } } }, "a.b[1][1].c[1].d", 1 },
-			{ Object.assign({}, { property = 1 }), "property", 1 },
-			-- ROBLOX deviation: len isn't a property of an object like it is in JS
-			{ "", "len", jestExpect.any("function") },
-		})
-	do
+		{ { a = { b = { c = 5 } } }, "a.b", { c = 5 } },
+		-- ROBLOX TODO: enable following tests
+		{ { a = { b = { { c = { { d = 1 } } } } } }, "a.b[1].c[1].d", 1 },
+		{ { a = { b = { { c = { d = { { e = 1 }, { f = 2 } } } } } } }, "a.b[1].c.d[2].f", 2 },
+		{ { a = { b = { { { c = { { d = 1 } } } } } } }, "a.b[1][1].c[1].d", 1 },
+		{ Object.assign({}, { property = 1 }), "property", 1 },
+		-- ROBLOX deviation: len isn't a property of an object like it is in JS
+		{ "", "len", jestExpect.any("function") },
+	}) do
 		local obj = testCase[1]
 		local keyPath = testCase[2]
 		local value = testCase[3]
@@ -1742,25 +1692,23 @@ describe(".toHaveProperty()", function()
 	-- ROBLOX deviation: we omit two test cases where the property to check for
 	-- is undefined in upstream and we do not support checking for nil in
 	-- toHaveProperty
-	for _, testCase in
-		ipairs({
-			{ { a = { b = { c = { d = 1 } } } }, "a.b.ttt.d", 1 },
-			{ { a = { b = { c = { d = 1 } } } }, "a.b.c.d", 2 },
-			{ { ["a.b.c.d"] = 1 }, "a.b.c.d", 2 },
-			{ { ["a.b.c.d"] = 1 }, { "a.b.c.d" }, 2 },
-			{ receivedDiffSingle, pathDiff, valueDiffSingle },
-			{ receivedDiffMultiple, pathDiff, valueDiffMultiple },
-			{ { a = { b = { c = { d = 1 } } } }, { "a", "b", "c", "d" }, 2 },
-			{ { a = { b = { c = {} } } }, "a.b.c.d", 1 },
-			{ { a = 1 }, "a.b.c.d", 5 },
-			{ {}, "a", "test" },
-			--{{a = {b = 3}}, 'a.b', nil},
-			{ 1, "a.b.c", "test" },
-			{ "abc", "a.b.c", { a = 5 } },
-			{ { a = { b = { c = 5 } } }, "a.b", { c = 4 } },
-			-- {{a = {}}, 'a.b', nil}
-		})
-	do
+	for _, testCase in ipairs({
+		{ { a = { b = { c = { d = 1 } } } }, "a.b.ttt.d", 1 },
+		{ { a = { b = { c = { d = 1 } } } }, "a.b.c.d", 2 },
+		{ { ["a.b.c.d"] = 1 }, "a.b.c.d", 2 },
+		{ { ["a.b.c.d"] = 1 }, { "a.b.c.d" }, 2 },
+		{ receivedDiffSingle, pathDiff, valueDiffSingle },
+		{ receivedDiffMultiple, pathDiff, valueDiffMultiple },
+		{ { a = { b = { c = { d = 1 } } } }, { "a", "b", "c", "d" }, 2 },
+		{ { a = { b = { c = {} } } }, "a.b.c.d", 1 },
+		{ { a = 1 }, "a.b.c.d", 5 },
+		{ {}, "a", "test" },
+		--{{a = {b = 3}}, 'a.b', nil},
+		{ 1, "a.b.c", "test" },
+		{ "abc", "a.b.c", { a = 5 } },
+		{ { a = { b = { c = 5 } } }, "a.b", { c = 4 } },
+		-- {{a = {}}, 'a.b', nil}
+	}) do
 		local obj = testCase[1]
 		local keyPath = testCase[2]
 		local value = testCase[3]
@@ -1782,16 +1730,14 @@ describe(".toHaveProperty()", function()
 		)
 	end
 
-	for _, testCase in
-		ipairs({
-			{ { a = { b = { c = { d = 1 } } } }, "a.b.c.d" },
-			{ { a = { b = { c = { d = 1 } } } }, { "a", "b", "c", "d" } },
-			{ { ["a.b.c.d"] = 1 }, { "a.b.c.d" } },
-			{ { a = { b = { 1, 2, 3 } } }, { "a", "b", 2 } },
-			{ { a = 0 }, "a" },
-			{ { a = { b = false } }, "a.b" },
-		})
-	do
+	for _, testCase in ipairs({
+		{ { a = { b = { c = { d = 1 } } } }, "a.b.c.d" },
+		{ { a = { b = { c = { d = 1 } } } }, { "a", "b", "c", "d" } },
+		{ { ["a.b.c.d"] = 1 }, { "a.b.c.d" } },
+		{ { a = { b = { 1, 2, 3 } } }, { "a", "b", 2 } },
+		{ { a = 0 }, "a" },
+		{ { a = { b = false } }, "a.b" },
+	}) do
 		local obj = testCase[1]
 		local keyPath = testCase[2]
 
@@ -1830,15 +1776,13 @@ describe(".toHaveProperty()", function()
 			});
 		]]
 
-	for _, testCase in
-		ipairs({
-			{ nil, "a.b" },
-			{ nil, "a" },
-			{ { a = { b = {} } }, nil },
-			{ { a = { b = {} } }, 1 },
-			{ {}, {} },
-		})
-	do
+	for _, testCase in ipairs({
+		{ nil, "a.b" },
+		{ nil, "a" },
+		{ { a = { b = {} } }, nil },
+		{ { a = { b = {} } }, 1 },
+		{ {}, {} },
+	}) do
 		local obj = testCase[1]
 		local keyPath = testCase[2]
 
@@ -2005,18 +1949,16 @@ describe("toMatchObject()", function()
 		{ Set.new({ 1, 2 }), Set.new({ 2 }) },
 	})
 
-	for _, testCase in
-		ipairs({
-			{ nil, {} },
-			{ 4, {} },
-			{ "44", {} },
-			{ true, {} },
-			{ {}, nil },
-			{ {}, 4 },
-			{ {}, "some string" },
-			{ {}, true },
-		})
-	do
+	for _, testCase in ipairs({
+		{ nil, {} },
+		{ 4, {} },
+		{ "44", {} },
+		{ true, {} },
+		{ {}, nil },
+		{ {}, 4 },
+		{ {}, "some string" },
+		{ {}, true },
+	}) do
 		local n1 = testCase[1]
 		local n2 = testCase[2]
 

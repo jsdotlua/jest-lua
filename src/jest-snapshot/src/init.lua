@@ -161,9 +161,7 @@ end
 
 -- ROBLOX TODO: ADO-1552 add toMatchInlineSnapshot
 
-function _toMatchSnapshot(
-	config: MatchSnapshotConfig
-): {
+function _toMatchSnapshot(config: MatchSnapshotConfig): {
 	pass: boolean,
 	message: () -> string,
 	actual: string?,

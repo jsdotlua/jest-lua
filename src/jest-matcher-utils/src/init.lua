@@ -298,12 +298,12 @@ function isLineDiffable(expected: any, received: any): boolean
 		-- * if neither string is empty
 		-- * if either string has more than one line
 		return (
-				typeof(expected) == "string"
-				and typeof(received) == "string"
-				and #expected ~= 0
-				and #received ~= 0
-				and not not (string.find(expected, MULTILINE_REGEXP) or string.find(received, MULTILINE_REGEXP))
-			)
+			typeof(expected) == "string"
+			and typeof(received) == "string"
+			and #expected ~= 0
+			and #received ~= 0
+			and not not (string.find(expected, MULTILINE_REGEXP) or string.find(received, MULTILINE_REGEXP))
+		)
 	end
 
 	if expectedType == "DateTime" or expectedType == "function" then
@@ -460,12 +460,8 @@ function replaceMatchedToAsymmetricMatcher(
 				expectedReplaceable:set(key, receivedValue)
 			end
 		elseif Replaceable.isReplaceable(expectedValue, receivedValue) then
-			local replaced = replaceMatchedToAsymmetricMatcher(
-				expectedValue,
-				receivedValue,
-				expectedCycles,
-				receivedCycles
-			)
+			local replaced =
+				replaceMatchedToAsymmetricMatcher(expectedValue, receivedValue, expectedCycles, receivedCycles)
 			expectedReplaceable:set(key, replaced.replacedExpected)
 			receivedReplaceable:set(key, replaced.replacedReceived)
 		end

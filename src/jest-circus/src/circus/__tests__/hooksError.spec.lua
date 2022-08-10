@@ -26,21 +26,19 @@ local circus = require(script.Parent.Parent).default
 -- ROBLOX deviation START: using for in loops instead of desribe.each and test.each
 for _, fn in ipairs({ "beforeEach", "beforeAll", "afterEach", "afterAll" }) do
 	describe(("%s hooks error throwing"):format(fn), function()
-		for _, v in
-			ipairs({
-				-- ROBLOX FIXME Luau: roblox-cli doesn't allow for mixed arrays
-				{ "String" } :: any,
-				{ 1 },
-				{ {} },
-				-- ROBLOX deviation: skipped because there is no distinction between empty object and empty array in Lua
-				-- { {} },
-				{ Symbol("hello") },
-				{ true },
-				{ nil },
-				-- ROBLOX deviation: skipped because there is no distinction between null and undefined in Lua
-				-- { nil },
-			})
-		do
+		for _, v in ipairs({
+			-- ROBLOX FIXME Luau: roblox-cli doesn't allow for mixed arrays
+			{ "String" } :: any,
+			{ 1 },
+			{ {} },
+			-- ROBLOX deviation: skipped because there is no distinction between empty object and empty array in Lua
+			-- { {} },
+			{ Symbol("hello") },
+			{ true },
+			{ nil },
+			-- ROBLOX deviation: skipped because there is no distinction between null and undefined in Lua
+			-- { nil },
+		}) do
 			local el = v[1]
 			it(("%s throws an error when %s is provided as a first argument to it"):format(fn, tostring(el)), function()
 				jestExpect(function()

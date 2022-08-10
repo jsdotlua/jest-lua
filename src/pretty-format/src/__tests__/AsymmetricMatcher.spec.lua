@@ -31,14 +31,12 @@ beforeEach(function()
 end)
 
 -- ROBLOX deviation: modified to use our implementation of Any
-for _, type_ in
-	ipairs({
-		"number",
-		"string",
-		"function",
-		"table",
-	})
-do
+for _, type_ in ipairs({
+	"number",
+	"string",
+	"function",
+	"table",
+}) do
 	it(string.format("supports any(%s)", type_), function()
 		local result = prettyFormat(jestExpect.any(type_), options)
 		jestExpect(result).toBe(string.format("Any<%s>", type_))

@@ -42,11 +42,8 @@ local function getNoTestFoundVerbose(testRunData: TestRunData, globalConfig: Con
 							local valueAsString = if Array.isArray(value)
 								then Array.join(value, ", ")
 								else tostring(value)
-							local matches = pluralize(
-								"match",
-								Boolean.toJSBoolean(stats_[key]) and stats_[key] or 0,
-								"es"
-							)
+							local matches =
+								pluralize("match", Boolean.toJSBoolean(stats_[key]) and stats_[key] or 0, "es")
 							return ("  %s: %s - %s"):format(key, chalk.yellow(valueAsString), tostring(matches))
 						end
 						return nil

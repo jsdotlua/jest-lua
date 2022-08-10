@@ -162,94 +162,94 @@ local function readConfig(
 end
 exports.readConfig = readConfig
 
-function groupOptions(
-	options: Config_ProjectConfig & Config_GlobalConfig
-): {
+function groupOptions(options: Config_ProjectConfig & Config_GlobalConfig): {
 	globalConfig: Config_GlobalConfig,
 	projectConfig: Config_ProjectConfig,
 }
 	return {
-		globalConfig = (Object.freeze({
-			bail = options.bail,
-			-- ROBLOX deviation START: not supported
-			-- changedFilesWithAncestor = options.changedFilesWithAncestor,
-			-- ROBLOX deviation END
-			changedSince = options.changedSince,
-			-- ROBLOX deviation START: not supported
-			-- collectCoverage = options.collectCoverage,
-			-- collectCoverageFrom = options.collectCoverageFrom,
-			-- collectCoverageOnlyFrom = options.collectCoverageOnlyFrom,
-			-- coverageDirectory = options.coverageDirectory,
-			-- coverageProvider = options.coverageProvider,
-			-- coverageReporters = options.coverageReporters,
-			-- coverageThreshold = options.coverageThreshold,
-			-- detectLeaks = options.detectLeaks,
-			-- detectOpenHandles = options.detectOpenHandles,
-			-- errorOnDeprecated = options.errorOnDeprecated,
-			-- ROBLOX deviation END
-			expand = options.expand,
-			filter = options.filter,
-			-- ROBLOX deviation START: not supported
-			-- findRelatedTests = options.findRelatedTests,
-			-- forceExit = options.forceExit,
-			-- globalSetup = options.globalSetup,
-			-- globalTeardown = options.globalTeardown,
-			-- ROBLOX deviation END
-			json = options.json,
-			-- ROBLOX deviation START: not supported
-			-- lastCommit = options.lastCommit,
-			-- ROBLOX deviation END
-			listTests = options.listTests,
-			-- ROBLOX deviation START: not supported
-			-- logHeapUsage = options.logHeapUsage,
-			-- ROBLOX deviation END
-			maxConcurrency = options.maxConcurrency,
-			maxWorkers = options.maxWorkers,
-			-- ROBLOX deviation START: not supported
-			-- noSCM = nil,
-			-- ROBLOX deviation END
-			noStackTrace = options.noStackTrace,
-			nonFlagArgs = options.nonFlagArgs,
-			-- ROBLOX deviation START: not supported
-			-- notify = options.notify,
-			-- notifyMode = options.notifyMode,
-			-- onlyChanged = options.onlyChanged,
-			-- onlyFailures = options.onlyFailures,
-			-- ROBLOX deviation END
-			outputFile = options.outputFile,
-			passWithNoTests = options.passWithNoTests,
-			projects = options.projects,
-			-- ROBLOX deviation START: not supported
-			-- replname = options.replname,
-			-- reporters = options.reporters,
-			-- ROBLOX deviation END
-			rootDir = options.rootDir,
-			runTestsByPath = options.runTestsByPath,
-			silent = options.silent,
-			skipFilter = options.skipFilter,
-			-- ROBLOX deviation START: not supported
-			-- snapshotFormat = options.snapshotFormat,
-			-- ROBLOX deviation END
-			testFailureExitCode = options.testFailureExitCode,
-			testNamePattern = options.testNamePattern,
-			testPathPattern = options.testPathPattern,
-			-- ROBLOX deviation START: not supported
-			-- testResultsProcessor = options.testResultsProcessor,
-			-- testSequencer = options.testSequencer,
-			-- ROBLOX deviation END
-			testTimeout = options.testTimeout,
-			updateSnapshot = options.updateSnapshot,
-			-- ROBLOX deviation START: not supported
-			-- useStderr = options.useStderr,
-			-- ROBLOX deviation END
-			verbose = options.verbose,
-			-- ROBLOX deviation START: not supported
-			-- watch = options.watch,
-			-- watchAll = options.watchAll,
-			-- watchPlugins = options.watchPlugins,
-			-- watchman = options.watchman,
-			-- ROBLOX deviation END
-		}) :: any) :: Config_GlobalConfig,
+		globalConfig = (
+				Object.freeze({
+					bail = options.bail,
+					-- ROBLOX deviation START: not supported
+					-- changedFilesWithAncestor = options.changedFilesWithAncestor,
+					-- ROBLOX deviation END
+					changedSince = options.changedSince,
+					-- ROBLOX deviation START: not supported
+					-- collectCoverage = options.collectCoverage,
+					-- collectCoverageFrom = options.collectCoverageFrom,
+					-- collectCoverageOnlyFrom = options.collectCoverageOnlyFrom,
+					-- coverageDirectory = options.coverageDirectory,
+					-- coverageProvider = options.coverageProvider,
+					-- coverageReporters = options.coverageReporters,
+					-- coverageThreshold = options.coverageThreshold,
+					-- detectLeaks = options.detectLeaks,
+					-- detectOpenHandles = options.detectOpenHandles,
+					-- errorOnDeprecated = options.errorOnDeprecated,
+					-- ROBLOX deviation END
+					expand = options.expand,
+					filter = options.filter,
+					-- ROBLOX deviation START: not supported
+					-- findRelatedTests = options.findRelatedTests,
+					-- forceExit = options.forceExit,
+					-- globalSetup = options.globalSetup,
+					-- globalTeardown = options.globalTeardown,
+					-- ROBLOX deviation END
+					json = options.json,
+					-- ROBLOX deviation START: not supported
+					-- lastCommit = options.lastCommit,
+					-- ROBLOX deviation END
+					listTests = options.listTests,
+					-- ROBLOX deviation START: not supported
+					-- logHeapUsage = options.logHeapUsage,
+					-- ROBLOX deviation END
+					maxConcurrency = options.maxConcurrency,
+					maxWorkers = options.maxWorkers,
+					-- ROBLOX deviation START: not supported
+					-- noSCM = nil,
+					-- ROBLOX deviation END
+					noStackTrace = options.noStackTrace,
+					nonFlagArgs = options.nonFlagArgs,
+					-- ROBLOX deviation START: not supported
+					-- notify = options.notify,
+					-- notifyMode = options.notifyMode,
+					-- onlyChanged = options.onlyChanged,
+					-- onlyFailures = options.onlyFailures,
+					-- ROBLOX deviation END
+					outputFile = options.outputFile,
+					passWithNoTests = options.passWithNoTests,
+					projects = options.projects,
+					-- ROBLOX deviation START: not supported
+					-- replname = options.replname,
+					-- reporters = options.reporters,
+					-- ROBLOX deviation END
+					rootDir = options.rootDir,
+					runTestsByPath = options.runTestsByPath,
+					silent = options.silent,
+					skipFilter = options.skipFilter,
+					-- ROBLOX deviation START: not supported
+					-- snapshotFormat = options.snapshotFormat,
+					-- ROBLOX deviation END
+					testFailureExitCode = options.testFailureExitCode,
+					testNamePattern = options.testNamePattern,
+					testPathPattern = options.testPathPattern,
+					-- ROBLOX deviation START: not supported
+					-- testResultsProcessor = options.testResultsProcessor,
+					-- testSequencer = options.testSequencer,
+					-- ROBLOX deviation END
+					testTimeout = options.testTimeout,
+					updateSnapshot = options.updateSnapshot,
+					-- ROBLOX deviation START: not supported
+					-- useStderr = options.useStderr,
+					-- ROBLOX deviation END
+					verbose = options.verbose,
+					-- ROBLOX deviation START: not supported
+					-- watch = options.watch,
+					-- watchAll = options.watchAll,
+					-- watchPlugins = options.watchPlugins,
+					-- watchman = options.watchman,
+					-- ROBLOX deviation END
+				}) :: any
+			) :: Config_GlobalConfig,
 		projectConfig = Object.freeze({
 			automock = options.automock,
 			-- ROBLOX deviation START: caching not supported
@@ -350,9 +350,11 @@ function ensureNoDuplicateConfigs(
 This usually means that your %s config includes a directory that doesn't have any configuration recognizable by Jest. Please fix it.
 ]]):format(
 				(chalk.bold(tostring(configPath))),
-				(chalk.bold(tostring(projects[(Array.findIndex(parsedConfigs, function(x)
-					return x == config
-				end))]))),
+				(
+					chalk.bold(tostring(projects[(Array.findIndex(parsedConfigs, function(x)
+						return x == config
+					end))]))
+				),
 				tostring(chalk.bold(tostring(projects[(Array.findIndex(parsedConfigs, function(x)
 					return x == configPathMap:get(configPath)
 				end))]))),
@@ -420,9 +422,8 @@ local function readConfigs(
 				end),
 				function(root, projectIndex)
 					local projectIsTheOnlyProject = projectIndex == 1 and #projects == 1
-					local skipArgvConfigOption = not if projectIsTheOnlyProject
-						then projectIsCwd
-						else projectIsTheOnlyProject
+					local skipArgvConfigOption =
+						not if projectIsTheOnlyProject then projectIsCwd else projectIsTheOnlyProject
 
 					return readConfig(
 						cwdInstance,

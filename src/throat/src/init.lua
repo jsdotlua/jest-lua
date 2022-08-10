@@ -99,10 +99,7 @@ local function throatInternal(size: number)
 	return run
 end
 
-local function earlyBound<TResult, TArgs>(
-	size: number,
-	fn: (...TArgs) -> Promise<TResult>
-): ThroatEarlyBound<TResult, TArgs>
+local function earlyBound<TResult, TArgs>(size: number, fn: (...TArgs) -> Promise<TResult>): ThroatEarlyBound<TResult, TArgs>
 	local run = throatInternal(bit32.bor(size, 0))
 	return function(...)
 		local arguments = { ... }

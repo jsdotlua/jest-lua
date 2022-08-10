@@ -140,16 +140,14 @@ test("Any throws when called with empty constructor", function()
 end)
 
 test("Anything matches any type", function()
-	for _, test in
-		ipairs({
-			anything():asymmetricMatch("jest"),
-			anything():asymmetricMatch(1),
-			anything():asymmetricMatch(function() end),
-			anything():asymmetricMatch(true),
-			anything():asymmetricMatch({ x = 1 }),
-			anything():asymmetricMatch({ 1, 2 }),
-		})
-	do
+	for _, test in ipairs({
+		anything():asymmetricMatch("jest"),
+		anything():asymmetricMatch(1),
+		anything():asymmetricMatch(function() end),
+		anything():asymmetricMatch(true),
+		anything():asymmetricMatch({ x = 1 }),
+		anything():asymmetricMatch({ 1, 2 }),
+	}) do
 		expect(test).toBe(true)
 	end
 end)
@@ -219,24 +217,22 @@ test("ArrayNotContaining throws for non-arrays", function()
 end)
 
 test("ObjectContaining matches", function()
-	for _, test in
-		ipairs({
-			objectContaining({}):asymmetricMatch("jest"),
-			objectContaining({ foo = "foo" }):asymmetricMatch({ foo = "foo", jest = "jest" }),
-			-- ROBLOX deviation START: can't have nil values in table
-			objectContaining({ foo = "undefined" }):asymmetricMatch({ foo = "undefined" }),
-			-- ROBLOX deviation END
-			objectContaining({ first = objectContaining({ second = {} }) }):asymmetricMatch({
-				first = { second = {} },
-			}),
-			-- ROBLOX deviation start: skipping - Lua doesn't have buffer type
-			-- objectContaining({foo = Buffer.from('foo')}):asymmetricMatch({
-			-- 	foo = Buffer.from('foo'),
-			-- 	jest = 'jest',
-			-- }),
-			-- ROBLOX deviation end
-		})
-	do
+	for _, test in ipairs({
+		objectContaining({}):asymmetricMatch("jest"),
+		objectContaining({ foo = "foo" }):asymmetricMatch({ foo = "foo", jest = "jest" }),
+		-- ROBLOX deviation START: can't have nil values in table
+		objectContaining({ foo = "undefined" }):asymmetricMatch({ foo = "undefined" }),
+		-- ROBLOX deviation END
+		objectContaining({ first = objectContaining({ second = {} }) }):asymmetricMatch({
+			first = { second = {} },
+		}),
+		-- ROBLOX deviation start: skipping - Lua doesn't have buffer type
+		-- objectContaining({foo = Buffer.from('foo')}):asymmetricMatch({
+		-- 	foo = Buffer.from('foo'),
+		-- 	jest = 'jest',
+		-- }),
+		-- ROBLOX deviation end
+	}) do
 		expect(test).toEqual(true)
 	end
 end)
@@ -307,25 +303,23 @@ test("ObjectNotContaining matches", function()
 end)
 
 test("ObjectNotContaining does not match", function()
-	for _, test in
-		ipairs({
-			objectNotContaining({}):asymmetricMatch("jest"),
-			objectNotContaining({ foo = "foo" }):asymmetricMatch({
-				foo = "foo",
-				jest = "jest",
-			}),
-			-- ROBLOX deviation: can't have nil values in table
-			objectNotContaining({ foo = "undefined" }):asymmetricMatch({ foo = "undefined" }),
-			objectNotContaining({ first = { second = {} } }):asymmetricMatch({
-				first = { second = {} },
-			}),
-			objectNotContaining({
-				first = objectContaining({ second = {} }),
-			}):asymmetricMatch({ first = { second = {} } }),
-			objectNotContaining({}):asymmetricMatch(nil),
-			objectNotContaining({}):asymmetricMatch({}),
-		})
-	do
+	for _, test in ipairs({
+		objectNotContaining({}):asymmetricMatch("jest"),
+		objectNotContaining({ foo = "foo" }):asymmetricMatch({
+			foo = "foo",
+			jest = "jest",
+		}),
+		-- ROBLOX deviation: can't have nil values in table
+		objectNotContaining({ foo = "undefined" }):asymmetricMatch({ foo = "undefined" }),
+		objectNotContaining({ first = { second = {} } }):asymmetricMatch({
+			first = { second = {} },
+		}),
+		objectNotContaining({
+			first = objectContaining({ second = {} }),
+		}):asymmetricMatch({ first = { second = {} } }),
+		objectNotContaining({}):asymmetricMatch(nil),
+		objectNotContaining({}):asymmetricMatch({}),
+	}) do
 		expect(test).toBe(false)
 	end
 end)

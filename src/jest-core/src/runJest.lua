@@ -137,8 +137,8 @@ local function getTestPaths(
 end
 
 type ProcessResultOptions =
-		-- ROBLOX deviation START: inline Pick<Config_GlobalConfig, "json" | "outputFile" | "testResultsProcessor"> as Luau doesn't support Pick type
-{
+	-- ROBLOX deviation START: inline Pick<Config_GlobalConfig, "json" | "outputFile" | "testResultsProcessor"> as Luau doesn't support Pick type
+	{
 		json: boolean,
 		outputFile: Config_Path?,
 		-- testResultsProcessor: string?,
@@ -201,20 +201,18 @@ end
 
 local testSchedulerContext: TestSchedulerContext = { firstRun = true, previousSuccess = true }
 
-local function runJest(
-	ref: {
-		globalConfig: Config_GlobalConfig,
-		contexts: Array<Context>,
-		outputStream: NodeJS_WriteStream,
-		testWatcher: TestWatcher,
-		jestHooks: JestHookEmitter?,
-		startRun: (globalConfig: Config_GlobalConfig) -> (),
-		changedFilesPromise: ChangedFilesPromise?,
-		onComplete: (testResults: AggregatedResult) -> (),
-		failedTestsCache: FailedTestsCache?,
-		filter: Filter?,
-	}
-): Promise<nil>
+local function runJest(ref: {
+	globalConfig: Config_GlobalConfig,
+	contexts: Array<Context>,
+	outputStream: NodeJS_WriteStream,
+	testWatcher: TestWatcher,
+	jestHooks: JestHookEmitter?,
+	startRun: (globalConfig: Config_GlobalConfig) -> (),
+	changedFilesPromise: ChangedFilesPromise?,
+	onComplete: (testResults: AggregatedResult) -> (),
+	failedTestsCache: FailedTestsCache?,
+	filter: Filter?,
+}): Promise<nil>
 	-- ROBLOX FIXME Stylua
 	-- stylua: ignore
 	local contexts, globalConfig, outputStream, testWatcher, jestHooks, startRun, _changedFilesPromise, onComplete, _failedTestsCache, filter =

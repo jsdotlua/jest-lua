@@ -109,10 +109,10 @@ function resolveConfigPathByTraversing(
 ) --[[ ROBLOX deviation: using ModuleScript instead of Config_Path]]: ModuleScript
 	-- ROBLOX deviation START: custom logic
 	local configFiles = (
-			Array.filter(pathToResolve:GetChildren(), function(child)
-				return child:isA("ModuleScript") and child.Name == JEST_CONFIG_BASE_NAME
-			end) :: Array<any>
-		) :: Array<ModuleScript>
+		Array.filter(pathToResolve:GetChildren(), function(child)
+			return child:isA("ModuleScript") and child.Name == JEST_CONFIG_BASE_NAME
+		end) :: Array<any>
+	) :: Array<ModuleScript>
 	if not skipMultipleConfigWarning and #configFiles > 1 then
 		console.warn(makeMultipleConfigsWarning(configFiles))
 	end
@@ -194,25 +194,27 @@ local function extraIfPackageJson(configPath: Config_Path)
 end
 
 function makeMultipleConfigsWarning(configPaths: Array<ModuleScript>)
-	return chalk.yellow(Array.join(
-		Array.concat(
-			{},
-			{ chalk.bold("\u{25cf} Multiple configurations found:") },
-			Array.map(configPaths, function(configPath)
-				return ("    * %s%s"):format(tostring(extraIfPackageJson(configPath)), tostring(configPath))
-			end),
-			{
-				"",
-				"  Implicit config resolution does not allow multiple configuration files.",
-				"  Either remove unused config files or select one explicitly with `--config`.",
-				"",
-				"  Configuration Documentation:",
-				"  https://jestjs.io/docs/configuration.html",
-				"",
-			}
-		),
-		"\n"
-	))
+	return chalk.yellow(
+		Array.join(
+			Array.concat(
+				{},
+				{ chalk.bold("\u{25cf} Multiple configurations found:") },
+				Array.map(configPaths, function(configPath)
+					return ("    * %s%s"):format(tostring(extraIfPackageJson(configPath)), tostring(configPath))
+				end),
+				{
+					"",
+					"  Implicit config resolution does not allow multiple configuration files.",
+					"  Either remove unused config files or select one explicitly with `--config`.",
+					"",
+					"  Configuration Documentation:",
+					"  https://jestjs.io/docs/configuration.html",
+					"",
+				}
+			),
+			"\n"
+		)
+	)
 end
 
 return exports

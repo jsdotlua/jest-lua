@@ -428,7 +428,7 @@ local function format(val: any, options: OptionsReceived?): string
 	if options then
 		validateOptions(options)
 		if options.plugins then
-			local plugin_ = findPlugin((options.plugins :: Plugins), val)
+			local plugin_ = findPlugin(options.plugins :: Plugins, val)
 			if plugin_ ~= nil then
 				return printPlugin(plugin_, val, getConfig(options), "", 0, {})
 			end

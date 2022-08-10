@@ -75,12 +75,8 @@ describe("trimAndFormatPath()", function()
 		local basename = "1234.js"
 		local dirname = "1234567890/1234567890"
 		local columns = 25
-		local result = trimAndFormatPath(
-			pad,
-			makeProjectConfig({ cwd = "", rootDir = "" }),
-			path:join(dirname, basename),
-			columns
-		)
+		local result =
+			trimAndFormatPath(pad, makeProjectConfig({ cwd = "", rootDir = "" }), path:join(dirname, basename), columns)
 		jestExpect(result).toMatchSnapshot()
 		jestExpect(stripAnsi(result):len()).toBe(20)
 	end)
@@ -90,12 +86,8 @@ describe("trimAndFormatPath()", function()
 		local basename = "1234.js"
 		local dirname = "1234567890/1234567890"
 		local columns = 30
-		local result = trimAndFormatPath(
-			pad,
-			makeProjectConfig({ cwd = "", rootDir = "" }),
-			path:join(dirname, basename),
-			columns
-		)
+		local result =
+			trimAndFormatPath(pad, makeProjectConfig({ cwd = "", rootDir = "" }), path:join(dirname, basename), columns)
 		jestExpect(result).toMatchSnapshot()
 		jestExpect(stripAnsi(result):len()).toBe(25)
 	end)
@@ -105,12 +97,8 @@ describe("trimAndFormatPath()", function()
 		local basename = "1234.js"
 		local dirname = "1234567890/1234567890"
 		local columns = 15
-		local result = trimAndFormatPath(
-			pad,
-			makeProjectConfig({ cwd = "", rootDir = "" }),
-			path:join(dirname, basename),
-			columns
-		)
+		local result =
+			trimAndFormatPath(pad, makeProjectConfig({ cwd = "", rootDir = "" }), path:join(dirname, basename), columns)
 		jestExpect(result).toMatchSnapshot()
 		jestExpect(stripAnsi(result):len()).toBe(10)
 	end)
@@ -121,12 +109,8 @@ describe("trimAndFormatPath()", function()
 		local dirname = "1234567890/1234567890"
 		local columns = 50
 		local totalLength = (basename .. path.sep .. dirname):len()
-		local result = trimAndFormatPath(
-			pad,
-			makeProjectConfig({ cwd = "", rootDir = "" }),
-			path:join(dirname, basename),
-			columns
-		)
+		local result =
+			trimAndFormatPath(pad, makeProjectConfig({ cwd = "", rootDir = "" }), path:join(dirname, basename), columns)
 		jestExpect(result).toMatchSnapshot()
 		jestExpect(stripAnsi(result):len()).toBe(totalLength)
 	end)
@@ -136,12 +120,8 @@ describe("trimAndFormatPath()", function()
 		local basename = "1234.js"
 		local dirname = "1234567890"
 		local columns = 16
-		local result = trimAndFormatPath(
-			pad,
-			makeProjectConfig({ cwd = "", rootDir = "" }),
-			path:join(dirname, basename),
-			columns
-		)
+		local result =
+			trimAndFormatPath(pad, makeProjectConfig({ cwd = "", rootDir = "" }), path:join(dirname, basename), columns)
 		jestExpect(result).toMatchSnapshot()
 		jestExpect(stripAnsi(result):len()).toBe(columns - pad)
 	end)

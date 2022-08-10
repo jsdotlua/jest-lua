@@ -651,12 +651,7 @@ local function toContain(
 
 		local retval = matcherHint(matcherName, nil, nil, options)
 			.. "\n\n"
-			.. string.format(
-				"%s%s%s\n",
-				printLabel(labelExpected),
-				isNot and "never " or "",
-				printExpected(expected)
-			)
+			.. string.format("%s%s%s\n", printLabel(labelExpected), isNot and "never " or "", printExpected(expected))
 			.. string.format("%s%s", printLabel(labelReceived), isNot and "      " or "")
 		if isNot and Array.isArray(received) then
 			retval = retval .. printReceivedArrayContainExpectedItem(received, index)
@@ -717,12 +712,7 @@ local function toContainEqual(
 
 		local retval = matcherHint(matcherName, nil, nil, options)
 			.. "\n\n"
-			.. string.format(
-				"%s%s%s\n",
-				printLabel(labelExpected),
-				isNot and "never " or "",
-				printExpected(expected)
-			)
+			.. string.format("%s%s%s\n", printLabel(labelExpected), isNot and "never " or "", printExpected(expected))
 			.. string.format("%s%s", printLabel(labelReceived), isNot and "      " or "")
 		if isNot and Array.isArray(received) then
 			retval = retval .. printReceivedArrayContainExpectedItem(received, index)
@@ -827,12 +817,7 @@ local function toHaveLength(
 
 		local retval = matcherHint(matcherName, nil, nil, options)
 			.. "\n\n"
-			.. string.format(
-				"%s%s%s\n",
-				printLabel(labelExpected),
-				isNot and "never " or "",
-				printExpected(expected)
-			)
+			.. string.format("%s%s%s\n", printLabel(labelExpected), isNot and "never " or "", printExpected(expected))
 		if not isNot then
 			retval = retval .. string.format("%s%s\n", printLabel(labelReceivedLength), printReceived(receivedLength))
 		end

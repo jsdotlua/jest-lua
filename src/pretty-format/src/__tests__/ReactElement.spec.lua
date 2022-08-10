@@ -56,9 +56,8 @@ describe("ReactElement Plugin", function()
 		})
 
 		-- ROBLOX FIXME roact-alignment: forwardRef doesn't accept callable table: https://github.com/Roblox/roact-alignment/issues/283
-		forwardRefExample = React.forwardRef(
-			(forwardRefComponent :: any) :: (_props: unknown, _ref: unknown) -> ReactElement | nil
-		)
+		forwardRefExample =
+			React.forwardRef((forwardRefComponent :: any) :: (_props: unknown, _ref: unknown) -> ReactElement | nil)
 
 		forwardRefExample.displayName = nil
 	end)

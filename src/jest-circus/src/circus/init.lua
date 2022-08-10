@@ -79,12 +79,12 @@ local describe = (function()
 
 	only.each = bindEach(
 		-- ROBLOX FIXME: callable table can't be converted to a function
-		(only :: FIXME_ANALYZE),
+		only :: FIXME_ANALYZE,
 		false
 	)
 	skip.each = bindEach(
 		-- ROBLOX FIXME: callable table can't be converted to a function
-		(skip :: FIXME_ANALYZE),
+		skip :: FIXME_ANALYZE,
 		false
 	)
 

@@ -191,9 +191,8 @@ local function getSummary(aggregatedResults: AggregatedResult, options: SummaryO
 		runTime = math.floor(runTime)
 	end
 
-	local valuesForCurrentTestCases = getValuesCurrentTestCases(
-		if options ~= nil then options.currentTestCases else nil
-	)
+	local valuesForCurrentTestCases =
+		getValuesCurrentTestCases(if options ~= nil then options.currentTestCases else nil)
 
 	local estimatedTime = options ~= nil and options.estimatedTime or 0
 	local snapshotResults = aggregatedResults.snapshot
@@ -239,9 +238,7 @@ local function getSummary(aggregatedResults: AggregatedResult, options: SummaryO
 		.. (if updatedTestsPending > 0
 			then chalk.bold(chalk.yellow(("%d skipped"):format(updatedTestsPending))) .. ", "
 			else "")
-		.. (if updatedTestsTodo > 0
-			then chalk.bold(chalk.magenta(("%d todo"):format(updatedTestsTodo))) .. ", "
-			else "")
+		.. (if updatedTestsTodo > 0 then chalk.bold(chalk.magenta(("%d todo"):format(updatedTestsTodo))) .. ", " else "")
 		.. (if updatedTestsPassed > 0
 			then chalk.bold(chalk.green(("%d passed"):format(updatedTestsPassed))) .. ", "
 			else "")

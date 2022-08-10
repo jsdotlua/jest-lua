@@ -52,12 +52,7 @@ it("config for reporters supports `default`", function()
 	return Promise.resolve()
 		:andThen(function()
 			-- ROBLOX deviation START: upstream test file is JS so it doesn't check for types
-			local undefinedReportersScheduler =
-				createTestScheduler(
-					{ reporters = nil } :: any,
-					{} :: any,
-					nil :: any
-				):expect()
+			local undefinedReportersScheduler = createTestScheduler({ reporters = nil } :: any, {} :: any, nil :: any):expect()
 			local numberOfReporters = #(undefinedReportersScheduler :: any)._dispatcher._reporters
 			local stringDefaultReportersScheduler = createTestScheduler(
 				{ reporters = { "default" } } :: any,

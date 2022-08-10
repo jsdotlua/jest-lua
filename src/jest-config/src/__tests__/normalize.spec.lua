@@ -862,10 +862,7 @@ describe("testRegex", function()
 		return Promise.resolve()
 			:andThen(function()
 				local options =
-					normalize(
-						{ rootDir = pathToInstance("/root"), testRegex = ".*" },
-						{} :: Config_Argv
-					):expect().options
+					normalize({ rootDir = pathToInstance("/root"), testRegex = ".*" }, {} :: Config_Argv):expect().options
 				jestExpect(options.testRegex).toEqual({ ".*" })
 			end)
 			:expect()
@@ -889,10 +886,7 @@ describe("testMatch", function()
 		return Promise.resolve()
 			:andThen(function()
 				local options =
-					normalize(
-						{ rootDir = pathToInstance("/root"), testRegex = ".*" },
-						{} :: Config_Argv
-					):expect().options
+					normalize({ rootDir = pathToInstance("/root"), testRegex = ".*" }, {} :: Config_Argv):expect().options
 				jestExpect(#options.testMatch).toBe(0)
 			end)
 			:expect()
@@ -1581,10 +1575,7 @@ describe("testTimeout", function()
 			:andThen(function()
 				((console.warn :: unknown) :: jest_SpyInstance):mockImplementation(function() end)
 				local options =
-					normalize(
-						{ rootDir = pathToInstance("/root/"), testTimeout = 1000 },
-						{} :: Config_Argv
-					):expect().options
+					normalize({ rootDir = pathToInstance("/root/"), testTimeout = 1000 }, {} :: Config_Argv):expect().options
 				jestExpect(options.testTimeout).toBe(1000)
 				jestExpect(console.warn).never.toHaveBeenCalled()
 			end)

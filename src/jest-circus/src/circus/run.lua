@@ -164,14 +164,12 @@ function _runTest(test: Circus_TestEntry, parentSkipped: boolean): Promise<nil>
 	end)
 end
 
-function _callCircusHook(
-	ref: {
-		hook: Circus_Hook,
-		describeBlock: Circus_DescribeBlock?,
-		test: Circus_TestEntry?,
-		testContext: Circus_TestContext?,
-	}
-): Promise<nil>
+function _callCircusHook(ref: {
+	hook: Circus_Hook,
+	describeBlock: Circus_DescribeBlock?,
+	test: Circus_TestEntry?,
+	testContext: Circus_TestContext?,
+}): Promise<nil>
 	local hook, test, describeBlock, testContext = ref.hook, ref.test, ref.describeBlock, ref.testContext
 	return Promise.resolve():andThen(function()
 		dispatch({ hook = hook, name = "hook_start" }):expect()

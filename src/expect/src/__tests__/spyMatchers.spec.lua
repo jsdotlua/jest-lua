@@ -213,16 +213,14 @@ for _, calledTimes in ipairs({ "toBeCalledTimes", "toHaveBeenCalledTimes" }) do
 	end)
 end
 
-for _, calledWith in
-	ipairs({
-		"lastCalledWith",
-		"toHaveBeenLastCalledWith",
-		"nthCalledWith",
-		"toHaveBeenNthCalledWith",
-		"toBeCalledWith",
-		"toHaveBeenCalledWith",
-	})
-do
+for _, calledWith in ipairs({
+	"lastCalledWith",
+	"toHaveBeenLastCalledWith",
+	"nthCalledWith",
+	"toHaveBeenNthCalledWith",
+	"toBeCalledWith",
+	"toHaveBeenCalledWith",
+}) do
 	local caller = function(callee: any, ...)
 		if calledWith == "nthCalledWith" or calledWith == "toHaveBeenNthCalledWith" then
 			callee(1, ...)
@@ -794,16 +792,14 @@ for _, returnedTimes in ipairs({ "toReturnTimes", "toHaveReturnedTimes" }) do
 	end)
 end
 
-for _, returnedWith in
-	ipairs({
-		"lastReturnedWith",
-		"toHaveLastReturnedWith",
-		"nthReturnedWith",
-		"toHaveNthReturnedWith",
-		"toReturnWith",
-		"toHaveReturnedWith",
-	})
-do
+for _, returnedWith in ipairs({
+	"lastReturnedWith",
+	"toHaveLastReturnedWith",
+	"nthReturnedWith",
+	"toHaveNthReturnedWith",
+	"toReturnWith",
+	"toHaveReturnedWith",
+}) do
 	local caller = function(callee, ...)
 		if returnedWith == "nthReturnedWith" or returnedWith == "toHaveNthReturnedWith" then
 			callee(1, ...)

@@ -149,13 +149,11 @@ describe("dedentLines non-null", function()
 end)
 
 describe("dedentLines null", function()
-	for key, value in
-		pairs({
-			{ "object key multi-line", { ["multi\nline\nkey"] = false } },
-			{ "object value multi-line", { key = "multi\nline\nvalue" } },
-			{ "object key and value multi-line", { ["multi\nline"] = "\nleading nl" } },
-		})
-	do
+	for key, value in pairs({
+		{ "object key multi-line", { ["multi\nline\nkey"] = false } },
+		{ "object value multi-line", { key = "multi\nline\nvalue" } },
+		{ "object key and value multi-line", { ["multi\nline"] = "\nleading nl" } },
+	}) do
 		local name = value[1]
 		local val = value[2]
 		it(string.format("%s", name), function()

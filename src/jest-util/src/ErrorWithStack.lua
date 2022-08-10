@@ -27,10 +27,8 @@ function ErrorWithStack.new(
 	-- Ensure we have a large stack length so we get full details.
 	local originalStackLimit = Error["stackTraceLimit"]
 	if stackLimit ~= nil and stackLimit ~= 0 then
-		Error["stackTraceLimit"] = math.max(
-			stackLimit,
-			Boolean.toJSBoolean(originalStackLimit) and originalStackLimit or 10
-		)
+		Error["stackTraceLimit"] =
+			math.max(stackLimit, Boolean.toJSBoolean(originalStackLimit) and originalStackLimit or 10)
 	end
 
 	local self = setmetatable(Error.new(message), ErrorWithStack)

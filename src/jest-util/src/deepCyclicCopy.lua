@@ -71,11 +71,8 @@ function deepCyclicCopyObject<T>(object: T & Object, options: DeepCyclicCopyOpti
 
 		local descriptor: Object = descriptors[key]
 		if typeof(descriptor.value) ~= "nil" then
-			descriptor.value = deepCyclicCopy(
-				descriptor.value,
-				{ blacklist = EMPTY, keepPrototype = options.keepPrototype },
-				cycles
-			)
+			descriptor.value =
+				deepCyclicCopy(descriptor.value, { blacklist = EMPTY, keepPrototype = options.keepPrototype }, cycles)
 		end
 		descriptor.configurable = true
 	end)

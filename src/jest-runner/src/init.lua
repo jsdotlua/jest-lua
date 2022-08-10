@@ -149,10 +149,10 @@ function TestRunner:runTests(
 ): Promise<nil>
 	return Promise.resolve():andThen(function()
 		return (
-				if Boolean.toJSBoolean(options.serial)
-					then self:_createInBandTestRun(tests, watcher, onStart, onResult, onFailure):expect()
-					else self:_createParallelTestRun(tests, watcher, onStart, onResult, onFailure):expect()
-			)
+			if Boolean.toJSBoolean(options.serial)
+				then self:_createInBandTestRun(tests, watcher, onStart, onResult, onFailure):expect()
+				else self:_createParallelTestRun(tests, watcher, onStart, onResult, onFailure):expect()
+		)
 	end)
 end
 function TestRunner:_createInBandTestRun(
