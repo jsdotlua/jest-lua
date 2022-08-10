@@ -7,43 +7,41 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return (function()
-	local CurrentModule = script.Parent.Parent
-	local Packages = CurrentModule.Parent
-	local Promise = require(Packages.Promise)
-	local LuauPolyfill = require(Packages.LuauPolyfill)
-	local Symbol = LuauPolyfill.Symbol
-	local isPromise = require(CurrentModule.isPromise).default
+local CurrentModule = script.Parent.Parent
+local Packages = CurrentModule.Parent
+local Promise = require(Packages.Promise)
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Symbol = LuauPolyfill.Symbol
+local isPromise = require(CurrentModule.isPromise).default
 
-	type Function = (...any) -> ...any
+type Function = (...any) -> ...any
 
-	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jestExpect = JestGlobals.expect
-	local describe = (JestGlobals.describe :: any) :: Function
-	local it = (JestGlobals.it :: any) :: Function
+local JestGlobals = require(Packages.Dev.JestGlobals)
+local jestExpect = JestGlobals.expect
+local describe = (JestGlobals.describe :: any) :: Function
+local it = (JestGlobals.it :: any) :: Function
 
-	describe("foo", function()
-		describe("not a Promise: ", function()
-			it("nil", function()
-				jestExpect(isPromise(nil)).toBe(false)
+describe("foo", function()
+	describe("not a Promise: ", function()
+		it("nil", function()
+			jestExpect(isPromise(nil)).toBe(false)
+		end)
+
+		-- ROBLOX FIXME: have to cast first Array element to `any` to avoid type narrowing issue
+		for _, value in ipairs({ true :: any, 42, "1337", Symbol(), {} }) do
+			it(tostring(value), function()
+				jestExpect(isPromise(value)).toBe(false)
 			end)
-
-			-- ROBLOX FIXME: have to cast first Array element to `any` to avoid type narrowing issue
-			for _, value in ipairs({ true :: any, 42, "1337", Symbol(), {} }) do
-				it(tostring(value), function()
-					jestExpect(isPromise(value)).toBe(false)
-				end)
-			end
-		end)
-
-		it("a resolved Promise", function()
-			jestExpect(isPromise(Promise.resolve(42))).toBe(true)
-		end)
-
-		it("a rejected Promise", function()
-			jestExpect(isPromise(Promise.reject():catch(function() end))).toBe(true)
-		end)
+		end
 	end)
 
-	return {}
-end)()
+	it("a resolved Promise", function()
+		jestExpect(isPromise(Promise.resolve(42))).toBe(true)
+	end)
+
+	it("a rejected Promise", function()
+		jestExpect(isPromise(Promise.reject():catch(function() end))).toBe(true)
+	end)
+end)
+
+return {}

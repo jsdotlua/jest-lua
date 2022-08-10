@@ -6,67 +6,61 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-return (function()
-	local CurrentModule = script.Parent.Parent
-	local Packages = CurrentModule.Parent
+local CurrentModule = script.Parent.Parent
+local Packages = CurrentModule.Parent
 
-	type Function = (...any) -> ...any
+type Function = (...any) -> ...any
 
-	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jestExpect = JestGlobals.expect
-	local describe = (JestGlobals.describe :: any) :: Function
-	local it = (JestGlobals.it :: any) :: Function
+local JestGlobals = require(Packages.Dev.JestGlobals)
+local jestExpect = JestGlobals.expect
+local describe = (JestGlobals.describe :: any) :: Function
+local it = (JestGlobals.it :: any) :: Function
 
-	local chalk = require(Packages.ChalkLua)
+local chalk = require(Packages.ChalkLua)
 
-	local PrettyFormat = require(CurrentModule)
-	local prettyFormat = PrettyFormat.default
-	local plugins = PrettyFormat.plugins
+local PrettyFormat = require(CurrentModule)
+local prettyFormat = PrettyFormat.default
+local plugins = PrettyFormat.plugins
 
-	local ConvertAnsi = plugins.ConvertAnsi
+local ConvertAnsi = plugins.ConvertAnsi
 
-	local prettyFormatResult = function(val: string)
-		return prettyFormat(val, {
-			-- ROBLOX FIXME Luau: not sure why, possibly down to normalization again
-			plugins = { ConvertAnsi :: any },
-		})
-	end
+local prettyFormatResult = function(val: string)
+	return prettyFormat(val, {
+		-- ROBLOX FIXME Luau: not sure why, possibly down to normalization again
+		plugins = { ConvertAnsi :: any },
+	})
+end
 
-	describe("ConvertAnsi plugin", function()
-		it("supports style.red", function()
-			jestExpect(prettyFormatResult(string.format("%s foo content %s", chalk.red.open, chalk.red.close))).toEqual(
-				'"<red> foo content </>"'
-			)
-		end)
-
-		it("supports style.green", function()
-			jestExpect(prettyFormatResult(string.format("%s foo content %s", chalk.green.open, chalk.green.close))).toEqual(
-				'"<green> foo content </>"'
-			)
-		end)
-
-		it("supports style.reset", function()
-			jestExpect(prettyFormatResult(string.format("%s foo content %s", chalk.reset.open, chalk.reset.close))).toEqual(
-				'"</> foo content </>"'
-			)
-		end)
-
-		it("supports style.bold", function()
-			jestExpect(prettyFormatResult(string.format("%s foo content", chalk.bold.open))).toEqual(
-				'"<bold> foo content"'
-			)
-		end)
-
-		it("supports style.dim", function()
-			jestExpect(prettyFormatResult(string.format("%s foo content", chalk.dim.open))).toEqual(
-				'"<dim> foo content"'
-			)
-		end)
-
-		it("does not support other colors", function()
-			jestExpect(prettyFormatResult(string.format("%s", chalk.blue.open))).toEqual('""')
-		end)
+describe("ConvertAnsi plugin", function()
+	it("supports style.red", function()
+		jestExpect(prettyFormatResult(string.format("%s foo content %s", chalk.red.open, chalk.red.close))).toEqual(
+			'"<red> foo content </>"'
+		)
 	end)
 
-	return {}
-end)()
+	it("supports style.green", function()
+		jestExpect(prettyFormatResult(string.format("%s foo content %s", chalk.green.open, chalk.green.close))).toEqual(
+			'"<green> foo content </>"'
+		)
+	end)
+
+	it("supports style.reset", function()
+		jestExpect(prettyFormatResult(string.format("%s foo content %s", chalk.reset.open, chalk.reset.close))).toEqual(
+			'"</> foo content </>"'
+		)
+	end)
+
+	it("supports style.bold", function()
+		jestExpect(prettyFormatResult(string.format("%s foo content", chalk.bold.open))).toEqual('"<bold> foo content"')
+	end)
+
+	it("supports style.dim", function()
+		jestExpect(prettyFormatResult(string.format("%s foo content", chalk.dim.open))).toEqual('"<dim> foo content"')
+	end)
+
+	it("does not support other colors", function()
+		jestExpect(prettyFormatResult(string.format("%s", chalk.blue.open))).toEqual('""')
+	end)
+end)
+
+return {}

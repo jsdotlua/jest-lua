@@ -1,34 +1,32 @@
 -- ROBLOX NOTE: no upstream
 
-return (function()
-	local CurrentModule = script.Parent
-	local SrcModule = CurrentModule.Parent
-	local Packages = SrcModule.Parent
+local CurrentModule = script.Parent
+local SrcModule = CurrentModule.Parent
+local Packages = SrcModule.Parent
 
-	type Function = (...any) -> ...any
+type Function = (...any) -> ...any
 
-	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jestExpect = JestGlobals.expect
-	local describe = (JestGlobals.describe :: any) :: Function
-	local it = (JestGlobals.it :: any) :: Function
+local JestGlobals = require(Packages.Dev.JestGlobals)
+local jestExpect = JestGlobals.expect
+local describe = (JestGlobals.describe :: any) :: Function
+local it = (JestGlobals.it :: any) :: Function
 
-	local pluralize = require(SrcModule.pluralize).default
+local pluralize = require(SrcModule.pluralize).default
 
-	describe("pluralize", function()
-		it("should not pluralize when count is 1", function()
-			jestExpect(pluralize("test", 1)).toEqual("1 test")
-		end)
-
-		it("should pluralize when count is 0", function()
-			jestExpect(pluralize("test", 0)).toEqual("0 tests")
-		end)
-
-		it("should pluralize when count is more than 1", function()
-			for i = 2, 100 do
-				jestExpect(pluralize("test", i)).toEqual(tostring(i) .. " tests")
-			end
-		end)
+describe("pluralize", function()
+	it("should not pluralize when count is 1", function()
+		jestExpect(pluralize("test", 1)).toEqual("1 test")
 	end)
 
-	return {}
-end)()
+	it("should pluralize when count is 0", function()
+		jestExpect(pluralize("test", 0)).toEqual("0 tests")
+	end)
+
+	it("should pluralize when count is more than 1", function()
+		for i = 2, 100 do
+			jestExpect(pluralize("test", i)).toEqual(tostring(i) .. " tests")
+		end
+	end)
+end)
+
+return {}

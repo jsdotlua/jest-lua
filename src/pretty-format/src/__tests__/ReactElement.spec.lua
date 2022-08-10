@@ -6,33 +6,32 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return (function()
-	-- ROBLOX deviation: use `unknown` type until Luau starts to support it
-	type unknown = any
+-- ROBLOX deviation: use `unknown` type until Luau starts to support it
+type unknown = any
 
-	local CurrentModule = script.Parent.Parent
-	local Packages = CurrentModule.Parent
-	local React = require(Packages.Dev.React)
+local CurrentModule = script.Parent.Parent
+local Packages = CurrentModule.Parent
+local React = require(Packages.Dev.React)
 
-	type ReactElement = React.ReactElement
-	local PrettyFormat = require(CurrentModule)
-	local plugins = PrettyFormat.plugins
-	local setPrettyPrint = require(script.Parent.setPrettyPrint).default
-	local ReactElement = plugins.ReactElement
-	type Function = (...any) -> ...any
+type ReactElement = React.ReactElement
+local PrettyFormat = require(CurrentModule)
+local plugins = PrettyFormat.plugins
+local setPrettyPrint = require(script.Parent.setPrettyPrint).default
+local ReactElement = plugins.ReactElement
+type Function = (...any) -> ...any
 
-	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jestExpect = JestGlobals.expect
-	local describe = (JestGlobals.describe :: any) :: Function
-	local it = (JestGlobals.it :: any) :: Function
-	local beforeEach = (JestGlobals.beforeEach :: any) :: Function
+local JestGlobals = require(Packages.Dev.JestGlobals)
+local jestExpect = JestGlobals.expect
+local describe = (JestGlobals.describe :: any) :: Function
+local it = (JestGlobals.it :: any) :: Function
+local beforeEach = (JestGlobals.beforeEach :: any) :: Function
 
-	-- ROBLOX deviation: define `ReturnType` type until Luau starts to support it
-	type ReturnType<T> = any
+-- ROBLOX deviation: define `ReturnType` type until Luau starts to support it
+type ReturnType<T> = any
 
-	setPrettyPrint({ ReactElement })
-	describe("ReactElement Plugin", function()
-		--[[
+setPrettyPrint({ ReactElement })
+describe("ReactElement Plugin", function()
+	--[[
 			ROBLOX deviation START: use callable table instead of TSCallSignatureDeclaration
 			original code:
 			let forwardRefComponent: {
@@ -40,47 +39,46 @@ return (function()
 			  displayName?: string;
 			};
 		]]
-		local forwardRefComponent: typeof(setmetatable({} :: {
-			displayName: string?,
-		}, {
-			__call = (function() end :: any) :: (_self: any, _props: unknown, _ref: unknown) -> ReactElement | nil,
-		}))
-		-- ROBLOX deviation END
+	local forwardRefComponent: typeof(setmetatable({} :: {
+		displayName: string?,
+	}, {
+		__call = (function() end :: any) :: (_self: any, _props: unknown, _ref: unknown) -> ReactElement | nil,
+	}))
+	-- ROBLOX deviation END
 
-		local forwardRefExample: ReturnType<typeof(React.forwardRef)>
+	local forwardRefExample: ReturnType<typeof(React.forwardRef)>
 
-		beforeEach(function()
-			forwardRefComponent = setmetatable({}, {
-				__call = function(_self: any, _props: unknown, _ref: unknown)
-					return nil
-				end,
-			})
-
-			-- ROBLOX FIXME roact-alignment: forwardRef doesn't accept callable table: https://github.com/Roblox/roact-alignment/issues/283
-			forwardRefExample = React.forwardRef(
-				(forwardRefComponent :: any) :: (_props: unknown, _ref: unknown) -> ReactElement | nil
-			)
-
-			forwardRefExample.displayName = nil
-		end)
-
-		it("serializes forwardRef without displayName", function()
-			forwardRefExample = React.forwardRef(function(_props, _ref)
+	beforeEach(function()
+		forwardRefComponent = setmetatable({}, {
+			__call = function(_self: any, _props: unknown, _ref: unknown)
 				return nil
-			end)
-			jestExpect(React.createElement(forwardRefExample)).toPrettyPrintTo("<ForwardRef />")
-		end)
+			end,
+		})
 
-		it("serializes forwardRef with displayName", function()
-			forwardRefExample.displayName = "Display"
-			jestExpect(React.createElement(forwardRefExample)).toPrettyPrintTo("<Display />")
-		end)
+		-- ROBLOX FIXME roact-alignment: forwardRef doesn't accept callable table: https://github.com/Roblox/roact-alignment/issues/283
+		forwardRefExample = React.forwardRef(
+			(forwardRefComponent :: any) :: (_props: unknown, _ref: unknown) -> ReactElement | nil
+		)
 
-		it("serializes forwardRef component with displayName", function()
-			forwardRefComponent.displayName = "Display"
-			jestExpect(React.createElement(forwardRefExample)).toPrettyPrintTo("<ForwardRef(Display) />")
-		end)
+		forwardRefExample.displayName = nil
 	end)
 
-	return {}
-end)()
+	it("serializes forwardRef without displayName", function()
+		forwardRefExample = React.forwardRef(function(_props, _ref)
+			return nil
+		end)
+		jestExpect(React.createElement(forwardRefExample)).toPrettyPrintTo("<ForwardRef />")
+	end)
+
+	it("serializes forwardRef with displayName", function()
+		forwardRefExample.displayName = "Display"
+		jestExpect(React.createElement(forwardRefExample)).toPrettyPrintTo("<Display />")
+	end)
+
+	it("serializes forwardRef component with displayName", function()
+		forwardRefComponent.displayName = "Display"
+		jestExpect(React.createElement(forwardRefExample)).toPrettyPrintTo("<ForwardRef(Display) />")
+	end)
+end)
+
+return {}

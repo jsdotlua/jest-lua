@@ -1,54 +1,52 @@
 -- ROBLOX NOTE: no upstream
 
-return (function()
-	local CurrentModule = script.Parent.Parent
-	local Packages = CurrentModule.Parent
+local CurrentModule = script.Parent.Parent
+local Packages = CurrentModule.Parent
 
-	local ModuleMocker = require(CurrentModule).ModuleMocker
-	type Function = (...any) -> ...any
+local ModuleMocker = require(CurrentModule).ModuleMocker
+type Function = (...any) -> ...any
 
-	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jestExpect = JestGlobals.expect
-	local it = (JestGlobals.it :: any) :: Function
-	local beforeEach = (JestGlobals.beforeEach :: any) :: Function
+local JestGlobals = require(Packages.Dev.JestGlobals)
+local jestExpect = JestGlobals.expect
+local it = (JestGlobals.it :: any) :: Function
+local beforeEach = (JestGlobals.beforeEach :: any) :: Function
 
-	local moduleMocker
-	beforeEach(function()
-		moduleMocker = ModuleMocker.new()
+local moduleMocker
+beforeEach(function()
+	moduleMocker = ModuleMocker.new()
+end)
+
+it("mock return chaining", function()
+	local myMock = moduleMocker:fn()
+	jestExpect(myMock()).toBeNil()
+
+	myMock.mockReturnValueOnce(10).mockReturnValueOnce("x").mockReturnValue(true)
+	jestExpect(myMock()).toBe(10)
+	jestExpect(myMock()).toBe("x")
+	jestExpect(myMock()).toBe(true)
+	jestExpect(myMock()).toBe(true)
+end)
+
+it("default mock function name is jest.fn()", function()
+	local myMock = moduleMocker:fn()
+	jestExpect(myMock.getMockName()).toBe("jest.fn()")
+end)
+
+it("returns a function as the second return value", function()
+	local mock, mockFn = moduleMocker:fn()
+	mock.mockImplementationOnce(function(a, b)
+		return a .. b
 	end)
+	mock.mockReturnValue(true)
 
-	it("mock return chaining", function()
-		local myMock = moduleMocker:fn()
-		jestExpect(myMock()).toBeNil()
+	jestExpect(typeof(mockFn)).toBe("function")
 
-		myMock.mockReturnValueOnce(10).mockReturnValueOnce("x").mockReturnValue(true)
-		jestExpect(myMock()).toBe(10)
-		jestExpect(myMock()).toBe("x")
-		jestExpect(myMock()).toBe(true)
-		jestExpect(myMock()).toBe(true)
-	end)
+	jestExpect(mockFn("a", "b")).toBe("ab")
+	jestExpect(mock).toHaveBeenLastCalledWith("a", "b")
+	jestExpect(mock).toHaveLastReturnedWith("ab")
 
-	it("default mock function name is jest.fn()", function()
-		local myMock = moduleMocker:fn()
-		jestExpect(myMock.getMockName()).toBe("jest.fn()")
-	end)
+	jestExpect(mockFn()).toBe(true)
+	jestExpect(mock).toHaveLastReturnedWith(true)
+end)
 
-	it("returns a function as the second return value", function()
-		local mock, mockFn = moduleMocker:fn()
-		mock.mockImplementationOnce(function(a, b)
-			return a .. b
-		end)
-		mock.mockReturnValue(true)
-
-		jestExpect(typeof(mockFn)).toBe("function")
-
-		jestExpect(mockFn("a", "b")).toBe("ab")
-		jestExpect(mock).toHaveBeenLastCalledWith("a", "b")
-		jestExpect(mock).toHaveLastReturnedWith("ab")
-
-		jestExpect(mockFn()).toBe(true)
-		jestExpect(mock).toHaveLastReturnedWith(true)
-	end)
-
-	return {}
-end)()
+return {}

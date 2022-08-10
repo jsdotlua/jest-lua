@@ -7,58 +7,56 @@
  *
  ]]
 
-return (function()
-	local Packages = script.Parent.Parent.Parent
+local Packages = script.Parent.Parent.Parent
 
-	type Function = (...any) -> ...any
+type Function = (...any) -> ...any
 
-	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jest = JestGlobals.jest
-	local jestExpect = JestGlobals.expect
-	local it = (JestGlobals.it :: any) :: Function
-	local beforeEach = (JestGlobals.beforeEach :: any) :: Function
+local JestGlobals = require(Packages.Dev.JestGlobals)
+local jest = JestGlobals.jest
+local jestExpect = JestGlobals.expect
+local it = (JestGlobals.it :: any) :: Function
+local beforeEach = (JestGlobals.beforeEach :: any) :: Function
 
-	-- ROBLOX deviation START: not used
-	-- local readFileSync = require(Packages["graceful-fs"]).readFileSync
-	-- local slash = require(Packages.slash)
-	-- local tempy = require(Packages.tempy)
-	-- ROBLOX deviation END
+-- ROBLOX deviation START: not used
+-- local readFileSync = require(Packages["graceful-fs"]).readFileSync
+-- local slash = require(Packages.slash)
+-- local tempy = require(Packages.tempy)
+-- ROBLOX deviation END
 
-	local CurentModule = require(script.Parent.Parent)
-	local formatExecError = CurentModule.formatExecError
-	-- ROBLOX deviation START: not used
-	-- local formatResultsErrors = CurentModule.formatResultsErrors
-	-- local formatStackTrace = CurentModule.formatStackTrace
-	-- ROBLOX deviation END
+local CurentModule = require(script.Parent.Parent)
+local formatExecError = CurentModule.formatExecError
+-- ROBLOX deviation START: not used
+-- local formatResultsErrors = CurentModule.formatResultsErrors
+-- local formatStackTrace = CurentModule.formatStackTrace
+-- ROBLOX deviation END
 
-	--[[
+--[[
 		ROBLOX deviation: skipped lines 14-80
 		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-message-util/src/__tests__/messages.test.ts#L14-L80
 	]]
 
-	beforeEach(function()
-		jest.clearAllMocks()
-	end)
+beforeEach(function()
+	jest.clearAllMocks()
+end)
 
-	--[[
+--[[
 		ROBLOX deviation: skipped lines 86-109
 		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-message-util/src/__tests__/messages.test.ts#L86-L109
 	]]
 
-	it(".formatExecError()", function()
-		local message = formatExecError(
-			{ message = "Whoops!", stack = "" },
-			{ rootDir = "" :: any, testMatch = {} },
-			{ noStackTrace = false },
-			"path_test"
-		)
-		jestExpect(message).toMatchSnapshot()
-	end)
+it(".formatExecError()", function()
+	local message = formatExecError(
+		{ message = "Whoops!", stack = "" },
+		{ rootDir = "" :: any, testMatch = {} },
+		{ noStackTrace = false },
+		"path_test"
+	)
+	jestExpect(message).toMatchSnapshot()
+end)
 
-	--[[
+--[[
 		ROBLOX deviation: skipped lines 130-366
 		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-message-util/src/__tests__/messages.test.ts#L130-L366
 	]]
 
-	return {}
-end)()
+return {}

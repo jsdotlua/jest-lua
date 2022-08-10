@@ -6,45 +6,44 @@
 	is based off of, jasmine
 ]]
 
-return (function()
-	local CurrentModule = script.Parent.Parent
-	local Packages = CurrentModule.Parent.Parent
+local CurrentModule = script.Parent.Parent
+local Packages = CurrentModule.Parent.Parent
 
-	type Function = (...any) -> ...any
+type Function = (...any) -> ...any
 
-	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local expect = JestGlobals.expect
-	local describe = (JestGlobals.describe :: any) :: Function
-	local it = (JestGlobals.it :: any) :: Function
-	local itSKIP = JestGlobals.it.skip
-	local beforeEach = (JestGlobals.beforeEach :: any) :: Function
+local JestGlobals = require(Packages.Dev.JestGlobals)
+local expect = JestGlobals.expect
+local describe = (JestGlobals.describe :: any) :: Function
+local it = (JestGlobals.it :: any) :: Function
+local itSKIP = JestGlobals.it.skip
+local beforeEach = (JestGlobals.beforeEach :: any) :: Function
 
-	local createSpy = require(CurrentModule.createSpy)
-	local SpyStrategy = require(CurrentModule.SpyStrategy)
-	local CallTracker = require(CurrentModule.CallTracker)
+local createSpy = require(CurrentModule.createSpy)
+local SpyStrategy = require(CurrentModule.SpyStrategy)
+local CallTracker = require(CurrentModule.CallTracker)
 
-	describe("Spies", function()
-		describe("createSpy", function()
-			local TestClass = {}
-			TestClass.prototype = {}
+describe("Spies", function()
+	describe("createSpy", function()
+		local TestClass = {}
+		TestClass.prototype = {}
 
-			beforeEach(function()
-				setmetatable(TestClass, { __call = function() end })
-				TestClass.prototype.someFunction = {}
-				setmetatable(TestClass.prototype.someFunction, { __call = function() end })
-				TestClass.prototype.someFunction.bob = "test"
-			end)
+		beforeEach(function()
+			setmetatable(TestClass, { __call = function() end })
+			TestClass.prototype.someFunction = {}
+			setmetatable(TestClass.prototype.someFunction, { __call = function() end })
+			TestClass.prototype.someFunction.bob = "test"
+		end)
 
-			it("preserves the properties of the spied function", function()
-				local spy = createSpy("TestClass.prototype", TestClass.prototype.someFunction)
+		it("preserves the properties of the spied function", function()
+			local spy = createSpy("TestClass.prototype", TestClass.prototype.someFunction)
 
-				expect(spy.bob).toBe("test")
-			end)
+			expect(spy.bob).toBe("test")
+		end)
 
-			-- ROBLOX deviation: test skipped because we don't implement the
-			-- env.createSpy function that would actually allow for this
-			itSKIP("should allow you to omit the name argument and only pass the originalFn argument", function()
-				--[[
+		-- ROBLOX deviation: test skipped because we don't implement the
+		-- env.createSpy function that would actually allow for this
+		itSKIP("should allow you to omit the name argument and only pass the originalFn argument", function()
+			--[[
 					var fn = function test() {};
 					var spy = env.createSpy(fn);
 
@@ -55,38 +54,37 @@ return (function()
 					expect(spy.and.identity).toEqual('unknown');
 					}
 				]]
-			end)
-
-			it("warns the user that we intend to overwrite an existing property", function()
-				TestClass.prototype.someFunction["and"] = "turkey"
-				expect(function()
-					createSpy("TestClass.prototype", TestClass.prototype.someFunction)
-				end).toThrow(
-					"Jasmine spies would overwrite the 'and', 'andAlso' and 'calls' properties on the object being spied upon"
-				)
-
-				TestClass.prototype.someFunction["and"] = nil
-				TestClass.prototype.someFunction["andAlso"] = "turkey"
-				expect(function()
-					createSpy("TestClass.prototype", TestClass.prototype.someFunction)
-				end).toThrow(
-					"Jasmine spies would overwrite the 'and', 'andAlso' and 'calls' properties on the object being spied upon"
-				)
-			end)
-
-			-- ROBLOX TODO: ADO-1475
-			it("adds a spyStrategy and callTracker to the spy", function()
-				local spy = createSpy("TestClass.prototype", TestClass.prototype.someFunction)
-
-				expect(spy["and"].__index).toEqual(SpyStrategy)
-				expect(spy.calls.__index).toEqual(CallTracker)
-			end)
-
-			-- ROBLOX TODO: implement more tests when we have more files
-			-- translated such as spyRegistry (which will give access to the
-			-- spyOn function)
 		end)
-	end)
 
-	return {}
-end)()
+		it("warns the user that we intend to overwrite an existing property", function()
+			TestClass.prototype.someFunction["and"] = "turkey"
+			expect(function()
+				createSpy("TestClass.prototype", TestClass.prototype.someFunction)
+			end).toThrow(
+				"Jasmine spies would overwrite the 'and', 'andAlso' and 'calls' properties on the object being spied upon"
+			)
+
+			TestClass.prototype.someFunction["and"] = nil
+			TestClass.prototype.someFunction["andAlso"] = "turkey"
+			expect(function()
+				createSpy("TestClass.prototype", TestClass.prototype.someFunction)
+			end).toThrow(
+				"Jasmine spies would overwrite the 'and', 'andAlso' and 'calls' properties on the object being spied upon"
+			)
+		end)
+
+		-- ROBLOX TODO: ADO-1475
+		it("adds a spyStrategy and callTracker to the spy", function()
+			local spy = createSpy("TestClass.prototype", TestClass.prototype.someFunction)
+
+			expect(spy["and"].__index).toEqual(SpyStrategy)
+			expect(spy.calls.__index).toEqual(CallTracker)
+		end)
+
+		-- ROBLOX TODO: implement more tests when we have more files
+		-- translated such as spyRegistry (which will give access to the
+		-- spyOn function)
+	end)
+end)
+
+return {}

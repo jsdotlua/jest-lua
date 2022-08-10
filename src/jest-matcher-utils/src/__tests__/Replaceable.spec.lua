@@ -6,39 +6,38 @@
 -- * LICENSE file in the root directory of this source tree.
 -- */
 
-return (function()
-	local CurrentModule = script.Parent.Parent
-	local Packages = CurrentModule.Parent
+local CurrentModule = script.Parent.Parent
+local Packages = CurrentModule.Parent
 
-	local Replaceable = require(CurrentModule.Replaceable)
+local Replaceable = require(CurrentModule.Replaceable)
 
-	type Function = (...any) -> ...any
+type Function = (...any) -> ...any
 
-	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jest = JestGlobals.jest
-	local expect = JestGlobals.expect
-	local describe = (JestGlobals.describe :: any) :: Function
-	local it = (JestGlobals.it :: any) :: Function
-	local itSKIP = JestGlobals.it.skip
+local JestGlobals = require(Packages.Dev.JestGlobals)
+local jest = JestGlobals.jest
+local expect = JestGlobals.expect
+local describe = (JestGlobals.describe :: any) :: Function
+local it = (JestGlobals.it :: any) :: Function
+local itSKIP = JestGlobals.it.skip
 
-	describe("Replaceable", function()
-		describe("constructor", function()
-			it("init with object", function()
-				local replaceable = Replaceable.new({ a = 1, b = 2 })
-				expect(replaceable.object).toEqual({ a = 1, b = 2 })
-				expect(replaceable.type).toBe("table")
-			end)
+describe("Replaceable", function()
+	describe("constructor", function()
+		it("init with object", function()
+			local replaceable = Replaceable.new({ a = 1, b = 2 })
+			expect(replaceable.object).toEqual({ a = 1, b = 2 })
+			expect(replaceable.type).toBe("table")
+		end)
 
-			it("init with array", function()
-				local replaceable = Replaceable.new({ 1, 2, 3 })
-				expect(replaceable.object).toEqual({ 1, 2, 3 })
-				expect(replaceable.type).toBe("table")
-			end)
+		it("init with array", function()
+			local replaceable = Replaceable.new({ 1, 2, 3 })
+			expect(replaceable.object).toEqual({ 1, 2, 3 })
+			expect(replaceable.type).toBe("table")
+		end)
 
-			-- ROBLOX deviation: test skipped because it tests a map that is identical
-			-- to the object test above in lua
-			itSKIP("init with Map", function()
-				--[[
+		-- ROBLOX deviation: test skipped because it tests a map that is identical
+		-- to the object test above in lua
+		itSKIP("init with Map", function()
+			--[[
 					const replaceable = new Replaceable(
 						new Map([
 							['a', 1],
@@ -53,30 +52,30 @@ return (function()
 					);
 					expect(replaceable.type).toBe('map');
 				]]
-			end)
-
-			it("init with other type should throw error", function()
-				expect(function()
-					Replaceable.new(DateTime.now())
-				end).toThrow("Type DateTime is not supported in Replaceable!")
-			end)
 		end)
 
-		describe("get", function()
-			it("get object item", function()
-				local replaceable = Replaceable.new({ a = 1, b = 2 })
-				expect(replaceable:get("b")).toBe(2)
-			end)
+		it("init with other type should throw error", function()
+			expect(function()
+				Replaceable.new(DateTime.now())
+			end).toThrow("Type DateTime is not supported in Replaceable!")
+		end)
+	end)
 
-			it("get array item", function()
-				local replaceable = Replaceable.new({ 1, 2, 3 })
-				expect(replaceable:get(2)).toBe(2)
-			end)
+	describe("get", function()
+		it("get object item", function()
+			local replaceable = Replaceable.new({ a = 1, b = 2 })
+			expect(replaceable:get("b")).toBe(2)
+		end)
 
-			-- ROBLOX deviation: test skipped because it tests a map that is identical
-			-- to the object test above in lua
-			itSKIP("get Map item", function()
-				--[[
+		it("get array item", function()
+			local replaceable = Replaceable.new({ 1, 2, 3 })
+			expect(replaceable:get(2)).toBe(2)
+		end)
+
+		-- ROBLOX deviation: test skipped because it tests a map that is identical
+		-- to the object test above in lua
+		itSKIP("get Map item", function()
+			--[[
 					const replaceable = new Replaceable(
 						new Map([
 							['a', 1],
@@ -85,26 +84,26 @@ return (function()
 					);
 					expect(replaceable.get('b')).toBe(2);
 				]]
-			end)
+		end)
+	end)
+
+	describe("set", function()
+		it("set object item", function()
+			local replaceable = Replaceable.new({ a = 1, b = 2 })
+			replaceable:set("b", 3)
+			expect(replaceable.object).toEqual({ a = 1, b = 3 })
 		end)
 
-		describe("set", function()
-			it("set object item", function()
-				local replaceable = Replaceable.new({ a = 1, b = 2 })
-				replaceable:set("b", 3)
-				expect(replaceable.object).toEqual({ a = 1, b = 3 })
-			end)
+		it("set array item", function()
+			local replaceable = Replaceable.new({ 1, 2, 3 })
+			replaceable:set(2, 3)
+			expect(replaceable.object).toEqual({ 1, 3, 3 })
+		end)
 
-			it("set array item", function()
-				local replaceable = Replaceable.new({ 1, 2, 3 })
-				replaceable:set(2, 3)
-				expect(replaceable.object).toEqual({ 1, 3, 3 })
-			end)
-
-			-- ROBLOX deviation: test skipped because it tests a map that is identical
-			-- to the object test above in lua
-			itSKIP("set Map item", function()
-				--[[
+		-- ROBLOX deviation: test skipped because it tests a map that is identical
+		-- to the object test above in lua
+		itSKIP("set Map item", function()
+			--[[
 					const replaceable = new Replaceable(
 						new Map([
 							['a', 1],
@@ -119,70 +118,70 @@ return (function()
 						]),
 					);
 				]]
-			end)
 		end)
+	end)
 
-		describe("forEach", function()
-			--[[
+	describe("forEach", function()
+		--[[
 				ROBLOX deviation: we have to use this sorting function to sort the
 				calls made by the forEach method since the forEach method does
 				not follow any deterministic order in iterating because Lua
 				tables don't have any inherent order
 			]]
-			local function sortingFunction(x, y)
-				return x[1] <= y[1]
-			end
+		local function sortingFunction(x, y)
+			return x[1] <= y[1]
+		end
 
-			it("object forEach", function()
-				local object = { a = 1, b = 2, jest = 3 }
-				local replaceable = Replaceable.new(object)
+		it("object forEach", function()
+			local object = { a = 1, b = 2, jest = 3 }
+			local replaceable = Replaceable.new(object)
 
-				local spy = jest.fn()
-				replaceable:forEach(spy)
-				expect(spy).toHaveBeenCalledTimes(3)
-				local calls = spy.mock.calls
+			local spy = jest.fn()
+			replaceable:forEach(spy)
+			expect(spy).toHaveBeenCalledTimes(3)
+			local calls = spy.mock.calls
 
-				table.sort(calls, sortingFunction)
-				expect(calls[1]).toEqual({ 1, "a", object })
-				expect(calls[2]).toEqual({ 2, "b", object })
-				expect(calls[3]).toEqual({ 3, "jest", object })
-			end)
+			table.sort(calls, sortingFunction)
+			expect(calls[1]).toEqual({ 1, "a", object })
+			expect(calls[2]).toEqual({ 2, "b", object })
+			expect(calls[3]).toEqual({ 3, "jest", object })
+		end)
 
-			it("array forEach", function()
-				-- ROBLOX deviation: test changed from {1, 2, 3} --> {4, 5, 6} for
-				-- clarity between table values and table indices
-				local object = { 4, 5, 6 }
-				local replaceable = Replaceable.new(object)
+		it("array forEach", function()
+			-- ROBLOX deviation: test changed from {1, 2, 3} --> {4, 5, 6} for
+			-- clarity between table values and table indices
+			local object = { 4, 5, 6 }
+			local replaceable = Replaceable.new(object)
 
-				local spy = jest.fn()
-				replaceable:forEach(spy)
-				expect(spy).toHaveBeenCalledTimes(3)
-				local calls = spy.mock.calls
+			local spy = jest.fn()
+			replaceable:forEach(spy)
+			expect(spy).toHaveBeenCalledTimes(3)
+			local calls = spy.mock.calls
 
-				table.sort(calls, sortingFunction)
-				expect(calls[1]).toEqual({ 4, 1, object })
-				expect(calls[2]).toEqual({ 5, 2, object })
-				expect(calls[3]).toEqual({ 6, 3, object })
-			end)
+			table.sort(calls, sortingFunction)
+			expect(calls[1]).toEqual({ 4, 1, object })
+			expect(calls[2]).toEqual({ 5, 2, object })
+			expect(calls[3]).toEqual({ 6, 3, object })
+		end)
 
-			it("map forEach", function()
-				local object = { a = 1, b = 2 }
-				local replaceable = Replaceable.new(object)
+		it("map forEach", function()
+			local object = { a = 1, b = 2 }
+			local replaceable = Replaceable.new(object)
 
-				local spy = jest.fn()
-				replaceable:forEach(spy)
-				expect(spy).toHaveBeenCalledTimes(2)
-				local calls = spy.mock.calls
+			local spy = jest.fn()
+			replaceable:forEach(spy)
+			expect(spy).toHaveBeenCalledTimes(2)
+			local calls = spy.mock.calls
 
-				table.sort(calls, sortingFunction)
-				expect(calls[1]).toEqual({ 1, "a", object })
-				expect(calls[2]).toEqual({ 2, "b", object })
-			end)
+			table.sort(calls, sortingFunction)
+			expect(calls[1]).toEqual({ 1, "a", object })
+			expect(calls[2]).toEqual({ 2, "b", object })
+		end)
 
-			-- ROBLOX deviation: test skipped because we don't have an enumerable
-			-- property in lua
-			itSKIP("forEach should ignore nonenumerable property", function()
-				--[[
+		-- ROBLOX deviation: test skipped because we don't have an enumerable
+		-- property in lua
+		itSKIP("forEach should ignore nonenumerable property", function()
+			--[[
 					const symbolKey = Symbol('jest');
 					const symbolKey2 = Symbol('awesome');
 					const object = {a: 1, [symbolKey]: 3};
@@ -205,29 +204,28 @@ return (function()
 					expect(cb.mock.calls[0]).toEqual([1, 'a', object]);
 					expect(cb.mock.calls[1]).toEqual([3, symbolKey, object]);
 				]]
-			end)
-		end)
-
-		describe("isReplaceable", function()
-			it("should return true if two object types equal and support", function()
-				expect(Replaceable.isReplaceable({ a = 1 }, { b = 2 })).toBe(true)
-				expect(Replaceable.isReplaceable({}, { 1, 2, 3 })).toBe(true)
-				expect(Replaceable.isReplaceable({}, { a = 1, b = 2 })).toBe(true)
-			end)
-
-			-- ROBLOX deviation: test skipped because we don't have different object
-			-- types in Lua, we only have tables
-			itSKIP("should return false if two object types not equal", function()
-				--[[
-				      expect(Replaceable.isReplaceable({a: 1}, [1, 2, 3])).toBe(false);
-				]]
-			end)
-
-			it("should return false if object types not support", function()
-				expect(Replaceable.isReplaceable("foo", "bar")).toBe(false)
-			end)
 		end)
 	end)
 
-	return {}
-end)()
+	describe("isReplaceable", function()
+		it("should return true if two object types equal and support", function()
+			expect(Replaceable.isReplaceable({ a = 1 }, { b = 2 })).toBe(true)
+			expect(Replaceable.isReplaceable({}, { 1, 2, 3 })).toBe(true)
+			expect(Replaceable.isReplaceable({}, { a = 1, b = 2 })).toBe(true)
+		end)
+
+		-- ROBLOX deviation: test skipped because we don't have different object
+		-- types in Lua, we only have tables
+		itSKIP("should return false if two object types not equal", function()
+			--[[
+				      expect(Replaceable.isReplaceable({a: 1}, [1, 2, 3])).toBe(false);
+				]]
+		end)
+
+		it("should return false if object types not support", function()
+			expect(Replaceable.isReplaceable("foo", "bar")).toBe(false)
+		end)
+	end)
+end)
+
+return {}

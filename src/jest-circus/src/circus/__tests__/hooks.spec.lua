@@ -6,21 +6,20 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return (function()
-	local CurrentModule = script.Parent
-	local SrcModule = CurrentModule.Parent
-	local Packages = SrcModule.Parent.Parent
-	local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).default
-	local runTest = require(script.Parent.Parent.__mocks__.testUtils).runTest
+local CurrentModule = script.Parent
+local SrcModule = CurrentModule.Parent
+local Packages = SrcModule.Parent.Parent
+local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).default
+local runTest = require(script.Parent.Parent.__mocks__.testUtils).runTest
 
-	type Function = (...any) -> ...any
+type Function = (...any) -> ...any
 
-	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jestExpect = JestGlobals.expect
-	local it = (JestGlobals.it :: any) :: Function
+local JestGlobals = require(Packages.Dev.JestGlobals)
+local jestExpect = JestGlobals.expect
+local it = (JestGlobals.it :: any) :: Function
 
-	it("beforeEach is executed before each test in current/child describe blocks", function()
-		local stdout = runTest([[
+it("beforeEach is executed before each test in current/child describe blocks", function()
+	local stdout = runTest([[
 			describe("describe", function()
 				beforeEach(function()
 					return console.log("> describe beforeEach")
@@ -48,11 +47,11 @@ return (function()
 				test("2nd describe test", function() end)
 			end)
   	]]).stdout
-		jestExpect(wrap(stdout)).toMatchSnapshot()
-	end)
+	jestExpect(wrap(stdout)).toMatchSnapshot()
+end)
 
-	it("multiple before each hooks in one describe are executed in the right order", function()
-		local stdout = runTest([[
+it("multiple before each hooks in one describe are executed in the right order", function()
+	local stdout = runTest([[
 			describe("describe 1", function()
 				beforeEach(function()
 					console.log("before each 1")
@@ -66,11 +65,11 @@ return (function()
 				end)
 			end)
   	]]).stdout
-		jestExpect(wrap(stdout)).toMatchSnapshot()
-	end)
+	jestExpect(wrap(stdout)).toMatchSnapshot()
+end)
 
-	it("beforeAll is exectued correctly", function()
-		local stdout = runTest([[
+it("beforeAll is exectued correctly", function()
+	local stdout = runTest([[
 			describe("describe 1", function()
 				beforeAll(function()
 					return console.log("> beforeAll 1")
@@ -92,8 +91,7 @@ return (function()
 				end)
 			end)
   	]]).stdout
-		jestExpect(wrap(stdout)).toMatchSnapshot()
-	end)
+	jestExpect(wrap(stdout)).toMatchSnapshot()
+end)
 
-	return {}
-end)()
+return {}

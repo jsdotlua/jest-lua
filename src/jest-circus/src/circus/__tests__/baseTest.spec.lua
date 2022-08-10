@@ -6,21 +6,20 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return (function()
-	local CurrentModule = script.Parent
-	local SrcModule = CurrentModule.Parent
-	local Packages = SrcModule.Parent.Parent
-	local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).default
-	local runTest = require(script.Parent.Parent.__mocks__.testUtils).runTest
+local CurrentModule = script.Parent
+local SrcModule = CurrentModule.Parent
+local Packages = SrcModule.Parent.Parent
+local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).default
+local runTest = require(script.Parent.Parent.__mocks__.testUtils).runTest
 
-	type Function = (...any) -> ...any
+type Function = (...any) -> ...any
 
-	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jestExpect = JestGlobals.expect
-	local it = (JestGlobals.it :: any) :: Function
+local JestGlobals = require(Packages.Dev.JestGlobals)
+local jestExpect = JestGlobals.expect
+local it = (JestGlobals.it :: any) :: Function
 
-	it("simple test", function()
-		local stdout = runTest([[
+it("simple test", function()
+	local stdout = runTest([[
 			describe("describe", function()
 				beforeEach(function() end)
 				afterEach(function() end)
@@ -28,11 +27,11 @@ return (function()
 				test("two", function() end)
 			end)
 		]]).stdout
-		jestExpect(wrap(stdout)).toMatchSnapshot()
-	end)
+	jestExpect(wrap(stdout)).toMatchSnapshot()
+end)
 
-	it("failures", function()
-		local stdout = runTest([[
+it("failures", function()
+	local stdout = runTest([[
 			describe("describe", function()
 				beforeEach(function() end)
 				afterEach(function()
@@ -44,8 +43,7 @@ return (function()
 				test("two", function() end)
 			end)
   		]]).stdout
-		jestExpect(wrap(stdout)).toMatchSnapshot()
-	end)
+	jestExpect(wrap(stdout)).toMatchSnapshot()
+end)
 
-	return {}
-end)()
+return {}

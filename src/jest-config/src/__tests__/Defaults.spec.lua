@@ -6,19 +6,17 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return (function()
-	local Packages = script.Parent.Parent.Parent
-	type Function = (...any) -> ...any
+local Packages = script.Parent.Parent.Parent
+type Function = (...any) -> ...any
 
-	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jestExpect = JestGlobals.expect
-	local it = (JestGlobals.it :: any) :: Function
+local JestGlobals = require(Packages.Dev.JestGlobals)
+local jestExpect = JestGlobals.expect
+local it = (JestGlobals.it :: any) :: Function
 
-	local defaults = require(script.Parent.Parent).defaults
+local defaults = require(script.Parent.Parent).defaults
 
-	it("get configuration defaults", function()
-		jestExpect(defaults).toBeDefined()
-	end)
+it("get configuration defaults", function()
+	jestExpect(defaults).toBeDefined()
+end)
 
-	return {}
-end)()
+return {}

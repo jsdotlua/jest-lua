@@ -5,46 +5,45 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  ]]
-return (function()
-	local CurrentModule = script.Parent.Parent
-	local Packages = CurrentModule.Parent
 
-	type Function = (...any) -> ...any
+local CurrentModule = script.Parent.Parent
+local Packages = CurrentModule.Parent
 
-	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jestExpect = JestGlobals.expect
-	local describe = (JestGlobals.describe :: any) :: Function
-	local it = (JestGlobals.it :: any) :: Function
+type Function = (...any) -> ...any
 
-	local formatTestResults = require(CurrentModule.formatTestResults).default
+local JestGlobals = require(Packages.Dev.JestGlobals)
+local jestExpect = JestGlobals.expect
+local describe = (JestGlobals.describe :: any) :: Function
+local it = (JestGlobals.it :: any) :: Function
 
-	local types = require(CurrentModule.types)
-	type AggregatedResult = types.AggregatedResult
+local formatTestResults = require(CurrentModule.formatTestResults).default
 
-	describe("formatTestResults", function()
-		local assertion = {
-			fullName = "TestedModule#aMethod when some condition is met returns true",
-			status = "passed",
-			title = "returns true",
-		}
+local types = require(CurrentModule.types)
+type AggregatedResult = types.AggregatedResult
 
-		-- ROBLOX deviation START - casted to any, TS should fail here
-		local results: AggregatedResult = {
-			testResults = {
-				{
-					numFailingTests = 0,
-					perfStats = { end_ = 2, runtime = 1, slow = false, start = 1 }, -- @ts-expect-error
-					testResults = { assertion },
-				},
+describe("formatTestResults", function()
+	local assertion = {
+		fullName = "TestedModule#aMethod when some condition is met returns true",
+		status = "passed",
+		title = "returns true",
+	}
+
+	-- ROBLOX deviation START - casted to any, TS should fail here
+	local results: AggregatedResult = {
+		testResults = {
+			{
+				numFailingTests = 0,
+				perfStats = { end_ = 2, runtime = 1, slow = false, start = 1 }, -- @ts-expect-error
+				testResults = { assertion },
 			},
-		} :: any
-		-- ROBLOX deviation END
+		},
+	} :: any
+	-- ROBLOX deviation END
 
-		it("includes test full name", function()
-			local result = formatTestResults(results, nil, nil)
-			jestExpect(result.testResults[1].assertionResults[1].fullName).toEqual(assertion.fullName)
-		end)
+	it("includes test full name", function()
+		local result = formatTestResults(results, nil, nil)
+		jestExpect(result.testResults[1].assertionResults[1].fullName).toEqual(assertion.fullName)
 	end)
+end)
 
-	return {}
-end)()
+return {}

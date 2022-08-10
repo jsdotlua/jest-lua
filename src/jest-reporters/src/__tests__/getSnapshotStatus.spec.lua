@@ -6,59 +6,57 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return (function()
-	local CurrentModule = script.Parent.Parent
-	local Packages = CurrentModule.Parent
+local CurrentModule = script.Parent.Parent
+local Packages = CurrentModule.Parent
 
-	type Function = (...any) -> ...any
+type Function = (...any) -> ...any
 
-	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jestExpect = JestGlobals.expect
-	local it = (JestGlobals.it :: any) :: Function
+local JestGlobals = require(Packages.Dev.JestGlobals)
+local jestExpect = JestGlobals.expect
+local it = (JestGlobals.it :: any) :: Function
 
-	local getSnapshotStatus = require(CurrentModule.getSnapshotStatus).default
+local getSnapshotStatus = require(CurrentModule.getSnapshotStatus).default
 
-	it("Retrieves the snapshot status", function()
-		local snapshotResult = {
-			added = 1,
-			fileDeleted = false,
-			matched = 1,
-			unchecked = 1,
-			uncheckedKeys = { "test suite with unchecked snapshot" },
-			unmatched = 1,
-			updated = 1,
-		}
-		jestExpect(getSnapshotStatus(snapshotResult, false)).toMatchSnapshot()
-	end)
+it("Retrieves the snapshot status", function()
+	local snapshotResult = {
+		added = 1,
+		fileDeleted = false,
+		matched = 1,
+		unchecked = 1,
+		uncheckedKeys = { "test suite with unchecked snapshot" },
+		unmatched = 1,
+		updated = 1,
+	}
+	jestExpect(getSnapshotStatus(snapshotResult, false)).toMatchSnapshot()
+end)
 
-	it("Shows no snapshot updates if all snapshots matched", function()
-		local snapshotResult = {
-			added = 0,
-			fileDeleted = false,
-			matched = 1,
-			unchecked = 0,
-			uncheckedKeys = {},
-			unmatched = 0,
-			updated = 0,
-		}
-		jestExpect(getSnapshotStatus(snapshotResult, true)).toMatchSnapshot()
-	end)
+it("Shows no snapshot updates if all snapshots matched", function()
+	local snapshotResult = {
+		added = 0,
+		fileDeleted = false,
+		matched = 1,
+		unchecked = 0,
+		uncheckedKeys = {},
+		unmatched = 0,
+		updated = 0,
+	}
+	jestExpect(getSnapshotStatus(snapshotResult, true)).toMatchSnapshot()
+end)
 
-	it("Retrieves the snapshot status after a snapshot update", function()
-		local snapshotResult = {
-			added = 2,
-			fileDeleted = true,
-			matched = 2,
-			unchecked = 2,
-			uncheckedKeys = {
-				"first test suite with unchecked snapshot",
-				"second test suite with unchecked snapshot",
-			},
-			unmatched = 2,
-			updated = 2,
-		}
-		jestExpect(getSnapshotStatus(snapshotResult, true)).toMatchSnapshot()
-	end)
+it("Retrieves the snapshot status after a snapshot update", function()
+	local snapshotResult = {
+		added = 2,
+		fileDeleted = true,
+		matched = 2,
+		unchecked = 2,
+		uncheckedKeys = {
+			"first test suite with unchecked snapshot",
+			"second test suite with unchecked snapshot",
+		},
+		unmatched = 2,
+		updated = 2,
+	}
+	jestExpect(getSnapshotStatus(snapshotResult, true)).toMatchSnapshot()
+end)
 
-	return {}
-end)()
+return {}

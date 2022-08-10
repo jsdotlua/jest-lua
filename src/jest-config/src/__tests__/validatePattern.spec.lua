@@ -7,38 +7,36 @@
  *
  ]]
 
-return (function()
-	local Packages = script.Parent.Parent.Parent
-	type Function = (...any) -> ...any
+local Packages = script.Parent.Parent.Parent
+type Function = (...any) -> ...any
 
-	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jestExpect = JestGlobals.expect
-	local describe = (JestGlobals.describe :: any) :: Function
-	local it = (JestGlobals.it :: any) :: Function
+local JestGlobals = require(Packages.Dev.JestGlobals)
+local jestExpect = JestGlobals.expect
+local describe = (JestGlobals.describe :: any) :: Function
+local it = (JestGlobals.it :: any) :: Function
 
-	local validatePattern = require(script.Parent.Parent.validatePattern).default
+local validatePattern = require(script.Parent.Parent.validatePattern).default
 
-	describe("validate pattern function", function()
-		it("without passed args returns true", function()
-			local isValid = validatePattern()
-			jestExpect(isValid).toBeTruthy()
-		end)
-
-		it("returns true for empty pattern", function()
-			local isValid = validatePattern("")
-			jestExpect(isValid).toBeTruthy()
-		end)
-
-		it("returns true for valid pattern", function()
-			local isValid = validatePattern("abc+")
-			jestExpect(isValid).toBeTruthy()
-		end)
-
-		it("returns false for invalid pattern", function()
-			local isValid = validatePattern("\\")
-			jestExpect(isValid).toBeFalsy()
-		end)
+describe("validate pattern function", function()
+	it("without passed args returns true", function()
+		local isValid = validatePattern()
+		jestExpect(isValid).toBeTruthy()
 	end)
 
-	return {}
-end)()
+	it("returns true for empty pattern", function()
+		local isValid = validatePattern("")
+		jestExpect(isValid).toBeTruthy()
+	end)
+
+	it("returns true for valid pattern", function()
+		local isValid = validatePattern("abc+")
+		jestExpect(isValid).toBeTruthy()
+	end)
+
+	it("returns false for invalid pattern", function()
+		local isValid = validatePattern("\\")
+		jestExpect(isValid).toBeFalsy()
+	end)
+end)
+
+return {}

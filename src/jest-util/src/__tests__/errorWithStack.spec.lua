@@ -7,37 +7,35 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return (function()
-	local CurrentModule = script.Parent.Parent
-	local Packages = CurrentModule.Parent
-	local LuauPolyfill = require(Packages.LuauPolyfill)
-	local Error = LuauPolyfill.Error
-	local ErrorWithStack = require(CurrentModule.ErrorWithStack).default
+local CurrentModule = script.Parent.Parent
+local Packages = CurrentModule.Parent
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Error = LuauPolyfill.Error
+local ErrorWithStack = require(CurrentModule.ErrorWithStack).default
 
-	type Function = (...any) -> ...any
+type Function = (...any) -> ...any
 
-	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jest = JestGlobals.jest
-	local jestExpect = JestGlobals.expect
-	local describe = (JestGlobals.describe :: any) :: Function
-	local it = (JestGlobals.it :: any) :: Function
+local JestGlobals = require(Packages.Dev.JestGlobals)
+local jest = JestGlobals.jest
+local jestExpect = JestGlobals.expect
+local describe = (JestGlobals.describe :: any) :: Function
+local it = (JestGlobals.it :: any) :: Function
 
-	describe("ErrorWithStack", function()
-		local message = "💩 something went wrong"
-		local function callsite() end
-		it("calls Error.captureStackTrace with given callsite when capture exists", function()
-			local originalCaptureStackTrace = Error["captureStackTrace"]
-			local captureStackTraceSpy = jest.fn()
-			Error["captureStackTrace"] = captureStackTraceSpy
-			-- jest.spyOn(Error, "captureStackTrace")
-			local actual = ErrorWithStack.new(message, callsite)
-			jestExpect(actual).toBeInstanceOf(Error)
-			jestExpect(actual.message).toBe(message)
-			jestExpect(Error["captureStackTrace"]).toHaveBeenCalledWith(actual, callsite)
+describe("ErrorWithStack", function()
+	local message = "💩 something went wrong"
+	local function callsite() end
+	it("calls Error.captureStackTrace with given callsite when capture exists", function()
+		local originalCaptureStackTrace = Error["captureStackTrace"]
+		local captureStackTraceSpy = jest.fn()
+		Error["captureStackTrace"] = captureStackTraceSpy
+		-- jest.spyOn(Error, "captureStackTrace")
+		local actual = ErrorWithStack.new(message, callsite)
+		jestExpect(actual).toBeInstanceOf(Error)
+		jestExpect(actual.message).toBe(message)
+		jestExpect(Error["captureStackTrace"]).toHaveBeenCalledWith(actual, callsite)
 
-			Error["captureStackTrace"] = originalCaptureStackTrace
-		end)
+		Error["captureStackTrace"] = originalCaptureStackTrace
 	end)
+end)
 
-	return {}
-end)()
+return {}

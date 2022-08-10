@@ -7,86 +7,84 @@
 --  *
 --  */
 
-return (function()
-	local CurrentModule = script.Parent.Parent
-	local Packages = CurrentModule.Parent
+local CurrentModule = script.Parent.Parent
+local Packages = CurrentModule.Parent
 
-	local LuauPolyfill = require(Packages.LuauPolyfill)
-	local setTimeout = LuauPolyfill.setTimeout
-	local clearTimeout = LuauPolyfill.clearTimeout
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local setTimeout = LuauPolyfill.setTimeout
+local clearTimeout = LuauPolyfill.clearTimeout
 
-	type Function = (...any) -> ...any
+type Function = (...any) -> ...any
 
-	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jest = JestGlobals.jest
-	local jestExpect = JestGlobals.expect
-	local describe = (JestGlobals.describe :: any) :: Function
-	local describeSKIP = (JestGlobals.describe.skip :: any) :: Function
-	local it = (JestGlobals.it :: any) :: Function
-	local afterEach = (JestGlobals.afterEach :: any) :: Function
+local JestGlobals = require(Packages.Dev.JestGlobals)
+local jest = JestGlobals.jest
+local jestExpect = JestGlobals.expect
+local describe = (JestGlobals.describe :: any) :: Function
+local describeSKIP = (JestGlobals.describe.skip :: any) :: Function
+local it = (JestGlobals.it :: any) :: Function
+local afterEach = (JestGlobals.afterEach :: any) :: Function
 
-	afterEach(function()
-		jest.useRealTimers()
-	end)
+afterEach(function()
+	jest.useRealTimers()
+end)
 
-	-- ROBLOX TODO: the mocked delay and tick aren't in the environment of polyfilled functions
-	-- unskip and fix when we can figure this out
-	describeSKIP("FakeTimers", function()
-		describe("construction", function()
-			it("installs delay mock", function()
-				jestExpect(setTimeout).never.toBeNil()
-			end)
-
-			it("installs clearTimeout mock", function()
-				jestExpect(clearTimeout).never.toBeNil()
-			end)
+-- ROBLOX TODO: the mocked delay and tick aren't in the environment of polyfilled functions
+-- unskip and fix when we can figure this out
+describeSKIP("FakeTimers", function()
+	describe("construction", function()
+		it("installs delay mock", function()
+			jestExpect(setTimeout).never.toBeNil()
 		end)
 
-		-- ROBLOX deviation: omitted runAllTicks, not implemented
-
-		describe("runAllTimers", function()
-			it("runs all ticks, in order", function()
-				jest.useFakeTimers()
-
-				local runOrder = {}
-				local mock1 = jest.fn(function()
-					table.insert(runOrder, "mock1")
-				end)
-				local mock2 = jest.fn(function()
-					table.insert(runOrder, "mock2")
-				end)
-				local mock3 = jest.fn(function()
-					table.insert(runOrder, "mock3")
-				end)
-				local mock4 = jest.fn(function()
-					table.insert(runOrder, "mock4")
-				end)
-				local mock5 = jest.fn(function()
-					table.insert(runOrder, "mock5")
-				end)
-				local mock6 = jest.fn(function()
-					table.insert(runOrder, "mock6")
-				end)
-
-				setTimeout(mock1, 100)
-				setTimeout(mock2, 0 / 0)
-				setTimeout(mock3, 0)
-				setTimeout(mock4, 200)
-				setTimeout(mock5, math.huge)
-				setTimeout(mock6, -math.huge)
-
-				jest.runAllTimers()
-				jestExpect(runOrder).toEqual({
-					"mock2",
-					"mock3",
-					"mock5",
-					"mock6",
-					"mock1",
-					"mock4",
-				})
-			end)
+		it("installs clearTimeout mock", function()
+			jestExpect(clearTimeout).never.toBeNil()
 		end)
 	end)
 
-	return {}
-end)()
+	-- ROBLOX deviation: omitted runAllTicks, not implemented
+
+	describe("runAllTimers", function()
+		it("runs all ticks, in order", function()
+			jest.useFakeTimers()
+
+			local runOrder = {}
+			local mock1 = jest.fn(function()
+				table.insert(runOrder, "mock1")
+			end)
+			local mock2 = jest.fn(function()
+				table.insert(runOrder, "mock2")
+			end)
+			local mock3 = jest.fn(function()
+				table.insert(runOrder, "mock3")
+			end)
+			local mock4 = jest.fn(function()
+				table.insert(runOrder, "mock4")
+			end)
+			local mock5 = jest.fn(function()
+				table.insert(runOrder, "mock5")
+			end)
+			local mock6 = jest.fn(function()
+				table.insert(runOrder, "mock6")
+			end)
+
+			setTimeout(mock1, 100)
+			setTimeout(mock2, 0 / 0)
+			setTimeout(mock3, 0)
+			setTimeout(mock4, 200)
+			setTimeout(mock5, math.huge)
+			setTimeout(mock6, -math.huge)
+
+			jest.runAllTimers()
+			jestExpect(runOrder).toEqual({
+				"mock2",
+				"mock3",
+				"mock5",
+				"mock6",
+				"mock1",
+				"mock4",
+			})
+		end)
+	end)
+end)
+
+return {}

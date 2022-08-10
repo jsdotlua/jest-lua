@@ -6,21 +6,20 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return (function()
-	local CurrentModule = script.Parent
-	local SrcModule = CurrentModule.Parent
-	local Packages = SrcModule.Parent.Parent
-	local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).default
-	local runTest = require(script.Parent.Parent.__mocks__.testUtils).runTest
+local CurrentModule = script.Parent
+local SrcModule = CurrentModule.Parent
+local Packages = SrcModule.Parent.Parent
+local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).default
+local runTest = require(script.Parent.Parent.__mocks__.testUtils).runTest
 
-	type Function = (...any) -> ...any
+type Function = (...any) -> ...any
 
-	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jestExpect = JestGlobals.expect
-	local it = (JestGlobals.it :: any) :: Function
+local JestGlobals = require(Packages.Dev.JestGlobals)
+local jestExpect = JestGlobals.expect
+local it = (JestGlobals.it :: any) :: Function
 
-	it("tests are not marked done until their parent afterAll runs", function()
-		local stdout = runTest([[
+it("tests are not marked done until their parent afterAll runs", function()
+	local stdout = runTest([[
 			describe("describe", function()
 				afterAll(function() end)
 				test("one", function() end)
@@ -43,11 +42,11 @@ return (function()
 				test("2nd describe test", function() end)
 			end)
 			]]).stdout
-		jestExpect(stdout).toMatchSnapshot()
-	end)
+	jestExpect(stdout).toMatchSnapshot()
+end)
 
-	it("describe block cannot have hooks and no tests", function()
-		local result = runTest([[
+it("describe block cannot have hooks and no tests", function()
+	local result = runTest([[
 			describe("describe", function()
 				afterEach(function() end)
 				beforeEach(function() end)
@@ -55,11 +54,11 @@ return (function()
 				beforeAll(function() end)
 			end)
   		]])
-		jestExpect(wrap(result.stdout)).toMatchSnapshot()
-	end)
+	jestExpect(wrap(result.stdout)).toMatchSnapshot()
+end)
 
-	it("describe block _can_ have hooks if a child describe block has tests", function()
-		local result = runTest([[
+it("describe block _can_ have hooks if a child describe block has tests", function()
+	local result = runTest([[
 			describe("describe", function()
 				afterEach(function()
 					return console.log("> afterEach")
@@ -80,11 +79,11 @@ return (function()
 				end)
 			end)
 		]])
-		jestExpect(wrap(result.stdout)).toMatchSnapshot()
-	end)
+	jestExpect(wrap(result.stdout)).toMatchSnapshot()
+end)
 
-	it("describe block hooks must not run if describe block is skipped", function()
-		local result = runTest([[
+it("describe block hooks must not run if describe block is skipped", function()
+	local result = runTest([[
 			describe.skip("describe", function()
 				afterAll(function()
 					return console.log("> afterAll")
@@ -97,11 +96,11 @@ return (function()
 				end)
 			end)
 		]])
-		jestExpect(wrap(result.stdout)).toMatchSnapshot()
-	end)
+	jestExpect(wrap(result.stdout)).toMatchSnapshot()
+end)
 
-	it("child tests marked with todo should not run if describe block is skipped", function()
-		local result = runTest([[
+it("child tests marked with todo should not run if describe block is skipped", function()
+	local result = runTest([[
 			describe.skip("describe", function()
 				afterAll(function()
 					return console.log("> afterAll")
@@ -112,11 +111,11 @@ return (function()
 				test.todo("my test")
 			end)
 		]])
-		jestExpect(wrap(result.stdout)).toMatchSnapshot()
-	end)
+	jestExpect(wrap(result.stdout)).toMatchSnapshot()
+end)
 
-	it("child tests marked with only should not run if describe block is skipped", function()
-		local result = runTest([[
+it("child tests marked with only should not run if describe block is skipped", function()
+	local result = runTest([[
 			describe.skip("describe", function()
 				afterAll(function()
 					return console.log("> afterAll")
@@ -129,8 +128,7 @@ return (function()
 				end)
 			end)
 		]])
-		jestExpect(wrap(result.stdout)).toMatchSnapshot()
-	end)
+	jestExpect(wrap(result.stdout)).toMatchSnapshot()
+end)
 
-	return {}
-end)()
+return {}
