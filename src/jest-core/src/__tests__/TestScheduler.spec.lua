@@ -7,11 +7,15 @@
  *
  ]]
 
-return function()
+return (function()
 	local Packages = script.Parent.Parent.Parent
 	local Promise = require(Packages.Promise)
 
+	type Function = (...any) -> ...any
+
 	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local it = (JestGlobals.it :: any) :: Function
+	local itSKIP = JestGlobals.it.skip
 	local jestExpect = JestGlobals.expect
 
 	local SummaryReporter = require(Packages.JestReporters).SummaryReporter
@@ -283,4 +287,6 @@ return function()
 		-- 	:expect()
 	end)
 	-- ROBLOX deviation END
-end
+
+	return {}
+end)()

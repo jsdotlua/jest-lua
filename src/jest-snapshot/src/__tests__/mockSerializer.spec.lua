@@ -7,16 +7,20 @@
 -- *
 -- */
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Symbol = LuauPolyfill.Symbol
 
+	type Function = (...any) -> ...any
+
 	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jestExpect = JestGlobals.expect
 	local jest = JestGlobals.jest
+	local jestExpect = JestGlobals.expect
+	local it = (JestGlobals.it :: any) :: Function
+	local itSKIP = JestGlobals.it.skip
 
 	local prettyFormat = require(Packages.PrettyFormat).format
 
@@ -167,4 +171,6 @@ return function()
 		}, "\n")
 		jestExpect(prettyFormat(val, { maxDepth = 3, plugins = { plugin_ } })).toBe(expected)
 	end)
-end
+
+	return {}
+end)()

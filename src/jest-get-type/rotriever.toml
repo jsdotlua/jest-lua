@@ -9,3 +9,6 @@ files = ["*", "!**/__tests__/**"]
 [dependencies]
 LuauPolyfill = { workspace = true }
 RegExp = { workspace = true }
+
+[dev_dependencies]
+JestGlobals = { path = "../jest-globals" }

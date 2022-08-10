@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return function()
+return (function()
 	-- ROBLOX deviation: use `unknown` type until Luau starts to support it
 	type unknown = any
 
@@ -19,7 +19,13 @@ return function()
 	local plugins = PrettyFormat.plugins
 	local setPrettyPrint = require(script.Parent.setPrettyPrint).default
 	local ReactElement = plugins.ReactElement
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local beforeEach = (JestGlobals.beforeEach :: any) :: Function
 
 	-- ROBLOX deviation: define `ReturnType` type until Luau starts to support it
 	type ReturnType<T> = any
@@ -75,4 +81,6 @@ return function()
 			jestExpect(React.createElement(forwardRefExample)).toPrettyPrintTo("<ForwardRef(Display) />")
 		end)
 	end)
-end
+
+	return {}
+end)()

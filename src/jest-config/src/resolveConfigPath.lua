@@ -10,6 +10,7 @@ local Packages = script.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
+local String = LuauPolyfill.String
 local console = LuauPolyfill.console
 type Array<T> = LuauPolyfill.Array<T>
 
@@ -44,12 +45,11 @@ local makeResolutionErrorMessage: (initialPath: Config_Path | Instance, cwd: Ins
 local makeMultipleConfigsWarning
 -- ROBLOX deviation END
 
--- ROBLOX deviation START: not needed
--- local function isFile(filePath: Config_Path)
--- 	local ref = fs:existsSync(filePath)
--- 	return if Boolean.toJSBoolean(ref) then not Boolean.toJSBoolean(fs:lstatSync(filePath):isDirectory()) else ref
--- end
--- ROBLOX deviation END
+local function isFile(filePath: Instance?)
+	-- ROBLOX deviation START: custom implementation
+	return typeof(filePath) == "Instance" and filePath:IsA("ModuleScript") and String.endsWith(filePath.Name, ".config")
+	-- ROBLOX deviation END
+end
 
 local function getConfigFilename(ext: string)
 	return JEST_CONFIG_BASE_NAME .. ext
@@ -74,6 +74,10 @@ exports.default = function(
 		absolutePath = resolvePath(cwd, pathToResolve)
 	else
 		absolutePath = pathToResolve
+	end
+
+	if isFile(absolutePath) then
+		return absolutePath :: ModuleScript
 	end
 
 	if absolutePath == nil then

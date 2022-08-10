@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
@@ -15,7 +15,14 @@ return function()
 	local Object = LuauPolyfill.Object
 	local Set = LuauPolyfill.Set
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local it = (JestGlobals.it :: any) :: Function
+	local beforeEach = (JestGlobals.beforeEach :: any) :: Function
+	local afterEach = (JestGlobals.afterEach :: any) :: Function
+
 	local Writeable = require(Packages.RobloxShared).Writeable
 
 	local SummaryReporter
@@ -179,4 +186,6 @@ return function()
 		local result = Array.join(results, ""):gsub("\\", "/")
 		jestExpect(result).toMatchSnapshot()
 	end)
-end
+
+	return {}
+end)()

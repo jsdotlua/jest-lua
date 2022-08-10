@@ -6,7 +6,7 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
@@ -17,7 +17,16 @@ return function()
 
 	local chalk = require(Packages.ChalkLua)
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local itSKIP = JestGlobals.it.skip
+	local beforeAll = (JestGlobals.beforeAll :: any) :: Function
+	local afterAll = (JestGlobals.afterAll :: any) :: Function
+
 	local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 
 	local Number = require(Packages.LuauPolyfill).Number
@@ -1025,4 +1034,6 @@ Options:
 		end)
 		-- ROBLOX deviation end
 	end)
-end
+
+	return {}
+end)()

@@ -1,4 +1,4 @@
 return {
 	displayName = "JestRunner",
-	testMatch = { "**/__tests2__/*.test", "**/__tests__/*.test" },
+	testMatch = { "**/__tests__/*.spec" },
 }

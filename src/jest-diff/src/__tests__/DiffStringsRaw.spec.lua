@@ -6,10 +6,16 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
 
 	local DIFF_DELETE = require(CurrentModule).DIFF_DELETE
 	local DIFF_EQUAL = require(CurrentModule).DIFF_EQUAL
@@ -40,4 +46,6 @@ return function()
 			jestExpect(received).toEqual(expected)
 		end)
 	end)
-end
+
+	return {}
+end)()

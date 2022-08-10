@@ -1,12 +1,17 @@
 -- ROBLOX NOTE: no upstream
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
-	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jestExpect = JestGlobals.expect
+	type Function = (...any) -> ...any
 
+	local JestGlobals = require(Packages.Dev.JestGlobals)
 	local jest = JestGlobals.jest
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local afterEach = (JestGlobals.afterEach :: any) :: Function
+
 	local FakeTimers = require(CurrentModule)
 	local timers = FakeTimers.new()
 
@@ -780,4 +785,6 @@ return function()
 			jestExpect(timers.osOverride.clock()).toBe(100)
 		end)
 	end)
-end
+
+	return {}
+end)()

@@ -1,9 +1,14 @@
 -- ROBLOX note: no upstream
 
-return function()
+return (function()
 	local CurrentModule = script.Parent
 	local Packages = CurrentModule.Parent.Parent
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
 
 	local helpersModule = require(CurrentModule.Parent.helpers)
 	local format = helpersModule.format
@@ -36,4 +41,6 @@ return function()
 			jestExpect(formatWithOptions({ depth = 7 }, nestedValue)).toMatch("value")
 		end)
 	end)
-end
+
+	return {}
+end)()

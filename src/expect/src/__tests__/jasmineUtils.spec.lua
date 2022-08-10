@@ -13,9 +13,17 @@
 
 	ROBLOX TODO: refactor tests once the matchers code has been translated
 ]]
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
+
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local expect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local itSKIP = JestGlobals.it.skip
 
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Symbol = LuauPolyfill.Symbol
@@ -35,15 +43,15 @@ return function()
 			local b = {}
 			b.x = b
 
-			expect(equals(a, b)).to.equal(true)
-			expect(equals(b, a)).to.equal(true)
+			expect(a).toEqual(b)
+			expect(b).toEqual(a)
 
 			local c = {}
 			c.x = a
 			local d = {}
 			d.x = b
-			expect(equals(c, d)).to.equal(true)
-			expect(equals(d, c)).to.equal(true)
+			expect(c).toEqual(d)
+			expect(d).toEqual(c)
 		end)
 
 		it("properties with different circularity are not equal", function()
@@ -53,8 +61,8 @@ return function()
 			local bx = {}
 			b.x = bx
 			bx.y = bx
-			expect(equals(a, b)).to.equal(false)
-			expect(equals(b, a)).to.equal(false)
+			expect(a).never.toEqual(b)
+			expect(b).never.toEqual(a)
 		end)
 
 		it("are not equal if circularity is not on the same property", function()
@@ -63,22 +71,22 @@ return function()
 			a.a = a
 			b.a = {}
 			b.a.a = a
-			expect(equals(a, b)).to.equal(false)
-			expect(equals(b, a)).to.equal(false)
+			expect(a).never.toEqual(b)
+			expect(b).never.toEqual(a)
 
 			local c = {}
 			c.x = { x = c }
 			local d = {}
 			d.x = d
-			expect(equals(c, d)).to.equal(false)
-			expect(equals(d, c)).to.equal(false)
+			expect(c).never.toEqual(d)
+			expect(d).never.toEqual(c)
 		end)
 
 		it("tests equality between symbols", function()
 			local a = Symbol.for_("foo")
 			local b = Symbol.for_("foo")
 
-			expect(equals(a, b)).to.equal(true)
+			expect(a).toEqual(b)
 
 			local c = {}
 			local d = {}
@@ -86,7 +94,7 @@ return function()
 			c[a] = 5
 			d[b] = 5
 
-			expect(equals(c, d)).to.equal(true)
+			expect(c).toEqual(d)
 		end)
 
 		it("tests circularity defined on different property", function()
@@ -95,20 +103,20 @@ return function()
 			a.a = a
 			b.a = {}
 			b.a.a = a
-			expect(equals(a, b)).to.equal(false)
-			expect(equals(b, a)).to.equal(false)
+			expect(a).never.toEqual(b)
+			expect(b).never.toEqual(a)
 		end)
 	end)
 
 	describe("equality edge cases", function()
 		it("tests keys with false value", function()
-			expect(equals({ { a = false, b = 2 }, { b = 2 } })).to.equal(false)
+			expect(equals({ { a = false, b = 2 }, { b = 2 } })).toBe(false)
 		end)
 
 		it("tests equality of regex", function()
-			expect(equals(RegExp("abc"), RegExp("abd"))).to.equal(false)
-			expect(equals(RegExp("abc", "m"), RegExp("abc", "m"))).to.equal(true)
-			expect(equals(RegExp("abc", "m"), RegExp("abc"))).to.equal(false)
+			expect(equals(RegExp("abc"), RegExp("abd"))).toBe(false)
+			expect(equals(RegExp("abc", "m"), RegExp("abc", "m"))).toBe(true)
+			expect(equals(RegExp("abc", "m"), RegExp("abc"))).toBe(false)
 		end)
 	end)
 
@@ -116,9 +124,9 @@ return function()
 		-- not yet supported, these tests should be moved to iterableEquality when that
 		-- is repurposed for the Set polyfill
 		itSKIP("basic sets", function()
-			expect(equals(Set.new({ 1, 2 }), Set.new({ 3, 4 }))).to.equal(false)
-			expect(equals(Set.new({ 1, 2 }), Set.new({ 1, 2 }))).to.equal(true)
-			expect(equals(Set.new({ 2, 1 }), Set.new({ 1, 2 }))).to.equal(true)
+			expect(equals(Set.new({ 1, 2 }), Set.new({ 3, 4 }))).toBe(false)
+			expect(equals(Set.new({ 1, 2 }), Set.new({ 1, 2 }))).toBe(true)
+			expect(equals(Set.new({ 2, 1 }), Set.new({ 1, 2 }))).toBe(true)
 		end)
 	end)
 
@@ -127,24 +135,24 @@ return function()
 		it("tests fnNameFor", function()
 			local func = function() end
 
-			expect(fnNameFor(func)).to.equal("[Function]")
+			expect(fnNameFor(func)).toBe("[Function]")
 		end)
 
 		it("tests isA", function()
 			local func = function() end
-			expect(isA("function", func)).to.equal(true)
-			expect(isA("string", "abc")).to.equal(true)
-			expect(isA("boolean", true)).to.equal(true)
+			expect(isA("function", func)).toBe(true)
+			expect(isA("string", "abc")).toBe(true)
+			expect(isA("boolean", true)).toBe(true)
 		end)
 
 		it("tests hasProperty", function()
 			local objA = { prop3 = "test" }
 			local metaA = { prop1 = 5, prop2 = "prop" }
 			setmetatable(objA, { __index = metaA })
-			expect(jasmineUtils.hasProperty(objA, "prop1")).to.equal(true)
-			expect(jasmineUtils.hasProperty(objA, "prop2")).to.equal(true)
-			expect(jasmineUtils.hasProperty(objA, "prop3")).to.equal(true)
-			expect(jasmineUtils.hasProperty(objA, "prop4")).to.equal(false)
+			expect(jasmineUtils.hasProperty(objA, "prop1")).toBe(true)
+			expect(jasmineUtils.hasProperty(objA, "prop2")).toBe(true)
+			expect(jasmineUtils.hasProperty(objA, "prop3")).toBe(true)
+			expect(jasmineUtils.hasProperty(objA, "prop4")).toBe(false)
 
 			local objB = { prop1 = "test" }
 			local metaB = { prop1 = 3, prop2 = { a = 1, b = {} } }
@@ -153,9 +161,9 @@ return function()
 					return metaB[key]
 				end,
 			})
-			expect(jasmineUtils.hasProperty(objB, "prop1")).to.equal(true)
-			expect(jasmineUtils.hasProperty(objB, "prop2")).to.equal(true)
-			expect(jasmineUtils.hasProperty(objB, "prop3")).to.equal(false)
+			expect(jasmineUtils.hasProperty(objB, "prop1")).toBe(true)
+			expect(jasmineUtils.hasProperty(objB, "prop2")).toBe(true)
+			expect(jasmineUtils.hasProperty(objB, "prop3")).toBe(false)
 
 			local objC = { prop1 = "test" }
 			setmetatable(objC, {
@@ -165,10 +173,12 @@ return function()
 			})
 			expect(function()
 				jasmineUtils.hasProperty(objC, "prop1")
-			end).never.to.throw()
+			end).never.toThrow()
 			expect(function()
 				jasmineUtils.hasProperty(objC, "prop2")
-			end).to.throw()
+			end).toThrow()
 		end)
 	end)
-end
+
+	return {}
+end)()

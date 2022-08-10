@@ -350,12 +350,12 @@ function ensureNoDuplicateConfigs(
 This usually means that your %s config includes a directory that doesn't have any configuration recognizable by Jest. Please fix it.
 ]]):format(
 				(chalk.bold(tostring(configPath))),
-				(chalk.bold(projects[(Array.findIndex(parsedConfigs, function(x)
+				(chalk.bold(tostring(projects[(Array.findIndex(parsedConfigs, function(x)
 					return x == config
-				end))])),
-				tostring(chalk.bold(projects[(Array.findIndex(parsedConfigs, function(x)
+				end))]))),
+				tostring(chalk.bold(tostring(projects[(Array.findIndex(parsedConfigs, function(x)
 					return x == configPathMap:get(configPath)
-				end))])),
+				end))]))),
 				tostring(chalk.bold('"projects"'))
 			)
 			error(Error.new(message))

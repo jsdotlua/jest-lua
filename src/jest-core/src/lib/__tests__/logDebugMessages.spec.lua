@@ -7,7 +7,7 @@
  *
  ]]
 
-return function()
+return (function()
 	local Packages = script.Parent.Parent.Parent.Parent
 	local Promise = require(Packages.Promise)
 
@@ -16,7 +16,12 @@ return function()
 	local JSON = nodeUtils.JSON
 	type NodeJS_WriteStream = RobloxShared.NodeJS_WriteStream
 
+	type Function = (...any) -> ...any
+
 	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local it = (JestGlobals.it :: any) :: Function
+	local beforeAll = (JestGlobals.beforeAll :: any) :: Function
+	local afterAll = (JestGlobals.afterAll :: any) :: Function
 	local jestExpect = JestGlobals.expect
 
 	local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).wrap
@@ -107,4 +112,6 @@ return function()
 			jestExpect(wrap(message)).toMatchSnapshot()
 		end)
 	end)
-end
+
+	return {}
+end)()

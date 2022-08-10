@@ -1,10 +1,15 @@
 -- ROBLOX NOTE: no upstream
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local it = (JestGlobals.it :: any) :: Function
+	local itSKIP = JestGlobals.it.skip
 
 	local toMatchSnapshot = require(CurrentModule).toMatchSnapshot
 	jestExpect.extend({
@@ -23,13 +28,15 @@ return function()
 		jestExpect("extra long string oh my gerd").toMatchTrimmedSnapshot(10)
 	end)
 
-	it("tests that a missing snapshot throws", function()
+	-- ROBLOX FIXME START: we can't call toMatchSnapshot and expect it to fail as this would affect the test state
+	itSKIP("tests that a missing snapshot throws", function()
 		jestExpect(function()
 			jestExpect().toMatchSnapshot()
 		end).toThrow(
 			"Snapshot name: `tests that a missing snapshot throws 1`\n\nNew snapshot was [1mnot written[22m. The update flag must be explicitly passed to write a new snapshot.\n\nThis is likely because this test is run in a continuous integration (CI) environment in which snapshots are not written by default."
 		)
 	end)
+	-- ROBLOX FIXME END
 
 	it("tests snapshots with asymmetric matchers", function()
 		jestExpect({
@@ -57,4 +64,6 @@ return function()
 	it("test with newlines\nin the name\nand body", function()
 		jestExpect("a\nb").toMatchSnapshot()
 	end)
-end
+
+	return {}
+end)()

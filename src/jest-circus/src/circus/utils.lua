@@ -367,7 +367,7 @@ local function callAsyncCircusFn(
 
 		if not isHook and returnedValue ~= nil then
 			-- ROBLOX CHECK: dedent with tagged templates might be implemented differently
-			reject(Error.new(dedent(([[
+			reject((dedent(([[
 
 test functions can only return Promise or undefined.
       Returned value: %s
@@ -543,7 +543,7 @@ local function addErrorToEachTestUnderDescribe(
 	for _, child in ipairs(describeBlock.children) do
 		if child.type == "describeBlock" then
 			-- ROBLOX FIXME Luau: analyze should narrow the child type here
-			addErrorToEachTestUnderDescribe((child :: Circus_DescribeBlock), error_, asyncError)
+			addErrorToEachTestUnderDescribe(child :: Circus_DescribeBlock, error_, asyncError)
 		elseif child.type == "test" then
 			table.insert(child.errors, { error_, asyncError })
 		end

@@ -6,7 +6,7 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
@@ -17,9 +17,14 @@ return function()
 
 	local RegExp = require(Packages.RegExp)
 
+	type Function = (...any) -> ...any
+
 	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jestExpect = JestGlobals.expect
 	local jest = JestGlobals.jest
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local itSKIP = JestGlobals.it.skip
 
 	local prettyFormat = require(CurrentModule).default
 
@@ -795,4 +800,6 @@ return function()
 			end)
 		end)
 	end)
-end
+
+	return {}
+end)()

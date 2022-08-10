@@ -13,7 +13,6 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Set = LuauPolyfill.Set
-local String = LuauPolyfill.String
 type Set<T> = LuauPolyfill.Set<T>
 
 local exports = {}
@@ -106,13 +105,16 @@ end
 -- Let's print the test failure summary character by character which is safer
 -- when hundreds of tests are failing.
 function SummaryReporter:_write(string_: string)
-	local i = 1
-	local strLen = utf8.len(string_)
-	assert(strLen ~= nil)
-	while i < strLen do
-		self._process.stderr:write(String.charCodeAt(string_, i))
-		i += 1
-	end
+	-- ROBLOX deviation START: print whole string at once
+	self._process.stderr:write(string_)
+	-- local i = 1
+	-- local strLen = utf8.len(string_)
+	-- assert(strLen ~= nil)
+	-- while i < strLen do
+	-- 	self._process.stderr:write(String.charCodeAt(string_, i))
+	-- 	i += 1
+	-- end
+	-- ROBLOX deviation END
 end
 
 function SummaryReporter:onRunStart(aggregatedResults: AggregatedResult, options: ReporterOnStartOptions)

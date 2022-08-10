@@ -7,11 +7,15 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local it = (JestGlobals.it :: any) :: Function
 
 	local formatTime = require(script.Parent.Parent.formatTime).default
 	it("defaults to milliseconds", function()
@@ -57,4 +61,6 @@ return function()
 	it("left pads the quantity properly when pad length is higher", function()
 		jestExpect(formatTime(42, -3, 5)).toBe("   42 ms")
 	end)
-end
+
+	return {}
+end)()

@@ -5,28 +5,34 @@
 	is based off of, jasmine
 ]]
 
-return function()
+return (function()
+	local CurrentModule = script.Parent.Parent
+	local Packages = CurrentModule.Parent.Parent
+
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local expect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local itSKIP = JestGlobals.it.skip
+
+	local SpyStrategy = require(CurrentModule.SpyStrategy)
+	local createSpy = require(CurrentModule.createSpy)
+
+	local Promise = require(Packages.Dev.Promise)
+
 	describe("SpyStrategy", function()
-		local CurrentModule = script.Parent.Parent
-		local Packages = CurrentModule.Parent.Parent
-
-		local SpyStrategy = require(CurrentModule.SpyStrategy)
-		local createSpy = require(CurrentModule.createSpy)
-
-		local equals = require(Packages.Dev.RobloxShared).expect.equals
-
-		local Promise = require(Packages.Dev.Promise)
-
 		it("defaults its name to unknown", function()
 			local spyStrategy = SpyStrategy.new()
 
-			expect(spyStrategy.identity).to.equal("unknown")
+			expect(spyStrategy.identity).toBe("unknown")
 		end)
 
 		it("takes a name", function()
 			local spyStrategy = SpyStrategy.new({ name = "foo" })
 
-			expect(spyStrategy.identity).to.equal("foo")
+			expect(spyStrategy.identity).toBe("foo")
 		end)
 
 		it("stubs an original function, if provided", function()
@@ -35,9 +41,7 @@ return function()
 
 			spyStrategy:exec()
 
-			-- ROBLOX deviation: toHaveBeenCalledWith() has not been implemented so
-			-- we use calls:any() to see if a call has been made
-			expect(equals(originalFn.calls:any())).to.equal(false)
+			expect(originalFn).never.toHaveBeenCalled()
 		end)
 
 		it("allows an original function to be called, passed through the params and returns it's value", function()
@@ -47,9 +51,9 @@ return function()
 			spyStrategy:callThrough()
 			local returnValue = spyStrategy:exec(1, { "foo" })
 
-			expect(originalFn.calls:any()).to.equal(true)
-			expect(equals(originalFn.calls:mostRecent().args, { 1, { "foo" } })).to.equal(true)
-			expect(returnValue).to.equal(42)
+			expect(originalFn).toHaveBeenCalled()
+			expect(originalFn.calls:mostRecent().args).toEqual({ 1, { "foo" } })
+			expect(returnValue).toBe(42)
 		end)
 
 		it("can return a specified value when executed", function()
@@ -60,8 +64,8 @@ return function()
 			spyStrategy:returnValue(17)
 			returnValue = spyStrategy:exec()
 
-			expect(originalFn.calls:any()).to.equal(false)
-			expect(returnValue).to.equal(17)
+			expect(originalFn).never.toHaveBeenCalled()
+			expect(returnValue).toBe(17)
 		end)
 
 		it("can return specified values in order specified when executed", function()
@@ -70,11 +74,11 @@ return function()
 
 			spyStrategy:returnValues("value1", "value2", "value3")
 
-			expect(spyStrategy:exec()).to.equal("value1")
-			expect(spyStrategy:exec()).to.equal("value2")
-			expect(spyStrategy:exec()).to.equal("value3")
-			expect(spyStrategy:exec()).to.equal(nil)
-			expect(originalFn.calls:any()).to.equal(false)
+			expect(spyStrategy:exec()).toBe("value1")
+			expect(spyStrategy:exec()).toBe("value2")
+			expect(spyStrategy:exec()).toBe("value3")
+			expect(spyStrategy:exec()).toBe(nil)
+			expect(originalFn).never.toHaveBeenCalled()
 		end)
 
 		it("allows an exception to be thrown when executed", function()
@@ -85,14 +89,13 @@ return function()
 
 			expect(function()
 				spyStrategy:exec()
-			end).to.throw("bar")
+			end).toThrow("bar")
 
-			expect(originalFn.calls:any()).to.equal(false)
+			expect(originalFn).never.toHaveBeenCalled()
 		end)
 
-		-- ROBLOX deviation: test skipped because its translation is identical to the
-		-- one above
-		itSKIP("allows a string to be thrown, wrapping it into an exception when executed", function()
+		-- ROBLOX NOTE: test translation is identical to the one above
+		it("allows a string to be thrown, wrapping it into an exception when executed", function()
 			local originalFn = createSpy("original")
 			local spyStrategy = SpyStrategy.new({ fn = originalFn })
 
@@ -100,9 +103,9 @@ return function()
 
 			expect(function()
 				spyStrategy:exec()
-			end).to.throw("bar")
+			end).toThrow("bar")
 
-			expect(originalFn.calls:any()).to.equal(false)
+			expect(originalFn).never.toHaveBeenCalled()
 		end)
 
 		it("allows a non-Error to be thrown when executed", function()
@@ -114,10 +117,10 @@ return function()
 			local ok, err = pcall(function()
 				spyStrategy:exec()
 			end)
-			expect(ok).to.equal(false)
-			expect(equals(err, { code = "ESRCH" })).to.equal(true)
+			expect(ok).toBe(false)
+			expect(err).toEqual({ code = "ESRCH" })
 
-			expect(originalFn.calls:any()).to.equal(false)
+			expect(originalFn).never.toHaveBeenCalled()
 		end)
 
 		it("allows a fake function to be called instead", function()
@@ -129,8 +132,8 @@ return function()
 			spyStrategy:callFake(fakeFn)
 			returnValue = spyStrategy:exec()
 
-			expect(originalFn.calls:any()).to.equal(false)
-			expect(returnValue).to.equal(67)
+			expect(originalFn).never.toHaveBeenCalled()
+			expect(returnValue).toBe(67)
 		end)
 
 		it("allows a fake async function to be called instead", function()
@@ -152,9 +155,9 @@ return function()
 			spyStrategy
 				:exec()
 				:andThen(function(returnValue)
-					expect(originalFn.calls:any()).to.equal(false)
-					expect(fakeFn.calls:any()).to.equal(true)
-					expect(returnValue).to.equal(67)
+					expect(originalFn).never.toHaveBeenCalled()
+					expect(fakeFn.calls:any()).toBe(true)
+					expect(returnValue).toBe(67)
 				end)
 				:catch(function(err)
 					error(err)
@@ -199,13 +202,13 @@ return function()
 			spyStrategy:callFake(fakeFn)
 			returnValue = spyStrategy:exec()
 
-			expect(originalFn.calls:any()).to.equal(false)
-			expect(returnValue).to.equal(67)
+			expect(originalFn).never.toHaveBeenCalled()
+			expect(returnValue).toBe(67)
 
 			spyStrategy:stub()
 			returnValue = spyStrategy:exec()
 
-			expect(returnValue).to.equal(nil)
+			expect(returnValue).toBe(nil)
 		end)
 
 		it("returns the spy after changing the strategy", function()
@@ -213,11 +216,13 @@ return function()
 			local spyFn = createSpy("spyFn").andAlso:returnValue(spy)
 			local spyStrategy = SpyStrategy.new({ getSpy = spyFn })
 
-			expect(spyStrategy:callThrough()).to.equal(spy)
-			expect(spyStrategy:returnValue()).to.equal(spy)
-			expect(spyStrategy:throwError()).to.equal(spy)
-			expect(spyStrategy:callFake(function() end)).to.equal(spy)
-			expect(spyStrategy:stub()).to.equal(spy)
+			expect(spyStrategy:callThrough()).toBe(spy)
+			expect(spyStrategy:returnValue()).toBe(spy)
+			expect(spyStrategy:throwError()).toBe(spy)
+			expect(spyStrategy:callFake(function() end)).toBe(spy)
+			expect(spyStrategy:stub()).toBe(spy)
 		end)
 	end)
-end
+
+	return {}
+end)()

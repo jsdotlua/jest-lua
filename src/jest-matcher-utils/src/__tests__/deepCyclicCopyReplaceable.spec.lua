@@ -7,27 +7,34 @@
 --  *
 --  */
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
-	local Number = require(Packages.LuauPolyfill).Number
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local expect = JestGlobals.expect
+	local it = (JestGlobals.it :: any) :: Function
+	local itSKIP = JestGlobals.it.skip
+
+	local LuauPolyfill = require(Packages.LuauPolyfill)
+	local Array = LuauPolyfill.Array
+	local Number = LuauPolyfill.Number
 
 	local deepCyclicCopyReplaceable = require(CurrentModule.deepCyclicCopyReplaceable)
-
-	local equals = require(Packages.Dev.RobloxShared).expect.equals
 
 	type anyTable = { [any]: any }
 
 	it("returns the same value for primitive or function values", function()
 		local fn = function() end
 
-		expect(deepCyclicCopyReplaceable(nil)).to.equal(nil)
-		expect(deepCyclicCopyReplaceable(true)).to.equal(true)
-		expect(deepCyclicCopyReplaceable(42)).to.equal(42)
-		expect(Number.isNaN(deepCyclicCopyReplaceable(0 / 0))).to.equal(true)
-		expect(deepCyclicCopyReplaceable("foo")).to.equal("foo")
-		expect(deepCyclicCopyReplaceable(fn)).to.equal(fn)
+		expect(deepCyclicCopyReplaceable(nil)).toBe(nil)
+		expect(deepCyclicCopyReplaceable(true)).toBe(true)
+		expect(deepCyclicCopyReplaceable(42)).toBe(42)
+		expect(Number.isNaN(deepCyclicCopyReplaceable(0 / 0))).toBe(true)
+		expect(deepCyclicCopyReplaceable("foo")).toBe("foo")
+		expect(deepCyclicCopyReplaceable(fn)).toBe(fn)
 	end)
 
 	-- ROBLOX deviation: test skipped because Lua doesn't have functionality
@@ -89,11 +96,8 @@ return function()
 
 	it("copies arrays as array objects", function()
 		local array = { 42, "foo", "bar", {}, {} }
-		local copy = deepCyclicCopyReplaceable(array)
-
-		expect(equals(copy, array)).to.equal(true)
-		expect(array ~= copy).to.equal(true)
-		expect(typeof(array) == "table").to.equal(true)
+		expect(deepCyclicCopyReplaceable(array)).toEqual(array)
+		expect(Array.isArray(deepCyclicCopyReplaceable(array))).toBe(true)
 	end)
 
 	it("handles cyclic dependencies", function()
@@ -104,13 +108,13 @@ return function()
 
 		expect(function()
 			deepCyclicCopyReplaceable(cyclic)
-		end).never.to.throw()
+		end).never.toThrow()
 
 		local copy = deepCyclicCopyReplaceable(cyclic)
 
-		expect(copy.a).to.equal(42)
-		expect(equals(copy.bar, copy)).to.equal(true)
-		expect(equals(copy.subcycle.baz, copy)).to.equal(true)
+		expect(copy.a).toBe(42)
+		expect(copy.bar).toEqual(copy)
+		expect(copy.subcycle.baz).toEqual(copy)
 	end)
 
 	it("Copy Map", function()
@@ -118,17 +122,18 @@ return function()
 
 		local copy = deepCyclicCopyReplaceable(map)
 
-		expect(equals(map, copy)).to.equal(true)
+		expect(map).toEqual(copy)
 
-		-- ROBLOX deviation: omitted expect call because there's no functionality to
+		-- ROBLOX deviation START: omitted expect call because there's no functionality to
 		-- compare constructors in the same way
 		-- expect(copy.constructor).toBe(Map);
+		-- ROBLOX deviation END
 	end)
 
 	it("Copy cyclic Map", function()
 		local map = { a = 1, b = 2 }
 		map.map = map
-		expect(equals(map, deepCyclicCopyReplaceable(map))).to.equal(true)
+		expect(deepCyclicCopyReplaceable(map)).toEqual(map)
 	end)
 
 	it("return same value for built-in object type except array, map and object", function()
@@ -136,22 +141,23 @@ return function()
 		local numberArray = { 1, 2, 3 }
 		local set = { foo = true, bar = true }
 
-		expect(deepCyclicCopyReplaceable(date)).to.equal(date)
-		expect(equals(deepCyclicCopyReplaceable(numberArray), numberArray)).to.equal(true)
-		expect(equals(deepCyclicCopyReplaceable(set), set)).to.equal(true)
+		expect(deepCyclicCopyReplaceable(date)).toBe(date)
+		expect(deepCyclicCopyReplaceable(numberArray)).toEqual(numberArray)
+		expect(deepCyclicCopyReplaceable(set)).toEqual(set)
 		-- ROBLOX deviation: omitted expect calls because there are no distinct
 		-- buffer or regular expression types in Lua
 	end)
 
-	-- ROBLOX deviation: test skipped because Lua has no Symbol type
+	-- ROBLOX deviation START: test skipped because Lua has no Symbol type
 	itSKIP("should copy object symbol key property", function()
 		--[[
 			const symbolKey = Symbol.for('key');
 			expect(deepCyclicCopyReplaceable({[symbolKey]: 1})).toEqual({[symbolKey]: 1});
 		]]
 	end)
+	-- ROBLOX deviation END
 
-	-- ROBLOX deviation: test skipped because Lua doesn't have properties like
+	-- ROBLOX deviation START: test skipped because Lua doesn't have properties like
 	-- 'configurable' and 'writable'
 	itSKIP("should set writable, configurable to true", function()
 		--[[
@@ -168,12 +174,16 @@ return function()
 			});
 		]]
 	end)
+	-- ROBLOX deviation END
 
-	-- ROBLOX deviation: Test not present in upstream
+	-- ROBLOX deviation START: Test not present in upstream
 	it("should keep metatable on copied table", function()
 		local a = {}
 		setmetatable(a, { test = 1 })
 
-		expect(getmetatable(deepCyclicCopyReplaceable(a))["test"]).to.equal(1)
+		expect(getmetatable(deepCyclicCopyReplaceable(a))["test"]).toBe(1)
 	end)
-end
+	-- ROBLOX deviation END
+
+	return {}
+end)()

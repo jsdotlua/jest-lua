@@ -426,14 +426,14 @@ local function createToBeCalledMatcher(matcherName: string): SyncExpectationResu
 
 		local count
 		if receivedIsSpy then
-			count = received.calls.count()
+			count = received.calls:count()
 		else
 			count = #received.mock.calls
 		end
 
 		local calls
 		if receivedIsSpy then
-			calls = Array.map(received.calls.all(), function(x: any)
+			calls = Array.map(received.calls:all(), function(x: any)
 				return x.args
 			end)
 		else
@@ -559,7 +559,7 @@ local function createToBeCalledTimesMatcher(matcherName: string): SyncExpectatio
 
 		local count
 		if receivedIsSpy then
-			count = received.calls.count()
+			count = received.calls:count()
 		else
 			count = #received.mock.calls
 		end
@@ -672,7 +672,7 @@ local function createToBeCalledWithMatcher(matcherName: string): SyncExpectation
 
 		local calls
 		if receivedIsSpy then
-			calls = Array.map(received.calls.all(), function(x: any)
+			calls = Array.map(received.calls:all(), function(x: any)
 				return x.args
 			end)
 		else
@@ -827,7 +827,7 @@ local function createLastCalledWithMatcher(matcherName: string): SyncExpectation
 
 		local calls
 		if receivedIsSpy then
-			calls = Array.map(received.calls.all(), function(x: any)
+			calls = Array.map(received.calls:all(), function(x: any)
 				return x.args
 			end)
 		else
@@ -1027,7 +1027,7 @@ local function createNthCalledWithMatcher(matcherName: string): SyncExpectationR
 
 		local calls
 		if receivedIsSpy then
-			calls = Array.map(received.calls.all(), function(x: any)
+			calls = Array.map(received.calls:all(), function(x: any)
 				return x.args
 			end)
 		else

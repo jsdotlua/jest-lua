@@ -7,13 +7,15 @@ content_root = "src"
 files = ["*", "!**/__tests__/**"]
 
 [dependencies]
+ChalkLua = { workspace = true }
+LuauPolyfill = { workspace = true }
+Promise = { workspace = true }
+JestTypes = { path = "../jest-types" }
 JestDiff = { path = "../jest-diff" }
 JestGetType = { path = "../jest-get-type" }
 JestMatcherUtils = { path = "../jest-matcher-utils" }
 PrettyFormat = { path = "../pretty-format" }
 RobloxShared = { path = "../roblox-shared" }
-ChalkLua = { workspace = true }
-LuauPolyfill = { workspace = true }
 
 [dev_dependencies]
 JestGlobals = { path = "../jest-globals" }

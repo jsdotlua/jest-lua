@@ -7,14 +7,20 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Symbol = LuauPolyfill.Symbol
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local itSKIP = JestGlobals.it.skip
 
 	local PrettyFormat = require(Packages.PrettyFormat)
 	local format = PrettyFormat.format
@@ -276,4 +282,6 @@ return function()
 			jestExpect(dedentLines(indented)).toEqual(nil)
 		end)
 	end)
-end
+
+	return {}
+end)()

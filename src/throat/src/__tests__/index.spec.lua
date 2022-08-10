@@ -1,6 +1,6 @@
 -- ROBLOX upstream: https://github.com/ForbesLindesay/throat/blob/6.0.1/test/index.js
 
-return function()
+return (function()
 	local Packages = script.Parent.Parent.Parent
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Array = LuauPolyfill.Array
@@ -13,7 +13,16 @@ return function()
 	local Promise = require(Packages.Promise)
 	type Promise<T> = LuauPolyfill.Promise<T>
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local itFIXME = function(description: string, ...: any)
+		JestGlobals.it.todo(description)
+	end
+
 	local throatModule = require(script.Parent.Parent)
 	local throat = throatModule.default
 	type ThroatEarlyBound<TResult, TArgs> = throatModule.ThroatEarlyBound<TResult, TArgs>
@@ -262,7 +271,7 @@ return function()
 			if not ok then
 				local ex = result
 				jestExpect(ex.message).toMatch("Expected throat size to be a number")
-				return true
+				return
 			end
 			error(Error.new("Expected a failure"))
 		end)
@@ -273,7 +282,7 @@ return function()
 			if not ok then
 				local ex = result
 				jestExpect(ex.message).toMatch("Expected throat fn to be a function")
-				return true
+				return
 			end
 			error(Error.new("Expected a failure"))
 		end)
@@ -284,7 +293,7 @@ return function()
 			if not ok then
 				local ex = result
 				jestExpect(ex.message).toMatch("Expected throat fn to be a function")
-				return true
+				return
 			end
 			error(Error.new("Expected a failure"))
 		end)
@@ -499,4 +508,6 @@ return function()
 			end)
 			:expect()
 	end)
-end
+
+	return {}
+end)()

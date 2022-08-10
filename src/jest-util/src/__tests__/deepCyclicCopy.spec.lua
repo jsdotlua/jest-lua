@@ -8,7 +8,7 @@
  *
  ]]
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 	local LuauPolyfill = require(Packages.LuauPolyfill)
@@ -17,9 +17,13 @@ return function()
 	local Set = LuauPolyfill.Set
 	local Symbol = LuauPolyfill.Symbol
 
+	type Function = (...any) -> ...any
+
 	local JestGlobals = require(Packages.Dev.JestGlobals)
 	local jest = JestGlobals.jest
 	local jestExpect = JestGlobals.expect
+	local it = (JestGlobals.it :: any) :: Function
+	local itSKIP = JestGlobals.it.skip
 
 	local deepCyclicCopy = require(script.Parent.Parent.deepCyclicCopy).default
 	it("returns the same value for primitive or function values", function()
@@ -46,7 +50,7 @@ return function()
 		--[[
 			ROBLOX deviation: not property descriptors in Lua
 			original code:
-			expect(Object.getOwnPropertyDescriptor(copy, 'foo')).toBeDefined();
+		jestExpect(Object.getOwnPropertyDescriptor(copy, 'foo')).toBeDefined();
 		]]
 		jestExpect(copy["foo"]).toBeDefined()
 		jestExpect(fn).never.toBeCalled()
@@ -250,4 +254,6 @@ return function()
 		end)
 	end
 	-- ROBLOX deviation END
-end
+
+	return {}
+end)()

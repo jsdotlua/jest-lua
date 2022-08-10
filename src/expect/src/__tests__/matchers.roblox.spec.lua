@@ -1,8 +1,17 @@
 -- ROBLOX NOTE: no upstream
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
+
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local itSKIP = JestGlobals.it.skip
+	local beforeAll = (JestGlobals.beforeAll :: any) :: Function
+	local afterAll = (JestGlobals.afterAll :: any) :: Function
 
 	local jestExpect = require(CurrentModule)
 
@@ -281,4 +290,6 @@ return function()
 			end)
 		end)
 	end)
-end
+
+	return {}
+end)()

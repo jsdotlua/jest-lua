@@ -7,9 +7,16 @@
 --  *
 --  */
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
+
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local expect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
 
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Error = require(Packages.LuauPolyfill).Error
@@ -23,7 +30,7 @@ return function()
 
 	describe(".getType()", function()
 		it("nil", function()
-			expect(getType(nil)).to.equal("nil")
+			expect(getType(nil)).toBe("nil")
 		end)
 
 		--[[
@@ -39,49 +46,49 @@ return function()
   			test('array', () => expect(getType([])).toBe('array'));
 		]]
 		it("table", function()
-			expect(getType({})).to.equal("table")
+			expect(getType({})).toBe("table")
 		end)
 
 		it("number", function()
-			expect(getType(1)).to.equal("number")
+			expect(getType(1)).toBe("number")
 		end)
 
 		it("string", function()
-			expect(getType("oi")).to.equal("string")
+			expect(getType("oi")).toBe("string")
 		end)
 
 		it("function", function()
-			expect(getType(function() end)).to.equal("function")
+			expect(getType(function() end)).toBe("function")
 		end)
 
 		it("boolean", function()
-			expect(getType(true)).to.equal("boolean")
+			expect(getType(true)).toBe("boolean")
 		end)
 
 		-- ROBLOX deviation start: additional symbol tests
 		it("symbol", function()
-			expect(getType(Symbol("test"))).to.equal("symbol")
-			expect(getType(Symbol.for_("test"))).to.equal("symbol")
-			expect(getType(Symbol.for_("test2"))).to.equal("symbol")
-			expect(getType(Symbol())).to.equal("symbol")
+			expect(getType(Symbol("test"))).toBe("symbol")
+			expect(getType(Symbol.for_("test"))).toBe("symbol")
+			expect(getType(Symbol.for_("test2"))).toBe("symbol")
+			expect(getType(Symbol())).toBe("symbol")
 		end)
 		-- ROBLOX deviation end
 
 		it("regexp", function()
-			expect(getType(RegExp("abc"))).to.equal("regexp")
+			expect(getType(RegExp("abc"))).toBe("regexp")
 		end)
 
 		it("map", function()
-			expect(getType(Map.new())).to.equal("map")
+			expect(getType(Map.new())).toBe("map")
 		end)
 
 		it("set", function()
-			expect(getType(Set.new())).to.equal("set")
+			expect(getType(Set.new())).toBe("set")
 		end)
 
 		-- ROBLOX deviation: checking DateTime instead of Date
 		it("DateTime", function()
-			expect(getType(DateTime.now())).to.equal("DateTime")
+			expect(getType(DateTime.now())).toBe("DateTime")
 		end)
 
 		--[[
@@ -92,16 +99,18 @@ return function()
 
 		-- ROBLOX deviation start: additional Luau tests
 		it("error", function()
-			expect(getType(Error("abc"))).to.equal("error")
+			expect(getType(Error("abc"))).toBe("error")
 		end)
 
 		it("Instance", function()
-			expect(getType(Instance.new("Frame"))).to.equal("Instance")
+			expect(getType(Instance.new("Frame"))).toBe("Instance")
 		end)
 
 		it("userdata", function()
-			expect(getType(newproxy())).to.equal("userdata")
+			expect(getType(newproxy())).toBe("userdata")
 		end)
 		-- ROBLOX deviation end
 	end)
-end
+
+	return {}
+end)()

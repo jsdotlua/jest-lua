@@ -62,23 +62,11 @@ local bind = require(Packages.JestEach).bind
 local jest_message_utilModule = require(Packages.JestMessageUtil)
 local formatExecError = jest_message_utilModule.formatExecError
 local formatResultsErrors = jest_message_utilModule.formatResultsErrors
--- ROBLOX TODO START: not implemented yet
 local jest_snapshotModule = require(Packages.JestSnapshot)
 local SnapshotState = jest_snapshotModule.SnapshotState
-type SnapshotStateType = any -- jest_snapshotModule.SnapshotStateType
--- ROBLOX TODO END
+type SnapshotStateType = jest_snapshotModule.JestSnapshot_SnapshotStateType
 local addSerializer = jest_snapshotModule.addSerializer
--- ROBLOX TODO START: not implemented yet
-local buildSnapshotResolver = function(...)
-	return Promise.resolve({
-		resolveSnapshotPath = function()
-			warn("resolveSnapshotPath is not implemented yet")
-			return script.Parent.temporarySnapshotData
-		end,
-	})
-end
--- local buildSnapshotResolver = jest_snapshotModule.buildSnapshotResolver
--- ROBLOX TODO END
+local buildSnapshotResolver = jest_snapshotModule.buildSnapshotResolver
 local globals = require(script.Parent.Parent).default
 local run = require(script.Parent.Parent.run).default
 local stateModule = require(script.Parent.Parent.state)
@@ -96,6 +84,11 @@ type Process = NodeJS_Process
 
 type JestGlobals = Global_TestFrameworkGlobals & { expect: Expect }
 
+-- ROBLOX deviation START: additional deps
+local RobloxShared = require(Packages.RobloxShared)
+local getRelativePath = RobloxShared.getRelativePath
+-- ROBLOX deviation END
+
 -- ROBLOX deviation START: predeclare variables
 local handleSnapshotStateAfterRetry
 local eventHandler
@@ -110,7 +103,9 @@ local function initialize(
 		globalConfig: Config_GlobalConfig,
 		-- ROBLOX deviation: no default param
 		localRequire: <T>(path: Config_Path) -> T,
-		testPath: Config_Path,
+		-- ROBLOX deviation START: use ModuleScript instead of string
+		testPath: ModuleScript,
+		-- ROBLOX deviation END
 		parentProcess: Process,
 		sendMessageToJest: TestFileEvent?,
 		setGlobalsForRuntime: (globals: JestGlobals) -> (),
@@ -262,7 +257,7 @@ local function initialize(
 
 		addEventHandler(handleSnapshotStateAfterRetry(snapshotState))
 		if sendMessageToJest ~= nil then
-			addEventHandler(testCaseReportHandler(testPath, sendMessageToJest))
+			addEventHandler(testCaseReportHandler(getRelativePath(testPath), sendMessageToJest))
 		end
 
 		-- Return it back to the outer scope (test runner outside the VM).

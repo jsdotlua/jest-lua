@@ -7,13 +7,18 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return function()
+return (function()
+	local CurrentModule = script.Parent.Parent
+	local Packages = CurrentModule.Parent
+
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local it = JestGlobals.it --(JestGlobals.it :: any) :: Function
 	--[[
 		ROBLOX deviation:
 		skipped whole file as it seems unnecessary in Lua environment
 	]]
-	-- local CurrentModule = script.Parent.Parent
-	-- local Packages = CurrentModule.Parent
 	-- local LuauPolyfill = require(Packages.LuauPolyfill)
 	-- local Array = LuauPolyfill.Array
 	-- -- local EventEmitter = require(Packages.events).EventEmitter
@@ -87,4 +92,8 @@ return function()
 	-- 	expect(fake:hasOwnProperty("PROP_STRING")).toBe(false)
 	-- 	expect(fake:hasOwnProperty("PROP_string")).toBe(false)
 	-- end)
-end
+
+	it.todo("empty test")
+
+	return {}
+end)()

@@ -1,13 +1,18 @@
 -- ROBLOX NOTE: no upstream
 
-return function()
+return (function()
 	local CurrentModule = script.Parent
 	local SrcModule = CurrentModule.Parent
 	local Packages = SrcModule.Parent
 
+	type Function = (...any) -> ...any
+
 	local JestGlobals = require(Packages.Dev.JestGlobals)
 	local jest = JestGlobals.jest
 	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local beforeEach = (JestGlobals.beforeEach :: any) :: Function
 
 	local clearLine = require(SrcModule.clearLine).default
 
@@ -35,4 +40,6 @@ return function()
 			jestExpect(writeMock).toHaveBeenCalledWith(stream, "\x1b[999D\x1b[K")
 		end)
 	end)
-end
+
+	return {}
+end)()

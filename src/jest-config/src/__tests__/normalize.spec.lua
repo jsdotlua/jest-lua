@@ -7,7 +7,7 @@
  *
  ]]
 
-return function()
+return (function()
 	type unknown = any --[[ ROBLOX FIXME: adding `unknown` type alias to make it easier to use Luau unknown equivalent when supported ]]
 	local Packages = script.Parent.Parent.Parent
 	local LuauPolyfill = require(Packages.LuauPolyfill)
@@ -22,10 +22,18 @@ return function()
 	local RegExp = require(Packages.RegExp)
 	type RegExp = RegExp.RegExp
 
+	type Function = (...any) -> ...any
+
 	local JestGlobals = require(Packages.Dev.JestGlobals)
 	local jest = JestGlobals.jest
-	type jest_SpyInstance = any
 	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local beforeEach = (JestGlobals.beforeEach :: any) :: Function
+	local afterEach = (JestGlobals.afterEach :: any) :: Function
+	local beforeAll = (JestGlobals.beforeAll :: any) :: Function
+	local afterAll = (JestGlobals.afterAll :: any) :: Function
+	type jest_SpyInstance = any
 
 	-- ROBLOX deviation START: not used
 	-- local createHash = require(Packages.crypto).createHash
@@ -1704,4 +1712,6 @@ return function()
 	-- 	end)
 	-- end)
 	-- ROBLOX deviation END
-end
+
+	return {}
+end)()

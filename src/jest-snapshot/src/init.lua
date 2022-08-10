@@ -11,9 +11,6 @@
 local CurrentModule = script
 local Packages = CurrentModule.Parent
 
--- ROBLOX deviation: used to communicate with the TestEZ test runner
-local JEST_TEST_CONTEXT = "__JEST_TEST_CONTEXT__"
-
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Error = LuauPolyfill.Error
 local instanceof = LuauPolyfill.instanceof
@@ -35,9 +32,15 @@ local matcherHint = JestMatcherUtils.matcherHint
 local printWithType = JestMatcherUtils.printWithType
 local stringify = JestMatcherUtils.stringify
 
--- ROBLOX TODO: ADO-1449 add imports for snapshot_resolver and related functionality
+local SnapshotResolverModule = require(script.SnapshotResolver)
+local EXTENSION = SnapshotResolverModule.EXTENSION
+type JestSnapshotResolver = SnapshotResolverModule.SnapshotResolver
+local buildSnapshotResolver = SnapshotResolverModule.buildSnapshotResolver
+local isSnapshotPath = SnapshotResolverModule.isSnapshotPath
 
-local SnapshotState = require(CurrentModule.State)
+local SnapshotStateModule = require(CurrentModule.State)
+local SnapshotState = SnapshotStateModule.default
+type SnapshotState = SnapshotStateModule.SnapshotState
 
 local plugins = require(CurrentModule.plugins)
 local addSerializer = plugins.addSerializer
@@ -158,7 +161,15 @@ end
 
 -- ROBLOX TODO: ADO-1552 add toMatchInlineSnapshot
 
-function _toMatchSnapshot(config: MatchSnapshotConfig)
+function _toMatchSnapshot(
+	config: MatchSnapshotConfig
+): {
+	pass: boolean,
+	message: () -> string,
+	actual: string?,
+	expected: string?,
+	name: string?,
+}
 	local context = config.context
 	local hint = config.hint
 	local inlineSnapshot = config.inlineSnapshot
@@ -166,38 +177,6 @@ function _toMatchSnapshot(config: MatchSnapshotConfig)
 	local matcherName = config.matcherName
 	local properties = config.properties
 	local received = config.received
-
-	--[[
-		deviation: we modify the TestEZ test runner to record the test context in
-		a global state for jest-snapshot to find the correct snapshot
-		deviation: loads an empty snapshot state if one doesn't exist, Jest creates
-		one by default but we cannot do so because of permission issues
-	--]]
-	local snapshotFileName = _G[JEST_TEST_CONTEXT].instance.Name:match("(.*)%.spec") .. ".snap"
-	if _G[JEST_TEST_CONTEXT].snapshotState == nil then
-		local snapshotPath = nil
-		pcall(function()
-			snapshotPath = _G[JEST_TEST_CONTEXT].instance.Parent.__snapshots__[snapshotFileName]
-		end)
-		local ok, result = pcall(function()
-			return SnapshotState.new(
-				snapshotPath,
-				{ updateSnapshot = _G.UPDATESNAPSHOT or "none", snapshotFormat = {} }
-			)
-		end)
-		if ok then
-			_G[JEST_TEST_CONTEXT].snapshotState = result
-		else
-			return {
-				message = function()
-					return "Jest-Roblox: Error while loading snapshot file"
-				end,
-				pass = false,
-			}
-		end
-	end
-	context.snapshotState = context.snapshotState or _G[JEST_TEST_CONTEXT].snapshotState
-	context.currentTestName = context.currentTestName or table.concat(_G[JEST_TEST_CONTEXT].blocks, " ")
 
 	-- ROBLOX deviation: we don't call dontThrow because we don't yet have the functionality in
 	-- place where we add errors to global matcher state and deal with them accordingly
@@ -441,14 +420,14 @@ function _toThrowErrorMatchingSnapshot(config: types.MatchSnapshotConfig, fromPr
 	})
 end
 
-return {
-	-- EXTENSION = EXTENSION,
+local JestSnapshot = {
+	EXTENSION = EXTENSION,
 	SnapshotState = SnapshotState,
 	addSerializer = addSerializer,
-	-- buildSnapshotResolver = buildSnapshotResolver,
+	buildSnapshotResolver = buildSnapshotResolver,
 	-- cleanup = cleanup,
 	getSerializers = getSerializers,
-	-- isSnapshotPath = isSnapshotPath,
+	isSnapshotPath = isSnapshotPath,
 	-- toMatchInlineSnapshot = toMatchInlineSnapshot,
 	toMatchSnapshot = toMatchSnapshot,
 	toThrowErrorMatchingSnapshot = toThrowErrorMatchingSnapshot,
@@ -456,3 +435,8 @@ return {
 	-- WORKSPACES FIXME: needs to be exported for consumption by workspace neighbors
 	plugins = require(CurrentModule.plugins),
 }
+
+export type JestSnapshot_SnapshotResolver = JestSnapshotResolver
+export type JestSnapshot_SnapshotStateType = SnapshotState
+
+return JestSnapshot

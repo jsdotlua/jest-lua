@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return function()
+return (function()
 	type unknown = any --[[ ROBLOX FIXME: adding `unknown` type alias to make it easier to use Luau unknown equivalent when supported ]]
 
 	local CurrentModule = script.Parent.Parent
@@ -17,7 +17,16 @@ return function()
 	local Object = LuauPolyfill.Object
 	local Symbol = LuauPolyfill.Symbol
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local itSKIP = JestGlobals.it.skip
+	local itFIXME = function(description: string, ...: any)
+		JestGlobals.it.todo(description)
+	end
 
 	local React = require(Packages.Dev.React)
 	type ReactElement = React.ReactElement
@@ -675,4 +684,6 @@ return function()
 		)
 	end)
 	-- ROBLOX deviation END
-end
+
+	return {}
+end)()

@@ -1,10 +1,15 @@
 -- ROBLOX NOTE: no upstream
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
 
 	local getParent = require(CurrentModule.utils).robloxGetParent
 
@@ -43,4 +48,6 @@ return function()
 			).toEqual("/Users/rng/jest-roblox/src/Submodules/expect/src/__tests__")
 		end)
 	end)
-end
+
+	return {}
+end)()

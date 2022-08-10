@@ -10,6 +10,7 @@ files = ["*", "!**/__tests__/**"]
 LuauPolyfill = { workspace = true }
 
 [dev_dependencies]
+JestGlobals = { path = "../jest-globals" }
 Expect = { path = "../expect" }
 Promise = { workspace = true }
 RobloxShared = { path = "../roblox-shared" }

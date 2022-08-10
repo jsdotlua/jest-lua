@@ -12,9 +12,16 @@
 -- ROBLOX deviation: use `unknown` type until Luau starts to support it
 type unknown = any
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
+
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local it = (JestGlobals.it :: any) :: Function
+	local beforeAll = (JestGlobals.beforeAll :: any) :: Function
+	local afterAll = (JestGlobals.afterAll :: any) :: Function
 
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Object = LuauPolyfill.Object
@@ -245,4 +252,6 @@ return function()
 		end).never.toThrow()
 	end)
 	-- ROBLOX deviation END
-end
+
+	return {}
+end)()

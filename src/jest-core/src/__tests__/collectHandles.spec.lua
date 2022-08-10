@@ -7,9 +7,15 @@
  *
  ]]
 
-return function()
+return (function()
+	local Packages = script.Parent.Parent.Parent
+
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
 	-- ROBLOX deviation START: collectHandles not ported yet
-	-- local Packages = script.Parent.Parent.Parent
 	-- local LuauPolyfill = require(Packages.LuauPolyfill)
 	-- local Array = LuauPolyfill.Array
 	-- local clearInterval = LuauPolyfill.clearInterval
@@ -121,4 +127,6 @@ return function()
 		end)
 	end)
 	-- ROBLOX deviation END
-end
+
+	return {}
+end)()

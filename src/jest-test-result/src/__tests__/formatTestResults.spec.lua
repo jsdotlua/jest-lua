@@ -5,11 +5,17 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  ]]
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+
 	local formatTestResults = require(CurrentModule.formatTestResults).default
 
 	local types = require(CurrentModule.types)
@@ -39,4 +45,6 @@ return function()
 			jestExpect(result.testResults[1].assertionResults[1].fullName).toEqual(assertion.fullName)
 		end)
 	end)
-end
+
+	return {}
+end)()

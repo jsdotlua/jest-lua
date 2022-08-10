@@ -7,11 +7,15 @@
  *
  ]]
 
-return function()
+return (function()
 	local Packages = script.Parent.Parent.Parent
 	local typesModule = require(Packages.JestTypes)
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local it = (JestGlobals.it :: any) :: Function
 
 	type Config_Argv = typesModule.Config_Argv
 	type Config_InitialOptions = typesModule.Config_InitialOptions
@@ -71,4 +75,6 @@ return function()
 		local argv = { config = '{"watch": false}', watch = true } :: Config_Argv
 		jestExpect(setFromArgv(options, argv)).toMatchObject({ watch = true })
 	end)
-end
+
+	return {}
+end)()

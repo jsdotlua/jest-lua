@@ -6,12 +6,19 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return function()
+return (function()
 	local CurrentModule = script.Parent
 	local SrcModule = CurrentModule.Parent
 	local Packages = SrcModule.Parent.Parent
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	require(script.Parent.setup)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local itSKIP = JestGlobals.it.skip
 
 	local typesModule = require(Packages.JestTypes)
 
@@ -32,11 +39,13 @@ return function()
 	aliasCircusIt()
 
 	describe("test/it error throwing", function()
-		it("it doesn't throw an error with valid arguments", function()
+		-- ROBLOX FIXME START: we can't run circusTest insinde of circus's it
+		itSKIP("it doesn't throw an error with valid arguments", function()
 			jestExpect(function()
 				circusIt("test1", function() end)
-			end).never.toThrowError()
+			end).never.toThrow()
 		end)
+		-- ROBLOX FIXME END
 
 		it("it throws error with missing callback function", function()
 			jestExpect(function()
@@ -63,11 +72,13 @@ return function()
 			end).toThrowError("Invalid second argument, test4b. It must be a callback function.")
 		end)
 
-		it("test doesn't throw an error with valid arguments", function()
+		-- ROBLOX FIXME START: we can't run circusTest insinde of circus's it
+		itSKIP("test doesn't throw an error with valid arguments", function()
 			jestExpect(function()
 				circusTest("test5", function() end)
-			end).never.toThrowError()
+			end).never.toThrow()
 		end)
+		-- ROBLOX FIXME END
 
 		it("test throws error with missing callback function", function()
 			jestExpect(function()
@@ -92,4 +103,6 @@ return function()
 			end).toThrowError("Invalid second argument, test8b. It must be a callback function.")
 		end)
 	end)
-end
+
+	return {}
+end)()

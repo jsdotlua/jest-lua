@@ -45,7 +45,7 @@ local function getNoTestFound(testRunData: TestRunData, globalConfig: Config_Glo
 		.. "\n"
 		.. "Run with `--passWithNoTests` to exit with code 0"
 		.. "\n"
-		.. ("In %s"):format(chalk.bold(globalConfig.rootDir))
+		.. ("In %s"):format(chalk.bold(tostring(globalConfig.rootDir)))
 		.. "\n"
 		.. ("  %s checked across %s. Run with `--verbose` for more details."):format(
 			(pluralize("file", testFiles, "s")),

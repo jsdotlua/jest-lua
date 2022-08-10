@@ -6,7 +6,7 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
@@ -16,7 +16,15 @@ return function()
 	-- ROBLOX deviation: omitted INVERTED_COLOR import because it doesn't have an
 	-- actual implementation yet
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local beforeAll = (JestGlobals.beforeAll :: any) :: Function
+	local afterAll = (JestGlobals.afterAll :: any) :: Function
+
 	local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 
 	local LuauPolyfill = require(Packages.LuauPolyfill)
@@ -289,4 +297,6 @@ return function()
 			end)
 		end)
 	end)
-end
+
+	return {}
+end)()

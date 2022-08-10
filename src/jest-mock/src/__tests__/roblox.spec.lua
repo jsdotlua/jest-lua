@@ -1,11 +1,16 @@
 -- ROBLOX NOTE: no upstream
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
 	local ModuleMocker = require(CurrentModule).ModuleMocker
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local it = (JestGlobals.it :: any) :: Function
+	local beforeEach = (JestGlobals.beforeEach :: any) :: Function
 
 	local moduleMocker
 	beforeEach(function()
@@ -44,4 +49,6 @@ return function()
 		jestExpect(mockFn()).toBe(true)
 		jestExpect(mock).toHaveLastReturnedWith(true)
 	end)
-end
+
+	return {}
+end)()

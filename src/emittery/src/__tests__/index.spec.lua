@@ -1,6 +1,6 @@
 -- ROBLOX upstream: https://github.com/sindresorhus/emittery/blob/v0.11.0/test/index.js
 
-return function()
+return (function()
 	local Packages = script.Parent.Parent.Parent
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Error = LuauPolyfill.Error
@@ -11,7 +11,14 @@ return function()
 	local TypeError = Error
 	type Object = LuauPolyfill.Object
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local it = (JestGlobals.it :: any) :: Function
+	local itFIXME = function(description: string, ...: any)
+		JestGlobals.it.todo(description)
+	end
 
 	-- ROBLOX deviation START: implement t object to limit deviations in tests
 	local function pEvent(emitter, eventName, _options: Object?)
@@ -1636,4 +1643,6 @@ return function()
 			t:notThrowsAsync(emitter:emit("test", data)):expect()
 		end)
 	end)
-end
+
+	return {}
+end)()

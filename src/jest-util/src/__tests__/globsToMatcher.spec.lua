@@ -7,10 +7,14 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local it = (JestGlobals.it :: any) :: Function
 
 	--[[
 		ROBLOX deviation: not using micromatch. Inlining results of calls to micromatch
@@ -170,4 +174,6 @@ return function()
 			false
 		)
 	end)
-end
+
+	return {}
+end)()

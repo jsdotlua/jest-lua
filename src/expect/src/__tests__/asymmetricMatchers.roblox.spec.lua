@@ -1,13 +1,18 @@
 --!nocheck
 -- ROBLOX NOTE: no upstream
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
 	local chalk = require(Packages.Dev.ChalkLua)
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
 
 	local AsymmetricMatchers = require(CurrentModule.asymmetricMatchers)
 	local stringContaining = AsymmetricMatchers.stringContaining
@@ -76,4 +81,6 @@ return function()
 		jestExpect(Color3.new()).toEqual(jestExpect.any("Color3"))
 		jestExpect(UDim2.new()).toEqual(jestExpect.any("UDim2"))
 	end)
-end
+
+	return {}
+end)()

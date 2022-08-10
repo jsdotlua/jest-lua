@@ -4,33 +4,39 @@
 	CallTracker file so we instead look to the source that the jest/jasmine2
 	is based off of, jasmine
 ]]
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent.Parent
 
-	local CallTracker = require(CurrentModule.CallTracker)
+	type Function = (...any) -> ...any
 
-	local equals = require(Packages.Dev.RobloxShared).expect.equals
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local expect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local itSKIP = JestGlobals.it.skip
+
+	local CallTracker = require(CurrentModule.CallTracker)
 
 	describe("CallTracker", function()
 		it("tracks that it was called when executed", function()
 			local callTracker = CallTracker.new()
 
-			expect(callTracker:any()).to.equal(false)
+			expect(callTracker:any()).toBe(false)
 
 			expect(callTracker:track())
 
-			expect(callTracker:any()).to.equal(true)
+			expect(callTracker:any()).toBe(true)
 		end)
 
 		it("tracks that number of times that it is executed", function()
 			local callTracker = CallTracker.new()
 
-			expect(callTracker:count()).to.equal(0)
+			expect(callTracker:count()).toEqual(0)
 
 			callTracker:track()
 
-			expect(callTracker:count()).to.equal(1)
+			expect(callTracker:count()).toEqual(1)
 		end)
 
 		it("tracks the params from each execution", function()
@@ -39,15 +45,15 @@ return function()
 			callTracker:track({ object = nil, args = {} })
 			callTracker:track({ object = {}, args = { 0, "foo" } })
 
-			expect(equals(callTracker:argsFor(0), {})).to.equal(true)
+			expect(callTracker:argsFor(0)).toEqual({})
 
-			expect(equals(callTracker:argsFor(1), { 0, "foo" })).to.equal(true)
+			expect(callTracker:argsFor(1)).toEqual({ 0, "foo" })
 		end)
 
 		it("returns any empty array when there was no call", function()
 			local callTracker = CallTracker.new()
 
-			expect(equals(callTracker:argsFor(0), {})).to.equal(true)
+			expect(callTracker:argsFor(0)).toEqual({})
 		end)
 
 		it("allows access for the arguments for all calls", function()
@@ -56,7 +62,7 @@ return function()
 			callTracker:track({ object = {}, args = {} })
 			callTracker:track({ object = {}, args = { 0, "foo" } })
 
-			expect(equals(callTracker:allArgs(), { {}, { 0, "foo" } })).to.equal(true)
+			expect(callTracker:allArgs()).toEqual({ {}, { 0, "foo" } })
 		end)
 
 		it("tracks the context and arguments for each call", function()
@@ -65,9 +71,9 @@ return function()
 			callTracker:track({ object = {}, args = {} })
 			callTracker:track({ object = {}, args = { 0, "foo" } })
 
-			expect(equals(callTracker:all()[1], { object = {}, args = {} })).to.equal(true)
+			expect(callTracker:all()[1]).toEqual({ object = {}, args = {} })
 
-			expect(equals(callTracker:all()[2], { object = {}, args = { 0, "foo" } })).to.equal(true)
+			expect(callTracker:all()[2]).toEqual({ object = {}, args = { 0, "foo" } })
 		end)
 
 		it("simplifies access to the arguments for the last (most recent) call", function()
@@ -76,16 +82,16 @@ return function()
 			callTracker:track()
 			callTracker:track({ object = {}, args = { 0, "foo" } })
 
-			expect(equals(callTracker:mostRecent(), {
+			expect(callTracker:mostRecent()).toEqual({
 				object = {},
 				args = { 0, "foo" },
-			})).to.equal(true)
+			})
 		end)
 
 		it("returns a useful falsy value when there isn't a last (most recent) call", function()
 			local callTracker = CallTracker.new()
 
-			expect(callTracker:first()).to.equal(nil)
+			expect(callTracker:first()).toBe(nil)
 		end)
 
 		it("allows the tracking to be reset", function()
@@ -95,11 +101,11 @@ return function()
 			callTracker:track({ object = {}, args = { 0, "foo" } })
 			callTracker:reset()
 
-			expect(callTracker:any()).to.equal(false)
-			expect(callTracker:count()).to.equal(0)
-			expect(equals(callTracker:argsFor(0), {})).to.equal(true)
-			expect(equals(callTracker:all(), {})).to.equal(true)
-			expect(callTracker:mostRecent()).to.equal(nil)
+			expect(callTracker:any()).toBe(false)
+			expect(callTracker:count()).toEqual(0)
+			expect(callTracker:argsFor(0)).toEqual({})
+			expect(callTracker:all()).toEqual({})
+			expect(callTracker:mostRecent()).toBeFalsy()
 		end)
 
 		-- ROBLOX deviation: test skipped because jest's implementation of CallTracker
@@ -138,4 +144,6 @@ return function()
 		]]
 		end)
 	end)
-end
+
+	return {}
+end)()

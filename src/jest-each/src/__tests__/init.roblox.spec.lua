@@ -6,9 +6,15 @@
  * LICENSE file in the root directory of this source tree.
  *
  ]]
-return function()
+return (function()
 	local Packages = script.Parent.Parent.Parent
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	require(script.Parent.setup)
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
 
 	local NIL = require(script.Parent.Parent.nilPlaceholder)
 
@@ -75,4 +81,6 @@ return function()
 			)
 		end).toThrowErrorMatchingSnapshot()
 	end)
-end
+
+	return {}
+end)()

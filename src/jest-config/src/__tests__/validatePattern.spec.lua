@@ -7,9 +7,14 @@
  *
  ]]
 
-return function()
+return (function()
 	local Packages = script.Parent.Parent.Parent
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
 
 	local validatePattern = require(script.Parent.Parent.validatePattern).default
 
@@ -34,4 +39,6 @@ return function()
 			jestExpect(isValid).toBeFalsy()
 		end)
 	end)
-end
+
+	return {}
+end)()

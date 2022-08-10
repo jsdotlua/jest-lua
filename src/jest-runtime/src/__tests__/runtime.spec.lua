@@ -1,10 +1,17 @@
 -- ROBLOX NOTE: no upstream
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local beforeAll = (JestGlobals.beforeAll :: any) :: Function
+	local afterAll = (JestGlobals.afterAll :: any) :: Function
 
 	local JestRuntime = require(CurrentModule)
 	-- ROBLOX TODO: using RuntimePrivate type until better approach is found
@@ -62,4 +69,6 @@ return function()
 			jestExpect(testFile1).never.toBe(testFile2)
 		end)
 	end)
-end
+
+	return {}
+end)()

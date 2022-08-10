@@ -7,7 +7,7 @@
  *
  ]]
 
-return function()
+return (function()
 	local Packages = script.Parent.Parent.Parent
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Array = LuauPolyfill.Array
@@ -20,6 +20,11 @@ return function()
 
 	local JestGlobals = require(Packages.Dev.JestGlobals)
 	-- local jest = JestGlobals.jest
+	type Function = (...any) -> ...any
+
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local beforeEach = (JestGlobals.beforeEach :: any) :: Function
 	local jestExpect = JestGlobals.expect
 
 	-- local path = require(Packages.path)
@@ -379,15 +384,15 @@ return function()
 			-- ROBLOX deviation END
 
 			it("finds tests with parentheses in their rootDir when using testMatch", function()
-				return Promise.resolve()
-					:andThen(function()
-						local config = normalize({
-							name = name,
-							rootDir = script.Parent["test_root_with_(parentheses)"],
-							testMatch = { "**/__testtests__/**/*" },
-							testRegex = nil,
-						}, {} :: Config_Argv):expect().options
-						return findMatchingTests(config):andThen(function(data)
+				return Promise.resolve():andThen(function()
+					local config = normalize({
+						name = name,
+						rootDir = script.Parent["test_root_with_(parentheses)"],
+						testMatch = { "**/__testtests__/**/*" },
+						testRegex = nil,
+					}, {} :: Config_Argv):expect().options
+					return findMatchingTests(config)
+						:andThen(function(data)
 							-- ROBLOX deviation START: use scripts to calculate relative path
 							local relPaths = Array.map(toScripts(data.tests), function(absPath)
 								return pathRelative(rootDir, absPath)
@@ -397,8 +402,8 @@ return function()
 								jestExpect.stringContaining(path.normalize("__testtests__/test.js")),
 							})
 						end)
-					end)
-					:expect()
+						:expect()
+				end)
 			end)
 
 			-- ROBLOX deviation START: only lua extensions are supported in Luau version
@@ -797,4 +802,6 @@ return function()
 		-- end)
 		-- ROBLOX deviation END
 	end)
-end
+
+	return {}
+end)()

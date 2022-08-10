@@ -6,14 +6,20 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return function()
+return (function()
 	local CurrentModule = script.Parent
 	local SrcModule = CurrentModule.Parent
 	local Packages = SrcModule.Parent.Parent
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Symbol = LuauPolyfill.Symbol
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	require(script.Parent.setup)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
 
 	local JestTypesModule = require(Packages.JestTypes)
 	type Circus_HookType = JestTypesModule.Circus_HookType
@@ -50,4 +56,6 @@ return function()
 		end)
 	end
 	-- ROBLOX deviation END
-end
+
+	return {}
+end)()

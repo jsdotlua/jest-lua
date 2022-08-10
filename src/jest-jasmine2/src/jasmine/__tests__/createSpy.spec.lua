@@ -6,17 +6,24 @@
 	is based off of, jasmine
 ]]
 
-return function()
+return (function()
+	local CurrentModule = script.Parent.Parent
+	local Packages = CurrentModule.Parent.Parent
+
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local expect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local itSKIP = JestGlobals.it.skip
+	local beforeEach = (JestGlobals.beforeEach :: any) :: Function
+
+	local createSpy = require(CurrentModule.createSpy)
+	local SpyStrategy = require(CurrentModule.SpyStrategy)
+	local CallTracker = require(CurrentModule.CallTracker)
+
 	describe("Spies", function()
-		local CurrentModule = script.Parent.Parent
-		local Modules = CurrentModule.Parent.Parent
-
-		local createSpy = require(CurrentModule.createSpy)
-		local SpyStrategy = require(CurrentModule.SpyStrategy)
-		local CallTracker = require(CurrentModule.CallTracker)
-
-		local jestExpect = require(Modules.Dev.Expect)
-
 		describe("createSpy", function()
 			local TestClass = {}
 			TestClass.prototype = {}
@@ -31,7 +38,7 @@ return function()
 			it("preserves the properties of the spied function", function()
 				local spy = createSpy("TestClass.prototype", TestClass.prototype.someFunction)
 
-				expect(spy.bob).to.equal("test")
+				expect(spy.bob).toBe("test")
 			end)
 
 			-- ROBLOX deviation: test skipped because we don't implement the
@@ -43,9 +50,9 @@ return function()
 
 					// IE doesn't do `.name`
 					if (fn.name === 'test') {
-						expect(spy.and.identity).toEqual('test');
+					expect(spy.and.identity).toEqual('test');
 					} else {
-						expect(spy.and.identity).toEqual('unknown');
+					expect(spy.and.identity).toEqual('unknown');
 					}
 				]]
 			end)
@@ -54,7 +61,7 @@ return function()
 				TestClass.prototype.someFunction["and"] = "turkey"
 				expect(function()
 					createSpy("TestClass.prototype", TestClass.prototype.someFunction)
-				end).to.throw(
+				end).toThrow(
 					"Jasmine spies would overwrite the 'and', 'andAlso' and 'calls' properties on the object being spied upon"
 				)
 
@@ -62,7 +69,7 @@ return function()
 				TestClass.prototype.someFunction["andAlso"] = "turkey"
 				expect(function()
 					createSpy("TestClass.prototype", TestClass.prototype.someFunction)
-				end).to.throw(
+				end).toThrow(
 					"Jasmine spies would overwrite the 'and', 'andAlso' and 'calls' properties on the object being spied upon"
 				)
 			end)
@@ -71,8 +78,8 @@ return function()
 			it("adds a spyStrategy and callTracker to the spy", function()
 				local spy = createSpy("TestClass.prototype", TestClass.prototype.someFunction)
 
-				jestExpect(spy["and"].__index).toEqual(SpyStrategy)
-				jestExpect(spy.calls.__index).toEqual(CallTracker)
+				expect(spy["and"].__index).toEqual(SpyStrategy)
+				expect(spy.calls.__index).toEqual(CallTracker)
 			end)
 
 			-- ROBLOX TODO: implement more tests when we have more files
@@ -80,4 +87,6 @@ return function()
 			-- spyOn function)
 		end)
 	end)
-end
+
+	return {}
+end)()

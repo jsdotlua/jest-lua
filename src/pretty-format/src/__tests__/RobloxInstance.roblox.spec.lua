@@ -1,6 +1,6 @@
 -- ROBLOX NOTE: no upstream
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
@@ -10,7 +10,12 @@ return function()
 
 	local InstanceSubset = require(Packages.RobloxShared).RobloxInstance.InstanceSubset
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
 
 	local prettyFormatResult = function(val: any)
 		return prettyFormat(val, {
@@ -158,4 +163,6 @@ return function()
 			)
 		end)
 	end)
-end
+
+	return {}
+end)()

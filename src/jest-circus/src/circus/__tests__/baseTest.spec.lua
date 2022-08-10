@@ -6,14 +6,19 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return function()
+return (function()
 	local CurrentModule = script.Parent
 	local SrcModule = CurrentModule.Parent
 	local Packages = SrcModule.Parent.Parent
 	local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).default
 	local runTest = require(script.Parent.Parent.__mocks__.testUtils).runTest
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	require(script.Parent.setup)
+	local jestExpect = JestGlobals.expect
+	local it = (JestGlobals.it :: any) :: Function
 
 	it("simple test", function()
 		local stdout = runTest([[
@@ -42,4 +47,6 @@ return function()
   		]]).stdout
 		jestExpect(wrap(stdout)).toMatchSnapshot()
 	end)
-end
+
+	return {}
+end)()

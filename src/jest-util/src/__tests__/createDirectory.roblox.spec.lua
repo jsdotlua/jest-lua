@@ -1,11 +1,18 @@
 -- ROBLOX NOTE: no upstream
 
-return function()
+return (function()
 	local CurrentModule = script.Parent
 	local SrcModule = CurrentModule.Parent
 	local Packages = SrcModule.Parent
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local beforeEach = (JestGlobals.beforeEach :: any) :: Function
+	local afterEach = (JestGlobals.afterEach :: any) :: Function
 
 	local createDirectory = require(SrcModule.createDirectory).default
 
@@ -53,4 +60,6 @@ return function()
 			end).never.toThrow()
 		end)
 	end)
-end
+
+	return {}
+end)()

@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  ]]
-return function()
+return (function()
 	local Packages = script.Parent.Parent.Parent
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Array = LuauPolyfill.Array
@@ -20,9 +20,12 @@ return function()
 
 	local HttpService = game:GetService("HttpService")
 
+	require(script.Parent.setup)
 	local JestGlobals = require(Packages.Dev.JestGlobals)
 	local jest = JestGlobals.jest
 	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
 
 	local pretty = require(Packages.PrettyFormat).default
 	local each = require(script.Parent.Parent).default()
@@ -643,4 +646,6 @@ return function()
 			end)
 		end)
 	end)
-end
+
+	return {}
+end)()

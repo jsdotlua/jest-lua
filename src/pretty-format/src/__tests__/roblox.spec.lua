@@ -1,10 +1,14 @@
 -- ROBLOX NOTE: no upstream
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local it = (JestGlobals.it :: any) :: Function
 
 	local prettyFormat = require(CurrentModule).default
 
@@ -25,4 +29,6 @@ return function()
 		jestExpect(prettyFormat(UDim2.new(1, 50, 0, 50))).toEqual("UDim2({1, 50}, {0, 50})")
 		jestExpect(prettyFormat(Vector3.new(10, 20, 30))).toEqual("Vector3(10, 20, 30)")
 	end)
-end
+
+	return {}
+end)()

@@ -6,12 +6,18 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return function()
+return (function()
 	local CurrentModule = script.Parent
 	local SrcModule = CurrentModule.Parent
 	local Packages = SrcModule.Parent.Parent
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	require(script.Parent.setup)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
 
 	local typesModule = require(Packages.JestTypes)
 
@@ -50,4 +56,6 @@ return function()
 			end).toThrowError("Todo must be called with only a description.")
 		end)
 	end)
-end
+
+	return {}
+end)()

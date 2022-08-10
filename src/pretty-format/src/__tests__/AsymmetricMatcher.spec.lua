@@ -6,7 +6,7 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
@@ -16,7 +16,13 @@ return function()
 
 	local AsymmetricMatcher = plugins.AsymmetricMatcher
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local beforeEach = (JestGlobals.beforeEach :: any) :: Function
 
 	-- ROBLOX deviation: don't need fnNameFor
 
@@ -36,7 +42,7 @@ return function()
 	do
 		it(string.format("supports any(%s)", type_), function()
 			local result = prettyFormat(jestExpect.any(type_), options)
-			expect(result).to.equal(string.format("Any<%s>", type_))
+			jestExpect(result).toBe(string.format("Any<%s>", type_))
 		end)
 
 		it(string.format("supports nested any(%s)", type_), function()
@@ -45,68 +51,68 @@ return function()
 					nested = jestExpect.any(type_),
 				},
 			}, options)
-			expect(result).to.equal(string.format('Table {\n  "test": Table {\n    "nested": Any<%s>,\n  },\n}', type_))
+			jestExpect(result).toBe(string.format('Table {\n  "test": Table {\n    "nested": Any<%s>,\n  },\n}', type_))
 		end)
 	end
 
 	it("anything()", function()
 		local result = prettyFormat(jestExpect.anything(), options)
-		expect(result).to.equal("Anything")
+		jestExpect(result).toEqual("Anything")
 	end)
 
 	it("arrayContaining()", function()
 		local result = prettyFormat(jestExpect.arrayContaining({ 1, 2 }), options)
-		expect(result).to.equal("ArrayContaining {\n" .. "  1,\n" .. "  2,\n" .. "}")
+		jestExpect(result).toBe("ArrayContaining {\n" .. "  1,\n" .. "  2,\n" .. "}")
 	end)
 
 	it("arrayNotContaining()", function()
 		local result = prettyFormat(jestExpect.never.arrayContaining({ 1, 2 }), options)
-		expect(result).to.equal("ArrayNotContaining {\n" .. "  1,\n" .. "  2,\n" .. "}")
+		jestExpect(result).toBe("ArrayNotContaining {\n" .. "  1,\n" .. "  2,\n" .. "}")
 	end)
 
 	it("objectContaining()", function()
 		local result = prettyFormat(jestExpect.objectContaining({ a = "test" }), options)
-		expect(result).to.equal("ObjectContaining {\n" .. '  "a": "test",\n' .. "}")
+		jestExpect(result).toBe("ObjectContaining {\n" .. '  "a": "test",\n' .. "}")
 	end)
 
 	it("objectNotContaining()", function()
 		local result = prettyFormat(jestExpect.never.objectContaining({ a = "test" }), options)
-		expect(result).to.equal("ObjectNotContaining {\n" .. '  "a": "test",\n' .. "}")
+		jestExpect(result).toBe("ObjectNotContaining {\n" .. '  "a": "test",\n' .. "}")
 	end)
 
 	it("stringContaining(string)", function()
 		local result = prettyFormat(jestExpect.stringContaining("jest"), options)
-		expect(result).to.equal('StringContaining "jest"')
+		jestExpect(result).toBe('StringContaining "jest"')
 	end)
 
 	-- ROBLOX deviation: custom test for stringContaining to test Lua patterns
 	it("stringContaining(string with magic characters)", function()
 		local result = prettyFormat(jestExpect.stringContaining("jest*"), options)
-		expect(result).to.equal('StringContaining "jest*"')
+		jestExpect(result).toBe('StringContaining "jest*"')
 	end)
 
 	it("never.stringContaining(string)", function()
 		local result = prettyFormat(jestExpect.never.stringContaining("jest"), options)
-		expect(result).to.equal('StringNotContaining "jest"')
+		jestExpect(result).toBe('StringNotContaining "jest"')
 	end)
 
 	-- ROBLOX deviation: we use Lua string patterns instead of regex
 	it("stringMatching(string)", function()
 		local result = prettyFormat(jestExpect.stringMatching("jest"), options)
-		expect(result).to.equal('StringMatching "jest"')
+		jestExpect(result).toBe('StringMatching "jest"')
 	end)
 
 	-- ROBLOX deviation: modified to remove alternations
 	it("stringMatching(pattern)", function()
 		local result = prettyFormat(jestExpect.stringMatching("(jest).*"), options)
-		expect(result).to.equal('StringMatching "(jest).*"')
+		jestExpect(result).toBe('StringMatching "(jest).*"')
 	end)
 
 	-- ROBLOX deviation: omitted, escapeRegex doesn't do anything since we don't have regex
 
 	it("stringNotMatching(string)", function()
 		local result = prettyFormat(jestExpect.never.stringMatching("jest"), options)
-		expect(result).to.equal('StringNotMatching "jest"')
+		jestExpect(result).toBe('StringNotMatching "jest"')
 	end)
 
 	it("supports multiple nested asymmetric matchers", function()
@@ -122,7 +128,7 @@ return function()
 				}),
 			},
 		}, options)
-		expect(result).to.equal(
+		jestExpect(result).toBe(
 			"Table {\n"
 				.. '  "test": Table {\n'
 				.. '    "nested": ObjectContaining {\n'
@@ -177,25 +183,25 @@ return function()
 			.. "}"
 
 		it("default implicit: 2 spaces", function()
-			expect(prettyFormat(val, options)).to.equal(result)
+			jestExpect(prettyFormat(val, options)).toBe(result)
 		end)
 		it("default explicit: 2 spaces", function()
 			options.indent = 2
-			expect(prettyFormat(val, options)).to.equal(result)
+			jestExpect(prettyFormat(val, options)).toBe(result)
 		end)
 
 		-- Tests assume that no strings in val contain multiple adjacent spaces!
 		it("non-default: 0 spaces", function()
 			options.indent = 0
-			expect(
+			jestExpect(
 				-- ROBLOX FIXME Luau: workaround bizarre false positive that doesn't repro in isolation: TypeError: Argument count mismatch. Function expects 1 argument, but 2 are specified
 				prettyFormat(val, options)
-			).to.equal(result:gsub("  ", "") :: any)
+			).toBe(result:gsub("  ", "") :: any)
 		end)
 		it("non-default: 4 spaces", function()
 			options.indent = 4
 			-- ROBLOX FIXME Luau: workaround bizarre false positive that doesn't repro in isolation: TypeError: Argument count mismatch. Function expects 1 argument, but 2 are specified
-			expect(prettyFormat(val, options)).to.equal(result:gsub("  ", "    ") :: any)
+			jestExpect(prettyFormat(val, options)).toBe(result:gsub("  ", "    ") :: any)
 		end)
 	end)
 
@@ -222,7 +228,7 @@ return function()
 				},
 			}
 			local result = prettyFormat(val, options)
-			expect(result).to.equal(
+			jestExpect(result).toBe(
 				"Table {\n"
 					.. '  "nested": Table {\n'
 					.. "    [ArrayContaining],\n"
@@ -260,7 +266,7 @@ return function()
 				}),
 			}
 			local result = prettyFormat(val, options)
-			expect(result).to.equal(
+			jestExpect(result).toBe(
 				"Table {\n"
 					.. "  ArrayContaining {\n"
 					.. '    "printed",\n'
@@ -289,7 +295,7 @@ return function()
 				}),
 			},
 		}, options)
-		expect(result).to.equal(
+		jestExpect(result).toBe(
 			"{"
 				.. '"test": {'
 				.. '"nested": ObjectContaining {'
@@ -304,4 +310,6 @@ return function()
 				.. "}"
 		)
 	end)
-end
+
+	return {}
+end)()

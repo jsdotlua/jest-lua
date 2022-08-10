@@ -23,7 +23,16 @@
 * limitations under the License.
 --]]
 
-return function()
+return (function()
+	local Packages = script.Parent.Parent.Parent
+
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local expect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+
 	local CleanupSemantic = require(script.Parent.Parent.CleanupSemantic)
 	local Diff = CleanupSemantic.Diff
 	local DIFF_DELETE = CleanupSemantic.DIFF_DELETE
@@ -59,46 +68,46 @@ return function()
 
 	describe("commonPrefix", function()
 		it("empty string", function()
-			expect(diff_commonPrefix("", "xyz")).to.equal(0)
+			expect(diff_commonPrefix("", "xyz")).toBe(0)
 		end)
 		it("null case", function()
-			expect(diff_commonPrefix("abc", "xyz")).to.equal(0)
+			expect(diff_commonPrefix("abc", "xyz")).toBe(0)
 		end)
 		it("non-null case", function()
-			expect(diff_commonPrefix("1234abcdef", "1234xyz")).to.equal(4)
+			expect(diff_commonPrefix("1234abcdef", "1234xyz")).toBe(4)
 		end)
 		it("whole case", function()
-			expect(diff_commonPrefix("1234", "1234xyz")).to.equal(4)
+			expect(diff_commonPrefix("1234", "1234xyz")).toBe(4)
 		end)
 	end)
 
 	describe("commonSuffix", function()
 		it("empty string", function()
-			expect(diff_commonSuffix("", "xyz")).to.equal(0)
+			expect(diff_commonSuffix("", "xyz")).toBe(0)
 		end)
 		it("null case", function()
-			expect(diff_commonSuffix("abc", "xyz")).to.equal(0)
+			expect(diff_commonSuffix("abc", "xyz")).toBe(0)
 		end)
 		it("non-null case", function()
-			expect(diff_commonSuffix("abcdef1234", "xyz1234")).to.equal(4)
+			expect(diff_commonSuffix("abcdef1234", "xyz1234")).toBe(4)
 		end)
 		it("whole case", function()
-			expect(diff_commonSuffix("1234", "xyz1234")).to.equal(4)
+			expect(diff_commonSuffix("1234", "xyz1234")).toBe(4)
 		end)
 	end)
 
 	describe("commonOverlap", function()
 		it("null case", function()
-			expect(diff_commonOverlap("", "abcd")).to.equal(0)
+			expect(diff_commonOverlap("", "abcd")).toBe(0)
 		end)
 		it("whole case", function()
-			expect(diff_commonOverlap("abc", "abcd")).to.equal(3)
+			expect(diff_commonOverlap("abc", "abcd")).toBe(3)
 		end)
 		it("no overlap", function()
-			expect(diff_commonOverlap("123456", "abcd")).to.equal(0)
+			expect(diff_commonOverlap("123456", "abcd")).toBe(0)
 		end)
 		it("overlap", function()
-			expect(diff_commonOverlap("123456xxx", "xxxabcd")).to.equal(3)
+			expect(diff_commonOverlap("123456xxx", "xxxabcd")).toBe(3)
 		end)
 	end)
 
@@ -106,7 +115,7 @@ return function()
 		it("null case", function()
 			local diffs = {}
 			diff_cleanupMerge(diffs)
-			expect(equivalent({}, diffs)).to.equal(true)
+			expect(equivalent({}, diffs)).toBe(true)
 		end)
 		it("no change case", function()
 			local diffs = {
@@ -120,7 +129,7 @@ return function()
 				Diff.new(DIFF_INSERT, "c"),
 			}
 			diff_cleanupMerge(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("merge equalities", function()
 			local diffs = {
@@ -132,7 +141,7 @@ return function()
 				Diff.new(DIFF_EQUAL, "abc"),
 			}
 			diff_cleanupMerge(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("merge deletions", function()
 			local diffs = {
@@ -144,7 +153,7 @@ return function()
 				Diff.new(DIFF_DELETE, "abc"),
 			}
 			diff_cleanupMerge(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("merge insertions", function()
 			local diffs = {
@@ -156,7 +165,7 @@ return function()
 				Diff.new(DIFF_INSERT, "abc"),
 			}
 			diff_cleanupMerge(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("merge interweave", function()
 			local diffs = {
@@ -173,7 +182,7 @@ return function()
 				Diff.new(DIFF_EQUAL, "ef"),
 			}
 			diff_cleanupMerge(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("prefix and suffix detection", function()
 			local diffs = {
@@ -188,7 +197,7 @@ return function()
 				Diff.new(DIFF_EQUAL, "c"),
 			}
 			diff_cleanupMerge(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("prefix and suffix detection with equalities", function()
 			local diffs = {
@@ -205,7 +214,7 @@ return function()
 				Diff.new(DIFF_EQUAL, "cy"),
 			}
 			diff_cleanupMerge(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("slide edit left", function()
 			local diffs = {
@@ -218,7 +227,7 @@ return function()
 				Diff.new(DIFF_EQUAL, "ac"),
 			}
 			diff_cleanupMerge(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("slide edit right", function()
 			local diffs = {
@@ -231,7 +240,7 @@ return function()
 				Diff.new(DIFF_INSERT, "ba"),
 			}
 			diff_cleanupMerge(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("slide edit left recursive", function()
 			local diffs = {
@@ -246,7 +255,7 @@ return function()
 				Diff.new(DIFF_EQUAL, "acx"),
 			}
 			diff_cleanupMerge(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("slide edit right recursive", function()
 			local diffs = {
@@ -261,7 +270,7 @@ return function()
 				Diff.new(DIFF_DELETE, "cba"),
 			}
 			diff_cleanupMerge(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("empty merge", function()
 			local diffs = {
@@ -274,7 +283,7 @@ return function()
 				Diff.new(DIFF_EQUAL, "bc"),
 			}
 			diff_cleanupMerge(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("empty equality", function()
 			local diffs = {
@@ -287,7 +296,7 @@ return function()
 				Diff.new(DIFF_EQUAL, "b"),
 			}
 			diff_cleanupMerge(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 	end)
 
@@ -295,7 +304,7 @@ return function()
 		it("null case", function()
 			local diffs = {}
 			diff_cleanupSemanticLossless(diffs)
-			expect(equivalent({}, diffs)).to.equal(true)
+			expect(equivalent({}, diffs)).toBe(true)
 		end)
 		it("blank lines", function()
 			local diffs = {
@@ -309,7 +318,7 @@ return function()
 				Diff.new(DIFF_EQUAL, "BBB\r\nEEE"),
 			}
 			diff_cleanupSemanticLossless(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("line boundaries", function()
 			local diffs = {
@@ -323,7 +332,7 @@ return function()
 				Diff.new(DIFF_EQUAL, "BBB EEE"),
 			}
 			diff_cleanupSemanticLossless(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("word boundaries", function()
 			local diffs = {
@@ -337,7 +346,7 @@ return function()
 				Diff.new(DIFF_EQUAL, "cat."),
 			}
 			diff_cleanupSemanticLossless(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("alphanumeric boundaries", function()
 			local diffs = {
@@ -351,7 +360,7 @@ return function()
 				Diff.new(DIFF_EQUAL, "cat."),
 			}
 			diff_cleanupSemanticLossless(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("hitting the start", function()
 			local diffs = {
@@ -364,7 +373,7 @@ return function()
 				Diff.new(DIFF_EQUAL, "aax"),
 			}
 			diff_cleanupSemanticLossless(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("hitting the end", function()
 			local diffs = {
@@ -377,7 +386,7 @@ return function()
 				Diff.new(DIFF_DELETE, "a"),
 			}
 			diff_cleanupSemanticLossless(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("sentence boundaries", function()
 			local diffs = {
@@ -391,7 +400,7 @@ return function()
 				Diff.new(DIFF_EQUAL, " The yyy."),
 			}
 			diff_cleanupSemanticLossless(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 	end)
 
@@ -399,7 +408,7 @@ return function()
 		it("null case", function()
 			local diffs = {}
 			cleanupSemantic(diffs)
-			expect(equivalent({}, diffs)).to.equal(true)
+			expect(equivalent({}, diffs)).toBe(true)
 		end)
 		it("no elimination #1", function()
 			local diffs = {
@@ -415,7 +424,7 @@ return function()
 				Diff.new(DIFF_DELETE, "e"),
 			}
 			cleanupSemantic(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("no elimination #2", function()
 			local diffs = {
@@ -431,7 +440,7 @@ return function()
 				Diff.new(DIFF_DELETE, "wxyz"),
 			}
 			cleanupSemantic(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("simple elimination", function()
 			local diffs = {
@@ -444,7 +453,7 @@ return function()
 				Diff.new(DIFF_INSERT, "b"),
 			}
 			cleanupSemantic(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("backpass elimination", function()
 			local diffs = {
@@ -459,7 +468,7 @@ return function()
 				Diff.new(DIFF_INSERT, "cdfg"),
 			}
 			cleanupSemantic(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("multiple elimination", function()
 			local diffs = {
@@ -478,7 +487,7 @@ return function()
 				Diff.new(DIFF_INSERT, "1A2_1A2"),
 			}
 			cleanupSemantic(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("word boundaries", function()
 			local diffs = {
@@ -492,7 +501,7 @@ return function()
 				Diff.new(DIFF_EQUAL, "cat."),
 			}
 			cleanupSemantic(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("no overlap elimination", function()
 			local diffs = {
@@ -504,7 +513,7 @@ return function()
 				Diff.new(DIFF_INSERT, "xxdef"),
 			}
 			cleanupSemantic(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("overlap elimination", function()
 			local diffs = {
@@ -517,7 +526,7 @@ return function()
 				Diff.new(DIFF_INSERT, "def"),
 			}
 			cleanupSemantic(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("reverse overlap elimination", function()
 			local diffs = {
@@ -530,7 +539,7 @@ return function()
 				Diff.new(DIFF_DELETE, "abc"),
 			}
 			cleanupSemantic(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 		it("two overlap elimination", function()
 			local diffs = {
@@ -550,7 +559,9 @@ return function()
 				Diff.new(DIFF_INSERT, "BC"),
 			}
 			cleanupSemantic(diffs)
-			expect(equivalent(expected, diffs)).to.equal(true)
+			expect(equivalent(expected, diffs)).toBe(true)
 		end)
 	end)
-end
+
+	return {}
+end)()

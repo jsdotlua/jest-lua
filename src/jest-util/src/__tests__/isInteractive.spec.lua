@@ -7,12 +7,18 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 	local isInteractive = require(CurrentModule.isInteractive).default
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+
 	-- ROBLOX deviation START: no equivalent in Lua. Always returning false
 	describe("isInteractive", function()
 		it("Returns false", function()
@@ -37,7 +43,7 @@ return function()
 	-- 	process.stdout.isTTY = true
 	-- 	process.env.TERM = "xterm-256color"
 	-- 	local isInteractive = require("../isInteractive").default
-	-- 	expect(isInteractive).toBe(true)
+	-- jestExpect(isInteractive).toBe(true)
 	-- end)
 	-- it("Returns false when running on a non-interactive environment", function()
 	-- 	local isInteractive
@@ -48,7 +54,7 @@ return function()
 	-- 	process.stdout.isTTY = nil
 	-- 	process.env.TERM = "xterm-256color"
 	-- 	isInteractive = require("../isInteractive").default
-	-- 	expect(isInteractive).toBe(expectedResult) -- Test with isCI being false and isTTY false
+	-- jestExpect(isInteractive).toBe(expectedResult) -- Test with isCI being false and isTTY false
 	-- 	jest:resetModules()
 	-- 	jest:doMock("ci-info", function()
 	-- 		return { isCI = false }
@@ -56,7 +62,7 @@ return function()
 	-- 	process.stdout.isTTY = nil
 	-- 	process.env.TERM = "xterm-256color"
 	-- 	isInteractive = require("../isInteractive").default
-	-- 	expect(isInteractive).toBe(expectedResult) -- Test with isCI being true and isTTY true
+	-- jestExpect(isInteractive).toBe(expectedResult) -- Test with isCI being true and isTTY true
 	-- 	jest:resetModules()
 	-- 	jest:doMock("ci-info", function()
 	-- 		return { isCI = true }
@@ -64,7 +70,7 @@ return function()
 	-- 	process.stdout.isTTY = true
 	-- 	process.env.TERM = "xterm-256color"
 	-- 	isInteractive = require("../isInteractive").default
-	-- 	expect(isInteractive).toBe(expectedResult) -- Test with dumb terminal
+	-- jestExpect(isInteractive).toBe(expectedResult) -- Test with dumb terminal
 	-- 	jest:resetModules()
 	-- 	jest:doMock("ci-info", function()
 	-- 		return { isCI = false }
@@ -72,8 +78,10 @@ return function()
 	-- 	process.stdout.isTTY = nil
 	-- 	process.env.TERM = "dumb"
 	-- 	isInteractive = require("../isInteractive").default
-	-- 	expect(isInteractive).toBe(expectedResult)
+	-- jestExpect(isInteractive).toBe(expectedResult)
 	-- end)
 
 	-- ROBLOX deviation END
-end
+
+	return {}
+end)()

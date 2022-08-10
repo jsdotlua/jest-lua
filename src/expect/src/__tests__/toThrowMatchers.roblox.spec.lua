@@ -1,20 +1,28 @@
 -- ROBLOX NOTE: no upstream
 
-return function()
+return (function()
+	local CurrentModule = script.Parent.Parent
+	local Packages = CurrentModule.Parent
+
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local it = (JestGlobals.it :: any) :: Function
+	local describe = (JestGlobals.describe :: any) :: Function
+	local beforeAll = (JestGlobals.beforeAll :: any) :: Function
+	local afterAll = (JestGlobals.afterAll :: any) :: Function
+
+	local LuauPolyfill = require(Packages.LuauPolyfill)
+	local Error = LuauPolyfill.Error
+	local extends = LuauPolyfill.extends
+
+	local AssertionError = LuauPolyfill.AssertionError
+
+	local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
+
+	local jestExpect = require(CurrentModule)
+
 	describe("Lua toThrowMatcher tests", function()
-		local CurrentModule = script.Parent.Parent
-		local Packages = CurrentModule.Parent
-
-		local LuauPolyfill = require(Packages.LuauPolyfill)
-		local Error = LuauPolyfill.Error
-		local extends = LuauPolyfill.extends
-
-		local AssertionError = LuauPolyfill.AssertionError
-
-		local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
-
-		local jestExpect = require(CurrentModule)
-
 		beforeAll(function()
 			jestExpect.addSnapshotSerializer(alignedAnsiStyleSerializer)
 		end)
@@ -169,4 +177,6 @@ return function()
 			end).toThrow("I am erroring!")
 		end)
 	end)
-end
+
+	return {}
+end)()

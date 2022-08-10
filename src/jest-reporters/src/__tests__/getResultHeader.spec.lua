@@ -6,11 +6,16 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local it = (JestGlobals.it :: any) :: Function
+
 	local makeGlobalConfig = require(Packages.TestUtils).makeGlobalConfig
 	local testResultModule = require(Packages.JestTestResult)
 	type TestResult = testResultModule.TestResult
@@ -64,4 +69,6 @@ return function()
 		local result = getResultHeader((testResultFast :: any) :: TestResult, globalConfig)
 		jestExpect(result).never.toContain(("%s s"):format(tostring(testTime / 1000)))
 	end)
-end
+
+	return {}
+end)()

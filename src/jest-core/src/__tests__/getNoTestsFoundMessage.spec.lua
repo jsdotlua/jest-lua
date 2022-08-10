@@ -6,13 +6,21 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return function()
+return (function()
 	local Packages = script.Parent.Parent.Parent
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Object = LuauPolyfill.Object
 	local getNoTestsFoundMessage = require(script.Parent.Parent.getNoTestsFoundMessage).default
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	-- local itSKIP = JestGlobals.it.skip
+	local beforeAll = (JestGlobals.beforeAll :: any) :: Function
+	local afterAll = (JestGlobals.afterAll :: any) :: Function
+	local jestExpect = JestGlobals.expect
 	-- ROBLOX deviation START: this should be added in global jest config
 	local ConvertAnsi = require(Packages.PrettyFormat).plugins.ConvertAnsi
 	local JestSnapshotSerializerRaw = require(Packages.Dev.JestSnapshotSerializerRaw)
@@ -62,4 +70,6 @@ return function()
 			jestExpect(getNoTestsFoundMessage({}, config)).toMatchSnapshot()
 		end)
 	end)
-end
+
+	return {}
+end)()

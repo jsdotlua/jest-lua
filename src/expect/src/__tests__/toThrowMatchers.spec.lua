@@ -7,9 +7,19 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
+
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local describe = (JestGlobals.describe :: any) :: Function
+	local describeSKIP = (JestGlobals.describe.skip :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local itSKIP = JestGlobals.it.skip
+	local beforeAll = (JestGlobals.beforeAll :: any) :: Function
+	local afterAll = (JestGlobals.afterAll :: any) :: Function
 
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Error = LuauPolyfill.Error
@@ -470,8 +480,8 @@ return function()
 			-- ROBLOX deviation: we skip the entire promise/async block for now since
 			-- we don't have promise/async functionality for matchers or
 			-- throwingMatchers in current release
-			describe("promise/async throws if Error-like object is returned", function()
-				SKIP()
+			describeSKIP("promise/async throws if Error-like object is returned", function()
+				-- SKIP()
 			end)
 
 			describe("expected is undefined", function()
@@ -497,4 +507,6 @@ return function()
 			end)
 		end)
 	end
-end
+
+	return {}
+end)()

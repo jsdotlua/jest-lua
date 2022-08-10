@@ -6,13 +6,20 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Object = LuauPolyfill.Object
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local beforeAll = (JestGlobals.beforeAll :: any) :: Function
+	local afterAll = (JestGlobals.afterAll :: any) :: Function
 
 	local DIFF_DELETE = require(CurrentModule.CleanupSemantic).DIFF_DELETE
 	local DIFF_EQUAL = require(CurrentModule.CleanupSemantic).DIFF_EQUAL
@@ -142,4 +149,6 @@ return function()
 			jestExpect(joinAlignedDiffsNoExpand(diffsCommonStartEnd, options)).toMatchSnapshot()
 		end)
 	end)
-end
+
+	return {}
+end)()

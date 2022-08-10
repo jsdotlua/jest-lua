@@ -1,10 +1,16 @@
 -- ROBLOX NOTE: no upstream
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+
 	local makeEmptyAggregatedTestResult = require(CurrentModule.helpers).makeEmptyAggregatedTestResult
 	local buildFailureTestResult = require(CurrentModule.helpers).buildFailureTestResult
 	local createEmptyTestResult = require(CurrentModule.helpers).createEmptyTestResult
@@ -130,4 +136,6 @@ return function()
 			jestExpect(aggregatedTestResult.numPassedTests).toEqual(2)
 		end)
 	end)
-end
+
+	return {}
+end)()

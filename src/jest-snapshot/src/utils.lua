@@ -127,7 +127,9 @@ local function keyToTestName(key: string): string
 end
 
 local function getSnapshotData(
-	snapshotPath: ConfigPath,
+	-- ROBLOX deviation START: using ModuleScript instead of Config_Path
+	snapshotPath: ModuleScript?,
+	-- ROBLOX deviation END
 	update: ConfigSnapshotUpdateState
 ): { data: SnapshotData, dirty: boolean }
 	local data = {}

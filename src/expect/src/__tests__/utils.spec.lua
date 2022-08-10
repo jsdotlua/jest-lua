@@ -7,9 +7,17 @@
 --  *
 --  */
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
+
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local expect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local test = (JestGlobals.test :: any) :: Function
+	local testSKIP = JestGlobals.test.skip
 
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Set = LuauPolyfill.Set
@@ -22,8 +30,6 @@ return function()
 	local iterableEquality = require(CurrentModule.utils).iterableEquality
 	local subsetEquality = require(CurrentModule.utils).subsetEquality
 
-	local equals = require(CurrentModule.jasmineUtils).equals
-
 	type Array<T> = LuauPolyfill.Array<T>
 
 	type GetPath = {
@@ -34,90 +40,91 @@ return function()
 	}
 
 	describe("getPath()", function()
-		it("property exists", function()
-			expect(equals(getPath({ a = { b = { c = 5 } } }, "a.b.c"), {
+		test("property exists", function()
+			expect(getPath({ a = { b = { c = 5 } } }, "a.b.c")).toEqual({
 				hasEndProp = true,
 				lastTraversedObject = { c = 5 },
 				traversedPath = { "a", "b", "c" },
 				value = 5,
-			})).to.equal(true)
+			})
 
-			expect(equals(getPath({ a = { b = { c = { d = 1 } } } }, "a.b.c.d"), {
+			expect(getPath({ a = { b = { c = { d = 1 } } } }, "a.b.c.d")).toEqual({
 				hasEndProp = true,
 				lastTraversedObject = { d = 1 },
 				traversedPath = { "a", "b", "c", "d" },
 				value = 1,
-			})).to.equal(true)
+			})
 		end)
 
-		it("property doesnt exist", function()
-			expect(equals(getPath({ a = { b = {} } }, "a.b.c"), {
+		test("property doesnt exist", function()
+			expect(getPath({ a = { b = {} } }, "a.b.c")).toEqual({
 				hasEndProp = false,
 				lastTraversedObject = {},
 				traversedPath = { "a", "b" },
 				value = nil,
-			})).to.equal(true)
+			})
 		end)
 
-		it("property exist but undefined", function()
-			expect(equals(getPath({ a = { b = { c = "undefined" } } }, "a.b.c"), {
+		test("property exist but undefined", function()
+			expect(getPath({ a = { b = { c = "undefined" } } }, "a.b.c")).toEqual({
 				hasEndProp = true,
 				lastTraversedObject = { c = "undefined" },
 				traversedPath = { "a", "b", "c" },
 				value = "undefined",
-			})).to.equal(true)
+			})
 		end)
 
-		-- ROBLOX deviation: modified test because we don't have built in
-		it("property is a getter on class instance", function()
+		-- ROBLOX deviation START: modified test because we don't have built in getters
+		test("property is a getter on class instance", function()
 			local A = {}
 			A.a = "a"
 			A.b = { c = "c" }
 
-			expect(equals(getPath(A, "a"), {
+			expect(getPath(A, "a")).toEqual({
 				hasEndProp = true,
 				lastTraversedObject = { a = "a", b = { c = "c" } },
 				traversedPath = { "a" },
 				value = "a",
-			})).to.equal(true)
+			})
 
-			expect(equals(getPath(A, "b.c"), {
+			expect(getPath(A, "b.c")).toEqual({
 				hasEndProp = true,
 				lastTraversedObject = { c = "c" },
 				traversedPath = { "b", "c" },
 				value = "c",
-			})).to.equal(true)
+			})
 		end)
+		-- ROBLOX deviation END
 
-		it("property is inherited", function()
+		test("property is inherited", function()
 			local A = {}
 			local prototypeA = { a = "a" }
 			setmetatable(A, { __index = prototypeA })
 
-			expect(equals(getPath(A, "a"), {
+			expect(getPath(A, "a")).toEqual({
 				hasEndProp = true,
 				lastTraversedObject = A,
 				traversedPath = { "a" },
 				value = "a",
-			})).to.equal(true)
+			})
 		end)
 
-		it("path breaks", function()
-			expect(equals(getPath({ a = {} }, "a.b.c"), {
+		test("path breaks", function()
+			expect(getPath({ a = {} }, "a.b.c")).toEqual({
 				hasEndProp = false,
 				lastTraversedObject = {},
 				traversedPath = { "a" },
 				value = nil,
-			})).to.equal(true)
+			})
 		end)
 
-		it("empty object at the end", function()
-			expect(equals(getPath({ a = { b = { c = {} } } }, "a.b.c.d"), {
+		test("empty object at the end", function()
+			expect(getPath({ a = { b = { c = {} } } }, "a.b.c.d")).toEqual({
 				hasEndProp = false,
 				lastTraversedObject = {},
 				traversedPath = { "a", "b", "c" },
 				value = nil,
-			})).to.equal(true)
+			})
 		end)
 	end)
 
@@ -139,8 +146,8 @@ return function()
 			},
 		}
 
-		for key, value in ipairs(fixtures) do
-			it(
+		for _, value in fixtures do
+			test(
 				string.format(
 					"expect(getObjectSubset(%s, %s)).toEqual(%s)",
 					stringify(value[1]),
@@ -148,50 +155,55 @@ return function()
 					stringify(value[3])
 				),
 				function()
-					expect(equals(getObjectSubset(value[1], value[2]), value[3])).to.equal(true)
+					expect(getObjectSubset(value[1], value[2])).toEqual(value[3])
 				end
 			)
 		end
 
 		describe("returns the object instance if the subset has no extra properties", function()
-			it("Date", function()
+			test("Date", function()
 				local object = DateTime.fromUniversalTime(2015, 11, 30)
 				local subset = DateTime.fromUniversalTime(2016, 12, 30)
 
-				expect(getObjectSubset(object, subset)).to.equal(object)
+				expect(getObjectSubset(object, subset)).toBe(object)
 			end)
 		end)
 
 		describe("returns the subset instance if its property values are equal", function()
-			it("Object", function()
+			test("Object", function()
 				local object = { key0 = "zero", key1 = "one", key2 = "two" }
 				local subset = { key0 = "zero", key2 = "two" }
 
-				expect(equals(getObjectSubset(object, subset), subset)).to.equal(true)
+				expect(getObjectSubset(object, subset)).toBe(subset)
+				-- ROBLOX FIXME END
 			end)
 		end)
 
 		describe("Uint8Array", function()
-			local equalObject = { 0, 0, 0 }
+			local equalObject = { [1] = 0, [2] = 0, [3] = 0 }
 			local typedArray = { 0, 0, 0 }
 
-			it("expected", function()
+			test("expected", function()
 				local object = equalObject
 				local subset = typedArray
 
-				expect(equals(getObjectSubset(object, subset), subset)).to.equal(true)
+				-- ROBLOX FIXME START: using toEqual instead of toBe
+				expect(getObjectSubset(object, subset)).toEqual(subset)
+				-- ROBLOX FIXME END
 			end)
 
-			it("received", function()
+			test("received", function()
 				local object = typedArray
 				local subset = equalObject
 
-				expect(equals(getObjectSubset(object, subset), subset)).to.equal(true)
+				-- ROBLOX FIXME START: using toEqual instead of toBe
+				expect(getObjectSubset(object, subset)).toEqual(subset)
+				-- ROBLOX FIXME END
 			end)
 		end)
 
 		describe("calculating subsets of objects with circular references", function()
-			it("simple circular references", function()
+			test("simple circular references", function()
 				type CircularObj = { a: string?, b: string?, ref: any? }
 
 				local nonCircularObj = { a = "world", b = "something" }
@@ -208,26 +220,26 @@ return function()
 				local nonCircularRef: CircularObj = { b = "something" }
 				nonCircularRef.ref = {}
 
-				expect(equals(getObjectSubset(circularObjA, nonCircularObj), {
+				expect(getObjectSubset(circularObjA, nonCircularObj)).toEqual({
 					a = "hello",
-				})).to.equal(true)
+				})
 
-				expect(equals(getObjectSubset(nonCircularObj, circularObjA), {
+				expect(getObjectSubset(nonCircularObj, circularObjA)).toEqual({
 					a = "world",
-				})).to.equal(true)
+				})
 
-				expect(equals(getObjectSubset(circularObjB, circularObjA), circularObjB)).to.equal(true)
+				expect(getObjectSubset(circularObjB, circularObjA)).toEqual(circularObjB)
 
-				expect(equals(getObjectSubset(primitiveInsteadOfRef, circularObjA), {
+				expect(getObjectSubset(primitiveInsteadOfRef, circularObjA)).toEqual({
 					ref = "not a ref",
-				})).to.equal(true)
+				})
 
-				expect(equals(getObjectSubset(nonCircularRef, circularObjA), {
+				expect(getObjectSubset(nonCircularRef, circularObjA)).toEqual({
 					ref = {},
-				})).to.equal(true)
+				})
 			end)
 
-			it("transitive circular references", function()
+			test("transitive circular references", function()
 				type CircularObj = { a: string?, nestedObj: any? }
 
 				local nonCircularObj = { a = "world", b = "something" }
@@ -244,70 +256,71 @@ return function()
 				local nonCircularRef: CircularObj = {}
 				nonCircularRef.nestedObj = { otherProp = {} }
 
-				expect(equals(getObjectSubset(transitiveCircularObjA, nonCircularObj), {
+				expect(getObjectSubset(transitiveCircularObjA, nonCircularObj)).toEqual({
 					a = "hello",
-				})).to.equal(true)
+				})
 
-				expect(equals(getObjectSubset(nonCircularObj, transitiveCircularObjA), {
+				expect(getObjectSubset(nonCircularObj, transitiveCircularObjA)).toEqual({
 					a = "world",
-				})).to.equal(true)
+				})
 
-				expect(equals(getObjectSubset(transitiveCircularObjB, transitiveCircularObjA), transitiveCircularObjB)).to.equal(
-					true
-				)
+				expect(getObjectSubset(transitiveCircularObjB, transitiveCircularObjA)).toEqual(transitiveCircularObjB)
 
-				expect(equals(getObjectSubset(primitiveInsteadOfRef, transitiveCircularObjA), {
+				expect(getObjectSubset(primitiveInsteadOfRef, transitiveCircularObjA)).toEqual({
 					nestedObj = { otherProp = "not the parent ref" },
-				})).to.equal(true)
+				})
 
-				expect(equals(getObjectSubset(nonCircularRef, transitiveCircularObjA), {
+				expect(getObjectSubset(nonCircularRef, transitiveCircularObjA)).toEqual({
 					nestedObj = { otherProp = {} },
-				})).to.equal(true)
+				})
 			end)
 		end)
 	end)
 
 	describe("emptyObject()", function()
-		it("matches an empty object", function()
-			expect(emptyObject({})).to.equal(true)
+		test("matches an empty object", function()
+			expect(emptyObject({})).toBe(true)
 		end)
 
-		it("does not match an object with keys", function()
-			expect(emptyObject({ foo = "undefined" })).to.equal(false)
+		test("does not match an object with keys", function()
+			expect(emptyObject({ foo = "undefined" })).toBe(false)
 		end)
 
-		it("does not match a non-object", function()
-			expect(emptyObject(nil)).to.equal(false)
-			expect(emptyObject(34)).to.equal(false)
+		test("does not match a non-object", function()
+			expect(emptyObject(nil)).toBe(false)
+			expect(emptyObject(34)).toBe(false)
 		end)
 	end)
 
 	describe("subsetEquality()", function()
-		it("matching object returns true", function()
-			expect(subsetEquality({ foo = "bar" }, { foo = "bar" })).to.equal(true)
+		test("matching object returns true", function()
+			expect(subsetEquality({ foo = "bar" }, { foo = "bar" })).toBe(true)
 		end)
 
-		it("object without keys is undefined", function()
-			expect(subsetEquality("foo", "bar")).to.equal(nil)
+		test("object without keys is undefined", function()
+			expect(subsetEquality("foo", "bar")).toBe(nil)
 		end)
 
-		it("objects to not match", function()
-			expect(subsetEquality({ foo = "bar" }, { foo = "baz" })).to.equal(false)
-			expect(subsetEquality("foo", { foo = "baz" })).to.equal(false)
+		test("objects to not match", function()
+			expect(subsetEquality({ foo = "bar" }, { foo = "baz" })).toBe(false)
+			expect(subsetEquality("foo", { foo = "baz" })).toBe(false)
 		end)
 
-		it("null does not return errors", function()
-			expect(subsetEquality(nil, { foo = "bar" })).to.equal(false)
+		test("null does not return errors", function()
+			expect(subsetEquality(nil, { foo = "bar" })).never.toBeTruthy()
 		end)
 
-		-- ROBLOX deviation: skipped test because it would be identical to the one
-		-- directly above since we don't have a distinct undefined type
-		itSKIP("undefined does not return errors", function()
-			expect(not not subsetEquality(nil, { foo = "bar" })).to.equal(false)
+		--[[
+			ROBLOX NOTE:
+			test is identical to the one directly above
+			since we don't have a distinct undefined type
+		]]
+		test("undefined does not return errors", function()
+			expect(subsetEquality(nil, { foo = "bar" })).never.toBeTruthy()
 		end)
 
 		describe("matching subsets with circular references", function()
-			it("simple circular references", function()
+			test("simple circular references", function()
 				type CircularObj = { a: string?, ref: any? }
 
 				local circularObjA1: CircularObj = { a = "hello" }
@@ -322,14 +335,14 @@ return function()
 				local primitiveInsteadOfRef: CircularObj = {}
 				primitiveInsteadOfRef.ref = "not a ref"
 
-				expect(subsetEquality(circularObjA1, {})).to.equal(true)
-				expect(subsetEquality({}, circularObjA1)).to.equal(false)
-				expect(subsetEquality(circularObjA2, circularObjA1)).to.equal(true)
-				expect(subsetEquality(circularObjB, circularObjA1)).to.equal(false)
-				expect(subsetEquality(primitiveInsteadOfRef, circularObjA1)).to.equal(false)
+				expect(subsetEquality(circularObjA1, {})).toBe(true)
+				expect(subsetEquality({}, circularObjA1)).toBe(false)
+				expect(subsetEquality(circularObjA2, circularObjA1)).toBe(true)
+				expect(subsetEquality(circularObjB, circularObjA1)).toBe(false)
+				expect(subsetEquality(primitiveInsteadOfRef, circularObjA1)).toBe(false)
 			end)
 
-			it("referenced object on same level should not regarded as circular reference", function()
+			test("referenced object on same level should not regarded as circular reference", function()
 				local referencedObj = { abc = "def" }
 				local object = {
 					a = { abc = "def" },
@@ -340,10 +353,10 @@ return function()
 					b = referencedObj,
 				}
 
-				expect(subsetEquality(object, thisIsNotCircular)).to.equal(true)
+				expect(subsetEquality(object, thisIsNotCircular)).toBeTruthy()
 			end)
 
-			it("transitive circular references", function()
+			test("transitive circular references", function()
 				type CircularObj = { a: string, nestedObj: any? }
 
 				local transitiveCircularObjA1: CircularObj = { a = "hello" }
@@ -363,86 +376,88 @@ return function()
 					parentObj = "not the parent ref",
 				}
 
-				expect(subsetEquality(transitiveCircularObjA1, {})).to.equal(true)
-				expect(subsetEquality({}, transitiveCircularObjA1)).to.equal(false)
-				expect(subsetEquality(transitiveCircularObjA2, transitiveCircularObjA1)).to.equal(true)
-				expect(subsetEquality(transitiveCircularObjB, transitiveCircularObjA1)).to.equal(false)
-				expect(subsetEquality(primitiveInsteadOfRef, transitiveCircularObjA1)).to.equal(false)
+				expect(subsetEquality(transitiveCircularObjA1, {})).toBe(true)
+				expect(subsetEquality({}, transitiveCircularObjA1)).toBe(false)
+				expect(subsetEquality(transitiveCircularObjA2, transitiveCircularObjA1)).toBe(true)
+				expect(subsetEquality(transitiveCircularObjB, transitiveCircularObjA1)).toBe(false)
+				expect(subsetEquality(primitiveInsteadOfRef, transitiveCircularObjA1)).toBe(false)
 			end)
 		end)
 	end)
 
 	-- ROBLOX TODO: (ADO-1217) implement tests once we have Map functionality
 	describe("iterableEquality", function()
-		it("returns true when given circular Set", function()
+		test("returns true when given circular Set", function()
 			local a = Set.new({})
 			a:add(a)
 			local b = Set.new({})
 			b:add(b)
-			expect(iterableEquality(a, b)).to.equal(true)
+			expect(iterableEquality(a, b)).toBe(true)
 		end)
 
-		it("returns true when given nested Sets", function()
+		test("returns true when given nested Sets", function()
 			expect(
 				iterableEquality(
 					Set.new({ Set.new({ { 1 } }), Set.new({ { 2 } }) }),
 					Set.new({ Set.new({ { 2 } }), Set.new({ { 1 } }) })
 				)
-			).to.equal(true)
+			).toBe(true)
 			expect(
 				iterableEquality(
 					Set.new({ Set.new({ { 1 } }), Set.new({ { 2 } }) }),
 					Set.new({ Set.new({ { 3 } }), Set.new({ { 1 } }) })
 				)
-			).to.equal(false)
+			).toBe(false)
 		end)
 
-		it("returns false when given inequal set within a set", function()
-			expect(iterableEquality(Set.new({ Set.new({ 2 }) }), Set.new({ Set.new({ 1, 2 }) }))).to.equal(false)
-			-- duplicate call in upstream?
-			expect(iterableEquality(Set.new({ Set.new({ 2 }) }), Set.new({ Set.new({ 1, 2 }) }))).to.equal(false)
+		test("returns false when given inequal set within a set", function()
+			expect(iterableEquality(Set.new({ Set.new({ 2 }) }), Set.new({ Set.new({ 1, 2 }) }))).toBe(false)
+			-- ROBLOX NOTE: duplicate call in upstream?
+			expect(iterableEquality(Set.new({ Set.new({ 2 }) }), Set.new({ Set.new({ 1, 2 }) }))).toBe(false)
 		end)
 
-		itSKIP("returns false when given inequal set within a map", function() end)
+		testSKIP("returns false when given inequal set within a map", function() end)
 
-		it("returns true when given circular Set shape", function()
+		test("returns true when given circular Set shape", function()
 			local a1 = Set.new()
 			local a2 = Set.new()
 			a1:add(a2)
 			a2:add(a1)
 			local b = Set.new()
 			b:add(b)
-			expect(iterableEquality(a1, b)).to.equal(true)
+			expect(iterableEquality(a1, b)).toEqual(true)
 		end)
 
-		itSKIP("returns true when given circular key in Map", function() end)
+		testSKIP("returns true when given circular key in Map", function() end)
 
-		itSKIP("returns true when given nested Maps", function() end)
+		testSKIP("returns true when given nested Maps", function() end)
 
-		itSKIP("returns true when given circular key and value in Map", function() end)
+		testSKIP("returns true when given circular key and value in Map", function() end)
 
-		itSKIP("returns true when given circular value in Map", function() end)
+		testSKIP("returns true when given circular value in Map", function() end)
 
 		-- ROBLOX deviation START: skipped as Lua doesn't support ArrayBuffer
 		-- describe('arrayBufferEquality', function()
-		-- 	it('returns undefined if given a non instance of ArrayBuffer', function()
-		-- 		expect(arrayBufferEquality(2, 's')).toBeUndefined()
-		-- 		expect(arrayBufferEquality(nil, 2)).toBeUndefined()
-		-- 		expect(arrayBufferEquality(Date.new(), ArrayBuffer.new(2))).toBeUndefined()
+		-- 	test('returns undefined if given a non instance of ArrayBuffer', function()
+		-- 	expect(arrayBufferEquality(2, 's')).toBeUndefined()
+		-- 	expect(arrayBufferEquality(nil, 2)).toBeUndefined()
+		-- 	expect(arrayBufferEquality(Date.new(), ArrayBuffer.new(2))).toBeUndefined()
 		-- 	end)
 
-		-- 	it('returns false when given non-matching buffers', function()
+		-- 	test('returns false when given non-matching buffers', function()
 		-- 		local a = Array.from(Uint8Array, { 2, 4 }).buffer
 		-- 		local b = Array.from(Uint16Array, { 1, 7 }).buffer
-		-- 		expect(arrayBufferEquality(a, b)).not_.toBeTruthy()
+		-- 	expect(arrayBufferEquality(a, b)).not_.toBeTruthy()
 		-- 	end)
 
-		-- 	it('returns true when given matching buffers', function()
+		-- 	test('returns true when given matching buffers', function()
 		-- 		local a = Array.from(Uint8Array, { 1, 2 }).buffer
 		-- 		local b = Array.from(Uint8Array, { 1, 2 }).buffer
-		-- 		expect(arrayBufferEquality(a, b)).toBeTruthy()
+		-- 	expect(arrayBufferEquality(a, b)).toBeTruthy()
 		-- 	end)
 		-- end)
 		-- ROBLOX deviation END
 	end)
-end
+
+	return {}
+end)()

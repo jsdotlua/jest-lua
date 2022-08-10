@@ -7,7 +7,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return function()
+return (function()
 	local CurrentModule = script.Parent.Parent
 	local Packages = CurrentModule.Parent
 	local Promise = require(Packages.Promise)
@@ -15,7 +15,12 @@ return function()
 	local Symbol = LuauPolyfill.Symbol
 	local isPromise = require(CurrentModule.isPromise).default
 
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	type Function = (...any) -> ...any
+
+	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
 
 	describe("foo", function()
 		describe("not a Promise: ", function()
@@ -39,4 +44,6 @@ return function()
 			jestExpect(isPromise(Promise.reject():catch(function() end))).toBe(true)
 		end)
 	end)
-end
+
+	return {}
+end)()

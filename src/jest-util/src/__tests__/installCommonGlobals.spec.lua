@@ -7,7 +7,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-return function()
+return (function()
 	type Jest_Mock = any
 
 	local CurrentModule = script.Parent.Parent
@@ -15,9 +15,14 @@ return function()
 	local LuauPolyfill = require(Packages.LuauPolyfill)
 	local Object = LuauPolyfill.Object
 
+	type Function = (...any) -> ...any
+
 	local JestGlobals = require(Packages.Dev.JestGlobals)
 	local jest = JestGlobals.jest
 	local jestExpect = JestGlobals.expect
+	local describe = (JestGlobals.describe :: any) :: Function
+	local it = (JestGlobals.it :: any) :: Function
+	local beforeEach = (JestGlobals.beforeEach :: any) :: Function
 
 	-- local vmModule = require(Packages.vm)
 	-- local createContext = vmModule.createContext
@@ -53,4 +58,6 @@ return function()
 			jestExpect(#fake.mock.calls).toBe(1)
 		end)
 	end)
-end
+
+	return {}
+end)()

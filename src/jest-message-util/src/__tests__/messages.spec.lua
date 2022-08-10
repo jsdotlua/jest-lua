@@ -7,12 +7,18 @@
  *
  ]]
 
-return function()
+return (function()
 	local Packages = script.Parent.Parent.Parent
+
+	type Function = (...any) -> ...any
 
 	local JestGlobals = require(Packages.Dev.JestGlobals)
 	local jest = JestGlobals.jest
 	local jestExpect = JestGlobals.expect
+	local it = (JestGlobals.it :: any) :: Function
+	local beforeEach = (JestGlobals.beforeEach :: any) :: Function
+	local beforeAll = (JestGlobals.beforeAll :: any) :: Function
+	local afterAll = (JestGlobals.afterAll :: any) :: Function
 
 	-- ROBLOX deviation START: not used
 	-- local readFileSync = require(Packages["graceful-fs"]).readFileSync
@@ -72,4 +78,6 @@ return function()
 		ROBLOX deviation: skipped lines 130-366
 		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-message-util/src/__tests__/messages.test.ts#L130-L366
 	]]
-end
+
+	return {}
+end)()
