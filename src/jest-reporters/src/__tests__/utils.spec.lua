@@ -16,8 +16,6 @@ return (function()
 	local jestExpect = JestGlobals.expect
 	local describe = (JestGlobals.describe :: any) :: Function
 	local it = (JestGlobals.it :: any) :: Function
-	local beforeAll = (JestGlobals.beforeAll :: any) :: Function
-	local afterAll = (JestGlobals.afterAll :: any) :: Function
 
 	local path = require(Packages.Path).path
 	-- ROBLOX deviation START: not needed
@@ -34,23 +32,6 @@ return (function()
 	local printDisplayName = utilsModule.printDisplayName
 	local trimAndFormatPath = utilsModule.trimAndFormatPath
 	local wrapAnsiString = utilsModule.wrapAnsiString
-
-	-- ROBLOX deviation START: this should be added in global jest config
-	local ConvertAnsi = require(Packages.Dev.PrettyFormat).plugins.ConvertAnsi
-	local JestSnapshotSerializerRaw = require(Packages.Dev.JestSnapshotSerializerRaw)
-
-	beforeAll(function()
-		jestExpect.addSnapshotSerializer({
-			serialize = ConvertAnsi.serialize,
-			test = ConvertAnsi.test,
-		})
-		jestExpect.addSnapshotSerializer(JestSnapshotSerializerRaw)
-	end)
-
-	afterAll(function()
-		jestExpect.resetSnapshotSerializers()
-	end)
-	-- ROBLOX deviation END
 
 	describe("wrapAnsiString()", function()
 		-- ROBLOX deviation START: Not needed since we don't have a console width

@@ -10,7 +10,6 @@ return (function()
 	local Packages = script.Parent.Parent.Parent
 	type Function = (...any) -> ...any
 
-	require(script.Parent.setup)
 	local JestGlobals = require(Packages.Dev.JestGlobals)
 	local jestExpect = JestGlobals.expect
 	local describe = (JestGlobals.describe :: any) :: Function

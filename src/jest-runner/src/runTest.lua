@@ -227,18 +227,17 @@ local function runTestInternal(
 
 		local start = DateTime.now().UnixTimestampMillis
 
-		-- ROBLOX deviation START: no support for setup files
-		-- for _, path_ in config.setupFiles do
-		-- 	-- ROBLOX deviation START: no esm modules in Lua
-		-- 	-- local esm = runtime:unstable_shouldLoadAsEsm(path)
-		-- 	-- if esm ~= nil then
-		-- 	-- 	runtime:unstable_importModule(path):expect()
-		-- 	-- else
-		-- 	-- 	runtime:requireModule(path)
-		-- 	-- end
-		-- 	-- ROBLOX deviation END
-		-- end
-		-- ROBLOX deviation END
+		for _, path_ in config.setupFiles do
+			-- ROBLOX deviation START: no esm modules in Lua
+			runtime:requireModule(path_)
+			-- local esm = runtime:unstable_shouldLoadAsEsm(path)
+			-- if esm ~= nil then
+			-- 	runtime:unstable_importModule(path):expect()
+			-- else
+			-- 	runtime:requireModule(path)
+			-- end
+			-- ROBLOX deviation END
+		end
 
 		-- ROBLOX deviation START: no source map supported
 		-- local sourcemapOptions: sourcemapSupport_Options = {

@@ -31,8 +31,6 @@ return (function()
 	local it = (JestGlobals.it :: any) :: Function
 	local beforeEach = (JestGlobals.beforeEach :: any) :: Function
 	local afterEach = (JestGlobals.afterEach :: any) :: Function
-	local beforeAll = (JestGlobals.beforeAll :: any) :: Function
-	local afterAll = (JestGlobals.afterAll :: any) :: Function
 	type jest_SpyInstance = any
 
 	-- ROBLOX deviation START: not used
@@ -84,23 +82,6 @@ return (function()
 	local RobloxShared = require(Packages.RobloxShared)
 	local JSON = RobloxShared.nodeUtils.JSON
 	local getRelativePath = RobloxShared.getRelativePath
-	-- ROBLOX deviation END
-
-	-- ROBLOX deviation START: this should be added in global jest config
-	local ConvertAnsi = require(Packages.Dev.PrettyFormat).plugins.ConvertAnsi
-	local JestSnapshotSerializerRaw = require(Packages.Dev.JestSnapshotSerializerRaw)
-
-	beforeAll(function()
-		jestExpect.addSnapshotSerializer({
-			serialize = ConvertAnsi.serialize,
-			test = ConvertAnsi.test,
-		})
-		jestExpect.addSnapshotSerializer(JestSnapshotSerializerRaw)
-	end)
-
-	afterAll(function()
-		jestExpect.resetSnapshotSerializers()
-	end)
 	-- ROBLOX deviation END
 
 	-- ROBLOX deviation START: not used

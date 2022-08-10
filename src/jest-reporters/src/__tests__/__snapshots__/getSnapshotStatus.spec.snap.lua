@@ -1,30 +1,28 @@
 -- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-reporters/src/__tests__/__snapshots__/getSnapshotStatus.test.js.snap
-local snapshots = {}
+local exports = {}
 
-snapshots[ [=[Retrieves the snapshot status 1]=] ] = [=[
+exports[ [=[Retrieves the snapshot status 1]=] ] = [=[
 
 Table {
-  "[1m[32m › 1 snapshot written.[39m[22m",
-  "[1m[32m › 1 snapshot updated.[39m[22m",
-  "[1m[31m › 1 snapshot failed.[39m[22m",
-  "[1m[33m › 1 snapshot obsolete.[39m[22m",
+  "<bold><green> › 1 snapshot written.</></>",
+  "<bold><green> › 1 snapshot updated.</></>",
+  "<bold><red> › 1 snapshot failed.</></>",
+  "<bold><yellow> › 1 snapshot obsolete.</></>",
   "	 • test suite with unchecked snapshot",
 }
 ]=]
-
-snapshots[ [=[Retrieves the snapshot status after a snapshot update 1]=] ] = [=[
+exports[ [=[Retrieves the snapshot status after a snapshot update 1]=] ] = [=[
 
 Table {
-  "[1m[32m › 2 snapshots written.[39m[22m",
-  "[1m[32m › 2 snapshots updated.[39m[22m",
-  "[1m[31m › 2 snapshots failed.[39m[22m",
-  "[1m[32m › 2 snapshots removed.[39m[22m",
+  "<bold><green> › 2 snapshots written.</></>",
+  "<bold><green> › 2 snapshots updated.</></>",
+  "<bold><red> › 2 snapshots failed.</></>",
+  "<bold><green> › 2 snapshots removed.</></>",
   "	 • first test suite with unchecked snapshot",
   "	 • second test suite with unchecked snapshot",
-  "[1m[32m › snapshot file removed.[39m[22m",
+  "<bold><green> › snapshot file removed.</></>",
 }
 ]=]
+exports[ [=[Shows no snapshot updates if all snapshots matched 1]=] ] = "Table {}"
 
-snapshots[ [=[Shows no snapshot updates if all snapshots matched 1]=] ] = "Table {}"
-
-return snapshots
+return exports

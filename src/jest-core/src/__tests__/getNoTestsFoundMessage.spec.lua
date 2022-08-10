@@ -17,26 +17,7 @@ return (function()
 	local JestGlobals = require(Packages.Dev.JestGlobals)
 	local describe = (JestGlobals.describe :: any) :: Function
 	local it = (JestGlobals.it :: any) :: Function
-	-- local itSKIP = JestGlobals.it.skip
-	local beforeAll = (JestGlobals.beforeAll :: any) :: Function
-	local afterAll = (JestGlobals.afterAll :: any) :: Function
 	local jestExpect = JestGlobals.expect
-	-- ROBLOX deviation START: this should be added in global jest config
-	local ConvertAnsi = require(Packages.PrettyFormat).plugins.ConvertAnsi
-	local JestSnapshotSerializerRaw = require(Packages.Dev.JestSnapshotSerializerRaw)
-
-	beforeAll(function()
-		jestExpect.addSnapshotSerializer({
-			serialize = ConvertAnsi.toHumanReadableAnsi,
-			test = ConvertAnsi.test,
-		})
-		jestExpect.addSnapshotSerializer(JestSnapshotSerializerRaw)
-	end)
-
-	afterAll(function()
-		jestExpect.resetSnapshotSerializers()
-	end)
-	-- ROBLOX deviation END
 
 	describe("getNoTestsFoundMessage", function()
 		local function createGlobalConfig(options)

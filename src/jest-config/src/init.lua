@@ -298,9 +298,9 @@ function groupOptions(
 			rootDir = options.rootDir,
 			roots = options.roots,
 			runner = options.runner,
+			setupFiles = options.setupFiles,
+			setupFilesAfterEnv = options.setupFilesAfterEnv,
 			-- ROBLOX deviation START: not supported
-			-- setupFiles = options.setupFiles,
-			-- setupFilesAfterEnv = options.setupFilesAfterEnv,
 			-- skipFilter = options.skipFilter,
 			-- skipNodeResolution = options.skipNodeResolution,
 			-- ROBLOX deviation END

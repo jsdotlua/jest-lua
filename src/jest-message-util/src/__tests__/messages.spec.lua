@@ -17,8 +17,6 @@ return (function()
 	local jestExpect = JestGlobals.expect
 	local it = (JestGlobals.it :: any) :: Function
 	local beforeEach = (JestGlobals.beforeEach :: any) :: Function
-	local beforeAll = (JestGlobals.beforeAll :: any) :: Function
-	local afterAll = (JestGlobals.afterAll :: any) :: Function
 
 	-- ROBLOX deviation START: not used
 	-- local readFileSync = require(Packages["graceful-fs"]).readFileSync
@@ -31,23 +29,6 @@ return (function()
 	-- ROBLOX deviation START: not used
 	-- local formatResultsErrors = CurentModule.formatResultsErrors
 	-- local formatStackTrace = CurentModule.formatStackTrace
-	-- ROBLOX deviation END
-
-	-- ROBLOX deviation START: this should be added in global jest config
-	local ConvertAnsi = require(Packages.PrettyFormat).plugins.ConvertAnsi
-	local JestSnapshotSerializerRaw = require(Packages.Dev.JestSnapshotSerializerRaw)
-
-	beforeAll(function()
-		jestExpect.addSnapshotSerializer({
-			serialize = ConvertAnsi.serialize,
-			test = ConvertAnsi.test,
-		})
-		jestExpect.addSnapshotSerializer(JestSnapshotSerializerRaw)
-	end)
-
-	afterAll(function()
-		jestExpect.resetSnapshotSerializers()
-	end)
 	-- ROBLOX deviation END
 
 	--[[

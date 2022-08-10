@@ -1,49 +1,45 @@
 -- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-each/src/__tests__/__snapshots__/template.test.ts.snap
 -- Jest Snapshot v1, https://goo.gl/fbAQLP
-local snapshots = {}
+local exports = {}
 
-snapshots["jest-each .describe throws an error when called with an empty string 1"] = [=[
+exports["jest-each .describe throws an error when called with an empty string 1"] = [=[
 
 "Error: `.each` called with an empty Tagged Template Literal of table data.
 "
 ]=]
+exports["jest-each .describe throws error when there are additional words in first column heading 1"] = [=[
 
-snapshots["jest-each .describe throws error when there are additional words in first column heading 1"] = [=[
-
-Table headings do not conform to expected format:
-
-<green>heading1 | headingN</>
-
-Received:
-
-<red>"a is the left | b | expected"</>
-]=]
-
-snapshots["jest-each .describe throws error when there are additional words in last column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b | expected value"</>
+<red>\"a is the left | b | expected\"</>"
 ]=]
+exports["jest-each .describe throws error when there are additional words in last column heading 1"] = [=[
 
-snapshots["jest-each .describe throws error when there are additional words in second column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b is the right | expected"</>
+<red>\"a | b | expected value\"</>"
 ]=]
+exports["jest-each .describe throws error when there are additional words in second column heading 1"] = [=[
 
-snapshots["jest-each .describe throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
+"Table headings do not conform to expected format:
 
-Not enough arguments supplied for given headings:
+<green>heading1 | headingN</>
+
+Received:
+
+<red>\"a | b is the right | expected\"</>"
+]=]
+exports["jest-each .describe throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
+
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -59,12 +55,11 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 2
+Missing <red>1</> argument in row 2"
 ]=]
+exports["jest-each .describe throws error when there are fewer arguments than headings when given one row 1"] = [=[
 
-snapshots["jest-each .describe throws error when there are fewer arguments than headings when given one row 1"] = [=[
-
-Not enough arguments supplied for given headings:
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -75,58 +70,51 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 1
+Missing <red>1</> argument in row 1"
 ]=]
-
-snapshots["jest-each .describe throws error when there are no arguments for given headings 1"] = [=[
+exports["jest-each .describe throws error when there are no arguments for given headings 1"] = [=[
 
 "Error: `.each` called with a Tagged Template Literal with no data, remember to interpolate with ${expression} syntax.
 "
 ]=]
-
-snapshots["jest-each .describe.only throws an error when called with an empty string 1"] = [=[
+exports["jest-each .describe.only throws an error when called with an empty string 1"] = [=[
 
 "Error: `.each` called with an empty Tagged Template Literal of table data.
 "
 ]=]
+exports["jest-each .describe.only throws error when there are additional words in first column heading 1"] = [=[
 
-snapshots["jest-each .describe.only throws error when there are additional words in first column heading 1"] = [=[
-
-Table headings do not conform to expected format:
-
-<green>heading1 | headingN</>
-
-Received:
-
-<red>"a is the left | b | expected"</>
-]=]
-
-snapshots["jest-each .describe.only throws error when there are additional words in last column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b | expected value"</>
+<red>\"a is the left | b | expected\"</>"
 ]=]
+exports["jest-each .describe.only throws error when there are additional words in last column heading 1"] = [=[
 
-snapshots["jest-each .describe.only throws error when there are additional words in second column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b is the right | expected"</>
+<red>\"a | b | expected value\"</>"
 ]=]
+exports["jest-each .describe.only throws error when there are additional words in second column heading 1"] = [=[
 
-snapshots["jest-each .describe.only throws error when there are fewer arguments than headings over multiple rows 1"] =
-	[=[
+"Table headings do not conform to expected format:
 
-Not enough arguments supplied for given headings:
+<green>heading1 | headingN</>
+
+Received:
+
+<red>\"a | b is the right | expected\"</>"
+]=]
+exports["jest-each .describe.only throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
+
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -142,13 +130,11 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 2
+Missing <red>1</> argument in row 2"
 ]=]
+exports["jest-each .describe.only throws error when there are fewer arguments than headings when given one row 1"] = [=[
 
-snapshots["jest-each .describe.only throws error when there are fewer arguments than headings when given one row 1"] =
-	[=[
-
-Not enough arguments supplied for given headings:
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -159,58 +145,51 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 1
+Missing <red>1</> argument in row 1"
 ]=]
-
-snapshots["jest-each .describe.only throws error when there are no arguments for given headings 1"] = [=[
+exports["jest-each .describe.only throws error when there are no arguments for given headings 1"] = [=[
 
 "Error: `.each` called with a Tagged Template Literal with no data, remember to interpolate with ${expression} syntax.
 "
 ]=]
-
-snapshots["jest-each .describeFOCUS throws an error when called with an empty string 1"] = [=[
+exports["jest-each .describeFOCUS throws an error when called with an empty string 1"] = [=[
 
 "Error: `.each` called with an empty Tagged Template Literal of table data.
 "
 ]=]
+exports["jest-each .describeFOCUS throws error when there are additional words in first column heading 1"] = [=[
 
-snapshots["jest-each .describeFOCUS throws error when there are additional words in first column heading 1"] = [=[
-
-Table headings do not conform to expected format:
-
-<green>heading1 | headingN</>
-
-Received:
-
-<red>"a is the left | b | expected"</>
-]=]
-
-snapshots["jest-each .describeFOCUS throws error when there are additional words in last column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b | expected value"</>
+<red>\"a is the left | b | expected\"</>"
 ]=]
+exports["jest-each .describeFOCUS throws error when there are additional words in last column heading 1"] = [=[
 
-snapshots["jest-each .describeFOCUS throws error when there are additional words in second column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b is the right | expected"</>
+<red>\"a | b | expected value\"</>"
 ]=]
+exports["jest-each .describeFOCUS throws error when there are additional words in second column heading 1"] = [=[
 
-snapshots["jest-each .describeFOCUS throws error when there are fewer arguments than headings over multiple rows 1"] =
-	[=[
+"Table headings do not conform to expected format:
 
-Not enough arguments supplied for given headings:
+<green>heading1 | headingN</>
+
+Received:
+
+<red>\"a | b is the right | expected\"</>"
+]=]
+exports["jest-each .describeFOCUS throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
+
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -226,13 +205,11 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 2
+Missing <red>1</> argument in row 2"
 ]=]
+exports["jest-each .describeFOCUS throws error when there are fewer arguments than headings when given one row 1"] = [=[
 
-snapshots["jest-each .describeFOCUS throws error when there are fewer arguments than headings when given one row 1"] =
-	[=[
-
-Not enough arguments supplied for given headings:
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -243,57 +220,51 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 1
+Missing <red>1</> argument in row 1"
 ]=]
-
-snapshots["jest-each .describeFOCUS throws error when there are no arguments for given headings 1"] = [=[
+exports["jest-each .describeFOCUS throws error when there are no arguments for given headings 1"] = [=[
 
 "Error: `.each` called with a Tagged Template Literal with no data, remember to interpolate with ${expression} syntax.
 "
 ]=]
-
-snapshots["jest-each .fdescribe throws an error when called with an empty string 1"] = [=[
+exports["jest-each .fdescribe throws an error when called with an empty string 1"] = [=[
 
 "Error: `.each` called with an empty Tagged Template Literal of table data.
 "
 ]=]
+exports["jest-each .fdescribe throws error when there are additional words in first column heading 1"] = [=[
 
-snapshots["jest-each .fdescribe throws error when there are additional words in first column heading 1"] = [=[
-
-Table headings do not conform to expected format:
-
-<green>heading1 | headingN</>
-
-Received:
-
-<red>"a is the left | b | expected"</>
-]=]
-
-snapshots["jest-each .fdescribe throws error when there are additional words in last column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b | expected value"</>
+<red>\"a is the left | b | expected\"</>"
 ]=]
+exports["jest-each .fdescribe throws error when there are additional words in last column heading 1"] = [=[
 
-snapshots["jest-each .fdescribe throws error when there are additional words in second column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b is the right | expected"</>
+<red>\"a | b | expected value\"</>"
 ]=]
+exports["jest-each .fdescribe throws error when there are additional words in second column heading 1"] = [=[
 
-snapshots["jest-each .fdescribe throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
+"Table headings do not conform to expected format:
 
-Not enough arguments supplied for given headings:
+<green>heading1 | headingN</>
+
+Received:
+
+<red>\"a | b is the right | expected\"</>"
+]=]
+exports["jest-each .fdescribe throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
+
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -309,12 +280,11 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 2
+Missing <red>1</> argument in row 2"
 ]=]
+exports["jest-each .fdescribe throws error when there are fewer arguments than headings when given one row 1"] = [=[
 
-snapshots["jest-each .fdescribe throws error when there are fewer arguments than headings when given one row 1"] = [=[
-
-Not enough arguments supplied for given headings:
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -325,57 +295,51 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 1
+Missing <red>1</> argument in row 1"
 ]=]
-
-snapshots["jest-each .fdescribe throws error when there are no arguments for given headings 1"] = [=[
+exports["jest-each .fdescribe throws error when there are no arguments for given headings 1"] = [=[
 
 "Error: `.each` called with a Tagged Template Literal with no data, remember to interpolate with ${expression} syntax.
 "
 ]=]
-
-snapshots["jest-each .fit throws an error when called with an empty string 1"] = [=[
+exports["jest-each .fit throws an error when called with an empty string 1"] = [=[
 
 "Error: `.each` called with an empty Tagged Template Literal of table data.
 "
 ]=]
+exports["jest-each .fit throws error when there are additional words in first column heading 1"] = [=[
 
-snapshots["jest-each .fit throws error when there are additional words in first column heading 1"] = [=[
-
-Table headings do not conform to expected format:
-
-<green>heading1 | headingN</>
-
-Received:
-
-<red>"a is the left | b | expected"</>
-]=]
-
-snapshots["jest-each .fit throws error when there are additional words in last column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b | expected value"</>
+<red>\"a is the left | b | expected\"</>"
 ]=]
+exports["jest-each .fit throws error when there are additional words in last column heading 1"] = [=[
 
-snapshots["jest-each .fit throws error when there are additional words in second column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b is the right | expected"</>
+<red>\"a | b | expected value\"</>"
 ]=]
+exports["jest-each .fit throws error when there are additional words in second column heading 1"] = [=[
 
-snapshots["jest-each .fit throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
+"Table headings do not conform to expected format:
 
-Not enough arguments supplied for given headings:
+<green>heading1 | headingN</>
+
+Received:
+
+<red>\"a | b is the right | expected\"</>"
+]=]
+exports["jest-each .fit throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
+
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -391,12 +355,11 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 2
+Missing <red>1</> argument in row 2"
 ]=]
+exports["jest-each .fit throws error when there are fewer arguments than headings when given one row 1"] = [=[
 
-snapshots["jest-each .fit throws error when there are fewer arguments than headings when given one row 1"] = [=[
-
-Not enough arguments supplied for given headings:
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -407,57 +370,51 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 1
+Missing <red>1</> argument in row 1"
 ]=]
-
-snapshots["jest-each .fit throws error when there are no arguments for given headings 1"] = [=[
+exports["jest-each .fit throws error when there are no arguments for given headings 1"] = [=[
 
 "Error: `.each` called with a Tagged Template Literal with no data, remember to interpolate with ${expression} syntax.
 "
 ]=]
-
-snapshots["jest-each .it throws an error when called with an empty string 1"] = [=[
+exports["jest-each .it throws an error when called with an empty string 1"] = [=[
 
 "Error: `.each` called with an empty Tagged Template Literal of table data.
 "
 ]=]
+exports["jest-each .it throws error when there are additional words in first column heading 1"] = [=[
 
-snapshots["jest-each .it throws error when there are additional words in first column heading 1"] = [=[
-
-Table headings do not conform to expected format:
-
-<green>heading1 | headingN</>
-
-Received:
-
-<red>"a is the left | b | expected"</>
-]=]
-
-snapshots["jest-each .it throws error when there are additional words in last column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b | expected value"</>
+<red>\"a is the left | b | expected\"</>"
 ]=]
+exports["jest-each .it throws error when there are additional words in last column heading 1"] = [=[
 
-snapshots["jest-each .it throws error when there are additional words in second column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b is the right | expected"</>
+<red>\"a | b | expected value\"</>"
 ]=]
+exports["jest-each .it throws error when there are additional words in second column heading 1"] = [=[
 
-snapshots["jest-each .it throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
+"Table headings do not conform to expected format:
 
-Not enough arguments supplied for given headings:
+<green>heading1 | headingN</>
+
+Received:
+
+<red>\"a | b is the right | expected\"</>"
+]=]
+exports["jest-each .it throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
+
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -473,12 +430,11 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 2
+Missing <red>1</> argument in row 2"
 ]=]
+exports["jest-each .it throws error when there are fewer arguments than headings when given one row 1"] = [=[
 
-snapshots["jest-each .it throws error when there are fewer arguments than headings when given one row 1"] = [=[
-
-Not enough arguments supplied for given headings:
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -489,57 +445,51 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 1
+Missing <red>1</> argument in row 1"
 ]=]
-
-snapshots["jest-each .it throws error when there are no arguments for given headings 1"] = [=[
+exports["jest-each .it throws error when there are no arguments for given headings 1"] = [=[
 
 "Error: `.each` called with a Tagged Template Literal with no data, remember to interpolate with ${expression} syntax.
 "
 ]=]
-
-snapshots["jest-each .it.only throws an error when called with an empty string 1"] = [=[
+exports["jest-each .it.only throws an error when called with an empty string 1"] = [=[
 
 "Error: `.each` called with an empty Tagged Template Literal of table data.
 "
 ]=]
+exports["jest-each .it.only throws error when there are additional words in first column heading 1"] = [=[
 
-snapshots["jest-each .it.only throws error when there are additional words in first column heading 1"] = [=[
-
-Table headings do not conform to expected format:
-
-<green>heading1 | headingN</>
-
-Received:
-
-<red>"a is the left | b | expected"</>
-]=]
-
-snapshots["jest-each .it.only throws error when there are additional words in last column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b | expected value"</>
+<red>\"a is the left | b | expected\"</>"
 ]=]
+exports["jest-each .it.only throws error when there are additional words in last column heading 1"] = [=[
 
-snapshots["jest-each .it.only throws error when there are additional words in second column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b is the right | expected"</>
+<red>\"a | b | expected value\"</>"
 ]=]
+exports["jest-each .it.only throws error when there are additional words in second column heading 1"] = [=[
 
-snapshots["jest-each .it.only throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
+"Table headings do not conform to expected format:
 
-Not enough arguments supplied for given headings:
+<green>heading1 | headingN</>
+
+Received:
+
+<red>\"a | b is the right | expected\"</>"
+]=]
+exports["jest-each .it.only throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
+
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -555,12 +505,11 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 2
+Missing <red>1</> argument in row 2"
 ]=]
+exports["jest-each .it.only throws error when there are fewer arguments than headings when given one row 1"] = [=[
 
-snapshots["jest-each .it.only throws error when there are fewer arguments than headings when given one row 1"] = [=[
-
-Not enough arguments supplied for given headings:
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -571,57 +520,51 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 1
+Missing <red>1</> argument in row 1"
 ]=]
-
-snapshots["jest-each .it.only throws error when there are no arguments for given headings 1"] = [=[
+exports["jest-each .it.only throws error when there are no arguments for given headings 1"] = [=[
 
 "Error: `.each` called with a Tagged Template Literal with no data, remember to interpolate with ${expression} syntax.
 "
 ]=]
-
-snapshots["jest-each .itFOCUS throws an error when called with an empty string 1"] = [=[
+exports["jest-each .itFOCUS throws an error when called with an empty string 1"] = [=[
 
 "Error: `.each` called with an empty Tagged Template Literal of table data.
 "
 ]=]
+exports["jest-each .itFOCUS throws error when there are additional words in first column heading 1"] = [=[
 
-snapshots["jest-each .itFOCUS throws error when there are additional words in first column heading 1"] = [=[
-
-Table headings do not conform to expected format:
-
-<green>heading1 | headingN</>
-
-Received:
-
-<red>"a is the left | b | expected"</>
-]=]
-
-snapshots["jest-each .itFOCUS throws error when there are additional words in last column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b | expected value"</>
+<red>\"a is the left | b | expected\"</>"
 ]=]
+exports["jest-each .itFOCUS throws error when there are additional words in last column heading 1"] = [=[
 
-snapshots["jest-each .itFOCUS throws error when there are additional words in second column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b is the right | expected"</>
+<red>\"a | b | expected value\"</>"
 ]=]
+exports["jest-each .itFOCUS throws error when there are additional words in second column heading 1"] = [=[
 
-snapshots["jest-each .itFOCUS throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
+"Table headings do not conform to expected format:
 
-Not enough arguments supplied for given headings:
+<green>heading1 | headingN</>
+
+Received:
+
+<red>\"a | b is the right | expected\"</>"
+]=]
+exports["jest-each .itFOCUS throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
+
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -637,12 +580,11 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 2
+Missing <red>1</> argument in row 2"
 ]=]
+exports["jest-each .itFOCUS throws error when there are fewer arguments than headings when given one row 1"] = [=[
 
-snapshots["jest-each .itFOCUS throws error when there are fewer arguments than headings when given one row 1"] = [=[
-
-Not enough arguments supplied for given headings:
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -653,57 +595,51 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 1
+Missing <red>1</> argument in row 1"
 ]=]
-
-snapshots["jest-each .itFOCUS throws error when there are no arguments for given headings 1"] = [=[
+exports["jest-each .itFOCUS throws error when there are no arguments for given headings 1"] = [=[
 
 "Error: `.each` called with a Tagged Template Literal with no data, remember to interpolate with ${expression} syntax.
 "
 ]=]
-
-snapshots["jest-each .test throws an error when called with an empty string 1"] = [=[
+exports["jest-each .test throws an error when called with an empty string 1"] = [=[
 
 "Error: `.each` called with an empty Tagged Template Literal of table data.
 "
 ]=]
+exports["jest-each .test throws error when there are additional words in first column heading 1"] = [=[
 
-snapshots["jest-each .test throws error when there are additional words in first column heading 1"] = [=[
-
-Table headings do not conform to expected format:
-
-<green>heading1 | headingN</>
-
-Received:
-
-<red>"a is the left | b | expected"</>
-]=]
-
-snapshots["jest-each .test throws error when there are additional words in last column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b | expected value"</>
+<red>\"a is the left | b | expected\"</>"
 ]=]
+exports["jest-each .test throws error when there are additional words in last column heading 1"] = [=[
 
-snapshots["jest-each .test throws error when there are additional words in second column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b is the right | expected"</>
+<red>\"a | b | expected value\"</>"
 ]=]
+exports["jest-each .test throws error when there are additional words in second column heading 1"] = [=[
 
-snapshots["jest-each .test throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
+"Table headings do not conform to expected format:
 
-Not enough arguments supplied for given headings:
+<green>heading1 | headingN</>
+
+Received:
+
+<red>\"a | b is the right | expected\"</>"
+]=]
+exports["jest-each .test throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
+
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -719,12 +655,11 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 2
+Missing <red>1</> argument in row 2"
 ]=]
+exports["jest-each .test throws error when there are fewer arguments than headings when given one row 1"] = [=[
 
-snapshots["jest-each .test throws error when there are fewer arguments than headings when given one row 1"] = [=[
-
-Not enough arguments supplied for given headings:
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -735,10 +670,9 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 1
+Missing <red>1</> argument in row 1"
 ]=]
-
-snapshots["jest-each .test throws error when there are no arguments for given headings 1"] = [=[
+exports["jest-each .test throws error when there are no arguments for given headings 1"] = [=[
 
 "Error: `.each` called with a Tagged Template Literal with no data, remember to interpolate with ${expression} syntax.
 "
@@ -759,7 +693,7 @@ snapshots["jest-each .test throws error when there are no arguments for given he
 
 -- Received:
 
--- <red>"a is the left | b | expected"</>
+-- <red>\"a is the left | b | expected\"</>
 -- ]=]
 
 -- snapshots["jest-each .test.concurrent throws error when there are additional words in last column heading 1"] = [=[
@@ -770,7 +704,7 @@ snapshots["jest-each .test throws error when there are no arguments for given he
 
 -- Received:
 
--- <red>"a | b | expected value"</>
+-- <red>\"a | b | expected value\"</>
 -- ]=]
 
 -- snapshots["jest-each .test.concurrent throws error when there are additional words in second column heading 1"] = [=[
@@ -846,7 +780,7 @@ snapshots["jest-each .test throws error when there are no arguments for given he
 
 -- Received:
 
--- <red>"a is the left | b | expected"</>
+-- <red>\"a is the left | b | expected\"</>
 -- ]=]
 
 -- snapshots["jest-each .test.concurrent.only throws error when there are additional words in last column heading 1"] = [=[
@@ -857,7 +791,7 @@ snapshots["jest-each .test throws error when there are no arguments for given he
 
 -- Received:
 
--- <red>"a | b | expected value"</>
+-- <red>\"a | b | expected value\"</>
 -- ]=]
 
 -- snapshots["jest-each .test.concurrent.only throws error when there are additional words in second column heading 1"] =
@@ -934,7 +868,7 @@ snapshots["jest-each .test throws error when there are no arguments for given he
 
 -- Received:
 
--- <red>"a is the left | b | expected"</>
+-- <red>\"a is the left | b | expected\"</>
 -- ]=]
 
 -- snapshots["jest-each .test.concurrent.skip throws error when there are additional words in last column heading 1"] = [=[
@@ -945,7 +879,7 @@ snapshots["jest-each .test throws error when there are no arguments for given he
 
 -- Received:
 
--- <red>"a | b | expected value"</>
+-- <red>\"a | b | expected value\"</>
 -- ]=]
 
 -- snapshots["jest-each .test.concurrent.skip throws error when there are additional words in second column heading 1"] =
@@ -1007,49 +941,44 @@ snapshots["jest-each .test throws error when there are no arguments for given he
 -- "
 -- ]=]
 -- ROBLOX deviation END
-
-snapshots["jest-each .test.only throws an error when called with an empty string 1"] = [=[
+exports["jest-each .test.only throws an error when called with an empty string 1"] = [=[
 
 "Error: `.each` called with an empty Tagged Template Literal of table data.
 "
 ]=]
+exports["jest-each .test.only throws error when there are additional words in first column heading 1"] = [=[
 
-snapshots["jest-each .test.only throws error when there are additional words in first column heading 1"] = [=[
-
-Table headings do not conform to expected format:
-
-<green>heading1 | headingN</>
-
-Received:
-
-<red>"a is the left | b | expected"</>
-]=]
-
-snapshots["jest-each .test.only throws error when there are additional words in last column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b | expected value"</>
+<red>\"a is the left | b | expected\"</>"
 ]=]
+exports["jest-each .test.only throws error when there are additional words in last column heading 1"] = [=[
 
-snapshots["jest-each .test.only throws error when there are additional words in second column heading 1"] = [=[
-
-Table headings do not conform to expected format:
+"Table headings do not conform to expected format:
 
 <green>heading1 | headingN</>
 
 Received:
 
-<red>"a | b is the right | expected"</>
+<red>\"a | b | expected value\"</>"
 ]=]
+exports["jest-each .test.only throws error when there are additional words in second column heading 1"] = [=[
 
-snapshots["jest-each .test.only throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
+"Table headings do not conform to expected format:
 
-Not enough arguments supplied for given headings:
+<green>heading1 | headingN</>
+
+Received:
+
+<red>\"a | b is the right | expected\"</>"
+]=]
+exports["jest-each .test.only throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
+
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -1065,12 +994,11 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 2
+Missing <red>1</> argument in row 2"
 ]=]
+exports["jest-each .test.only throws error when there are fewer arguments than headings when given one row 1"] = [=[
 
-snapshots["jest-each .test.only throws error when there are fewer arguments than headings when given one row 1"] = [=[
-
-Not enough arguments supplied for given headings:
+"Not enough arguments supplied for given headings:
 <green>a | b | expected</>
 
 Received:
@@ -1081,95 +1009,87 @@ Received:
 <red>  },</>
 <red>}</>
 
-Missing <red>1</> argument in row 1
+Missing <red>1</> argument in row 1"
 ]=]
+exports["jest-each .test.only throws error when there are no arguments for given headings 1"] = [=[
 
-snapshots["jest-each .test.only throws error when there are no arguments for given headings 1"] = [=[
+"Error: `.each` called with a Tagged Template Literal with no data, remember to interpolate with ${expression} syntax.
+"
+]=]
+exports["jest-each .testFOCUS throws an error when called with an empty string 1"] = [=[
+
+"Error: `.each` called with an empty Tagged Template Literal of table data.
+"
+]=]
+exports["jest-each .testFOCUS throws error when there are additional words in first column heading 1"] = [=[
+
+"Table headings do not conform to expected format:
+
+<green>heading1 | headingN</>
+
+Received:
+
+<red>\"a is the left | b | expected\"</>"
+]=]
+exports["jest-each .testFOCUS throws error when there are additional words in last column heading 1"] = [=[
+
+"Table headings do not conform to expected format:
+
+<green>heading1 | headingN</>
+
+Received:
+
+<red>\"a | b | expected value\"</>"
+]=]
+exports["jest-each .testFOCUS throws error when there are additional words in second column heading 1"] = [=[
+
+"Table headings do not conform to expected format:
+
+<green>heading1 | headingN</>
+
+Received:
+
+<red>\"a | b is the right | expected\"</>"
+]=]
+exports["jest-each .testFOCUS throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
+
+"Not enough arguments supplied for given headings:
+<green>a | b | expected</>
+
+Received:
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>  Table {</>
+<red>    1,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
+
+Missing <red>1</> argument in row 2"
+]=]
+exports["jest-each .testFOCUS throws error when there are fewer arguments than headings when given one row 1"] = [=[
+
+"Not enough arguments supplied for given headings:
+<green>a | b | expected</>
+
+Received:
+<red>Table {</>
+<red>  Table {</>
+<red>    0,</>
+<red>    1,</>
+<red>  },</>
+<red>}</>
+
+Missing <red>1</> argument in row 1"
+]=]
+exports["jest-each .testFOCUS throws error when there are no arguments for given headings 1"] = [=[
 
 "Error: `.each` called with a Tagged Template Literal with no data, remember to interpolate with ${expression} syntax.
 "
 ]=]
 
-snapshots["jest-each .testFOCUS throws an error when called with an empty string 1"] = [=[
-
-"Error: `.each` called with an empty Tagged Template Literal of table data.
-"
-]=]
-
-snapshots["jest-each .testFOCUS throws error when there are additional words in first column heading 1"] = [=[
-
-Table headings do not conform to expected format:
-
-<green>heading1 | headingN</>
-
-Received:
-
-<red>"a is the left | b | expected"</>
-]=]
-
-snapshots["jest-each .testFOCUS throws error when there are additional words in last column heading 1"] = [=[
-
-Table headings do not conform to expected format:
-
-<green>heading1 | headingN</>
-
-Received:
-
-<red>"a | b | expected value"</>
-]=]
-
-snapshots["jest-each .testFOCUS throws error when there are additional words in second column heading 1"] = [=[
-
-Table headings do not conform to expected format:
-
-<green>heading1 | headingN</>
-
-Received:
-
-<red>"a | b is the right | expected"</>
-]=]
-
-snapshots["jest-each .testFOCUS throws error when there are fewer arguments than headings over multiple rows 1"] = [=[
-
-Not enough arguments supplied for given headings:
-<green>a | b | expected</>
-
-Received:
-<red>Table {</>
-<red>  Table {</>
-<red>    0,</>
-<red>    1,</>
-<red>    1,</>
-<red>  },</>
-<red>  Table {</>
-<red>    1,</>
-<red>    1,</>
-<red>  },</>
-<red>}</>
-
-Missing <red>1</> argument in row 2
-]=]
-
-snapshots["jest-each .testFOCUS throws error when there are fewer arguments than headings when given one row 1"] = [=[
-
-Not enough arguments supplied for given headings:
-<green>a | b | expected</>
-
-Received:
-<red>Table {</>
-<red>  Table {</>
-<red>    0,</>
-<red>    1,</>
-<red>  },</>
-<red>}</>
-
-Missing <red>1</> argument in row 1
-]=]
-
-snapshots["jest-each .testFOCUS throws error when there are no arguments for given headings 1"] = [=[
-
-"Error: `.each` called with a Tagged Template Literal with no data, remember to interpolate with ${expression} syntax.
-"
-]=]
-
-return snapshots
+return exports

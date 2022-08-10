@@ -2,7 +2,6 @@
 
 local Packages = script.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
-local Boolean = LuauPolyfill.Boolean
 local Symbol = LuauPolyfill.Symbol
 
 local always = require(script.always)
@@ -20,7 +19,7 @@ exports.wrap = wrap
 local function test(
 	value: any
 ): boolean --[[ ROBLOX FIXME: change to TSTypePredicate equivalent if supported ]] --[[ value is Wrapper ]]
-	return Boolean.toJSBoolean(value) and always.test(value[RAW])
+	return typeof(value) == "table" and always.test(value[RAW])
 end
 exports.test = test
 

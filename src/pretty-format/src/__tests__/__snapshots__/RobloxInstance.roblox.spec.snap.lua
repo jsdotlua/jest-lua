@@ -148,12 +148,6 @@ exports[ [=[Instance serializes Folder 1]=] ] = [=[
       \"Parent\": \"__tests__\" [Folder],
     },
   },
-  \"jest.config\": ModuleScript {
-    \"Archivable\": true,
-    \"ClassName\": \"ModuleScript\",
-    \"Name\": \"jest.config\",
-    \"Parent\": \"PrettyFormat\" [ModuleScript],
-  },
   \"plugins\": Folder {
     \"Archivable\": true,
     \"ClassName\": \"Folder\",

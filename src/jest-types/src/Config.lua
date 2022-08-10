@@ -136,10 +136,16 @@ export type DefaultOptions = {
 	roots: Array<Path>,
 	runTestsByPath: boolean,
 	runner: string,
-	-- ROBLOX deviation START: not supported
-	-- setupFiles: Array<Path>,
-	-- setupFilesAfterEnv: Array<Path>,
-	-- ROBLOX deviation END
+	setupFiles: Array<
+		-- ROBLOX deviation START: using ModuleScript instead of Path
+		ModuleScript
+		-- ROBLOX deviation END
+	>,
+	setupFilesAfterEnv: Array<
+		-- ROBLOX deviation START: using ModuleScript instead of Path
+		ModuleScript
+		-- ROBLOX deviation END
+	>,
 	skipFilter: boolean,
 	slowTestThreshold: number,
 	snapshotSerializers: Array<Path>,
@@ -225,10 +231,16 @@ export type InitialProjectOptions = {
 	-- ROBLOX deviation END
 	roots: Array<string>?,
 	runner: string?,
-	-- ROBLOX deviation START: not supported
-	-- setupFiles: Array<Path>?,
-	-- setupFilesAfterEnv: Array<Path>?,
-	-- ROBLOX deviation END
+	setupFiles: Array<
+		-- ROBLOX deviation START: using ModuleScript instead of Path
+		ModuleScript
+		-- ROBLOX deviation END
+	>?,
+	setupFilesAfterEnv: Array<
+		-- ROBLOX deviation START: using ModuleScript instead of Path
+		ModuleScript
+		-- ROBLOX deviation END
+	>?,
 	skipFilter: boolean?,
 	skipNodeResolution: boolean?,
 	slowTestThreshold: number?,
@@ -365,16 +377,22 @@ export type InitialOptions = {
   	 * @deprecated Use `transform` options instead.
   	 ]]
 	scriptPreprocessor: string?,
+	setupFiles: Array<
+		-- ROBLOX deviation START: using ModuleScript instead of Path
+		ModuleScript
+		-- ROBLOX deviation END
+	>?,
 	-- ROBLOX deviation START: not supported
-	-- setupFiles: Array<Path>?,
+	-- --[[*
+	-- * @deprecated Use `setupFilesAfterEnv` options instead.
+	-- ]]
+	-- setupTestFrameworkScriptFile: Path?,
 	-- ROBLOX deviation END
-	--[[*
-	* @deprecated Use `setupFilesAfterEnv` options instead.
-	]]
-	setupTestFrameworkScriptFile: Path?,
-	-- ROBLOX deviation START: not supported
-	-- setupFilesAfterEnv: Array<Path>?,
-	-- ROBLOX deviation END
+	setupFilesAfterEnv: Array<
+		-- ROBLOX deviation START: using ModuleScript instead of Path
+		ModuleScript
+		-- ROBLOX deviation END
+	>?,
 	silent: boolean?,
 	skipFilter: boolean?,
 	skipNodeResolution: boolean?,
@@ -575,10 +593,16 @@ export type ProjectConfig = {
 	-- ROBLOX deviation END
 	roots: Array<Path>,
 	runner: string,
-	-- ROBLOX deviation START: not supported
-	-- setupFiles: Array<Path>,
-	-- setupFilesAfterEnv: Array<Path>,
-	-- ROBLOX deviation END
+	setupFiles: Array<
+		-- ROBLOX deviation START: using ModuleScript instead of Path
+		ModuleScript
+		-- ROBLOX deviation END
+	>,
+	setupFilesAfterEnv: Array<
+		-- ROBLOX deviation START: using ModuleScript instead of Path
+		ModuleScript
+		-- ROBLOX deviation END
+	>,
 	skipFilter: boolean,
 	-- ROBLOX deviation START: not supported
 	-- skipNodeResolution: boolean?,
@@ -692,10 +716,16 @@ export type Argv = Arguments<
 		roots: Array<string>?,
 		runInBand: boolean?,
 		selectProjects: Array<string>?,
-		-- ROBLOX deviation START: not supported
-		-- setupFiles: Array<string>?,
-		-- setupFilesAfterEnv: Array<string>?,
-		-- ROBLOX deviation END
+		setupFiles: Array<
+			-- ROBLOX deviation START: using ModuleScript instead of string
+			ModuleScript
+			-- ROBLOX deviation END
+		>?,
+		setupFilesAfterEnv: Array<
+			-- ROBLOX deviation START: using ModuleScript instead of string
+			ModuleScript
+			-- ROBLOX deviation END
+		>?,
 		showConfig: boolean?,
 		silent: boolean?,
 		snapshotSerializers: Array<string>?,

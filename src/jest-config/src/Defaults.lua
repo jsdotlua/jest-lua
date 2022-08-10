@@ -86,10 +86,8 @@ local defaultOptions: Config_DefaultOptions = {
 	roots = { "<rootDir>" },
 	runTestsByPath = false,
 	runner = "jest-runner",
-	-- ROBLOX deviation START: not supported
-	-- setupFiles = {},
-	-- setupFilesAfterEnv = {},
-	-- ROBLOX deviation END
+	setupFiles = {},
+	setupFilesAfterEnv = {},
 	skipFilter = false,
 	slowTestThreshold = 5,
 	snapshotSerializers = {},

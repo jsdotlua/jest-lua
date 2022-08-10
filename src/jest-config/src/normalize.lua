@@ -507,11 +507,9 @@ local function normalizeMissingOptions(
 		-- ROBLOX deviation END
 	end
 
-	-- ROBLOX deviation START: not supported
-	-- if options.setupFiles == nil then
-	-- 	options.setupFiles = {}
-	-- end
-	-- ROBLOX deviation END
+	if options.setupFiles == nil then
+		options.setupFiles = {}
+	end
 	return options
 end
 local function normalizeRootDir(options: Config_InitialOptions): Config_InitialOptionsWithRootDir
@@ -834,19 +832,24 @@ local function normalize(
 					-- 	break
 					-- ROBLOX deviation END
 					-- ROBLOX deviation START: no need to resolve
-					-- elseif key == "setupFiles" or key == "setupFilesAfterEnv" or key == "snapshotSerializers" then
-					-- 	do
-					-- 		local option = oldOptions[key]
-					-- 		value = if Boolean.toJSBoolean(option)
-					-- 			then Array.map(option, function(filePath)
-					-- 				return resolve(
-					-- 					newOptions.resolver,
-					-- 					{ filePath = filePath, key = key, rootDir = options.rootDir }
-					-- 				)
-					-- 			end)
-					-- 			else option
-					-- 	end
-					-- 	break
+				elseif key == "setupFiles" or key == "setupFilesAfterEnv" or key == "snapshotSerializers" then
+					do
+						local option = oldOptions[key]
+						if option ~= nil then
+							value = Array.map(option, function(path)
+								return if path == "<rootDir>" then options.rootDir else path
+							end)
+						end
+						-- value = if Boolean.toJSBoolean(option)
+						-- 	then Array.map(option, function(filePath)
+						-- 		return resolve(
+						-- 			newOptions.resolver,
+						-- 			{ filePath = filePath, key = key, rootDir = options.rootDir }
+						-- 		)
+						-- 	end)
+						-- 	else option
+					end
+					break
 				elseif key == "modulePaths" or key == "roots" then
 					do
 						local option = oldOptions[key]
