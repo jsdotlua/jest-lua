@@ -7,10 +7,7 @@ content_root = "src"
 files = ["*", "!**/__tests__/**"]
 
 [dependencies]
-JestMock = { path = "../jest-mock" }
-JestFakeTimers = { path = "../jest-fake-timers" }
-JestEnvironment = { path = "../jest-environment" }
-JestRuntime = { path = "../jest-runtime" }
+JestCore = { path = "../jest-core" }
 
 [dev_dependencies]
 JestGlobals = { path = "../jest-globals" }

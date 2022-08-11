@@ -1,25 +1,23 @@
--- ROBLOX NOTE: no upstream
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest/src/jest.ts
+--[[*
+ * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ ]]
 
-local CurrentModule = script
-local Packages = CurrentModule.Parent
+local Packages = script.Parent
 
-local Runtime = require(Packages.JestRuntime)
-
-local runtime = Runtime.new()
--- ROBLOX TODO: remove when we don't need to manually inject fake timers into tests
-local fakeTimers = runtime._jestObject.jestTimers
-
-local jest = {
-	testEnv = {
-		delay = fakeTimers.delayOverride,
-		tick = fakeTimers.tickOverride,
-		DateTime = fakeTimers.dateTimeOverride,
-		os = fakeTimers.osOverride,
-		require = function(scriptInstance: ModuleScript)
-			return runtime:requireModuleOrMock(scriptInstance)
-		end,
-	},
-	runtime = runtime,
-}
-
-return jest
+local exports = {}
+local coreModule = require(Packages.JestCore)
+exports.SearchSource = coreModule.SearchSource
+exports.TestWatcher = coreModule.TestWatcher
+exports.createTestScheduler = coreModule.createTestScheduler
+-- ROBLOX ROBLOX deviation START: not ported
+-- exports.getVersion = coreModule.getVersion
+-- ROBLOX deviation END
+exports.runCLI = coreModule.runCLI
+-- ROBLOX deviation START: JestCli is not ported
+-- exports.run = require(Packages.JestCli).run
+-- ROBLOX deviation END
+return exports
