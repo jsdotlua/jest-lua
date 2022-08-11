@@ -1,6 +1,6 @@
 # Jest Roblox Changelog
 
-## Not released yet
+## 3.0.0 alpha 0 (2022-08-11)
 
 * :sparkles: Port `jest-config` ([#203](https://github.com/Roblox/jest-roblox/pull/203))
 * :sparkles: Port `jest-core` ([#203](https://github.com/Roblox/jest-roblox/pull/203))
