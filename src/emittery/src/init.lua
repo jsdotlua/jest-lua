@@ -1,6 +1,10 @@
 -- ROBLOX upstream: https://github.com/sindresorhus/emittery/blob/v0.11.0/index.js
 -- ROBLOX upstream types: https://github.com/sindresorhus/emittery/blob/v0.11.0/index.d.ts
+--[[
+	MIT License
 
+	Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)
+]]
 local Packages = script.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array

@@ -1,4 +1,9 @@
 -- ROBLOX upstream: https://github.com/ikatyang/jest-snapshot-serializer-raw/blob/v1.2.0/src/index.ts
+--[[
+	MIT License
+
+	Copyright (c) Ika <ikatyang@gmail.com> (https://github.com/ikatyang)
+]]
 
 local Packages = script.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)

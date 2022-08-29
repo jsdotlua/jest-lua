@@ -1,4 +1,9 @@
 -- ROBLOX upstream: https://github.com/graphql/graphql-js/blob/1951bce42092123e844763b6a8e985a8a3327511/src/__testUtils__/dedent.js
+--[[
+	MIT License
+
+	Copyright (c) GraphQL Contributors
+]]
 local srcWorkspace = script.Parent
 local rootWorkspace = srcWorkspace.Parent
 local Packages = rootWorkspace

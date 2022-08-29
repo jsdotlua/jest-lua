@@ -1,4 +1,10 @@
--- ROBLOX NOTE: no upstream
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-circus/src/state.ts
+--[[*
+ * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ ]]
 
 -- ROBLOX deviation: moved implementation from `state.lua` to avoid cyclic dependencies
 local CurrentModule = script.Parent

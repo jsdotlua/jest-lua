@@ -1,4 +1,9 @@
 -- ROBLOX upstream: https://github.com/sindresorhus/emittery/blob/v0.11.0/test/index.js
+--[[
+	MIT License
+
+	Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)
+]]
 
 local Packages = script.Parent.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
