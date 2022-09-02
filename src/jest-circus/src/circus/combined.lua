@@ -270,7 +270,7 @@ do
 				-- state.originalGlobalErrorHandlers = injectGlobalErrorHandlers(state.parentProcess)
 				-- ROBLOX deviation END
 				if Boolean.toJSBoolean(event.testNamePattern) then
-					state.testNamePattern = RegExp.new(event.testNamePattern, "i")
+					state.testNamePattern = RegExp(event.testNamePattern, "i")
 				end
 				break
 			elseif event.name == "teardown" then
