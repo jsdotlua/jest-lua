@@ -767,10 +767,10 @@ Error message: <r>"<d>expect(</><r>received</><r><d>).</>toBe<d>(</><g>expected<
 <r>Expected: <g>2</><r></>
 <r>Received: <r>4</><r>"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:172
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:161
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:160
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:171
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:185
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:174
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:173
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:184
 ]=]
 
 return exports
