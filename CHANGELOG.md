@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* :sparkles: Added `task.delay()` and `time()` as fake timers ([#242](https://github.com/Roblox/jest-roblox/pull/242))
 * :bug: Fix test result message for failing test ([#237](https://github.com/Roblox/jest-roblox/pull/237))
 
 ## 3.0.0 alpha 0 (2022-08-11)

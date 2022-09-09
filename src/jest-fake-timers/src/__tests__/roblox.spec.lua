@@ -84,6 +84,47 @@ describe("FakeTimers", function()
 			})
 		end)
 
+		it("preserves insertion order for timers with the same timeout", function()
+			timers:useFakeTimers()
+
+			local runOrder = {}
+			local mock1 = jest.fn(function()
+				table.insert(runOrder, "mock1")
+			end)
+			local mock2 = jest.fn(function()
+				table.insert(runOrder, "mock2")
+			end)
+			local mock3 = jest.fn(function()
+				table.insert(runOrder, "mock3")
+			end)
+			local mock4 = jest.fn(function()
+				table.insert(runOrder, "mock4")
+			end)
+			local mock5 = jest.fn(function()
+				table.insert(runOrder, "mock5")
+			end)
+			local mock6 = jest.fn(function()
+				table.insert(runOrder, "mock6")
+			end)
+
+			timers.delayOverride(0, mock2)
+			timers.delayOverride(10, mock3)
+			timers.delayOverride(10, mock5)
+			timers.delayOverride(10, mock6)
+			timers.delayOverride(20, mock1)
+			timers.delayOverride(20, mock4)
+
+			timers:runAllTimers()
+			expect(runOrder).toEqual({
+				"mock2",
+				"mock3",
+				"mock5",
+				"mock6",
+				"mock1",
+				"mock4",
+			})
+		end)
+
 		it("warns when trying to advance timers while real timers are used", function()
 			expect(function()
 				timers:runAllTimers()
@@ -372,18 +413,23 @@ describe("FakeTimers", function()
 		it("resets native timer APIs", function()
 			local nativeDelay = timers.delayOverride.getMockImplementation()
 			local nativeTick = timers.tickOverride.getMockImplementation()
+			local nativeTime = timers.timeOverride.getMockImplementation()
 
 			timers:useFakeTimers()
 			local fakeDelay = timers.delayOverride.getMockImplementation()
 			local fakeTick = timers.tickOverride.getMockImplementation()
+			local fakeTime = timers.timeOverride.getMockImplementation()
 			expect(fakeDelay).never.toBe(nativeDelay)
 			expect(fakeTick).never.toBe(nativeTick)
+			expect(fakeTime).never.toBe(nativeTime)
 
 			timers:useRealTimers()
 			local realDelay = timers.delayOverride.getMockImplementation()
 			local realTick = timers.tickOverride.getMockImplementation()
+			local realTime = timers.timeOverride.getMockImplementation()
 			expect(realDelay).toBe(nativeDelay)
 			expect(realTick).toBe(nativeTick)
+			expect(realTime).toBe(nativeTime)
 		end)
 	end)
 
@@ -596,6 +642,85 @@ describe("tick", function()
 	end)
 end)
 
+describe("time", function()
+	it("installs time mock", function()
+		expect(time).never.toBeNil()
+	end)
+
+	it("affected by timers", function()
+		timers:useFakeTimers()
+
+		expect(timers.timeOverride()).toBe(0)
+		timers:advanceTimersByTime(100)
+		expect(timers.timeOverride()).toBe(100)
+	end)
+end)
+
+describe("task", function()
+	describe("construction", function()
+		it("installs task mock", function()
+			expect(task).never.toBeNil()
+			expect(timers.taskOverride.delay).never.toBeNil()
+		end)
+
+		it("task methods pass through", function()
+			timers:useFakeTimers()
+
+			expect(timers.taskOverride.spawn).never.toBeNil()
+			expect(timers.taskOverride.defer).never.toBeNil()
+			expect(timers.taskOverride.wait).never.toBeNil()
+		end)
+	end)
+
+	describe("timers.taskOverride.delay", function()
+		it("calls callback with args", function()
+			timers:useFakeTimers()
+
+			local runOrder = {}
+			local tableInsert = function(str)
+				table.insert(runOrder, str)
+			end
+			local mock1 = jest.fn(tableInsert)
+			local mock2 = jest.fn(tableInsert)
+			local mock3 = jest.fn(tableInsert)
+			local mock4 = jest.fn(tableInsert)
+			local mock5 = jest.fn(tableInsert)
+			local mock6 = jest.fn(tableInsert)
+
+			timers.taskOverride.delay(100, mock1, "mock1")
+			timers.taskOverride.delay(0, mock2, "mock2")
+			timers.taskOverride.delay(0, mock3, "mock3")
+			timers.taskOverride.delay(200, mock4, "mock4")
+			timers.taskOverride.delay(3, mock5, "mock5")
+			timers.taskOverride.delay(4, mock6, "mock6")
+			timers:runAllTimers()
+			expect(timers.osOverride.clock()).toEqual(200)
+			expect(runOrder).toEqual({
+				"mock2",
+				"mock3",
+				"mock5",
+				"mock6",
+				"mock1",
+				"mock4",
+			})
+		end)
+	end)
+
+	describe("useRealTimers, useFakeTimers", function()
+		it("resets native timer APIs", function()
+			local nativeTaskDelay = timers.taskOverride.delay.getMockImplementation()
+
+			timers:useFakeTimers()
+			local fakeTaskDelay = timers.taskOverride.delay.getMockImplementation()
+			expect(fakeTaskDelay).never.toBe(nativeTaskDelay)
+
+			timers:useRealTimers()
+			local realTaskDelay = timers.taskOverride.delay.getMockImplementation()
+			expect(realTaskDelay).toBe(nativeTaskDelay)
+		end)
+	end)
+end)
+
 it("spies", function()
 	timers:useFakeTimers()
 
@@ -604,8 +729,10 @@ it("spies", function()
 	local mock3 = jest.fn()
 
 	expect(timers.delayOverride).never.toHaveBeenCalled()
+	expect(timers.taskOverride.delay).never.toHaveBeenCalled()
 
 	timers.delayOverride(0, mock1)
+	timers.taskOverride.delay(0, mock1)
 	timers.delayOverride(25, function()
 		mock2()
 		timers.delayOverride(50, mock3)
@@ -614,6 +741,7 @@ it("spies", function()
 	end)
 
 	expect(timers.delayOverride).toHaveBeenCalledTimes(2)
+	expect(timers.taskOverride.delay).toHaveBeenCalledTimes(1)
 	expect(timers.tickOverride).never.toHaveBeenCalled()
 	expect(timers.dateTimeOverride.now).never.toHaveBeenCalled()
 

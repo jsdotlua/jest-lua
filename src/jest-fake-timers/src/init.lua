@@ -27,12 +27,15 @@ local jestMock = require(Packages.JestMock).ModuleMocker
 
 local realDelay = delay
 local realTick = tick
+local realTime = time
 local realDateTime = DateTime
 local realOs = os
+local realTask = task
 
 type Timeout = {
 	time: number,
 	callback: () -> (),
+	args: { any },
 }
 
 export type FakeTimers = {
@@ -51,8 +54,10 @@ export type FakeTimers = {
 	getTimerCount: (self: FakeTimers) -> number,
 	delayOverride: typeof(delay),
 	tickOverride: typeof(tick),
+	timeOverride: typeof(time),
 	dateTimeOverride: typeof(DateTime),
 	osOverride: typeof(os),
+	taskOverride: typeof(task),
 }
 
 local FakeTimers = {}
@@ -62,6 +67,7 @@ function FakeTimers.new()
 
 	local delayOverride = mock:fn(realDelay)
 	local tickOverride = mock:fn(realTick)
+	local timeOverride = mock:fn(realTime)
 	local dateTimeOverride = {
 		now = mock:fn(realDateTime.now),
 		fromUnixTimestamp = realDateTime.fromUnixTimestamp,
@@ -75,6 +81,10 @@ function FakeTimers.new()
 		clock = mock:fn(realOs.clock),
 	}
 	setmetatable(osOverride, { __index = realOs })
+	local taskOverride = {
+		delay = mock:fn(realTask.delay),
+	}
+	setmetatable(taskOverride, { __index = realTask })
 
 	local self = {
 		_fakingTime = false,
@@ -84,8 +94,10 @@ function FakeTimers.new()
 		_mockSystemTime = realDateTime.now().UnixTimestamp,
 		delayOverride = delayOverride,
 		tickOverride = tickOverride,
+		timeOverride = timeOverride,
 		dateTimeOverride = dateTimeOverride,
 		osOverride = osOverride,
+		taskOverride = taskOverride,
 	}
 
 	setmetatable(self, FakeTimers)
@@ -114,9 +126,9 @@ end
 
 function FakeTimers:runAllTimers(): ()
 	if self:_checkFakeTimers() then
-		for _, timeout in ipairs(self._timeouts) do
+		for _, timeout in self._timeouts do
 			self:_advanceToTime(timeout.time)
-			timeout.callback()
+			timeout.callback(unpack(timeout.args))
 		end
 	end
 	self._timeouts = {}
@@ -125,15 +137,15 @@ end
 function FakeTimers:runOnlyPendingTimers(): ()
 	if self:_checkFakeTimers() then
 		local pendingTimeouts = {}
-		for _, timeout in ipairs(self._timeouts) do
+		for _, timeout in self._timeouts do
 			table.insert(pendingTimeouts, timeout)
 		end
 
 		-- Call all pending timeouts
 		self._timeouts = {}
-		for _, timeout in ipairs(pendingTimeouts) do
+		for _, timeout in pendingTimeouts do
 			self:_advanceToTime(timeout.time)
-			timeout.callback()
+			timeout.callback(unpack(timeout.args))
 		end
 	end
 end
@@ -145,14 +157,14 @@ function FakeTimers:advanceTimersToNextTimer(steps_: number?): ()
 	if self:_checkFakeTimers() then
 		local newTimeouts = {}
 		local nextTime = -1
-		for _, timeout in ipairs(self._timeouts) do
+		for _, timeout in self._timeouts do
 			if timeout.time > nextTime and steps > 0 then
 				nextTime = timeout.time
 				self:_advanceToTime(nextTime)
 				steps = steps - 1
 			end
 			if self._mockTime >= timeout.time then
-				timeout.callback()
+				timeout.callback(unpack(timeout.args))
 			else
 				table.insert(newTimeouts, timeout)
 			end
@@ -165,10 +177,10 @@ function FakeTimers:advanceTimersByTime(msToRun: number): ()
 	if self:_checkFakeTimers() then
 		local targetTime = self._mockTime + msToRun
 		local newTimeouts = {}
-		for _, timeout in ipairs(self._timeouts) do
+		for _, timeout in self._timeouts do
 			if targetTime >= timeout.time then
 				self:_advanceToTime(timeout.time)
-				timeout.callback()
+				timeout.callback(unpack(timeout.args))
 			else
 				table.insert(newTimeouts, timeout)
 			end
@@ -188,36 +200,46 @@ function FakeTimers:useRealTimers(): ()
 	if self._fakingTime then
 		self.delayOverride.mockImplementation(realDelay)
 		self.tickOverride.mockImplementation(realTick)
+		self.timeOverride.mockImplementation(realTime)
 		self.dateTimeOverride.now.mockImplementation(realDateTime.now)
 		self.osOverride.time.mockImplementation(realOs.time)
 		self.osOverride.clock.mockImplementation(realOs.clock)
+		self.taskOverride.delay.mockImplementation(realTask.delay)
 		self._fakingTime = false
 	end
+end
+
+local function fakeDelay(self, delayTime, callback, ...)
+	local targetTime = self._mockTime + delayTime
+	local timeout = {
+		time = targetTime,
+		callback = callback,
+		args = { ... },
+	}
+	local insertIndex = #self._timeouts + 1
+	for i, timeout_ in self._timeouts do
+		-- Timeouts are inserted in time order. As soon as we encounter a
+		-- timeout that's _after_ our targetTime, we place ours in the list
+		-- immediately before it. This way, timeouts with the exact same time
+		-- will be queued up in insertion order to break ties
+		if timeout_.time > targetTime then
+			insertIndex = i
+			break
+		end
+	end
+	table.insert(self._timeouts, insertIndex, timeout)
 end
 
 function FakeTimers:useFakeTimers(): ()
 	if not self._fakingTime then
 		self.delayOverride.mockImplementation(function(delayTime, callback)
-			local targetTime = self._mockTime + delayTime
-			local timeout = {
-				time = targetTime,
-				callback = callback,
-			}
-			local insertIndex = #self._timeouts + 1
-			for i, timeout_ in ipairs(self._timeouts) do
-				-- Timeouts are inserted in time order. As soon as we encounter a
-				-- timeout that's _after_ our targetTime, we place ours in the list
-				-- immediately before it. This way, timeouts with the exact same time
-				-- will be queued up in insertion order to break ties
-				if timeout_.time > targetTime then
-					insertIndex = i
-					break
-				end
-			end
-			table.insert(self._timeouts, insertIndex, timeout)
+			fakeDelay(self, delayTime, callback)
 		end)
 		self.tickOverride.mockImplementation(function()
 			return self._mockSystemTime
+		end)
+		self.timeOverride.mockImplementation(function()
+			return self._mockTime
 		end)
 		self.dateTimeOverride.now.mockImplementation(function()
 			return realDateTime.fromUnixTimestamp(self._mockSystemTime)
@@ -238,6 +260,9 @@ function FakeTimers:useFakeTimers(): ()
 		end)
 		self.osOverride.clock.mockImplementation(function()
 			return self._mockTime
+		end)
+		self.taskOverride.delay.mockImplementation(function(delayTime, callback, ...)
+			fakeDelay(self, delayTime, callback, ...)
 		end)
 		self._fakingTime = true
 		self:reset()

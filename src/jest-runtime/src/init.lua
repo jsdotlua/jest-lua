@@ -331,8 +331,10 @@ function Runtime:requireModule(
 	end
 	getfenv(moduleFunction).delay = self._fakeTimersImplementation.delayOverride
 	getfenv(moduleFunction).tick = self._fakeTimersImplementation.tickOverride
+	getfenv(moduleFunction).time = self._fakeTimersImplementation.timeOverride
 	getfenv(moduleFunction).DateTime = self._fakeTimersImplementation.dateTimeOverride
 	getfenv(moduleFunction).os = self._fakeTimersImplementation.osOverride
+	getfenv(moduleFunction).task = self._fakeTimersImplementation.taskOverride
 
 	moduleResult = moduleFunction()
 	if moduleResult == nil then
