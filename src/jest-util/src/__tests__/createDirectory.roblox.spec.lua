@@ -19,7 +19,7 @@ local SrcModule = CurrentModule.Parent
 local Packages = SrcModule.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
@@ -46,7 +46,7 @@ describe("createDirectory", function()
 			error("kaboom")
 		end
 
-		jestExpect(function()
+		expect(function()
 			createDirectory("Packages/foo/bar")
 		end).toThrow("kaboom")
 	end)
@@ -56,7 +56,7 @@ describe("createDirectory", function()
 			error("Error(13): Access Denied. Path is outside of sandbox.")
 		end
 
-		jestExpect(function()
+		expect(function()
 			createDirectory("Packages/foo/bar")
 		end).toThrow(
 			"Provided path is invalid: you likely need to provide a different argument to --fs.readwrite.\nYou may need to pass in `--fs.readwrite=$PWD`"
@@ -66,7 +66,7 @@ describe("createDirectory", function()
 	it("should not throw when CreateDirectories executes successfully", function()
 		function mockFileSystem:CreateDirectories() end
 
-		jestExpect(function()
+		expect(function()
 			createDirectory("Packages/foo/bar")
 		end).never.toThrow()
 	end)

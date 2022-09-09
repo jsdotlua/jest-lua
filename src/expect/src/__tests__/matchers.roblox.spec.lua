@@ -22,7 +22,7 @@ local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
 local afterAll = JestGlobals.afterAll
 
-local jestExpect = require(CurrentModule)
+local expect = require(CurrentModule)
 
 local chalk = require(Packages.Dev.ChalkLua)
 local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
@@ -40,7 +40,7 @@ end
 
 local screenGui
 beforeAll(function()
-	jestExpect.addSnapshotSerializer(alignedAnsiStyleSerializer)
+	expect.addSnapshotSerializer(alignedAnsiStyleSerializer)
 
 	screenGui = Instance.new("ScreenGui")
 	screenGui.Name = "Root"
@@ -119,15 +119,15 @@ beforeAll(function()
 end)
 
 afterAll(function()
-	jestExpect.resetSnapshotSerializers()
+	expect.resetSnapshotSerializers()
 end)
 
 -- test cases devised from https://github.com/Roblox/jest-roblox/pull/27#discussion_r561374828
 it("tests toStrictEqual matcher with example class", function()
-	jestExpect(CustomClass.new()).never.toBe(CustomClass.new()) -- not the same table
-	jestExpect(CustomClass.new()).toStrictEqual(CustomClass.new()) -- not the same table, but same shape and same class
-	jestExpect(CustomClass.new()).never.toStrictEqual({ foo = true }) -- same shape but not same class
-	jestExpect(CustomClass.new()).toEqual({ foo = true }) -- same shape
+	expect(CustomClass.new()).never.toBe(CustomClass.new()) -- not the same table
+	expect(CustomClass.new()).toStrictEqual(CustomClass.new()) -- not the same table, but same shape and same class
+	expect(CustomClass.new()).never.toStrictEqual({ foo = true }) -- same shape but not same class
+	expect(CustomClass.new()).toEqual({ foo = true }) -- same shape
 end)
 
 -- test case taken from Jest docs
@@ -140,32 +140,32 @@ function LaCroix.new(flavor)
 end
 
 it("the La Croix cans on my desk are not semantically the same", function()
-	jestExpect(LaCroix.new("lemon")).toEqual({ flavor = "lemon" })
-	jestExpect(LaCroix.new("lemon")).never.toStrictEqual({ flavor = "lemon" })
+	expect(LaCroix.new("lemon")).toEqual({ flavor = "lemon" })
+	expect(LaCroix.new("lemon")).never.toStrictEqual({ flavor = "lemon" })
 end)
 
 it("tests the set polyfill", function()
-	jestExpect(Set.new({ 1, 2, 5 })).toEqual(Set.new({ 2, 5, 1 }))
-	jestExpect(Set.new({ 1, 2, 6 })).never.toEqual(Set.new({ 1, 2, 5 }))
-	jestExpect(Set.new({ { 1, 2 }, { 3, 4 } })).toEqual(Set.new({ { 3, 4 }, { 1, 2 } }))
-	jestExpect(Set.new({ { 1, 2 }, { 3, 4 } })).never.toEqual(Set.new({ { 1, 2 }, { 3, 5 } }))
-	jestExpect(Set.new({ "a" })).toContain("a")
+	expect(Set.new({ 1, 2, 5 })).toEqual(Set.new({ 2, 5, 1 }))
+	expect(Set.new({ 1, 2, 6 })).never.toEqual(Set.new({ 1, 2, 5 }))
+	expect(Set.new({ { 1, 2 }, { 3, 4 } })).toEqual(Set.new({ { 3, 4 }, { 1, 2 } }))
+	expect(Set.new({ { 1, 2 }, { 3, 4 } })).never.toEqual(Set.new({ { 1, 2 }, { 3, 5 } }))
+	expect(Set.new({ "a" })).toContain("a")
 end)
 
 describe("chalk tests", function()
 	it("tests basic chalked string", function()
-		jestExpect(chalk.red("i am chalked")).toMatch("i am chalked")
-		jestExpect(chalk.red("i am chalked")).toMatch(chalk.red("i am chalked"))
+		expect(chalk.red("i am chalked")).toMatch("i am chalked")
+		expect(chalk.red("i am chalked")).toMatch(chalk.red("i am chalked"))
 	end)
 
 	it("tests nested chalk string", function()
 		local nestedStyle = chalk.red .. chalk.bold .. chalk.bgYellow
-		jestExpect(nestedStyle("i am heavily chalked")).toMatch("i am heavily chalked")
-		jestExpect(nestedStyle("i am heavily chalked")).toMatch(chalk.bgYellow("i am heavily chalked"))
-		jestExpect(nestedStyle("i am heavily chalked")).toMatch(chalk.bold(chalk.bgYellow("i am heavily chalked")))
-		jestExpect(nestedStyle("i am heavily chalked")).toMatch(nestedStyle("i am heavily chalked"))
+		expect(nestedStyle("i am heavily chalked")).toMatch("i am heavily chalked")
+		expect(nestedStyle("i am heavily chalked")).toMatch(chalk.bgYellow("i am heavily chalked"))
+		expect(nestedStyle("i am heavily chalked")).toMatch(chalk.bold(chalk.bgYellow("i am heavily chalked")))
+		expect(nestedStyle("i am heavily chalked")).toMatch(nestedStyle("i am heavily chalked"))
 
-		jestExpect(nestedStyle("i am heavily chalked")).never.toMatch(chalk.red("i am heavily chalked"))
+		expect(nestedStyle("i am heavily chalked")).never.toMatch(chalk.red("i am heavily chalked"))
 	end)
 end)
 
@@ -179,10 +179,10 @@ local nestedFn = function(fn)
 end
 
 it("tests stack traces for calls within pcalls", function()
-	jestExpect(function()
-		jestExpect(function()
+	expect(function()
+		expect(function()
 			nestedFn(function()
-				jestExpect(4).toBe(2)
+				expect(4).toBe(2)
 			end)
 		end).never.toThrow()
 	end).toThrowErrorMatchingSnapshot()
@@ -199,10 +199,10 @@ end
 
 -- TODO: ADO-1716 unskip this test and determine how to reconcile behavior
 it.skip("tests stack traces for calls within pcalls with Error polyfill", function()
-	jestExpect(function()
-		jestExpect(function()
+	expect(function()
+		expect(function()
 			nestedFnWithError(function()
-				jestExpect(4).toBe(2)
+				expect(4).toBe(2)
 			end)
 		end).never.toThrow()
 	end).toThrowErrorMatchingSnapshot()
@@ -211,14 +211,14 @@ end)
 describe("Instance matchers", function()
 	describe(".toMatchInstance", function()
 		it("matches properties of instance", function()
-			jestExpect(screenGui).toMatchInstance({
+			expect(screenGui).toMatchInstance({
 				Name = "Root",
 				ClassName = "ScreenGui",
 			})
 		end)
 
 		it("matches properties of children", function()
-			jestExpect(screenGui).toMatchInstance({
+			expect(screenGui).toMatchInstance({
 				["ScrollingFrame"] = {
 					Size = UDim2.new(0, 400, 0, 600),
 					Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -228,7 +228,7 @@ describe("Instance matchers", function()
 		end)
 
 		it("matches subset of instance", function()
-			jestExpect(screenGui).toMatchInstance({
+			expect(screenGui).toMatchInstance({
 				ClassName = "ScreenGui",
 				AbsolutePosition = Vector2.new(0, 0),
 				["ScrollingFrame"] = {
@@ -249,16 +249,16 @@ describe("Instance matchers", function()
 		end)
 
 		it("does not match properties of instance", function()
-			jestExpect(function()
-				jestExpect(screenGui).toMatchInstance({
+			expect(function()
+				expect(screenGui).toMatchInstance({
 					ClassName = "Frame",
 				})
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it("does not match subset of instance", function()
-			jestExpect(function()
-				jestExpect(screenGui).toMatchInstance({
+			expect(function()
+				expect(screenGui).toMatchInstance({
 					ClassName = "ScreenGui",
 					Name = "Root",
 					["ScrollingFrame"] = {
@@ -274,11 +274,11 @@ describe("Instance matchers", function()
 		end)
 
 		it("works with asymmetric matchers", function()
-			jestExpect(function()
-				jestExpect(screenGui).toMatchInstance({
-					AbsolutePosition = jestExpect.any("Vector3"),
+			expect(function()
+				expect(screenGui).toMatchInstance({
+					AbsolutePosition = expect.any("Vector3"),
 					["ScrollingFrame"] = {
-						MidImage = jestExpect.stringMatching("foobar"),
+						MidImage = expect.stringMatching("foobar"),
 					},
 				})
 			end).toThrowErrorMatchingSnapshot()
@@ -287,14 +287,14 @@ describe("Instance matchers", function()
 
 	describe(".toMatchSnapshot", function()
 		it("matches instance against snapshot", function()
-			jestExpect(screenGui).toMatchSnapshot()
+			expect(screenGui).toMatchSnapshot()
 		end)
 
 		it.skip("matches instance against snapshot with fuzzy values", function()
 			local frame = Instance.new("Frame")
 			frame.Position = UDim2.fromOffset(math.random(0, 100), math.random(0, 100))
-			jestExpect(frame).toMatchSnapshot({
-				Position = jestExpect.any("UDim2"),
+			expect(frame).toMatchSnapshot({
+				Position = expect.any("UDim2"),
 			})
 		end)
 	end)

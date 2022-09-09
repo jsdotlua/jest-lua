@@ -15,7 +15,7 @@ local Symbol = LuauPolyfill.Symbol
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local it = JestGlobals.it
 
 local prettyFormat = require(Packages.PrettyFormat).format
@@ -24,7 +24,7 @@ local plugin_ = require(CurrentModule.mockSerializer)
 
 it("mock with 0 calls and default name", function()
 	local fn = jest.fn()
-	jestExpect(fn).toMatchSnapshot()
+	expect(fn).toMatchSnapshot()
 end)
 
 it("mock with 1 calls and non-default name via new in object", function()
@@ -38,7 +38,7 @@ it("mock with 1 calls and non-default name via new in object", function()
 	local val = {
 		fn = fn,
 	}
-	jestExpect(val).toMatchSnapshot()
+	expect(val).toMatchSnapshot()
 end)
 
 -- ROBLOX deviation: skipped because we don't have support for React elements in prettyFormat
@@ -53,7 +53,7 @@ it.skip("mock with 1 calls in React element", function()
 		},
 		type = "button",
 	}
-	jestExpect(val).toMatchSnapshot()
+	expect(val).toMatchSnapshot()
 end)
 
 it("mock with 2 calls", function()
@@ -64,7 +64,7 @@ it("mock with 2 calls", function()
 	fn.mockReturnValue("undefined")
 	fn()
 	fn({ foo = "bar" }, 42)
-	jestExpect(fn).toMatchSnapshot()
+	expect(fn).toMatchSnapshot()
 end)
 
 it("indent option", function()
@@ -92,7 +92,7 @@ it("indent option", function()
 		"},",
 		"}",
 	}, "\n")
-	jestExpect(prettyFormat(fn, { indent = 0, plugins = { plugin_ } })).toBe(expected)
+	expect(prettyFormat(fn, { indent = 0, plugins = { plugin_ } })).toBe(expected)
 end)
 
 it("min option", function()
@@ -103,7 +103,7 @@ it("min option", function()
 	-- ROBLOX deviation: replaced [] with {}
 	local expected =
 		'[MockFunction] {"calls": {{{"key": "value"}}}, "results": {{"type": "return", "value": {"key": "value"}}}}'
-	jestExpect(prettyFormat(fn, { min = true, plugins = { plugin_ } })).toBe(expected)
+	expect(prettyFormat(fn, { min = true, plugins = { plugin_ } })).toBe(expected)
 end)
 
 it("maxDepth option", function()
@@ -165,7 +165,7 @@ it("maxDepth option", function()
 		"  },",
 		"}",
 	}, "\n")
-	jestExpect(prettyFormat(val, { maxDepth = 3, plugins = { plugin_ } })).toBe(expected)
+	expect(prettyFormat(val, { maxDepth = 3, plugins = { plugin_ } })).toBe(expected)
 end)
 
 return {}

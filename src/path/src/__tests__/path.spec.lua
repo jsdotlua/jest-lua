@@ -3,7 +3,7 @@ local Packages = CurrentModule.Parent
 
 local path = require(CurrentModule).path
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
@@ -18,7 +18,7 @@ describe("path.normalize normalizes the given path", function()
 	for _, test in ipairs(normalizeTests) do
 		it("normalizes to" .. test[2], function()
 			local result = path:normalize(test[1])
-			jestExpect(result).toEqual(test[2])
+			expect(result).toEqual(test[2])
 		end)
 	end
 end)
@@ -41,7 +41,7 @@ describe("path.basename returns the last portion of a path", function()
 
 		it("basename result " .. expected, function()
 			local actual = path:basename(table.unpack(args))
-			jestExpect(actual).toEqual(expected)
+			expect(actual).toEqual(expected)
 		end)
 	end
 end)
@@ -68,7 +68,7 @@ describe("path.isAbsolute determines if a path is an absolute path", function()
 
 	for _, test in ipairs(isAbsoluteTests) do
 		it(test[1] .. " should return " .. tostring(test[2]), function()
-			jestExpect(path:isAbsolute(test[1])).toEqual(test[2])
+			expect(path:isAbsolute(test[1])).toEqual(test[2])
 		end)
 	end
 end)
@@ -103,7 +103,7 @@ describe("path.extname returns the extension of the path", function()
 
 	for _, test in ipairs(extnameTests) do
 		it(test[1] .. " should return " .. test[2], function()
-			jestExpect(path:extname(test[1])).toEqual(test[2])
+			expect(path:extname(test[1])).toEqual(test[2])
 		end)
 	end
 end)
@@ -119,7 +119,7 @@ describe("path.dirname returns directory name of a path", function()
 	for _, test in ipairs(dirnameTests) do
 		it("returns directory name " .. test[2], function()
 			local dirname = path:dirname(test[1])
-			jestExpect(dirname).toEqual(test[2])
+			expect(dirname).toEqual(test[2])
 		end)
 	end
 end)
@@ -138,7 +138,7 @@ describe("path.join joins all given path segments", function()
 
 		it("resolves to " .. expected, function()
 			local actual = path:join(unpack(parts))
-			jestExpect(actual).toEqual(expected)
+			expect(actual).toEqual(expected)
 		end)
 	end
 end)
@@ -164,7 +164,7 @@ describe("path.resolve correctly resolves absolute paths", function()
 		local expected = test[2]
 		it(table.concat(test[1], ", ") .. " resolves to " .. expected, function()
 			local result = path:resolve(table.unpack(args))
-			jestExpect(result).toEqual(test[2])
+			expect(result).toEqual(test[2])
 		end)
 	end
 end)
@@ -183,7 +183,7 @@ describe("path.relative correctly resolves relative paths", function()
 
 		it("should resolve " .. from .. " to " .. to .. " to " .. expected, function()
 			local actual = path:relative(from, to)
-			jestExpect(actual).toEqual(expected)
+			expect(actual).toEqual(expected)
 		end)
 	end
 end)

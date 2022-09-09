@@ -10,7 +10,7 @@ local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
@@ -39,31 +39,31 @@ describe("wrapAnsiString()", function()
 	-- 		.. ("tetetetetettetetetetetetetete%s"):format(chalk.underline("stnhsnthsnth"))
 	-- 		.. "ssot"
 
-	-- 	jestExpect(wrapAnsiString(string_, 10)).toMatchSnapshot()
-	-- 	jestExpect(stripAnsi(wrapAnsiString(string_, 10))).toMatchSnapshot()
+	-- 	expect(wrapAnsiString(string_, 10)).toMatchSnapshot()
+	-- 	expect(stripAnsi(wrapAnsiString(string_, 10))).toMatchSnapshot()
 	-- end)
 	-- ROBLOX deviation END
 
 	it("returns the string unaltered if given a terminal width of zero", function()
 		local string = "This string shouldn't cause you any trouble"
-		jestExpect(wrapAnsiString(string, 0)).toMatchSnapshot()
+		expect(wrapAnsiString(string, 0)).toMatchSnapshot()
 		local stripped = stripAnsi(wrapAnsiString(string, 0))
-		jestExpect(stripped).toMatchSnapshot()
+		expect(stripped).toMatchSnapshot()
 	end)
 end)
 
 describe("stripAnsi", function()
 	it("does not mess up regular text content", function()
 		local stripped = stripAnsi("...12/34/56.js")
-		jestExpect(stripped).toBe("...12/34/56.js")
-		jestExpect(utf8.len(stripped)).toBe(14)
-		jestExpect(stripped:len()).toBe(14)
+		expect(stripped).toBe("...12/34/56.js")
+		expect(utf8.len(stripped)).toBe(14)
+		expect(stripped:len()).toBe(14)
 	end)
 	it("strips ansi chars", function()
 		local stripped = stripAnsi("[1m...12/34/56.js[22m")
-		jestExpect(stripped).toBe("...12/34/56.js")
-		jestExpect(utf8.len(stripped)).toBe(14)
-		jestExpect(stripped:len()).toBe(14)
+		expect(stripped).toBe("...12/34/56.js")
+		expect(utf8.len(stripped)).toBe(14)
+		expect(stripped:len()).toBe(14)
 	end)
 end)
 
@@ -75,8 +75,8 @@ describe("trimAndFormatPath()", function()
 		local columns = 25
 		local result =
 			trimAndFormatPath(pad, makeProjectConfig({ cwd = "", rootDir = "" }), path:join(dirname, basename), columns)
-		jestExpect(result).toMatchSnapshot()
-		jestExpect(stripAnsi(result):len()).toBe(20)
+		expect(result).toMatchSnapshot()
+		expect(stripAnsi(result):len()).toBe(20)
 	end)
 
 	it("trims dirname (longer line width)", function()
@@ -86,8 +86,8 @@ describe("trimAndFormatPath()", function()
 		local columns = 30
 		local result =
 			trimAndFormatPath(pad, makeProjectConfig({ cwd = "", rootDir = "" }), path:join(dirname, basename), columns)
-		jestExpect(result).toMatchSnapshot()
-		jestExpect(stripAnsi(result):len()).toBe(25)
+		expect(result).toMatchSnapshot()
+		expect(stripAnsi(result):len()).toBe(25)
 	end)
 
 	it("trims dirname and basename", function()
@@ -97,8 +97,8 @@ describe("trimAndFormatPath()", function()
 		local columns = 15
 		local result =
 			trimAndFormatPath(pad, makeProjectConfig({ cwd = "", rootDir = "" }), path:join(dirname, basename), columns)
-		jestExpect(result).toMatchSnapshot()
-		jestExpect(stripAnsi(result):len()).toBe(10)
+		expect(result).toMatchSnapshot()
+		expect(stripAnsi(result):len()).toBe(10)
 	end)
 
 	it("does not trim anything", function()
@@ -109,8 +109,8 @@ describe("trimAndFormatPath()", function()
 		local totalLength = (basename .. path.sep .. dirname):len()
 		local result =
 			trimAndFormatPath(pad, makeProjectConfig({ cwd = "", rootDir = "" }), path:join(dirname, basename), columns)
-		jestExpect(result).toMatchSnapshot()
-		jestExpect(stripAnsi(result):len()).toBe(totalLength)
+		expect(result).toMatchSnapshot()
+		expect(stripAnsi(result):len()).toBe(totalLength)
 	end)
 
 	it("split at the path.sep index", function()
@@ -120,20 +120,20 @@ describe("trimAndFormatPath()", function()
 		local columns = 16
 		local result =
 			trimAndFormatPath(pad, makeProjectConfig({ cwd = "", rootDir = "" }), path:join(dirname, basename), columns)
-		jestExpect(result).toMatchSnapshot()
-		jestExpect(stripAnsi(result):len()).toBe(columns - pad)
+		expect(result).toMatchSnapshot()
+		expect(stripAnsi(result):len()).toBe(columns - pad)
 	end)
 end)
 
 describe("printDisplayName", function()
 	it("should default displayName color to white when displayName is a string", function()
-		jestExpect(printDisplayName(makeProjectConfig({ displayName = { color = "white", name = "hello" } }))).toMatchSnapshot()
+		expect(printDisplayName(makeProjectConfig({ displayName = { color = "white", name = "hello" } }))).toMatchSnapshot()
 	end)
 	it("should default displayName color to white when color is not a valid value", function()
-		jestExpect(printDisplayName(makeProjectConfig({ displayName = { color = "rubbish" :: any, name = "hello" } }))).toMatchSnapshot()
+		expect(printDisplayName(makeProjectConfig({ displayName = { color = "rubbish" :: any, name = "hello" } }))).toMatchSnapshot()
 	end)
 	it("should correctly print the displayName when color and name are valid values", function()
-		jestExpect(printDisplayName(makeProjectConfig({ displayName = { color = "green", name = "hello" } }))).toMatchSnapshot()
+		expect(printDisplayName(makeProjectConfig({ displayName = { color = "green", name = "hello" } }))).toMatchSnapshot()
 	end)
 end)
 

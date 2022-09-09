@@ -19,15 +19,15 @@ local SrcModule = CurrentModule.Parent
 local Packages = SrcModule.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local requireOrImportModule = require(SrcModule.requireOrImportModule)
 
 describe("requireOrImportModule", function()
 	it("should execute without error", function()
-		jestExpect(requireOrImportModule).toBeDefined()
-		jestExpect(requireOrImportModule).toEqual({})
+		expect(requireOrImportModule).toBeDefined()
+		expect(requireOrImportModule).toEqual({})
 	end)
 end)
 

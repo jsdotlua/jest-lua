@@ -17,7 +17,7 @@
 local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent.Parent
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
@@ -54,12 +54,12 @@ describe("NullConsole", function()
 
 	it("should not write to the console stdout", function()
 		_console:log("Hello, world!")
-		jestExpect(_stdout).toBe("")
+		expect(_stdout).toBe("")
 	end)
 
 	it("should not write to the console stderr", function()
 		_console:error("Somethign went wrong")
-		jestExpect(_stdout).toBe("")
+		expect(_stdout).toBe("")
 	end)
 end)
 

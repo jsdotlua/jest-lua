@@ -10,7 +10,7 @@ local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
@@ -28,11 +28,11 @@ end)
 
 describe("groupTestsBySuites", function()
 	it("should handle empty results", function()
-		jestExpect(groupTestsBySuites({})).toEqual(wrap({}))
+		expect(groupTestsBySuites({})).toEqual(wrap({}))
 	end)
 
 	it("should group A1 in A", function()
-		jestExpect(groupTestsBySuites({
+		expect(groupTestsBySuites({
 			{
 				ancestorTitles = { "A" },
 				failureMessages = {},
@@ -56,7 +56,7 @@ describe("groupTestsBySuites", function()
 	end)
 
 	it("should group A1 in A; B1 in B", function()
-		jestExpect(groupTestsBySuites({
+		expect(groupTestsBySuites({
 			{
 				ancestorTitles = { "A" },
 				failureMessages = {},
@@ -98,7 +98,7 @@ describe("groupTestsBySuites", function()
 	end)
 
 	it("should group A1, A2 in A", function()
-		jestExpect(groupTestsBySuites({
+		expect(groupTestsBySuites({
 			{
 				ancestorTitles = { "A" },
 				failureMessages = {},
@@ -134,7 +134,7 @@ describe("groupTestsBySuites", function()
 	end)
 
 	it("should group A1, A2 in A; B1, B2 in B", function()
-		jestExpect(groupTestsBySuites({
+		expect(groupTestsBySuites({
 			{
 				ancestorTitles = { "A" },
 				failureMessages = {},
@@ -200,7 +200,7 @@ describe("groupTestsBySuites", function()
 	end)
 
 	it("should group AB1 in AB", function()
-		jestExpect(groupTestsBySuites({
+		expect(groupTestsBySuites({
 			{
 				ancestorTitles = { "A", "B" },
 				failureMessages = {},
@@ -230,7 +230,7 @@ describe("groupTestsBySuites", function()
 	end)
 
 	it("should group AB1, AB2 in AB", function()
-		jestExpect(groupTestsBySuites({
+		expect(groupTestsBySuites({
 			{
 				ancestorTitles = { "A", "B" },
 				failureMessages = {},
@@ -272,7 +272,7 @@ describe("groupTestsBySuites", function()
 	end)
 
 	it("should group A1 in A; AB1 in AB", function()
-		jestExpect(groupTestsBySuites({
+		expect(groupTestsBySuites({
 			{
 				ancestorTitles = { "A" },
 				failureMessages = {},
@@ -315,7 +315,7 @@ describe("groupTestsBySuites", function()
 	end)
 
 	it("should group AB1 in AB; A1 in A", function()
-		jestExpect(groupTestsBySuites({
+		expect(groupTestsBySuites({
 			{
 				ancestorTitles = { "A", "B" },
 				failureMessages = {},
@@ -358,7 +358,7 @@ describe("groupTestsBySuites", function()
 	end)
 
 	it("should group AB1 in AB; CD1 in CD", function()
-		jestExpect(groupTestsBySuites({
+		expect(groupTestsBySuites({
 			{
 				ancestorTitles = { "A", "B" },
 				failureMessages = {},
@@ -412,7 +412,7 @@ describe("groupTestsBySuites", function()
 	end)
 
 	it("should group ABC1 in ABC; BC1 in BC; D1 in D; A1 in A", function()
-		jestExpect(groupTestsBySuites({
+		expect(groupTestsBySuites({
 			{
 				ancestorTitles = { "A", "B", "C" },
 				failureMessages = {},

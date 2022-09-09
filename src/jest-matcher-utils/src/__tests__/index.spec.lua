@@ -22,7 +22,7 @@ local chalk = require(Packages.ChalkLua)
 local prettyFormat = require(Packages.PrettyFormat).format
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
@@ -41,11 +41,11 @@ local pluralize = JestMatcherUtils.pluralize
 local stringify = JestMatcherUtils.stringify
 
 beforeAll(function()
-	jestExpect.addSnapshotSerializer(alignedAnsiStyleSerializer)
+	expect.addSnapshotSerializer(alignedAnsiStyleSerializer)
 end)
 
 afterAll(function()
-	jestExpect.resetSnapshotSerializers()
+	expect.resetSnapshotSerializers()
 end)
 
 describe("stringify()", function()
@@ -70,14 +70,14 @@ describe("stringify()", function()
 
 	for key, value in ipairs(fixtures) do
 		it(stringify(value[1]), function()
-			jestExpect(stringify(value[1])).toBe(value[2])
+			expect(stringify(value[1])).toBe(value[2])
 		end)
 	end
 
 	it("circular references", function()
 		local a: any = {}
 		a.a = a
-		jestExpect(stringify(a)).toBe('{"a": [Circular]}')
+		expect(stringify(a)).toBe('{"a": [Circular]}')
 	end)
 
 	it("toJSON error", function()
@@ -87,17 +87,15 @@ describe("stringify()", function()
 			end,
 		}
 
-		jestExpect(stringify(evil)).toBe('{"toJSON": [Function toJSON]}')
-		jestExpect(stringify({ a = { b = { evil = evil } } })).toBe(
-			'{"a": {"b": {"evil": {"toJSON": [Function toJSON]}}}}'
-		)
+		expect(stringify(evil)).toBe('{"toJSON": [Function toJSON]}')
+		expect(stringify({ a = { b = { evil = evil } } })).toBe('{"a": {"b": {"evil": {"toJSON": [Function toJSON]}}}}')
 
 		-- ROBLOX deviation: we use a table with a __call metamethod to mimic a
 		-- function with properties in upstream
 		local Evil = {}
 		setmetatable(Evil, { __call = function() end })
 		Evil.toJSON = evil.toJSON
-		jestExpect(stringify(Evil)).toBe('{"toJSON": [Function toJSON]}')
+		expect(stringify(Evil)).toBe('{"toJSON": [Function toJSON]}')
 	end)
 
 	it("toJSON errors when comparing two objects", function()
@@ -118,7 +116,7 @@ describe("stringify()", function()
 		-- ROBLOX deviation: our to.equal() method does not work in the same way
 		-- so I'm not sure how to reconcile this. For now I just made it so that
 		-- I check equality and confirm that they are not equal
-		jestExpect(equals(evilA, evilB)).toBe(false)
+		expect(equals(evilA, evilB)).toBe(false)
 	end)
 
 	it("reduces maxDepth if stringifying very large objects", function()
@@ -132,8 +130,8 @@ describe("stringify()", function()
 			small.b[i] = "test"
 		end
 
-		jestExpect(stringify(big)).toBe(prettyFormat(big, { maxDepth = 1, min = true }))
-		jestExpect(stringify(small)).toBe(prettyFormat(small, { min = true }))
+		expect(stringify(big)).toBe(prettyFormat(big, { maxDepth = 1, min = true }))
+		expect(stringify(small)).toBe(prettyFormat(small, { min = true }))
 	end)
 end)
 
@@ -141,7 +139,7 @@ describe("ensureNumbers()", function()
 	local matcherName = "toBeCloseTo"
 
 	it("dont throw error when variables are numbers", function()
-		jestExpect(function()
+		expect(function()
 			ensureNumbers(1, 2, matcherName)
 		end).never.toThrow()
 		--[[
@@ -154,13 +152,13 @@ describe("ensureNumbers()", function()
 	end)
 
 	it("throws error when expected is not a number (backward compatibility)", function()
-		jestExpect(function()
+		expect(function()
 			ensureNumbers(1, "not_a_number", "." .. matcherName)
 		end).toThrowErrorMatchingSnapshot()
 	end)
 
 	it("throws error when received is not a number (backward compatibility)", function()
-		jestExpect(function()
+		expect(function()
 			ensureNumbers("not_a_number", 3, "." .. matcherName)
 		end).toThrowErrorMatchingSnapshot()
 	end)
@@ -173,7 +171,7 @@ describe("ensureNumbers()", function()
 				secondArgument = "precision",
 			}
 
-			jestExpect(function()
+			expect(function()
 				ensureNumbers("", 0, matcherName, options)
 			end).toThrowErrorMatchingSnapshot()
 		end)
@@ -184,7 +182,7 @@ describe("ensureNumbers()", function()
 				-- promise nil is equivalent to empty string
 			}
 
-			jestExpect(function()
+			expect(function()
 				ensureNumbers(0.1, nil, matcherName, options)
 			end).toThrowErrorMatchingSnapshot()
 		end)
@@ -195,7 +193,7 @@ describe("ensureNumbers()", function()
 				promise = "rejects",
 			}
 
-			jestExpect(function()
+			expect(function()
 				ensureNumbers(0.01, "0", matcherName, options)
 			end).toThrowErrorMatchingSnapshot()
 		end)
@@ -206,7 +204,7 @@ describe("ensureNumbers()", function()
 				promise = "rejects",
 			}
 
-			jestExpect(function()
+			expect(function()
 				ensureNumbers(Symbol(0.1), 0, matcherName, options)
 			end).toThrowErrorMatchingSnapshot()
 		end)
@@ -217,7 +215,7 @@ describe("ensureNumbers()", function()
 				promise = "resolves",
 			}
 
-			jestExpect(function()
+			expect(function()
 				ensureNumbers(false, 0, matcherName, options)
 			end).toThrowErrorMatchingSnapshot()
 		end)
@@ -228,7 +226,7 @@ describe("ensureNumbers()", function()
 				promise = "resolves",
 			}
 
-			jestExpect(function()
+			expect(function()
 				ensureNumbers(0.1, nil, matcherName, options)
 			end).toThrowErrorMatchingSnapshot()
 		end)
@@ -239,19 +237,19 @@ describe("ensureNoExpected()", function()
 	local matcherName = "toBeDefined"
 
 	it("dont throw error when undefined", function()
-		jestExpect(function()
+		expect(function()
 			ensureNoExpected(nil, matcherName)
 		end).never.toThrow()
 	end)
 
 	it("throws error when expected is not undefined with matcherName", function()
-		jestExpect(function()
+		expect(function()
 			ensureNoExpected({ a = 1 }, "." .. matcherName)
 		end).toThrowErrorMatchingSnapshot()
 	end)
 
 	it("throws error when expected is not undefined with matcherName and options", function()
-		jestExpect(function()
+		expect(function()
 			ensureNoExpected({ a = 1 }, matcherName, { isNot = true })
 		end).toThrowErrorMatchingSnapshot()
 	end)
@@ -276,16 +274,16 @@ describe("diff", function()
 		}
 
 		for i, value in ipairs(fixtures) do
-			jestExpect(diff(value[1], value[2])).toMatchSnapshot()
+			expect(diff(value[1], value[2])).toMatchSnapshot()
 		end
 	end)
 
 	it("two booleans", function()
-		jestExpect(diff(false, true)).toBe(nil)
+		expect(diff(false, true)).toBe(nil)
 	end)
 
 	it("two numbers", function()
-		jestExpect(diff(1, 2)).toBe(nil)
+		expect(diff(1, 2)).toBe(nil)
 	end)
 
 	it.skip("two bigints", function()
@@ -299,33 +297,33 @@ end)
 
 describe("pluralize()", function()
 	it("one", function()
-		jestExpect(pluralize("apple", 1)).toBe("one apple")
+		expect(pluralize("apple", 1)).toBe("one apple")
 	end)
 
 	it("two", function()
-		jestExpect(pluralize("apple", 2)).toBe("two apples")
+		expect(pluralize("apple", 2)).toBe("two apples")
 	end)
 
 	it("20", function()
-		jestExpect(pluralize("apple", 20)).toBe("20 apples")
+		expect(pluralize("apple", 20)).toBe("20 apples")
 	end)
 end)
 
 describe("getLabelPrinter", function()
 	it("0 args", function()
 		local printLabel = getLabelPrinter()
-		jestExpect(printLabel("")).toBe(": ")
+		expect(printLabel("")).toBe(": ")
 	end)
 
 	it("1 empty string", function()
 		local printLabel = getLabelPrinter()
-		jestExpect(printLabel("")).toBe(": ")
+		expect(printLabel("")).toBe(": ")
 	end)
 
 	it("1 non-empty string", function()
 		local string_ = "Expected"
 		local printLabel = getLabelPrinter(string_)
-		jestExpect(printLabel(string_)).toBe("Expected: ")
+		expect(printLabel(string_)).toBe("Expected: ")
 	end)
 
 	it("2 equal lengths", function()
@@ -333,8 +331,8 @@ describe("getLabelPrinter", function()
 		local collectionType = "array"
 		local stringReceived = string.format("Received %s", collectionType)
 		local printLabel = getLabelPrinter(stringExpected, stringReceived)
-		jestExpect(printLabel(stringExpected)).toBe("Expected value: ")
-		jestExpect(printLabel(stringReceived)).toBe("Received array: ")
+		expect(printLabel(stringExpected)).toBe("Expected value: ")
+		expect(printLabel(stringReceived)).toBe("Received array: ")
 	end)
 
 	it("2 unequal lengths", function()
@@ -342,8 +340,8 @@ describe("getLabelPrinter", function()
 		local collectionType = "set"
 		local stringReceived = string.format("Received %s", collectionType)
 		local printLabel = getLabelPrinter(stringExpected, stringReceived)
-		jestExpect(printLabel(stringExpected)).toBe("Expected value: ")
-		jestExpect(printLabel(stringReceived)).toBe("Received set:   ")
+		expect(printLabel(stringExpected)).toBe("Expected value: ")
+		expect(printLabel(stringReceived)).toBe("Received set:   ")
 	end)
 
 	it("returns incorrect padding if inconsistent arg is shorter", function()
@@ -351,8 +349,8 @@ describe("getLabelPrinter", function()
 		local stringInconsistent = "Received value"
 		local stringInconsistentShorter = "Received set"
 		local printLabel = getLabelPrinter(stringConsistent, stringInconsistent)
-		jestExpect(printLabel(stringConsistent)).toBe("Expected:       ")
-		jestExpect(printLabel(stringInconsistentShorter)).toBe("Received set:   ")
+		expect(printLabel(stringConsistent)).toBe("Expected:       ")
+		expect(printLabel(stringInconsistentShorter)).toBe("Received set:   ")
 	end)
 
 	it("throws if inconsistent arg is longer", function()
@@ -360,8 +358,8 @@ describe("getLabelPrinter", function()
 		local stringInconsistent = "Received value"
 		local stringInconsistentLonger = "Received string"
 		local printLabel = getLabelPrinter(stringConsistent, stringInconsistent)
-		jestExpect(printLabel(stringConsistent)).toBe("Expected:       ")
-		jestExpect(function()
+		expect(printLabel(stringConsistent)).toBe("Expected:       ")
+		expect(function()
 			printLabel(stringInconsistentLonger)
 		end).toThrow("Cannot print label for string with length larger than the max allowed of 14")
 	end)
@@ -385,7 +383,7 @@ describe("matcherHint", function()
 
 		local substringNegative = chalk.green(expectedArgument)
 
-		jestExpect(received).never.toMatch(substringNegative)
+		expect(received).never.toMatch(substringNegative)
 	end)
 
 	it("receivedColor", function()
@@ -398,8 +396,8 @@ describe("matcherHint", function()
 		local substringNegative = chalk.red(receivedArgument)
 		local substringPositive = receivedColor(receivedArgument)
 
-		jestExpect(received).never.toMatch(substringNegative)
-		jestExpect(received).toMatch(substringPositive)
+		expect(received).never.toMatch(substringNegative)
+		expect(received).toMatch(substringPositive)
 	end)
 
 	it("secondArgumentColor", function()
@@ -413,8 +411,8 @@ describe("matcherHint", function()
 		local substringNegative = chalk.green(secondArgument)
 		local substringPositive = secondArgumentColor(secondArgument)
 
-		jestExpect(received).never.toMatch(substringNegative)
-		jestExpect(received).toMatch(substringPositive)
+		expect(received).never.toMatch(substringNegative)
+		expect(received).toMatch(substringPositive)
 	end)
 end)
 

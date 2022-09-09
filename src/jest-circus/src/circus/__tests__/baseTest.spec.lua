@@ -13,7 +13,7 @@ local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).default
 local runTest = require(script.Parent.Parent.__mocks__.testUtils).runTest
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local it = JestGlobals.it
 
 it("simple test", function()
@@ -25,7 +25,7 @@ it("simple test", function()
 				test("two", function() end)
 			end)
 		]]).stdout
-	jestExpect(wrap(stdout)).toMatchSnapshot()
+	expect(wrap(stdout)).toMatchSnapshot()
 end)
 
 it("failures", function()
@@ -41,7 +41,7 @@ it("failures", function()
 				test("two", function() end)
 			end)
   		]]).stdout
-	jestExpect(wrap(stdout)).toMatchSnapshot()
+	expect(wrap(stdout)).toMatchSnapshot()
 end)
 
 return {}

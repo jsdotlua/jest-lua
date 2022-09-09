@@ -11,7 +11,7 @@ local Packages = script.Parent.Parent.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 
@@ -49,7 +49,7 @@ it(".formatExecError()", function()
 		{ noStackTrace = false },
 		"path_test"
 	)
-	jestExpect(message).toMatchSnapshot()
+	expect(message).toMatchSnapshot()
 end)
 
 --[[

@@ -10,7 +10,7 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local it = JestGlobals.it
 
 --[[
@@ -25,7 +25,7 @@ it("works like micromatch with only positive globs", function()
 	local globs = { "**/*.test.js", "**/*.test.jsx" }
 	local matcher = globsToMatcher(globs)
 
-	jestExpect(matcher("some-module.js")).toBe(
+	expect(matcher("some-module.js")).toBe(
 		--[[
 				ROBLOX deviation: inline micromatch expected result
 				original code:
@@ -33,7 +33,7 @@ it("works like micromatch with only positive globs", function()
 			]]
 		false
 	)
-	jestExpect(matcher("some-module.test.js")).toBe(
+	expect(matcher("some-module.test.js")).toBe(
 		--[[
 				ROBLOX deviation: inline micromatch expected result
 				original code:
@@ -47,7 +47,7 @@ it("works like micromatch with a mix of overlapping positive and negative globs"
 	local globs = { "**/*.js", "!**/*.test.js", "**/*.test.js" }
 	local matcher = globsToMatcher(globs)
 
-	jestExpect(matcher("some-module.js")).toBe(
+	expect(matcher("some-module.js")).toBe(
 		--[[
 				ROBLOX deviation: inline micromatch expected result
 				original code:
@@ -55,7 +55,7 @@ it("works like micromatch with a mix of overlapping positive and negative globs"
 			]]
 		true
 	)
-	jestExpect(matcher("some-module.test.js")).toBe(
+	expect(matcher("some-module.test.js")).toBe(
 		--[[
 				ROBLOX deviation: inline micromatch expected result
 				original code:
@@ -66,7 +66,7 @@ it("works like micromatch with a mix of overlapping positive and negative globs"
 	local globs2 = { "**/*.js", "!**/*.test.js", "**/*.test.js", "!**/*.test.js" }
 	local matcher2 = globsToMatcher(globs2)
 
-	jestExpect(matcher2("some-module.js")).toBe(
+	expect(matcher2("some-module.js")).toBe(
 		--[[
 				ROBLOX deviation: inline micromatch expected result
 				original code:
@@ -74,7 +74,7 @@ it("works like micromatch with a mix of overlapping positive and negative globs"
 			]]
 		true
 	)
-	jestExpect(matcher2("some-module.test.js")).toBe(
+	expect(matcher2("some-module.test.js")).toBe(
 		--[[
 				ROBLOX deviation: inline micromatch expected result
 				original code:
@@ -88,7 +88,7 @@ it("works like micromatch with only negative globs", function()
 	local globs = { "!**/*.test.js", "!**/*.test.jsx" }
 	local matcher = globsToMatcher(globs)
 
-	jestExpect(matcher("some-module.js")).toBe(
+	expect(matcher("some-module.js")).toBe(
 		--[[
 				ROBLOX deviation: inline micromatch expected result
 				original code:
@@ -96,7 +96,7 @@ it("works like micromatch with only negative globs", function()
 			]]
 		true
 	)
-	jestExpect(matcher("some-module.test.js")).toBe(
+	expect(matcher("some-module.test.js")).toBe(
 		--[[
 				ROBLOX deviation: inline micromatch expected result
 				original code:
@@ -110,7 +110,7 @@ it("works like micromatch with empty globs", function()
 	local globs = {}
 	local matcher = globsToMatcher(globs)
 
-	jestExpect(matcher("some-module.js")).toBe(
+	expect(matcher("some-module.js")).toBe(
 		--[[
 				ROBLOX deviation: inline micromatch expected result
 				original code:
@@ -118,7 +118,7 @@ it("works like micromatch with empty globs", function()
 			]]
 		false
 	)
-	jestExpect(matcher("some-module.test.js")).toBe(
+	expect(matcher("some-module.test.js")).toBe(
 		--[[
 				ROBLOX deviation: inline micromatch expected result
 				original code:
@@ -132,7 +132,7 @@ it("works like micromatch with pure negated extglobs", function()
 	local globs = { "**/*.js", "!(some-module.test.js)" }
 	local matcher = globsToMatcher(globs)
 
-	jestExpect(matcher("some-module.js")).toBe(
+	expect(matcher("some-module.js")).toBe(
 		--[[
 				ROBLOX deviation: inline micromatch expected result
 				original code:
@@ -140,7 +140,7 @@ it("works like micromatch with pure negated extglobs", function()
 			]]
 		true
 	)
-	jestExpect(matcher("some-module.test.js")).toBe(
+	expect(matcher("some-module.test.js")).toBe(
 		--[[
 				ROBLOX deviation: inline micromatch expected result
 				original code:
@@ -154,7 +154,7 @@ it("works like micromatch with negated extglobs", function()
 	local globs = { "**/*.js", "!(tests|coverage)/*.js" }
 	local matcher = globsToMatcher(globs)
 
-	jestExpect(matcher("some-module.js")).toBe(
+	expect(matcher("some-module.js")).toBe(
 		--[[
 				ROBLOX deviation: inline micromatch expected result
 				original code:
@@ -162,7 +162,7 @@ it("works like micromatch with negated extglobs", function()
 			]]
 		false
 	)
-	jestExpect(matcher("tests/some-module.test.js")).toBe(
+	expect(matcher("tests/some-module.test.js")).toBe(
 		--[[
 				ROBLOX deviation: inline micromatch expected result
 				original code:

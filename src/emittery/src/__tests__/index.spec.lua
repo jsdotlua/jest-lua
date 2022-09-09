@@ -16,7 +16,7 @@ local TypeError = Error
 type Object = LuauPolyfill.Object
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local it = JestGlobals.it
 local itFIXME = function(description: string, ...: any)
 	JestGlobals.it.todo(description)
@@ -28,23 +28,23 @@ local function pEvent(emitter, eventName, _options: Object?)
 end
 local t = {
 	deepEqual = function(_self, value1, value2)
-		jestExpect(value1).toEqual(value2)
+		expect(value1).toEqual(value2)
 	end,
 	is = function(_self, value1, value2)
-		jestExpect(value1).toBe(value2)
+		expect(value1).toBe(value2)
 	end,
 	true_ = function(_self, value)
-		jestExpect(value).toBe(true)
+		expect(value).toBe(true)
 	end,
 	false_ = function(_self, value)
-		jestExpect(value).toBe(false)
+		expect(value).toBe(false)
 	end,
 	pass = function(_self) end,
 	fail = function(_self)
 		error(Error.new("fail"))
 	end,
 	throws = function(_self, fn, err)
-		jestExpect(fn).toThrow(err)
+		expect(fn).toThrow(err)
 	end,
 	throwsAsync = function(_self, ...)
 		error("throwsAsync not implemented yet")
@@ -955,7 +955,7 @@ it("onAny()", function()
 			emitter:emit("🦄", eventFixture):expect()
 			emitter:emitSerial("🦄", eventFixture):expect()
 			-- ROBLOX deviation: implement t:plan(4) using manual assertCount
-			jestExpect(assertCount).toBe(4)
+			expect(assertCount).toBe(4)
 		end)
 		:expect()
 end)

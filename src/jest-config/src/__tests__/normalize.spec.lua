@@ -23,7 +23,7 @@ type RegExp = RegExp.RegExp
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
@@ -163,13 +163,13 @@ end)
 -- ROBLOX deviation START: additional tests
 describe("rootDir", function()
 	it("throws error when rootDir is string", function()
-		jestExpect(function()
+		expect(function()
 			normalize({ rootDir = "rootDir" :: any }, {} :: Config_Argv):expect()
 		end).toThrowErrorMatchingSnapshot()
 	end)
 
 	it("throws error when rootDir is table", function()
-		jestExpect(function()
+		expect(function()
 			normalize({
 				rootDir = setmetatable({}, {
 					__tostring = function()
@@ -191,7 +191,7 @@ it("picks a name based on the rootDir", function()
 			-- local expected = createHash("md5"):update("/root/path/foo"):update(tostring(math.huge)):digest("hex")
 			-- ROBLOX deviation END
 			local options = normalize({ rootDir = rootDir }, {} :: Config_Argv):expect().options
-			jestExpect(options.name).toBe(expected)
+			expect(options.name).toBe(expected)
 		end)
 		:expect()
 end)
@@ -204,7 +204,7 @@ it("keeps custom project name based on the projects rootDir", function()
 				projects = { { name = name, rootDir = pathToInstance("/path/to/foo") } :: any },
 				rootDir = pathToInstance("/root/path/baz"),
 			}, {} :: Config_Argv):expect().options
-			jestExpect((options.projects[1] :: any).name).toBe(name)
+			expect((options.projects[1] :: any).name).toBe(name)
 		end)
 		:expect()
 end)
@@ -216,7 +216,7 @@ it("keeps custom names based on the rootDir", function()
 				{ name = "custom-name", rootDir = pathToInstance("/root/path/foo") },
 				{} :: Config_Argv
 			):expect().options
-			jestExpect(options.name).toBe("custom-name")
+			expect(options.name).toBe("custom-name")
 		end)
 		:expect()
 end)
@@ -227,8 +227,8 @@ it("minimal config is stable across runs", function()
 			local rootDir = pathToInstance("/root/path/foo")
 			local firstNormalization = normalize({ rootDir = rootDir }, {} :: Config_Argv):expect()
 			local secondNormalization = normalize({ rootDir = rootDir }, {} :: Config_Argv):expect()
-			jestExpect(firstNormalization).toEqual(secondNormalization)
-			jestExpect(JSON.stringify(firstNormalization)).toBe(JSON.stringify(secondNormalization))
+			expect(firstNormalization).toEqual(secondNormalization)
+			expect(JSON.stringify(firstNormalization)).toBe(JSON.stringify(secondNormalization))
 		end)
 		:expect()
 end)
@@ -237,7 +237,7 @@ end)
 -- it("sets coverageReporters correctly when argv.json is set", function()
 -- 	return Promise.resolve():andThen(function()
 -- 		local options = normalize({ rootDir = pathToInstance("/root/path/foo") }, { json = true } :: Config_Argv):expect().options
--- 		jestExpect(options.coverageReporters).toEqual({ "json", "lcov", "clover" })
+-- 		expect(options.coverageReporters).toEqual({ "json", "lcov", "clover" })
 -- 	end)
 -- end)
 -- ROBLOX deviation END
@@ -248,7 +248,7 @@ describe("rootDir", function()
 			:andThen(function()
 				-- ROBLOX deviation START: no .rejects and .assertions
 				-- expect:assertions(1)
-				jestExpect(function()
+				expect(function()
 					normalize({}, {} :: Config_Argv):expect()
 				end).toThrowErrorMatchingSnapshot()
 				-- ROBLOX deviation END
@@ -266,7 +266,7 @@ describe("automock", function()
 					{ automock = false, rootDir = pathToInstance("/root/path/foo") },
 					{} :: Config_Argv
 				):expect().options
-				jestExpect(options.automock).toBe(false)
+				expect(options.automock).toBe(false)
 			end)
 			:expect()
 	end)
@@ -283,7 +283,7 @@ end)
 -- 			local expected = Object.create(nil)
 -- 			expected[tostring(expectedPathFooBar)] = true
 -- 			expected[tostring(expectedPathFooQux)] = true
--- 			jestExpect(options.collectCoverageOnlyFrom).toEqual(expected)
+-- 			expect(options.collectCoverageOnlyFrom).toEqual(expected)
 -- 		end)
 -- 	end)
 -- 	it("does not change absolute paths", function()
@@ -295,7 +295,7 @@ end)
 -- 			local expected = Object.create(nil)
 -- 			expected[tostring(expectedPathAbs)] = true
 -- 			expected[tostring(expectedPathAbsAnother)] = true
--- 			jestExpect(options.collectCoverageOnlyFrom).toEqual(expected)
+-- 			expect(options.collectCoverageOnlyFrom).toEqual(expected)
 -- 		end)
 -- 	end)
 -- 	it("substitutes <rootDir> tokens", function()
@@ -306,7 +306,7 @@ end)
 -- 			):expect().options
 -- 			local expected = Object.create(nil)
 -- 			expected[tostring(expectedPathFooBar)] = true
--- 			jestExpect(options.collectCoverageOnlyFrom).toEqual(expected)
+-- 			expect(options.collectCoverageOnlyFrom).toEqual(expected)
 -- 		end)
 -- 	end)
 -- end)
@@ -326,7 +326,7 @@ end)
 -- 				rootDir = "/root/path/foo/",
 -- 			}, {} :: Config_Argv):expect().options
 -- 			local expected = { barBaz, notQuxQuux, barBaz, notQuxQuux }
--- 			jestExpect(options.collectCoverageFrom).toEqual(expected)
+-- 			expect(options.collectCoverageFrom).toEqual(expected)
 -- 		end)
 -- 	end)
 -- end)
@@ -347,7 +347,7 @@ end)
 -- 				("%s"):format(tostring(sourceFile)),
 -- 				("bar/%s"):format(tostring(sourceFile)),
 -- 			}
--- 			jestExpect(options.collectCoverageFrom).toEqual(expected)
+-- 			expect(options.collectCoverageFrom).toEqual(expected)
 -- 		end)
 -- 	end)
 -- end)
@@ -361,7 +361,7 @@ local function testPathArray(key: string)
 	-- 			{ [tostring(key)] = { "bar/baz", "qux/quux/" }, rootDir = "/root/path/foo" },
 	-- 			{} :: Config_Argv
 	-- 		):expect().options
-	-- 		jestExpect(options[tostring(key)]).toEqual({ expectedPathFooBar, expectedPathFooQux })
+	-- 		expect(options[tostring(key)]).toEqual({ expectedPathFooBar, expectedPathFooQux })
 	-- 	end)
 	-- end)
 	-- ROBLOX deviation END
@@ -372,7 +372,7 @@ local function testPathArray(key: string)
 				[key] = { pathToInstance("/an/abs/path"), pathToInstance("/another/abs/path") },
 				rootDir = pathToInstance("/root/path/foo"),
 			} :: any, {} :: Config_Argv):expect().options
-			jestExpect(Array.map((options :: Object)[key], function(path)
+			expect(Array.map((options :: Object)[key], function(path)
 				return getRelativePath(path, nil)
 			end)).toEqual({
 				expectedPathAbs,
@@ -388,7 +388,7 @@ local function testPathArray(key: string)
 	-- 				{ [tostring(key)] = { "<rootDir>/bar/baz" }, rootDir = "/root/path/foo" },
 	-- 				{} :: Config_Argv
 	-- 			):expect().options
-	-- 			jestExpect(options[tostring(key)]).toEqual({ expectedPathFooBar })
+	-- 			expect(options[tostring(key)]).toEqual({ expectedPathFooBar })
 	-- 		end)
 	-- 	end)
 	-- ROBLOX deviation END
@@ -417,7 +417,7 @@ end)
 -- 					["abs-path"] = "/qux/quux",
 -- 				},
 -- 			}, {} :: Config_Argv):expect().options
--- 			jestExpect(options.transform).toEqual({
+-- 			expect(options.transform).toEqual({
 -- 				{ DEFAULT_CSS_PATTERN, "/root/node_modules/jest-regex-util", {} },
 -- 				{ DEFAULT_JS_PATTERN, require_:resolve("babel-jest"), {} },
 -- 				{ "abs-path", "/qux/quux", {} },
@@ -434,7 +434,7 @@ end)
 -- 					["abs-path"] = "/qux/quux",
 -- 				},
 -- 			}, {} :: Config_Argv):expect().options
--- 			jestExpect(options.transform).toEqual({
+-- 			expect(options.transform).toEqual({
 -- 				{ DEFAULT_CSS_PATTERN, "/root/node_modules/jest-regex-util", {} },
 -- 				{ DEFAULT_JS_PATTERN, require_:resolve("babel-jest"), { rootMode = "upward" } },
 -- 				{ "abs-path", "/qux/quux", {} },
@@ -456,7 +456,7 @@ end)
 -- 				{ haste = { hasteImplModulePath = "<rootDir>/haste_impl.js" }, rootDir = "/root/" },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.haste).toEqual({ hasteImplModulePath = "/root/haste_impl.js" })
+-- 			expect(options.haste).toEqual({ hasteImplModulePath = "/root/haste_impl.js" })
 -- 		end)
 -- 	end)
 -- end)
@@ -476,7 +476,7 @@ end)
 -- 				{ rootDir = "/root/path/foo", setupFilesAfterEnv = { "bar/baz" } },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.setupFilesAfterEnv).toEqual({ expectedPathFooBar })
+-- 			expect(options.setupFilesAfterEnv).toEqual({ expectedPathFooBar })
 -- 		end)
 -- 	end)
 -- 	it("does not change absolute paths", function()
@@ -485,7 +485,7 @@ end)
 -- 				{ rootDir = "/root/path/foo", setupFilesAfterEnv = { "/an/abs/path" } },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.setupFilesAfterEnv).toEqual({ expectedPathAbs })
+-- 			expect(options.setupFilesAfterEnv).toEqual({ expectedPathAbs })
 -- 		end)
 -- 	end)
 -- 	it("substitutes <rootDir> tokens", function()
@@ -494,7 +494,7 @@ end)
 -- 				{ rootDir = "/root/path/foo", setupFilesAfterEnv = { "<rootDir>/bar/baz" } },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.setupFilesAfterEnv).toEqual({ expectedPathFooBar })
+-- 			expect(options.setupFilesAfterEnv).toEqual({ expectedPathFooBar })
 -- 		end)
 -- 	end)
 -- end)
@@ -512,12 +512,12 @@ end)
 -- 	it("logs a deprecation warning when `setupTestFrameworkScriptFile` is used", function()
 -- 		return Promise.resolve():andThen(function()
 -- 			normalize({ rootDir = "/root/path/foo", setupTestFrameworkScriptFile = "bar/baz" }, {} :: Config_Argv):expect()
--- 			jestExpect(((console.warn :: unknown) :: jest_SpyInstance).mock.calls[1][1]).toMatchSnapshot()
+-- 			expect(((console.warn :: unknown) :: jest_SpyInstance).mock.calls[1][1]).toMatchSnapshot()
 -- 		end)
 -- 	end)
 -- 	it("logs an error when `setupTestFrameworkScriptFile` and `setupFilesAfterEnv` are used", function()
 -- 		return Promise.resolve():andThen(function()
--- 			jestExpect(normalize({
+-- 			expect(normalize({
 -- 					rootDir = "/root/path/foo",
 -- 					setupFilesAfterEnv = { "bar/baz" },
 -- 					setupTestFrameworkScriptFile = "bar/baz",
@@ -536,7 +536,7 @@ end)
 -- 				{ coveragePathIgnorePatterns = { "bar/baz", "qux/quux" }, rootDir = "/root/path/foo" },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.coveragePathIgnorePatterns).toEqual({
+-- 			expect(options.coveragePathIgnorePatterns).toEqual({
 -- 				joinForPattern("bar", "baz"),
 -- 				joinForPattern("qux", "quux"),
 -- 			})
@@ -550,7 +550,7 @@ end)
 -- 				{ coveragePathIgnorePatterns = { "bar/baz", "qux/quux/" }, rootDir = "/root/path/foo" },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.coveragePathIgnorePatterns).toEqual({
+-- 			expect(options.coveragePathIgnorePatterns).toEqual({
 -- 				joinForPattern("bar", "baz"),
 -- 				joinForPattern("qux", "quux", ""),
 -- 			})
@@ -562,7 +562,7 @@ end)
 -- 				{ coveragePathIgnorePatterns = { "hasNoToken", "<rootDir>/hasAToken" }, rootDir = "/root/path/foo" },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.coveragePathIgnorePatterns).toEqual({
+-- 			expect(options.coveragePathIgnorePatterns).toEqual({
 -- 				"hasNoToken",
 -- 				joinForPattern("", "root", "path", "foo", "hasAToken"),
 -- 			})
@@ -578,7 +578,7 @@ end)
 -- 				{ rootDir = "/root/path/foo", watchPathIgnorePatterns = { "bar/baz", "qux/quux" } },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.watchPathIgnorePatterns).toEqual({
+-- 			expect(options.watchPathIgnorePatterns).toEqual({
 -- 				joinForPattern("bar", "baz"),
 -- 				joinForPattern("qux", "quux"),
 -- 			})
@@ -592,7 +592,7 @@ end)
 -- 				{ rootDir = "/root/path/foo", watchPathIgnorePatterns = { "bar/baz", "qux/quux/" } },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.watchPathIgnorePatterns).toEqual({
+-- 			expect(options.watchPathIgnorePatterns).toEqual({
 -- 				joinForPattern("bar", "baz"),
 -- 				joinForPattern("qux", "quux", ""),
 -- 			})
@@ -604,7 +604,7 @@ end)
 -- 				{ rootDir = "/root/path/foo", watchPathIgnorePatterns = { "hasNoToken", "<rootDir>/hasAToken" } },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.watchPathIgnorePatterns).toEqual({
+-- 			expect(options.watchPathIgnorePatterns).toEqual({
 -- 				"hasNoToken",
 -- 				joinForPattern("", "root", "path", "foo", "hasAToken"),
 -- 			})
@@ -620,7 +620,7 @@ end)
 -- 				{ rootDir = "/root/path/foo", testPathIgnorePatterns = { "bar/baz", "qux/quux" } },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.testPathIgnorePatterns).toEqual({
+-- 			expect(options.testPathIgnorePatterns).toEqual({
 -- 				joinForPattern("bar", "baz"),
 -- 				joinForPattern("qux", "quux"),
 -- 			})
@@ -634,7 +634,7 @@ end)
 -- 				{ rootDir = "/root/path/foo", testPathIgnorePatterns = { "bar/baz", "qux/quux/" } },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.testPathIgnorePatterns).toEqual({
+-- 			expect(options.testPathIgnorePatterns).toEqual({
 -- 				joinForPattern("bar", "baz"),
 -- 				joinForPattern("qux", "quux", ""),
 -- 			})
@@ -646,7 +646,7 @@ end)
 -- 				{ rootDir = "/root/path/foo", testPathIgnorePatterns = { "hasNoToken", "<rootDir>/hasAToken" } },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.testPathIgnorePatterns).toEqual({
+-- 			expect(options.testPathIgnorePatterns).toEqual({
 -- 				"hasNoToken",
 -- 				joinForPattern("", "root", "path", "foo", "hasAToken"),
 -- 			})
@@ -662,7 +662,7 @@ end)
 -- 				{ modulePathIgnorePatterns = { "bar/baz", "qux/quux" }, rootDir = "/root/path/foo" },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.modulePathIgnorePatterns).toEqual({
+-- 			expect(options.modulePathIgnorePatterns).toEqual({
 -- 				joinForPattern("bar", "baz"),
 -- 				joinForPattern("qux", "quux"),
 -- 			})
@@ -676,7 +676,7 @@ end)
 -- 				{ modulePathIgnorePatterns = { "bar/baz", "qux/quux/" }, rootDir = "/root/path/foo" },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.modulePathIgnorePatterns).toEqual({
+-- 			expect(options.modulePathIgnorePatterns).toEqual({
 -- 				joinForPattern("bar", "baz"),
 -- 				joinForPattern("qux", "quux", ""),
 -- 			})
@@ -688,7 +688,7 @@ end)
 -- 				{ modulePathIgnorePatterns = { "hasNoToken", "<rootDir>/hasAToken" }, rootDir = "/root/path/foo" },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.modulePathIgnorePatterns).toEqual({
+-- 			expect(options.modulePathIgnorePatterns).toEqual({
 -- 				"hasNoToken",
 -- 				joinForPattern("", "root", "path", "foo", "hasAToken"),
 -- 			})
@@ -699,7 +699,7 @@ end)
 -- 	it("defaults to Circus", function()
 -- 		return Promise.resolve():andThen(function()
 -- 			local options = normalize({ rootDir = "/root/path/foo" }, {} :: Config_Argv):expect().options
--- 			jestExpect(options.testRunner).toMatch("jest-circus")
+-- 			expect(options.testRunner).toMatch("jest-circus")
 -- 		end)
 -- 	end)
 -- 	it("resolves jasmine", function()
@@ -710,7 +710,7 @@ end)
 -- 			end)
 -- 			local options =
 -- 				normalize({ rootDir = "/root/path/foo" }, { testRunner = "jasmine2" } :: Config_Argv):expect().options
--- 			jestExpect(options.testRunner).toMatch("jest-jasmine2")
+-- 			expect(options.testRunner).toMatch("jest-jasmine2")
 -- 		end)
 -- 	end)
 -- 	it("is overwritten by argv", function()
@@ -721,7 +721,7 @@ end)
 -- 			end)
 -- 			local options =
 -- 				normalize({ rootDir = "/root/path/foo" }, { testRunner = "mocha" } :: Config_Argv):expect().options
--- 			jestExpect(options.testRunner).toBe("mocha")
+-- 			expect(options.testRunner).toBe("mocha")
 -- 		end)
 -- 	end)
 -- end)
@@ -729,7 +729,7 @@ end)
 -- 	it("defaults to <rootDir>/coverage", function()
 -- 		return Promise.resolve():andThen(function()
 -- 			local options = normalize({ rootDir = "/root/path/foo" }, {} :: Config_Argv):expect().options
--- 			jestExpect(options.coverageDirectory).toBe("/root/path/foo/coverage")
+-- 			expect(options.coverageDirectory).toBe("/root/path/foo/coverage")
 -- 		end)
 -- 	end)
 -- end)
@@ -751,18 +751,18 @@ end)
 -- 		return Promise.resolve():andThen(function()
 -- 			local options =
 -- 				normalize({ rootDir = "/root", testEnvironment = "jsdom" }, {} :: Config_Argv):expect().options
--- 			jestExpect(options.testEnvironment).toEqual("node_modules/jest-environment-jsdom")
+-- 			expect(options.testEnvironment).toEqual("node_modules/jest-environment-jsdom")
 -- 		end)
 -- 	end)
 -- 	it("resolves to node environment by default", function()
 -- 		return Promise.resolve():andThen(function()
 -- 			local options = normalize({ rootDir = "/root" }, {} :: Config_Argv):expect().options
--- 			jestExpect(options.testEnvironment).toEqual(require_:resolve("jest-environment-node"))
+-- 			expect(options.testEnvironment).toEqual(require_:resolve("jest-environment-node"))
 -- 		end)
 -- 	end)
 -- 	it("throws on invalid environment names", function()
 -- 		return Promise.resolve():andThen(function()
--- 			jestExpect(normalize({ rootDir = "/root", testEnvironment = "phantom" }, {} :: Config_Argv)).rejects
+-- 			expect(normalize({ rootDir = "/root", testEnvironment = "phantom" }, {} :: Config_Argv)).rejects
 -- 				.toThrowErrorMatchingSnapshot()
 -- 				:expect()
 -- 		end)
@@ -773,7 +773,7 @@ end)
 -- 				{ rootDir = "/root", testEnvironment = "<rootDir>/testEnvironment.js" },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.testEnvironment).toEqual("/root/testEnvironment.js")
+-- 			expect(options.testEnvironment).toEqual("/root/testEnvironment.js")
 -- 		end)
 -- 	end)
 -- end)
@@ -791,8 +791,8 @@ end)
 -- 	it("correctly identifies and uses babel-jest", function()
 -- 		return Promise.resolve():andThen(function()
 -- 			local options = normalize({ rootDir = "/root" }, {} :: Config_Argv):expect().options
--- 			jestExpect(options.transform[1][1]).toBe(DEFAULT_JS_PATTERN)
--- 			jestExpect(options.transform[1][2]).toEqual(require_:resolve("babel-jest"))
+-- 			expect(options.transform[1][1]).toBe(DEFAULT_JS_PATTERN)
+-- 			expect(options.transform[1][2]).toEqual(require_:resolve("babel-jest"))
 -- 		end)
 -- 	end)
 -- 	it("uses babel-jest if babel-jest is explicitly specified in a custom transform options", function()
@@ -802,8 +802,8 @@ end)
 -- 				{ rootDir = "/root", transform = { [tostring(customJSPattern)] = "babel-jest" } },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.transform[1][1]).toBe(customJSPattern)
--- 			jestExpect(options.transform[1][2]).toEqual(require_:resolve("babel-jest"))
+-- 			expect(options.transform[1][1]).toBe(customJSPattern)
+-- 			expect(options.transform[1][2]).toEqual(require_:resolve("babel-jest"))
 -- 		end)
 -- 	end)
 -- end)
@@ -831,15 +831,15 @@ end)
 -- 				}, {} :: Config_Argv):expect()
 -- 				options, hasDeprecationWarnings = ref.options, ref.hasDeprecationWarnings
 -- 			end
--- 			jestExpect(options.transform).toEqual({ { ".*", "/node_modules/bar/baz", {} } })
--- 			jestExpect(options.transformIgnorePatterns).toEqual({
+-- 			expect(options.transform).toEqual({ { ".*", "/node_modules/bar/baz", {} } })
+-- 			expect(options.transformIgnorePatterns).toEqual({
 -- 				joinForPattern("bar", "baz"),
 -- 				joinForPattern("qux", "quux"),
 -- 			})
--- 			jestExpect(options)["not"].toHaveProperty("scriptPreprocessor")
--- 			jestExpect(options)["not"].toHaveProperty("preprocessorIgnorePatterns")
--- 			jestExpect(hasDeprecationWarnings).toBeTruthy()
--- 			jestExpect(((console.warn :: unknown) :: jest_SpyInstance).mock.calls[1][1]).toMatchSnapshot()
+-- 			expect(options)["not"].toHaveProperty("scriptPreprocessor")
+-- 			expect(options)["not"].toHaveProperty("preprocessorIgnorePatterns")
+-- 			expect(hasDeprecationWarnings).toBeTruthy()
+-- 			expect(((console.warn :: unknown) :: jest_SpyInstance).mock.calls[1][1]).toMatchSnapshot()
 -- 		end)
 -- 	end)
 -- end)
@@ -851,7 +851,7 @@ describe("testRegex", function()
 			:andThen(function()
 				local options =
 					normalize({ rootDir = pathToInstance("/root"), testRegex = "" }, {} :: Config_Argv):expect().options
-				jestExpect(options.testRegex).toEqual({})
+				expect(options.testRegex).toEqual({})
 			end)
 			:expect()
 	end)
@@ -861,7 +861,7 @@ describe("testRegex", function()
 			:andThen(function()
 				local options =
 					normalize({ rootDir = pathToInstance("/root"), testRegex = ".*" }, {} :: Config_Argv):expect().options
-				jestExpect(options.testRegex).toEqual({ ".*" })
+				expect(options.testRegex).toEqual({ ".*" })
 			end)
 			:expect()
 	end)
@@ -873,7 +873,7 @@ describe("testRegex", function()
 					{ rootDir = pathToInstance("/root"), testRegex = { ".*", "foo\\.bar" } },
 					{} :: Config_Argv
 				):expect().options
-				jestExpect(options.testRegex).toEqual({ ".*", "foo\\.bar" })
+				expect(options.testRegex).toEqual({ ".*", "foo\\.bar" })
 			end)
 			:expect()
 	end)
@@ -885,7 +885,7 @@ describe("testMatch", function()
 			:andThen(function()
 				local options =
 					normalize({ rootDir = pathToInstance("/root"), testRegex = ".*" }, {} :: Config_Argv):expect().options
-				jestExpect(#options.testMatch).toBe(0)
+				expect(#options.testMatch).toBe(0)
 			end)
 			:expect()
 	end)
@@ -897,7 +897,7 @@ describe("testMatch", function()
 					{ rootDir = pathToInstance("/root"), testMatch = { "**/*.js" } },
 					{} :: Config_Argv
 				):expect().options
-				jestExpect(options.testRegex).toEqual({})
+				expect(options.testRegex).toEqual({})
 			end)
 			:expect()
 	end)
@@ -906,7 +906,7 @@ describe("testMatch", function()
 		return Promise.resolve()
 			:andThen(function()
 				-- ROBLOX deviation START: no .rejects
-				jestExpect(function()
+				expect(function()
 					normalize(
 						{ rootDir = pathToInstance("/root"), testMatch = { "**/*.js" }, testRegex = ".*" },
 						{} :: Config_Argv
@@ -922,7 +922,7 @@ describe("testMatch", function()
 	-- 	return Promise.resolve():andThen(function()
 	-- 		local options =
 	-- 			normalize({ rootDir = pathToInstance("/root"), testMatch = { "<rootDir>/**/*.js" } }, {} :: Config_Argv):expect().options
-	-- 		jestExpect(options.testMatch).toEqual({ "/root/**/*.js" })
+	-- 		expect(options.testMatch).toEqual({ "/root/**/*.js" })
 	-- 	end):expect()
 	-- end)
 	-- ROBLOX deviation END
@@ -933,7 +933,7 @@ end)
 -- 	it("defaults to node_modules", function()
 -- 		return Promise.resolve():andThen(function()
 -- 			local options = normalize({ rootDir = "/root" }, {} :: Config_Argv):expect().options
--- 			jestExpect(options.moduleDirectories).toEqual({ "node_modules" })
+-- 			expect(options.moduleDirectories).toEqual({ "node_modules" })
 -- 		end)
 -- 	end)
 -- 	it("normalizes moduleDirectories", function()
@@ -942,7 +942,7 @@ end)
 -- 				{ moduleDirectories = { "<rootDir>/src", "<rootDir>/node_modules" }, rootDir = "/root" },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.moduleDirectories).toEqual({ "/root/src", "/root/node_modules" })
+-- 			expect(options.moduleDirectories).toEqual({ "/root/src", "/root/node_modules" })
 -- 		end)
 -- 	end)
 -- end)
@@ -998,14 +998,14 @@ end)
 -- 	end)
 -- 	test("throws when preset not found", function()
 -- 		return Promise.resolve():andThen(function()
--- 			jestExpect(normalize({ preset = "doesnt-exist", rootDir = "/root/path/foo" }, {} :: Config_Argv)).rejects
+-- 			expect(normalize({ preset = "doesnt-exist", rootDir = "/root/path/foo" }, {} :: Config_Argv)).rejects
 -- 				.toThrowErrorMatchingSnapshot()
 -- 				:expect()
 -- 		end)
 -- 	end)
 -- 	test('throws when module was found but no "jest-preset.js" or "jest-preset.json" files', function()
 -- 		return Promise.resolve():andThen(function()
--- 			jestExpect(normalize({ preset = "exist-but-no-jest-preset", rootDir = "/root/path/foo" }, {} :: Config_Argv)).rejects
+-- 			expect(normalize({ preset = "exist-but-no-jest-preset", rootDir = "/root/path/foo" }, {} :: Config_Argv)).rejects
 -- 				.toThrowErrorMatchingSnapshot()
 -- 				:expect()
 -- 		end)
@@ -1016,7 +1016,7 @@ end)
 -- 				require_("library-that-is-not-installed")
 -- 				return { transform = {} :: Config_Argv }
 -- 			end, { virtual = true })
--- 			jestExpect(normalize({ preset = "react-native-js-preset", rootDir = "/root/path/foo" }, {} :: Config_Argv)).rejects
+-- 			expect(normalize({ preset = "react-native-js-preset", rootDir = "/root/path/foo" }, {} :: Config_Argv)).rejects
 -- 				.toThrowError(
 -- 					error("not implemented") --[[ ROBLOX TODO: Unhandled node for type: RegExpLiteral ]] --[[ /Cannot find module 'library-that-is-not-installed'/ ]]
 -- 				)
@@ -1028,7 +1028,7 @@ end)
 -- 			jest.doMock("/node_modules/react-native/jest-preset.json", function()
 -- 				return jest.requireActual("./jest-preset.json")
 -- 			end)
--- 			jestExpect(normalize({ preset = "react-native", rootDir = "/root/path/foo" }, {} :: Config_Argv)).rejects
+-- 			expect(normalize({ preset = "react-native", rootDir = "/root/path/foo" }, {} :: Config_Argv)).rejects
 -- 				.toThrowError(
 -- 					error("not implemented") --[[ ROBLOX TODO: Unhandled node for type: RegExpLiteral ]] --[[ /Unexpected token } in JSON at position 104[\s\S]* at / ]]
 -- 				)
@@ -1044,28 +1044,28 @@ end)
 -- 				then "TypeError: Cannot read properties of undefined (reading 'call')"
 -- 				else
 -- 					error("not implemented") --[[ ROBLOX TODO: Unhandled node for type: RegExpLiteral ]] --[[ /TypeError: Cannot read property 'call' of undefined[\s\S]* at / ]]
--- 			jestExpect(normalize({ preset = "react-native-js-preset", rootDir = "/root/path/foo" }, {} :: Config_Argv)).rejects
+-- 			expect(normalize({ preset = "react-native-js-preset", rootDir = "/root/path/foo" }, {} :: Config_Argv)).rejects
 -- 				.toThrowError(errorMessage)
 -- 				:expect()
 -- 		end)
 -- 	end)
 -- 	test('works with "react-native"', function()
 -- 		return Promise.resolve():andThen(function()
--- 			jestExpect(normalize({ preset = "react-native", rootDir = "/root/path/foo" }, {} :: Config_Argv)).resolves["not"]
+-- 			expect(normalize({ preset = "react-native", rootDir = "/root/path/foo" }, {} :: Config_Argv)).resolves["not"]
 -- 				.toThrow()
 -- 				:expect()
 -- 		end)
 -- 	end)
 -- 	test:each({ "react-native-js-preset", "cjs-preset" })("works with cjs preset", function(presetName)
 -- 		return Promise.resolve():andThen(function()
--- 			jestExpect(normalize({ preset = presetName, rootDir = "/root/path/foo" }, {} :: Config_Argv)).resolves["not"]
+-- 			expect(normalize({ preset = presetName, rootDir = "/root/path/foo" }, {} :: Config_Argv)).resolves["not"]
 -- 				.toThrow()
 -- 				:expect()
 -- 		end)
 -- 	end)
 -- 	test("works with esm preset", function()
 -- 		return Promise.resolve():andThen(function()
--- 			jestExpect(normalize({ preset = "mjs-preset", rootDir = "/root/path/foo" }, {} :: Config_Argv)).resolves["not"]
+-- 			expect(normalize({ preset = "mjs-preset", rootDir = "/root/path/foo" }, {} :: Config_Argv)).resolves["not"]
 -- 				.toThrow()
 -- 				:expect()
 -- 		end)
@@ -1075,7 +1075,7 @@ end)
 -- 			local Resolver = require_("jest-resolve").default
 -- 			normalize({ preset = "react-native", rootDir = "/root/path/foo" }, {} :: Config_Argv):expect()
 -- 			local options = Resolver.findNodeModule.mock.calls[1][2]
--- 			jestExpect(options.extensions).toEqual({ ".json", ".js", ".cjs", ".mjs" })
+-- 			expect(options.extensions).toEqual({ ".json", ".js", ".cjs", ".mjs" })
 -- 		end)
 -- 	end)
 -- 	test("merges with options", function()
@@ -1089,15 +1089,15 @@ end)
 -- 				setupFilesAfterEnv = { "a" },
 -- 				transform = { a = "a" },
 -- 			}, {} :: Config_Argv):expect().options
--- 			jestExpect(options.moduleNameMapper).toEqual({ { "a", "a" }, { "b", "b" } })
--- 			jestExpect(options.modulePathIgnorePatterns).toEqual({ "b", "a" })
--- 			jestExpect(
+-- 			expect(options.moduleNameMapper).toEqual({ { "a", "a" }, { "b", "b" } })
+-- 			expect(options.modulePathIgnorePatterns).toEqual({ "b", "a" })
+-- 			expect(
 -- 				Array.sort(options.setupFiles) --[[ ROBLOX CHECK: check if 'options.setupFiles' is an Array ]]
 -- 			).toEqual({ "/node_modules/a", "/node_modules/b" })
--- 			jestExpect(
+-- 			expect(
 -- 				Array.sort(options.setupFilesAfterEnv) --[[ ROBLOX CHECK: check if 'options.setupFilesAfterEnv' is an Array ]]
 -- 			).toEqual({ "/node_modules/a", "/node_modules/b" })
--- 			jestExpect(options.transform).toEqual({
+-- 			expect(options.transform).toEqual({
 -- 				{ "a", "/node_modules/a", {} },
 -- 				{ "b", "/node_modules/b", {} },
 -- 			})
@@ -1117,7 +1117,7 @@ end)
 -- 				{ moduleNameMapper = moduleNameMapper, preset = "react-native", rootDir = "/root/path/foo" },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.moduleNameMapper).toEqual({
+-- 			expect(options.moduleNameMapper).toEqual({
 -- 				{ "e", "ee" },
 -- 				{ "b", "bb" },
 -- 				{ "c", "cc" },
@@ -1134,7 +1134,7 @@ end)
 -- 				{ preset = "react-native", rootDir = "/root/path/foo", transform = transform },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.transform).toEqual({
+-- 			expect(options.transform).toEqual({
 -- 				{ "e", "/node_modules/ee", {} },
 -- 				{ "b", "/node_modules/bb", {} },
 -- 				{ "c", "/node_modules/cc", {} },
@@ -1146,7 +1146,7 @@ end)
 -- 		return Promise.resolve():andThen(function()
 -- 			local options =
 -- 				normalize({ preset = "react-native", rootDir = "/root/path/foo" }, {} :: Config_Argv):expect().options
--- 			jestExpect(options.setupFilesAfterEnv).toEqual({ "/node_modules/b" })
+-- 			expect(options.setupFilesAfterEnv).toEqual({ "/node_modules/b" })
 -- 		end)
 -- 	end)
 -- end)
@@ -1184,7 +1184,7 @@ end)
 -- 				preset = "global-foo",
 -- 				rootDir = "/root/path/foo",
 -- 			}, {} :: Config_Argv):expect().options
--- 			jestExpect(options.globals).toEqual({
+-- 			expect(options.globals).toEqual({
 -- 				__DEV__ = true,
 -- 				config = { hereToStay = "This should stay here", sideBySide = "This should also live another day" },
 -- 				myString = "hello sunshine",
@@ -1215,7 +1215,7 @@ end)
 -- 				{ [tostring(configKey)] = { "a" }, preset = "react-foo", rootDir = "/root/path/foo" },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options).toEqual(expect:objectContaining({ [tostring(configKey)] = { "/node_modules/a" } }))
+-- 			expect(options).toEqual(expect:objectContaining({ [tostring(configKey)] = { "/node_modules/a" } }))
 -- 		end)
 -- 	end)
 -- end)
@@ -1236,25 +1236,25 @@ end)
 -- 	it("defaults to `jest-runner`", function()
 -- 		return Promise.resolve():andThen(function()
 -- 			local options = normalize({ rootDir = "/root" }, {} :: Config_Argv):expect().options
--- 			jestExpect(options.runner).toBe(require_:resolve("jest-runner"))
+-- 			expect(options.runner).toBe(require_:resolve("jest-runner"))
 -- 		end)
 -- 	end)
 -- 	it("resolves to runners that do not have the prefix", function()
 -- 		return Promise.resolve():andThen(function()
 -- 			local options =
 -- 				normalize({ rootDir = "/root/", runner = "my-runner-foo" }, {} :: Config_Argv):expect().options
--- 			jestExpect(options.runner).toBe("node_modules/my-runner-foo")
+-- 			expect(options.runner).toBe("node_modules/my-runner-foo")
 -- 		end)
 -- 	end)
 -- 	it("resolves to runners and prefers jest-runner-`name`", function()
 -- 		return Promise.resolve():andThen(function()
 -- 			local options = normalize({ rootDir = "/root/", runner = "eslint" }, {} :: Config_Argv):expect().options
--- 			jestExpect(options.runner).toBe("node_modules/jest-runner-eslint")
+-- 			expect(options.runner).toBe("node_modules/jest-runner-eslint")
 -- 		end)
 -- 	end)
 -- 	it("throw error when a runner is not found", function()
 -- 		return Promise.resolve():andThen(function()
--- 			jestExpect(normalize({ rootDir = "/root/", runner = "missing-runner" }, {} :: Config_Argv)).rejects
+-- 			expect(normalize({ rootDir = "/root/", runner = "missing-runner" }, {} :: Config_Argv)).rejects
 -- 				.toThrowErrorMatchingSnapshot()
 -- 				:expect()
 -- 		end)
@@ -1281,14 +1281,14 @@ end)
 -- 	it("defaults to undefined", function()
 -- 		return Promise.resolve():andThen(function()
 -- 			local options = normalize({ rootDir = "/root" }, {} :: Config_Argv):expect().options
--- 			jestExpect(options.watchPlugins).toEqual(nil)
+-- 			expect(options.watchPlugins).toEqual(nil)
 -- 		end)
 -- 	end)
 -- 	it("resolves to watch plugins and prefers jest-watch-`name`", function()
 -- 		return Promise.resolve():andThen(function()
 -- 			local options =
 -- 				normalize({ rootDir = "/root/", watchPlugins = { "typeahead" } }, {} :: Config_Argv):expect().options
--- 			jestExpect(options.watchPlugins).toEqual({
+-- 			expect(options.watchPlugins).toEqual({
 -- 				{ config = {} :: Config_Argv, path = "node_modules/jest-watch-typeahead" },
 -- 			})
 -- 		end)
@@ -1299,7 +1299,7 @@ end)
 -- 				{ rootDir = "/root/", watchPlugins = { "my-watch-plugin" } },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.watchPlugins).toEqual({
+-- 			expect(options.watchPlugins).toEqual({
 -- 				{ config = {} :: Config_Argv, path = "node_modules/my-watch-plugin" },
 -- 			})
 -- 		end)
@@ -1310,7 +1310,7 @@ end)
 -- 				{ rootDir = "/root/", watchPlugins = { "jest-watch-typeahead", "<rootDir>/path/to/plugin" } },
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.watchPlugins).toEqual({
+-- 			expect(options.watchPlugins).toEqual({
 -- 				{ config = {} :: Config_Argv, path = "node_modules/jest-watch-typeahead" },
 -- 				{ config = {} :: Config_Argv, path = "/root/path/to/plugin" },
 -- 			})
@@ -1318,7 +1318,7 @@ end)
 -- 	end)
 -- 	it("throw error when a watch plugin is not found", function()
 -- 		return Promise.resolve():andThen(function()
--- 			jestExpect(normalize({ rootDir = "/root/", watchPlugins = { "missing-plugin" } }, {} :: Config_Argv)).rejects
+-- 			expect(normalize({ rootDir = "/root/", watchPlugins = { "missing-plugin" } }, {} :: Config_Argv)).rejects
 -- 				.toThrowErrorMatchingSnapshot()
 -- 				:expect()
 -- 		end)
@@ -1341,7 +1341,7 @@ describe("testPathPattern", function()
 	it("defaults to empty", function()
 		return Promise.resolve():andThen(function()
 			local options = normalize(initialOptions, {} :: Config_Argv):expect().options
-			jestExpect(options.testPathPattern).toBe("")
+			expect(options.testPathPattern).toBe("")
 		end)
 	end)
 
@@ -1356,7 +1356,7 @@ describe("testPathPattern", function()
 					:andThen(function()
 						local argv = { [opt.property] = { "a/b" } } :: Config_Argv
 						local options = normalize(initialOptions, argv):expect().options
-						jestExpect(options.testPathPattern).toBe("a/b")
+						expect(options.testPathPattern).toBe("a/b")
 					end)
 					:expect()
 			end)
@@ -1366,8 +1366,8 @@ describe("testPathPattern", function()
 					:andThen(function()
 						local argv = { [opt.property] = { "a(" } } :: Config_Argv
 						local options = normalize(initialOptions, argv):expect().options
-						jestExpect(options.testPathPattern).toBe("")
-						jestExpect(((console.log :: unknown) :: jest_SpyInstance).mock.calls[1][1]).toMatchSnapshot()
+						expect(options.testPathPattern).toBe("")
+						expect(((console.log :: unknown) :: jest_SpyInstance).mock.calls[1][1]).toMatchSnapshot()
 					end)
 					:expect()
 			end)
@@ -1377,7 +1377,7 @@ describe("testPathPattern", function()
 					:andThen(function()
 						local argv = { testPathPattern = { "a/b", "c/d" } } :: Config_Argv
 						local options = normalize(initialOptions, argv):expect().options
-						jestExpect(options.testPathPattern).toBe("a/b|c/d")
+						expect(options.testPathPattern).toBe("a/b|c/d")
 					end)
 					:expect()
 			end)
@@ -1388,7 +1388,7 @@ describe("testPathPattern", function()
 						:andThen(function()
 							local argv = { [opt.property] = { "a\\/b", "a/b", "a\\b", "a\\\\b" } } :: Config_Argv
 							local options = normalize(initialOptions, argv):expect().options
-							jestExpect(options.testPathPattern).toBe("a\\/b|a/b|a\\b|a\\\\b")
+							expect(options.testPathPattern).toBe("a\\/b|a/b|a\\b|a\\\\b")
 						end)
 						:expect()
 				end)
@@ -1409,28 +1409,28 @@ describe("testPathPattern", function()
 			-- 		return Promise.resolve():andThen(function()
 			-- 			local argv = { [tostring(opt.property)] = { "a\\b", "c\\\\d" } }
 			-- 			local options = require_("../normalize"):default(initialOptions, argv):expect().options
-			-- 			jestExpect(options.testPathPattern).toBe("a\\b|c\\\\d")
+			-- 			expect(options.testPathPattern).toBe("a\\b|c\\\\d")
 			-- 		end)
 			-- 	end)
 			-- 	it("replaces POSIX path separators", function()
 			-- 		return Promise.resolve():andThen(function()
 			-- 			local argv = { [tostring(opt.property)] = { "a/b" } }
 			-- 			local options = require_("../normalize"):default(initialOptions, argv):expect().options
-			-- 			jestExpect(options.testPathPattern).toBe("a\\\\b")
+			-- 			expect(options.testPathPattern).toBe("a\\\\b")
 			-- 		end)
 			-- 	end)
 			-- 	it("replaces POSIX paths in multiple args", function()
 			-- 		return Promise.resolve():andThen(function()
 			-- 			local argv = { [tostring(opt.property)] = { "a/b", "c/d" } }
 			-- 			local options = require_("../normalize"):default(initialOptions, argv):expect().options
-			-- 			jestExpect(options.testPathPattern).toBe("a\\\\b|c\\\\d")
+			-- 			expect(options.testPathPattern).toBe("a\\\\b|c\\\\d")
 			-- 		end)
 			-- 	end)
 			-- 	it("coerces all patterns to strings", function()
 			-- 		return Promise.resolve():andThen(function()
 			-- 			local argv = { [tostring(opt.property)] = { 1 } } :: Config_Argv
 			-- 			local options = normalize(initialOptions, argv):expect().options
-			-- 			jestExpect(options.testPathPattern).toBe("1")
+			-- 			expect(options.testPathPattern).toBe("1")
 			-- 		end)
 			-- 	end)
 			-- end)
@@ -1445,7 +1445,7 @@ describe("testPathPattern", function()
 					initialOptions,
 					{ _ = { "a", "b" }, testPathPattern = { "c", "d" } } :: Config_Argv
 				):expect().options
-				jestExpect(options.testPathPattern).toBe("a|b|c|d")
+				expect(options.testPathPattern).toBe("a|b|c|d")
 			end)
 			:expect()
 	end)
@@ -1455,7 +1455,7 @@ describe("testPathPattern", function()
 	-- 	return Promise.resolve():andThen(function()
 	-- 		local options =
 	-- 			normalize(initialOptions, { all = true, onlyChanged = true } :: Config_Argv):expect().options
-	-- 		jestExpect(options.onlyChanged).toBe(false)
+	-- 		expect(options.onlyChanged).toBe(false)
 	-- 	end):expect()
 	-- end)
 	-- ROBLOX deviation END
@@ -1466,12 +1466,12 @@ end)
 -- 	it("defaults to something useful", function()
 -- 		return Promise.resolve():andThen(function()
 -- 			local options = normalize({ rootDir = "/root" }, {} :: Config_Argv):expect().options
--- 			jestExpect(options.moduleFileExtensions).toEqual({ "js", "jsx", "ts", "tsx", "json", "node" })
+-- 			expect(options.moduleFileExtensions).toEqual({ "js", "jsx", "ts", "tsx", "json", "node" })
 -- 		end)
 -- 	end)
 -- 	it:each({ nil, "jest-runner" })("throws if missing `js` but using jest-runner", function(runner)
 -- 		return Promise.resolve():andThen(function()
--- 			jestExpect(
+-- 			expect(
 -- 					normalize(
 -- 						{ moduleFileExtensions = { "json", "jsx" }, rootDir = "/root/", runner = runner },
 -- 						{} :: Config_Argv
@@ -1483,7 +1483,7 @@ end)
 -- 	end)
 -- 	it("does not throw if missing `js` with a custom runner", function()
 -- 		return Promise.resolve():andThen(function()
--- 			jestExpect(normalize({
+-- 			expect(normalize({
 -- 					moduleFileExtensions = { "json", "jsx" },
 -- 					rootDir = "/root/",
 -- 					runner = "./", -- does not need to be a valid runner for this validation
@@ -1497,7 +1497,7 @@ end)
 -- 	it("is set to process.cwd", function()
 -- 		return Promise.resolve():andThen(function()
 -- 			local options = normalize({ rootDir = "/root/" }, {} :: Config_Argv):expect().options
--- 			jestExpect(options.cwd).toBe(process:cwd())
+-- 			expect(options.cwd).toBe(process:cwd())
 -- 		end)
 -- 	end)
 -- 	it("is not lost if the config has its own cwd property", function()
@@ -1507,8 +1507,8 @@ end)
 -- 				{ cwd = "/tmp/config-sets-cwd-itself", rootDir = "/root/" } :: Config_InitialOptions,
 -- 				{} :: Config_Argv
 -- 			):expect().options
--- 			jestExpect(options.cwd).toBe(process:cwd())
--- 			jestExpect(console.warn).toHaveBeenCalled()
+-- 			expect(options.cwd).toBe(process:cwd())
+-- 			expect(console.warn).toHaveBeenCalled()
 -- 		end)
 -- 	end)
 -- end)
@@ -1518,7 +1518,7 @@ describe("Defaults", function()
 	it("should be accepted by normalize", function()
 		return Promise.resolve():andThen(function()
 			normalize(Object.assign({}, Defaults, { rootDir = pathToInstance("/root") }), {} :: Config_Argv):expect()
-			jestExpect(console.warn).never.toHaveBeenCalled()
+			expect(console.warn).never.toHaveBeenCalled()
 		end)
 	end)
 end)
@@ -1537,7 +1537,7 @@ describe("displayName", function()
 			return Promise.resolve()
 				:andThen(function()
 					-- ROBLOX deviation START: no .rejects
-					jestExpect(function()
+					expect(function()
 						normalize({ displayName = displayName, rootDir = pathToInstance("/root/") }, {} :: Config_Argv):expect()
 					end).toThrowErrorMatchingSnapshot()
 					-- ROBLOX deviation END
@@ -1559,8 +1559,8 @@ describe("displayName", function()
 	-- 				{ displayName = "project", rootDir = "/root/", runner = runner },
 	-- 				{} :: Config_Argv
 	-- 			):expect().options.displayName
-	-- 			jestExpect((displayName :: any).name).toBe("project")
-	-- 			jestExpect((displayName :: any).color).toMatchSnapshot()
+	-- 			expect((displayName :: any).name).toBe("project")
+	-- 			expect((displayName :: any).color).toMatchSnapshot()
 	-- 		end)
 	-- 	end
 	-- )
@@ -1574,8 +1574,8 @@ describe("testTimeout", function()
 				((console.warn :: unknown) :: jest_SpyInstance):mockImplementation(function() end)
 				local options =
 					normalize({ rootDir = pathToInstance("/root/"), testTimeout = 1000 }, {} :: Config_Argv):expect().options
-				jestExpect(options.testTimeout).toBe(1000)
-				jestExpect(console.warn).never.toHaveBeenCalled()
+				expect(options.testTimeout).toBe(1000)
+				expect(console.warn).never.toHaveBeenCalled()
 			end)
 			:expect()
 	end)
@@ -1584,7 +1584,7 @@ describe("testTimeout", function()
 		return Promise.resolve()
 			:andThen(function()
 				-- ROBLOX deviation START: no .rejects
-				jestExpect(function()
+				expect(function()
 					normalize({ rootDir = pathToInstance("/root/"), testTimeout = -1 }, {} :: Config_Argv):expect()
 				end).toThrowErrorMatchingSnapshot()
 				-- ROBLOX deviation END
@@ -1615,7 +1615,7 @@ end)
 -- 				local ok, result, hasReturned = xpcall(function()
 -- 					callback():expect()
 -- 				end, function(error_)
--- 					jestExpect(wrap(stripAnsi(error_.message):trim())).toMatchSnapshot()
+-- 					expect(wrap(stripAnsi(error_.message):trim())).toMatchSnapshot()
 -- 				end)
 -- 				if hasReturned then
 -- 					return result
@@ -1627,7 +1627,7 @@ end)
 -- 		return Promise.resolve():andThen(function()
 -- 			local options =
 -- 				normalize({ extensionsToTreatAsEsm = { ".ts" }, rootDir = "/root/" }, {} :: Config_Argv):expect().options
--- 			jestExpect(options.extensionsToTreatAsEsm).toEqual({ ".ts" })
+-- 			expect(options.extensionsToTreatAsEsm).toEqual({ ".ts" })
 -- 		end)
 -- 	end)
 -- 	it("should enforce leading dots", function()
@@ -1652,18 +1652,18 @@ end)
 -- describe("haste.enableSymlinks", function()
 -- 	it("should throw if watchman is not disabled", function()
 -- 		return Promise.resolve():andThen(function()
--- 			jestExpect(normalize({ haste = { enableSymlinks = true }, rootDir = "/root/" }, {})).rejects
+-- 			expect(normalize({ haste = { enableSymlinks = true }, rootDir = "/root/" }, {})).rejects
 -- 				.toThrow("haste.enableSymlinks is incompatible with watchman")
 -- 				:expect()
--- 			jestExpect(normalize({ haste = { enableSymlinks = true }, rootDir = "/root/", watchman = true }, {})).rejects
+-- 			expect(normalize({ haste = { enableSymlinks = true }, rootDir = "/root/", watchman = true }, {})).rejects
 -- 				.toThrow("haste.enableSymlinks is incompatible with watchman")
 -- 				:expect()
 -- 			local options = normalize(
 -- 				{ haste = { enableSymlinks = true }, rootDir = "/root/", watchman = false },
 -- 				{}
 -- 			):expect().options
--- 			jestExpect(options.haste.enableSymlinks).toBe(true)
--- 			jestExpect(options.watchman).toBe(false)
+-- 			expect(options.haste.enableSymlinks).toBe(true)
+-- 			expect(options.watchman).toBe(false)
 -- 		end)
 -- 	end)
 -- end)
@@ -1672,8 +1672,8 @@ end)
 -- 		return Promise.resolve():andThen(function()
 -- 			local options =
 -- 				normalize({ haste = { forceNodeFilesystemAPI = true }, rootDir = "/root/" }, {}):expect().options
--- 			jestExpect(options.haste.forceNodeFilesystemAPI).toBe(true)
--- 			jestExpect(console.warn)["not"].toHaveBeenCalled()
+-- 			expect(options.haste.forceNodeFilesystemAPI).toBe(true)
+-- 			expect(console.warn)["not"].toHaveBeenCalled()
 -- 		end)
 -- 	end)
 -- end)

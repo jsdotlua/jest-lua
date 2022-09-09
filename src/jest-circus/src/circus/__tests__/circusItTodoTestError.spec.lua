@@ -11,7 +11,7 @@ local SrcModule = CurrentModule.Parent
 local Packages = SrcModule.Parent.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
@@ -33,20 +33,20 @@ aliasCircusIt()
 
 describe("test/it.todo error throwing", function()
 	it("todo throws error when given no arguments", function()
-		jestExpect(function()
+		expect(function()
 			-- @ts-expect-error: Testing runtime errors here
 			(circusIt.todo :: any)()
 		end).toThrowError("Todo must be called with only a description.")
 	end)
 
 	it("todo throws error when given more than one argument", function()
-		jestExpect(function()
+		expect(function()
 			(circusIt.todo :: any)("test1", function() end)
 		end).toThrowError("Todo must be called with only a description.")
 	end)
 
 	it("todo throws error when given none string description", function()
-		jestExpect(function()
+		expect(function()
 			-- @ts-expect-error: Testing runtime errors here
 			(circusIt.todo :: any)(function() end)
 		end).toThrowError("Todo must be called with only a description.")

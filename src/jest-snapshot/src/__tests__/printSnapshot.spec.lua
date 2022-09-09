@@ -20,7 +20,7 @@ local chalk = (require(Packages.ChalkLua) :: any) :: Chalk
 local format = require(Packages.PrettyFormat).default
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
@@ -125,7 +125,7 @@ local toMatchSnapshot = jestSnapshot.toMatchSnapshot
 local toThrowErrorMatchingSnapshot = jestSnapshot.toThrowErrorMatchingSnapshot
 
 beforeAll(function()
-	jestExpect.addSnapshotSerializer({
+	expect.addSnapshotSerializer({
 		serialize = function(val: string): string
 			return convertAnsi(val)
 		end,
@@ -136,7 +136,7 @@ beforeAll(function()
 end)
 
 afterAll(function()
-	jestExpect.resetSnapshotSerializers()
+	expect.resetSnapshotSerializers()
 end)
 
 describe("chalk", function()
@@ -171,8 +171,8 @@ describe("chalk", function()
 		local formatted = formatLines(chalk)
 		local converted = convertAnsi(formatted)
 		chalk.level = 2
-		jestExpect(converted).toBe(expected0)
-		jestExpect(formatted).toBe(expected0)
+		expect(converted).toBe(expected0)
+		expect(formatted).toBe(expected0)
 	end)
 
 	-- ROBLOX deviation: test skipped because we don't have level 1 support in chalk-lua
@@ -184,11 +184,11 @@ describe("chalk", function()
 		local converted = convertAnsi(formatted)
 		chalk.level = 2
 
-		jestExpect(converted).toBe(expected1)
-		jestExpect(formatted).toContain(aOpenForeground1 .. aOpenBackground1 .. "-")
-		jestExpect(formatted).toContain(bOpenForeground1 .. bOpenBackground1 .. "+")
-		jestExpect(formatted).never.toContain(chalk.bgYellow(" ")) -- noColor
-		jestExpect(formatted).toContain(chalk.bgYellow("  "))
+		expect(converted).toBe(expected1)
+		expect(formatted).toContain(aOpenForeground1 .. aOpenBackground1 .. "-")
+		expect(formatted).toContain(bOpenForeground1 .. bOpenBackground1 .. "+")
+		expect(formatted).never.toContain(chalk.bgYellow(" ")) -- noColor
+		expect(formatted).toContain(chalk.bgYellow("  "))
 	end)
 
 	it("level 2", function()
@@ -198,11 +198,11 @@ describe("chalk", function()
 		local formatted = formatLines(chalk)
 		local converted = convertAnsi(formatted)
 
-		jestExpect(converted).toBe(expected1)
-		jestExpect(formatted).toContain(aOpenForeground2 .. aOpenBackground2 .. "-")
-		jestExpect(formatted).toContain(bOpenForeground2 .. bOpenBackground2 .. "+")
-		jestExpect(formatted).never.toContain(chalk.bgYellow(" "))
-		jestExpect(formatted).toContain(chalk.bgYellow("  "))
+		expect(converted).toBe(expected1)
+		expect(formatted).toContain(aOpenForeground2 .. aOpenBackground2 .. "-")
+		expect(formatted).toContain(bOpenForeground2 .. bOpenBackground2 .. "+")
+		expect(formatted).never.toContain(chalk.bgYellow(" "))
+		expect(formatted).toContain(chalk.bgYellow("  "))
 	end)
 
 	-- ROBLOX deviation: test skipped because we don't have level 1 support in chalk-lua
@@ -214,11 +214,11 @@ describe("chalk", function()
 		local converted = convertAnsi(formatted)
 		chalk.level = 2
 
-		jestExpect(converted).toBe(expected1)
-		-- jestExpect(formatted).toContain(aOpenForeground3 .. aOpenBackground3 .. '-')
-		-- jestExpect(formatted).toContain(bOpenForeground3 .. bOpenBackground3 .. '+')
-		jestExpect(formatted).never.toContain(chalk.bgYellow(" ")) -- noColor
-		jestExpect(formatted).toContain(chalk.bgYellow("  "))
+		expect(converted).toBe(expected1)
+		-- expect(formatted).toContain(aOpenForeground3 .. aOpenBackground3 .. '-')
+		-- expect(formatted).toContain(bOpenForeground3 .. bOpenBackground3 .. '+')
+		expect(formatted).never.toContain(chalk.bgYellow(" ")) -- noColor
+		expect(formatted).toContain(chalk.bgYellow("  "))
 	end)
 end)
 
@@ -241,7 +241,7 @@ describe("matcher error", function()
 				return {}
 			end
 
-			jestExpect(function()
+			expect(function()
 				toMatchSnapshot(context, received, properties)
 			end).toThrowErrorMatchingSnapshot()
 		end)
@@ -254,7 +254,7 @@ describe("matcher error", function()
 			local properties = nil
 			local hint = "reminder"
 
-			jestExpect(function()
+			expect(function()
 				toMatchSnapshot(context, received, properties, hint)
 			end).toThrowErrorMatchingSnapshot()
 		end)
@@ -266,7 +266,7 @@ describe("matcher error", function()
 			}
 			local properties = nil
 
-			jestExpect(function()
+			expect(function()
 				toMatchSnapshot(context, received, properties)
 			end).toThrowErrorMatchingSnapshot()
 		end)
@@ -281,13 +281,13 @@ describe("matcher error", function()
 			local properties = {}
 
 			it("(non-null)", function()
-				jestExpect(function()
+				expect(function()
 					toMatchSnapshot(context, "string", properties)
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it("(null)", function()
-				jestExpect(function()
+				expect(function()
 					toMatchSnapshot(context, nil, properties)
 				end).toThrowErrorMatchingSnapshot()
 			end)
@@ -302,7 +302,7 @@ describe("matcher error", function()
 			-- }
 			-- local hint = 'initialize me'
 
-			-- jestExpect(function()
+			-- expect(function()
 			-- 	toMatchSnapshot(context, received, nil, hint)
 			-- end).toThrowErrorMatchingSnapshot()
 		end)
@@ -320,7 +320,7 @@ describe("matcher error", function()
 			local received = 13
 			local fromPromise = false
 
-			jestExpect(function()
+			expect(function()
 				toThrowErrorMatchingSnapshot(context, received, nil, fromPromise)
 			end).toThrowErrorMatchingSnapshot()
 		end)
@@ -334,7 +334,7 @@ describe("matcher error", function()
 			local hint = "reminder"
 			local fromPromise = true
 
-			jestExpect(function()
+			expect(function()
 				toThrowErrorMatchingSnapshot(context, received, hint, fromPromise)
 			end).toThrowErrorMatchingSnapshot()
 		end)
@@ -354,7 +354,7 @@ describe("other error", function()
 			local received = function() end
 			local fromPromise = false
 
-			jestExpect(function()
+			expect(function()
 				toThrowErrorMatchingSnapshot(context, received, nil, fromPromise)
 			end).toThrowErrorMatchingSnapshot()
 		end)
@@ -389,8 +389,8 @@ describe("pass false", function()
 			local result = toMatchSnapshot(context, received, hint)
 			local message = result.message
 			local pass = result.pass
-			jestExpect(pass).toBe(false)
-			jestExpect(message()).toMatchSnapshot()
+			expect(pass).toBe(false)
+			expect(message()).toMatchSnapshot()
 		end)
 
 		it("New snapshot was not written (single line)", function()
@@ -416,8 +416,8 @@ describe("pass false", function()
 			local result = toMatchSnapshot(context, received, hint)
 			local message = result.message
 			local pass = result.pass
-			jestExpect(pass).toBe(false)
-			jestExpect(message()).toMatchSnapshot()
+			expect(pass).toBe(false)
+			expect(message()).toMatchSnapshot()
 		end)
 
 		describe("with properties", function()
@@ -452,8 +452,8 @@ describe("pass false", function()
 					local result = toMatchSnapshot(context, Error("Invalid array length"), { name = "Error" })
 					local message = result.message
 					local pass = result.pass
-					jestExpect(pass).toBe(false)
-					jestExpect(message()).toMatchSnapshot()
+					expect(pass).toBe(false)
+					expect(message()).toMatchSnapshot()
 				end)
 
 				it("isLineDiffable true", function()
@@ -466,8 +466,8 @@ describe("pass false", function()
 					local result = toMatchSnapshot(context, received, properties)
 					local message = result.message
 					local pass = result.pass
-					jestExpect(pass).toBe(false)
-					jestExpect(message()).toMatchSnapshot()
+					expect(pass).toBe(false)
+					expect(message()).toMatchSnapshot()
 				end)
 			end)
 
@@ -514,8 +514,8 @@ describe("pass false", function()
 				local result = toMatchSnapshot(context, received, properties, hint)
 				local message = result.message
 				local pass = result.pass
-				jestExpect(pass).toBe(false)
-				jestExpect(message()).toMatchSnapshot()
+				expect(pass).toBe(false)
+				expect(message()).toMatchSnapshot()
 			end)
 		end)
 	end)
@@ -541,7 +541,7 @@ describe("pass true", function()
 			local received = 7
 
 			local pass = toMatchSnapshot(context, received).pass
-			jestExpect(pass).toBe(true)
+			expect(pass).toBe(true)
 		end)
 	end)
 end)
@@ -559,11 +559,11 @@ describe("printPropertiesAndReceived", function()
 			statementMap = {},
 		}
 		local properties = {
-			hash = jestExpect.any("string"),
-			path = jestExpect.any("string"),
+			hash = expect.any("string"),
+			path = expect.any("string"),
 		}
 
-		jestExpect(printPropertiesAndReceived(properties, received, false)).toMatchSnapshot()
+		expect(printPropertiesAndReceived(properties, received, false)).toMatchSnapshot()
 	end)
 end)
 
@@ -583,7 +583,7 @@ describe("printSnapshotAndReceived", function()
 			local expected = "var foo = `backtick`;"
 			local received = "var foo = tag`backtick`;"
 
-			jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+			expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 		end)
 	end)
 
@@ -592,14 +592,14 @@ describe("printSnapshotAndReceived", function()
 			local expected = ""
 			local received = "single line string"
 
-			jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+			expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 		end)
 
 		it("received and expected multi line", function()
 			local expected = "multi\nline\nstring"
 			local received = ""
 
-			jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+			expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 		end)
 	end)
 
@@ -608,21 +608,21 @@ describe("printSnapshotAndReceived", function()
 			local expected = 'What does "oobleck" mean?'
 			local received = 'What does "ewbleck" mean?'
 
-			jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+			expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 		end)
 
 		it("backslash in multi line string", function()
 			local expected = "Forward / slash and back \\ slash"
 			local received = "Forward / slash\nBack \\ slash"
 
-			jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+			expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 		end)
 
 		it("backslash in single line string", function()
 			local expected = "forward / slash and back \\ slash"
 			local received = "Forward / slash and back \\ slash"
 
-			jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+			expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 		end)
 
 		-- ROBLOX deviation: test skipped because we do not have support for the
@@ -630,7 +630,7 @@ describe("printSnapshotAndReceived", function()
 		it.skip("regexp", function()
 			local expected = '\\(")'
 			local received = '\\(")'
-			jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+			expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 		end)
 	end)
 
@@ -680,11 +680,11 @@ describe("printSnapshotAndReceived", function()
 		}, "\n")
 
 		it("false", function()
-			jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+			expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 		end)
 
 		it("true", function()
-			jestExpect(testWithStringify(expected, received, true)).toMatchSnapshot()
+			expect(testWithStringify(expected, received, true)).toMatchSnapshot()
 		end)
 	end)
 
@@ -714,7 +714,7 @@ describe("printSnapshotAndReceived", function()
 			"================================================================================",
 		}, "\n")
 
-		jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+		expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 	end)
 
 	describe("has no common after clean up chaff", function()
@@ -722,14 +722,14 @@ describe("printSnapshotAndReceived", function()
 			local expected = { "delete", "two" }
 			local received = { "insert", "2" }
 
-			jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+			expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 		end)
 
 		it("string single line", function()
 			local expected = "delete"
 			local received = "insert"
 
-			jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+			expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 		end)
 	end)
 
@@ -744,26 +744,26 @@ describe("printSnapshotAndReceived", function()
 				local less2 = "multi\nline"
 				local difference = printSnapshotAndReceived(less2, less, less, true)
 
-				jestExpect(difference).toMatch("- multi")
-				jestExpect(difference).toMatch("- line")
-				jestExpect(difference).toContain(lessChange)
-				jestExpect(difference).never.toMatch("+ single line")
+				expect(difference).toMatch("- multi")
+				expect(difference).toMatch("- line")
+				expect(difference).toContain(lessChange)
+				expect(difference).never.toMatch("+ single line")
 			end)
 
 			it("expected is more", function()
 				local difference = printSnapshotAndReceived(less, more, more, true)
 
-				jestExpect(difference).toMatch("- single line")
-				jestExpect(difference).toMatch("+ multi line")
-				jestExpect(difference).never.toContain(lessChange)
+				expect(difference).toMatch("- single line")
+				expect(difference).toMatch("+ multi line")
+				expect(difference).never.toContain(lessChange)
 			end)
 
 			it("received is more", function()
 				local difference = printSnapshotAndReceived(less, more, more, true)
 
-				jestExpect(difference).toMatch("- single line")
-				jestExpect(difference).toMatch("+ multi line")
-				jestExpect(difference).never.toContain(lessChange)
+				expect(difference).toMatch("- single line")
+				expect(difference).toMatch("+ multi line")
+				expect(difference).never.toContain(lessChange)
 			end)
 		end)
 
@@ -779,27 +779,27 @@ describe("printSnapshotAndReceived", function()
 				local lessQuoted2 = '"0 numbers"'
 				local stringified = printSnapshotAndReceived(lessQuoted2, lessQuoted, less, true)
 
-				jestExpect(stringified).toMatch("Received:")
-				jestExpect(stringified).toContain(lessChange)
-				jestExpect(stringified).never.toMatch("+ Received")
+				expect(stringified).toMatch("Received:")
+				expect(stringified).toContain(lessChange)
+				expect(stringified).never.toMatch("+ Received")
 			end)
 
 			it("expected is more", function()
 				local stringified = printSnapshotAndReceived(moreQuoted, lessQuoted, less, true)
 
-				jestExpect(stringified).toMatch("Received:")
-				jestExpect(stringified).toMatch(less)
-				jestExpect(stringified).never.toMatch("+ Received")
-				jestExpect(stringified).never.toContain(lessChange)
+				expect(stringified).toMatch("Received:")
+				expect(stringified).toMatch(less)
+				expect(stringified).never.toMatch("+ Received")
+				expect(stringified).never.toContain(lessChange)
 			end)
 
 			it("received is more", function()
 				local stringified = printSnapshotAndReceived(lessQuoted, moreQuoted, more, true)
 
-				jestExpect(stringified).toMatch("Snapshot:")
-				jestExpect(stringified).toMatch(less)
-				jestExpect(stringified).never.toMatch("- Snapshot")
-				jestExpect(stringified).never.toContain(lessChange)
+				expect(stringified).toMatch("Snapshot:")
+				expect(stringified).toMatch(less)
+				expect(stringified).never.toMatch("- Snapshot")
+				expect(stringified).never.toContain(lessChange)
 			end)
 		end)
 	end)
@@ -810,28 +810,28 @@ describe("printSnapshotAndReceived", function()
 				local expected = nil
 				local received = { asymmetricMatch = function(self) end }
 
-				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+				expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
 			it("boolean", function()
 				local expected = true
 				local received = false
 
-				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+				expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
 			it("date", function()
 				local expected = DateTime.fromUniversalTime(2019, 9, 19)
 				local received = DateTime.fromUniversalTime(2019, 9, 20)
 
-				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+				expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
 			it("error", function()
 				local expected = Error('Cannot spread fragment "NameAndAppearances" within itself.')
 				local received = Error('Cannot spread fragment "NameAndAppearancesAndFriends" within itself.')
 
-				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+				expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
 			it("function", function()
@@ -839,14 +839,14 @@ describe("printSnapshotAndReceived", function()
 				local expected = nil
 				local received = function() end
 
-				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+				expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
 			it("number", function()
 				local expected = -0
 				local received = 0 / 0
 
-				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+				expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 		end)
 
@@ -870,7 +870,7 @@ describe("printSnapshotAndReceived", function()
 					Object.assign({ _id = "7fc63ff01769c4fa7d9279e97e307829" }, expected1),
 				}
 
-				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+				expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
 			it("object", function()
@@ -892,7 +892,7 @@ describe("printSnapshotAndReceived", function()
 					type = type_,
 				}
 
-				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+				expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
 			-- ROBLOX deviation: test skipped because there is no distinction
@@ -901,14 +901,14 @@ describe("printSnapshotAndReceived", function()
 				-- local expected = []
 				-- local received = {}
 
-				-- jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+				-- expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 
 			it("single line expected and multi line received", function()
 				local expected = {}
 				local received = { 0 }
 
-				jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+				expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 			end)
 		end)
 	end)
@@ -917,7 +917,7 @@ describe("printSnapshotAndReceived", function()
 		local expected = "There is no route defined for key 'Settings'.\nMust be one of: 'Home'"
 		local received = "There is no route defined for key Settings.\nMust be one of: 'Home'"
 
-		jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+		expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 	end)
 
 	it("multi line small changes", function()
@@ -942,14 +942,14 @@ describe("printSnapshotAndReceived", function()
 			"    at Object.doesNotThrow (__tests__/assertionError.test.js:70:10)",
 		}, "\n")
 
-		jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+		expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 	end)
 
 	it("single line large changes", function()
 		local expected = "Array length must be a finite positive integer"
 		local received = "Invalid array length"
 
-		jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+		expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 	end)
 
 	describe("ignore indentation", function()
@@ -990,7 +990,7 @@ describe("printSnapshotAndReceived", function()
 				type = "div",
 			}
 
-			jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+			expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 		end)
 
 		-- ROBLOX deviation: test skipped because we don't have support for react elements
@@ -1019,7 +1019,7 @@ describe("printSnapshotAndReceived", function()
 				type = "div",
 			}
 
-			jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+			expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 		end)
 
 		-- ROBLOX deviation: test skipped because we don't have support for react elements
@@ -1052,7 +1052,7 @@ describe("printSnapshotAndReceived", function()
 				type = "th",
 			}
 
-			jestExpect(testWithStringify(expected, received, false)).toMatchSnapshot()
+			expect(testWithStringify(expected, received, false)).toMatchSnapshot()
 		end)
 
 		describe("object", function()
@@ -1073,11 +1073,11 @@ describe("printSnapshotAndReceived", function()
 			}
 
 			it("delete", function()
-				jestExpect(testWithStringify(more, less, false)).toMatchSnapshot()
+				expect(testWithStringify(more, less, false)).toMatchSnapshot()
 			end)
 
 			it("insert", function()
-				jestExpect(testWithStringify(less, more, false)).toMatchSnapshot()
+				expect(testWithStringify(less, more, false)).toMatchSnapshot()
 			end)
 		end)
 	end)
@@ -1087,27 +1087,27 @@ describe("printSnapshotAndReceived", function()
 			local expected = "var foo = `backtick`;"
 			local received = "var foo = `back${x}tick`;"
 
-			jestExpect(testWithoutStringify(expected, received, false)).toMatchSnapshot()
+			expect(testWithoutStringify(expected, received, false)).toMatchSnapshot()
 		end)
 
 		it("backtick single line expected and multi line received", function()
 			local expected = "var foo = `backtick`;"
 			local received = "var foo = `back\ntick`;"
-			jestExpect(testWithoutStringify(expected, received, false)).toMatchSnapshot()
+			expect(testWithoutStringify(expected, received, false)).toMatchSnapshot()
 		end)
 
 		it("has no common after clean up chaff multi line", function()
 			local expected = "delete\ntwo"
 			local received = "insert\n2"
 
-			jestExpect(testWithoutStringify(expected, received, false)).toMatchSnapshot()
+			expect(testWithoutStringify(expected, received, false)).toMatchSnapshot()
 		end)
 
 		it("has no common after clean up chaff single line", function()
 			local expected = "delete"
 			local received = "insert"
 
-			jestExpect(testWithoutStringify(expected, received, false)).toMatchSnapshot()
+			expect(testWithoutStringify(expected, received, false)).toMatchSnapshot()
 		end)
 
 		it("prettier/pull/5590", function()
@@ -1138,7 +1138,7 @@ describe("printSnapshotAndReceived", function()
 				"================================================================================",
 			}, "\n")
 
-			jestExpect(testWithoutStringify(expected, received, false)).toMatchSnapshot()
+			expect(testWithoutStringify(expected, received, false)).toMatchSnapshot()
 		end)
 	end)
 end)

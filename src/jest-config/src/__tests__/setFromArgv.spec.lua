@@ -11,7 +11,7 @@ local Packages = script.Parent.Parent.Parent
 local typesModule = require(Packages.JestTypes)
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local it = JestGlobals.it
 
 type Config_Argv = typesModule.Config_Argv
@@ -21,7 +21,7 @@ local setFromArgv = require(script.Parent.Parent.setFromArgv).default
 it("maps special values to valid options", function()
 	local options = {} :: Config_InitialOptions
 	local argv = { coverage = true, env = "node", json = true, watchAll = true } :: Config_Argv
-	jestExpect(setFromArgv(options, argv)).toMatchObject({
+	expect(setFromArgv(options, argv)).toMatchObject({
 		-- ROBLOX deviation START: not supported
 		-- collectCoverage = true,
 		-- testEnvironment = "node",
@@ -42,7 +42,7 @@ end)
 -- 		coverageDirectory = "covDir",
 -- 		watchman = true,
 -- 	} :: Config_Argv
--- 	jestExpect(setFromArgv(options, argv)).toMatchObject({
+-- 	expect(setFromArgv(options, argv)).toMatchObject({
 -- 		collectCoverageOnlyFrom = { "a", "b" },
 -- 		coverageDirectory = "covDir",
 -- 		watchman = true,
@@ -56,7 +56,7 @@ end)
 -- 		testEnvironmentOptions = '{"userAgent": "Agent/007"}',
 -- 		transform = '{"*.js": "<rootDir>/transformer"}',
 -- 	} :: Config_Argv
--- 	jestExpect(setFromArgv(options, argv)).toMatchObject({
+-- 	expect(setFromArgv(options, argv)).toMatchObject({
 -- 		moduleNameMapper = {
 -- 			["types/(.*)"] = "<rootDir>/src/types/$1",
 -- 			["types2/(.*)"] = { "<rootDir>/src/types2/$1", "<rootDir>/src/types3/$1" },
@@ -70,7 +70,7 @@ end)
 it("explicit flags override those from --config", function()
 	local options = {} :: Config_InitialOptions
 	local argv = { config = '{"watch": false}', watch = true } :: Config_Argv
-	jestExpect(setFromArgv(options, argv)).toMatchObject({ watch = true })
+	expect(setFromArgv(options, argv)).toMatchObject({ watch = true })
 end)
 
 return {}

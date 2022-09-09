@@ -18,7 +18,7 @@ local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
@@ -53,7 +53,7 @@ describe("JestRuntime", function()
 	it("requireModuleOrMock loads a module and caches it", function()
 		local testFile1 = requireOverride(script.Parent.runtimeTestFile)
 		local testFile2 = requireOverride(script.Parent.runtimeTestFile)
-		jestExpect(testFile1).toBe(testFile2)
+		expect(testFile1).toBe(testFile2)
 	end)
 
 	it("isolateModules returns a new module instance", function()
@@ -63,9 +63,9 @@ describe("JestRuntime", function()
 			testFile2 = requireOverride(script.Parent.runtimeTestFile)
 		end)
 		local LuauPolyfill3 = requireOverride(script.Parent.runtimeTestFile)
-		jestExpect(testFile1).never.toBe(testFile2)
-		jestExpect(testFile1).toBe(LuauPolyfill3)
-		jestExpect(testFile2).never.toBe(LuauPolyfill3)
+		expect(testFile1).never.toBe(testFile2)
+		expect(testFile1).toBe(LuauPolyfill3)
+		expect(testFile2).never.toBe(LuauPolyfill3)
 	end)
 
 	it("separate isolateModules calls return different module instances", function()
@@ -77,7 +77,7 @@ describe("JestRuntime", function()
 		getRuntime():isolateModules(function()
 			testFile2 = requireOverride(script.Parent.runtimeTestFile)
 		end)
-		jestExpect(testFile1).never.toBe(testFile2)
+		expect(testFile1).never.toBe(testFile2)
 	end)
 end)
 

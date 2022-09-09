@@ -17,7 +17,7 @@ local Object = LuauPolyfill.Object
 local Symbol = LuauPolyfill.Symbol
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local itFIXME = function(description: string, ...: any)
@@ -55,8 +55,8 @@ local function formatTestObject(object: unknown, options: OptionsReceived?)
 end
 
 local function assertPrintedJSX(val: unknown, expected: string, options: OptionsReceived?)
-	jestExpect(formatElement(val, options)).toEqual(expected)
-	jestExpect(formatTestObject(renderer.create(val):toJSON(), options)).toEqual(expected)
+	expect(formatElement(val, options)).toEqual(expected)
+	expect(formatTestObject(renderer.create(val):toJSON(), options)).toEqual(expected)
 end
 
 it("supports a single element with no props or children", function()
@@ -250,17 +250,17 @@ it("supports a single element with custom React elements with a child", function
 end)
 
 it("supports undefined element type", function()
-	jestExpect(formatElement({ ["$$typeof"] = elementSymbol, props = {} })).toEqual("<UNDEFINED />")
+	expect(formatElement({ ["$$typeof"] = elementSymbol, props = {} })).toEqual("<UNDEFINED />")
 end)
 
 it("supports a fragment with no children", function()
-	jestExpect(formatElement({ ["$$typeof"] = elementSymbol, props = {}, type = fragmentSymbol })).toEqual(
+	expect(formatElement({ ["$$typeof"] = elementSymbol, props = {}, type = fragmentSymbol })).toEqual(
 		"<React.Fragment />"
 	)
 end)
 
 it("supports a fragment with string child", function()
-	jestExpect(formatElement({
+	expect(formatElement({
 		["$$typeof"] = elementSymbol,
 		props = { children = "test" },
 		type = fragmentSymbol,
@@ -268,7 +268,7 @@ it("supports a fragment with string child", function()
 end)
 
 it("supports a fragment with element child", function()
-	jestExpect(formatElement({
+	expect(formatElement({
 		["$$typeof"] = elementSymbol,
 		props = { children = React.createElement("div", nil, "test") },
 		type = fragmentSymbol,
@@ -276,7 +276,7 @@ it("supports a fragment with element child", function()
 end)
 
 it("supports suspense", function()
-	jestExpect(formatElement({
+	expect(formatElement({
 		["$$typeof"] = elementSymbol,
 		props = { children = React.createElement("div", nil, "test") },
 		type = suspenseSymbol,
@@ -338,8 +338,8 @@ it("supports array of elements", function()
 		"  </dd>,",
 		"}",
 	}, "\n")
-	jestExpect(formatElement(val)).toEqual(expected)
-	jestExpect(formatTestObject(Array.map(val, function(element)
+	expect(formatElement(val)).toEqual(expected)
+	expect(formatTestObject(Array.map(val, function(element)
 		return renderer.create(element):toJSON()
 	end))).toEqual(expected)
 end)
@@ -349,7 +349,7 @@ describe("test object for subset match", function()
 	-- has both props and children, make sure plugin allows them to be undefined.
 	it("undefined props", function()
 		local val = { ["$$typeof"] = testSymbol, children = { "undefined props" }, type = "span" }
-		jestExpect(formatTestObject(val)).toEqual("<span>\n  undefined props\n</span>")
+		expect(formatTestObject(val)).toEqual("<span>\n  undefined props\n</span>")
 	end)
 
 	it("undefined children", function()
@@ -358,7 +358,7 @@ describe("test object for subset match", function()
 			props = { className = "undefined children" },
 			type = "span",
 		}
-		jestExpect(formatTestObject(val)).toEqual('<span\n  className="undefined children"\n/>')
+		expect(formatTestObject(val)).toEqual('<span\n  className="undefined children"\n/>')
 	end)
 end)
 
@@ -497,8 +497,8 @@ describe("maxDepth option", function()
 			"  </dd>,",
 			"}",
 		}, "\n")
-		jestExpect(formatElement(array, { maxDepth = maxDepth })).toEqual(expected)
-		jestExpect(formatTestObject(
+		expect(formatElement(array, { maxDepth = maxDepth })).toEqual(expected)
+		expect(formatTestObject(
 			Array.map(array, function(element)
 				return renderer.create(element):toJSON()
 			end), --[[ ROBLOX CHECK: check if 'array' is an Array ]]
@@ -533,7 +533,7 @@ it.skip("ReactElement plugin highlights syntax", function()
 		"Mouse",
 		{ prop = React.createElement("div", nil, "mouse", React.createElement("span", nil, "rat")) }
 	)
-	jestExpect(formatElement(jsx, { highlight = true })).toMatchSnapshot()
+	expect(formatElement(jsx, { highlight = true })).toMatchSnapshot()
 end)
 
 -- ROBLOX deviation: hightlights not supported
@@ -542,13 +542,13 @@ it.skip("ReactTestComponent plugin highlights syntax", function()
 		"Mouse",
 		{ prop = React.createElement("div", nil, "mouse", React.createElement("span", nil, "rat")) }
 	)
-	jestExpect(formatTestObject(renderer.create(jsx):toJSON(), { highlight = true })).toMatchSnapshot()
+	expect(formatTestObject(renderer.create(jsx):toJSON(), { highlight = true })).toMatchSnapshot()
 end)
 
 -- ROBLOX deviation: theme not supported
 it.skip("throws if theme option is null", function()
 	local jsx = React.createElement("Mouse", { style = "color:red" }, "Hello, Mouse!")
-	jestExpect(function()
+	expect(function()
 		-- @ts-expect-error
 		formatElement(jsx, { highlight = true, theme = nil })
 	end).toThrow('pretty-format: Option "theme" must not be null.')
@@ -556,7 +556,7 @@ end)
 
 -- ROBLOX deviation: theme not supported
 it.skip('throws if theme option is not of type "object"', function()
-	-- jestExpect(function()
+	-- expect(function()
 	-- 	local jsx = React.createElement("Mouse", { style = "color:red" }, "Hello, Mouse!") -- @ts-expect-error
 	-- 	formatElement(jsx, { highlight = true, theme = "beautiful" })
 	-- end).toThrow('pretty-format: Option "theme" must be of type "object" but instead received "string".')
@@ -564,7 +564,7 @@ end)
 
 -- ROBLOX deviation: theme not supported
 it.skip("throws if theme option has value that is undefined in ansi-styles", function()
-	jestExpect(function()
+	expect(function()
 		local jsx = React.createElement("Mouse", { style = "color:red" }, "Hello, Mouse!")
 		formatElement(jsx, {
 			highlight = true,
@@ -578,20 +578,20 @@ end)
 -- ROBLOX deviation: hightlights not supported
 it.skip("ReactElement plugin highlights syntax with color from theme option", function()
 	local jsx = React.createElement("Mouse", { style = "color:red" }, "Hello, Mouse!")
-	jestExpect(formatElement(jsx, { highlight = true, theme = { value = "red" } })).toMatchSnapshot()
+	expect(formatElement(jsx, { highlight = true, theme = { value = "red" } })).toMatchSnapshot()
 end)
 
 -- ROBLOX deviation: hightlights not supported
 it.skip("ReactTestComponent plugin highlights syntax with color from theme option", function()
 	local jsx = React.createElement("Mouse", { style = "color:red" }, "Hello, Mouse!")
-	jestExpect(formatTestObject(renderer.create(jsx):toJSON(), { highlight = true, theme = { value = "red" } })).toMatchSnapshot()
+	expect(formatTestObject(renderer.create(jsx):toJSON(), { highlight = true, theme = { value = "red" } })).toMatchSnapshot()
 end)
 
 it("supports forwardRef with a child", function()
 	local function Cat(props: any, _ref: any)
 		return React.createElement("div", props, props.children)
 	end
-	jestExpect(formatElement(React.createElement(React.forwardRef(Cat), nil, "mouse"))).toEqual(
+	expect(formatElement(React.createElement(React.forwardRef(Cat), nil, "mouse"))).toEqual(
 		"<ForwardRef(Cat)>\n  mouse\n</ForwardRef(Cat)>"
 	)
 end)
@@ -602,7 +602,7 @@ describe("React.memo", function()
 			local function Dog(props: any)
 				return React.createElement("div", props, props.children)
 			end
-			jestExpect(formatElement(React.createElement(React.memo(Dog), nil, "cat"))).toEqual(
+			expect(formatElement(React.createElement(React.memo(Dog), nil, "cat"))).toEqual(
 				"<Memo(Dog)>\n  cat\n</Memo(Dog)>"
 			)
 		end)
@@ -618,7 +618,7 @@ describe("React.memo", function()
 			Foo.displayName = "DisplayNameBeforeMemoizing(Foo)"
 			-- ROBLOX FIXME roact-alignment: React.memo doesn't accept callable table: https://github.com/Roblox/roact-alignment/issues/283
 			local MemoFoo = React.memo((Foo :: any) :: (_props: unknown, _ref: unknown) -> ReactElement | nil)
-			jestExpect(formatElement(React.createElement(MemoFoo, nil, "cat"))).toEqual(
+			expect(formatElement(React.createElement(MemoFoo, nil, "cat"))).toEqual(
 				"<Memo(DisplayNameBeforeMemoizing(Foo))>\n  cat\n</Memo(DisplayNameBeforeMemoizing(Foo))>"
 			)
 		end)
@@ -634,7 +634,7 @@ describe("React.memo", function()
 			local MemoFoo = React.memo((Foo :: any) :: (_props: unknown, _ref: unknown) -> ReactElement | nil);
 			-- ROBLOX FIXME: React.memo doesn't seem to return proper type
 			(MemoFoo :: any).displayName = "DisplayNameForMemoized(Foo)"
-			jestExpect(formatElement(React.createElement(MemoFoo, nil, "cat"))).toEqual(
+			expect(formatElement(React.createElement(MemoFoo, nil, "cat"))).toEqual(
 				"<Memo(DisplayNameForMemoized(Foo))>\n  cat\n</Memo(DisplayNameForMemoized(Foo))>"
 			)
 		end)
@@ -643,14 +643,14 @@ end)
 
 it("supports context Provider with a child", function()
 	local Provider = React.createContext("test").Provider
-	jestExpect(formatElement(React.createElement(Provider, { value = "test-value" }, "child"))).toEqual(
+	expect(formatElement(React.createElement(Provider, { value = "test-value" }, "child"))).toEqual(
 		'<Context.Provider\n  value="test-value"\n>\n  child\n</Context.Provider>'
 	)
 end)
 
 it("supports context Consumer with a child", function()
 	local Consumer = React.createContext("test").Consumer
-	jestExpect(formatElement(React.createElement(Consumer, nil, function()
+	expect(formatElement(React.createElement(Consumer, nil, function()
 		return React.createElement("div", nil, "child")
 	end))).toEqual("<Context.Consumer>\n  [Function anonymous]\n</Context.Consumer>")
 end)
@@ -662,7 +662,7 @@ end)
 -- ROBLOX deviation: theme not supported
 it.skip("ReactTestComponent removes undefined props", function()
 	local jsx = React.createElement("Mouse", { abc = nil, xyz = true })
-	jestExpect(formatElement(jsx, { highlight = true, theme = { value = "red" } })).toMatchSnapshot()
+	expect(formatElement(jsx, { highlight = true, theme = { value = "red" } })).toMatchSnapshot()
 end)
 
 -- ROBLOX deviation START: tests not present upstream

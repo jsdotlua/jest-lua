@@ -25,7 +25,7 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local AssertionError = LuauPolyfill.AssertionError
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
@@ -49,7 +49,7 @@ describe("formatNodeAssertErrors", function()
 			name = "test_done",
 			test = test,
 		}, { expand = false } :: any)
-		jestExpect(test.errors).toMatchSnapshot()
+		expect(test.errors).toMatchSnapshot()
 	end)
 
 	local firstVal = { foo = "foo" }
@@ -125,7 +125,7 @@ describe("formatNodeAssertErrors", function()
 				name = "test_done",
 				test = test,
 			}, { expand = false } :: any)
-			jestExpect(test.errors).toMatchSnapshot()
+			expect(test.errors).toMatchSnapshot()
 		end)
 	end
 end)

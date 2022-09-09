@@ -24,7 +24,7 @@ type Function = (...any) -> ...any
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 
 -- local path = require(Packages.path)
 local test_resultModule = require(Packages.JestTestResult)
@@ -149,13 +149,13 @@ describe("SearchSource", function()
 						-- 		searchSource = SearchSource.new(context)
 
 						-- 		local path = "/path/to/__tests__/foo/bar/baz/../../../test.js"
-						-- 		jestExpect(searchSource:isTestFilePath(path)).toEqual(true)
+						-- 		expect(searchSource:isTestFilePath(path)).toEqual(true)
 						-- 	end)
 						searchSource = SearchSource.new({ config = config })
 
 						-- ROBLOX NOTE: lua extension instead of js
 						local path = "/path/to/__tests__/foo/bar/baz/../../../test.lua"
-						jestExpect(searchSource:isTestFilePath(path)).toEqual(true)
+						expect(searchSource:isTestFilePath(path)).toEqual(true)
 						-- ROBLOX deviation END
 					else
 						return
@@ -169,7 +169,7 @@ describe("SearchSource", function()
 				-- ROBLOX deviation START: default testMatch matches .lua files
 				local path = "/path/to/__tests__/test.lua"
 				-- ROBLOX deviation END
-				jestExpect(searchSource:isTestFilePath(path)).toEqual(true)
+				expect(searchSource:isTestFilePath(path)).toEqual(true)
 			end
 		end)
 
@@ -177,7 +177,7 @@ describe("SearchSource", function()
 		-- it("supports win32 separators", function()
 		-- 	if process.platform == "win32" then
 		-- 		local path = "\\path\\to\\__tests__\\test.lua"
-		-- 		jestExpect(searchSource:isTestFilePath(path)).toEqual(true)
+		-- 		expect(searchSource:isTestFilePath(path)).toEqual(true)
 		-- 	end
 		-- end)
 		-- ROBLOX deviation END
@@ -214,7 +214,7 @@ describe("SearchSource", function()
 							return pathRelative(rootDir, absPath)
 						end))
 						-- ROBLOX deviation END
-						jestExpect(relPaths).toEqual(Array.sort({
+						expect(relPaths).toEqual(Array.sort({
 							path.normalize(".hiddenFolder/not-really-a-test.txt"),
 							path.normalize("__testtests__/not-really-a-test.txt"),
 						}))
@@ -241,7 +241,7 @@ describe("SearchSource", function()
 							return pathRelative(rootDir, absPath)
 						end))
 						-- ROBLOX deviation END
-						jestExpect(relPaths).toEqual(Array.sort({
+						expect(relPaths).toEqual(Array.sort({
 							path.normalize(".hiddenFolder/not-really-a-test.txt"),
 							path.normalize("__testtests__/not-really-a-test.txt"),
 						}))
@@ -268,7 +268,7 @@ describe("SearchSource", function()
 							return pathRelative(rootDir, absPath)
 						end)
 						-- ROBLOX deviation END
-						jestExpect(Array.sort(relPaths)).toEqual({
+						expect(Array.sort(relPaths)).toEqual({
 							path.normalize("__testtests__/test.js"),
 							path.normalize("__testtests__/test.jsx"),
 						})
@@ -295,7 +295,7 @@ describe("SearchSource", function()
 							return pathRelative(rootDir, absPath)
 						end)
 						-- ROBLOX deviation END
-						jestExpect(Array.sort(relPaths)).toEqual({
+						expect(Array.sort(relPaths)).toEqual({
 							path.normalize("__testtests__/test.js"),
 							path.normalize("__testtests__/test.jsx"),
 						})
@@ -327,7 +327,7 @@ describe("SearchSource", function()
 							return pathRelative(rootDir, absPath)
 						end)
 						-- ROBLOX deviation END
-						jestExpect(Array.sort(relPaths)).toEqual({
+						expect(Array.sort(relPaths)).toEqual({
 							path.normalize("module.jsx"),
 							path.normalize("noTests.js"),
 						})
@@ -350,7 +350,7 @@ describe("SearchSource", function()
 		-- 					return pathRelative(rootDir, absPath)
 		-- 				end)
 		-- 				-- ROBLOX deviation END
-		-- 				jestExpect(Array.sort(relPaths)).toEqual({
+		-- 				expect(Array.sort(relPaths)).toEqual({
 		-- 					path.normalize("__testtests__/test.js"),
 		-- 					path.normalize("__testtests__/test.jsx"),
 		-- 				})
@@ -372,7 +372,7 @@ describe("SearchSource", function()
 		-- 					return pathRelative(rootDir, absPath)
 		-- 				end)
 		-- 				-- ROBLOX deviation END
-		-- 				jestExpect(Array.sort(relPaths)).toEqual({
+		-- 				expect(Array.sort(relPaths)).toEqual({
 		-- 					path.normalize("__testtests__/test.js"),
 		-- 					path.normalize("__testtests__/test.jsx"),
 		-- 				})
@@ -397,8 +397,8 @@ describe("SearchSource", function()
 							return pathRelative(rootDir, absPath)
 						end)
 						-- ROBLOX deviation END
-						jestExpect(Array.sort(relPaths)).toEqual({
-							jestExpect.stringContaining(path.normalize("__testtests__/test.js")),
+						expect(Array.sort(relPaths)).toEqual({
+							expect.stringContaining(path.normalize("__testtests__/test.js")),
 						})
 					end)
 					:expect()
@@ -421,7 +421,7 @@ describe("SearchSource", function()
 		-- 					return pathRelative(rootDir, absPath)
 		-- 				end)
 		-- 				-- ROBLOX deviation END
-		-- 				jestExpect(Array.sort(relPaths)).toEqual({
+		-- 				expect(Array.sort(relPaths)).toEqual({
 		-- 					path.normalize("__testtests__/test.js"),
 		-- 					path.normalize("__testtests__/test.jsx"),
 		-- 				})
@@ -445,7 +445,7 @@ describe("SearchSource", function()
 		-- 					return pathRelative(rootDir, absPath)
 		-- 				end)
 		-- 				-- ROBLOX deviation END
-		-- 				jestExpect(Array.sort(relPaths)).toEqual({
+		-- 				expect(Array.sort(relPaths)).toEqual({
 		-- 					path.normalize("__testtests__/test.foobar"),
 		-- 					path.normalize("__testtests__/test.js"),
 		-- 				})
@@ -469,7 +469,7 @@ describe("SearchSource", function()
 		-- 					return pathRelative(rootDir, absPath)
 		-- 				end)
 		-- 				-- ROBLOX deviation END
-		-- 				jestExpect(Array.sort(relPaths)).toEqual({
+		-- 				expect(Array.sort(relPaths)).toEqual({
 		-- 					path.normalize("__testtests__/test.js"),
 		-- 					path.normalize("__testtests__/test.jsx"),
 		-- 				})
@@ -491,7 +491,7 @@ describe("SearchSource", function()
 		-- 					return pathRelative(rootDir, absPath)
 		-- 				end)
 		-- 				-- ROBLOX deviation END
-		-- 				jestExpect(Array.sort(relPaths)).toEqual({
+		-- 				expect(Array.sort(relPaths)).toEqual({
 		-- 					path.normalize("__testtests__/test.js"),
 		-- 					path.normalize("__testtests__/test.jsx"),
 		-- 				})
@@ -513,7 +513,7 @@ describe("SearchSource", function()
 		-- 					return pathRelative(rootDir, absPath)
 		-- 				end)
 		-- 				-- ROBLOX deviation END
-		-- 				jestExpect(
+		-- 				expect(
 		-- 					Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
 		-- 				).toEqual({
 		-- 					path.normalize("__testtests__/test.js"),
@@ -550,7 +550,7 @@ describe("SearchSource", function()
 	-- 	it("should allow a simple match", function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local result = searchSource:filterPathsWin32({ "packages/lib/my-lib.ts" })
-	-- 			jestExpect(result).toEqual({ path:resolve("packages/lib/my-lib.ts") })
+	-- 			expect(result).toEqual({ path:resolve("packages/lib/my-lib.ts") })
 	-- 		end)
 	-- 	end)
 
@@ -559,44 +559,44 @@ describe("SearchSource", function()
 	-- 			local result = searchSource:filterPathsWin32({
 	-- 				"packages/.hidden/my-app-hidden.ts",
 	-- 			})
-	-- 			jestExpect(result).toEqual({ path:resolve("packages/.hidden/my-app-hidden.ts") })
+	-- 			expect(result).toEqual({ path:resolve("packages/.hidden/my-app-hidden.ts") })
 	-- 		end)
 	-- 	end)
 
 	-- 	it('should allow to match a file inside a directory prefixed with a "@"', function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local result = searchSource:filterPathsWin32({ "packages/@core/my-app.ts" })
-	-- 			jestExpect(result).toEqual({ path:resolve("packages/@core/my-app.ts") })
+	-- 			expect(result).toEqual({ path:resolve("packages/@core/my-app.ts") })
 	-- 		end)
 	-- 	end)
 
 	-- 	it('should allow to match a file inside a directory prefixed with a "+"', function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local result = searchSource:filterPathsWin32({ "packages/+cli/my-cli.ts" })
-	-- 			jestExpect(result).toEqual({ path:resolve("packages/+cli/my-cli.ts") })
+	-- 			expect(result).toEqual({ path:resolve("packages/+cli/my-cli.ts") })
 	-- 		end)
 	-- 	end)
 
 	-- 	it("should allow an @(pattern)", function()
 	-- 		local result = searchSource:filterPathsWin32({ "packages/@(@core)/my-app.ts" })
-	-- 		jestExpect(result).toEqual({ path:resolve("packages/@core/my-app.ts") })
+	-- 		expect(result).toEqual({ path:resolve("packages/@core/my-app.ts") })
 	-- 	end)
 
 	-- 	it("should allow a +(pattern)", function()
 	-- 		local result = searchSource:filterPathsWin32({ "packages/+(@core)/my-app.ts" })
-	-- 		jestExpect(result).toEqual({ path:resolve("packages/@core/my-app.ts") })
+	-- 		expect(result).toEqual({ path:resolve("packages/@core/my-app.ts") })
 	-- 	end)
 
 	-- 	it("should allow for (pattern) in file path", function()
 	-- 		local result = searchSource:filterPathsWin32({
 	-- 			"packages/programs (x86)/my-program.ts",
 	-- 		})
-	-- 		jestExpect(result).toEqual({ path:resolve("packages/programs (x86)/my-program.ts") })
+	-- 		expect(result).toEqual({ path:resolve("packages/programs (x86)/my-program.ts") })
 	-- 	end)
 
 	-- 	it("should allow no results found", function()
 	-- 		local result = searchSource:filterPathsWin32({ "not/exists" })
-	-- 		jestExpect(result).toHaveLength(0)
+	-- 		expect(result).toHaveLength(0)
 	-- 	end)
 	-- end)
 
@@ -632,7 +632,7 @@ describe("SearchSource", function()
 	-- 	it("makes sure a file is related to itself", function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local data = searchSource:findRelatedTests(Set.new({ rootPath }), false):expect()
-	-- 			jestExpect(toPaths(data.tests)).toEqual({ rootPath })
+	-- 			expect(toPaths(data.tests)).toEqual({ rootPath })
 	-- 		end)
 	-- 	end)
 
@@ -642,7 +642,7 @@ describe("SearchSource", function()
 	-- 			local file2Path = Array.join(path, rootDir, "RequireRegularModule.js") --[[ ROBLOX CHECK: check if 'path' is an Array ]]
 	-- 			local parentDep = Array.join(path, rootDir, "ModuleWithSideEffects.js") --[[ ROBLOX CHECK: check if 'path' is an Array ]]
 	-- 			local data = searchSource:findRelatedTests(Set.new({ filePath }), false):expect()
-	-- 			jestExpect(
+	-- 			expect(
 	-- 				Array.sort(toPaths(data.tests)) --[[ ROBLOX CHECK: check if 'toPaths(data.tests)' is an Array ]]
 	-- 			).toEqual({ parentDep, filePath, file2Path, rootPath })
 	-- 		end)
@@ -656,7 +656,7 @@ describe("SearchSource", function()
 	-- 			local data = searchSource
 	-- 				:findRelatedTests(Set.new({ regular, requireRegular, unrelatedFile }), true)
 	-- 				:expect()
-	-- 			jestExpect(
+	-- 			expect(
 	-- 				Array.from(Boolean.toJSBoolean(data.collectCoverageFrom) and data.collectCoverageFrom or {})
 	-- 			).toEqual({
 	-- 				"RegularModule.js",
@@ -684,7 +684,7 @@ describe("SearchSource", function()
 	-- 	return Promise.resolve():andThen(function()
 	-- 		local input: Array<Config_Path> = {}
 	-- 		local data = searchSource:findRelatedTestsFromPattern(input, false):expect()
-	-- 		jestExpect(data.tests).toEqual({})
+	-- 		expect(data.tests).toEqual({})
 	-- 	end)
 	-- end)
 
@@ -692,7 +692,7 @@ describe("SearchSource", function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local input = { "non-existend.js" }
 	-- 			local data = searchSource:findRelatedTestsFromPattern(input, false):expect()
-	-- 			jestExpect(data.tests).toEqual({})
+	-- 			expect(data.tests).toEqual({})
 	-- 		end)
 	-- 	end)
 
@@ -700,7 +700,7 @@ describe("SearchSource", function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local input = { "no_tests.js" }
 	-- 			local data = searchSource:findRelatedTestsFromPattern(input, false):expect()
-	-- 			jestExpect(data.tests).toEqual({})
+	-- 			expect(data.tests).toEqual({})
 	-- 		end)
 	-- 	end)
 
@@ -708,7 +708,7 @@ describe("SearchSource", function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local input = { "packages/jest-core/src/__tests__/test_root/module.jsx" }
 	-- 			local data = searchSource:findRelatedTestsFromPattern(input, false):expect()
-	-- 			jestExpect(
+	-- 			expect(
 	-- 				Array.sort(toPaths(data.tests)) --[[ ROBLOX CHECK: check if 'toPaths(data.tests)' is an Array ]]
 	-- 			).toEqual({
 	-- 				Array.join(path, rootDir, "__testtests__", "test.js"), --[[ ROBLOX CHECK: check if 'path' is an Array ]]
@@ -724,7 +724,7 @@ describe("SearchSource", function()
 	-- 				"packages/jest-core/src/__tests__/test_root/module.foobar",
 	-- 			}
 	-- 			local data = searchSource:findRelatedTestsFromPattern(input, false):expect()
-	-- 			jestExpect(
+	-- 			expect(
 	-- 				Array.sort(toPaths(data.tests)) --[[ ROBLOX CHECK: check if 'toPaths(data.tests)' is an Array ]]
 	-- 			).toEqual({
 	-- 				Array.join(path, rootDir, "__testtests__", "test.foobar"), --[[ ROBLOX CHECK: check if 'path' is an Array ]]
@@ -746,7 +746,7 @@ describe("SearchSource", function()
 	-- 				)
 	-- 				local input = { "/foo/bar/prefix-suffix/__tests__/my-test.test.js" }
 	-- 				local data = searchSource:findTestsByPaths(input)
-	-- 				jestExpect(data.tests).toEqual({})
+	-- 				expect(data.tests).toEqual({})
 	-- 			end
 	-- 		end)
 	-- 	end)
@@ -781,7 +781,7 @@ describe("SearchSource", function()
 	-- 					repos = { git = Set.new(), hg = Set.new() },
 	-- 				})
 	-- 				:expect()
-	-- 			jestExpect(sources).toEqual({})
+	-- 			expect(sources).toEqual({})
 	-- 		end)
 	-- 	end)
 
@@ -795,7 +795,7 @@ describe("SearchSource", function()
 	-- 					repos = { git = Set.new("/path/to/git"), hg = Set.new() },
 	-- 				})
 	-- 				:expect()
-	-- 			jestExpect(sources).toEqual({ regularModule })
+	-- 			expect(sources).toEqual({ regularModule })
 	-- 		end)
 	-- 	end)
 	-- end)

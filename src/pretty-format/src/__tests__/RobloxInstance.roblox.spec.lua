@@ -24,7 +24,7 @@ local RobloxInstance = PrettyFormat.plugins.RobloxInstance
 local InstanceSubset = require(Packages.RobloxShared).RobloxInstance.InstanceSubset
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
@@ -36,7 +36,7 @@ end
 
 describe("Instance", function()
 	it("serializes ModuleScript", function()
-		jestExpect(prettyFormatResult(script)).toEqual(
+		expect(prettyFormatResult(script)).toEqual(
 			"ModuleScript {\n"
 				.. '  "Archivable": true,\n'
 				.. '  "ClassName": "ModuleScript",\n'
@@ -47,13 +47,13 @@ describe("Instance", function()
 	end)
 
 	it("serializes Folder", function()
-		jestExpect(prettyFormatResult(CurrentModule)).toMatchSnapshot()
+		expect(prettyFormatResult(CurrentModule)).toMatchSnapshot()
 	end)
 
 	it("serializes Instances in table", function()
 		local SpotLight = Instance.new("SpotLight")
 		local Sky = Instance.new("Sky")
-		jestExpect(prettyFormatResult({
+		expect(prettyFormatResult({
 			a = SpotLight,
 			b = Sky,
 		})).toMatchSnapshot()
@@ -135,7 +135,7 @@ describe("Instance", function()
 			bottomBorder.Parent = exampleCard
 		end
 
-		jestExpect(prettyFormatResult(screenGui)).toMatchSnapshot()
+		expect(prettyFormatResult(screenGui)).toMatchSnapshot()
 	end)
 
 	it("collapses circular references in properties", function()
@@ -146,7 +146,7 @@ describe("Instance", function()
 		leftFrame.NextSelectionRight = rightFrame
 		rightFrame.NextSelectionRight = leftFrame
 
-		jestExpect(prettyFormatResult(leftFrame)).toMatchSnapshot()
+		expect(prettyFormatResult(leftFrame)).toMatchSnapshot()
 	end)
 end)
 
@@ -154,7 +154,7 @@ describe("InstanceSubset", function()
 	it("serializes a subset of Frame", function()
 		local frame = InstanceSubset.new("Frame", { Name = "ParentFrame" })
 
-		jestExpect(prettyFormatResult(frame)).toEqual("Frame {\n" .. '  "Name": "ParentFrame",\n' .. "}")
+		expect(prettyFormatResult(frame)).toEqual("Frame {\n" .. '  "Name": "ParentFrame",\n' .. "}")
 	end)
 
 	it("serializes nested InstanceSubsets", function()
@@ -164,7 +164,7 @@ describe("InstanceSubset", function()
 			ChildFrame = childFrame,
 		})
 
-		jestExpect(prettyFormatResult(frame)).toEqual(
+		expect(prettyFormatResult(frame)).toEqual(
 			"Frame {\n"
 				.. '  "ChildFrame": Frame {\n'
 				.. '    "Name": "ChildFrame",\n'

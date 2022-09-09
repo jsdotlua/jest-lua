@@ -8,13 +8,13 @@
 
 local Packages = script.Parent.Parent.Parent
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local it = JestGlobals.it
 
 local defaults = require(script.Parent.Parent).defaults
 
 it("get configuration defaults", function()
-	jestExpect(defaults).toBeDefined()
+	expect(defaults).toBeDefined()
 end)
 
 return {}

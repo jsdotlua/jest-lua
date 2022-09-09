@@ -20,7 +20,7 @@ local Packages = SrcModule.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
@@ -39,13 +39,13 @@ describe("preRunMessage", function()
 	end)
 
 	it("should execute print without error", function()
-		jestExpect(function()
+		expect(function()
 			print_(stream)
 		end).never.toThrow()
 	end)
 
 	it("should execute remove without error", function()
-		jestExpect(function()
+		expect(function()
 			remove(stream)
 		end).never.toThrow()
 	end)

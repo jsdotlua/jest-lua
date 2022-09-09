@@ -15,7 +15,7 @@ local ErrorWithStack = require(CurrentModule.ErrorWithStack).default
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
@@ -28,9 +28,9 @@ describe("ErrorWithStack", function()
 		Error["captureStackTrace"] = captureStackTraceSpy
 		-- jest.spyOn(Error, "captureStackTrace")
 		local actual = ErrorWithStack.new(message, callsite)
-		jestExpect(actual).toBeInstanceOf(Error)
-		jestExpect(actual.message).toBe(message)
-		jestExpect(Error["captureStackTrace"]).toHaveBeenCalledWith(actual, callsite)
+		expect(actual).toBeInstanceOf(Error)
+		expect(actual.message).toBe(message)
+		expect(Error["captureStackTrace"]).toHaveBeenCalledWith(actual, callsite)
 
 		Error["captureStackTrace"] = originalCaptureStackTrace
 	end)

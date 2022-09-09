@@ -12,7 +12,7 @@ local Promise = require(Packages.Promise)
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local it = JestGlobals.it
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 
 local SummaryReporter = require(Packages.JestReporters).SummaryReporter
 -- ROBLOX deviation START: not used
@@ -56,13 +56,13 @@ it("config for reporters supports `default`", function()
 				{} :: any,
 				nil :: any
 			):expect()
-			jestExpect(#(stringDefaultReportersScheduler :: any)._dispatcher._reporters).toBe(numberOfReporters)
+			expect(#(stringDefaultReportersScheduler :: any)._dispatcher._reporters).toBe(numberOfReporters)
 			local defaultReportersScheduler = createTestScheduler(
 				{ reporters = { { "default" :: any, {} } } } :: any,
 				{} :: any,
 				nil :: any
 			):expect()
-			jestExpect(#(defaultReportersScheduler :: any)._dispatcher._reporters).toBe(numberOfReporters)
+			expect(#(defaultReportersScheduler :: any)._dispatcher._reporters).toBe(numberOfReporters)
 			-- ROBLOX deviation END
 			-- ROBLOX deviation START: not supported
 			-- local emptyReportersScheduler =
@@ -71,7 +71,7 @@ it("config for reporters supports `default`", function()
 			-- 		{} :: any,
 			-- 		nil :: any
 			-- 	):expect()
-			-- jestExpect(#(emptyReportersScheduler :: any)._dispatcher._reporters).toBe(0)
+			-- expect(#(emptyReportersScheduler :: any)._dispatcher._reporters).toBe(0)
 			-- ROBLOX deviation END
 		end)
 		:expect()
@@ -84,9 +84,9 @@ it(".addReporter() .removeReporter()", function()
 			local scheduler = createTestScheduler({} :: any, {} :: any, nil :: any):expect()
 			local reporter = SummaryReporter.new()
 			scheduler:addReporter(reporter)
-			jestExpect((scheduler :: any)._dispatcher._reporters).toContain(reporter)
+			expect((scheduler :: any)._dispatcher._reporters).toContain(reporter)
 			scheduler:removeReporter(SummaryReporter)
-			jestExpect((scheduler :: any)._dispatcher._reporters).never.toContain(reporter)
+			expect((scheduler :: any)._dispatcher._reporters).never.toContain(reporter)
 			-- ROBLOX deviation END
 		end)
 		:expect()
@@ -112,8 +112,8 @@ it.skip("schedule tests run in parallel per default", function()
 	-- 		}
 	-- 		local tests = { test, test }
 	-- 		scheduler:scheduleTests(tests, { isInterrupted = jest.fn() }):expect()
-	-- 		jestExpect(mockParallelRunner.runTests).toHaveBeenCalled()
-	-- 		jestExpect(mockParallelRunner.runTests.mock.calls[1][6].serial).toBeFalsy()
+	-- 		expect(mockParallelRunner.runTests).toHaveBeenCalled()
+	-- 		expect(mockParallelRunner.runTests.mock.calls[1][6].serial).toBeFalsy()
 	-- 	end)
 	-- 	:expect()
 end)
@@ -137,8 +137,8 @@ it.skip("schedule tests run in serial if the runner flags them", function()
 	-- 		}
 	-- 		local tests = { test, test }
 	-- 		scheduler:scheduleTests(tests, { isInterrupted = jest.fn() }):expect()
-	-- 		jestExpect(mockSerialRunner.runTests).toHaveBeenCalled()
-	-- 		jestExpect(mockSerialRunner.runTests.mock.calls[1][6].serial).toBeTruthy()
+	-- 		expect(mockSerialRunner.runTests).toHaveBeenCalled()
+	-- 		expect(mockSerialRunner.runTests.mock.calls[1][6].serial).toBeTruthy()
 	-- 	end)
 	-- 	:expect()
 end)
@@ -179,7 +179,7 @@ it.skip("should bail after `n` failures", function()
 	-- 				{ numFailingTests = 2, snapshot = {}, testResults = { {} } }
 	-- 			)
 	-- 			:expect()
-	-- 		jestExpect(setState).toBeCalledWith({ interrupted = true })
+	-- 		expect(setState).toBeCalledWith({ interrupted = true })
 	-- 	end)
 	-- 	:expect()
 end)
@@ -220,7 +220,7 @@ it.skip("should not bail if less than `n` failures", function()
 	-- 				{ numFailingTests = 1, snapshot = {}, testResults = { {} } }
 	-- 			)
 	-- 			:expect()
-	-- 		jestExpect(setState)["not"].toBeCalled()
+	-- 		expect(setState)["not"].toBeCalled()
 	-- 	end)
 	-- 	:expect()
 end)
@@ -245,9 +245,9 @@ it.skip("should set runInBand to run in serial", function()
 	-- 		local tests = { test, test }
 	-- 		spyShouldRunInBand:mockReturnValue(true)
 	-- 		scheduler:scheduleTests(tests, { isInterrupted = jest.fn() }):expect()
-	-- 		jestExpect(spyShouldRunInBand).toHaveBeenCalled()
-	-- 		jestExpect(mockParallelRunner.runTests).toHaveBeenCalled()
-	-- 		jestExpect(mockParallelRunner.runTests.mock.calls[1][6].serial).toBeTruthy()
+	-- 		expect(spyShouldRunInBand).toHaveBeenCalled()
+	-- 		expect(mockParallelRunner.runTests).toHaveBeenCalled()
+	-- 		expect(mockParallelRunner.runTests.mock.calls[1][6].serial).toBeTruthy()
 	-- 	end)
 	-- 	:expect()
 end)
@@ -272,9 +272,9 @@ it.skip("should set runInBand to not run in serial", function()
 	-- 		local tests = { test, test }
 	-- 		spyShouldRunInBand:mockReturnValue(false)
 	-- 		scheduler:scheduleTests(tests, { isInterrupted = jest.fn() }):expect()
-	-- 		jestExpect(spyShouldRunInBand).toHaveBeenCalled()
-	-- 		jestExpect(mockParallelRunner.runTests).toHaveBeenCalled()
-	-- 		jestExpect(mockParallelRunner.runTests.mock.calls[1][6].serial).toBeFalsy()
+	-- 		expect(spyShouldRunInBand).toHaveBeenCalled()
+	-- 		expect(mockParallelRunner.runTests).toHaveBeenCalled()
+	-- 		expect(mockParallelRunner.runTests.mock.calls[1][6].serial).toBeFalsy()
 	-- 	end)
 	-- 	:expect()
 end)

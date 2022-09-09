@@ -12,7 +12,7 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local Object = LuauPolyfill.Object
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
@@ -46,7 +46,7 @@ local optionsNoColor = {
 
 beforeAll(function()
 	-- 2. Add string serializer to omit double quote marks.
-	jestExpect.addSnapshotSerializer({
+	expect.addSnapshotSerializer({
 		serialize = function(val: string)
 			return val
 		end,
@@ -57,7 +57,7 @@ beforeAll(function()
 end)
 
 afterAll(function()
-	jestExpect.resetSnapshotSerializers()
+	expect.resetSnapshotSerializers()
 end)
 
 local diffsCommonStartEnd = {
@@ -103,7 +103,7 @@ describe("joinAlignedDiffsExpand", function()
 	it("first line is empty common", function()
 		local options = normalizeDiffOptions(optionsNoColor)
 
-		jestExpect(joinAlignedDiffsExpand(diffsCommonStartEnd, options)).toMatchSnapshot()
+		expect(joinAlignedDiffsExpand(diffsCommonStartEnd, options)).toMatchSnapshot()
 	end)
 end)
 
@@ -111,31 +111,31 @@ describe("joinAlignedDiffsNoExpand", function()
 	it("patch 0 with context 1 and change at start and end", function()
 		local options = normalizeDiffOptions(Object.assign({}, optionsNoColor, { contextLines = 1, expand = false }))
 
-		jestExpect(joinAlignedDiffsNoExpand(diffsChangeStartEnd, options)).toMatchSnapshot()
+		expect(joinAlignedDiffsNoExpand(diffsChangeStartEnd, options)).toMatchSnapshot()
 	end)
 
 	it("patch 0 with context 5 and first line is empty common", function()
 		local options = normalizeDiffOptions(Object.assign({}, optionsNoColor, { expand = false }))
 
-		jestExpect(joinAlignedDiffsNoExpand(diffsCommonStartEnd, options)).toMatchSnapshot()
+		expect(joinAlignedDiffsNoExpand(diffsCommonStartEnd, options)).toMatchSnapshot()
 	end)
 
 	it("patch 1 with context 4 and last line is empty common", function()
 		local options = normalizeDiffOptions(Object.assign({}, optionsNoColor, { contextLines = 4, expand = false }))
 
-		jestExpect(joinAlignedDiffsNoExpand(diffsCommonStartEnd, options)).toMatchSnapshot()
+		expect(joinAlignedDiffsNoExpand(diffsCommonStartEnd, options)).toMatchSnapshot()
 	end)
 
 	it("patch 2 with context 3", function()
 		local options = normalizeDiffOptions(Object.assign({}, optionsNoColor, { contextLines = 3, expand = false }))
 
-		jestExpect(joinAlignedDiffsNoExpand(diffsCommonStartEnd, options)).toMatchSnapshot()
+		expect(joinAlignedDiffsNoExpand(diffsCommonStartEnd, options)).toMatchSnapshot()
 	end)
 
 	it("patch 3 with context 2 and omit excess common at start", function()
 		local options = normalizeDiffOptions(Object.assign({}, optionsNoColor, { contextLines = 2, expand = false }))
 
-		jestExpect(joinAlignedDiffsNoExpand(diffsCommonStartEnd, options)).toMatchSnapshot()
+		expect(joinAlignedDiffsNoExpand(diffsCommonStartEnd, options)).toMatchSnapshot()
 	end)
 end)
 

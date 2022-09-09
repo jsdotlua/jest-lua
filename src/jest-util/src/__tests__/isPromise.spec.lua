@@ -15,30 +15,30 @@ local Symbol = LuauPolyfill.Symbol
 local isPromise = require(CurrentModule.isPromise).default
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
 describe("foo", function()
 	describe("not a Promise: ", function()
 		it("nil", function()
-			jestExpect(isPromise(nil)).toBe(false)
+			expect(isPromise(nil)).toBe(false)
 		end)
 
 		-- ROBLOX FIXME: have to cast first Array element to `any` to avoid type narrowing issue
 		for _, value in ipairs({ true :: any, 42, "1337", Symbol(), {} }) do
 			it(tostring(value), function()
-				jestExpect(isPromise(value)).toBe(false)
+				expect(isPromise(value)).toBe(false)
 			end)
 		end
 	end)
 
 	it("a resolved Promise", function()
-		jestExpect(isPromise(Promise.resolve(42))).toBe(true)
+		expect(isPromise(Promise.resolve(42))).toBe(true)
 	end)
 
 	it("a rejected Promise", function()
-		jestExpect(isPromise(Promise.reject():catch(function() end))).toBe(true)
+		expect(isPromise(Promise.reject():catch(function() end))).toBe(true)
 	end)
 end)
 

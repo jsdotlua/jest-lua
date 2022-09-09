@@ -33,7 +33,7 @@ local Promise = require(Packages.Promise)
 type Promise<T> = LuauPolyfill.Promise<T>
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local itFIXME = function(description: string, ...: any)
@@ -131,9 +131,9 @@ describe("throat(n)", function()
 				assert(a.isRun)
 				assert(b.isRun)
 				assert(c.isRun)
-				jestExpect(a.args).toEqual({ 123 })
-				jestExpect(b.args).toEqual({ 456 })
-				jestExpect(c.args).toEqual({ 789 })
+				expect(a.args).toEqual({ 123 })
+				expect(b.args).toEqual({ 456 })
+				expect(c.args).toEqual({ 789 })
 				c:complete(sentC)
 				return resC
 			end)
@@ -287,7 +287,7 @@ describe("type errors", function()
 		end)
 		if not ok then
 			local ex = result
-			jestExpect(ex.message).toMatch("Expected throat size to be a number")
+			expect(ex.message).toMatch("Expected throat size to be a number")
 			return
 		end
 		error(Error.new("Expected a failure"))
@@ -298,7 +298,7 @@ describe("type errors", function()
 		end)
 		if not ok then
 			local ex = result
-			jestExpect(ex.message).toMatch("Expected throat fn to be a function")
+			expect(ex.message).toMatch("Expected throat fn to be a function")
 			return
 		end
 		error(Error.new("Expected a failure"))
@@ -309,7 +309,7 @@ describe("type errors", function()
 		end)
 		if not ok then
 			local ex = result
-			jestExpect(ex.message).toMatch("Expected throat fn to be a function")
+			expect(ex.message).toMatch("Expected throat fn to be a function")
 			return
 		end
 		error(Error.new("Expected a failure"))
@@ -336,7 +336,7 @@ it("sync errors are converted to async errors", function()
 		end),
 	})
 		:andThen(function(results)
-			jestExpect(results).toEqual({ true, true, true })
+			expect(results).toEqual({ true, true, true })
 		end)
 		:expect()
 end)
@@ -354,7 +354,7 @@ it("handles loads of promises", function()
 	end
 	return Promise.all(results)
 		:andThen(function(results)
-			jestExpect(results).toEqual(expected)
+			expect(results).toEqual(expected)
 		end)
 		:expect()
 end)
@@ -420,8 +420,8 @@ itFIXME("stack traces", function()
 						string.match(ex.stack, "myOuterFunction"),
 						("Stack should include myOuterFunction: %s\n\n"):format(tostring(ex.stack))
 					)
-					jestExpect(ex.code).toBe("MY_ERROR")
-					jestExpect(ex.message).toBe("My Error")
+					expect(ex.code).toBe("MY_ERROR")
+					expect(ex.message).toBe("My Error")
 				end),
 				myOuterFunction():andThen(function()
 					error(Error.new("Expected an error to be thrown"))
@@ -434,8 +434,8 @@ itFIXME("stack traces", function()
 						string.match(ex.stack, "myOuterFunction"),
 						("Stack should include myOuterFunction: %s\n\n"):format(tostring(ex.stack))
 					)
-					jestExpect(ex.code).toBe("MY_ERROR")
-					jestExpect(ex.message).toBe("My Error")
+					expect(ex.code).toBe("MY_ERROR")
+					expect(ex.message).toBe("My Error")
 				end),
 				myOuterFunction():andThen(function()
 					error(Error.new("Expected an error to be thrown"))
@@ -448,8 +448,8 @@ itFIXME("stack traces", function()
 						string.match(ex.stack, "myOuterFunction"),
 						("Stack should include myOuterFunction: %s\n\n"):format(tostring(ex.stack))
 					)
-					jestExpect(ex.code).toBe("MY_ERROR")
-					jestExpect(ex.message).toBe("My Error")
+					expect(ex.code).toBe("MY_ERROR")
+					expect(ex.message).toBe("My Error")
 				end),
 			})
 		end)
@@ -490,8 +490,8 @@ itFIXME("stack traces - ready provided fn", function()
 						string.match(ex.stack, "myOuterFunction"),
 						("Stack should include myOuterFunction: %s\n\n"):format(tostring(ex.stack))
 					)
-					jestExpect(ex.code).toBe("MY_ERROR")
-					jestExpect(ex.message).toBe("My Error")
+					expect(ex.code).toBe("MY_ERROR")
+					expect(ex.message).toBe("My Error")
 				end),
 				myOuterFunction():andThen(function()
 					error(Error.new("Expected an error to be thrown"))
@@ -504,8 +504,8 @@ itFIXME("stack traces - ready provided fn", function()
 						string.match(ex.stack, "myOuterFunction"),
 						("Stack should include myOuterFunction: %s\n\n"):format(tostring(ex.stack))
 					)
-					jestExpect(ex.code).toBe("MY_ERROR")
-					jestExpect(ex.message).toBe("My Error")
+					expect(ex.code).toBe("MY_ERROR")
+					expect(ex.message).toBe("My Error")
 				end),
 				myOuterFunction():andThen(function()
 					error(Error.new("Expected an error to be thrown"))
@@ -518,8 +518,8 @@ itFIXME("stack traces - ready provided fn", function()
 						string.match(ex.stack, "myOuterFunction"),
 						("Stack should include myOuterFunction: %s\n\n"):format(tostring(ex.stack))
 					)
-					jestExpect(ex.code).toBe("MY_ERROR")
-					jestExpect(ex.message).toBe("My Error")
+					expect(ex.code).toBe("MY_ERROR")
+					expect(ex.message).toBe("My Error")
 				end),
 			})
 		end)

@@ -10,7 +10,7 @@ local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
@@ -45,8 +45,8 @@ describe("getConsoleOutput", function()
 		end
 
 		local output = getConsoleOutput(buffer :: ConsoleBuffer, { rootDir = Packages, testMatch = {} }, globalConfig)
-		jestExpect(output).toMatch("console.log")
-		jestExpect(output).toMatch("Hello world!")
+		expect(output).toMatch("console.log")
+		expect(output).toMatch("Hello world!")
 	end)
 
 	it("should return the entire console buffer", function()
@@ -61,12 +61,12 @@ describe("getConsoleOutput", function()
 		end
 
 		local output = getConsoleOutput(buffer :: ConsoleBuffer, { rootDir = Packages, testMatch = {} }, globalConfig)
-		jestExpect(output).toMatch("console.log")
-		jestExpect(output).toMatch("Hello world!")
-		jestExpect(output).toMatch("console.error")
-		jestExpect(output).toMatch("Found some error!")
-		jestExpect(output).toMatch("console.warn")
-		jestExpect(output).toMatch("Found some warning!")
+		expect(output).toMatch("console.log")
+		expect(output).toMatch("Hello world!")
+		expect(output).toMatch("console.error")
+		expect(output).toMatch("Found some error!")
+		expect(output).toMatch("console.warn")
+		expect(output).toMatch("Found some warning!")
 	end)
 end)
 -- ROBLOX deviation END
@@ -82,7 +82,7 @@ end)
 -- local getConsoleOutput = require(CurrentModule.Parent.getConsoleOutput)
 
 -- local ModuleMocker = require(Packages.JestMock).ModuleMocker
--- local jestExpect = require(Packages.Dev.JestGlobals).expect
+-- local expect = require(Packages.Dev.JestGlobals).expect
 
 -- local typesModule = require(CurrentModule.Parent.types)
 -- type LogType = typesModule.LogType
@@ -117,11 +117,11 @@ end)
 -- 			{ rootDir = "root", testMatch = {} },
 -- 			globalConfig
 -- 		)
--- 		jestExpect(formatStackTrace).toHaveBeenCalled()
--- 		jestExpect(formatStackTrace).toHaveBeenCalledWith(
--- 			jestExpect.anything(),
--- 			jestExpect.anything(),
--- 			jestExpect.objectContaining({ noCodeFrame = jestExpect.anything(), noStackTrace = true })
+-- 		expect(formatStackTrace).toHaveBeenCalled()
+-- 		expect(formatStackTrace).toHaveBeenCalledWith(
+-- 			expect.anything(),
+-- 			expect.anything(),
+-- 			expect.objectContaining({ noCodeFrame = expect.anything(), noStackTrace = true })
 -- 		)
 -- 	end)
 -- end)

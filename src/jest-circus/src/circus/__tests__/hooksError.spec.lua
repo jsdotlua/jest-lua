@@ -13,7 +13,7 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local Symbol = LuauPolyfill.Symbol
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
@@ -39,7 +39,7 @@ for _, fn in ipairs({ "beforeEach", "beforeAll", "afterEach", "afterAll" }) do
 		}) do
 			local el = v[1]
 			it(("%s throws an error when %s is provided as a first argument to it"):format(fn, tostring(el)), function()
-				jestExpect(function()
+				expect(function()
 					circus[fn](el)
 				end).toThrowError("Invalid first argument. It must be a callback function.")
 			end)

@@ -10,7 +10,7 @@ local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
@@ -31,33 +31,33 @@ end
 
 describe("ConvertAnsi plugin", function()
 	it("supports style.red", function()
-		jestExpect(prettyFormatResult(string.format("%s foo content %s", chalk.red.open, chalk.red.close))).toEqual(
+		expect(prettyFormatResult(string.format("%s foo content %s", chalk.red.open, chalk.red.close))).toEqual(
 			'"<red> foo content </>"'
 		)
 	end)
 
 	it("supports style.green", function()
-		jestExpect(prettyFormatResult(string.format("%s foo content %s", chalk.green.open, chalk.green.close))).toEqual(
+		expect(prettyFormatResult(string.format("%s foo content %s", chalk.green.open, chalk.green.close))).toEqual(
 			'"<green> foo content </>"'
 		)
 	end)
 
 	it("supports style.reset", function()
-		jestExpect(prettyFormatResult(string.format("%s foo content %s", chalk.reset.open, chalk.reset.close))).toEqual(
+		expect(prettyFormatResult(string.format("%s foo content %s", chalk.reset.open, chalk.reset.close))).toEqual(
 			'"</> foo content </>"'
 		)
 	end)
 
 	it("supports style.bold", function()
-		jestExpect(prettyFormatResult(string.format("%s foo content", chalk.bold.open))).toEqual('"<bold> foo content"')
+		expect(prettyFormatResult(string.format("%s foo content", chalk.bold.open))).toEqual('"<bold> foo content"')
 	end)
 
 	it("supports style.dim", function()
-		jestExpect(prettyFormatResult(string.format("%s foo content", chalk.dim.open))).toEqual('"<dim> foo content"')
+		expect(prettyFormatResult(string.format("%s foo content", chalk.dim.open))).toEqual('"<dim> foo content"')
 	end)
 
 	it("does not support other colors", function()
-		jestExpect(prettyFormatResult(string.format("%s", chalk.blue.open))).toEqual('""')
+		expect(prettyFormatResult(string.format("%s", chalk.blue.open))).toEqual('""')
 	end)
 end)
 

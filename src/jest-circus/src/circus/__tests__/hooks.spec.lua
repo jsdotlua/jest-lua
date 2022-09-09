@@ -13,7 +13,7 @@ local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).default
 local runTest = require(script.Parent.Parent.__mocks__.testUtils).runTest
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local it = JestGlobals.it
 
 it("beforeEach is executed before each test in current/child describe blocks", function()
@@ -45,7 +45,7 @@ it("beforeEach is executed before each test in current/child describe blocks", f
 				test("2nd describe test", function() end)
 			end)
   	]]).stdout
-	jestExpect(wrap(stdout)).toMatchSnapshot()
+	expect(wrap(stdout)).toMatchSnapshot()
 end)
 
 it("multiple before each hooks in one describe are executed in the right order", function()
@@ -63,7 +63,7 @@ it("multiple before each hooks in one describe are executed in the right order",
 				end)
 			end)
   	]]).stdout
-	jestExpect(wrap(stdout)).toMatchSnapshot()
+	expect(wrap(stdout)).toMatchSnapshot()
 end)
 
 it("beforeAll is exectued correctly", function()
@@ -89,7 +89,7 @@ it("beforeAll is exectued correctly", function()
 				end)
 			end)
   	]]).stdout
-	jestExpect(wrap(stdout)).toMatchSnapshot()
+	expect(wrap(stdout)).toMatchSnapshot()
 end)
 
 return {}

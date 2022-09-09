@@ -14,7 +14,7 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local Symbol = LuauPolyfill.Symbol
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
@@ -37,14 +37,14 @@ describe("dedentLines non-null", function()
 		local indented = {}
 		local dedented = indented
 
-		jestExpect(dedentLines(indented)).toEqual(dedented)
+		expect(dedentLines(indented)).toEqual(dedented)
 	end)
 
 	it("one line empty string", function()
 		local indented = { "" }
 		local dedented = indented
 
-		jestExpect(dedentLines(indented)).toEqual(dedented)
+		expect(dedentLines(indented)).toEqual(dedented)
 	end)
 
 	it("one line empty object", function()
@@ -52,7 +52,7 @@ describe("dedentLines non-null", function()
 		local indented = formatLines2(val)
 		local dedented = formatLines0(val)
 
-		jestExpect(dedentLines(indented)).toEqual(dedented)
+		expect(dedentLines(indented)).toEqual(dedented)
 	end)
 
 	-- ROBLOX deviation: test skipped because we don't have support for react elements
@@ -65,7 +65,7 @@ describe("dedentLines non-null", function()
 		local indented = formatLines2(val)
 		local dedented = formatLines0(val)
 
-		jestExpect(dedentLines(indented)).toEqual(dedented)
+		expect(dedentLines(indented)).toEqual(dedented)
 	end)
 
 	it("object value empty string", function()
@@ -75,7 +75,7 @@ describe("dedentLines non-null", function()
 		local indented = formatLines2(val)
 		local dedented = formatLines0(val)
 
-		jestExpect(dedentLines(indented)).toEqual(dedented)
+		expect(dedentLines(indented)).toEqual(dedented)
 	end)
 
 	it("object value string includes double-quote marks", function()
@@ -85,7 +85,7 @@ describe("dedentLines non-null", function()
 		local indented = formatLines2(val)
 		local dedented = formatLines0(val)
 
-		jestExpect(dedentLines(indented)).toEqual(dedented)
+		expect(dedentLines(indented)).toEqual(dedented)
 	end)
 
 	-- ROBLOX deviation: test skipped because we don't have support for react elements
@@ -112,7 +112,7 @@ describe("dedentLines non-null", function()
 		local indented = formatLines2(val)
 		local dedented = formatLines0(val)
 
-		jestExpect(dedentLines(indented)).toEqual(dedented)
+		expect(dedentLines(indented)).toEqual(dedented)
 	end)
 
 	-- ROBLOX deviation: test skipped because we don't have support for react elements
@@ -141,7 +141,7 @@ describe("dedentLines non-null", function()
 		local indented = formatLines2(val)
 		local dedented = formatLines0(val)
 
-		jestExpect(dedentLines(indented)).toEqual(dedented)
+		expect(dedentLines(indented)).toEqual(dedented)
 	end)
 end)
 
@@ -154,7 +154,7 @@ describe("dedentLines null", function()
 		local name = value[1]
 		local val = value[2]
 		it(string.format("%s", name), function()
-			jestExpect(dedentLines(formatLines2(val))).toEqual(nil)
+			expect(dedentLines(formatLines2(val))).toEqual(nil)
 		end)
 	end
 
@@ -171,7 +171,7 @@ describe("dedentLines null", function()
 		}
 		local indented = formatLines2(val)
 
-		jestExpect(dedentLines(indented)).toEqual(nil)
+		expect(dedentLines(indented)).toEqual(nil)
 	end)
 
 	-- ROBLOX deviation: test skipped because we don't have support for react elements
@@ -205,7 +205,7 @@ describe("dedentLines null", function()
 		}
 		local indented = formatLines2(val)
 
-		jestExpect(dedentLines(indented)).toEqual(nil)
+		expect(dedentLines(indented)).toEqual(nil)
 	end)
 
 	-- ROBLOX deviation: test skipped because we don't have support for react elements
@@ -233,7 +233,7 @@ describe("dedentLines null", function()
 		}
 		local indented = formatLines2(val)
 
-		jestExpect(dedentLines(indented)).toEqual(nil)
+		expect(dedentLines(indented)).toEqual(nil)
 	end)
 
 	-- ROBLOX deviation: test skipped because we don't have support for react elements
@@ -261,19 +261,19 @@ describe("dedentLines null", function()
 		}
 		local indented = formatLines2(val)
 
-		jestExpect(dedentLines(indented)).toEqual(nil)
+		expect(dedentLines(indented)).toEqual(nil)
 	end)
 
 	it("markup unclosed self-closing start tag", function()
 		local indented = { "<img", '  alt="Jest logo"', '  src="jest.svg"' }
 
-		jestExpect(dedentLines(indented)).toEqual(nil)
+		expect(dedentLines(indented)).toEqual(nil)
 	end)
 
 	it("markup unclosed because no end tag", function()
 		local indented = { "<p>", "  Delightful JavaScript testing" }
 
-		jestExpect(dedentLines(indented)).toEqual(nil)
+		expect(dedentLines(indented)).toEqual(nil)
 	end)
 end)
 

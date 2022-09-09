@@ -10,7 +10,7 @@ local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local it = JestGlobals.it
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
@@ -47,7 +47,7 @@ it("creates a snapshot summary", function()
 		getSnapshotSummary(snapshots :: SnapshotSummary, globalConfig :: Config_GlobalConfig, UPDATE_COMMAND),
 		"\n"
 	):gsub("\\", "/")
-	jestExpect(result).toMatchSnapshot()
+	expect(result).toMatchSnapshot()
 end)
 
 it("creates a snapshot summary after an update", function()
@@ -68,7 +68,7 @@ it("creates a snapshot summary after an update", function()
 		getSnapshotSummary(snapshots :: SnapshotSummary, globalConfig :: Config_GlobalConfig, UPDATE_COMMAND),
 		"\n"
 	):gsub("\\", "/")
-	jestExpect(result).toMatchSnapshot()
+	expect(result).toMatchSnapshot()
 end)
 
 it("creates a snapshot summary with multiple snapshot being written/updated", function()
@@ -92,7 +92,7 @@ it("creates a snapshot summary with multiple snapshot being written/updated", fu
 		getSnapshotSummary(snapshots :: SnapshotSummary, globalConfig :: Config_GlobalConfig, UPDATE_COMMAND),
 		"\n"
 	):gsub("\\", "/")
-	jestExpect(result).toMatchSnapshot()
+	expect(result).toMatchSnapshot()
 end)
 
 it("returns nothing if there are no updates", function()
@@ -113,7 +113,7 @@ it("returns nothing if there are no updates", function()
 		getSnapshotSummary(snapshots :: SnapshotSummary, globalConfig :: Config_GlobalConfig, UPDATE_COMMAND),
 		"\n"
 	)
-	jestExpect(result).toMatchSnapshot()
+	expect(result).toMatchSnapshot()
 end)
 
 return {}

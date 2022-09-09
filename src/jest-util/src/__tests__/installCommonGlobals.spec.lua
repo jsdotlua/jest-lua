@@ -16,7 +16,7 @@ local Object = LuauPolyfill.Object
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
@@ -43,16 +43,16 @@ describe("installCommonGlobals", function()
 
 	it("returns the passed object", function()
 		local myGlobal = getGlobal()
-		jestExpect(installCommonGlobals(myGlobal, {})).toBe(myGlobal)
+		expect(installCommonGlobals(myGlobal, {})).toBe(myGlobal)
 	end)
 
 	it("turns a V8 global object into a Node global object", function()
 		local myGlobal = installCommonGlobals(getGlobal(), {})
-		jestExpect(myGlobal.process).toBeDefined()
-		jestExpect(myGlobal.DTRACE_NET_SERVER_CONNECTION).toBeDefined()
-		jestExpect(myGlobal.DTRACE_NET_SERVER_CONNECTION).never.toBe(fake)
+		expect(myGlobal.process).toBeDefined()
+		expect(myGlobal.DTRACE_NET_SERVER_CONNECTION).toBeDefined()
+		expect(myGlobal.DTRACE_NET_SERVER_CONNECTION).never.toBe(fake)
 		myGlobal:DTRACE_NET_SERVER_CONNECTION()
-		jestExpect(#fake.mock.calls).toBe(1)
+		expect(#fake.mock.calls).toBe(1)
 	end)
 end)
 

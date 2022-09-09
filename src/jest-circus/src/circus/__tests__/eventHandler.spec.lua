@@ -4,7 +4,7 @@ local SrcModule = CurrentModule.Parent
 local Packages = SrcModule.Parent.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
@@ -19,7 +19,7 @@ describe("eventHandler", function()
 	it("should not fail when called with testNamePattern", function()
 		local event = ({ name = "setup", testNamePattern = "apattern" } :: any) :: Circus_Event
 		local state = {} :: Circus_State
-		jestExpect(function()
+		expect(function()
 			eventHandler(nil, event, state)
 		end).never.toThrow()
 	end)
@@ -30,9 +30,9 @@ describe("eventHandler", function()
 		local state = {} :: Circus_State
 		eventHandler(nil, event, state)
 
-		jestExpect(state.testNamePattern).toBeDefined()
-		jestExpect(state.testNamePattern).toBeInstanceOf(RegExp)
-		jestExpect(state.testNamePattern).toEqual(RegExp(pattern, "i"))
+		expect(state.testNamePattern).toBeDefined()
+		expect(state.testNamePattern).toBeInstanceOf(RegExp)
+		expect(state.testNamePattern).toEqual(RegExp(pattern, "i"))
 	end)
 end)
 

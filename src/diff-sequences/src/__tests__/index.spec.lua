@@ -18,7 +18,7 @@ local Error = LuauPolyfill.Error
 type Array<T> = LuauPolyfill.Array<T>
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
@@ -43,34 +43,34 @@ describe("invalid arg", function()
 
 	describe("length", function()
 		it("is not a number", function()
-			jestExpect(function()
+			expect(function()
 				-- ROBLOX deviation: overriding type checking on purpose
 				diff("0" :: any, 0, isCommon, foundSubsequence)
 			end).toThrow("aLength")
 		end)
 		it("Infinity is not a safe integer", function()
-			jestExpect(function()
+			expect(function()
 				diff(math.huge, 0, isCommon, foundSubsequence)
 			end).toThrow("aLength")
 		end)
 		it.skip("Not a Number is not a safe integer", function()
-			jestExpect(function()
+			expect(function()
 				diff(Number.NaN, 0, isCommon, foundSubsequence)
 			end).toThrow("aLength")
 		end)
 
 		it("MAX_SAFE_INTEGER + 1 is not a safe integer", function()
-			jestExpect(function()
+			expect(function()
 				diff(0, Number.MAX_SAFE_INTEGER + 1, isCommon, foundSubsequence)
 			end).toThrow("bLength")
 		end)
 		it("MIN_SAFE_INTEGER - 1 is not a safe integer", function()
-			jestExpect(function()
+			expect(function()
 				diff(0, Number.MIN_SAFE_INTEGER - 1, isCommon, foundSubsequence)
 			end).toThrow("bLength")
 		end)
 		it("is a negative integer", function()
-			jestExpect(function()
+			expect(function()
 				diff(0, -1, isCommon, foundSubsequence)
 			end).toThrow("bLength")
 		end)
@@ -78,7 +78,7 @@ describe("invalid arg", function()
 
 	describe("callback", function()
 		it("nil is not a function", function()
-			jestExpect(function()
+			expect(function()
 				-- ROBLOX deviation: overriding type checking on purpose
 				diff(0, 0, nil :: any, foundSubsequence)
 			end).toThrow("isCommon")
@@ -86,7 +86,7 @@ describe("invalid arg", function()
 
 		-- ROBLOX note: this actually tests a separate parameter than the above test
 		it("undefined is not a function", function()
-			jestExpect(function()
+			expect(function()
 				-- ROBLOX deviation: overriding type checking on purpose
 				diff(0, 0, isCommon, nil :: any)
 			end).toThrow("foundSubsequence")
@@ -122,10 +122,10 @@ describe("input callback encapsulates comparison", function()
 		local b = { -0 }
 
 		it("are not common according to Object.is method", function()
-			jestExpect(countCommonObjectIs(a, b)).toEqual(0)
+			expect(countCommonObjectIs(a, b)).toEqual(0)
 		end)
 		it("are not common according to == method", function()
-			jestExpect(countCommonStrictEquality(a, b)).toEqual(1)
+			expect(countCommonStrictEquality(a, b)).toEqual(1)
 		end)
 	end)
 end)
@@ -135,10 +135,10 @@ describe("Not a number", function()
 	local a = { Number.NaN }
 
 	it("is common according to Object.is method", function()
-		jestExpect(countCommonObjectIs(a, a)).toEqual(1)
+		expect(countCommonObjectIs(a, a)).toEqual(1)
 	end)
 	it("is not common according to === operator", function()
-		jestExpect(countCommonStrictEquality(a, a)).toEqual(0)
+		expect(countCommonStrictEquality(a, a)).toEqual(0)
 	end)
 end)
 
@@ -255,7 +255,7 @@ local function findCommonItems(a_: Array<any> | string, b_: Array<any> | string)
 	end)
 
 	local nDifferences = countDifferences(aLength, bLength, isCommon)
-	jestExpect(aLength + bLength - 2 * #array).toBe(nDifferences)
+	expect(aLength + bLength - 2 * #array).toBe(nDifferences)
 
 	return array
 end
@@ -273,13 +273,13 @@ local function expectCommonItems(a: Array<any> | string, b: Array<any> | string,
 		expected = stringToArray(expected)
 	end
 
-	jestExpect(findCommonItems(a, b)).toEqual(expected)
+	expect(findCommonItems(a, b)).toEqual(expected)
 
 	if #a ~= #b then
 		-- If sequences a and b have different lengths,
 		-- then if you swap sequences in your callback functions,
 		-- this package finds the same items.
-		jestExpect(findCommonItems(b, a)).toEqual(expected)
+		expect(findCommonItems(b, a)).toEqual(expected)
 	end
 end
 
@@ -319,13 +319,13 @@ describe("no common items", function()
 		end
 
 		it("of a", function()
-			jestExpect(countItemsNegativeZero(-0, 1)).toEqual(0)
+			expect(countItemsNegativeZero(-0, 1)).toEqual(0)
 		end)
 		it("of b", function()
-			jestExpect(countItemsNegativeZero(1, -0)).toEqual(0)
+			expect(countItemsNegativeZero(1, -0)).toEqual(0)
 		end)
 		it("of a and b", function()
-			jestExpect(countItemsNegativeZero(-0, -0)).toEqual(0)
+			expect(countItemsNegativeZero(-0, -0)).toEqual(0)
 		end)
 	end)
 
@@ -808,8 +808,8 @@ describe("common substrings", function()
 		local expected = { '"sorting": ', 'Object {\n"', 'scending": ', "e," }
 		local abCommonSubstrings = findCommonSubstrings(a, b)
 		local baCommonSubstrings = findCommonSubstrings(b, a)
-		jestExpect(abCommonSubstrings).toEqual(baCommonSubstrings)
-		jestExpect(abCommonSubstrings).toEqual(expected)
+		expect(abCommonSubstrings).toEqual(baCommonSubstrings)
+		expect(abCommonSubstrings).toEqual(expected)
 	end)
 	it("regression", function()
 		-- Prevent unexpected regression. If change is incorrect, then fix code.
@@ -821,8 +821,8 @@ describe("common substrings", function()
 			"Il semble que la perfection soit atteinte non quand il n'y a plus rien à ajouter, mais quand il n'y a plus rien à retrancher."
 		local abCommonSubstrings = findCommonSubstrings(a, b)
 		local baCommonSubstrings = findCommonSubstrings(b, a)
-		jestExpect(abCommonSubstrings).toEqual(baCommonSubstrings)
-		jestExpect(abCommonSubstrings).toMatchSnapshot()
+		expect(abCommonSubstrings).toEqual(baCommonSubstrings)
+		expect(abCommonSubstrings).toMatchSnapshot()
 	end)
 	it("wrapping", function()
 		local a = table.concat({
@@ -835,8 +835,8 @@ describe("common substrings", function()
 		}, "\n")
 		local abCommonSubstrings = findCommonSubstrings(a, b)
 		local baCommonSubstrings = findCommonSubstrings(b, a)
-		jestExpect(abCommonSubstrings).toEqual(baCommonSubstrings)
-		jestExpect(abCommonSubstrings).toMatchSnapshot()
+		expect(abCommonSubstrings).toEqual(baCommonSubstrings)
+		expect(abCommonSubstrings).toMatchSnapshot()
 	end)
 end)
 

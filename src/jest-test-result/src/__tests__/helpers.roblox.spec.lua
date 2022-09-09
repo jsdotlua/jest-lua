@@ -18,7 +18,7 @@ local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
@@ -63,7 +63,7 @@ describe("helpers", function()
 			wasInterrupted = false,
 		}
 		local result = makeEmptyAggregatedTestResult()
-		jestExpect(result).toEqual(emptyAggregatedTestResult)
+		expect(result).toEqual(emptyAggregatedTestResult)
 	end)
 
 	it("creates a failure TestResult", function()
@@ -101,7 +101,7 @@ describe("helpers", function()
 		}
 
 		local result = buildFailureTestResult("testPath", testError)
-		jestExpect(result).toEqual(failureTestResult)
+		expect(result).toEqual(failureTestResult)
 	end)
 
 	it("creates an empty TestResult", function()
@@ -128,7 +128,7 @@ describe("helpers", function()
 		}
 
 		local result = createEmptyTestResult()
-		jestExpect(result).toEqual(emptyTestResult)
+		expect(result).toEqual(emptyTestResult)
 	end)
 
 	it("adds a TestResult to an AggregatedResult", function()
@@ -141,10 +141,10 @@ describe("helpers", function()
 		local aggregatedTestResult = makeEmptyAggregatedTestResult()
 
 		addResult(aggregatedTestResult, test1)
-		jestExpect(aggregatedTestResult.numPassedTests).toEqual(1)
+		expect(aggregatedTestResult.numPassedTests).toEqual(1)
 
 		addResult(aggregatedTestResult, test2)
-		jestExpect(aggregatedTestResult.numPassedTests).toEqual(2)
+		expect(aggregatedTestResult.numPassedTests).toEqual(2)
 	end)
 end)
 

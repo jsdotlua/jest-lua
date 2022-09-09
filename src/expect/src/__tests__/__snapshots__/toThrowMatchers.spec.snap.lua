@@ -19,7 +19,7 @@ Expected asymmetric matcher: <g>Any<Err2></>
 Received name:    <r>"Error"</>
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrow asymmetric any-Class fail isNot true 1"] = [=[
@@ -31,7 +31,7 @@ Expected asymmetric matcher: never <g>Any<Err></>
 Received name:    <r>"Error"</>
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrow asymmetric anything fail isNot true 1"] = [=[
@@ -43,7 +43,7 @@ Expected asymmetric matcher: never <g>Anything</>
 Received name:    <r>"Error"</>
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 -- ROBLOX deviation: output has anonymous instead of asymmetricMatch
@@ -56,7 +56,7 @@ Expected asymmetric matcher: <g>{"asymmetricMatch": [Function asymmetricMatch]}<
 Received name:    <r>"Error"</>
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 -- ROBLOX deviation: output has anonymous instead of asymmetricMatch
@@ -69,7 +69,7 @@ Expected asymmetric matcher: never <g>{"asymmetricMatch": [Function asymmetricMa
 Received name:    <r>"Error"</>
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrow asymmetric objectContaining fail isNot false 1"] = [=[
@@ -81,7 +81,7 @@ Expected asymmetric matcher: <g>ObjectContaining {"name": "NotError"}</>
 Received name:    <r>"Error"</>
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrow asymmetric objectContaining fail isNot true 1"] = [=[
@@ -93,7 +93,7 @@ Expected asymmetric matcher: never <g>ObjectContaining {"name": "Error"}</>
 Received name:    <r>"Error"</>
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrow error class did not throw at all 1"] = [=[
@@ -114,7 +114,7 @@ Received constructor: <r>Err</>
 
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrow error class threw, but class did not match (non-error falsey) 1"] = [=[
@@ -137,7 +137,7 @@ Received constructor:       <r>SubErr</> extends <g>Err</>
 
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrow error class threw, but class should not match (error subsubclass) 1"] = [=[
@@ -149,7 +149,7 @@ Received constructor:       <r>SubSubErr</> extends … extends <g>Err</>
 
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrow error class threw, but class should not match (error) 1"] = [=[
@@ -160,7 +160,7 @@ Expected constructor: never <g>Err</>
 
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrow error-message fail isNot false 1"] = [=[
@@ -238,7 +238,7 @@ snapshots["toThrow regexp threw, but message did not match (error) 1"] = [=[
 Expected pattern: <g>/banana/</>
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 -- ROBLOX deviation: we print "0" instead of 0
@@ -259,7 +259,7 @@ snapshots["toThrow regexp threw, but message should not match (error) 1"] = [=[
 Expected pattern: never <g>/ array /</>
 Received message:       <r>"Invalid</><i> array </i><r>length</>"
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 -- ROBLOX deviation: we print "404" instead of 404
@@ -289,7 +289,7 @@ snapshots["toThrow substring threw, but message did not match (error) 1"] = [=[
 Expected substring: <g>"banana"</>
 Received message:   <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 -- ROBLOX deviation: we include the stack trace even when catching a "primitive" error()
@@ -310,7 +310,7 @@ snapshots["toThrow substring threw, but message should not match (error) 1"] = [
 Expected substring: never <g>"array"</>
 Received message:         <r>"Invalid </><i>array</i><r> length</>"
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrow substring threw, but message should not match (non-error truthy) 1"] = [=[
@@ -332,7 +332,7 @@ Expected asymmetric matcher: <g>Any<Err2></>
 Received name:    <r>"Error"</>
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrowError asymmetric any-Class fail isNot true 1"] = [=[
@@ -344,7 +344,7 @@ Expected asymmetric matcher: never <g>Any<Err></>
 Received name:    <r>"Error"</>
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrowError asymmetric anything fail isNot true 1"] = [=[
@@ -356,7 +356,7 @@ Expected asymmetric matcher: never <g>Anything</>
 Received name:    <r>"Error"</>
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 -- ROBLOX deviation: output has anonymous instead of asymmetricMatch
@@ -369,7 +369,7 @@ Expected asymmetric matcher: <g>{"asymmetricMatch": [Function asymmetricMatch]}<
 Received name:    <r>"Error"</>
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 -- ROBLOX deviation: output has anonymous instead of asymmetricMatch
@@ -382,7 +382,7 @@ Expected asymmetric matcher: never <g>{"asymmetricMatch": [Function asymmetricMa
 Received name:    <r>"Error"</>
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrowError asymmetric objectContaining fail isNot false 1"] = [=[
@@ -394,7 +394,7 @@ Expected asymmetric matcher: <g>ObjectContaining {"name": "NotError"}</>
 Received name:    <r>"Error"</>
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrowError asymmetric objectContaining fail isNot true 1"] = [=[
@@ -406,7 +406,7 @@ Expected asymmetric matcher: never <g>ObjectContaining {"name": "Error"}</>
 Received name:    <r>"Error"</>
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrowError error class did not throw at all 1"] = [=[
@@ -427,7 +427,7 @@ Received constructor: <r>Err</>
 
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrowError error class threw, but class did not match (non-error falsey) 1"] = [=[
@@ -450,7 +450,7 @@ Received constructor:       <r>SubErr</> extends <g>Err</>
 
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrowError error class threw, but class should not match (error subsubclass) 1"] = [=[
@@ -462,7 +462,7 @@ Received constructor:       <r>SubSubErr</> extends … extends <g>Err</>
 
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrowError error class threw, but class should not match (error) 1"] = [=[
@@ -473,7 +473,7 @@ Expected constructor: never <g>Err</>
 
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrowError error-message fail isNot false 1"] = [=[
@@ -551,7 +551,7 @@ snapshots["toThrowError regexp threw, but message did not match (error) 1"] = [=
 Expected pattern: <g>/banana/</>
 Received message: <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 -- ROBLOX deviation: we print "0" instead of 0
@@ -572,7 +572,7 @@ snapshots["toThrowError regexp threw, but message should not match (error) 1"] =
 Expected pattern: never <g>/ array /</>
 Received message:       <r>"Invalid</><i> array </i><r>length</>"
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 -- ROBLOX deviation: we print "404" instead of 404
@@ -602,7 +602,7 @@ snapshots["toThrowError substring threw, but message did not match (error) 1"] =
 Expected substring: <g>"banana"</>
 Received message:   <r>"apple"</>
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 -- ROBLOX deviation: we include the stack trace even when catching a "primitive" error()
@@ -623,7 +623,7 @@ snapshots["toThrowError substring threw, but message should not match (error) 1"
 Expected substring: never <g>"array"</>
 Received message:         <r>"Invalid </><i>array</i><r> length</>"
 
-      at jestExpect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
+      at expect (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)
 ]=]
 
 snapshots["toThrowError substring threw, but message should not match (non-error truthy) 1"] = [=[

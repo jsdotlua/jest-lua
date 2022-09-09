@@ -19,7 +19,7 @@ local JestGlobals = require(Packages.Dev.JestGlobals)
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
 local afterAll = JestGlobals.afterAll
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 
 local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).wrap
 local test_utilsModule = require(Packages.Dev.TestUtils)
@@ -40,11 +40,11 @@ local logDebugMessages = require(script.Parent.Parent.logDebugMessages).default
 local JestSnapshotSerializerRaw = require(Packages.Dev.JestSnapshotSerializerRaw)
 
 beforeAll(function()
-	jestExpect.addSnapshotSerializer(JestSnapshotSerializerRaw)
+	expect.addSnapshotSerializer(JestSnapshotSerializerRaw)
 end)
 
 afterAll(function()
-	jestExpect.resetSnapshotSerializers()
+	expect.resetSnapshotSerializers()
 end)
 
 local function getOutputStream(resolve: (message: string) -> ())
@@ -69,7 +69,7 @@ it("prints the jest version", function()
 				)
 			end):expect()
 
-			jestExpect(JSON.parse(message).version).toBe("27.4.7")
+			expect(JSON.parse(message).version).toBe("27.4.7")
 		end)
 		:expect()
 end)
@@ -87,7 +87,7 @@ it("prints the test framework name", function()
 			)
 		end):expect()
 
-		jestExpect(JSON.parse(message).configs.testRunner).toBe("myRunner")
+		expect(JSON.parse(message).configs.testRunner).toBe("myRunner")
 	end)
 end)
 
@@ -106,7 +106,7 @@ it("prints the config object", function()
 		local message = Promise.new(function(resolve)
 			logDebugMessages(globalConfig, config, getOutputStream(resolve))
 		end):expect()
-		jestExpect(wrap(message)).toMatchSnapshot()
+		expect(wrap(message)).toMatchSnapshot()
 	end)
 end)
 

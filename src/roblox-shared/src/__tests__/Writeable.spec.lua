@@ -21,7 +21,7 @@ local Writeable = require(CurrentModule.Parent.Writeable).Writeable
 
 local ModuleMocker = require(Packages.JestMock).ModuleMocker
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
@@ -35,7 +35,7 @@ describe("Writeable", function()
 		end
 		local writeable = Writeable.new({ write = writeFn })
 		writeable:write("Hello, world!")
-		jestExpect(mockWrite).toBeCalledWith("Hello, world!")
+		expect(mockWrite).toBeCalledWith("Hello, world!")
 	end)
 end)
 

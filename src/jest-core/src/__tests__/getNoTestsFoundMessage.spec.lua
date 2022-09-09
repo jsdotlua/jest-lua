@@ -14,7 +14,7 @@ local getNoTestsFoundMessage = require(script.Parent.Parent.getNoTestsFoundMessa
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local describe = JestGlobals.describe
 local it = JestGlobals.it
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 
 describe("getNoTestsFoundMessage", function()
 	local function createGlobalConfig(options)
@@ -24,28 +24,28 @@ describe("getNoTestsFoundMessage", function()
 	-- ROBLOX deviation START: not supported
 	-- it("returns correct message when monitoring only failures", function()
 	-- 	local config = createGlobalConfig({ onlyFailures = true })
-	-- 	jestExpect(getNoTestsFoundMessage({}, config)).toMatchSnapshot()
+	-- 	expect(getNoTestsFoundMessage({}, config)).toMatchSnapshot()
 	-- end)
 
 	-- it("returns correct message when monitoring only changed", function()
 	-- 	local config = createGlobalConfig({ onlyChanged = true })
-	-- 	jestExpect(getNoTestsFoundMessage({}, config)).toMatchSnapshot()
+	-- 	expect(getNoTestsFoundMessage({}, config)).toMatchSnapshot()
 	-- end)
 	-- ROBLOX deviation END
 
 	it("returns correct message with verbose option", function()
 		local config = createGlobalConfig({ verbose = true })
-		jestExpect(getNoTestsFoundMessage({}, config)).toMatchSnapshot()
+		expect(getNoTestsFoundMessage({}, config)).toMatchSnapshot()
 	end)
 
 	it("returns correct message without options", function()
 		local config = createGlobalConfig()
-		jestExpect(getNoTestsFoundMessage({}, config)).toMatchSnapshot()
+		expect(getNoTestsFoundMessage({}, config)).toMatchSnapshot()
 	end)
 
 	it("returns correct message with passWithNoTests", function()
 		local config = createGlobalConfig({ passWithNoTests = true })
-		jestExpect(getNoTestsFoundMessage({}, config)).toMatchSnapshot()
+		expect(getNoTestsFoundMessage({}, config)).toMatchSnapshot()
 	end)
 end)
 

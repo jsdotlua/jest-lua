@@ -11,7 +11,7 @@ local SrcModule = CurrentModule.Parent
 local Packages = SrcModule.Parent.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
@@ -36,14 +36,14 @@ aliasCircusIt()
 describe("test/it error throwing", function()
 	-- ROBLOX FIXME START: we can't run circusTest insinde of circus's it
 	it.skip("it doesn't throw an error with valid arguments", function()
-		jestExpect(function()
+		expect(function()
 			circusIt("test1", function() end)
 		end).never.toThrow()
 	end)
 	-- ROBLOX FIXME END
 
 	it("it throws error with missing callback function", function()
-		jestExpect(function()
+		expect(function()
 			-- @ts-expect-error: Easy, we're testing runtime errors here
 			(circusIt :: any)("test2")
 		end).toThrowError(
@@ -52,7 +52,7 @@ describe("test/it error throwing", function()
 	end)
 
 	it("it throws an error when first argument isn't a string", function()
-		jestExpect(function()
+		expect(function()
 				-- @ts-expect-error: Easy, we're testing runtime errors here
 				(circusIt :: any)(function() end)
 			end)
@@ -61,7 +61,7 @@ describe("test/it error throwing", function()
 	end)
 
 	it("it throws an error when callback function is not a function", function()
-		jestExpect(function()
+		expect(function()
 			-- @ts-expect-error: Easy, we're testing runtime errors here
 			(circusIt :: any)("test4", "test4b")
 		end).toThrowError("Invalid second argument, test4b. It must be a callback function.")
@@ -69,14 +69,14 @@ describe("test/it error throwing", function()
 
 	-- ROBLOX FIXME START: we can't run circusTest insinde of circus's it
 	it.skip("test doesn't throw an error with valid arguments", function()
-		jestExpect(function()
+		expect(function()
 			circusTest("test5", function() end)
 		end).never.toThrow()
 	end)
 	-- ROBLOX FIXME END
 
 	it("test throws error with missing callback function", function()
-		jestExpect(function()
+		expect(function()
 			-- @ts-expect-error: Easy, we're testing runtime errors here
 			(circusIt :: any)("test6")
 		end).toThrowError(
@@ -85,14 +85,14 @@ describe("test/it error throwing", function()
 	end)
 
 	it("test throws an error when first argument isn't a string", function()
-		jestExpect(function()
+		expect(function()
 			-- @ts-expect-error: Easy, we're testing runtime errors here
 			(circusIt :: any)(function() end)
 		end).toThrowError("Invalid first argument, [Function anonymous]. It must be a string.")
 	end)
 
 	it("test throws an error when callback function is not a function", function()
-		jestExpect(function()
+		expect(function()
 			-- @ts-expect-error: Easy, we're testing runtime errors here
 			(circusIt :: any)("test8", "test8b")
 		end).toThrowError("Invalid second argument, test8b. It must be a callback function.")

@@ -9,7 +9,7 @@
 
 local Packages = script.Parent.Parent.Parent
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
@@ -18,22 +18,22 @@ local validatePattern = require(script.Parent.Parent.validatePattern).default
 describe("validate pattern function", function()
 	it("without passed args returns true", function()
 		local isValid = validatePattern()
-		jestExpect(isValid).toBeTruthy()
+		expect(isValid).toBeTruthy()
 	end)
 
 	it("returns true for empty pattern", function()
 		local isValid = validatePattern("")
-		jestExpect(isValid).toBeTruthy()
+		expect(isValid).toBeTruthy()
 	end)
 
 	it("returns true for valid pattern", function()
 		local isValid = validatePattern("abc+")
-		jestExpect(isValid).toBeTruthy()
+		expect(isValid).toBeTruthy()
 	end)
 
 	it("returns false for invalid pattern", function()
 		local isValid = validatePattern("\\")
-		jestExpect(isValid).toBeFalsy()
+		expect(isValid).toBeFalsy()
 	end)
 end)
 

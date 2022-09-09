@@ -19,7 +19,7 @@ local plugins = PrettyFormat.plugins
 local setPrettyPrint = require(script.Parent.setPrettyPrint).default
 local ReactElement = plugins.ReactElement
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
@@ -64,17 +64,17 @@ describe("ReactElement Plugin", function()
 		forwardRefExample = React.forwardRef(function(_props, _ref)
 			return nil
 		end)
-		jestExpect(React.createElement(forwardRefExample)).toPrettyPrintTo("<ForwardRef />")
+		expect(React.createElement(forwardRefExample)).toPrettyPrintTo("<ForwardRef />")
 	end)
 
 	it("serializes forwardRef with displayName", function()
 		forwardRefExample.displayName = "Display"
-		jestExpect(React.createElement(forwardRefExample)).toPrettyPrintTo("<Display />")
+		expect(React.createElement(forwardRefExample)).toPrettyPrintTo("<Display />")
 	end)
 
 	it("serializes forwardRef component with displayName", function()
 		forwardRefComponent.displayName = "Display"
-		jestExpect(React.createElement(forwardRefExample)).toPrettyPrintTo("<ForwardRef(Display) />")
+		expect(React.createElement(forwardRefExample)).toPrettyPrintTo("<ForwardRef(Display) />")
 	end)
 end)
 

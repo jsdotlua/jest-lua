@@ -10,7 +10,7 @@ local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local it = JestGlobals.it
 
 local makeGlobalConfig = require(Packages.TestUtils).makeGlobalConfig
@@ -44,27 +44,27 @@ local globalConfig = makeGlobalConfig()
 -- ROBLOX deviation START: terminal-link not ported
 -- it("should call `terminal-link` correctly", function()
 -- 	getResultHeader(testResult, globalConfig)
--- 	jestExpect(terminalLink).toBeCalledWith(
--- 		jestExpect:stringContaining("foo"),
+-- 	expect(terminalLink).toBeCalledWith(
+-- 		expect:stringContaining("foo"),
 -- 		"file:///foo",
--- 		jestExpect:objectContaining({ fallback = jestExpect:any(Function) })
+-- 		expect:objectContaining({ fallback = expect:any(Function) })
 -- 	)
 -- end)
 
 -- itFOCUS("should render the terminal link", function()
 -- 	local result = getResultHeader(testResult, globalConfig)
--- 	jestExpect(result).toContain("wannabehyperlink")
+-- 	expect(result).toContain("wannabehyperlink")
 -- end)
 -- ROBLOX deviation END
 
 it("should display test time for slow test", function()
 	local result = getResultHeader((testResultSlow :: any) :: TestResult, globalConfig)
-	jestExpect(result).toContain(("%s s"):format(tostring(testTime / 1000)))
+	expect(result).toContain(("%s s"):format(tostring(testTime / 1000)))
 end)
 
 it("should not display test time for fast test ", function()
 	local result = getResultHeader((testResultFast :: any) :: TestResult, globalConfig)
-	jestExpect(result).never.toContain(("%s s"):format(tostring(testTime / 1000)))
+	expect(result).never.toContain(("%s s"):format(tostring(testTime / 1000)))
 end)
 
 return {}

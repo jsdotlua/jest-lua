@@ -19,7 +19,7 @@ local Packages = SrcModule.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
@@ -39,15 +39,15 @@ describe("clearLine", function()
 	it("should NOT clear line if stream is NOT TTY", function()
 		clearLine(stream)
 
-		jestExpect(writeMock).never.toHaveBeenCalled()
+		expect(writeMock).never.toHaveBeenCalled()
 	end)
 
 	it("should clear line if stream is TTY", function()
 		stream.isTTY = true
 		clearLine(stream)
 
-		jestExpect(writeMock).toHaveBeenCalledTimes(1)
-		jestExpect(writeMock).toHaveBeenCalledWith(stream, "\x1b[999D\x1b[K")
+		expect(writeMock).toHaveBeenCalledTimes(1)
+		expect(writeMock).toHaveBeenCalledWith(stream, "\x1b[999D\x1b[K")
 	end)
 end)
 

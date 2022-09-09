@@ -10,7 +10,7 @@ local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
@@ -28,7 +28,7 @@ describe("diffStringsRaw", function()
 			Diff.new(DIFF_INSERT, "to"),
 		}
 		local received = diffStringsRaw("change from", "change to", true)
-		jestExpect(received).toEqual(expected)
+		expect(received).toEqual(expected)
 	end)
 
 	it("one-line without cleanup", function()
@@ -40,7 +40,7 @@ describe("diffStringsRaw", function()
 			Diff.new(DIFF_DELETE, "m"),
 		}
 		local received = diffStringsRaw("change from", "change to", false)
-		jestExpect(received).toEqual(expected)
+		expect(received).toEqual(expected)
 	end)
 end)
 

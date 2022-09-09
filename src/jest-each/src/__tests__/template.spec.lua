@@ -18,14 +18,14 @@ local NIL = require(script.Parent.Parent.nilPlaceholder)
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
 local each = require(script.Parent.Parent).default()
 local function noop() end
 
-local expectFunction = jestExpect.any("function")
+local expectFunction = expect.any("function")
 
 local function get(object, lensPath)
 	-- ROBLOX deviation START: set source for metatable mock functions
@@ -154,10 +154,10 @@ describe("jest-each", function()
 				local testCallBack = jest.fn()
 				testFunction("this will blow up :(", testCallBack)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(function()
+				expect(function()
 					return globalMock.mock.calls[1][2](globalMock.mock.calls[1])
 				end).toThrowErrorMatchingSnapshot()
-				jestExpect(testCallBack).never.toHaveBeenCalled()
+				expect(testCallBack).never.toHaveBeenCalled()
 			end)
 
 			it("does not throw error when there are multibyte characters in first column headings", function()
@@ -167,10 +167,10 @@ describe("jest-each", function()
 				local testCallBack = jest.fn()
 				testFunction("accept multibyte characters", testCallBack)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(function()
+				expect(function()
 					return globalMock.mock.calls[1][2](globalMock.mock.calls[1])
 				end).never.toThrowError()
-				jestExpect(testCallBack).toHaveBeenCalledWith({
+				expect(testCallBack).toHaveBeenCalledWith({
 					b = 1,
 					expected = 2,
 					["\u{285}(\u{30C4})\u{283}"] = 1,
@@ -184,10 +184,10 @@ describe("jest-each", function()
 				local testCallBack = jest.fn()
 				testFunction("this will blow up :(", testCallBack)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(function()
+				expect(function()
 					return globalMock.mock.calls[1][2](globalMock.mock.calls[1])
 				end).toThrowErrorMatchingSnapshot()
-				jestExpect(testCallBack).never.toHaveBeenCalled()
+				expect(testCallBack).never.toHaveBeenCalled()
 			end)
 
 			it("does not throw error when there are multibyte characters in second column headings", function()
@@ -197,10 +197,10 @@ describe("jest-each", function()
 				local testCallBack = jest.fn()
 				testFunction("accept multibyte characters", testCallBack)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(function()
+				expect(function()
 					return globalMock.mock.calls[1][2](globalMock.mock.calls[1])
 				end).never.toThrowError()
-				jestExpect(testCallBack).toHaveBeenCalledWith({
+				expect(testCallBack).toHaveBeenCalledWith({
 					a = 1,
 					expected = 2,
 					["\u{261D}(\u{295}\u{2299}\u{1E15}\u{2299}\u{294})\u{261D}"] = 1,
@@ -214,10 +214,10 @@ describe("jest-each", function()
 				local testCallBack = jest.fn()
 				testFunction("this will blow up :(", testCallBack)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(function()
+				expect(function()
 					return globalMock.mock.calls[1][2](globalMock.mock.calls[1])
 				end).toThrowErrorMatchingSnapshot()
-				jestExpect(testCallBack).never.toHaveBeenCalled()
+				expect(testCallBack).never.toHaveBeenCalled()
 			end)
 
 			it("does not throw error when there are multibyte characters in last column headings", function()
@@ -228,10 +228,10 @@ describe("jest-each", function()
 				local testCallBack = jest.fn()
 				testFunction("accept multibyte characters", testCallBack)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(function()
+				expect(function()
 					return globalMock.mock.calls[1][2](globalMock.mock.calls[1])
 				end).never.toThrowError()
-				jestExpect(testCallBack).toHaveBeenCalledWith({
+				expect(testCallBack).toHaveBeenCalledWith({
 					["(\u{E51}\u{C20}\u{203F}\u{C20}\u{E51})\u{FF1C}expected"] = 2,
 					a = 1,
 					b = 1,
@@ -253,8 +253,8 @@ describe("jest-each", function()
 				local testCallBack = jest.fn()
 				testFunction("test title", testCallBack)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(globalMock).toHaveBeenCalledTimes(1)
-				jestExpect(globalMock).toHaveBeenCalledWith("test title", expectFunction, nil)
+				expect(globalMock).toHaveBeenCalledTimes(1)
+				expect(globalMock).toHaveBeenCalledWith("test title", expectFunction, nil)
 			end)
 
 			it("does not throw error when there is only one column", function()
@@ -264,8 +264,8 @@ describe("jest-each", function()
 				local testCallBack = jest.fn()
 				testFunction("test title", testCallBack)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(globalMock).toHaveBeenCalledTimes(1)
-				jestExpect(globalMock).toHaveBeenCalledWith("test title", expectFunction, nil)
+				expect(globalMock).toHaveBeenCalledTimes(1)
+				expect(globalMock).toHaveBeenCalledWith("test title", expectFunction, nil)
 			end)
 
 			it(
@@ -284,8 +284,8 @@ describe("jest-each", function()
 					local testCallBack = jest.fn()
 					testFunction("test title $a", testCallBack)
 					local globalMock = get(globalTestMocks, keyPath)
-					jestExpect(globalMock).toHaveBeenCalledTimes(1)
-					jestExpect(globalMock).toHaveBeenCalledWith("test title 1", expectFunction, nil)
+					expect(globalMock).toHaveBeenCalledTimes(1)
+					expect(globalMock).toHaveBeenCalledWith("test title 1", expectFunction, nil)
 				end
 			)
 
@@ -296,10 +296,10 @@ describe("jest-each", function()
 				local testCallBack = jest.fn()
 				testFunction("this will blow up :(", testCallBack)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(function()
+				expect(function()
 					return globalMock.mock.calls[1][2](globalMock.mock.calls[1])
 				end).toThrowErrorMatchingSnapshot()
-				jestExpect(testCallBack).never.toHaveBeenCalled()
+				expect(testCallBack).never.toHaveBeenCalled()
 			end)
 
 			it("throws error when there are fewer arguments than headings when given one row", function()
@@ -309,10 +309,10 @@ describe("jest-each", function()
 				local testCallBack = jest.fn()
 				testFunction("this will blow up :(", testCallBack)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(function()
+				expect(function()
 					return globalMock.mock.calls[1][2](globalMock.mock.calls[1])
 				end).toThrowErrorMatchingSnapshot()
-				jestExpect(testCallBack).never.toHaveBeenCalled()
+				expect(testCallBack).never.toHaveBeenCalled()
 			end)
 
 			it("throws error when there are fewer arguments than headings over multiple rows", function()
@@ -322,10 +322,10 @@ describe("jest-each", function()
 				local testCallBack = jest.fn()
 				testFunction("this will blow up :(", testCallBack)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(function()
+				expect(function()
 					return globalMock.mock.calls[1][2](globalMock.mock.calls[1])
 				end).toThrowErrorMatchingSnapshot()
-				jestExpect(testCallBack).never.toHaveBeenCalled()
+				expect(testCallBack).never.toHaveBeenCalled()
 			end)
 
 			it("throws an error when called with an empty string", function()
@@ -335,10 +335,10 @@ describe("jest-each", function()
 				local testCallBack = jest.fn()
 				testFunction("this will blow up :(", testCallBack)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(function()
+				expect(function()
 					return globalMock.mock.calls[1][2](globalMock.mock.calls[1])
 				end).toThrowErrorMatchingSnapshot()
-				jestExpect(testCallBack).never.toHaveBeenCalled()
+				expect(testCallBack).never.toHaveBeenCalled()
 			end)
 
 			it("calls global with given title", function()
@@ -347,8 +347,8 @@ describe("jest-each", function()
 				local testFunction = get(eachObject, keyPath)
 				testFunction("expected string", noop)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(globalMock).toHaveBeenCalledTimes(1)
-				jestExpect(globalMock).toHaveBeenCalledWith("expected string", expectFunction, nil)
+				expect(globalMock).toHaveBeenCalledTimes(1)
+				expect(globalMock).toHaveBeenCalledWith("expected string", expectFunction, nil)
 			end)
 
 			it("calls global with given title when multiple tests cases exist", function()
@@ -357,9 +357,9 @@ describe("jest-each", function()
 				local testFunction = get(eachObject, keyPath)
 				testFunction("expected string", noop)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(globalMock).toHaveBeenCalledTimes(2)
-				jestExpect(globalMock).toHaveBeenCalledWith("expected string", expectFunction, nil)
-				jestExpect(globalMock).toHaveBeenCalledWith("expected string", expectFunction, nil)
+				expect(globalMock).toHaveBeenCalledTimes(2)
+				expect(globalMock).toHaveBeenCalledWith("expected string", expectFunction, nil)
+				expect(globalMock).toHaveBeenCalledWith("expected string", expectFunction, nil)
 			end)
 
 			it("calls global with title containing param values when using $variable format", function()
@@ -368,14 +368,14 @@ describe("jest-each", function()
 				local testFunction = get(eachObject, keyPath)
 				testFunction("expected string: a=$a, b=$b, expected=$expected index=$#", noop)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(globalMock).toHaveBeenCalledTimes(2)
+				expect(globalMock).toHaveBeenCalledTimes(2)
 				-- ROBLOX deviation START: index starts at 1
-				jestExpect(globalMock).toHaveBeenCalledWith(
+				expect(globalMock).toHaveBeenCalledWith(
 					"expected string: a=0, b=1, expected=1 index=1",
 					expectFunction,
 					nil
 				)
-				jestExpect(globalMock).toHaveBeenCalledWith(
+				expect(globalMock).toHaveBeenCalledWith(
 					"expected string: a=1, b=1, expected=2 index=2",
 					expectFunction,
 					nil
@@ -389,14 +389,14 @@ describe("jest-each", function()
 				local testFunction = get(eachObject, keyPath)
 				testFunction("add($a, $b) expected string: a=$a, b=$b, expected=$expected index=$#", noop)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(globalMock).toHaveBeenCalledTimes(2)
+				expect(globalMock).toHaveBeenCalledTimes(2)
 				-- ROBLOX deviation START: index starts at 1
-				jestExpect(globalMock).toHaveBeenCalledWith(
+				expect(globalMock).toHaveBeenCalledWith(
 					"add(0, 1) expected string: a=0, b=1, expected=1 index=1",
 					expectFunction,
 					nil
 				)
-				jestExpect(globalMock).toHaveBeenCalledWith(
+				expect(globalMock).toHaveBeenCalledWith(
 					"add(1, 1) expected string: a=1, b=1, expected=2 index=2",
 					expectFunction,
 					nil
@@ -416,8 +416,8 @@ describe("jest-each", function()
 				local testFunction = get(eachObject, keyPath)
 				testFunction("interpolates object keyPath to value: $a.foo.bar", noop)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(globalMock).toHaveBeenCalledTimes(1)
-				jestExpect(globalMock).toHaveBeenCalledWith(
+				expect(globalMock).toHaveBeenCalledTimes(1)
+				expect(globalMock).toHaveBeenCalledWith(
 					"interpolates object keyPath to value: baz",
 					expectFunction,
 					nil
@@ -436,8 +436,8 @@ describe("jest-each", function()
 				local testFunction = get(eachObject, keyPath)
 				testFunction("interpolates object keyPath to value: $a.foo.qux", noop)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(globalMock).toHaveBeenCalledTimes(1)
-				jestExpect(globalMock).toHaveBeenCalledWith(
+				expect(globalMock).toHaveBeenCalledTimes(1)
+				expect(globalMock).toHaveBeenCalledWith(
 					'interpolates object keyPath to value: {"bar": "baz"}',
 					expectFunction,
 					nil
@@ -452,11 +452,11 @@ describe("jest-each", function()
 				testFunction("expected string", testCallBack)
 				local globalMock = get(globalTestMocks, keyPath)
 				globalMock.mock.calls[1][2](globalMock.mock.calls[1])
-				jestExpect(testCallBack).toHaveBeenCalledTimes(1)
-				jestExpect(testCallBack).toHaveBeenCalledWith({ a = 0, b = 1, expected = 1 })
+				expect(testCallBack).toHaveBeenCalledTimes(1)
+				expect(testCallBack).toHaveBeenCalledWith({ a = 0, b = 1, expected = 1 })
 				globalMock.mock.calls[2][2](globalMock.mock.calls[2])
-				jestExpect(testCallBack).toHaveBeenCalledTimes(2)
-				jestExpect(testCallBack).toHaveBeenCalledWith({ a = 1, b = 1, expected = 2 })
+				expect(testCallBack).toHaveBeenCalledTimes(2)
+				expect(testCallBack).toHaveBeenCalledWith({ a = 1, b = 1, expected = 2 })
 			end)
 
 			it("calls global with given timeout", function()
@@ -465,7 +465,7 @@ describe("jest-each", function()
 				local testFunction = get(eachObject, keyPath)
 				testFunction("some test", noop, 10000)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(globalMock).toHaveBeenCalledWith("some test", jestExpect.any("function"), 10000)
+				expect(globalMock).toHaveBeenCalledWith("some test", expect.any("function"), 10000)
 			end)
 
 			it("formats primitive values using .toString()", function()
@@ -486,9 +486,9 @@ describe("jest-each", function()
 					noop
 				)
 				local globalMock = get(globalTestMocks, keyPath)
-				jestExpect(globalMock).toHaveBeenCalledWith(
+				expect(globalMock).toHaveBeenCalledWith(
 					"number: 1 | string: hello | boolean: true | symbol: Symbol(world) | null: nil | undefined: nil",
-					jestExpect.any("function"),
+					expect.any("function"),
 					nil
 				)
 			end)
@@ -513,10 +513,10 @@ describe("jest-each", function()
 		-- 	local testFunction = get(eachObject, keyPath)
 		-- 	testFunction("expected string", function(ref, done)
 		-- 		local a, b, expected = ref.a, ref.b, ref.expected
-		-- 		jestExpect(a).toBe(0)
-		-- 		jestExpect(b).toBe(1)
-		-- 		jestExpect(expected).toBe(1)
-		-- 		jestExpect(done).toBe("DONE")
+		-- 		expect(a).toBe(0)
+		-- 		expect(b).toBe(1)
+		-- 		expect(expected).toBe(1)
+		-- 		expect(done).toBe("DONE")
 		-- 	end)
 		-- 	get(globalTestMocks, keyPath).mock.calls[1][2](get(globalTestMocks, keyPath).mock.calls[1], "DONE")
 		-- end)
@@ -533,11 +533,11 @@ describe("jest-each", function()
 		-- 		testFunction("expected string", function(...)
 		-- 			local ref, done = ...
 		-- 			local a, b, expected = ref.a, ref.b, ref.expected
-		-- 			jestExpect(a).toBe(0)
-		-- 			jestExpect(b).toBe(1)
-		-- 			jestExpect(expected).toBe(1)
-		-- 			jestExpect(done).toBe(nil)
-		-- 			jestExpect(#{ ... }).toBe(1)
+		-- 			expect(a).toBe(0)
+		-- 			expect(b).toBe(1)
+		-- 			expect(expected).toBe(1)
+		-- 			expect(done).toBe(nil)
+		-- 			expect(#{ ... }).toBe(1)
 		-- 		end)
 		-- 		get(globalTestMocks, keyPath).mock.calls[1][2](get(globalTestMocks, keyPath).mock.calls[1], "DONE")
 		-- 	end
@@ -569,8 +569,8 @@ describe("jest-each", function()
 					local testFunction = get(eachObject, keyPath)
 					testFunction("expected string", noop)
 					local globalMock = get(globalTestMocks, keyPath)
-					jestExpect(globalMock).toHaveBeenCalledTimes(1)
-					jestExpect(globalMock).toHaveBeenCalledWith("expected string", expectFunction, nil)
+					expect(globalMock).toHaveBeenCalledTimes(1)
+					expect(globalMock).toHaveBeenCalledWith("expected string", expectFunction, nil)
 				end)
 
 				it("calls global with given title when multiple tests cases exist", function()
@@ -579,9 +579,9 @@ describe("jest-each", function()
 					local testFunction = get(eachObject, keyPath)
 					testFunction("expected string", noop)
 					local globalMock = get(globalTestMocks, keyPath)
-					jestExpect(globalMock).toHaveBeenCalledTimes(2)
-					jestExpect(globalMock).toHaveBeenCalledWith("expected string", expectFunction, nil)
-					jestExpect(globalMock).toHaveBeenCalledWith("expected string", expectFunction, nil)
+					expect(globalMock).toHaveBeenCalledTimes(2)
+					expect(globalMock).toHaveBeenCalledWith("expected string", expectFunction, nil)
+					expect(globalMock).toHaveBeenCalledWith("expected string", expectFunction, nil)
 				end)
 				it("calls global with title containing param values when using $variable format", function()
 					local globalTestMocks = getGlobalTestMocks()
@@ -589,14 +589,14 @@ describe("jest-each", function()
 					local testFunction = get(eachObject, keyPath)
 					testFunction("expected string: a=$a, b=$b, expected=$expected index=$#", noop)
 					local globalMock = get(globalTestMocks, keyPath)
-					jestExpect(globalMock).toHaveBeenCalledTimes(2)
+					expect(globalMock).toHaveBeenCalledTimes(2)
 					-- ROBLOX deviation START: index starts at 1
-					jestExpect(globalMock).toHaveBeenCalledWith(
+					expect(globalMock).toHaveBeenCalledWith(
 						"expected string: a=0, b=1, expected=1 index=1",
 						expectFunction,
 						nil
 					)
-					jestExpect(globalMock).toHaveBeenCalledWith(
+					expect(globalMock).toHaveBeenCalledWith(
 						"expected string: a=1, b=1, expected=2 index=2",
 						expectFunction,
 						nil

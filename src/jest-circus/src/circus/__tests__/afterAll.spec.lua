@@ -13,7 +13,7 @@ local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).default
 local runTest = require(script.Parent.Parent.__mocks__.testUtils).runTest
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local it = JestGlobals.it
 
 it("tests are not marked done until their parent afterAll runs", function()
@@ -40,7 +40,7 @@ it("tests are not marked done until their parent afterAll runs", function()
 				test("2nd describe test", function() end)
 			end)
 			]]).stdout
-	jestExpect(stdout).toMatchSnapshot()
+	expect(stdout).toMatchSnapshot()
 end)
 
 it("describe block cannot have hooks and no tests", function()
@@ -52,7 +52,7 @@ it("describe block cannot have hooks and no tests", function()
 				beforeAll(function() end)
 			end)
   		]])
-	jestExpect(wrap(result.stdout)).toMatchSnapshot()
+	expect(wrap(result.stdout)).toMatchSnapshot()
 end)
 
 it("describe block _can_ have hooks if a child describe block has tests", function()
@@ -77,7 +77,7 @@ it("describe block _can_ have hooks if a child describe block has tests", functi
 				end)
 			end)
 		]])
-	jestExpect(wrap(result.stdout)).toMatchSnapshot()
+	expect(wrap(result.stdout)).toMatchSnapshot()
 end)
 
 it("describe block hooks must not run if describe block is skipped", function()
@@ -94,7 +94,7 @@ it("describe block hooks must not run if describe block is skipped", function()
 				end)
 			end)
 		]])
-	jestExpect(wrap(result.stdout)).toMatchSnapshot()
+	expect(wrap(result.stdout)).toMatchSnapshot()
 end)
 
 it("child tests marked with todo should not run if describe block is skipped", function()
@@ -109,7 +109,7 @@ it("child tests marked with todo should not run if describe block is skipped", f
 				test.todo("my test")
 			end)
 		]])
-	jestExpect(wrap(result.stdout)).toMatchSnapshot()
+	expect(wrap(result.stdout)).toMatchSnapshot()
 end)
 
 it("child tests marked with only should not run if describe block is skipped", function()
@@ -126,7 +126,7 @@ it("child tests marked with only should not run if describe block is skipped", f
 				end)
 			end)
 		]])
-	jestExpect(wrap(result.stdout)).toMatchSnapshot()
+	expect(wrap(result.stdout)).toMatchSnapshot()
 end)
 
 return {}

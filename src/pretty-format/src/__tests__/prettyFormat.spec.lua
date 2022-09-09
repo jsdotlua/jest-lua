@@ -18,7 +18,7 @@ local RegExp = require(Packages.RegExp)
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
@@ -29,19 +29,19 @@ describe("prettyFormat()", function()
 
 	it("prints an empty array", function()
 		local val = {}
-		jestExpect(prettyFormat(val)).toEqual("Table {}")
+		expect(prettyFormat(val)).toEqual("Table {}")
 	end)
 
 	it("prints an array with items", function()
 		local val = { 1, 2, 3 }
-		jestExpect(prettyFormat(val)).toEqual("Table {\n  1,\n  2,\n  3,\n}")
+		expect(prettyFormat(val)).toEqual("Table {\n  1,\n  2,\n  3,\n}")
 	end)
 
 	-- ROBLOX deviation start: skipping test as Lua doesn't support sparse arrays with only holes
 	it.skip("prints a sparse array with only holes", function()
 		-- eslint-disable-next-line no-sparse-arrays
 		local val = { nil, nil, nil, nil }
-		jestExpect(prettyFormat(val)).toEqual("Table {\n  ,\n  ,\n  ,\n}")
+		expect(prettyFormat(val)).toEqual("Table {\n  ,\n  ,\n  ,\n}")
 	end)
 	-- ROBLOX deviation end
 
@@ -49,7 +49,7 @@ describe("prettyFormat()", function()
 		-- eslint-disable-next-line no-sparse-arrays
 		-- ROBLOX Luau FIXME: Luau needs to support mixed arrays
 		local val = { 1 :: any, nil, nil, 4 }
-		jestExpect(prettyFormat(val)).toEqual("Table {\n  1,\n  ,\n  ,\n  4,\n}")
+		expect(prettyFormat(val)).toEqual("Table {\n  1,\n  ,\n  ,\n  4,\n}")
 	end)
 
 	-- ROBLOX deviation start: skipping test as Lua doesn't support sparse arrays with value surrounded by holes
@@ -57,7 +57,7 @@ describe("prettyFormat()", function()
 		-- eslint-disable-next-line no-sparse-arrays
 		-- ROBLOX Luau FIXME: Luau needs to support mixed arrays
 		local val = { nil :: any, 5, nil, nil }
-		jestExpect(prettyFormat(val)).toEqual("Table {\n  ,\n  5,\n  ,\n}")
+		expect(prettyFormat(val)).toEqual("Table {\n  ,\n  5,\n  ,\n}")
 	end)
 	-- ROBLOX deviation end
 
@@ -66,7 +66,7 @@ describe("prettyFormat()", function()
 		-- eslint-disable-next-line no-sparse-arrays
 		-- ROBLOX Luau FIXME: Luau needs to support mixed arrays
 		local val = { 1 :: any, nil, nil, nil, nil, 4 }
-		jestExpect(prettyFormat(val)).toEqual("Table {\n  1,\n  ,\n  nil,\n  nil,\n  ,\n  4,\n}")
+		expect(prettyFormat(val)).toEqual("Table {\n  1,\n  ,\n  nil,\n  nil,\n  ,\n  4,\n}")
 	end)
 	-- ROBLOX deviation end
 
@@ -74,22 +74,22 @@ describe("prettyFormat()", function()
 
 	it("prints a nested array", function()
 		local val = { { 1, 2, 3 } }
-		jestExpect(prettyFormat(val)).toEqual("Table {\n  Table {\n    1,\n    2,\n    3,\n  },\n}")
+		expect(prettyFormat(val)).toEqual("Table {\n  Table {\n    1,\n    2,\n    3,\n  },\n}")
 	end)
 
 	it("prints true", function()
 		local val = true
-		jestExpect(prettyFormat(val)).toEqual("true")
+		expect(prettyFormat(val)).toEqual("true")
 	end)
 
 	it("prints false", function()
 		local val = false
-		jestExpect(prettyFormat(val)).toEqual("false")
+		expect(prettyFormat(val)).toEqual("false")
 	end)
 
 	it("prints an error", function()
 		local val = Error()
-		jestExpect(prettyFormat(val)).toEqual("[Error]")
+		expect(prettyFormat(val)).toEqual("[Error]")
 	end)
 
 	-- ROBLOX deviation: omitted, no Function constructor in lua
@@ -100,29 +100,29 @@ describe("prettyFormat()", function()
 			val = cb
 		end
 		f(function() end)
-		jestExpect(prettyFormat(val)).toEqual("[Function anonymous]")
+		expect(prettyFormat(val)).toEqual("[Function anonymous]")
 	end)
 
 	it("prints an anonymous assigned function", function()
 		local val = function() end
-		jestExpect(prettyFormat(val)).toEqual("[Function anonymous]")
+		expect(prettyFormat(val)).toEqual("[Function anonymous]")
 	end)
 
 	it("can customize function names", function()
 		local val = function() end
-		jestExpect(prettyFormat(val, {
+		expect(prettyFormat(val, {
 			printFunctionName = false,
 		})).toEqual("[Function]")
 	end)
 
 	it("prints inf", function()
 		local val = math.huge
-		jestExpect(prettyFormat(val)).toEqual("inf")
+		expect(prettyFormat(val)).toEqual("inf")
 	end)
 
 	it("prints -inf", function()
 		local val = -math.huge
-		jestExpect(prettyFormat(val)).toEqual("-inf")
+		expect(prettyFormat(val)).toEqual("-inf")
 	end)
 
 	-- ROBLOX deviation: omitted, identical to 'prints an empty array' test
@@ -132,7 +132,7 @@ describe("prettyFormat()", function()
 			prop1 = "value1",
 			prop2 = "value2",
 		}
-		jestExpect(prettyFormat(val)).toEqual('Table {\n  "prop1": "value1",\n  "prop2": "value2",\n}')
+		expect(prettyFormat(val)).toEqual('Table {\n  "prop1": "value1",\n  "prop2": "value2",\n}')
 	end)
 
 	it("prints a table with non-string keys", function()
@@ -153,7 +153,7 @@ describe("prettyFormat()", function()
 			'  "nil": "string",',
 			"}",
 		}, "\n")
-		jestExpect(prettyFormat(val)).toEqual(expected)
+		expect(prettyFormat(val)).toEqual(expected)
 	end)
 
 	-- ROBLOX deviation: separate test case for table keys because table ordering is non-deterministic
@@ -169,37 +169,37 @@ describe("prettyFormat()", function()
 			'  }: "array",',
 			"}",
 		}, "\n")
-		jestExpect(prettyFormat(val)).toEqual(expected)
+		expect(prettyFormat(val)).toEqual(expected)
 	end)
 
 	it("prints nan", function()
 		local val = 0 / 0
-		jestExpect(prettyFormat(val)).toEqual("nan")
+		expect(prettyFormat(val)).toEqual("nan")
 	end)
 
 	it("prints nil", function()
 		local val = nil
-		jestExpect(prettyFormat(val)).toEqual("nil")
+		expect(prettyFormat(val)).toEqual("nil")
 	end)
 
 	it("prints a positive number", function()
 		local val = 123
-		jestExpect(prettyFormat(val)).toEqual("123")
+		expect(prettyFormat(val)).toEqual("123")
 	end)
 
 	it("prints a negative number", function()
 		local val = -123
-		jestExpect(prettyFormat(val)).toEqual("-123")
+		expect(prettyFormat(val)).toEqual("-123")
 	end)
 
 	it("prints zero", function()
 		local val = 0
-		jestExpect(prettyFormat(val)).toEqual("0")
+		expect(prettyFormat(val)).toEqual("0")
 	end)
 
 	it("prints negative zero", function()
 		local val = -0
-		jestExpect(prettyFormat(val)).toEqual("-0")
+		expect(prettyFormat(val)).toEqual("-0")
 	end)
 
 	-- ROBLOX deviation: omitted, no BigInt type in lua
@@ -207,7 +207,7 @@ describe("prettyFormat()", function()
 	-- ROBLOX deviation: Date modified to use Roblox DateTime
 	it("prints a date", function()
 		local val = DateTime.fromUnixTimestampMillis(10e11)
-		jestExpect(prettyFormat(val)).toEqual("2001-09-09T01:46:40.000Z")
+		expect(prettyFormat(val)).toEqual("2001-09-09T01:46:40.000Z")
 	end)
 
 	-- ROBLOX deviation: omitted, Roblox DateTime throws an error with an invalid constructor
@@ -215,7 +215,7 @@ describe("prettyFormat()", function()
 	it("prints an object with sorted properties", function()
 		-- eslint-disable-next-line sort-keys
 		local val = { b = 1, a = 2 }
-		jestExpect(prettyFormat(val)).toEqual('Table {\n  "a": 2,\n  "b": 1,\n}')
+		expect(prettyFormat(val)).toEqual('Table {\n  "a": 2,\n  "b": 1,\n}')
 	end)
 
 	-- ROBLOX deviation start: skipping test in Lua we can't rely on the order of keys
@@ -225,7 +225,7 @@ describe("prettyFormat()", function()
 		local compareKeys = function()
 			return 0
 		end
-		jestExpect(prettyFormat(val, { compareKeys = compareKeys })).toEqual('Table {\n  "b": 1,\n  "a": 2,\n}')
+		expect(prettyFormat(val, { compareKeys = compareKeys })).toEqual('Table {\n  "b": 1,\n  "a": 2,\n}')
 	end)
 	-- ROBLOX deviation end
 
@@ -234,7 +234,7 @@ describe("prettyFormat()", function()
 		local compareKeys = function(a: string, b: string)
 			return if a > b then -1 else 1
 		end
-		jestExpect(prettyFormat(val, { compareKeys = compareKeys })).toEqual('Table {\n  "b": 2,\n  "a": 1,\n}')
+		expect(prettyFormat(val, { compareKeys = compareKeys })).toEqual('Table {\n  "b": 2,\n  "a": 1,\n}')
 	end)
 
 	-- ROBLOX deviation start: additional test to verify the compareKeys function
@@ -243,14 +243,14 @@ describe("prettyFormat()", function()
 		local compareKeys = function(a: string, b: string)
 			return if a > b then 1 else -1
 		end
-		jestExpect(prettyFormat(val, { compareKeys = compareKeys })).toEqual('Table {\n  "a": 1,\n  "b": 2,\n}')
+		expect(prettyFormat(val, { compareKeys = compareKeys })).toEqual('Table {\n  "a": 1,\n  "b": 2,\n}')
 	end)
 	-- ROBLOX deviation end
 
 	it("prints regular expressions from constructors", function()
 		local val = RegExp("regexp")
 
-		jestExpect(prettyFormat(val)).toEqual("/regexp/")
+		expect(prettyFormat(val)).toEqual("/regexp/")
 	end)
 
 	it("prints regular expressions from literals", function()
@@ -259,61 +259,61 @@ describe("prettyFormat()", function()
 		-- include the 'i' flag
 		local val = RegExp("regexp", "i")
 
-		jestExpect(prettyFormat(val)).toEqual("/regexp/i")
+		expect(prettyFormat(val)).toEqual("/regexp/i")
 	end)
 
 	it("prints regular expressions {escapeRegex: false}", function()
 		local val = RegExp([[regexp\d]], "i")
 
-		jestExpect(prettyFormat(val)).toEqual("/regexp\\d/i")
+		expect(prettyFormat(val)).toEqual("/regexp\\d/i")
 	end)
 
 	it("prints regular expressions {escapeRegex: true}", function()
 		local val = RegExp([[regexp\d]], "i")
-		jestExpect(prettyFormat(val, { escapeRegex = true })).toEqual("/regexp\\\\d/i")
+		expect(prettyFormat(val, { escapeRegex = true })).toEqual("/regexp\\\\d/i")
 	end)
 
 	it("escapes regular expressions nested inside object", function()
 		local obj = { test = RegExp("regexp\\d", "i") }
 
-		jestExpect(prettyFormat(obj, { escapeRegex = true })).toEqual('Table {\n  "test": /regexp\\\\d/i,\n}')
+		expect(prettyFormat(obj, { escapeRegex = true })).toEqual('Table {\n  "test": /regexp\\\\d/i,\n}')
 	end)
 
 	it("prints an empty set", function()
 		local val = Set.new()
-		jestExpect(prettyFormat(val)).toEqual("Set {}")
+		expect(prettyFormat(val)).toEqual("Set {}")
 	end)
 
 	it("prints a set with values", function()
 		local val = Set.new()
 		val:add("value1")
 		val:add("value2")
-		jestExpect(prettyFormat(val)).toEqual('Set {\n  "value1",\n  "value2",\n}')
+		expect(prettyFormat(val)).toEqual('Set {\n  "value1",\n  "value2",\n}')
 	end)
 
 	it("prints a string", function()
 		local val = "string"
-		jestExpect(prettyFormat(val)).toEqual('"string"')
+		expect(prettyFormat(val)).toEqual('"string"')
 	end)
 
 	it("prints and escape a string", function()
 		local val = "\"'\\"
-		jestExpect(prettyFormat(val)).toEqual('"\\"\'\\\\"')
+		expect(prettyFormat(val)).toEqual('"\\"\'\\\\"')
 	end)
 
 	it("doesn't escape string with {escapeString: false}", function()
 		local val = "\"'\\n"
-		jestExpect(prettyFormat(val, { escapeString = false })).toEqual('""\'\\n"')
+		expect(prettyFormat(val, { escapeString = false })).toEqual('""\'\\n"')
 	end)
 
 	it("prints a string with escapes", function()
-		jestExpect(prettyFormat('"-"')).toEqual('"\\"-\\""')
-		jestExpect(prettyFormat("\\ \\\\")).toEqual('"\\\\ \\\\\\\\"')
+		expect(prettyFormat('"-"')).toEqual('"\\"-\\""')
+		expect(prettyFormat("\\ \\\\")).toEqual('"\\\\ \\\\\\\\"')
 	end)
 
 	it("prints a multiline string", function()
 		local val = table.concat({ "line 1", "line 2", "line 3" }, "\n")
-		jestExpect(prettyFormat(val)).toEqual('"' .. val .. '"')
+		expect(prettyFormat(val)).toEqual('"' .. val .. '"')
 	end)
 
 	it("prints a multiline string as value of table", function()
@@ -330,7 +330,7 @@ describe("prettyFormat()", function()
 			},
 			type = "svg",
 		}
-		jestExpect(prettyFormat(val)).toEqual(table.concat({
+		expect(prettyFormat(val)).toEqual(table.concat({
 			"Table {",
 			'  "props": Table {',
 			'    "children": Table {',
@@ -353,7 +353,7 @@ describe("prettyFormat()", function()
 	-- ROBLOX deviation: converted these tests to use tables
 	it("prints deeply nested tables", function()
 		local val = { prop = { prop = { prop = "value" } } }
-		jestExpect(prettyFormat(val)).toEqual(
+		expect(prettyFormat(val)).toEqual(
 			'Table {\n  "prop": Table {\n    "prop": Table {\n      "prop": "value",\n    },\n  },\n}'
 		)
 	end)
@@ -361,13 +361,13 @@ describe("prettyFormat()", function()
 	it("prints circular references", function()
 		local val = {}
 		val["prop"] = val
-		jestExpect(prettyFormat(val)).toEqual('Table {\n  "prop": [Circular],\n}')
+		expect(prettyFormat(val)).toEqual('Table {\n  "prop": [Circular],\n}')
 	end)
 
 	it("prints parallel references", function()
 		local inner = {}
 		local val = { prop1 = inner, prop2 = inner }
-		jestExpect(prettyFormat(val)).toEqual('Table {\n  "prop1": Table {},\n  "prop2": Table {},\n}')
+		expect(prettyFormat(val)).toEqual('Table {\n  "prop1": Table {},\n  "prop2": Table {},\n}')
 	end)
 
 	describe("indent option", function()
@@ -399,18 +399,18 @@ describe("prettyFormat()", function()
 			"}",
 		}, "\n")
 		it("default implicit: 2 spaces", function()
-			jestExpect(prettyFormat(val)).toEqual(expected)
+			expect(prettyFormat(val)).toEqual(expected)
 		end)
 		it("default explicit: 2 spaces", function()
-			jestExpect(prettyFormat(val, { indent = 2 })).toEqual(expected)
+			expect(prettyFormat(val, { indent = 2 })).toEqual(expected)
 		end)
 
 		-- Tests assume that no strings in val contain multiple adjacent spaces!
 		it("non-default: 0 spaces", function()
-			jestExpect(prettyFormat(val, { indent = 0 })).toEqual(expected:gsub("  ", ""))
+			expect(prettyFormat(val, { indent = 0 })).toEqual(expected:gsub("  ", ""))
 		end)
 		it("non-default: 4 spaces", function()
-			jestExpect(prettyFormat(val, { indent = 4 })).toEqual(expected:gsub("  ", "    "))
+			expect(prettyFormat(val, { indent = 4 })).toEqual(expected:gsub("  ", "    "))
 		end)
 	end)
 
@@ -424,7 +424,7 @@ describe("prettyFormat()", function()
 			-- ROBLOX deviation: omitted, no typed arrays in lua
 			-- ['typed array']= new Uint8Array(),
 		}
-		jestExpect(prettyFormat(val, { maxDepth = 2, printBasicPrototype = false })).toBe(Array.join({
+		expect(prettyFormat(val, { maxDepth = 2, printBasicPrototype = false })).toBe(Array.join({
 			"{",
 			'  "deeply": {',
 			'    "nested": [Table],',
@@ -452,7 +452,7 @@ describe("prettyFormat()", function()
 				["set non-empty"] = Set.new({ "value" }),
 			},
 		}
-		jestExpect(prettyFormat(val, { maxDepth = 2 })).toEqual(table.concat({
+		expect(prettyFormat(val, { maxDepth = 2 })).toEqual(table.concat({
 			-- ROBLOX deviation: output re-ordered because we print keys alphabetically
 			"Table {",
 			"  Table {",
@@ -468,7 +468,7 @@ describe("prettyFormat()", function()
 	end)
 
 	it("throws on invalid options", function()
-		jestExpect(function()
+		expect(function()
 			prettyFormat({}, { invalidOption = true })
 		end).toThrow()
 	end)
@@ -478,7 +478,7 @@ describe("prettyFormat()", function()
 			name = "Foo",
 		}
 
-		jestExpect(prettyFormat(Foo, {
+		expect(prettyFormat(Foo, {
 			plugins = {
 				{
 					print = function()
@@ -508,7 +508,7 @@ describe("prettyFormat()", function()
 				},
 			},
 		}
-		jestExpect(prettyFormat(val, options)).toEqual("")
+		expect(prettyFormat(val, options)).toEqual("")
 	end)
 
 	it("throws if plugin does not return a string", function()
@@ -525,7 +525,7 @@ describe("prettyFormat()", function()
 				},
 			},
 		}
-		jestExpect(function()
+		expect(function()
 			prettyFormat(val, options)
 		end).toThrow()
 	end)
@@ -548,7 +548,7 @@ describe("prettyFormat()", function()
 		local _, err = pcall(function()
 			prettyFormat("", options)
 		end)
-		jestExpect(err.name).toBe("PrettyFormatPluginError")
+		expect(err.name).toBe("PrettyFormatPluginError")
 	end)
 
 	it("throws PrettyFormatPluginError if print throws an error", function()
@@ -569,7 +569,7 @@ describe("prettyFormat()", function()
 		local _, err = pcall(function()
 			prettyFormat("", options)
 		end)
-		jestExpect(err.name).toBe("PrettyFormatPluginError")
+		expect(err.name).toBe("PrettyFormatPluginError")
 	end)
 
 	it("throws PrettyFormatPluginError if serialize throws an error", function()
@@ -590,7 +590,7 @@ describe("prettyFormat()", function()
 		local _, err = pcall(function()
 			prettyFormat("", options)
 		end)
-		jestExpect(err.name).toBe("PrettyFormatPluginError")
+		expect(err.name).toBe("PrettyFormatPluginError")
 	end)
 
 	it("supports plugins with deeply nested arrays (#24)", function()
@@ -598,7 +598,7 @@ describe("prettyFormat()", function()
 			{ 1, 2 },
 			{ 3, 4 },
 		}
-		jestExpect(prettyFormat(val, {
+		expect(prettyFormat(val, {
 			plugins = {
 				{
 					print = function(v, f)
@@ -618,7 +618,7 @@ describe("prettyFormat()", function()
 
 	it("should call plugins on nested basic values", function()
 		local val = { prop = 42 }
-		jestExpect(prettyFormat(val, {
+		expect(prettyFormat(val, {
 			plugins = {
 				{
 					print = function(_val, _print)
@@ -635,7 +635,7 @@ describe("prettyFormat()", function()
 	-- ROBLOX deviation: omitted, identical to empty table test
 
 	it("calls toJSON and prints its return value", function()
-		jestExpect(prettyFormat({
+		expect(prettyFormat({
 			toJSON = function()
 				return { value = false }
 			end,
@@ -644,7 +644,7 @@ describe("prettyFormat()", function()
 	end)
 
 	it("calls toJSON and prints an internal representation.", function()
-		jestExpect(prettyFormat({
+		expect(prettyFormat({
 			toJSON = function()
 				return "[Internal Object]"
 			end,
@@ -653,14 +653,14 @@ describe("prettyFormat()", function()
 	end)
 
 	it("calls toJSON only on functions", function()
-		jestExpect(prettyFormat({
+		expect(prettyFormat({
 			toJSON = false,
 			value = true,
 		})).toEqual('Table {\n  "toJSON": false,\n  "value": true,\n}')
 	end)
 
 	it("does not call toJSON recursively", function()
-		jestExpect(prettyFormat({
+		expect(prettyFormat({
 			toJSON = function()
 				return {
 					toJSON = function()
@@ -677,7 +677,7 @@ describe("prettyFormat()", function()
 		(set :: any).toJSON = function()
 			return "map"
 		end
-		jestExpect(prettyFormat(set)).toEqual('"map"')
+		expect(prettyFormat(set)).toEqual('"map"')
 	end)
 
 	-- ROBLOX deviation: test not included in upstream
@@ -686,7 +686,7 @@ describe("prettyFormat()", function()
 		set.toJSON = function()
 			return "map"
 		end
-		jestExpect(prettyFormat(set)).toEqual('"map"')
+		expect(prettyFormat(set)).toEqual('"map"')
 	end)
 
 	it("disables toJSON calls through options", function()
@@ -700,7 +700,7 @@ describe("prettyFormat()", function()
 		(set :: any).toJSON = function()
 			return "map"
 		end
-		jestExpect(prettyFormat(set, {
+		expect(prettyFormat(set, {
 			callToJSON = false,
 		})).toEqual('Set {\n  Table {\n    "apple": "banana",\n    "toJSON": [Function toJSON' .. "],\n  },\n}")
 
@@ -722,8 +722,8 @@ describe("prettyFormat()", function()
 		prettyFormat(set, {
 			callToJSON = false,
 		})
-		jestExpect((set :: any).toJSON).never.toBeCalled()
-		jestExpect(value.toJSON).never.toBeCalled()
+		expect((set :: any).toJSON).never.toBeCalled()
+		expect(value.toJSON).never.toBeCalled()
 	end)
 
 	-- ROBLOX deviation: test not included in upstream
@@ -738,7 +738,7 @@ describe("prettyFormat()", function()
 		set["toJSON"] = function()
 			return "map"
 		end
-		jestExpect(prettyFormat(set, {
+		expect(prettyFormat(set, {
 			callToJSON = false,
 		})).toEqual('Table {\n  Table {\n    "apple": "banana",\n    "toJSON": [Function toJSON' .. "],\n  },\n}")
 	end)
@@ -752,7 +752,7 @@ describe("prettyFormat()", function()
 				["number"] = { 0, -0, 123, -123, math.huge, -math.huge, 0 / 0 },
 				["string"] = { "", "non-empty" },
 			}
-			jestExpect(prettyFormat(val, {
+			expect(prettyFormat(val, {
 				min = true,
 			})).toEqual("{" .. table.concat({
 				'"boolean": {false, true}',
@@ -771,7 +771,7 @@ describe("prettyFormat()", function()
 				["set empty"] = Set.new(),
 				["set non-empty"] = Set.new({ "value" }),
 			}
-			jestExpect(prettyFormat(val, {
+			expect(prettyFormat(val, {
 				min = true,
 			})).toEqual(
 				-- ROBLOX deviation: output re-ordered because we print keys alphabetically
@@ -788,7 +788,7 @@ describe("prettyFormat()", function()
 		end)
 
 		it("does not allow indent !== 0 in min mode", function()
-			jestExpect(function()
+			expect(function()
 				prettyFormat(1, { indent = 1, min = true })
 			end).toThrow()
 		end)

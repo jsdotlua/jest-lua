@@ -11,7 +11,7 @@ local Packages = CurrentModule.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 
@@ -70,7 +70,7 @@ it("normal output, everything goes to stdout", function()
 	reporter:onTestResult(testCase, testResult, aggregatedResults)
 	reporter:onRunComplete()
 	jest.runAllTimers()
-	jestExpect(stdoutWrite).toHaveBeenCalled()
+	expect(stdoutWrite).toHaveBeenCalled()
 end)
 
 it("when using stderr as output, no stdout call is made", function()
@@ -80,7 +80,7 @@ it("when using stderr as output, no stdout call is made", function()
 	reporter:onTestResult(testCase, testResult, aggregatedResults)
 	reporter:onRunComplete()
 	jest.runAllTimers()
-	jestExpect(stdoutWrite).never.toHaveBeenCalled()
+	expect(stdoutWrite).never.toHaveBeenCalled()
 end)
 
 return {}

@@ -22,7 +22,7 @@ local Error = LuauPolyfill.Error
 local Set = LuauPolyfill.Set
 
 local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
-local jestExpect = require(CurrentModule)
+local expect = require(CurrentModule)
 
 local jestMock = require(Packages.Dev.JestMock).ModuleMocker
 
@@ -51,11 +51,11 @@ local mock
 
 beforeAll(function()
 	mock = jestMock.new()
-	jestExpect.addSnapshotSerializer(alignedAnsiStyleSerializer)
+	expect.addSnapshotSerializer(alignedAnsiStyleSerializer)
 end)
 
 afterAll(function()
-	jestExpect.resetSnapshotSerializers()
+	expect.resetSnapshotSerializers()
 end)
 
 for _, called in ipairs({ "toBeCalled", "toHaveBeenCalled" }) do
@@ -63,18 +63,18 @@ for _, called in ipairs({ "toBeCalled", "toHaveBeenCalled" }) do
 		it("works only on spies or jest.fn", function()
 			local function fn() end
 
-			jestExpect(function()
-				jestExpect(fn)[called]()
+			expect(function()
+				expect(fn)[called]()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it("passes when called", function()
 			local fn = mock:fn()
 			fn("arg0", "arg1", "arg2")
-			jestExpect(createSpy(fn))[called]()
-			jestExpect(fn)[called]()
-			jestExpect(function()
-				jestExpect(fn).never[called]()
+			expect(createSpy(fn))[called]()
+			expect(fn)[called]()
+			expect(function()
+				expect(fn).never[called]()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -82,10 +82,10 @@ for _, called in ipairs({ "toBeCalled", "toHaveBeenCalled" }) do
 			local fn = mock:fn()
 			local spy = createSpy(fn)
 
-			jestExpect(spy).never[called]()
-			jestExpect(fn).never[called]()
-			jestExpect(function()
-				jestExpect(spy)[called]()
+			expect(spy).never[called]()
+			expect(fn).never[called]()
+			expect(function()
+				expect(spy)[called]()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -93,16 +93,16 @@ for _, called in ipairs({ "toBeCalled", "toHaveBeenCalled" }) do
 			local fn = mock:fn()
 
 			fn()
-			jestExpect(function()
-				jestExpect(fn)[called](555)
+			expect(function()
+				expect(fn)[called](555)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it(".not fails with any argument passed", function()
 			local fn = mock:fn()
 
-			jestExpect(function()
-				jestExpect(fn).never[called](555)
+			expect(function()
+				expect(fn).never[called](555)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -110,9 +110,9 @@ for _, called in ipairs({ "toBeCalled", "toHaveBeenCalled" }) do
 			local fn = mock:fn().mockName("named-mock")
 
 			fn()
-			jestExpect(fn)[called]()
-			jestExpect(function()
-				jestExpect(fn).never[called]()
+			expect(fn)[called]()
+			expect(function()
+				expect(fn).never[called]()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 	end)
@@ -123,30 +123,30 @@ for _, calledTimes in ipairs({ "toBeCalledTimes", "toHaveBeenCalledTimes" }) do
 		it(".not works only on spies or jest.fn", function()
 			local function fn() end
 
-			jestExpect(function()
-				jestExpect(fn).never[calledTimes](2)
+			expect(function()
+				expect(fn).never[calledTimes](2)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it("only accepts a number argument", function()
 			local fn = mock:fn()
 			fn()
-			jestExpect(fn)[calledTimes](1)
+			expect(fn)[calledTimes](1)
 
 			for i, value in ipairs({ {}, true, "a", function() end }) do
-				jestExpect(function()
-					jestExpect(fn)[calledTimes](value)
+				expect(function()
+					expect(fn)[calledTimes](value)
 				end).toThrowErrorMatchingSnapshot()
 			end
 		end)
 
 		it(".not only accepts a number argument", function()
 			local fn = mock:fn()
-			jestExpect(fn).never[calledTimes](1)
+			expect(fn).never[calledTimes](1)
 
 			for i, value in ipairs({ {}, true, "a", function() end }) do
-				jestExpect(function()
-					jestExpect(fn).never[calledTimes](value)
+				expect(function()
+					expect(fn).never[calledTimes](value)
 				end).toThrowErrorMatchingSnapshot()
 			end
 		end)
@@ -157,11 +157,11 @@ for _, calledTimes in ipairs({ "toBeCalledTimes", "toHaveBeenCalledTimes" }) do
 			fn()
 
 			local spy = createSpy(fn)
-			jestExpect(spy)[calledTimes](2)
-			jestExpect(fn)[calledTimes](2)
+			expect(spy)[calledTimes](2)
+			expect(fn)[calledTimes](2)
 
-			jestExpect(function()
-				jestExpect(spy).never[calledTimes](2)
+			expect(function()
+				expect(spy).never[calledTimes](2)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -172,14 +172,14 @@ for _, calledTimes in ipairs({ "toBeCalledTimes", "toHaveBeenCalledTimes" }) do
 			fn()
 
 			local spy = createSpy(fn)
-			jestExpect(spy)[calledTimes](3)
-			jestExpect(spy).never[calledTimes](2)
+			expect(spy)[calledTimes](3)
+			expect(spy).never[calledTimes](2)
 
-			jestExpect(fn)[calledTimes](3)
-			jestExpect(fn).never[calledTimes](2)
+			expect(fn)[calledTimes](3)
+			expect(fn).never[calledTimes](2)
 
-			jestExpect(function()
-				jestExpect(fn)[calledTimes](2)
+			expect(function()
+				expect(fn)[calledTimes](2)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -188,14 +188,14 @@ for _, calledTimes in ipairs({ "toBeCalledTimes", "toHaveBeenCalledTimes" }) do
 			fn()
 
 			local spy = createSpy(fn)
-			jestExpect(spy)[calledTimes](1)
-			jestExpect(spy).never[calledTimes](2)
+			expect(spy)[calledTimes](1)
+			expect(spy).never[calledTimes](2)
 
-			jestExpect(fn)[calledTimes](1)
-			jestExpect(fn).never[calledTimes](2)
+			expect(fn)[calledTimes](1)
+			expect(fn).never[calledTimes](2)
 
-			jestExpect(function()
-				jestExpect(fn)[calledTimes](2)
+			expect(function()
+				expect(fn)[calledTimes](2)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -203,8 +203,8 @@ for _, calledTimes in ipairs({ "toBeCalledTimes", "toHaveBeenCalledTimes" }) do
 			local fn = mock:fn().mockName("named-mock")
 			fn()
 
-			jestExpect(function()
-				jestExpect(fn)[calledTimes](2)
+			expect(function()
+				expect(fn)[calledTimes](2)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 	end)
@@ -230,18 +230,18 @@ for _, calledWith in ipairs({
 		it("works only on spies or jest.fn", function()
 			local function fn() end
 
-			jestExpect(function()
-				jestExpect(fn)[calledWith]()
+			expect(function()
+				expect(fn)[calledWith]()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it("works when not called", function()
 			local fn = mock:fn()
-			caller(jestExpect(createSpy(fn)).never[calledWith], "foo", "bar")
-			caller(jestExpect(fn).never[calledWith], "foo", "bar")
+			caller(expect(createSpy(fn)).never[calledWith], "foo", "bar")
+			caller(expect(fn).never[calledWith], "foo", "bar")
 
-			jestExpect(function()
-				caller(jestExpect(fn)[calledWith], "foo", "bar")
+			expect(function()
+				caller(expect(fn)[calledWith], "foo", "bar")
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -249,19 +249,19 @@ for _, calledWith in ipairs({
 			local fn = mock:fn()
 			fn()
 
-			caller(jestExpect(createSpy(fn))[calledWith])
-			caller(jestExpect(fn)[calledWith])
+			caller(expect(createSpy(fn))[calledWith])
+			caller(expect(fn)[calledWith])
 		end)
 
 		it("works with arguments that don't match", function()
 			local fn = mock:fn()
 			fn("foo", "bar1")
 
-			caller(jestExpect(createSpy(fn)).never[calledWith], "foo", "bar")
-			caller(jestExpect(fn).never[calledWith], "foo", "bar")
+			caller(expect(createSpy(fn)).never[calledWith], "foo", "bar")
+			caller(expect(fn).never[calledWith], "foo", "bar")
 
-			jestExpect(function()
-				caller(jestExpect(fn)[calledWith], "foo", "bar")
+			expect(function()
+				caller(expect(fn)[calledWith], "foo", "bar")
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -269,11 +269,11 @@ for _, calledWith in ipairs({
 			local fn = mock:fn()
 			fn("foo", "bar")
 
-			caller(jestExpect(createSpy(fn))[calledWith], "foo", "bar")
-			caller(jestExpect(fn)[calledWith], "foo", "bar")
+			caller(expect(createSpy(fn))[calledWith], "foo", "bar")
+			caller(expect(fn)[calledWith], "foo", "bar")
 
-			jestExpect(function()
-				caller(jestExpect(fn).never[calledWith], "foo", "bar")
+			expect(function()
+				caller(expect(fn).never[calledWith], "foo", "bar")
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -282,8 +282,8 @@ for _, calledWith in ipairs({
 			local fn = mock:fn()
 			fn("foo", nil)
 
-			jestExpect(function()
-				caller(jestExpect(fn)[calledWith], "foo")
+			expect(function()
+				caller(expect(fn)[calledWith], "foo")
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -306,15 +306,15 @@ for _, calledWith in ipairs({
 
 			fn(m1)
 
-			caller(jestExpect(fn)[calledWith], m2)
-			caller(jestExpect(fn).never[calledWith], m3)
+			caller(expect(fn)[calledWith], m2)
+			caller(expect(fn).never[calledWith], m3)
 
-			jestExpect(function()
-				caller(jestExpect(fn).never[calledWith], m2)
+			expect(function()
+				caller(expect(fn).never[calledWith], m2)
 			end).toThrowErrorMatchingSnapshot()
 
-			jestExpect(function()
-				caller(jestExpect(fn)[calledWith], m3)
+			expect(function()
+				caller(expect(fn)[calledWith], m3)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -327,15 +327,15 @@ for _, calledWith in ipairs({
 
 			fn(s1)
 
-			caller(jestExpect(fn)[calledWith], s2)
-			caller(jestExpect(fn).never[calledWith], s3)
+			caller(expect(fn)[calledWith], s2)
+			caller(expect(fn).never[calledWith], s3)
 
-			jestExpect(function()
-				caller(jestExpect(fn).never[calledWith], s2)
+			expect(function()
+				caller(expect(fn).never[calledWith], s2)
 			end).toThrowErrorMatchingSnapshot()
 
-			jestExpect(function()
-				caller(jestExpect(fn)[calledWith], s3)
+			expect(function()
+				caller(expect(fn)[calledWith], s3)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -358,10 +358,10 @@ for _, calledWith in ipairs({
 				fn("foo", "bar1")
 				fn("foo", "bar")
 
-				jestExpect(fn)[calledWith]("foo", "bar")
+				expect(fn)[calledWith]("foo", "bar")
 
-				jestExpect(function()
-					jestExpect(fn).never[calledWith]("foo", "bar")
+				expect(function()
+					expect(fn).never[calledWith]("foo", "bar")
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
@@ -371,10 +371,10 @@ for _, calledWith in ipairs({
 				fn("foo", "bar2")
 				fn("foo", "bar3")
 
-				jestExpect(fn).never[calledWith]("foo", "bar")
+				expect(fn).never[calledWith]("foo", "bar")
 
-				jestExpect(function()
-					jestExpect(fn)[calledWith]("foo", "bar")
+				expect(function()
+					expect(fn)[calledWith]("foo", "bar")
 				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
@@ -393,12 +393,12 @@ for _, calledWith in ipairs({
 				fn("foo", "bar1")
 				fn("foo", "bar")
 
-				jestExpect(fn)[calledWith](1, "foo1", "bar")
-				jestExpect(fn)[calledWith](2, "foo", "bar1")
-				jestExpect(fn)[calledWith](3, "foo", "bar")
+				expect(fn)[calledWith](1, "foo1", "bar")
+				expect(fn)[calledWith](2, "foo", "bar1")
+				expect(fn)[calledWith](3, "foo", "bar")
 
-				jestExpect(function()
-					jestExpect(fn).never[calledWith](1, "foo1", "bar")
+				expect(function()
+					expect(fn).never[calledWith](1, "foo1", "bar")
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
@@ -406,8 +406,8 @@ for _, calledWith in ipairs({
 				local fn = mock:fn()
 				fn("foo1", "bar")
 
-				jestExpect(function()
-					jestExpect(fn)[calledWith](0, "foo1", "bar")
+				expect(function()
+					expect(fn)[calledWith](0, "foo1", "bar")
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
@@ -415,8 +415,8 @@ for _, calledWith in ipairs({
 				local fn = mock:fn()
 				fn("foo1", "bar")
 
-				jestExpect(function()
-					jestExpect(fn)[calledWith](0.1, "foo1", "bar")
+				expect(function()
+					expect(fn)[calledWith](0.1, "foo1", "bar")
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
@@ -424,8 +424,8 @@ for _, calledWith in ipairs({
 				local fn = mock:fn()
 				fn("foo1", "bar")
 
-				jestExpect(function()
-					jestExpect(fn).never[calledWith](math.huge, "foo1", "bar")
+				expect(function()
+					expect(fn).never[calledWith](math.huge, "foo1", "bar")
 				end).toThrowErrorMatchingSnapshot()
 			end)
 		end
@@ -434,10 +434,10 @@ for _, calledWith in ipairs({
 			local fn = mock:fn().mockName("named-mock")
 			fn("foo", "bar")
 
-			caller(jestExpect(fn)[calledWith], "foo", "bar")
+			caller(expect(fn)[calledWith], "foo", "bar")
 
-			jestExpect(function()
-				caller(jestExpect(fn).never[calledWith], "foo", "bar")
+			expect(function()
+				caller(expect(fn).never[calledWith], "foo", "bar")
 			end).toThrowErrorMatchingSnapshot()
 		end)
 	end)
@@ -448,16 +448,16 @@ for _, returned in ipairs({ "toReturn", "toHaveReturned" }) do
 		it(".not works only on jest.fn", function()
 			local function fn() end
 
-			jestExpect(function()
-				jestExpect(fn).never[returned]()
+			expect(function()
+				expect(fn).never[returned]()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it("throw matcher error if received is spy", function()
 			local spy = createSpy(mock:fn())
 
-			jestExpect(function()
-				jestExpect(spy)[returned]()
+			expect(function()
+				expect(spy)[returned]()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -466,9 +466,9 @@ for _, returned in ipairs({ "toReturn", "toHaveReturned" }) do
 				return 42
 			end)
 			fn()
-			jestExpect(fn)[returned]()
-			jestExpect(function()
-				jestExpect(fn).never[returned]()
+			expect(fn)[returned]()
+			expect(function()
+				expect(fn).never[returned]()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -478,9 +478,9 @@ for _, returned in ipairs({ "toReturn", "toHaveReturned" }) do
 				return nil
 			end)
 			fn()
-			jestExpect(fn)[returned]()
-			jestExpect(function()
-				jestExpect(fn).never[returned]()
+			expect(fn)[returned]()
+			expect(function()
+				expect(fn).never[returned]()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -501,19 +501,19 @@ for _, returned in ipairs({ "toReturn", "toHaveReturned" }) do
 
 			fn(false)
 
-			jestExpect(fn)[returned]()
+			expect(fn)[returned]()
 
-			jestExpect(function()
-				jestExpect(fn).never[returned]()
+			expect(function()
+				expect(fn).never[returned]()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it(".not passes when not returned", function()
 			local fn = mock:fn()
 
-			jestExpect(fn).never[returned]()
-			jestExpect(function()
-				jestExpect(fn)[returned]()
+			expect(fn).never[returned]()
+			expect(function()
+				expect(fn)[returned]()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -530,9 +530,9 @@ for _, returned in ipairs({ "toReturn", "toHaveReturned" }) do
 				fn()
 			end)
 
-			jestExpect(fn).never[returned]()
-			jestExpect(function()
-				jestExpect(fn)[returned]()
+			expect(fn).never[returned]()
+			expect(function()
+				expect(fn)[returned]()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -546,9 +546,9 @@ for _, returned in ipairs({ "toReturn", "toHaveReturned" }) do
 				fn()
 			end)
 
-			jestExpect(fn).never[returned]()
-			jestExpect(function()
-				jestExpect(fn)[returned]()
+			expect(fn).never[returned]()
+			expect(function()
+				expect(fn)[returned]()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -556,16 +556,16 @@ for _, returned in ipairs({ "toReturn", "toHaveReturned" }) do
 			local fn = mock:fn()
 
 			fn()
-			jestExpect(function()
-				jestExpect(fn)[returned](555)
+			expect(function()
+				expect(fn)[returned](555)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it(".not fails with any argument passed", function()
 			local fn = mock:fn()
 
-			jestExpect(function()
-				jestExpect(fn).never[returned](555)
+			expect(function()
+				expect(fn).never[returned](555)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -574,9 +574,9 @@ for _, returned in ipairs({ "toReturn", "toHaveReturned" }) do
 				return 42
 			end).mockName("named-mock")
 			fn()
-			jestExpect(fn)[returned]()
-			jestExpect(function()
-				jestExpect(fn).never[returned]()
+			expect(fn)[returned]()
+			expect(function()
+				expect(fn).never[returned]()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -587,9 +587,9 @@ for _, returned in ipairs({ "toReturn", "toHaveReturned" }) do
 				if value == 0 then
 					-- Before returning from the base case of recursion, none of the
 					-- calls have returned yet.
-					jestExpect(fn).never[returned]()
-					jestExpect(function()
-						jestExpect(fn)[returned]()
+					expect(fn).never[returned]()
+					expect(function()
+						expect(fn)[returned]()
 					end).toThrowErrorMatchingSnapshot()
 
 					return 0
@@ -610,8 +610,8 @@ for _, returnedTimes in ipairs({ "toReturnTimes", "toHaveReturnedTimes" }) do
 
 			-- ROBLOX deviation: we don't test against the snapshot because the error
 			-- message is sufficiently deviated (we report a table instead of a function)
-			jestExpect(function()
-				jestExpect(spy).never[returnedTimes](2)
+			expect(function()
+				expect(spy).never[returnedTimes](2)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -620,11 +620,11 @@ for _, returnedTimes in ipairs({ "toReturnTimes", "toHaveReturnedTimes" }) do
 				return 42
 			end)
 			fn()
-			jestExpect(fn)[returnedTimes](1)
+			expect(fn)[returnedTimes](1)
 
 			for i, value in ipairs({ {}, true, "a", function() end }) do
-				jestExpect(function()
-					jestExpect(fn)[returnedTimes](value)
+				expect(function()
+					expect(fn)[returnedTimes](value)
 				end).toThrowErrorMatchingSnapshot()
 			end
 		end)
@@ -633,11 +633,11 @@ for _, returnedTimes in ipairs({ "toReturnTimes", "toHaveReturnedTimes" }) do
 			local fn = mock:fn(function()
 				return 42
 			end)
-			jestExpect(fn).never[returnedTimes](2)
+			expect(fn).never[returnedTimes](2)
 
 			for i, value in ipairs({ {}, true, "a", function() end }) do
-				jestExpect(function()
-					jestExpect(fn).never[returnedTimes](value)
+				expect(function()
+					expect(fn).never[returnedTimes](value)
 				end).toThrowErrorMatchingSnapshot()
 			end
 		end)
@@ -649,10 +649,10 @@ for _, returnedTimes in ipairs({ "toReturnTimes", "toHaveReturnedTimes" }) do
 			fn()
 			fn()
 
-			jestExpect(fn)[returnedTimes](2)
+			expect(fn)[returnedTimes](2)
 
-			jestExpect(function()
-				jestExpect(fn).never[returnedTimes](2)
+			expect(function()
+				expect(fn).never[returnedTimes](2)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -664,10 +664,10 @@ for _, returnedTimes in ipairs({ "toReturnTimes", "toHaveReturnedTimes" }) do
 			fn()
 			fn()
 
-			jestExpect(fn)[returnedTimes](2)
+			expect(fn)[returnedTimes](2)
 
-			jestExpect(function()
-				jestExpect(fn).never[returnedTimes](2)
+			expect(function()
+				expect(fn).never[returnedTimes](2)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -679,11 +679,11 @@ for _, returnedTimes in ipairs({ "toReturnTimes", "toHaveReturnedTimes" }) do
 			fn()
 			fn()
 
-			jestExpect(fn)[returnedTimes](3)
-			jestExpect(fn).never[returnedTimes](2)
+			expect(fn)[returnedTimes](3)
+			expect(fn).never[returnedTimes](2)
 
-			jestExpect(function()
-				jestExpect(fn)[returnedTimes](2)
+			expect(function()
+				expect(fn)[returnedTimes](2)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -693,11 +693,11 @@ for _, returnedTimes in ipairs({ "toReturnTimes", "toHaveReturnedTimes" }) do
 			end)
 			fn()
 
-			jestExpect(fn)[returnedTimes](1)
-			jestExpect(fn).never[returnedTimes](2)
+			expect(fn)[returnedTimes](1)
+			expect(fn).never[returnedTimes](2)
 
-			jestExpect(function()
-				jestExpect(fn)[returnedTimes](2)
+			expect(function()
+				expect(fn)[returnedTimes](2)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -718,10 +718,10 @@ for _, returnedTimes in ipairs({ "toReturnTimes", "toHaveReturnedTimes" }) do
 
 			fn(false)
 
-			jestExpect(fn).never[returnedTimes](3)
+			expect(fn).never[returnedTimes](3)
 
-			jestExpect(function()
-				jestExpect(fn)[returnedTimes](3)
+			expect(function()
+				expect(fn)[returnedTimes](3)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -742,10 +742,10 @@ for _, returnedTimes in ipairs({ "toReturnTimes", "toHaveReturnedTimes" }) do
 
 			fn(false)
 
-			jestExpect(fn)[returnedTimes](2)
+			expect(fn)[returnedTimes](2)
 
-			jestExpect(function()
-				jestExpect(fn).never[returnedTimes](2)
+			expect(function()
+				expect(fn).never[returnedTimes](2)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -756,10 +756,10 @@ for _, returnedTimes in ipairs({ "toReturnTimes", "toHaveReturnedTimes" }) do
 			fn()
 			fn()
 
-			jestExpect(fn)[returnedTimes](2)
+			expect(fn)[returnedTimes](2)
 
-			jestExpect(function()
-				jestExpect(fn)[returnedTimes](1)
+			expect(function()
+				expect(fn)[returnedTimes](1)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -774,9 +774,9 @@ for _, returnedTimes in ipairs({ "toReturnTimes", "toHaveReturnedTimes" }) do
 
 					if value == 2 then
 						-- Only 2 of the recursive calls have returned at this point
-						jestExpect(fn)[returnedTimes](2)
-						jestExpect(function()
-							jestExpect(fn).never[returnedTimes](2)
+						expect(fn)[returnedTimes](2)
+						expect(function()
+							expect(fn).never[returnedTimes](2)
 						end).toThrowErrorMatchingSnapshot()
 					end
 
@@ -809,17 +809,17 @@ for _, returnedWith in ipairs({
 		it("works only on spies or jest.fn", function()
 			local function fn() end
 
-			jestExpect(function()
-				jestExpect(fn)[returnedWith]()
+			expect(function()
+				expect(fn)[returnedWith]()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it("works when not called", function()
 			local fn = mock:fn()
-			caller(jestExpect(fn).never[returnedWith], "foo")
+			caller(expect(fn).never[returnedWith], "foo")
 
-			jestExpect(function()
-				caller(jestExpect(fn)[returnedWith], "foo")
+			expect(function()
+				caller(expect(fn)[returnedWith], "foo")
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -827,7 +827,7 @@ for _, returnedWith in ipairs({
 			local fn = mock:fn()
 			fn()
 
-			caller(jestExpect(fn)[returnedWith])
+			caller(expect(fn)[returnedWith])
 		end)
 
 		it("works with argument that does not match", function()
@@ -836,10 +836,10 @@ for _, returnedWith in ipairs({
 			end)
 			fn()
 
-			caller(jestExpect(fn).never[returnedWith], "bar")
+			caller(expect(fn).never[returnedWith], "bar")
 
-			jestExpect(function()
-				caller(jestExpect(fn)[returnedWith], "bar")
+			expect(function()
+				caller(expect(fn)[returnedWith], "bar")
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -849,10 +849,10 @@ for _, returnedWith in ipairs({
 			end)
 			fn()
 
-			caller(jestExpect(fn)[returnedWith], "foo")
+			caller(expect(fn)[returnedWith], "foo")
 
-			jestExpect(function()
-				caller(jestExpect(fn).never[returnedWith], "foo")
+			expect(function()
+				caller(expect(fn).never[returnedWith], "foo")
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -862,10 +862,10 @@ for _, returnedWith in ipairs({
 			end)
 			fn()
 
-			caller(jestExpect(fn)[returnedWith], nil)
+			caller(expect(fn)[returnedWith], nil)
 
-			jestExpect(function()
-				caller(jestExpect(fn).never[returnedWith], nil)
+			expect(function()
+				caller(expect(fn).never[returnedWith], nil)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -889,14 +889,14 @@ for _, returnedWith in ipairs({
 			end)
 			fn()
 
-			caller(jestExpect(fn)[returnedWith], m2)
-			caller(jestExpect(fn).never[returnedWith], m3)
+			caller(expect(fn)[returnedWith], m2)
+			caller(expect(fn).never[returnedWith], m3)
 
-			jestExpect(function()
-				caller(jestExpect(fn).never[returnedWith], m2)
+			expect(function()
+				caller(expect(fn).never[returnedWith], m2)
 			end).toThrowErrorMatchingSnapshot()
-			jestExpect(function()
-				caller(jestExpect(fn)[returnedWith], m3)
+			expect(function()
+				caller(expect(fn)[returnedWith], m3)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -910,15 +910,15 @@ for _, returnedWith in ipairs({
 			end)
 			fn()
 
-			caller(jestExpect(fn)[returnedWith], s2)
-			caller(jestExpect(fn).never[returnedWith], s3)
+			caller(expect(fn)[returnedWith], s2)
+			caller(expect(fn).never[returnedWith], s3)
 
-			jestExpect(function()
-				caller(jestExpect(fn).never[returnedWith], s2)
+			expect(function()
+				caller(expect(fn).never[returnedWith], s2)
 			end).toThrowErrorMatchingSnapshot()
 
-			jestExpect(function()
-				caller(jestExpect(fn)[returnedWith], s3)
+			expect(function()
+				caller(expect(fn)[returnedWith], s3)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -935,12 +935,12 @@ for _, returnedWith in ipairs({
 			end)
 
 			-- It doesn't matter what return value is tested if the call threw
-			caller(jestExpect(fn).never[returnedWith], "foo")
-			caller(jestExpect(fn).never[returnedWith], nil)
+			caller(expect(fn).never[returnedWith], "foo")
+			caller(expect(fn).never[returnedWith], nil)
 			-- ROBLOX deviation: omitted call with undefined value
 
-			jestExpect(function()
-				caller(jestExpect(fn)[returnedWith], nil)
+			expect(function()
+				caller(expect(fn)[returnedWith], nil)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -955,12 +955,12 @@ for _, returnedWith in ipairs({
 			end)
 
 			-- It doesn't matter what return value is tested if the call threw
-			caller(jestExpect(fn).never[returnedWith], "foo")
-			caller(jestExpect(fn).never[returnedWith], nil)
+			caller(expect(fn).never[returnedWith], "foo")
+			caller(expect(fn).never[returnedWith], nil)
 			-- ROBLOX deviation: omitted call with undefined value
 
-			jestExpect(function()
-				caller(jestExpect(fn)[returnedWith], nil)
+			expect(function()
+				caller(expect(fn)[returnedWith], nil)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -989,10 +989,10 @@ for _, returnedWith in ipairs({
 					fn()
 					fn()
 
-					jestExpect(fn).never[returnedWith]("bar")
+					expect(fn).never[returnedWith]("bar")
 
-					jestExpect(function()
-						jestExpect(fn)[returnedWith]("bar")
+					expect(function()
+						expect(fn)[returnedWith]("bar")
 					end).toThrowErrorMatchingSnapshot()
 				end)
 
@@ -1005,9 +1005,9 @@ for _, returnedWith in ipairs({
 							-- calls have returned yet.
 							-- This test ensures that the incomplete calls are not incorrectly
 							-- interpretted as have returned undefined
-							jestExpect(fn).never[returnedWith](nil)
-							jestExpect(function()
-								jestExpect(fn)[returnedWith](nil)
+							expect(fn).never[returnedWith](nil)
+							expect(function()
+								expect(fn)[returnedWith](nil)
 							end).toThrowErrorMatchingSnapshot()
 
 							return 0
@@ -1039,14 +1039,14 @@ for _, returnedWith in ipairs({
 					fn()
 					fn()
 
-					jestExpect(fn)[returnedWith](1, "foo1")
-					jestExpect(fn)[returnedWith](2, "foo2")
-					jestExpect(fn)[returnedWith](3, "foo3")
+					expect(fn)[returnedWith](1, "foo1")
+					expect(fn)[returnedWith](2, "foo2")
+					expect(fn)[returnedWith](3, "foo3")
 
-					jestExpect(function()
-						jestExpect(fn).never[returnedWith](1, "foo1")
-						jestExpect(fn).never[returnedWith](2, "foo2")
-						jestExpect(fn).never[returnedWith](3, "foo3")
+					expect(function()
+						expect(fn).never[returnedWith](1, "foo1")
+						expect(fn).never[returnedWith](2, "foo2")
+						expect(fn).never[returnedWith](3, "foo3")
 					end).toThrowErrorMatchingSnapshot()
 				end)
 
@@ -1059,16 +1059,16 @@ for _, returnedWith in ipairs({
 					fn()
 					fn()
 
-					jestExpect(function()
-						jestExpect(fn)[returnedWith](1, "bar1")
-						jestExpect(fn)[returnedWith](2, "bar2")
-						jestExpect(fn)[returnedWith](3, "bar3")
+					expect(function()
+						expect(fn)[returnedWith](1, "bar1")
+						expect(fn)[returnedWith](2, "bar2")
+						expect(fn)[returnedWith](3, "bar3")
 					end).toThrowErrorMatchingSnapshot()
 
-					jestExpect(function()
-						jestExpect(fn).never[returnedWith](1, "foo1")
-						jestExpect(fn).never[returnedWith](2, "foo2")
-						jestExpect(fn).never[returnedWith](3, "foo3")
+					expect(function()
+						expect(fn).never[returnedWith](1, "foo1")
+						expect(fn).never[returnedWith](2, "foo2")
+						expect(fn).never[returnedWith](3, "foo3")
 					end).toThrowErrorMatchingSnapshot()
 				end)
 
@@ -1078,8 +1078,8 @@ for _, returnedWith in ipairs({
 					end)
 					fn()
 
-					jestExpect(function()
-						jestExpect(fn)[returnedWith](0, "foo")
+					expect(function()
+						expect(fn)[returnedWith](0, "foo")
 					end).toThrowErrorMatchingSnapshot()
 				end)
 
@@ -1091,8 +1091,8 @@ for _, returnedWith in ipairs({
 					fn()
 					fn()
 
-					jestExpect(function()
-						jestExpect(fn)[returnedWith](4, "foo")
+					expect(function()
+						expect(fn)[returnedWith](4, "foo")
 					end).toThrowErrorMatchingSnapshot()
 				end)
 
@@ -1102,8 +1102,8 @@ for _, returnedWith in ipairs({
 					end)
 					fn("foo")
 
-					jestExpect(function()
-						jestExpect(fn)[returnedWith](0.1, "foo")
+					expect(function()
+						expect(fn)[returnedWith](0.1, "foo")
 					end).toThrowErrorMatchingSnapshot()
 				end)
 
@@ -1113,8 +1113,8 @@ for _, returnedWith in ipairs({
 					end)
 					fn("foo")
 
-					jestExpect(function()
-						jestExpect(fn).never[returnedWith]()
+					expect(function()
+						expect(fn).never[returnedWith]()
 					end).toThrowErrorMatchingSnapshot()
 				end)
 
@@ -1129,22 +1129,22 @@ for _, returnedWith in ipairs({
 
 							if value == 2 then
 								-- Only 2 of the recursive calls have returned at this point
-								jestExpect(fn).never[returnedWith](1, 6)
-								jestExpect(fn).never[returnedWith](2, 3)
-								jestExpect(fn)[returnedWith](3, 1)
-								jestExpect(fn)[returnedWith](4, 0)
+								expect(fn).never[returnedWith](1, 6)
+								expect(fn).never[returnedWith](2, 3)
+								expect(fn)[returnedWith](3, 1)
+								expect(fn)[returnedWith](4, 0)
 
-								jestExpect(function()
-									jestExpect(fn)[returnedWith](1, 6)
+								expect(function()
+									expect(fn)[returnedWith](1, 6)
 								end).toThrowErrorMatchingSnapshot()
-								jestExpect(function()
-									jestExpect(fn)[returnedWith](2, 3)
+								expect(function()
+									expect(fn)[returnedWith](2, 3)
 								end).toThrowErrorMatchingSnapshot()
-								jestExpect(function()
-									jestExpect(fn).never[returnedWith](3, 1)
+								expect(function()
+									expect(fn).never[returnedWith](3, 1)
 								end).toThrowErrorMatchingSnapshot()
-								jestExpect(function()
-									jestExpect(fn).never[returnedWith](4, 0)
+								expect(function()
+									expect(fn).never[returnedWith](4, 0)
 								end).toThrowErrorMatchingSnapshot()
 							end
 
@@ -1174,10 +1174,10 @@ for _, returnedWith in ipairs({
 					fn()
 					fn()
 
-					jestExpect(fn)[returnedWith]("foo3")
+					expect(fn)[returnedWith]("foo3")
 
-					jestExpect(function()
-						jestExpect(fn).never[returnedWith]("foo3")
+					expect(function()
+						expect(fn).never[returnedWith]("foo3")
 					end).toThrowErrorMatchingSnapshot()
 				end)
 
@@ -1188,9 +1188,9 @@ for _, returnedWith in ipairs({
 						if value == 0 then
 							-- Before returning from the base case of recursion, none of the
 							-- calls have returned yet
-							jestExpect(fn).never[returnedWith](0)
-							jestExpect(function()
-								jestExpect(fn)[returnedWith](0)
+							expect(fn).never[returnedWith](0)
+							expect(function()
+								expect(fn)[returnedWith](0)
 							end).toThrowErrorMatchingSnapshot()
 							return 0
 						else
@@ -1205,10 +1205,10 @@ for _, returnedWith in ipairs({
 
 		it("includes the custom mock name in the error message", function()
 			local fn = mock:fn().mockName("named-mock")
-			caller(jestExpect(fn).never[returnedWith], "foo")
+			caller(expect(fn).never[returnedWith], "foo")
 
-			jestExpect(function()
-				caller(jestExpect(fn)[returnedWith], "foo")
+			expect(function()
+				caller(expect(fn)[returnedWith], "foo")
 			end).toThrowErrorMatchingSnapshot()
 		end)
 	end)

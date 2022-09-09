@@ -16,7 +16,7 @@ local clearTimeout = LuauPolyfill.clearTimeout
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local afterEach = JestGlobals.afterEach
@@ -30,11 +30,11 @@ end)
 describe.skip("FakeTimers", function()
 	describe("construction", function()
 		it("installs delay mock", function()
-			jestExpect(setTimeout).never.toBeNil()
+			expect(setTimeout).never.toBeNil()
 		end)
 
 		it("installs clearTimeout mock", function()
-			jestExpect(clearTimeout).never.toBeNil()
+			expect(clearTimeout).never.toBeNil()
 		end)
 	end)
 
@@ -72,7 +72,7 @@ describe.skip("FakeTimers", function()
 			setTimeout(mock6, -math.huge)
 
 			jest.runAllTimers()
-			jestExpect(runOrder).toEqual({
+			expect(runOrder).toEqual({
 				"mock2",
 				"mock3",
 				"mock5",

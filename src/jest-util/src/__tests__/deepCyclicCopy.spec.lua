@@ -18,20 +18,20 @@ local Symbol = LuauPolyfill.Symbol
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local jest = JestGlobals.jest
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local it = JestGlobals.it
 
 local deepCyclicCopy = require(script.Parent.Parent.deepCyclicCopy).default
 it("returns the same value for primitive or function values", function()
 	local function fn() end
-	jestExpect(deepCyclicCopy(nil)).toBe(nil)
+	expect(deepCyclicCopy(nil)).toBe(nil)
 	-- ROBLOX deviation: no difference between null and undefined in Lua
-	-- jestExpect(deepCyclicCopy(nil)).toBe(nil)
-	jestExpect(deepCyclicCopy(true)).toBe(true)
-	jestExpect(deepCyclicCopy(42)).toBe(42)
-	jestExpect(Number.isNaN(deepCyclicCopy(0 / 0))).toBe(true)
-	jestExpect(deepCyclicCopy("foo")).toBe("foo")
-	jestExpect(deepCyclicCopy(fn)).toBe(fn)
+	-- expect(deepCyclicCopy(nil)).toBe(nil)
+	expect(deepCyclicCopy(true)).toBe(true)
+	expect(deepCyclicCopy(42)).toBe(42)
+	expect(Number.isNaN(deepCyclicCopy(0 / 0))).toBe(true)
+	expect(deepCyclicCopy("foo")).toBe("foo")
+	expect(deepCyclicCopy(fn)).toBe(fn)
 end)
 
 it("does not execute getters/setters, but copies them", function()
@@ -46,16 +46,16 @@ it("does not execute getters/setters, but copies them", function()
 	--[[
 			ROBLOX deviation: not property descriptors in Lua
 			original code:
-		jestExpect(Object.getOwnPropertyDescriptor(copy, 'foo')).toBeDefined();
+		expect(Object.getOwnPropertyDescriptor(copy, 'foo')).toBeDefined();
 		]]
-	jestExpect(copy["foo"]).toBeDefined()
-	jestExpect(fn).never.toBeCalled()
+	expect(copy["foo"]).toBeDefined()
+	expect(fn).never.toBeCalled()
 end)
 
 it("copies symbols", function()
 	local symbol = Symbol("foo")
 	local obj = { [symbol] = 42 }
-	jestExpect(deepCyclicCopy(obj)[symbol]).toBe(42)
+	expect(deepCyclicCopy(obj)[symbol]).toBe(42)
 end)
 
 it("copies arrays as array objects", function()
@@ -69,8 +69,8 @@ it("copies arrays as array objects", function()
 		{},
 	}
 
-	jestExpect(deepCyclicCopy(array)).toEqual(array)
-	jestExpect(Array.isArray(deepCyclicCopy(array))).toBe(true)
+	expect(deepCyclicCopy(array)).toEqual(array)
+	expect(Array.isArray(deepCyclicCopy(array))).toBe(true)
 end)
 
 it("handles cyclic dependencies", function()
@@ -79,15 +79,15 @@ it("handles cyclic dependencies", function()
 	cyclic.subcycle.baz = cyclic
 	cyclic.bar = cyclic
 
-	jestExpect(function()
+	expect(function()
 		return deepCyclicCopy(cyclic)
 	end).never.toThrow()
 
 	local copy = deepCyclicCopy(cyclic)
 
-	jestExpect(copy.a).toBe(42)
-	jestExpect(copy.bar).toEqual(copy)
-	jestExpect(copy.subcycle.baz).toEqual(copy)
+	expect(copy.a).toBe(42)
+	expect(copy.bar).toEqual(copy)
+	expect(copy.subcycle.baz).toEqual(copy)
 end)
 
 it("uses the blacklist to avoid copying properties on the first level", function()
@@ -99,7 +99,7 @@ it("uses the blacklist to avoid copying properties on the first level", function
 		},
 	}
 
-	jestExpect(deepCyclicCopy(obj, {
+	expect(deepCyclicCopy(obj, {
 		blacklist = Set.new({ "blacklisted", "blacklisted2" }),
 	})).toEqual({
 		subObj = {
@@ -130,16 +130,16 @@ do
 		-- 	return object == sourceObject.nestedArray
 		-- end)
 		-- local copy = deepCyclicCopy(sourceObject, { keepPrototype = false })
-		-- jestExpect(Object.getPrototypeOf(copy)).never.toBe(Object.getPrototypeOf(sourceObject))
-		-- jestExpect(Object.getPrototypeOf(copy.nestedObject)).never.toBe(
+		-- expect(Object.getPrototypeOf(copy)).never.toBe(Object.getPrototypeOf(sourceObject))
+		-- expect(Object.getPrototypeOf(copy.nestedObject)).never.toBe(
 		-- 	Object.getPrototypeOf(sourceObject.nestedObject)
 		-- )
-		-- jestExpect(Object.getPrototypeOf(copy.nestedArray)).never.toBe(
+		-- expect(Object.getPrototypeOf(copy.nestedArray)).never.toBe(
 		-- 	Object.getPrototypeOf(sourceObject.nestedArray)
 		-- )
-		-- jestExpect(Object.getPrototypeOf(copy)).toBe(Object.getPrototypeOf({}))
-		-- jestExpect(Object.getPrototypeOf(copy.nestedObject)).toBe(Object.getPrototypeOf({}))
-		-- jestExpect(Object.getPrototypeOf(copy.nestedArray)).toBe(Object.getPrototypeOf({}))
+		-- expect(Object.getPrototypeOf(copy)).toBe(Object.getPrototypeOf({}))
+		-- expect(Object.getPrototypeOf(copy.nestedObject)).toBe(Object.getPrototypeOf({}))
+		-- expect(Object.getPrototypeOf(copy.nestedArray)).toBe(Object.getPrototypeOf({}))
 		-- spy:mockRestore()
 	end)
 
@@ -154,8 +154,8 @@ do
 		-- 	return self
 		-- end)()
 		-- local copy = deepCyclicCopy(sourceArray)
-		-- jestExpect(Object.getPrototypeOf(copy)).never.toBe(Object.getPrototypeOf(sourceArray))
-		-- jestExpect(Object.getPrototypeOf(copy)).toBe(Object.getPrototypeOf({}))
+		-- expect(Object.getPrototypeOf(copy)).never.toBe(Object.getPrototypeOf(sourceArray))
+		-- expect(Object.getPrototypeOf(copy)).toBe(Object.getPrototypeOf({}))
 		-- spy:mockRestore()
 	end)
 
@@ -170,8 +170,8 @@ do
 		-- 	return self
 		-- end)()
 		-- local copy = deepCyclicCopy(sourceArray, { keepPrototype = false })
-		-- jestExpect(Object.getPrototypeOf(copy)).never.toBe(Object.getPrototypeOf(sourceArray))
-		-- jestExpect(Object.getPrototypeOf(copy)).toBe(Object.getPrototypeOf({}))
+		-- expect(Object.getPrototypeOf(copy)).never.toBe(Object.getPrototypeOf(sourceArray))
+		-- expect(Object.getPrototypeOf(copy)).toBe(Object.getPrototypeOf({}))
 		-- spy:mockRestore()
 	end)
 
@@ -186,7 +186,7 @@ do
 		-- 	return self
 		-- end)()
 		-- local copy = deepCyclicCopy(sourceArray, { keepPrototype = true })
-		-- jestExpect(Object.getPrototypeOf(copy)).toBe(Object.getPrototypeOf(sourceArray))
+		-- expect(Object.getPrototypeOf(copy)).toBe(Object.getPrototypeOf(sourceArray))
 		-- spy:mockRestore()
 	end)
 
@@ -210,16 +210,16 @@ do
 		-- 	return object == sourceobject.nestedArray
 		-- end)
 		-- local copy = deepCyclicCopy(sourceobject, { keepPrototype = false })
-		-- jestExpect(Object.getPrototypeOf(copy)).never.toBe(Object.getPrototypeOf(sourceobject))
-		-- jestExpect(Object.getPrototypeOf(copy.nestedObject)).never.toBe(
+		-- expect(Object.getPrototypeOf(copy)).never.toBe(Object.getPrototypeOf(sourceobject))
+		-- expect(Object.getPrototypeOf(copy.nestedObject)).never.toBe(
 		-- 	Object.getPrototypeOf(sourceobject.nestedObject)
 		-- )
-		-- jestExpect(Object.getPrototypeOf(copy.nestedArray)).never.toBe(
+		-- expect(Object.getPrototypeOf(copy.nestedArray)).never.toBe(
 		-- 	Object.getPrototypeOf(sourceobject.nestedArray)
 		-- )
-		-- jestExpect(Object.getPrototypeOf(copy)).toBe(Object.getPrototypeOf({}))
-		-- jestExpect(Object.getPrototypeOf(copy.nestedObject)).toBe(Object.getPrototypeOf({}))
-		-- jestExpect(Object.getPrototypeOf(copy.nestedArray)).toBe(Object.getPrototypeOf({}))
+		-- expect(Object.getPrototypeOf(copy)).toBe(Object.getPrototypeOf({}))
+		-- expect(Object.getPrototypeOf(copy.nestedObject)).toBe(Object.getPrototypeOf({}))
+		-- expect(Object.getPrototypeOf(copy.nestedArray)).toBe(Object.getPrototypeOf({}))
 		-- spy:mockRestore()
 	end)
 
@@ -243,9 +243,9 @@ do
 		-- 	return object == sourceObject.nestedArray
 		-- end)
 		-- local copy = deepCyclicCopy(sourceObject, { keepPrototype = true })
-		-- jestExpect(Object.getPrototypeOf(copy)).toBe(Object.getPrototypeOf(sourceObject))
-		-- jestExpect(Object.getPrototypeOf(copy.nestedObject)).toBe(Object.getPrototypeOf(sourceObject.nestedObject))
-		-- jestExpect(Object.getPrototypeOf(copy.nestedArray)).toBe(Object.getPrototypeOf(sourceObject.nestedArray))
+		-- expect(Object.getPrototypeOf(copy)).toBe(Object.getPrototypeOf(sourceObject))
+		-- expect(Object.getPrototypeOf(copy.nestedObject)).toBe(Object.getPrototypeOf(sourceObject.nestedObject))
+		-- expect(Object.getPrototypeOf(copy.nestedArray)).toBe(Object.getPrototypeOf(sourceObject.nestedArray))
 		-- spy:mockRestore()
 	end)
 end

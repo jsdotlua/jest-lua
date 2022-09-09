@@ -10,7 +10,7 @@ local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local it = JestGlobals.it
 
 local getSnapshotStatus = require(CurrentModule.getSnapshotStatus).default
@@ -25,7 +25,7 @@ it("Retrieves the snapshot status", function()
 		unmatched = 1,
 		updated = 1,
 	}
-	jestExpect(getSnapshotStatus(snapshotResult, false)).toMatchSnapshot()
+	expect(getSnapshotStatus(snapshotResult, false)).toMatchSnapshot()
 end)
 
 it("Shows no snapshot updates if all snapshots matched", function()
@@ -38,7 +38,7 @@ it("Shows no snapshot updates if all snapshots matched", function()
 		unmatched = 0,
 		updated = 0,
 	}
-	jestExpect(getSnapshotStatus(snapshotResult, true)).toMatchSnapshot()
+	expect(getSnapshotStatus(snapshotResult, true)).toMatchSnapshot()
 end)
 
 it("Retrieves the snapshot status after a snapshot update", function()
@@ -54,7 +54,7 @@ it("Retrieves the snapshot status after a snapshot update", function()
 		unmatched = 2,
 		updated = 2,
 	}
-	jestExpect(getSnapshotStatus(snapshotResult, true)).toMatchSnapshot()
+	expect(getSnapshotStatus(snapshotResult, true)).toMatchSnapshot()
 end)
 
 return {}

@@ -33,17 +33,17 @@ local subsetEquality = require(CurrentModule.utils).subsetEquality
 
 local equals = require(CurrentModule.jasmineUtils).equals
 
-local jestExpect = require(CurrentModule)
+local expect = require(CurrentModule)
 
 beforeAll(function()
-	jestExpect.addSnapshotSerializer(alignedAnsiStyleSerializer)
+	expect.addSnapshotSerializer(alignedAnsiStyleSerializer)
 end)
 
 afterAll(function()
-	jestExpect.resetSnapshotSerializers()
+	expect.resetSnapshotSerializers()
 end)
 
-jestExpect.extend({
+expect.extend({
 	toBeDivisibleBy = function(self, actual: number, expected: number)
 		local pass = actual % expected == 0
 		local message = if pass
@@ -94,27 +94,27 @@ jestExpect.extend({
 })
 
 it("is available globally when matcher is unary", function()
-	jestExpect(15).toBeDivisibleBy(5)
-	jestExpect(15).toBeDivisibleBy(3)
-	jestExpect(15).never.toBeDivisibleBy(6)
+	expect(15).toBeDivisibleBy(5)
+	expect(15).toBeDivisibleBy(3)
+	expect(15).never.toBeDivisibleBy(6)
 
-	jestExpect(function()
-		jestExpect(15).toBeDivisibleBy(2)
+	expect(function()
+		expect(15).toBeDivisibleBy(2)
 	end).toThrowErrorMatchingSnapshot()
 end)
 
 it("is available globally when matcher is variadic", function()
-	jestExpect(15).toBeWithinRange(10, 20)
-	jestExpect(15).never.toBeWithinRange(6)
+	expect(15).toBeWithinRange(10, 20)
+	expect(15).never.toBeWithinRange(6)
 
-	jestExpect(function()
-		jestExpect(15).toBeWithinRange(1, 3)
+	expect(function()
+		expect(15).toBeWithinRange(1, 3)
 	end).toThrowErrorMatchingSnapshot()
 end)
 
 -- ROBLOX TODO: ADO-1475
 it("exposes matcherUtils in context", function()
-	jestExpect.extend({
+	expect.extend({
 		_shouldNotError = function(self, _actual, _expected)
 			local pass = self.equals(
 				self.utils,
@@ -138,73 +138,73 @@ it("exposes matcherUtils in context", function()
 		end,
 	})
 
-	jestExpect()._shouldNotError()
+	expect()._shouldNotError()
 end)
 
 it("is ok if there is no message specified", function()
-	jestExpect.extend({
+	expect.extend({
 		toFailWithoutMessage = function(_, _expected)
 			return { pass = false }
 		end,
 	})
 
-	jestExpect(function()
-		jestExpect(true).toFailWithoutMessage()
+	expect(function()
+		expect(true).toFailWithoutMessage()
 	end).toThrowErrorMatchingSnapshot()
 end)
 
 -- ROBLOX TODO: ADO-1475
 it("exposes an equality function to custom matchers", function()
-	-- jestExpect and expect share the same global state
+	-- expect and expect share the same global state
 	-- expect.assertions(3)
-	jestExpect.extend({
+	expect.extend({
 		toBeOne = function(self)
-			jestExpect(self.equals).toBe(equals)
+			expect(self.equals).toBe(equals)
 			return { pass = not not self.equals(1, 1) }
 		end,
 	})
 
-	jestExpect(function()
-		jestExpect().toBeOne()
+	expect(function()
+		expect().toBeOne()
 	end).never.toThrow()
 end)
 
 it("defines asymmetric unary matchers", function()
-	jestExpect(function()
-		jestExpect({ value = 2 }).toEqual({ value = jestExpect.toBeDivisibleBy(2) })
+	expect(function()
+		expect({ value = 2 }).toEqual({ value = expect.toBeDivisibleBy(2) })
 	end).never.toThrow()
-	jestExpect(function()
-		jestExpect({ value = 3 }).toEqual({ value = jestExpect.toBeDivisibleBy(2) })
+	expect(function()
+		expect({ value = 3 }).toEqual({ value = expect.toBeDivisibleBy(2) })
 	end).toThrowErrorMatchingSnapshot()
 end)
 
 it("defines asymmetric unary matchers that can be prefixed by never", function()
-	jestExpect(function()
-		jestExpect({ value = 2 }).toEqual({ value = jestExpect.never.toBeDivisibleBy(2) })
+	expect(function()
+		expect({ value = 2 }).toEqual({ value = expect.never.toBeDivisibleBy(2) })
 	end).toThrowErrorMatchingSnapshot()
-	jestExpect(function()
-		jestExpect({ value = 3 }).toEqual({ value = jestExpect.never.toBeDivisibleBy(2) })
+	expect(function()
+		expect({ value = 3 }).toEqual({ value = expect.never.toBeDivisibleBy(2) })
 	end).never.toThrow()
 end)
 
 it("defines asymmetric variadic matchers", function()
-	jestExpect(function()
-		jestExpect({ value = 2 }).toEqual({ value = jestExpect.toBeWithinRange(1, 3) })
+	expect(function()
+		expect({ value = 2 }).toEqual({ value = expect.toBeWithinRange(1, 3) })
 	end).never.toThrow()
-	jestExpect(function()
-		jestExpect({ value = 3 }).toEqual({ value = jestExpect.toBeWithinRange(4, 11) })
+	expect(function()
+		expect({ value = 3 }).toEqual({ value = expect.toBeWithinRange(4, 11) })
 	end).toThrowErrorMatchingSnapshot()
 end)
 
 it("defines asymmetric variadic matchers that can be prefixed by never", function()
-	jestExpect(function()
-		jestExpect({ value = 2 }).toEqual({
-			value = jestExpect.never.toBeWithinRange(1, 3),
+	expect(function()
+		expect({ value = 2 }).toEqual({
+			value = expect.never.toBeWithinRange(1, 3),
 		})
 	end).toThrowErrorMatchingSnapshot()
-	jestExpect(function()
-		jestExpect({ value = 3 }).toEqual({
-			value = jestExpect.never.toBeWithinRange(5, 7),
+	expect(function()
+		expect({ value = 3 }).toEqual({
+			value = expect.never.toBeWithinRange(5, 7),
 		})
 	end).never.toThrow()
 end)
@@ -213,39 +213,39 @@ it("prints the Symbol into the error message", function()
 	local foo = Symbol("foo")
 	local bar = Symbol("bar")
 
-	jestExpect(function()
-		jestExpect({ a = foo }).toEqual({
-			a = jestExpect.toBeSymbol(bar),
+	expect(function()
+		expect({ a = foo }).toEqual({
+			a = expect.toBeSymbol(bar),
 		})
 	end).toThrowErrorMatchingSnapshot()
 end)
 
 it("allows overriding existing extension", function()
-	jestExpect.extend({
+	expect.extend({
 		toAllowOverridingExistingMatcher = function(_self, _expected: unknown)
 			return { pass = _expected == "bar" }
 		end,
 	})
-	jestExpect("foo").never.toAllowOverridingExistingMatcher()
-	jestExpect.extend({
+	expect("foo").never.toAllowOverridingExistingMatcher()
+	expect.extend({
 		toAllowOverridingExistingMatcher = function(_self, _expected: unknown)
 			return { pass = _expected == "foo" }
 		end,
 	})
-	jestExpect("foo").toAllowOverridingExistingMatcher()
+	expect("foo").toAllowOverridingExistingMatcher()
 end)
 
 -- ROBLOX deviation START: lua specific test to handle asymmetric unary matcher with a table argument
 it("works for asymmetric unary matchers with a table argument", function()
 	local input = { 1, 2, 3 }
-	jestExpect.extend({
+	expect.extend({
 		unaryShouldNotError = function(_self, _actual, sample)
 			local pass = sample == input
 			return { pass = pass }
 		end,
 	})
-	jestExpect(function()
-		jestExpect({ value = 0 }).toEqual({ value = jestExpect.unaryShouldNotError(input) })
+	expect(function()
+		expect({ value = 0 }).toEqual({ value = expect.unaryShouldNotError(input) })
 	end).never.toThrow()
 end)
 -- ROBLOX deviation END

@@ -10,7 +10,7 @@ local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
@@ -40,7 +40,7 @@ describe("formatTestResults", function()
 
 	it("includes test full name", function()
 		local result = formatTestResults(results, nil, nil)
-		jestExpect(result.testResults[1].assertionResults[1].fullName).toEqual(assertion.fullName)
+		expect(result.testResults[1].assertionResults[1].fullName).toEqual(assertion.fullName)
 	end)
 end)
 

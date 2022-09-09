@@ -15,7 +15,7 @@ local Object = LuauPolyfill.Object
 local Set = LuauPolyfill.Set
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jestExpect = JestGlobals.expect
+local expect = JestGlobals.expect
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 local afterEach = JestGlobals.afterEach
@@ -88,7 +88,7 @@ it("snapshots needs update with npm test", function()
 	local testReporter = SummaryReporter.new(globalConfig, process)
 	testReporter:onRunComplete(Set.new(), aggregatedResults)
 	local result = Array.join(results, "")
-	jestExpect(result).toMatchSnapshot()
+	expect(result).toMatchSnapshot()
 end)
 
 it("snapshots needs update with yarn test", function()
@@ -113,7 +113,7 @@ it("snapshots needs update with yarn test", function()
 	local testReporter = SummaryReporter.new(globalConfig, process)
 	testReporter:onRunComplete(Set.new(), aggregatedResults)
 	local result = Array.join(results, "")
-	jestExpect(result).toMatchSnapshot()
+	expect(result).toMatchSnapshot()
 end)
 
 it("snapshots all have results (no update)", function()
@@ -147,7 +147,7 @@ it("snapshots all have results (no update)", function()
 	local testReporter = SummaryReporter.new(globalConfig, process)
 	testReporter:onRunComplete(Set.new(), aggregatedResults)
 	local result = Array.join(results, ""):gsub("\\", "/")
-	jestExpect(result).toMatchSnapshot()
+	expect(result).toMatchSnapshot()
 end)
 
 it("snapshots all have results (after update)", function()
@@ -181,7 +181,7 @@ it("snapshots all have results (after update)", function()
 	local testReporter = SummaryReporter.new(globalConfig, process)
 	testReporter:onRunComplete(Set.new(), aggregatedResults)
 	local result = Array.join(results, ""):gsub("\\", "/")
-	jestExpect(result).toMatchSnapshot()
+	expect(result).toMatchSnapshot()
 end)
 
 return {}
