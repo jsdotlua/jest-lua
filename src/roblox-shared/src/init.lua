@@ -18,6 +18,7 @@ local nodeUtilsModule = require(CurrentModule.nodeUtils)
 export type NodeJS_WriteStream = nodeUtilsModule.NodeJS_WriteStream
 local exports = {
 	dedent = require(CurrentModule.dedent).dedent,
+	escapePatternCharacters = require(CurrentModule.escapePatternCharacters).escapePatternCharacters,
 	expect = require(CurrentModule.expect),
 	getRelativePath = require(CurrentModule.getRelativePath),
 	RobloxInstance = require(CurrentModule.RobloxInstance),

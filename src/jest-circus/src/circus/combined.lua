@@ -105,10 +105,12 @@ do
 
 				-- pass mode of currentDescribeBlock to tests
 				-- but do not when there is already a single test with "only" mode
-				local shouldPassMode = not currentDescribeBlock.mode == "only"
-					and Array.some(currentDescribeBlock.children, function(child)
-						return child.type == "test" and child.mode == "only"
-					end)
+				local shouldPassMode = not (
+						currentDescribeBlock.mode == "only"
+						and Array.some(currentDescribeBlock.children, function(child)
+							return child.type == "test" and child.mode == "only"
+						end)
+					)
 				if shouldPassMode then
 					Array.forEach(currentDescribeBlock.children, function(child)
 						if child.type == "test" and not Boolean.toJSBoolean(child.mode) then

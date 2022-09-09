@@ -32,8 +32,8 @@ function ErrorWithStack.new(
 	end
 
 	local self = setmetatable(Error.new(message), ErrorWithStack)
-	if Boolean.toJSBoolean(Error["captureStackTrace"]) then
-		Error["captureStackTrace"](self, callsite)
+	if Error.captureStackTrace then
+		Error.captureStackTrace((self :: any) :: ErrorWithStack, callsite)
 	end
 	Error["stackTraceLimit"] = originalStackLimit
 	return (self :: any) :: ErrorWithStack

@@ -19,7 +19,7 @@ exports[ [=[Lua toThrowMatcher tests prints the stack trace for Lua AssertionErr
 Error name:    <r>"AssertionError"</>
 Error message: <r>""</>
 
-      LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.AssertionError.AssertionError:397 function new
+      AssertionError [ERR_ASSERTION]
       LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:80 function error3
       LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:84 function test3
       LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:114
@@ -32,6 +32,7 @@ exports[ [=[Lua toThrowMatcher tests prints the stack trace for Lua Error error 
 Error name:    <r>"Error"</>
 Error message: <r>""</>
 
+      Error
       LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:64 function error1
       LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:72 function test1
       LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:90

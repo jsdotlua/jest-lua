@@ -359,7 +359,12 @@ function separateMessageFromStack(content: string): { message: string, stack: st
 	-- (maybe it's a code frame instead), just the first non-empty line.
 	-- If the error is a plain "Error:" instead of a SyntaxError or TypeError we
 	-- remove the prefix from the message because it is generally not useful.
-	local re = RegExp([=[^(?:Error: )?([\s\S]*?(?=\n\s*at\s.*:\d*:\d*)|\s*.*)([\s\S]*)$]=])
+	--[[
+		ROBLOX deviation START: adjusted the RegExp to look for Luau specific stacktrace - line starting with LoadedCode
+		original regexp: RegExp([=[^(?:Error: )?([\s\S]*?(?=\n\s*at\s.*:\d*:\d*)|\s*.*)([\s\S]*)$]=])
+	]]
+	local re = RegExp([=[^(?:Error: )?([\s\S]*?(?=\n\s*LoadedCode.*:\d*)|\s*.*)([\s\S]*)$]=])
+	-- ROBLOX deviation END
 	local messageMatch = re:exec(content)
 	if not messageMatch then
 		-- For typescript

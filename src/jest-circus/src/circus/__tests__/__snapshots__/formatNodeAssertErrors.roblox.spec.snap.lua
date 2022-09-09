@@ -16,7 +16,12 @@ Table {
 
 Difference:
 
-<dim>Compared values have no visual difference.</>LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
+<dim>Compared values have no visual difference.</>
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:36
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:346
+LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:262
+",
   },
 }
 ]=]
@@ -40,7 +45,12 @@ Difference:
 <dim>  Table {</>
 <green>-   \"foo\": \"foo\",</>
 <red>+   \"foo\": \"fooBar\",</>
-<dim>  }</>LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
+<dim>  }</>
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:112
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:346
+LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:262
+",
   },
 }
 ]=]
@@ -64,7 +74,12 @@ Difference:
 <dim>  Table {</>
 <green>-   \"foo\": \"foo\",</>
 <red>+   \"foo\": \"fooBar\",</>
-<dim>  }</>LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
+<dim>  }</>
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:112
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:346
+LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:262
+",
   },
 }
 ]=]
@@ -82,7 +97,12 @@ Table {
 
 Difference:
 
-<dim>Compared values have no visual difference.</>LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
+<dim>Compared values have no visual difference.</>
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:112
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:346
+LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:262
+",
   },
 }
 ]=]
@@ -100,7 +120,12 @@ Table {
 
 Difference:
 
-<dim>Compared values have no visual difference.</>LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
+<dim>Compared values have no visual difference.</>
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:112
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:346
+LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:262
+",
   },
 }
 ]=]
@@ -118,7 +143,12 @@ Table {
 
 Difference:
 
-<dim>Compared values have no visual difference.</>LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
+<dim>Compared values have no visual difference.</>
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:112
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:346
+LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:262
+",
   },
 }
 ]=]
@@ -136,7 +166,12 @@ Table {
 
 Difference:
 
-<dim>Compared values have no visual difference.</>LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
+<dim>Compared values have no visual difference.</>
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:112
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:346
+LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:262
+",
   },
 }
 ]=]
@@ -154,7 +189,12 @@ Table {
 
 Difference:
 
-<dim>Compared values have no visual difference.</>LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
+<dim>Compared values have no visual difference.</>
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:112
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:346
+LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:262
+",
   },
 }
 ]=]
@@ -172,7 +212,12 @@ Table {
 
 Difference:
 
-<dim>Compared values have no visual difference.</>LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
+<dim>Compared values have no visual difference.</>
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:112
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:346
+LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:262
+",
   },
 }
 ]=]
@@ -196,7 +241,12 @@ Difference:
 <dim>  Table {</>
 <green>-   \"foo\": \"foo\",</>
 <red>+   \"foo\": \"fooBar\",</>
-<dim>  }</>LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
+<dim>  }</>
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:112
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:346
+LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:262
+",
   },
 }
 ]=]
@@ -220,7 +270,12 @@ Difference:
 <dim>  Table {</>
 <green>-   \"foo\": \"foo\",</>
 <red>+   \"foo\": \"fooBar\",</>
-<dim>  }</>LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.",
+<dim>  }</>
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:112
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:346
+LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:262
+",
   },
 }
 ]=]

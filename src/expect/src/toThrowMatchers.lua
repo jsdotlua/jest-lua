@@ -231,7 +231,9 @@ local function createMatcher(matcherName: string, fromPromise: boolean?): RawMat
 						error_ = stringify(error_)
 					end
 
-					local errorObject = Error(error_)
+					local errorObject = Error.new(error_)
+					-- ROBLOX NOTE: using LuauPolyfill's private method to capture the stacktrace without this function
+					Error.__captureStackTrace(errorObject, 3)
 					local _, end_ = string.find(errorObject.stack, getTopStackEntry(errorObject.stack), 1, true)
 					errorObject.stack = string.sub(errorObject.stack, end_ + 1 + string.len("\n"))
 					errorObject.stack = diffStack(compareStack, errorObject.stack)

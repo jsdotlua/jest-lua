@@ -12,10 +12,10 @@ local CurrentModule = script
 local Packages = CurrentModule.Parent
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
+local Error = LuauPolyfill.Error
 local Object = LuauPolyfill.Object
 type Array<T> = LuauPolyfill.Array<T>
-
-local AssertionError = LuauPolyfill.AssertionError
+type Error = LuauPolyfill.Error
 
 local matcherUtils = require(Packages.JestMatcherUtils)
 
@@ -65,21 +65,26 @@ local subsetEquality = utils.subsetEquality
 local makeThrowingMatcher, _validateResult
 
 --[[
-	ROBLOX deviation START: inline type for JestAssertionError['matcherResult'] as Lua doesn't support Omit utility type
-	original code:
-	class JestAssertionError extends Error {
-	  matcherResult?: Omit<SyncExpectationResult, 'message'> & {message: string};
-	}
+	ROBLOX deviation START: inline type as Lua doesn't support Omit utility type
+	original code: Omit<SyncExpectationResult, 'message'>
 ]]
-type JestMatcherError_matcherResult = {
+type Omit_SyncExpectationResult_message = {
 	pass: boolean,
-	message: string,
 }
 
-type JestAssertionError = {
-	matcherResult: JestMatcherError_matcherResult?,
+type JestAssertionError = Error & {
+	matcherResult: Omit_SyncExpectationResult_message & { message: string },
 }
 -- ROBLOX deviation END
+type JestAssertionError_statics = { new: (message: string) -> JestAssertionError }
+local JestAssertionError = (
+	setmetatable({}, { __index = Error }) :: any
+) :: JestAssertionError & JestAssertionError_statics;
+(JestAssertionError :: any).__index = JestAssertionError
+function JestAssertionError.new(message: string): JestAssertionError
+	local self = setmetatable(Error.new(message), JestAssertionError)
+	return (self :: any) :: JestAssertionError
+end
 
 --[[
 	ROBLOX deviation: skipped code
@@ -136,7 +141,7 @@ function makeThrowingMatcher(
 	actual: any,
 	err: JestAssertionError?
 ): ThrowingMatcherFn
-	return function(...)
+	local function throwingMatcher(...)
 		local throws = true
 		local utils = Object.assign({
 			iterableEquality = iterableEquality,
@@ -176,10 +181,16 @@ function makeThrowingMatcher(
 					error_ = err
 					error_.message = message
 				elseif asyncError then
+					-- ROBLOX deviation START: Currently async is not implemented
 					error("Currently async is not implemented")
+					-- ROBLOX deviation END
 				else
-					error_ = {}
-					error_.message = message
+					error_ = JestAssertionError.new(message)
+
+					--[[
+						ROBLOX deviation: skipped code
+						original code lines 291 - 295
+					]]
 				end
 
 				-- Passing the result of the matcher with the error so that a custom
@@ -188,39 +199,44 @@ function makeThrowingMatcher(
 				error_.matcherResult = Object.assign({}, result, { message = message })
 
 				if throws then
-					error(AssertionError.new({ message = message }))
+					error(error_)
 				else
-					table.insert(getState().suppressedErrors, error)
+					table.insert(getState().suppressedErrors, error_)
 				end
 			end
 		end
 
-		local potentialResult, preservedStack, result
+		local function handleError(error_)
+			if
+				-- ROBLOX deviation START: adjusted condition
+				-- matcher[INTERNAL_MATCHER_FLAG] == true
+				-- and not instanceof(error_, JestAssertionError)
+				-- and error_.name ~= "PrettyFormatPluginError"
+				-- -- Guard for some environments (browsers) that do not support this feature.
+				-- and
+				Error.captureStackTrace and typeof(error_) == "table"
+				-- ROBLOX deviation END
+			then
+				-- Try to remove this and deeper functions from the stack trace frame.
+				Error.captureStackTrace(error_, throwingMatcher)
+			end
+			error(error_)
+		end
 
-		local ok = xpcall(function(...)
+		local ok, result = pcall(function(...)
 			-- ROBLOX TODO: Implement INTERNAL_MATCHER_FLAG cases
-			potentialResult = matcher(matcherContext, actual, ...)
+			local potentialResult = matcher(matcherContext, actual, ...)
 
-			local syncResult = potentialResult
+			local syncResult = potentialResult :: SyncExpectationResult
 
 			return processResult(syncResult)
-		end, function(e)
-			preservedStack = debug.traceback(nil, 7)
-			result = e
 		end, ...)
 
 		if not ok then
-			if typeof(result) == "table" and typeof(result.message) == "string" then
-				local errorTable = AssertionError.new({ message = result.message })
-				errorTable.stack = preservedStack
-				error(errorTable)
-			else
-				local errorTable = AssertionError.new({ message = result })
-				errorTable.stack = preservedStack
-				error(errorTable)
-			end
+			handleError(result)
 		end
 	end
+	return throwingMatcher
 end
 
 function _validateResult(result: any)

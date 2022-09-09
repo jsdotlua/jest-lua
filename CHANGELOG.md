@@ -1,5 +1,9 @@
 # Jest Roblox Changelog
 
+## Unreleased
+
+* :bug: Fix test result message for failing test ([#237](https://github.com/Roblox/jest-roblox/pull/237))
+
 ## 3.0.0 alpha 0 (2022-08-11)
 
 * :sparkles: Port `jest-config` ([#203](https://github.com/Roblox/jest-roblox/pull/203))

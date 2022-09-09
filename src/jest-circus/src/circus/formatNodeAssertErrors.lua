@@ -14,6 +14,11 @@ local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local instanceof = LuauPolyfill.instanceof
 
+-- ROBLOX deviation START: additional dependencies
+local RobloxShared = require(Packages.RobloxShared)
+local escapePatternCharacters = RobloxShared.escapePatternCharacters
+-- ROBLOX deviation END
+
 type Record<K, T> = { [K]: T }
 
 local exports = {}
@@ -153,7 +158,12 @@ function assertionErrorMessage(error_, options: DiffOptions)
 	local diffString = diff(expected, actual, options)
 	local hasCustomMessage = not Boolean.toJSBoolean(generatedMessage)
 	local operatorName = getOperatorName(operator, stack)
-	local trimmedStack = stack:gsub(message, "", 1):gsub("AssertionError(.*)", "")
+	-- ROBLOX deviation START: adjust replace pattern to work with gsub
+	local escapedMessage = escapePatternCharacters(message)
+	local rep1 = stack:gsub(escapedMessage, "", 1)
+	local rep2 = rep1:gsub("^AssertionError([^\n]*)", "")
+	local trimmedStack = rep2:gsub("^Error([^\n]*)", "")
+	-- ROBLOX deviation END
 
 	if operatorName == "doesNotThrow" then
 		return buildHintString(assertThrowingMatcherHint(operatorName))
