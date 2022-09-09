@@ -103,7 +103,10 @@ function buildArrayTests(title: string, table_: Global_EachTable): EachTests
 end
 
 function buildTemplateTests(title: string, table_: Global_EachTable, taggedTemplateData: Global_TemplateData): EachTests
-	local headings = getHeadingKeys((table_ :: Array<string>)[1] :: string)
+	-- ROBLOX deviation START: API change support Array<string> or string as header
+	local headingString = if Array.isArray(table_) then (table_ :: Array<string>)[1] :: string else table_ :: string
+	local headings = getHeadingKeys(headingString)
+	-- ROBLOX deviation END
 	validateTemplateTableArguments(headings, taggedTemplateData)
 	return convertTemplateTable(title, headings, taggedTemplateData)
 end
