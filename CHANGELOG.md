@@ -1,9 +1,14 @@
 # Jest Roblox Changelog
 
-## Unreleased
+## 3.0.0 rc 0 (2022-09-09)
 
 * :sparkles: Added `task.delay()` and `time()` as fake timers ([#242](https://github.com/Roblox/jest-roblox/pull/242))
 * :bug: Fix test result message for failing test ([#237](https://github.com/Roblox/jest-roblox/pull/237))
+* :bug: Fix `testNamePattern` config value ([#232](https://github.com/Roblox/jest-roblox/pull/232))
+* :bug: Fix `.each` for template syntax ([#246](https://github.com/Roblox/jest-roblox/pull/246))
+* :hammer_and_wrench: Update LuauPolyfill to [v1.0.0](https://github.com/Roblox/luau-polyfill/blob/v1.0.0/CHANGELOG.md#100) ([#237](https://github.com/Roblox/jest-roblox/pull/237))
+* :hammer_and_wrench: Update Roact to [v17.0.1-rc.16](https://github.com/Roblox/roact-alignment/tree/v17.0.1-rc.16) ([#237](https://github.com/Roblox/jest-roblox/pull/237))
+* :hammer_and_wrench: Explicitly license files ([#235](https://github.com/Roblox/jest-roblox/pull/235))
 
 ## 3.0.0 alpha 0 (2022-08-11)
 
