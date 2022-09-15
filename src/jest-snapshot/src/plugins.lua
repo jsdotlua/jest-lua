@@ -9,9 +9,6 @@
 local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
-local Array = LuauPolyfill.Array
-
 local jestMockSerializer = require(CurrentModule.mockSerializer)
 
 local prettyFormat = require(Packages.PrettyFormat)
@@ -29,8 +26,6 @@ local PLUGINS: PrettyFormatPlugins = {
 	plugins.RobloxInstance,
 }
 
-local originalPLUGINS: PrettyFormatPlugins = Array.from(PLUGINS) :: PrettyFormatPlugins
-
 -- Prepend to list so the last added is the first tested.
 local function addSerializer(plugin_)
 	table.insert(PLUGINS, 1, plugin_)
@@ -40,15 +35,7 @@ local function getSerializers()
 	return PLUGINS
 end
 
--- ROBLOX deviation: add resetSerializers to deal with resetting plugins since we don't
--- have any of jest's test resetting implemented
-local function resetSerializers()
-	-- ROBLOX FIXME Luau: should be inferred from passed param
-	PLUGINS = Array.from(originalPLUGINS) :: PrettyFormatPlugins
-end
-
 return {
 	addSerializer = addSerializer,
 	getSerializers = getSerializers,
-	resetSerializers = resetSerializers,
 }

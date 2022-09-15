@@ -24,7 +24,6 @@ local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
-local afterAll = JestGlobals.afterAll
 
 local printSnapshot = require(CurrentModule.printSnapshot)
 type Chalk = printSnapshot.Chalk
@@ -133,10 +132,6 @@ beforeAll(function()
 			return typeof(val) == "string" and val:match(ansiRegex)
 		end,
 	})
-end)
-
-afterAll(function()
-	expect.resetSnapshotSerializers()
 end)
 
 describe("chalk", function()

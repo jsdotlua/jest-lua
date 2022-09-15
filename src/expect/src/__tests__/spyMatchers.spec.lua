@@ -14,7 +14,6 @@ local JestGlobals = require(Packages.Dev.JestGlobals)
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
-local afterAll = JestGlobals.afterAll
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
@@ -52,10 +51,6 @@ local mock
 beforeAll(function()
 	mock = jestMock.new()
 	expect.addSnapshotSerializer(alignedAnsiStyleSerializer)
-end)
-
-afterAll(function()
-	expect.resetSnapshotSerializers()
 end)
 
 for _, called in ipairs({ "toBeCalled", "toHaveBeenCalled" }) do

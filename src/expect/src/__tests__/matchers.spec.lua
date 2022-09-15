@@ -14,7 +14,6 @@ local JestGlobals = require(Packages.Dev.JestGlobals)
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
-local afterAll = JestGlobals.afterAll
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local extends = LuauPolyfill.extends
@@ -38,10 +37,6 @@ local expect = require(CurrentModule)
 
 beforeAll(function()
 	expect.addSnapshotSerializer(alignedAnsiStyleSerializer)
-end)
-
-afterAll(function()
-	expect.resetSnapshotSerializers()
 end)
 
 it("should throw if passed two arguments", function()

@@ -297,8 +297,6 @@ setMatchers(toThrowMatchers, true, Expect)
 local plugins = require(Packages.JestSnapshot).plugins
 Expect.addSnapshotSerializer = plugins.addSerializer
 -- ROBLOX deviation END
--- ROBLOX deviation: exposing our custom resetSnapshotSerializers
-Expect.resetSnapshotSerializers = plugins.resetSerializers
 -- ROBLOX deviation START: skipped
 -- Expect.assertions = assertions
 -- Expect.hasAssertions = hasAssertions

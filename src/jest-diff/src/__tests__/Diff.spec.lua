@@ -24,7 +24,6 @@ local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
-local afterAll = JestGlobals.afterAll
 
 local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 
@@ -79,10 +78,6 @@ local expanded = { expand = true }
 
 beforeAll(function()
 	expect.addSnapshotSerializer(alignedAnsiStyleSerializer)
-end)
-
-afterAll(function()
-	expect.resetSnapshotSerializers()
 end)
 
 describe("different types", function()

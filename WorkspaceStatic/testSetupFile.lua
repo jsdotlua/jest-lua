@@ -12,7 +12,6 @@ type Function = (...any) -> ...any
 local JestGlobals = require(script.Parent.JestGlobals.JestGlobals)
 local jestExpect = JestGlobals.expect
 local beforeAll = JestGlobals.beforeAll
-local afterAll = JestGlobals.afterAll
 
 local JestSnapshotSerializerRaw = require(script.Parent.Parent.JestSnapshotSerializerRaw)
 local ConvertAnsi = require(script.Parent.Parent.PrettyFormat).plugins.ConvertAnsi
@@ -20,10 +19,6 @@ local ConvertAnsi = require(script.Parent.Parent.PrettyFormat).plugins.ConvertAn
 beforeAll(function()
 	jestExpect.addSnapshotSerializer(JestSnapshotSerializerRaw)
 	jestExpect.addSnapshotSerializer(ConvertAnsi)
-end)
-
-afterAll(function()
-	jestExpect.resetSnapshotSerializers()
 end)
 
 return {}

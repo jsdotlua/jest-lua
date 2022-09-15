@@ -18,7 +18,6 @@ local Packages = CurrentModule.Parent
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
-local afterAll = JestGlobals.afterAll
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Object = LuauPolyfill.Object
@@ -37,10 +36,6 @@ local expect = require(CurrentModule)
 
 beforeAll(function()
 	expect.addSnapshotSerializer(alignedAnsiStyleSerializer)
-end)
-
-afterAll(function()
-	expect.resetSnapshotSerializers()
 end)
 
 expect.extend({

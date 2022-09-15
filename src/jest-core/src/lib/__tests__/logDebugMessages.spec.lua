@@ -18,7 +18,6 @@ type NodeJS_WriteStream = RobloxShared.NodeJS_WriteStream
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
-local afterAll = JestGlobals.afterAll
 local expect = JestGlobals.expect
 
 local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).wrap
@@ -41,10 +40,6 @@ local JestSnapshotSerializerRaw = require(Packages.Dev.JestSnapshotSerializerRaw
 
 beforeAll(function()
 	expect.addSnapshotSerializer(JestSnapshotSerializerRaw)
-end)
-
-afterAll(function()
-	expect.resetSnapshotSerializers()
 end)
 
 local function getOutputStream(resolve: (message: string) -> ())

@@ -16,7 +16,6 @@ local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
-local afterAll = JestGlobals.afterAll
 
 local DIFF_DELETE = require(CurrentModule.CleanupSemantic).DIFF_DELETE
 local DIFF_EQUAL = require(CurrentModule.CleanupSemantic).DIFF_EQUAL
@@ -54,10 +53,6 @@ beforeAll(function()
 			return typeof(val) == "string"
 		end,
 	})
-end)
-
-afterAll(function()
-	expect.resetSnapshotSerializers()
 end)
 
 local diffsCommonStartEnd = {

@@ -770,10 +770,10 @@ Error message: <r>"<d>expect(</><r>received</><r><d>).</>toBe<d>(</><g>expected<
       Error: <d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
       Expected: <g>2</>
       Received: <r>4</>
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:185
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:174
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:173
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:184
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:180
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:169
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:168
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:179
 ]=]
 
 return exports

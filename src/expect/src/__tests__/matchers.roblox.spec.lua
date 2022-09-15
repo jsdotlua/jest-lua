@@ -20,7 +20,6 @@ local JestGlobals = require(Packages.Dev.JestGlobals)
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
-local afterAll = JestGlobals.afterAll
 
 local expect = require(CurrentModule)
 
@@ -116,10 +115,6 @@ beforeAll(function()
 		bottomBorder.ZIndex = 2
 		bottomBorder.Parent = exampleCard
 	end
-end)
-
-afterAll(function()
-	expect.resetSnapshotSerializers()
 end)
 
 -- test cases devised from https://github.com/Roblox/jest-roblox/pull/27#discussion_r561374828
