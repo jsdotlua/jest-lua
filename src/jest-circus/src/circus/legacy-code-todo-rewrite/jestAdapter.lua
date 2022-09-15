@@ -52,7 +52,7 @@ local function jestAdapter(
 			environment = environment,
 			globalConfig = globalConfig,
 			localRequire = function(...)
-				runtime:requireModule(...)
+				return runtime:requireModule(...)
 			end,
 			-- ROBLOX TODO: do we need this?
 			-- parentProcess = process,
