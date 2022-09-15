@@ -56,7 +56,7 @@ local function getNoTestFoundVerbose(testRunData: TestRunData, globalConfig: Con
 			"\n"
 		)
 		return if Boolean.toJSBoolean(testRun.matches.total)
-			then ("In %s\n"):format(chalk.bold(config.rootDir)) .. ("  %s checked.\n"):format(
+			then ("In %s\n"):format(chalk.bold(tostring(config.rootDir))) .. ("  %s checked.\n"):format(
 				pluralize("file", Boolean.toJSBoolean(testRun.matches.total) and testRun.matches.total or 0, "s")
 			) .. statsMessage
 			else
