@@ -271,6 +271,11 @@ function printPlugin(plugin_: Plugin, val: any, config: Config, indentation: str
 		end
 	end)
 	if not ok then
+		-- ROBLOX deviation START: float the error up if a PrettyFormatPluginError is already thrown to avoid nesting
+		if typeof(err) == "table" and err.name == "PrettyFormatPluginError" then
+			error(err)
+		end
+		-- ROBLOX deviation END
 		error(PrettyFormatPluginError(err))
 	end
 
