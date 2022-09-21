@@ -969,17 +969,19 @@ local function normalize(
 					-- 		else transform
 					-- 	break
 					-- ROBLOX deviation END
+				elseif
+					key == "testPathIgnorePatterns"
+					-- or key == "coveragePathIgnorePatterns"
+					-- or key == "modulePathIgnorePatterns"
+					-- or key == "transformIgnorePatterns"
+					-- or key == "watchPathIgnorePatterns"
+					-- or key == "unmockedModulePathPatterns"
+				then
+					-- ROBLOX deviation START: subbing rootDir not supported
+					value = oldOptions[key]
+					-- ROBLOX deviation END
+					break
 					-- ROBLOX deviation START: no need to resolve
-					-- elseif
-					-- 	key == "coveragePathIgnorePatterns"
-					-- 	or key == "modulePathIgnorePatterns"
-					-- 	or key == "testPathIgnorePatterns"
-					-- 	or key == "transformIgnorePatterns"
-					-- 	or key == "watchPathIgnorePatterns"
-					-- 	or key == "unmockedModulePathPatterns"
-					-- then
-					-- 	value = normalizeUnmockedModulePathPatterns(oldOptions, key)
-					-- 	break
 					-- elseif key == "haste" then
 					-- 	value = Object.assign({}, oldOptions[key])
 					-- 	if

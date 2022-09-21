@@ -122,15 +122,15 @@ local expectedPathAbsAnother: string
 -- 	end
 -- 	return nil
 -- end)
-
--- -- Windows uses backslashes for path separators, which need to be escaped in
--- -- regular expressions. This little helper function helps us generate the
--- -- expected strings for checking path patterns.
--- local function joinForPattern(...: string)
--- 	local args = { ... }
--- 	return Array.join(args, escapeStrForRegex(path.sep))
--- end
 -- ROBLOX deviation END
+
+-- Windows uses backslashes for path separators, which need to be escaped in
+-- regular expressions. This little helper function helps us generate the
+-- expected strings for checking path patterns.
+local function joinForPattern(...: string)
+	local args = { ... }
+	return Array.join(args, "/")
+end
 
 local originalWarn = console.warn
 
@@ -611,48 +611,50 @@ end)
 -- 		end)
 -- 	end)
 -- end)
--- describe("testPathIgnorePatterns", function()
--- 	it("does not normalize paths relative to rootDir", function()
--- 		return Promise.resolve():andThen(function()
--- 			-- This is a list of patterns, so we can't assume any of them are
--- 			-- directories
--- 			local options = normalize(
--- 				{ rootDir = "/root/path/foo", testPathIgnorePatterns = { "bar/baz", "qux/quux" } },
--- 				{} :: Config_Argv
--- 			):expect().options
--- 			expect(options.testPathIgnorePatterns).toEqual({
--- 				joinForPattern("bar", "baz"),
--- 				joinForPattern("qux", "quux"),
--- 			})
--- 		end)
--- 	end)
--- 	it("does not normalize trailing slashes", function()
--- 		return Promise.resolve():andThen(function()
--- 			-- This is a list of patterns, so we can't assume any of them are
--- 			-- directories
--- 			local options = normalize(
--- 				{ rootDir = "/root/path/foo", testPathIgnorePatterns = { "bar/baz", "qux/quux/" } },
--- 				{} :: Config_Argv
--- 			):expect().options
--- 			expect(options.testPathIgnorePatterns).toEqual({
--- 				joinForPattern("bar", "baz"),
--- 				joinForPattern("qux", "quux", ""),
--- 			})
--- 		end)
--- 	end)
--- 	it("substitutes <rootDir> tokens", function()
--- 		return Promise.resolve():andThen(function()
--- 			local options = normalize(
--- 				{ rootDir = "/root/path/foo", testPathIgnorePatterns = { "hasNoToken", "<rootDir>/hasAToken" } },
--- 				{} :: Config_Argv
--- 			):expect().options
--- 			expect(options.testPathIgnorePatterns).toEqual({
--- 				"hasNoToken",
--- 				joinForPattern("", "root", "path", "foo", "hasAToken"),
--- 			})
--- 		end)
--- 	end)
--- end)
+describe("testPathIgnorePatterns", function()
+	it("does not normalize paths relative to rootDir", function()
+		return Promise.resolve():andThen(function()
+			-- This is a list of patterns, so we can't assume any of them are
+			-- directories
+			local options = normalize({
+				rootDir = pathToInstance("/root/path/foo"),
+				testPathIgnorePatterns = { "bar/baz", "qux/quux" },
+			}, {} :: Config_Argv):expect().options
+			expect(options.testPathIgnorePatterns).toEqual({
+				joinForPattern("bar", "baz"),
+				joinForPattern("qux", "quux"),
+			})
+		end)
+	end)
+	it("does not normalize trailing slashes", function()
+		return Promise.resolve():andThen(function()
+			-- This is a list of patterns, so we can't assume any of them are
+			-- directories
+			local options = normalize({
+				rootDir = pathToInstance("/root/path/foo"),
+				testPathIgnorePatterns = { "bar/baz", "qux/quux/" },
+			}, {} :: Config_Argv):expect().options
+			expect(options.testPathIgnorePatterns).toEqual({
+				joinForPattern("bar", "baz"),
+				joinForPattern("qux", "quux", ""),
+			})
+		end)
+	end)
+	-- ROBLOX deviation START: not supported
+	-- it("substitutes <rootDir> tokens", function()
+	-- 	return Promise.resolve():andThen(function()
+	-- 		local options = normalize({
+	-- 			rootDir = pathToInstance("/root/path/foo"),
+	-- 			testPathIgnorePatterns = { "hasNoToken", "<rootDir>/hasAToken" },
+	-- 		}, {} :: Config_Argv):expect().options
+	-- 		expect(options.testPathIgnorePatterns).toEqual({
+	-- 			"hasNoToken",
+	-- 			joinForPattern("", "root", "path", "foo", "hasAToken"),
+	-- 		})
+	-- 	end)
+	-- end)
+	-- ROBLOX deviation END
+end)
 -- describe("modulePathIgnorePatterns", function()
 -- 	it("does not normalize paths relative to rootDir", function()
 -- 		return Promise.resolve():andThen(function()
