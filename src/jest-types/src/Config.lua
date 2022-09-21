@@ -482,8 +482,8 @@ export type GlobalConfig = {
 	-- forceExit: boolean,
 	-- ROBLOX deviation END
 	json: boolean,
-	globalSetup: string?,
 	-- ROBLOX deviation START: not supported
+	-- globalSetup: string?,
 	-- globalTeardown: string?,
 	-- lastCommit: boolean,
 	-- logHeapUsage: boolean,

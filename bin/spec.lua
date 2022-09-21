@@ -20,7 +20,7 @@ local processServiceExists, ProcessService = pcall(function()
 end)
 
 local status, result = runCLI(Workspace, {
-	verbose = _G.verbose == "true",
+	verbose = if _G.verbose == "true" then true else nil,
 	ci = _G.CI == "true",
 	updateSnapshot = _G.UPDATESNAPSHOT == "true",
 }, { Workspace }):awaitStatus()
