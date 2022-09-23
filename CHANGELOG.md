@@ -1,5 +1,12 @@
 # Jest Roblox Changelog
 
+## 3.0.0 rc 1 (2022-09-23)
+* :rotating_light: `jest.resetSnapshotSerializer` removed ([#253](https://github.com/Roblox/jest-roblox/pull/253))
+* :bug: Fix `PrettyFormatPluginError` not throwing on invalid plugins ([#250](https://github.com/Roblox/jest-roblox/pull/250))
+* :bug: Fix `snapshotSerializers` config option not working ([#251](https://github.com/Roblox/jest-roblox/pull/251))
+* :bug: Fix crash when no tests are discovered ([#252](https://github.com/Roblox/jest-roblox/pull/252))
+* :bug: Fix `testPathIgnorePatterns` config option crashing ([#259](https://github.com/Roblox/jest-roblox/pull/259))
+
 ## 3.0.0 rc 0 (2022-09-09)
 
 * :sparkles: Added `task.delay()` and `time()` as fake timers ([#242](https://github.com/Roblox/jest-roblox/pull/242))
