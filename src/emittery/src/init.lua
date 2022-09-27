@@ -27,9 +27,6 @@ type Promise<T> = LuauPolyfill.Promise<T>
 type PropertyKey = string | number | Symbol
 type EventName = PropertyKey
 
--- ROBLOX deviation: use `unknown` type until Luau starts to support it
-type unknown = any
-
 local HttpService = game:GetService("HttpService")
 
 -- ROBLOX deviation START: predefine variables

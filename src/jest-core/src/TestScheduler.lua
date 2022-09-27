@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-type unknown = any --[[ ROBLOX FIXME: adding `unknown` type alias to make it easier to use Luau unknown equivalent when supported ]]
 local Packages = script.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
@@ -560,7 +559,7 @@ function TestScheduler:_getReporterProps(
 	reporter: string | Config_ReporterConfig
 ): { path: string, options: Record<string, unknown> }
 	if typeof(reporter) == "string" then
-		return { options = self._options, path = reporter }
+		return { options = self._options :: any, path = reporter }
 	elseif Array.isArray(reporter) then
 		-- ROBLOX deviation START: need explicit types as Luau doesn't support tuple types
 		local path, options = reporter[1] :: string, reporter[2] :: Record<string, any>

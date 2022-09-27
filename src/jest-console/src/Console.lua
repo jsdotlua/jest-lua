@@ -31,8 +31,6 @@ local format = require(CurrentModule.helpers).format
 local RobloxShared = require(Packages.RobloxShared)
 type Writeable = RobloxShared.Writeable
 
-type unknown = any
-
 export type Console = {
 	error: (...unknown) -> (),
 	log: (...unknown) -> (),

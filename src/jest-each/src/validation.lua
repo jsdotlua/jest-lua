@@ -14,8 +14,6 @@ local Error = LuauPolyfill.Error
 local String = LuauPolyfill.String
 type Array<T> = LuauPolyfill.Array<T>
 
-type unknown = any --[[ ROBLOX FIXME: adding `unknown` type alias to make it easier to use Luau unknown equivalent when supported ]]
-
 local exports = {}
 
 local chalk = require(Packages.ChalkLua)
@@ -33,6 +31,7 @@ local EXPECTED_COLOR = chalk.green
 local RECEIVED_COLOR = chalk.red
 
 local function validateArrayTable(table_: unknown): ()
+	-- ROBLOX deviation START: need a tableArr variable to help Luau analyze
 	if not Array.isArray(table_) then
 		error(
 			Error.new(
@@ -42,8 +41,11 @@ local function validateArrayTable(table_: unknown): ()
 		)
 	end
 
-	if isTaggedTemplateLiteral(table_) then
-		if isEmptyString(table_[1]) then
+	local tableArr = table_ :: Array<unknown>
+	-- ROBLOX deviation END
+
+	if isTaggedTemplateLiteral(tableArr) then
+		if isEmptyString(tableArr[1]) then
 			error(Error.new("Error: `.each` called with an empty Tagged Template Literal of table data.\n"))
 		end
 		error(
@@ -53,7 +55,7 @@ local function validateArrayTable(table_: unknown): ()
 		)
 	end
 
-	if isEmptyTable(table_) then
+	if isEmptyTable(tableArr) then
 		error(Error.new("Error: `.each` called with an empty Array of table data.\n"))
 	end
 end

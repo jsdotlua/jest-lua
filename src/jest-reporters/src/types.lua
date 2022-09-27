@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-type unknown = any --[[ ROBLOX FIXME: adding `unknown` type alias to make it easier to use Luau unknown equivalent when supported ]]
 type void = nil
 
 local CurrentModule = script.Parent

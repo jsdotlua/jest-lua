@@ -5,7 +5,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  ]]
-type unknown = any --[[ ROBLOX FIXME: adding `unknown` type alias to make it easier to use Luau unknown equivalent when supported ]]
 
 local exports = {}
 
@@ -24,8 +23,10 @@ local helpersModule = require(CurrentModule.helpers)
 local format = helpersModule.format
 local formatWithOptions = helpersModule.formatWithOptions
 
-local WriteableModule = require(Packages.RobloxShared)
-type Writeable = WriteableModule.Writeable
+local RobloxShared = require(Packages.RobloxShared)
+type Writeable = RobloxShared.Writeable
+type NodeJS_WriteStream = RobloxShared.NodeJS_WriteStream
+
 -- ROBLOX deviation END
 
 local chalk = require(Packages.ChalkLua)
@@ -80,7 +81,11 @@ type CustomConsolePrivate = CustomConsole & {
 local CustomConsole = setmetatable({}, { __index = Console }) :: any
 CustomConsole.__index = CustomConsole
 
-function CustomConsole.new(stdout: unknown, stderr: unknown, formatBuffer_: Formatter?): CustomConsole
+function CustomConsole.new(
+	stdout: NodeJS_WriteStream,
+	stderr: NodeJS_WriteStream,
+	formatBuffer_: Formatter?
+): CustomConsole
 	local self = setmetatable((Console.new(stdout, stderr) :: any) :: CustomConsolePrivate, CustomConsole)
 
 	local formatBuffer: Formatter = if formatBuffer_ ~= nil

@@ -140,7 +140,6 @@ local function typeEquality(a: any, b: any): boolean | nil
 end
 
 -- ROBLOX deviation START: skipped as Lua doesn't support ArrayBuffer
--- type unknown = any
 
 -- local function arrayBufferEquality(
 -- 	a: unknown,

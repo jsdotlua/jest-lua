@@ -6,8 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-type unknown = any --[[ ROBLOX FIXME: adding `unknown` type alias to make it easier to use Luau unknown equivalent when supported ]]
-
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
@@ -56,7 +54,7 @@ end
 
 local function assertPrintedJSX(val: unknown, expected: string, options: OptionsReceived?)
 	expect(formatElement(val, options)).toEqual(expected)
-	expect(formatTestObject(renderer.create(val):toJSON(), options)).toEqual(expected)
+	expect(formatTestObject(renderer.create(val :: any):toJSON(), options)).toEqual(expected)
 end
 
 it("supports a single element with no props or children", function()

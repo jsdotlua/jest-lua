@@ -18,8 +18,6 @@ return {
 	end,
 }
 
--- type unknown = any --[[ ROBLOX FIXME: adding `unknown` type alias to make it easier to use Luau unknown equivalent when supported ]]
-
 -- -- ROBLOX FIXME START: added types and objects that do not exist in Luau
 -- type NodeJS_ProcessEnv = any
 -- type NodeJS_Process = any

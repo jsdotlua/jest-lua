@@ -13,7 +13,6 @@
 	* limitations under the License.
 ]]
 -- ROBLOX NOTE upstream: Added some utilities to support keeping the upstream code consistent
-type unknown = any
 
 local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent
@@ -51,6 +50,8 @@ function formatter(inspectOptions: InspectOptions?, fmt: unknown, ...)
 	local fmtArgs = {}
 	local extraArgs = {}
 
+	local fmt_: string = ""
+
 	if type(fmt) == "string" then
 		local _, c = fmt:gsub("%%[sdj%%]", "")
 
@@ -62,14 +63,15 @@ function formatter(inspectOptions: InspectOptions?, fmt: unknown, ...)
 				table.insert(extraArgs, formattedValue)
 			end
 		end
+		fmt_ = fmt
 	else
-		fmt = inspect(fmt, inspectOptions)
+		fmt_ = inspect(fmt, inspectOptions)
 		for _, value in pairs(args) do
 			table.insert(extraArgs, getFormattedValue(value, inspectOptions))
 		end
 	end
 
-	return string.format(fmt, table.unpack(fmtArgs)) .. concatRestArgs(extraArgs)
+	return string.format(fmt_, table.unpack(fmtArgs)) .. concatRestArgs(extraArgs)
 end
 
 return {

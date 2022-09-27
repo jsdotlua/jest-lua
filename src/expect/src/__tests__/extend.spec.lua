@@ -9,9 +9,6 @@
 --  *
 --  */
 
--- ROBLOX deviation: use `unknown` type until Luau starts to support it
-type unknown = any
-
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 

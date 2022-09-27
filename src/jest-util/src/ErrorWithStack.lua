@@ -7,7 +7,6 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-type unknown = any --[[ ROBLOX FIXME: adding `unknown` type alias to make it easier to use Luau unknown equivalent when supported ]]
 local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
@@ -21,7 +20,7 @@ local ErrorWithStack = setmetatable({}, { __index = Error })
 ErrorWithStack.__index = ErrorWithStack
 function ErrorWithStack.new(
 	message: string | nil,
-	callsite: (...any) -> () | unknown,
+	callsite: (...any) -> (...unknown),
 	stackLimit: number?
 ): ErrorWithStack
 	-- Ensure we have a large stack length so we get full details.

@@ -119,7 +119,7 @@ function DefaultReporter.new(globalConfig: Config_GlobalConfig, _process: NodePr
 
 	-- ROBLOX deviation START: Added for tests otherwise isInteractive = false
 	if _process ~= nil and _process.env.IS_INTERACTIVE ~= nil then
-		self._isInteractive = _process.env.IS_INTERACTIVE
+		self._isInteractive = Boolean.toJSBoolean(_process.env.IS_INTERACTIVE)
 	end
 	-- ROBLOX deviation END
 

@@ -9,9 +9,6 @@
 
 local exports = {}
 
--- ROBLOX deviation: use `unknown` type until Luau starts to support it
-type unknown = any
-
 exports.default = function(globalToMutate: typeof(_G), key: string, value: unknown): ()
 	-- @ts-expect-error: no index
 	globalToMutate[key] = value

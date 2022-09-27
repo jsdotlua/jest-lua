@@ -20,9 +20,6 @@ local String = LuauPolyfill.String
 type Array<T> = LuauPolyfill.Array<T>
 type Record<K, T> = { [K]: T }
 
--- ROBLOX deviation: use `never` type until Luau starts to support it
-type never = any
-
 local exports = {}
 
 -- ROBLOX deviation START: not needed

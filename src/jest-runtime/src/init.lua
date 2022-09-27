@@ -7,8 +7,6 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-type unknown = any
-
 local Packages = script.Parent
 
 local LuauPolyfill = require(Packages.LuauPolyfill)

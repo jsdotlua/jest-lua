@@ -6,9 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
--- ROBLOX deviation: use `unknown` type until Luau starts to support it
-type unknown = any
-
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 local React = require(Packages.Dev.React)

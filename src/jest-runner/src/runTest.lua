@@ -7,7 +7,6 @@
  *
  ]]
 
-type unknown = any
 local Packages = script.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local console = LuauPolyfill.console

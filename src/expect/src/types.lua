@@ -20,9 +20,6 @@ type Partial<T> = any
 type Function = (...any) -> any
 type Object = LuauPolyfill.Object
 
--- ROBLOX deviation: use `unknown` type until Luau starts to support it
-type unknown = any
-
 -- ROBLOX deviation: inline Promise type here. should probably go into LuauPolyfill
 export type PromiseLike<T> = {
 	andThen: (

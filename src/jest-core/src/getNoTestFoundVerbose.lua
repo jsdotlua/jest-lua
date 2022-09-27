@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-type unknown = any --[[ ROBLOX FIXME: adding `unknown` type alias to make it easier to use Luau unknown equivalent when supported ]]
 local Packages = script.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
@@ -37,10 +36,10 @@ local function getNoTestFoundVerbose(testRunData: TestRunData, globalConfig: Con
 						if key == "roots" and #config.roots == 1 then
 							return nil
 						end
-						local value = (config :: Record<string, unknown>)[key]
+						local value = ((config :: any) :: Record<string, unknown>)[key]
 						if Boolean.toJSBoolean(value) then
 							local valueAsString = if Array.isArray(value)
-								then Array.join(value, ", ")
+								then Array.join(value :: Array<unknown>, ", ")
 								else tostring(value)
 							local matches =
 								pluralize("match", Boolean.toJSBoolean(stats_[key]) and stats_[key] or 0, "es")

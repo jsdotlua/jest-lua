@@ -15,8 +15,6 @@ type FakeTimers = JestFakeTimers.FakeTimers
 local moduleMockerModule = require(Packages.JestMock)
 type ModuleMocker = moduleMockerModule.ModuleMocker
 
-type unknown = any
-
 export type MockFactory = () -> ...unknown
 
 export type Jest = {

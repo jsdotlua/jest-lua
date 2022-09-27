@@ -9,7 +9,6 @@
 
 -- ROBLOX deviation: returning a function to be able to re-execute the module in tests
 return function()
-	type unknown = any --[[ ROBLOX FIXME: adding `unknown` type alias to make it easier to use Luau unknown equivalent when supported ]]
 	local CurrentModule = script.Parent
 	local Packages = CurrentModule.Parent
 	local LuauPolyfill = require(Packages.LuauPolyfill)
