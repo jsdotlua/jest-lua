@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 3.0.0 (2022-09-30)
+
 * :sparkles: Added `expect.assertions(number)` and `expect.hasAssertions()` functions ([#256](https://github.com/Roblox/jest-roblox/pull/256))
 
 ## 3.0.0 rc 1 (2022-09-23)

@@ -37,9 +37,7 @@ local expect = JestGlobals.expect
 ---
 
 ## Inspiration and Prior Work
-Jest Roblox is a Roblox port of the open source JavaScript testing framework [Jest](https://github.com/facebook/jest). Modules in the `modules` directory are  aligned to [v27.4.7](https://github.com/facebook/jest/tree/v27.4.7) of Jest, but the current public API is compatible with TestEZ [v0.4.0](https://github.com/Roblox/testez/tree/v0.4.0) while we complete our alignment.
-
-It is also an evolution of an older test framework used at Roblox, [TestEZ](https://github.com/Roblox/TestEZ). It is currently forked from commit [d983722](https://github.com/Roblox/testez/tree/d983722fb085141db3a7e80a37b30b03a69e6e55) of TestEZ.
+Jest Roblox is a Roblox port of the open source JavaScript testing framework [Jest](https://github.com/facebook/jest). Modules in the `modules` directory are  aligned to [v27.4.7](https://github.com/facebook/jest/tree/v27.4.7) of Jest.
 
 ---
 
