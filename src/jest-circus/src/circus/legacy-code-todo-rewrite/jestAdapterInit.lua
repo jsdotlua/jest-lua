@@ -49,12 +49,7 @@ type Global_ItConcurrent = typesModule.Global_ItConcurrent
 type Global_ItConcurrentExtended = typesModule.Global_ItConcurrentExtended
 -- ROBLOX deviation END
 local expectModule = require(Packages.Expect)
--- ROBLOX TODO START: implement
-local extractExpectedAssertionsErrors = function(...)
-	return {}
-end
--- local extractExpectedAssertionsErrors = expectModule.extractExpectedAssertionsErrors
--- ROBLOX TODO END
+local extractExpectedAssertionsErrors = expectModule.extractExpectedAssertionsErrors
 local getState = expectModule.getState
 local setState = expectModule.setState
 local bind = require(Packages.JestEach).bind

@@ -1,5 +1,9 @@
 # Jest Roblox Changelog
 
+## Unreleased
+
+* :sparkles: Added `expect.assertions(number)` and `expect.hasAssertions()` functions ([#256](https://github.com/Roblox/jest-roblox/pull/256))
+
 ## 3.0.0 rc 1 (2022-09-23)
 * :rotating_light: `jest.resetSnapshotSerializer` removed ([#253](https://github.com/Roblox/jest-roblox/pull/253))
 * :bug: Fix `PrettyFormatPluginError` not throwing on invalid plugins ([#250](https://github.com/Roblox/jest-roblox/pull/250))

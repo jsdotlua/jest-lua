@@ -11,6 +11,7 @@ local Packages = script.Parent.Parent.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local describe = JestGlobals.describe
+local expect = JestGlobals.expect
 local it = JestGlobals.it
 -- ROBLOX deviation START: collectHandles not ported yet
 -- local LuauPolyfill = require(Packages.LuauPolyfill)
@@ -120,7 +121,9 @@ local it = JestGlobals.it
 -- ROBLOX deviation START: checking if collectHandles.lua file loads without errors
 describe("collectHandles - custom tests", function()
 	it("should load collectHandles module", function()
-		require(script.Parent.Parent.collectHandles)
+		local collectHandlesModule = require(script.Parent.Parent.collectHandles)
+
+		expect(collectHandlesModule).toBeDefined()
 	end)
 end)
 -- ROBLOX deviation END

@@ -125,12 +125,7 @@ type AsymmetricMatchers = {
 } & AsymmetricMatchersOmitAnyAndAnything
 -- ROBLOX deviation end
 
---[[
-	ROBLOX TODO: add default generic param when possible
-	original code:
-	export type Expect<State extends MatcherState = MatcherState> = {
-]]
-export type Expect<State> = {
+export type Expect<State = MatcherState> = {
 	-- ROBLOX deviation: no way to express __call metamethod typing
 	-- <T = unknown>(actual: T) -> Matchers<void, T>;
 

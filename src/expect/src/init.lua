@@ -30,7 +30,7 @@ local stringContaining = AsymmetricMatchers.stringContaining
 local stringNotContaining = AsymmetricMatchers.stringNotContaining
 local stringMatching = AsymmetricMatchers.stringMatching
 local stringNotMatching = AsymmetricMatchers.stringNotMatching
-
+local extractExpectedAssertionsErrors = require(CurrentModule.extractExpectedAssertionsErrors).default
 local JasmineUtils = require(CurrentModule.jasmineUtils)
 local equals = JasmineUtils.equals
 
@@ -285,8 +285,25 @@ Expect.stringMatching = stringMatching
 
 --[[
 	ROBLOX deviation: skipped code
-	original code lines: 376 - 416
+	original code lines: 376 - 392
 ]]
+
+local function assertions(expected: number)
+	local error_ = Error.new()
+	if Error.captureStackTrace then
+		Error.captureStackTrace(error_, assertions)
+	end
+	setState({ expectedAssertionsNumber = expected, expectedAssertionsNumberError = error_ })
+end
+local function hasAssertions(...: any)
+	local args = { ... }
+	local error_ = Error.new()
+	if Error.captureStackTrace then
+		Error.captureStackTrace(error_, hasAssertions)
+	end
+	matcherUtils.ensureNoExpected(args[1], ".hasAssertions")
+	setState({ isExpectingAssertions = true, isExpectingAssertionsError = error_ })
+end
 
 -- add default jest matchers
 setMatchers(matchers, true, Expect)
@@ -297,14 +314,11 @@ setMatchers(toThrowMatchers, true, Expect)
 local plugins = require(Packages.JestSnapshot).plugins
 Expect.addSnapshotSerializer = plugins.addSerializer
 -- ROBLOX deviation END
--- ROBLOX deviation START: skipped
--- Expect.assertions = assertions
--- Expect.hasAssertions = hasAssertions
--- ROBLOX deviation END
+Expect.assertions = assertions
+Expect.hasAssertions = hasAssertions
 Expect.getState = getState
 Expect.setState = setState
--- ROBLOX deviation: skipped
--- Expect.extractExpectedAssertionsErrors = extractExpectedAssertionsErrors
+Expect.extractExpectedAssertionsErrors = extractExpectedAssertionsErrors
 
 -- ROBLOX TODO: ADO-1554 clean up the following deviations and move them to the
 -- appropriate locations

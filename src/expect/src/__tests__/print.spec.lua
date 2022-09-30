@@ -122,6 +122,8 @@ describe("printing constructor", function()
 					return "Doge"
 				end,
 			})
+			local result = Print.printExpectedConstructorNameNot("Received", Dog)
+			expect(result).toContain("Received: never [32mDoge")
 		end)
 
 		it('does not print name or "never" for class with empty tostring', function()
