@@ -5,10 +5,34 @@ title: Deviations
 
 The Jest Roblox alignment effort aims to map as closely to Jest's API as possible, but there are a few places where language deviations require us to omit functionality or deviate our approach. Deviations are also sometimes made to maintain Lua-nativity. Any user-facing deviations are documented here.
 
+## Globals
+
+### `.each`
+Tagged templates are not available in Lua. As an alternative, a list of tables can be passed into `each`. First argument is a string with headings separated by |, or a table with a single element containing that.
+
+```lua
+test.each('a | b | expected',
+	{1, 1, 2},
+	{1, 2, 3},
+	{2, 1, 3}
+)('returns $expected when $a is added $b', function(ref)
+	local a, b, expected = ref.a, ref.b, ref.expected
+	expect(a + b).toBe(expected)
+end)
+```
+
+An array of arrays can still be passed, see [`.each`](api#describeeachtablename-fn-timeout).
+
 ## Expect
 
 ### `.never`
 Since `not` is a reserved keyword in Lua, Jest Roblox uses `never` to test the opposite of a matcher.
+
+Some aliases are provided:
+* `.arrayNotContaining`
+* `.objectNotContaining`
+* `.stringNotContaining`
+* `.stringNotMatching`
 
 ### `expect.extend(matchers)`
 The first argument that a custom matcher takes in `expect.extend(matchers)` always needs to be a `self`, which is assigned the `matcherContext`. It can be left empty with a `_` if the `matcherContext` is not needed. See the [Custom Matchers API doc](expect#custom-matchers-api) for more information.
@@ -30,7 +54,7 @@ Lua doesn't have constructors for primitive types, so `expect.any` accepts eithe
 - If a table is passed in, it checks that the received value in is an instance (or a derived instance) of the expected table, using the [`instanceof` method in LuauPolyfill](https://github.com/Roblox/luau-polyfill/blob/main/src/instanceof.lua)
 
 ### `expect.stringMatching(string | regexp)`
-`expect.stringMatching(string | regexp)` can either accept a [Lua string pattern](https://developer.roblox.com/en-us/articles/string-patterns-reference) or a [LuauRegExp RegExp object](expect#regexp).
+`expect.stringMatching(string | regexp)` can either accept a [Lua string pattern](https://developer.roblox.com/en-us/articles/string-patterns-reference) or a [RegExp](expect#regexp).
 
 ### `.toHaveLength(number)`
 `.toHaveLength(number)` uses the Lua `#` operator to check the length of the received value. Since `#` is only well defined for non-sparse array-like tables and strings it will return 0 for tables with key-value pairs. It also checks the `.length` property of the table instead if it has one.
@@ -48,6 +72,9 @@ When doing `nil` checking, use of `.toBeNil()` and `.never.toBeNil()` is encoura
 
 ### `.toBeInstanceOf(prototype)`
 `.toBeInstanceOf(prototype)` uses the [`instanceof` method in LuauPolyfill](https://github.com/Roblox/luau-polyfill/blob/main/src/instanceof.lua) to check that a value is an instance (or a derived instance) of a prototype class.
+
+### `.toMatch(string | regexp)`
+`.toMatch` matches a [Lua string pattern](https://developer.roblox.com/en-us/articles/string-patterns-reference) or a [Regexp](expect#regexp).
 
 ### `.toMatchInstance(table)`
 `.toMatchInstance` is custom matcher unique to Jest Roblox that allows for matching a Roblox Instance against a table of properties.
@@ -85,3 +112,22 @@ We would write it in Lua as:
 local mockFn = jest.fn()
 local instance1 = mockFn.new()
 ```
+
+## Fake Timers
+
+### `jest.useFakeTimers()`
+`jest.useFakeTimers()` injects fake versions of Lua and Roblox timers.
+
+The supported timers are `delay`, `tick`, `time`, `DateTime`, `task.delay`, `os.time`, and `os.clock`.
+
+### `jest.advanceTimersByTime(secsToRun)`
+
+`jest.advanceTimersByTime` takes seconds as an argument, not milliseconds.
+
+## Configuration
+
+### `projects`
+The `projects` configuration takes an array of Instances. Each entry should be a path to a datamodel Instance with a configuration file.
+
+### Filters
+Test filtering configuration options like `testMatch` or `testPathIgnorePatterns` match against the path of the test in the datamodel, not the filesystem path.

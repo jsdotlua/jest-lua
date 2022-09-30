@@ -2,6 +2,7 @@
 id: mock-functions
 title: Mock Functions
 ---
+<p><a href='https://jestjs.io/docs/27.x/mock-functions' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a></p>
 
 Mock functions allow you to test the links between code by erasing the actual implementation of a function, capturing calls to the function (and the parameters passed in those calls), capturing instances of constructor functions when instantiated with `new`, and allowing test-time configuration of return values.
 
@@ -192,4 +193,4 @@ expect(mockFunc.mock.calls[#mockFunc.mock.calls]).toEqual({
 expect(mockFunc.mock.calls[#mockFunc.mock.calls][1]).toBe(42)
 ```
 
-For a complete list of matchers, check out the [reference docs](ExpectAPI.md).
+For a complete list of matchers, check out the [reference docs](expect).

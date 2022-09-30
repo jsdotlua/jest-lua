@@ -6,6 +6,7 @@ module.exports = {
       items: [
         'getting-started',
         'using-matchers',
+        'asynchronous',
         'setup-teardown',
         'mock-functions',
       ],
@@ -15,7 +16,9 @@ module.exports = {
       label: 'Guides',
       items: [
         'snapshot-testing',
-        'migration-guide',
+        'timer-mocks',
+        'testez-migration',
+        'upgrading-to-jest3',
       ]
     },
     'deviations',
@@ -23,9 +26,9 @@ module.exports = {
   api: [
     'api',
     'expect',
-    'testez',
     'mock-function-api',
     'jest-object',
+    'configuration',
     'cli',
   ]
 };

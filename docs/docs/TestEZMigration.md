@@ -1,15 +1,17 @@
 ---
-id: migration-guide
-title: Migrating to Jest Roblox
+id: testez-migration
+title: Migrating from TestEZ
 ---
 
-If you are using TestEZ, migrating over should be fairly straightforward. Many parts of Jest Roblox still use the TestEZ API and all the relevant parts are documented in the [TestEZ API doc](testez).
+If you are using TestEZ, migrating to Jest Roblox v2.4.x should be fairly straightforward. Many parts of Jest Roblox v2.x still use the TestEZ API.
+
+To migrate to Jest Roblox v3.x, additionally see [upgrading to Jest Roblox v3](upgrading-to-jest3).
 
 Replace TestEZ with `JestGlobals` in your `rotriever.toml`.
 ```diff title="rotriever.toml"
 [dev_dependencies]
 - TestEZ = "github.com/roblox/testez@0.4.1"
-+ JestGlobals = "github.com/roblox/jest-roblox@2.1.0"
++ JestGlobals = "github.com/roblox/jest-roblox@2.4.1"
 ```
 
 Unlike TestEZ, which is injected into the global environment, you will need to explicitly require anything you need from `JestGlobals`. For example, to use the new Jest Roblox assertion library, add this to the top of your test file.
@@ -31,7 +33,7 @@ Globals that are injected make life very difficult for languages with strong typ
 
 Additionally, upstream Jest also plans to remove injected globals and instead prefers that users import any needed functionality through the `@jest/globals` package.
 
-Jest Roblox is staying ahead of that plan and not including support for injected globals.
+Jest Roblox is staying ahead of that plan and not including support for injected globals. In Jest Roblox v3.x, _every_ import will need to be explicitly required, including `describe`, `it`, etc. See [Globals](api) for a list of all exports.
 
 Now that rotriever 0.5.0 allows users to import specific sub-packages, users can now specifically import `JestGlobals` and import any needed functionality from that package.
 

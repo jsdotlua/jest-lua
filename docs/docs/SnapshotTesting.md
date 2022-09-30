@@ -2,6 +2,7 @@
 id: snapshot-testing
 title: Snapshot Testing
 ---
+<p><a href='https://jestjs.io/docs/27.x/snapshot-testing' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a></p>
 
 Snapshot tests are a very useful tool whenever you want to make sure your UI does not change unexpectedly.
 
@@ -39,6 +40,7 @@ Table {
 The snapshot artifact should be committed alongside code changes, and reviewed as part of your code review process. Jest Roblox uses [pretty-format](https://github.com/Roblox/jest-roblox/tree/master/src/pretty-format) to make snapshots human-readable during code review. On subsequent test runs, Jest Roblox will compare the rendered output with the previous snapshot. If they match, the test will pass. If they don't match, either the test runner found a bug in your code that should be fixed, or the implementation has changed and the snapshot needs to be updated.
 
 ### Updating Snapshots
+<img alt='deviation' src='img/deviation.svg'/>
 
 It's straightforward to spot when a snapshot test fails after a bug has been introduced. When that happens, go ahead and fix the issue and make sure your snapshot tests are passing again. Now, let's talk about the case when a snapshot test is failing due to an intentional implementation change.
 
@@ -53,7 +55,7 @@ it("table", function()
 end)
 ```
 
-In that case, Jest will print this output:
+In that case, Jest Roblox will print this output:
 ```
 Snapshot name: `describe table 1`
 
@@ -73,10 +75,12 @@ Snapshot name: `describe table 1`
 
 Since we just updated our component, it's reasonable to expect changes in the snapshot for this component. Our snapshot test case is failing because the snapshot for our updated component no longer matches the snapshot artifact for this test case.
 
-To resolve this, we will need to update our snapshot artifacts. You can run Jest Roblox with a flag that will tell it to re-generate snapshots:
+To resolve this, we will need to update our snapshot artifacts. You can call `runCLI` with an option that will tell it to re-generate snapshots:
 
-```
---lua.globals=UPDATESNAPSHOT="all"
+```lua
+runCLI(Project, {
+	updateSnapshot = "true"
+}, { Project }):awaitStatus()
 ```
 
 You'll also need to pass the following flags to give `roblox-cli` the proper permissions to update snapshots:
@@ -85,9 +89,24 @@ You'll also need to pass the following flags to give `roblox-cli` the proper per
 --load.asRobloxScript --fs.readwrite="$(pwd)" 
 ```
 
+:::tip
+You can pass in configuration options into Jest Roblox by setting Lua globals in `roblox-cli`.
+
+```lua
+runCLI(Project, {
+	updateSnapshot = _G.UPDATESNAPSHOT == "true"
+}, { Project }):awaitStatus()
+```
+
+Add the `--lua.globals` flag into `roblox-cli`.
+```bash
+--lua.globals=UPDATESNAPSHOT=true
+```
+:::
+
 This will re-generate snapshot artifacts for all failing snapshot tests. If we had any additional failing snapshot tests due to an unintentional bug, we would need to fix the bug before re-generating snapshots to avoid recording snapshots of the buggy behavior.
 
-If you'd like to limit which snapshot test cases get re-generated, you can `FOCUS` tests to re-record snapshots only for those tests.
+If you'd like to limit which snapshot test cases get re-generated, you can pass an additional `testNamePattern` flag to re-record snapshots only for those tests that match the pattern.
 
 ### Property Matchers
 
