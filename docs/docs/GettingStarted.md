@@ -110,5 +110,3 @@ roblox-cli run --load.model default.project.json --run spec.lua --fastFlags.over
 **You just successfully wrote your first test using Jest Roblox!**
 
 This test used `expect` and `toBe` to test that two values were exactly identical. To learn about other things that Jest Roblox can test, see [Using Matchers](using-matchers).
-
-To set up a project with multi-package Rotriever workspaces, see [Using Rotriever Workspaces](using-workspaces).

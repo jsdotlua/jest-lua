@@ -74,7 +74,7 @@ Returns the `jest` object for chaining.
 ### `jest.fn(implementation)`
 <a href='https://jestjs.io/docs/27.x/jest-object#jestfnimplementation' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Deviation' src='img/deviation.svg'/>
 
-Returns a new, unused [mock function](mock-function-apimd). Optionally takes a mock implementation.
+Returns a new, unused [mock function](mock-function-api). Optionally takes a mock implementation.
 
 `jest.fn()` returns a callable table as the first return value and a function as the second return value. See the [deviation](deviations#jestfn) note.
 

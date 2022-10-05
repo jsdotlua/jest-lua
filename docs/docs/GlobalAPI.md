@@ -496,7 +496,7 @@ The first argument is the test name; the second argument is a function that cont
 If a **promise is returned** from `test`, Jest Roblox will wait for the promise to resolve before letting the test complete.
 <img alt='API change' src='img/apichange.svg'/>
 
-Jest Roblox will also wait if you **provide a second argument to the test function**, usually called `done`. This could be handy when you want to test callbacks. See how to test async code [here](async#callbacks).
+Jest Roblox will also wait if you **provide a second argument to the test function**, usually called `done`. This could be handy when you want to test callbacks. See how to test async code [here](asynchronous#callbacks).
 :::
 
 For example, let's say `fetchBeverageList()` returns a promise that is supposed to resolve to a list that has `lemon` in it. You can test this with:
