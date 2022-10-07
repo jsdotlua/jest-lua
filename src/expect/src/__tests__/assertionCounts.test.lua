@@ -42,7 +42,7 @@ describe(".hasAssertions()", function()
 	it("throws if expected is not undefined", function()
 		jestExpect(function()
 			-- @ts-expect-error
-			jestExpect.hasAssertions(2)
+			(jestExpect.hasAssertions :: any)(2)
 		end).toThrowErrorMatchingSnapshot()
 	end)
 

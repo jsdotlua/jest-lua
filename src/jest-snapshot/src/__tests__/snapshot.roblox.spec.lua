@@ -18,12 +18,14 @@ local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local expect = JestGlobals.expect
+-- ROBLOX deviation START: importing expectExtended to avoid analyze errors for additional matchers
+local expect = JestGlobals.expectExtended
+-- ROBLOX deviation END
 local it = JestGlobals.it
 
 local toMatchSnapshot = require(CurrentModule).toMatchSnapshot
 expect.extend({
-	toMatchTrimmedSnapshot = function(self, received, length)
+	toMatchTrimmedSnapshot = function(self, received: string, length: number?)
 		return toMatchSnapshot(self, string.sub(received, 1, length), "toMatchTrimmedSnapshot")
 	end,
 })

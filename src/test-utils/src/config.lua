@@ -57,7 +57,7 @@ local DEFAULT_GLOBAL_CONFIG: Config_GlobalConfig = {
 	projects = {},
 	replname = nil,
 	reporters = {},
-	rootDir = "/test_root_dir/",
+	rootDir = "/test_root_dir/" :: any,
 	runTestsByPath = false,
 	silent = false,
 	skipFilter = false,
@@ -111,7 +111,7 @@ local DEFAULT_PROJECT_CONFIG: Config_ProjectConfig = {
 	resetModules = false,
 	resolver = nil,
 	restoreMocks = false,
-	rootDir = "/test_root_dir/",
+	rootDir = "/test_root_dir/" :: any,
 	roots = {},
 	runner = "jest-runner",
 	setupFiles = {},
@@ -137,8 +137,8 @@ local DEFAULT_PROJECT_CONFIG: Config_ProjectConfig = {
 	watchPathIgnorePatterns = {},
 }
 
-exports.makeGlobalConfig = function(overrides: { [string]: any }?): Config_GlobalConfig
-	overrides = overrides or {}
+exports.makeGlobalConfig = function(overrides_: { [string]: any }?): Config_GlobalConfig
+	local overrides = overrides_ or {}
 	local overridesKeys = Array.reduce(Object.keys(overrides), function(acc, key)
 		acc[key] = key
 		return acc

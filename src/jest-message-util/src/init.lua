@@ -37,7 +37,7 @@ local formatStackTrace, getStackTraceLines, separateMessageFromStack
 -- ROBLOX deviation: static definition for StackTraceConfig
 export type StackTraceConfig = {
 	-- ROBLOX deviation START: using Instance instead of string
-	rootDir: Instance,
+	rootDir: Instance?,
 	-- ROBLOX deviation END
 	testMatch: Array<string>,
 }

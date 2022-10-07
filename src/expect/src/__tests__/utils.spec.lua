@@ -94,11 +94,10 @@ describe("getPath()", function()
 	-- ROBLOX deviation END
 
 	test("property is inherited", function()
-		local A = {}
+		local A = {} :: { [string]: any }
 		local prototypeA = { a = "a" }
 		setmetatable(A, { __index = prototypeA })
-
-		expect(getPath(A, "a")).toEqual({
+		expect(getPath((A :: any) :: { [string]: any }, "a")).toEqual({
 			hasEndProp = true,
 			lastTraversedObject = A,
 			traversedPath = { "a" },
@@ -127,9 +126,9 @@ end)
 
 describe("getObjectSubset", function()
 	local fixtures = {
-		{ { a = "b", c = "d" }, { a = "d" }, { a = "b" } },
-		{ { a = { 1, 2 }, b = "b" }, { a = { 3, 4 } }, { a = { 1, 2 } } },
-		{ { { a = "b", c = "d" } }, { { a = "z" } }, { { a = "b" } } },
+		{ { a = "b", c = "d" } :: any, { a = "d" }, { a = "b" } },
+		{ { a = { 1, 2 }, b = "b" } :: any, { a = { 3, 4 } }, { a = { 1, 2 } } },
+		{ { { a = "b", c = "d" } } :: any, { { a = "z" } }, { { a = "b" } } },
 		{
 			{ 1, 2 },
 			{ 1, 2, 3 },

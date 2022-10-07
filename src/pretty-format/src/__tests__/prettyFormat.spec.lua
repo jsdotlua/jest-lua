@@ -407,10 +407,12 @@ describe("prettyFormat()", function()
 
 		-- Tests assume that no strings in val contain multiple adjacent spaces!
 		it("non-default: 0 spaces", function()
-			expect(prettyFormat(val, { indent = 0 })).toEqual(expected:gsub("  ", ""))
+			local result = expected:gsub("  ", "")
+			expect(prettyFormat(val, { indent = 0 })).toEqual(result)
 		end)
 		it("non-default: 4 spaces", function()
-			expect(prettyFormat(val, { indent = 4 })).toEqual(expected:gsub("  ", "    "))
+			local result = expected:gsub("  ", "    ")
+			expect(prettyFormat(val, { indent = 4 })).toEqual(result)
 		end)
 	end)
 

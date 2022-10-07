@@ -26,30 +26,36 @@ local process = {
 
 export type Path = {
 	initialize: (self: Path, root: string, sep: string) -> (),
-	getRoot: (self: Path) -> string,
+	getRoot: (self: Path, filePath: string?) -> string,
 	getSep: (self: Path) -> string,
 	pathsEqual: (self: Path, a: string, b: string) -> boolean,
-	_splitPath: (self: Path, filename: string) -> { root: string, dir: string, basename: string | string? },
+	_splitPath: (self: Path, filename: string) -> (string, string, string),
 	_normalizeArray: (self: Path, parts: Array<string>, isrelative: boolean) -> (),
 	_splitBySeparators: (self: Path, filepath: string) -> Array<string>,
-	normalize: (self: Path, filepath: string) -> string | nil,
+	normalize: (self: Path, filepath: string) -> string,
 	_filterparts: (self: Path, parts: Array<string>) -> Array<string>,
 	_rawjoin: (self: Path, parts: Array<string>) -> string,
-	_filteredjoin: (self: Path, ...string) -> { joined: string, filteredparts: Array<string> },
-	join: (self: Path, ...string) -> string | nil,
+	_filteredjoin: (self: Path, ...string) -> (string, Array<string>),
+	join: (self: Path, ...string) -> string,
 	resolve: (self: Path, ...string) -> string | nil,
 	_commonParts: (self: Path, ...string) -> Array<string>,
 	relative: (self: Path, from: string, to: string) -> string,
 	dirname: (self: Path, filepath: string) -> string,
-	basename: (self: Path, filepath: string, expected_ext: string) -> string | string?,
-	extname: (self: Path, filepath: string) -> string | string?,
-	isDriveRelative: (self: Path) -> boolean,
+	basename: (self: Path, filepath: string, expected_ext: string?) -> string,
+	extname: (self: Path, filepath: string) -> string?,
+	isDriveRelative: (self: Path, filePath: string?) -> boolean,
 	isAbsolute: (self: Path, filepath: string) -> boolean,
 	normalizeSeparators: (self: Path, filepath: string) -> string,
+	sep: string,
+	root: string,
 }
 
-local Path = {}
-Path.__index = Path
+type Path_statics = {
+	new: () -> Path,
+}
+
+local Path = {} :: Path_statics & Path;
+(Path :: any).__index = Path
 
 function Path.new(): Path
 	local self = setmetatable({}, Path)
@@ -61,7 +67,7 @@ function Path:initialize(root: string, sep: string)
 	self.sep = sep
 end
 
-function Path:getRoot()
+function Path:getRoot(_filePath)
 	return self.root
 end
 
@@ -137,7 +143,7 @@ function Path:normalize(filepath: string)
 
 	if #filepath == 0 then
 		if is_absolute then
-			return root
+			return root :: string
 		end
 		return "."
 	end
@@ -145,7 +151,7 @@ function Path:normalize(filepath: string)
 		filepath = filepath .. self.sep
 	end
 	if is_absolute then
-		filepath = root .. filepath
+		filepath = (root :: string) .. filepath
 	end
 	return filepath
 end
@@ -201,18 +207,18 @@ end
 function Path:resolve(...: string)
 	local paths: Array<string> = { ... }
 	local resolvedpath = ""
-	local resolveddrive = nil
+	local resolveddrive: string? = nil
 	local isabsolute = false
 	for i = #paths, 1, -1 do
 		local path = paths[i]
 		if path and path ~= "" then
-			local root = resolveddrive and self:getRoot(path)
+			local root: string = (resolveddrive and self:getRoot(path)) :: string
 			if self:isDriveRelative(path) then
 				root = root or self:getRoot(path)
 				resolveddrive = resolveddrive or root
 				path = path:sub(root:len() + 1)
 			end
-			if not root or resolveddrive:sub(1, 2) == root:sub(1, 2) then
+			if not root or (resolveddrive :: string):sub(1, 2) == root:sub(1, 2) then
 				resolvedpath = self:join(self:normalize(path), resolvedpath)
 				if self:isAbsolute(resolvedpath) then
 					isabsolute = true
@@ -310,7 +316,7 @@ function Path:dirname(filepath: string)
 	return "."
 end
 
-function Path:basename(filepath: string, expected_ext: string)
+function Path:basename(filepath: string, expected_ext: string?)
 	local _, _, base = self:_splitPath(filepath)
 	if expected_ext then
 		local ext_pos = base:find(expected_ext:gsub(".", ".") .. "$")

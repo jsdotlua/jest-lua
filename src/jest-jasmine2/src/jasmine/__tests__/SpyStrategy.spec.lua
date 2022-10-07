@@ -1,3 +1,4 @@
+--!nocheck
 -- ROBLOX upstream: https://github.com/jasmine/jasmine/blob/v3.6.0/spec/core/SpyStrategySpec.js
 --[[
 	Our usual upstream of jest v27.4.7 doesn't include any tests for the

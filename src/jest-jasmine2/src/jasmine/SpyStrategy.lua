@@ -38,7 +38,7 @@ local SpyStrategy = {}
 
 SpyStrategy.__index = SpyStrategy
 function SpyStrategy.new(args)
-	args = args or {}
+	args = args or {} :: { [string]: unknown }
 
 	-- ROBLOX deviation: API changed we allow originalFn to also be a table with a
 	-- __call metamethod since this allows for the typical use case of passing
@@ -88,7 +88,7 @@ function SpyStrategy:returnValues(...): any
 	return self.getSpy()
 end
 
-function SpyStrategy:throwError(something: string | { [any]: any }): any
+function SpyStrategy:throwError(something: (string | { [any]: any })?): any
 	self.plan = function()
 		error(something)
 	end
@@ -108,7 +108,7 @@ function SpyStrategy:callFake(fn): any
 	return self.getSpy()
 end
 
-function SpyStrategy:stub(_fn): any
+function SpyStrategy:stub(_fn: any?): any
 	self.plan = function() end
 
 	return self.getSpy()

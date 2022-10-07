@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+* :bug: Fix typing for expect matchers [#271](https://github.com/Roblox/jest-roblox/pull/271)
+* :sparkles: export additional `expectExtended` from `JestGlobals` to allow use of custom matchers [#271](https://github.com/Roblox/jest-roblox/pull/271)
+
 ## 3.0.0 (2022-09-30)
 
 * :sparkles: Added `expect.assertions(number)` and `expect.hasAssertions()` functions ([#256](https://github.com/Roblox/jest-roblox/pull/256))

@@ -56,13 +56,17 @@ describe("stripAnsi", function()
 	it("does not mess up regular text content", function()
 		local stripped = stripAnsi("...12/34/56.js")
 		expect(stripped).toBe("...12/34/56.js")
-		expect(utf8.len(stripped)).toBe(14)
+		-- ROBLOX FIXME Luau: need to extract `utf8.len(stripped)` into a len variable. Otherwise, analyze complains about calling `expect` which is a callable table.
+		local len = utf8.len(stripped)
+		expect(len).toBe(14)
 		expect(stripped:len()).toBe(14)
 	end)
 	it("strips ansi chars", function()
 		local stripped = stripAnsi("[1m...12/34/56.js[22m")
 		expect(stripped).toBe("...12/34/56.js")
-		expect(utf8.len(stripped)).toBe(14)
+		-- ROBLOX FIXME Luau: need to extract `utf8.len(stripped)` into a len variable. Otherwise, analyze complains about calling `expect` which is a callable table.
+		local len = utf8.len(stripped)
+		expect(len).toBe(14)
 		expect(stripped:len()).toBe(14)
 	end)
 end)
@@ -73,8 +77,12 @@ describe("trimAndFormatPath()", function()
 		local basename = "1234.js"
 		local dirname = "1234567890/1234567890"
 		local columns = 25
-		local result =
-			trimAndFormatPath(pad, makeProjectConfig({ cwd = "", rootDir = "" }), path:join(dirname, basename), columns)
+		local result = trimAndFormatPath(
+			pad,
+			makeProjectConfig({ cwd = "", rootDir = "" }),
+			path:join(dirname, basename) :: string,
+			columns
+		)
 		expect(result).toMatchSnapshot()
 		expect(stripAnsi(result):len()).toBe(20)
 	end)
@@ -84,8 +92,12 @@ describe("trimAndFormatPath()", function()
 		local basename = "1234.js"
 		local dirname = "1234567890/1234567890"
 		local columns = 30
-		local result =
-			trimAndFormatPath(pad, makeProjectConfig({ cwd = "", rootDir = "" }), path:join(dirname, basename), columns)
+		local result = trimAndFormatPath(
+			pad,
+			makeProjectConfig({ cwd = "", rootDir = "" }),
+			path:join(dirname, basename) :: string,
+			columns
+		)
 		expect(result).toMatchSnapshot()
 		expect(stripAnsi(result):len()).toBe(25)
 	end)
@@ -95,8 +107,12 @@ describe("trimAndFormatPath()", function()
 		local basename = "1234.js"
 		local dirname = "1234567890/1234567890"
 		local columns = 15
-		local result =
-			trimAndFormatPath(pad, makeProjectConfig({ cwd = "", rootDir = "" }), path:join(dirname, basename), columns)
+		local result = trimAndFormatPath(
+			pad,
+			makeProjectConfig({ cwd = "", rootDir = "" }),
+			path:join(dirname, basename) :: string,
+			columns
+		)
 		expect(result).toMatchSnapshot()
 		expect(stripAnsi(result):len()).toBe(10)
 	end)
@@ -107,8 +123,12 @@ describe("trimAndFormatPath()", function()
 		local dirname = "1234567890/1234567890"
 		local columns = 50
 		local totalLength = (basename .. path.sep .. dirname):len()
-		local result =
-			trimAndFormatPath(pad, makeProjectConfig({ cwd = "", rootDir = "" }), path:join(dirname, basename), columns)
+		local result = trimAndFormatPath(
+			pad,
+			makeProjectConfig({ cwd = "", rootDir = "" }),
+			path:join(dirname, basename) :: string,
+			columns
+		)
 		expect(result).toMatchSnapshot()
 		expect(stripAnsi(result):len()).toBe(totalLength)
 	end)
@@ -118,8 +138,12 @@ describe("trimAndFormatPath()", function()
 		local basename = "1234.js"
 		local dirname = "1234567890"
 		local columns = 16
-		local result =
-			trimAndFormatPath(pad, makeProjectConfig({ cwd = "", rootDir = "" }), path:join(dirname, basename), columns)
+		local result = trimAndFormatPath(
+			pad,
+			makeProjectConfig({ cwd = "", rootDir = "" }),
+			path:join(dirname, basename) :: string,
+			columns
+		)
 		expect(result).toMatchSnapshot()
 		expect(stripAnsi(result):len()).toBe(columns - pad)
 	end)

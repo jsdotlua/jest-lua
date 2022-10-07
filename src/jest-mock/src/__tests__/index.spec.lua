@@ -34,7 +34,7 @@ describe("moduleMocker", function()
 
 				fn("a", "b", "c")
 				expect(fn.mock.calls).toEqual({
-					{ 1, 2, 3 },
+					{ 1, 2, 3 } :: any,
 					{ "a", "b", "c" },
 				})
 			end)
@@ -231,7 +231,7 @@ describe("moduleMocker", function()
 			-- end)
 
 			it("mockReturnValueOnce mocks value just once", function()
-				local fake = moduleMocker:fn(function(a)
+				local fake = moduleMocker:fn(function(a: number)
 					return a + 2
 				end)
 				fake.mockReturnValueOnce(42)

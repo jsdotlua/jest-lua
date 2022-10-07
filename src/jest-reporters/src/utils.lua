@@ -147,8 +147,8 @@ function relativePath(
 	-- 	testPath
 	-- )
 	-- ROBLOX FIXME END
-	local dirname = path:dirname(testPath)
-	local basename = path:basename(testPath)
+	local dirname = path:dirname(testPath) :: string
+	local basename = path:basename(testPath) :: string
 	return { basename = basename, dirname = dirname }
 end
 exports.relativePath = relativePath

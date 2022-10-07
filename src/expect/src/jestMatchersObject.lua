@@ -17,6 +17,7 @@ type Partial<T> = any
 local AsymmetricMatcher = require(CurrentModule.asymmetricMatchers).AsymmetricMatcher
 
 local Types = require(CurrentModule.types)
+type Expect = Types.Expect
 type MatcherState = Types.MatcherState
 type MatchersObject<T> = Types.MatchersObject<T>
 
@@ -74,7 +75,7 @@ end
 	original code:
 	export const setMatchers = <State extends MatcherState = MatcherState>(
 ]]
-local function setMatchers<State>(matchers: MatchersObject<State>, isInternal: boolean, expect): ()
+local function setMatchers<State>(matchers: MatchersObject<State>, isInternal: boolean, expect: Expect): ()
 	for key, matcher in pairs(matchers) do
 		-- ROBLOX TODO: assign INTERNAL_MATCHER_FLAG to matchers
 		if not isInternal then
@@ -116,14 +117,14 @@ local function setMatchers<State>(matchers: MatchersObject<State>, isInternal: b
 				end
 				printval = printval .. tostring(sample[i])
 				return string.format("%s<%s>", self:toString(), printval)
-			end
+			end;
 
 			-- ROBLOX deviation start: there is not Object.defineProperty equivalent in Lua
-			expect[key] = function(...)
+			(expect :: any)[key] = function(...)
 				return CustomMatcher.new(false, ...)
 			end
 			if not expect.never then
-				expect.never = {}
+				expect.never = {} :: any
 			end
 			expect.never[key] = function(...)
 				return CustomMatcher.new(true, ...)

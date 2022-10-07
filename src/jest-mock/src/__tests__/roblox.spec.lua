@@ -46,7 +46,7 @@ end)
 
 it("returns a function as the second return value", function()
 	local mock, mockFn = moduleMocker:fn()
-	mock.mockImplementationOnce(function(a, b)
+	mock.mockImplementationOnce(function(a: string, b: string)
 		return a .. b
 	end)
 	mock.mockReturnValue(true)

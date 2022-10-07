@@ -18,12 +18,17 @@ local importedExpect = require(Packages.Expect)
 -- ROBLOX deviation START: additional imports
 local jestTypesModule = require(Packages.JestTypes)
 type TestFrameworkGlobals = jestTypesModule.Global_TestFrameworkGlobals
+
+local ExpectModule = require(Packages.Expect)
+type MatcherState = ExpectModule.MatcherState
+type ExpectExtended<E, State = MatcherState> = ExpectModule.ExpectExtended<E, State>
 -- ROBLOX deviation END
 
 type JestGlobals =
 	{
 		jest: Jest,
 		expect: typeof(importedExpect),
+		expectExtended: ExpectExtended<{ [string]: (...any) -> nil }>,
 	}
 	-- ROBLOX deviation START: using TestFrameworkGlobals instead of declaring variables one by one
 	& TestFrameworkGlobals

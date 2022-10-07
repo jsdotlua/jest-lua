@@ -1,3 +1,4 @@
+--!nonstrict
 -- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/asymmetricMatchers.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -46,9 +47,17 @@ local utils = Object.freeze(Object.assign({}, matcherUtils, {
 	subsetEquality = subsetEquality,
 }))
 
+type AsymmetricMatcher = {
+	getMatcherContext: (self: AsymmetricMatcher) -> State_,
+	asymmetricMatch: (self: AsymmetricMatcher, other: unknown) -> boolean,
+	toString: (self: AsymmetricMatcher) -> string,
+	getExpectedType: ((self: AsymmetricMatcher) -> string)?,
+	toAsymmetricMatcher: ((self: AsymmetricMatcher) -> string)?,
+}
+
 local AsymmetricMatcher = {}
 AsymmetricMatcher.__index = AsymmetricMatcher
-function AsymmetricMatcher.new(sample: any, inverse: boolean?)
+function AsymmetricMatcher.new(sample: any, inverse: boolean?): AsymmetricMatcher
 	local self = {
 		sample = sample,
 		inverse = if inverse == nil then false else inverse,
@@ -56,7 +65,7 @@ function AsymmetricMatcher.new(sample: any, inverse: boolean?)
 	}
 
 	setmetatable(self, AsymmetricMatcher)
-	return self
+	return (self :: any) :: AsymmetricMatcher
 end
 
 type State_ = MatcherState

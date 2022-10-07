@@ -1,3 +1,4 @@
+--!nonstrict
 -- ROBLOX upstream: https://github.com/sindresorhus/emittery/blob/v0.11.0/test/index.js
 --[[
 	MIT License

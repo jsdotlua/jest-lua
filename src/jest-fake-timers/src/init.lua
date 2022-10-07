@@ -1,3 +1,4 @@
+--!nonstrict
 -- ROBLOX derived from: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-fake-timers/src/modernFakeTimers.ts
 --[[
 	* Copyright (c) Roblox Corporation. All rights reserved.
@@ -62,7 +63,7 @@ export type FakeTimers = {
 
 local FakeTimers = {}
 FakeTimers.__index = FakeTimers
-function FakeTimers.new()
+function FakeTimers.new(): FakeTimers
 	local mock = jestMock.new()
 
 	local delayOverride = mock:fn(realDelay)
@@ -101,7 +102,7 @@ function FakeTimers.new()
 	}
 
 	setmetatable(self, FakeTimers)
-	return self
+	return (self :: any) :: FakeTimers
 end
 
 function FakeTimers:_advanceToTime(time_): ()

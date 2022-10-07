@@ -1,3 +1,4 @@
+--!nonstrict
 -- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-matcher-utils/src/index.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -55,8 +56,7 @@ export type MatcherHintOptions = {
 	isDirectExpectCall: boolean?,
 	isNot: boolean?,
 	promise: string?,
-	-- ROBLOX TODO? should be MatcherHintColor like in upstream, but requires modeling Chalk differently
-	receivedColor: string?,
+	receivedColor: MatcherHintColor?,
 	secondArgument: string?,
 	-- ROBLOX TODO? should be MatcherHintColor like in upstream, but requires modeling Chalk differently
 	secondArgumentColor: MatcherHintColor?,

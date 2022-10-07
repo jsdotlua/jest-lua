@@ -45,16 +45,16 @@ end)
 
 describe("stringify()", function()
 	local fixtures = {
-		{ {}, "{}" },
-		{ 1, "1" },
-		{ 0, "0" },
-		{ 1.5, "1.5" },
-		{ nil, "nil" },
+		{ {} :: any, "{}" },
+		{ 1 :: any, "1" },
+		{ 0 :: any, "0" },
+		{ 1.5 :: any, "1.5" },
+		{ nil :: any, "nil" },
 		{ "abc", '"abc"' },
-		{ 0 / 0, "nan" },
-		{ math.huge, "inf" },
-		{ -math.huge, "-inf" },
-		{ RegExp("ab\\.c", "i"), "/ab\\.c/i" },
+		{ 0 / 0 :: any, "nan" },
+		{ math.huge :: any, "inf" },
+		{ -math.huge :: any, "-inf" },
+		{ RegExp("ab\\.c", "i") :: any, "/ab\\.c/i" },
 		--[[
 				ROBLOX deviation: skipped since BigInt doesn't exist in Luau
 				original code:
@@ -200,7 +200,7 @@ describe("ensureNumbers()", function()
 			}
 
 			expect(function()
-				ensureNumbers(Symbol(0.1), 0, matcherName, options)
+				ensureNumbers(Symbol("0.1"), 0, matcherName, options)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
@@ -256,16 +256,16 @@ describe("diff", function()
 	it("forwards to jest-diff", function()
 		local fixtures = {
 			{ "a", "b" },
-			{ "a", {} },
-			{ "a", nil },
-			{ "a", 1 },
-			{ "a", true },
-			{ 1, true },
+			{ "a" :: any, {} },
+			{ "a" :: any, nil },
+			{ "a" :: any, 1 },
+			{ "a" :: any, true },
+			{ 1 :: any, true },
 			--[[
-					ROBLOX deviation: skipped since BigInt doesn't exist in Luau
-					original code:
-					[BigInt(1), true]
-				]]
+				ROBLOX deviation: skipped since BigInt doesn't exist in Luau
+				original code:
+				[BigInt(1), true]
+			]]
 		}
 
 		for i, value in ipairs(fixtures) do

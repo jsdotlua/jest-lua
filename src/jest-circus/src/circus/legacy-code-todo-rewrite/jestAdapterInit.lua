@@ -76,7 +76,7 @@ type Expect = jestExpectModule.Expect
 
 type Process = NodeJS_Process
 
-type JestGlobals = Global_TestFrameworkGlobals & { expect: Expect }
+type JestGlobals = Global_TestFrameworkGlobals & { expect: Expect, expectExtended: any }
 
 -- ROBLOX deviation START: additional deps
 local RobloxShared = require(Packages.RobloxShared)
@@ -194,6 +194,7 @@ local function initialize(
 		end
 
 		local runtimeGlobals: JestGlobals = Object.assign({}, globalsObject, { expect = createExpect(globalConfig) })
+		runtimeGlobals.expectExtended = runtimeGlobals.expect
 		setGlobalsForRuntime(runtimeGlobals)
 
 		if config.injectGlobals then

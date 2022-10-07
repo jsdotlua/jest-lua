@@ -16,7 +16,9 @@ local plugins = PrettyFormat.plugins
 local setPrettyPrint = require(script.Parent.setPrettyPrint).default
 local ReactElement = plugins.ReactElement
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local expect = JestGlobals.expect
+-- ROBLOX deviation START: importing expectExtended to avoid analyze errors for additional matchers
+local expect = JestGlobals.expectExtended
+-- ROBLOX deviation END
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
@@ -25,6 +27,7 @@ local beforeEach = JestGlobals.beforeEach
 type ReturnType<T> = any
 
 setPrettyPrint({ ReactElement })
+
 describe("ReactElement Plugin", function()
 	--[[
 			ROBLOX deviation START: use callable table instead of TSCallSignatureDeclaration

@@ -1,3 +1,4 @@
+--!nonstrict
 -- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-mock/src/index.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -108,7 +109,7 @@ type MockFunctionConfig = {
 
 export type ModuleMocker = {
 	isMockFunction: (_self: ModuleMocker, fn: any) -> boolean,
-	fn: (_self: ModuleMocker, implementation: (...any) -> ...any) -> (MockFn, (...any) -> ...any),
+	fn: <T..., Y...>(_self: ModuleMocker, implementation: ((Y...) -> T...)?) -> (MockFn, (...any) -> ...any),
 	clearAllMocks: (_self: ModuleMocker) -> (),
 	resetAllMocks: (_self: ModuleMocker) -> (),
 	restoreAllMocks: (_self: ModuleMocker) -> (),
@@ -116,7 +117,7 @@ export type ModuleMocker = {
 }
 
 ModuleMockerClass.__index = ModuleMockerClass
-function ModuleMockerClass.new()
+function ModuleMockerClass.new(): ModuleMocker
 	local self = {
 		_mockState = {},
 		_mockConfigRegistry = {},
@@ -126,7 +127,7 @@ function ModuleMockerClass.new()
 
 	setmetatable(self, ModuleMockerClass)
 
-	return self
+	return (self :: any) :: ModuleMocker
 end
 
 -- ROBLOX deviation: omitting _getSlots as it is specific to JS prototypes
@@ -367,8 +368,8 @@ function ModuleMockerClass:isMockFunction(fn: any)
 end
 
 -- ROBLOX TODO: type return type as JestMock.Mock<any, any> when Mock type is implemented properly
-type MockFn = (...any) -> ...any
-function ModuleMockerClass:fn(implementation: (...any) -> ...any): (MockFn, (...any) -> ...any)
+type MockFn = any -- (...any) -> ...any
+function ModuleMockerClass:fn<T..., Y...>(implementation: ((Y...) -> T...)?): (MockFn, (...any) -> ...any)
 	local length = 0
 	local fn = self:_makeComponent({ length = length, type = "function" })
 	if implementation then
@@ -408,14 +409,16 @@ end
 	}
 ]]
 
-function ModuleMockerClass.mocked<T>(_self: ModuleMocker, item: T, _deep: boolean?): MaybeMocked<T> | MaybeMockedDeep<T>
+function ModuleMockerClass:mocked<T>(item: T, _deep: boolean?): MaybeMocked<T> | MaybeMockedDeep<T>
 	return item :: any
 end
 
 exports.ModuleMocker = ModuleMockerClass
 
 local JestMock = ModuleMockerClass.new()
-local fn = JestMock.fn
+local fn = function<T..., Y...>(implementation: ((Y...) -> T...)?)
+	return JestMock:fn(implementation)
+end
 exports.fn = fn
 -- ROBLOX TODO: spyOn is not implemented
 -- local spyOn = JestMock.spyOn

@@ -125,7 +125,7 @@ describe("Replaceable", function()
 				not follow any deterministic order in iterating because Lua
 				tables don't have any inherent order
 			]]
-		local function sortingFunction(x, y)
+		local function sortingFunction(x: { number }, y: { number })
 			return x[1] <= y[1]
 		end
 
@@ -139,9 +139,9 @@ describe("Replaceable", function()
 			local calls = spy.mock.calls
 
 			table.sort(calls, sortingFunction)
-			expect(calls[1]).toEqual({ 1, "a", object })
-			expect(calls[2]).toEqual({ 2, "b", object })
-			expect(calls[3]).toEqual({ 3, "jest", object })
+			expect(calls[1]).toEqual({ 1 :: any, "a", object })
+			expect(calls[2]).toEqual({ 2 :: any, "b", object })
+			expect(calls[3]).toEqual({ 3 :: any, "jest", object })
 		end)
 
 		it("array forEach", function()
@@ -156,9 +156,9 @@ describe("Replaceable", function()
 			local calls = spy.mock.calls
 
 			table.sort(calls, sortingFunction)
-			expect(calls[1]).toEqual({ 4, 1, object })
-			expect(calls[2]).toEqual({ 5, 2, object })
-			expect(calls[3]).toEqual({ 6, 3, object })
+			expect(calls[1]).toEqual({ 4 :: any, 1, object })
+			expect(calls[2]).toEqual({ 5 :: any, 2, object })
+			expect(calls[3]).toEqual({ 6 :: any, 3, object })
 		end)
 
 		it("map forEach", function()
@@ -171,8 +171,8 @@ describe("Replaceable", function()
 			local calls = spy.mock.calls
 
 			table.sort(calls, sortingFunction)
-			expect(calls[1]).toEqual({ 1, "a", object })
-			expect(calls[2]).toEqual({ 2, "b", object })
+			expect(calls[1]).toEqual({ 1 :: any, "a", object })
+			expect(calls[2]).toEqual({ 2 :: any, "b", object })
 		end)
 
 		-- ROBLOX deviation: test skipped because we don't have an enumerable

@@ -152,7 +152,7 @@ local function createMatcher(matcherName: string, fromPromise: boolean?): RawMat
 				-- Function used to compare stack traces and cut out unnecessary
 				-- information of function calls that are internal to the testing
 				-- framework
-				local function diffStack(compareStack, currentStack)
+				local function diffStack(compareStack, currentStack): string?
 					local relevantStack = ""
 					local lastRelevantStack = ""
 					local topCompareStackLine = getTopStackEntry(compareStack)
@@ -234,12 +234,14 @@ local function createMatcher(matcherName: string, fromPromise: boolean?): RawMat
 					local errorObject = Error.new(error_)
 					-- ROBLOX NOTE: using LuauPolyfill's private method to capture the stacktrace without this function
 					Error.__captureStackTrace(errorObject, 3)
-					local _, end_ = string.find(errorObject.stack, getTopStackEntry(errorObject.stack), 1, true)
-					errorObject.stack = string.sub(errorObject.stack, end_ + 1 + string.len("\n"))
-					errorObject.stack = diffStack(compareStack, errorObject.stack)
+					local _, end_ =
+						string.find(errorObject.stack :: string, getTopStackEntry(errorObject.stack :: string), 1, true)
+					errorObject.stack = string.sub(errorObject.stack :: string, (end_ :: number) + 1 + string.len("\n"))
+					errorObject.stack = diffStack(compareStack, errorObject.stack :: string)
 					errorObject["$$robloxInternalJestError"] = true
 
-					return errorObject
+					-- ROBLOX FIXME: can we return from xpcall error handler?
+					return (errorObject :: any) :: never
 				end)
 
 				if not ok then
@@ -300,6 +302,9 @@ function toThrowExpectedRegExp(
 
 	local message
 	if pass then
+		-- ROBLOX deviation START: assertion to help analyze
+		assert(thrown ~= nil)
+		-- ROBLOX deviation END
 		message = function()
 			local retval = matcherHint(matcherName, nil, nil, options)
 				.. "\n\n"
@@ -352,6 +357,9 @@ function toThrowExpectedAsymmetric(
 
 	local message
 	if pass then
+		-- ROBLOX deviation START: assertion to help analyze
+		assert(thrown ~= nil)
+		-- ROBLOX deviation END
 		message = function()
 			local retval = matcherHint(matcherName, nil, nil, options)
 				.. "\n\n"
@@ -407,6 +415,9 @@ function toThrowExpectedObject(
 
 	local message
 	if pass then
+		-- ROBLOX deviation START: assertion to help analyze
+		assert(thrown ~= nil)
+		-- ROBLOX deviation END
 		message = function()
 			local retval = matcherHint(matcherName, nil, nil, options)
 				.. "\n\n"
@@ -460,7 +471,7 @@ function toThrowExpectedClass(
 	thrown: Thrown,
 	expected: Function
 ): SyncExpectationResult
-	local function isClass(a)
+	local function isClass(a: any)
 		return a and getmetatable(a) and getmetatable(a).__index
 	end
 
@@ -536,6 +547,9 @@ function toThrowExpectedString(
 
 	local message
 	if pass then
+		-- ROBLOX deviation START: assertion to help analyze
+		assert(thrown ~= nil)
+		-- ROBLOX deviation END
 		message = function()
 			local retval = matcherHint(matcherName, nil, nil, options)
 				.. "\n\n"
@@ -582,6 +596,9 @@ function toThrow(matcherName: string, options: MatcherHintOptions, thrown: Throw
 	local message
 
 	if pass then
+		-- ROBLOX deviation START: assertion to help analyze
+		assert(thrown ~= nil)
+		-- ROBLOX deviation END
 		message = function()
 			local retval = matcherHint(matcherName, nil, "", options) .. "\n\n"
 
@@ -661,7 +678,7 @@ function formatStack(thrown: Thrown) -- ROBLOX FIXME: narrowing | nil)
 	if thrown == nil or not thrown.isError then
 		return ""
 	else
-		return formatStackTrace(thrown.value.stack)
+		return formatStackTrace(thrown.value.stack, { testMatch = {} }, { noStackTrace = true })
 	end
 end
 

@@ -91,7 +91,7 @@ it.skip("copies symbols", function()
 end)
 
 it("copies arrays as array objects", function()
-	local array = { 42, "foo", "bar", {}, {} }
+	local array = { 42 :: any, "foo", "bar", {}, {} }
 
 	expect(deepCyclicCopyReplaceable(array)).toEqual(array)
 	expect(Array.isArray(deepCyclicCopyReplaceable(array))).toBe(true)

@@ -47,6 +47,7 @@ local toThrowMatchers = require(CurrentModule.toThrowMatchers).matchers
 local Types = require(CurrentModule.types)
 type AsyncExpectationResult = Types.AsyncExpectationResult
 export type Expect = Types.Expect_
+export type ExpectObj = Types.ExpectObj<any>
 type ExpectationResult = Types.ExpectationResult
 type JestMatcherState = Types.MatcherState
 type MatcherInterface<R> = Types.Matchers_<R>
@@ -55,6 +56,10 @@ type PromiseMatcherFn = Types.PromiseMatcherFn
 type RawMatcherFn = Types.RawMatcherFn_
 type SyncExpectationResult = Types.SyncExpectationResult
 type ThrowingMatcherFn = Types.ThrowingMatcherFn
+
+-- ROBLOX deviation START: add additional type exports
+export type ExpectExtended<E, State = JestMatcherState> = Types.ExpectExtended<E, State>
+-- ROBLOX deviation END
 
 local utils = require(CurrentModule.utils)
 local iterableEquality = utils.iterableEquality
@@ -91,7 +96,7 @@ end
 	original code lines 56 - 84
 ]]
 
-local function expect_(_self, actual: any, ...): any
+local function expect_(_self, actual: any, ...)
 	local rest: Array<any> = { ... }
 
 	if #rest ~= 0 then
@@ -170,7 +175,7 @@ function makeThrowingMatcher(
 		local function processResult(result: SyncExpectationResult, asyncError: JestAssertionError?)
 			_validateResult(result)
 
-			getState().assertionCalls = getState().assertionCalls + 1
+			getState().assertionCalls = (getState().assertionCalls :: number) + 1
 
 			if (result.pass and isNot) or (not result.pass and not isNot) then
 				-- XOR
@@ -229,7 +234,7 @@ function makeThrowingMatcher(
 
 			local syncResult = potentialResult :: SyncExpectationResult
 
-			return processResult(syncResult)
+			processResult(syncResult)
 		end, ...)
 
 		if not ok then
@@ -256,7 +261,7 @@ function _validateResult(result: any)
 	end
 end
 
-local Expect = {}
+local Expect = {} :: Expect
 
 --[[
 	ROBLOX FIXME: add extends and default generic param when supported
@@ -334,10 +339,11 @@ setMatchers({
 -- ROBLOX deviation END
 
 setmetatable(Expect, { __call = expect_ })
+local expectExport = (Expect :: any) :: Expect
 
 -- ROBLOX deviation START: exporting types without a namespace prefix
 export type MatcherState = JestMatcherState
 export type Matcher<R> = MatcherInterface<R>
 -- ROBLOX deviation END
 
-return Expect
+return expectExport

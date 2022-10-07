@@ -63,6 +63,7 @@ type FakeTimers = JestFakeTimers.FakeTimers
 
 type JestGlobals = {
 	expect: any,
+	expectExtended: any,
 	jestSnapshot: {
 		toMatchSnapshot: (...any) -> any,
 		toThrowErrorMatchingSnapshot: (...any) -> any,
@@ -769,6 +770,7 @@ function Runtime:getGlobalsFromEnvironment(): JestGlobals
 			* describe
 		]]
 		expect = jestExpect,
+		expectExtended = jestExpect,
 		--[[
 			ROBLOX deviation: skipped for now
 			* fdescribe

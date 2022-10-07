@@ -174,7 +174,7 @@ end
 
 	deviation: constructor does not have Function type annotation
 ]]
-function printConstructorName(label: string, constructor, isNot: boolean, isExpected: boolean): string
+function printConstructorName(label: string, constructor: any, isNot: boolean, isExpected: boolean): string
 	-- ROBLOX deviation: omitted handling for tostring() returning non-string as
 	-- tostring() always returns string
 	local retval = label .. ": "

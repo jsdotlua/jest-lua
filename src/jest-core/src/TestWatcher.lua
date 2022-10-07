@@ -25,11 +25,12 @@ export type TestWatcher = emittery<{ change: State }> & {
 	setState: (self: TestWatcher, state: State) -> Promise<nil>,
 	isInterrupted: (self: TestWatcher) -> boolean,
 	isWatchMode: (self: TestWatcher) -> boolean,
+	_isWatchMode: boolean,
 }
 local TestWatcher = setmetatable({}, { __index = emittery })
 TestWatcher.__index = TestWatcher
 function TestWatcher.new(ref: { isWatchMode: boolean }): TestWatcher
-	local self = setmetatable(emittery.new(), TestWatcher)
+	local self = setmetatable(emittery.new(), TestWatcher) :: any
 	local isWatchMode = ref.isWatchMode
 	self.state = { interrupted = false }
 	self._isWatchMode = isWatchMode

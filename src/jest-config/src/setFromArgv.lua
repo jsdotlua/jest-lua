@@ -60,7 +60,7 @@ local function setFromArgv(options: Config_InitialOptions, argv: Config_Argv): C
 				-- or condition_ == "moduleNameMapper"
 				-- or condition_ == "testEnvironmentOptions"
 				-- or condition_ == "transform"
-				-- ROBLOX deviation EDN
+				-- ROBLOX deviation END
 			then
 				-- ROBLOX FIXME Luau: analyze complains about argv not being a table
 				local str = (argv :: any)[key]

@@ -40,9 +40,9 @@ function deepCyclicCopyReplaceable(value: any, cycles: anyTable)
 	end
 end
 
-return function(value, cycles)
-	cycles = cycles or {}
-	setmetatable(cycles, { _mode = "kv" })
+return function(value, cycles_: anyTable?)
+	local cycles = cycles_ or {}
+	setmetatable(cycles :: any, { _mode = "kv" })
 
 	return deepCyclicCopyReplaceable(value, cycles)
 end

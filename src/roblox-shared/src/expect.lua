@@ -242,9 +242,9 @@ local function isObjectWithKeys(a: any)
 end
 
 -- ROBLOX MOVED: expect/utils.lua
-local function iterableEquality(a: any, b: any, aStack: Array<any>, bStack: Array<any>): boolean | nil
-	aStack = aStack or {}
-	bStack = bStack or {}
+local function iterableEquality(a: any, b: any, aStack_: Array<any>?, bStack_: Array<any>?): boolean | nil
+	local aStack = (aStack_ or {}) :: Array<any>
+	local bStack = (bStack_ or {}) :: Array<any>
 
 	if getType(a) ~= "set" or getType(b) ~= "set" then
 		return nil
@@ -318,7 +318,7 @@ local function subsetEquality(object: any, subset: any): boolean | nil
 	-- it has already visited to avoid infinite loops in case
 	-- there are circular references in the subset passed to it
 	local function subsetEqualityWithContext(seenReferences_: { [any]: boolean }?)
-		local seenReferences = seenReferences_ or {}
+		local seenReferences = (seenReferences_ or {}) :: { [any]: boolean }
 
 		return function(object_: any, subset_: any): boolean | nil
 			if not isObjectWithKeys(subset_) then
@@ -370,7 +370,7 @@ end
 -- recognize that the seenReferences or {} is sufficient to make seenReferences
 -- non-nil
 local function getObjectSubset(object: any, subset: any, seenReferences_: { [Object]: boolean }?): any
-	local seenReferences = if seenReferences_ then seenReferences_ else {}
+	local seenReferences = (if seenReferences_ then seenReferences_ else {}) :: { [Object]: boolean }
 
 	if Array.isArray(object) then
 		if Array.isArray(subset) and #subset == #object then

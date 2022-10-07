@@ -26,18 +26,18 @@ end)
 describe("path.basename returns the last portion of a path", function()
 	local basenameTests = {
 		{
-			{ "/foo/bar/baz/asdf/quux.html" },
+			{ "/foo/bar/baz/asdf/quux.html" } :: { string } | string,
 			"quux.html",
 		},
 		{
-			{ "/foo/bar/baz/asdf/quux.html", ".html" },
+			{ "/foo/bar/baz/asdf/quux.html", ".html" } :: { string } | string,
 			"quux",
 		},
 	}
 
 	for _, test in ipairs(basenameTests) do
-		local args = test[1]
-		local expected = test[2]
+		local args = test[1] :: { string }
+		local expected = test[2] :: string
 
 		it("basename result " .. expected, function()
 			local actual = path:basename(table.unpack(args))
@@ -49,26 +49,26 @@ end)
 describe("path.isAbsolute determines if a path is an absolute path", function()
 	local isAbsoluteTests = {
 		{
-			"/foo/bar",
+			"/foo/bar" :: string | boolean,
 			true,
 		},
 		{
-			"/baz/..",
+			"/baz/.." :: string | boolean,
 			true,
 		},
 		{
-			"qux/",
+			"qux/" :: string | boolean,
 			false,
 		},
 		{
-			".",
+			"." :: string | boolean,
 			false,
 		},
 	}
 
 	for _, test in ipairs(isAbsoluteTests) do
-		it(test[1] .. " should return " .. tostring(test[2]), function()
-			expect(path:isAbsolute(test[1])).toEqual(test[2])
+		it(test[1] :: string .. " should return " .. tostring(test[2]), function()
+			expect(path:isAbsolute(test[1] :: string)).toEqual(test[2])
 		end)
 	end
 end)
@@ -127,14 +127,14 @@ end)
 describe("path.join joins all given path segments", function()
 	local joinTests = {
 		{
-			{ "/foo", "bar", "baz/asdf", "quux", ".." },
+			{ "/foo", "bar", "baz/asdf", "quux", ".." } :: { string } | string,
 			"/foo/bar/baz/asdf",
 		},
 	}
 
 	for _, test in ipairs(joinTests) do
-		local parts = test[1]
-		local expected = test[2]
+		local parts = test[1] :: { string }
+		local expected = test[2] :: string
 
 		it("resolves to " .. expected, function()
 			local actual = path:join(unpack(parts))
@@ -146,23 +146,23 @@ end)
 describe("path.resolve correctly resolves absolute paths", function()
 	local resolveTests = {
 		{
-			{ "/foo/bar", "./baz" },
+			{ "/foo/bar", "./baz" } :: { string } | string,
 			"/foo/bar/baz",
 		},
 		{
-			{ "/foo/bar", "/tmp/file/" },
+			{ "/foo/bar", "/tmp/file/" } :: { string } | string,
 			"/tmp/file",
 		},
 		{
-			{ "/wwwroot", "static_files/png/", "../gif/image.gif" },
+			{ "/wwwroot", "static_files/png/", "../gif/image.gif" } :: { string } | string,
 			"/wwwroot/static_files/gif/image.gif",
 		},
 	}
 
 	for _, test in ipairs(resolveTests) do
-		local args = test[1]
-		local expected = test[2]
-		it(table.concat(test[1], ", ") .. " resolves to " .. expected, function()
+		local args = test[1] :: { string }
+		local expected = test[2] :: string
+		it(table.concat(test[1] :: { string }, ", ") .. " resolves to " .. expected, function()
 			local result = path:resolve(table.unpack(args))
 			expect(result).toEqual(test[2])
 		end)

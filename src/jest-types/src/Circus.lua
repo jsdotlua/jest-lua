@@ -57,6 +57,7 @@ export type Event = SyncEvent | AsyncEvent
 type JestGlobals = GlobalModule.TestFrameworkGlobals & {
 	-- we cannot type `expect` properly as it'd create circular dependencies
 	expect: any,
+	expectExtended: any,
 }
 
 export type SyncEvent = {

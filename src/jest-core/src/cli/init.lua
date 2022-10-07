@@ -123,7 +123,7 @@ local function runCLI(
 		local configsOfProjectsToRun = configs
 		if Boolean.toJSBoolean(argv.selectProjects) then
 			local namesMissingWarning = getProjectNamesMissingWarning(configs)
-			if Boolean.toJSBoolean(namesMissingWarning) then
+			if Boolean.toJSBoolean(namesMissingWarning) and namesMissingWarning then
 				outputStream:write(namesMissingWarning)
 			end
 			configsOfProjectsToRun = getConfigsOfProjectsToRun(argv.selectProjects, configs)

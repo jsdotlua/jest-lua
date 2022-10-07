@@ -632,7 +632,12 @@ local function toContain(
 					"%s%s%s",
 					printLabel(labelReceived),
 					isNot and "      " or "",
-					isNot and printReceivedStringContainExpectedSubstring(received, index, #tostring(expected))
+					isNot
+							and printReceivedStringContainExpectedSubstring(
+								received,
+								index :: number,
+								#tostring(expected)
+							)
 						or printReceived(received)
 				)
 		end
@@ -654,7 +659,7 @@ local function toContain(
 			.. string.format("%s%s%s\n", printLabel(labelExpected), isNot and "never " or "", printExpected(expected))
 			.. string.format("%s%s", printLabel(labelReceived), isNot and "      " or "")
 		if isNot and Array.isArray(received) then
-			retval = retval .. printReceivedArrayContainExpectedItem(received, index)
+			retval = retval .. printReceivedArrayContainExpectedItem(received, index :: number)
 		else
 			retval = retval .. printReceived(received)
 		end
@@ -1030,7 +1035,11 @@ local function toMatch(
 				retval = retval
 					.. string.format(
 						"Received string:        %s",
-						printReceivedStringContainExpectedSubstring(received, received:find(expected), #expected)
+						printReceivedStringContainExpectedSubstring(
+							received,
+							received:find(expected) :: number,
+							#expected
+						)
 					)
 			else
 				retval = retval

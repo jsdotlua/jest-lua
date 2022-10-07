@@ -107,7 +107,7 @@ end)
 
 describe("equality edge cases", function()
 	it("tests keys with false value", function()
-		expect(equals({ { a = false, b = 2 }, { b = 2 } })).toBe(false)
+		expect(equals({ { a = false, b = 2 } :: any, { b = 2 } })).toBe(false)
 	end)
 
 	it("tests equality of regex", function()

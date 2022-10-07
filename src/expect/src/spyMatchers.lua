@@ -1,3 +1,4 @@
+--!nonstrict
 -- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/spyMatchers.ts
 -- /**
 -- * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -72,7 +73,8 @@ function printExpectedArgs(expected: Array<any>): string
 	end
 end
 
-function printReceivedArgs(received: Array<any>, expected: Array<any>): string
+function printReceivedArgs(received: Array<any>, expected_: Array<any>?): string
+	local expected = expected_ or {}
 	if #received == 0 then
 		return NO_ARGUMENTS
 	else

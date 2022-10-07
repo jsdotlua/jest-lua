@@ -1,3 +1,4 @@
+--!nonstrict
 --[[
 	* Copyright (c) Roblox Corporation. All rights reserved.
 	* Licensed under the MIT License (the "License");
@@ -105,8 +106,8 @@ end
 -- given an Instance and a property-value table subset, returns
 -- an InstanceSubset object representing the subset of Instance with values in the subset table
 -- and a InstanceSubset object representing the subset table
-local function getInstanceSubset(instance: any, subset: any, seenReferences): any
-	seenReferences = seenReferences or {}
+local function getInstanceSubset(instance: any, subset: any, seenReferences_: any?): (any, any)
+	local seenReferences = seenReferences_ or {}
 
 	local trimmed: any = {}
 	seenReferences[instance] = trimmed
