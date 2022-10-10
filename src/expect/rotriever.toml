@@ -8,6 +8,7 @@ files = ["*", "!**/__tests__/**"]
 
 [dependencies]
 LuauPolyfill = { workspace = true }
+Promise = { workspace = true }
 RegExp = { workspace = true }
 JestGetType = { path = "../jest-get-type" }
 JestMessageUtil = { path = "../jest-message-util" }

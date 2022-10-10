@@ -12,10 +12,13 @@ local CurrentModule = script
 local Packages = CurrentModule.Parent
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
+local Boolean = LuauPolyfill.Boolean
 local Error = LuauPolyfill.Error
 local Object = LuauPolyfill.Object
+local Promise = require(Packages.Promise)
 type Array<T> = LuauPolyfill.Array<T>
 type Error = LuauPolyfill.Error
+type Promise<T> = LuauPolyfill.Promise<T>
 
 local matcherUtils = require(Packages.JestMatcherUtils)
 
@@ -42,7 +45,9 @@ local setMatchers = JestMatchersObject.setMatchers
 local setState = JestMatchersObject.setState
 local matchers = require(CurrentModule.matchers)
 local spyMatchers = require(CurrentModule.spyMatchers)
-local toThrowMatchers = require(CurrentModule.toThrowMatchers).matchers
+local toThrowMatchersModule = require(CurrentModule.toThrowMatchers)
+local toThrowMatchers = toThrowMatchersModule.matchers
+local createThrowMatcher = toThrowMatchersModule.createMatcher
 
 local Types = require(CurrentModule.types)
 type AsyncExpectationResult = Types.AsyncExpectationResult
@@ -81,20 +86,42 @@ type JestAssertionError = Error & {
 	matcherResult: Omit_SyncExpectationResult_message & { message: string },
 }
 -- ROBLOX deviation END
-type JestAssertionError_statics = { new: (message: string) -> JestAssertionError }
+type JestAssertionError_statics = { new: (message: string?) -> JestAssertionError }
 local JestAssertionError = (
 	setmetatable({}, { __index = Error }) :: any
-) :: JestAssertionError & JestAssertionError_statics;
+) :: (JestAssertionError & JestAssertionError_statics);
+
 (JestAssertionError :: any).__index = JestAssertionError
-function JestAssertionError.new(message: string): JestAssertionError
+function JestAssertionError.new(message: string?): JestAssertionError
 	local self = setmetatable(Error.new(message), JestAssertionError)
 	return (self :: any) :: JestAssertionError
 end
 
---[[
-	ROBLOX deviation: skipped code
-	original code lines 56 - 84
-]]
+local function isPromise<T>(
+	obj: any
+): boolean --[[ ROBLOX FIXME: change to TSTypePredicate equivalent if supported ]] --[[ obj is PromiseLike<T> ]]
+	return not not Boolean.toJSBoolean(obj)
+		and (typeof(obj) == "table" or typeof(obj) == "function")
+		and typeof(obj.andThen) == "function"
+end
+
+local function createToThrowErrorMatchingSnapshotMatcher(matcher: RawMatcherFn)
+	return function(self: JestMatcherState, received: any, testNameOrInlineSnapshot: string?)
+		return matcher(self, table.unpack({ received, testNameOrInlineSnapshot, true }))
+	end
+end
+
+local function getPromiseMatcher(name: string, matcher: any)
+	if name == "toThrow" or name == "toThrowError" then
+		return createThrowMatcher(name, true)
+	elseif name == "toThrowErrorMatchingSnapshot" or name == "toThrowErrorMatchingInlineSnapshot" then
+		return createToThrowErrorMatchingSnapshotMatcher(matcher)
+	end
+	return nil
+end
+
+-- ROBLOX deviation: Declaring this here because hoisting is not available in lua
+local makeResolveMatcher, makeRejectMatcher
 
 local function expect_(_self, actual: any, ...)
 	local rest: Array<any> = { ... }
@@ -110,19 +137,18 @@ local function expect_(_self, actual: any, ...)
 		resolves = { never = {} },
 	}
 
+	local err = JestAssertionError.new()
+
 	for name, matcher in pairs(allMatchers) do
-		--[[
-			ROBLOX deviation: skipped unused variable declaration for promiseMatcher
-			original code:
-			const promiseMatcher = getPromiseMatcher(name, matcher) || matcher;
-		]]
+		local ref = getPromiseMatcher(name, matcher)
+		local promiseMatcher = Boolean.toJSBoolean(ref) and ref or matcher
 		expectation[name] = makeThrowingMatcher(matcher, false, "", actual)
 		expectation.never[name] = makeThrowingMatcher(matcher, true, "", actual)
 
-		--[[
-			ROBLOX deviation: skipped code
-			original code lines 106 - 134
-		]]
+		expectation.resolves[name] = makeResolveMatcher(name, promiseMatcher, false, actual, err)
+		expectation.resolves.never[name] = makeResolveMatcher(name, promiseMatcher, true, actual, err)
+		expectation.rejects[name] = makeRejectMatcher(name, promiseMatcher, false, actual, err)
+		expectation.rejects.never[name] = makeRejectMatcher(name, promiseMatcher, true, actual, err)
 	end
 
 	return expectation
@@ -132,10 +158,76 @@ local function getMessage(message: (() -> string)?)
 	return if message then message() else matcherUtils.RECEIVED_COLOR("No message was specified for this matcher.")
 end
 
---[[
-	ROBLOX deviation: skipped makeResolveMatcher, makeRejectMatcher
-	original code lines 144 - 241
-]]
+function makeResolveMatcher(
+	matcherName: string,
+	matcher: RawMatcherFn,
+	isNot: boolean,
+	actual: Promise<any>,
+	outerErr: JestAssertionError
+): PromiseMatcherFn
+	return function(...)
+		local args = { ... }
+		local options = { isNot = isNot, promise = "resolves" }
+		if not isPromise(actual) then
+			error(
+				JestAssertionError.new(
+					matcherUtils.matcherErrorMessage(
+						matcherUtils.matcherHint(matcherName, nil, "", options),
+						("%s value must be a promise"):format(tostring(matcherUtils.RECEIVED_COLOR("received"))),
+						matcherUtils.printWithType("Received", actual, matcherUtils.printReceived)
+					)
+				)
+			)
+		end
+		local innerErr = JestAssertionError.new()
+		return actual:andThen(function(result)
+			return makeThrowingMatcher(matcher, isNot, "resolves", result, innerErr)(table.unpack(args))
+		end, function(reason)
+			outerErr.message = tostring(matcherUtils.matcherHint(matcherName, nil, "", options))
+				.. "\n\n"
+				.. "Received promise rejected instead of resolved\n"
+				.. ("Rejected to value: %s"):format(matcherUtils.printReceived(reason))
+			return Promise.reject(outerErr)
+		end)
+	end
+end
+
+function makeRejectMatcher(
+	matcherName: string,
+	matcher: RawMatcherFn,
+	isNot: boolean,
+	actual: Promise<any> | any --[[ ROBLOX TODO: Unhandled node for type: TSParenthesizedType ]] --[[ (() => Promise<any>) ]],
+	outerErr: JestAssertionError
+): PromiseMatcherFn
+	return function(...)
+		local args = { ... }
+		local options = { isNot = isNot, promise = "rejects" }
+		local actualWrapper: Promise<any> = if typeof(actual) == "function" then actual() else actual
+		if not isPromise(actualWrapper) then
+			error(
+				JestAssertionError.new(
+					matcherUtils.matcherErrorMessage(
+						matcherUtils.matcherHint(matcherName, nil, "", options),
+						("%s value must be a promise or a function returning a promise"):format(
+							tostring(matcherUtils.RECEIVED_COLOR("received"))
+						),
+						matcherUtils.printWithType("Received", actual, matcherUtils.printReceived)
+					)
+				)
+			)
+		end
+		local innerErr = JestAssertionError.new()
+		return actualWrapper:andThen(function(result)
+			outerErr.message = tostring(matcherUtils.matcherHint(matcherName, nil, "", options))
+				.. "\n\n"
+				.. "Received promise resolved instead of rejected\n"
+				.. ("Resolved to value: %s"):format(matcherUtils.printReceived(result))
+			return Promise.reject(outerErr)
+		end, function(reason)
+			return makeThrowingMatcher(matcher, isNot, "rejects", reason, innerErr)(table.unpack(args))
+		end)
+	end
+end
 
 -- ROBLOX deviation: matcher does not have RawMatcherFn type annotation and the
 -- the function return is not annotated with ThrowingMatcherFn

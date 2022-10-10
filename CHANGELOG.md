@@ -4,6 +4,7 @@
 
 * :bug: Fix typing for expect matchers [#271](https://github.com/Roblox/jest-roblox/pull/271)
 * :sparkles: export additional `expectExtended` from `JestGlobals` to allow use of custom matchers [#271](https://github.com/Roblox/jest-roblox/pull/271)
+* :sparkles: Added support for `expect.resolves` and `expect.rejects` [#262](https://github.com/Roblox/jest-roblox/pull/262)
 
 ## 3.0.0 (2022-09-30)
 

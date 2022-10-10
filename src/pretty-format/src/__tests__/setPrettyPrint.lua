@@ -37,7 +37,7 @@ local function setPrettyPrint(plugins: Plugins)
 			local pass = prettyFormatted == expected
 			local message = if Boolean.toJSBoolean(pass)
 				then function()
-					return tostring(self.utils:matcherHint(".not.toBe"))
+					return tostring(self.utils.matcherHint(".not.toBe"))
 						.. "\n\n"
 						.. "Expected value to not be:\n"
 						.. ("  %s\n"):format(self.utils:printExpected(expected))
@@ -46,7 +46,7 @@ local function setPrettyPrint(plugins: Plugins)
 				end
 				else function()
 					local diffString = self.utils:diff(expected, prettyFormatted, { expand = self.expand })
-					return tostring(self.utils:matcherHint(".toBe"))
+					return tostring(self.utils.matcherHint(".toBe"))
 						.. "\n\n"
 						.. "Expected value to be:\n"
 						.. ("  %s\n"):format(self.utils:printExpected(expected))

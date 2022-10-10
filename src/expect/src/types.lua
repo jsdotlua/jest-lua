@@ -17,27 +17,10 @@ type Error = LuauPolyfill.Error
 type Array<T> = LuauPolyfill.Array<T>
 type Record<K, T> = { [K]: T }
 type Partial<T> = any
+type Promise<T> = LuauPolyfill.Promise<T>
+type PromiseLike<T> = LuauPolyfill.PromiseLike<T>
 type Function = (...any) -> any
 type Object = LuauPolyfill.Object
-
--- ROBLOX deviation: inline Promise type here. should probably go into LuauPolyfill
-export type PromiseLike<T> = {
-	andThen: (
-		((T) -> T)? | (PromiseLike<T>)?, -- resolve
-		((any) -> () | PromiseLike<T>)? -- reject
-	) -> PromiseLike<T>,
-}
-
-export type Promise<T> = {
-	andThen: ((
-		((T) -> T | PromiseLike<T>)?, -- resolve
-		((any) -> () | PromiseLike<nil>)? -- reject
-	) -> Promise<T>)?,
-
-	catch: ((((any) -> () | PromiseLike<nil>)) -> Promise<T>)?,
-
-	onCancel: ((() -> ()?) -> boolean)?,
-}
 
 export type SyncExpectationResult = {
 	pass: boolean,

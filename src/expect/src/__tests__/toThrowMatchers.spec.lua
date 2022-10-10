@@ -12,18 +12,20 @@ local Packages = CurrentModule.Parent
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local describe = JestGlobals.describe
+local expect = JestGlobals.expect
 local it = JestGlobals.it
+local test = JestGlobals.test
 local beforeAll = JestGlobals.beforeAll
+local jestExpect = require(script.Parent.Parent)
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Error = LuauPolyfill.Error
 local extends = LuauPolyfill.extends
 
+local Promise = require(Packages.Promise)
 local RegExp = require(Packages.RegExp)
 
 local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
-
-local expect = require(CurrentModule)
 
 beforeAll(function()
 	expect.addSnapshotSerializer(alignedAnsiStyleSerializer)
@@ -467,11 +469,84 @@ for _, toThrow in ipairs(matchers) do
 				end)
 			end)
 		end)
-		-- ROBLOX deviation: we skip the entire promise/async block for now since
-		-- we don't have promise/async functionality for matchers or
-		-- throwingMatchers in current release
-		describe.skip("promise/async throws if Error-like object is returned", function()
-			-- SKIP()
+
+		describe("promise/async throws if Error-like object is returned", function()
+			local function asyncFn(shouldThrow: boolean?, resolve: boolean?)
+				return Promise.resolve():andThen(function()
+					local err
+					if shouldThrow then
+						err = Err.new("async apple")
+					end
+					if resolve then
+						-- ROBLOX deviation START: remove :expect() call to better align with JS behaviour
+						-- return Promise.resolve(err or "apple"):expect()
+						return Promise.resolve(err or "apple")
+						-- ROBLOX deviation END
+					else
+						-- ROBLOX deviation START: remove :expect() call to better align with JS behaviour
+						-- return Promise.reject(err or "apple"):expect()
+						return Promise.reject(err or "apple")
+						-- ROBLOX deviation END
+					end
+				end)
+			end
+			test("passes", function()
+				return Promise.resolve():andThen(function()
+					expect.assertions(24)
+					jestExpect(Promise.reject(Error.new())).rejects[toThrow]():expect()
+
+					jestExpect(asyncFn(true)).rejects[toThrow]():expect()
+					jestExpect(asyncFn(true)).rejects[toThrow](Err):expect()
+					jestExpect(asyncFn(true)).rejects[toThrow](Error):expect()
+					jestExpect(asyncFn(true)).rejects[toThrow]("apple"):expect()
+					jestExpect(asyncFn(true)).rejects[toThrow](RegExp("app")):expect()
+
+					jestExpect(asyncFn(true)).rejects.never[toThrow](Err2):expect()
+					jestExpect(asyncFn(true)).rejects.never[toThrow]("banana"):expect()
+					jestExpect(asyncFn(true)).rejects.never[toThrow](RegExp("banana")):expect()
+
+					jestExpect(asyncFn(true, true)).resolves[toThrow]():expect()
+
+					jestExpect(asyncFn(false, true)).resolves.never[toThrow]():expect()
+					jestExpect(asyncFn(false, true)).resolves.never[toThrow](Error):expect()
+					jestExpect(asyncFn(false, true)).resolves.never[toThrow]("apple"):expect()
+					jestExpect(asyncFn(false, true)).resolves.never[toThrow](RegExp("apple")):expect()
+					jestExpect(asyncFn(false, true)).resolves.never[toThrow]("banana"):expect()
+					jestExpect(asyncFn(false, true)).resolves.never[toThrow](RegExp("banana")):expect()
+					jestExpect(asyncFn()).rejects.never[toThrow]():expect()
+					jestExpect(asyncFn()).rejects.never[toThrow](Error):expect()
+					jestExpect(asyncFn()).rejects.never[toThrow]("apple"):expect()
+					jestExpect(asyncFn()).rejects.never[toThrow](RegExp("apple")):expect()
+					jestExpect(asyncFn()).rejects.never[toThrow]("banana"):expect()
+					jestExpect(asyncFn()).rejects.never[toThrow](RegExp("banana")):expect()
+					-- Works with nested functions inside promises
+					jestExpect(Promise.reject(function()
+							error(Error.new())
+						end)).rejects
+						[toThrow]()
+						:expect()
+					jestExpect(Promise.reject(function() end)).rejects.never[toThrow]():expect()
+				end)
+			end)
+			test("did not throw at all", function()
+				return Promise.resolve():andThen(function()
+					return expect(jestExpect(asyncFn()).rejects[toThrow]()).rejects.toThrowErrorMatchingSnapshot()
+				end)
+			end)
+			test("threw, but class did not match", function()
+				return Promise.resolve():andThen(function()
+					expect(jestExpect(asyncFn(true)).rejects[toThrow](Err2)).rejects
+						.toThrowErrorMatchingSnapshot()
+						:expect()
+				end)
+			end)
+			test("threw, but should not have", function()
+				return Promise.resolve():andThen(function()
+					expect(jestExpect(asyncFn(true)).rejects.never[toThrow]()).rejects
+						.toThrowErrorMatchingSnapshot()
+						:expect()
+				end)
+			end)
 		end)
 
 		describe("expected is undefined", function()

@@ -176,10 +176,11 @@ function _toMatchSnapshot(config: MatchSnapshotConfig): {
 	local properties = config.properties
 	local received = config.received
 
-	-- ROBLOX deviation: we don't call dontThrow because we don't yet have the functionality in
+	-- ROBLOX deviation START: we don't call dontThrow because we don't yet have the functionality in
 	-- place where we add errors to global matcher state and deal with them accordingly
 	-- so we instead rely on throwing the actual errors
 	-- local _ = context.dontThrow and context.dontThrow()
+	-- ROBLOX deviation END
 
 	local currentTestName = context.currentTestName
 	local isNot = context.isNot
@@ -352,10 +353,11 @@ function _toThrowErrorMatchingSnapshot(config: types.MatchSnapshotConfig, fromPr
 	local matcherName = config.matcherName
 	local received = config.received
 
-	-- ROBLOX deviation: we don't call dontThrow because we don't yet have the functionality in
+	-- ROBLOX deviation START: we don't call dontThrow because we don't yet have the functionality in
 	-- place where we add errors to global matcher state and deal with them accordingly
 	-- so we instead rely on throwing the actual errors
 	-- local _ = context.dontThrow and context.dontThrow()
+	-- ROBLOX deviation END
 
 	local isNot = context.isNot
 	local promise = context.promise

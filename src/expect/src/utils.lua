@@ -12,6 +12,8 @@ local Packages = CurrentModule.Parent
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
+local Error = LuauPolyfill.Error
+local instanceof = LuauPolyfill.instanceof
 local Object = LuauPolyfill.Object
 local RegExp = require(Packages.RegExp)
 
@@ -247,16 +249,11 @@ function pathAsArray(propertyPath: string): Array<any>
 	return properties
 end
 
+-- ROBLOX deviation START: Custom implementation
 local function isError(value: any): any
-	-- Although strings and tables are not errors, they are the types that
-	-- can be used to trigger an error in Lua so we treat them as the "error"
-	-- types
-	if typeof(value) == "string" or typeof(value) == "table" then
-		return true
-	end
-
-	return false
+	return instanceof(value, Error)
 end
+-- ROBLOX deviation END
 
 local function emptyObject(obj: any): boolean
 	return typeof(obj) == "table" and #Object.keys(obj) == 0 or false
