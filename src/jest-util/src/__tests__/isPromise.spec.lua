@@ -41,5 +41,3 @@ describe("foo", function()
 		expect(isPromise(Promise.reject():catch(function() end))).toBe(true)
 	end)
 end)
-
-return {}

@@ -851,5 +851,3 @@ describe("common substrings", function()
 		expect(abCommonSubstrings).toMatchSnapshot()
 	end)
 end)
-
-return {}

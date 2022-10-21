@@ -1982,5 +1982,3 @@ describe("toMatchObject()", function()
 		end).toThrowErrorMatchingSnapshot()
 	end)
 end)
-
-return {}

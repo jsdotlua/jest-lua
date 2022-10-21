@@ -30,5 +30,3 @@ describe("requireOrImportModule", function()
 		expect(requireOrImportModule).toEqual({})
 	end)
 end)
-
-return {}

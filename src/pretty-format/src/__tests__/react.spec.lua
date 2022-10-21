@@ -678,5 +678,3 @@ it("supports props when key is a table without name property", function()
 	)
 end)
 -- ROBLOX deviation END
-
-return {}

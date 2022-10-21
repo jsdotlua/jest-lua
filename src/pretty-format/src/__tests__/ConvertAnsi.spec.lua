@@ -60,5 +60,3 @@ describe("ConvertAnsi plugin", function()
 		expect(prettyFormatResult(string.format("%s", chalk.blue.open))).toEqual('""')
 	end)
 end)
-
-return {}

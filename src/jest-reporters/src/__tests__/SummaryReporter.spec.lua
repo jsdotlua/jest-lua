@@ -183,5 +183,3 @@ it("snapshots all have results (after update)", function()
 	local result = Array.join(results, ""):gsub("\\", "/")
 	expect(result).toMatchSnapshot()
 end)
-
-return {}

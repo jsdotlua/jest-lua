@@ -1646,5 +1646,3 @@ itFIXME("debug mode - handles circular references in event data", function()
 		t:notThrowsAsync(emitter:emit("test", data)):expect()
 	end)
 end)
-
-return {}

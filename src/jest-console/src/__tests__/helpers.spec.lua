@@ -50,5 +50,3 @@ describe("formatWithOptions", function()
 		expect(formatWithOptions({ depth = 7 }, nestedValue)).toMatch("value")
 	end)
 end)
-
-return {}

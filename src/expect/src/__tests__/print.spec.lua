@@ -158,5 +158,3 @@ describe("printing constructor", function()
 		end)
 	end)
 end)
-
-return {}

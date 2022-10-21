@@ -454,5 +454,3 @@ describe("iterableEquality", function()
 	-- end)
 	-- ROBLOX deviation END
 end)
-
-return {}

@@ -173,5 +173,3 @@ describe("Lua tests", function()
 		end)
 	end)
 end)
-
-return {}

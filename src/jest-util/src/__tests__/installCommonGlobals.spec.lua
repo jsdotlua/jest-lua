@@ -55,5 +55,3 @@ describe("installCommonGlobals", function()
 		expect(#fake.mock.calls).toBe(1)
 	end)
 end)
-
-return {}

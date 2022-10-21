@@ -91,5 +91,3 @@ local it = JestGlobals.it --(JestGlobals.it :: any) :: Function
 -- end)
 
 it.todo("empty test")
-
-return {}

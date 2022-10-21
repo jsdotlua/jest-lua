@@ -31,5 +31,3 @@ describe("testPathPatternToRegExp", function()
 		expect(typeof(testPathPatternToRegExp.default)).toEqual("function")
 	end)
 end)
-
-return {}

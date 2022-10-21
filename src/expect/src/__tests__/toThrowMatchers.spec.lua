@@ -572,5 +572,3 @@ for _, toThrow in ipairs(matchers) do
 		end)
 	end)
 end
-
-return {}

@@ -147,5 +147,3 @@ describe("helpers", function()
 		expect(aggregatedTestResult.numPassedTests).toEqual(2)
 	end)
 end)
-
-return {}

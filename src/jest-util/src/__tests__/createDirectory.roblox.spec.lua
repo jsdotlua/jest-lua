@@ -71,5 +71,3 @@ describe("createDirectory", function()
 		end).never.toThrow()
 	end)
 end)
-
-return {}

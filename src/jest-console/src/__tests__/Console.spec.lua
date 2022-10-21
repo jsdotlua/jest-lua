@@ -67,5 +67,3 @@ describe("Console", function()
 		expect(_stderr).toBe("Hello, world!\n")
 	end)
 end)
-
-return {}

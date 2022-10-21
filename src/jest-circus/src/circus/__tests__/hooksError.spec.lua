@@ -47,5 +47,3 @@ for _, fn in ipairs({ "beforeEach", "beforeAll", "afterEach", "afterAll" }) do
 	end)
 end
 -- ROBLOX deviation END
-
-return {}

@@ -30,5 +30,3 @@ it.skip("tests that a missing snapshot file throws", function()
 	)
 end)
 -- ROBLOX FIXME END
-
-return {}

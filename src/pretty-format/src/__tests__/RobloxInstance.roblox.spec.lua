@@ -174,5 +174,3 @@ describe("InstanceSubset", function()
 		)
 	end)
 end)
-
-return {}

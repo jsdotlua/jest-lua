@@ -98,5 +98,3 @@ describe("test/it error throwing", function()
 		end).toThrowError("Invalid second argument, test8b. It must be a callback function.")
 	end)
 end)
-
-return {}

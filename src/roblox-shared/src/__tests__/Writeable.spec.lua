@@ -38,5 +38,3 @@ describe("Writeable", function()
 		expect(mockWrite).toBeCalledWith("Hello, world!")
 	end)
 end)
-
-return {}

@@ -220,5 +220,3 @@ describe("SpyStrategy", function()
 		expect(spyStrategy:stub()).toBe(spy)
 	end)
 end)
-
-return {}

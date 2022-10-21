@@ -69,5 +69,3 @@ describe("assertions & hasAssertions", function()
 		expect(assertionsErrors[1].error.stack).toMatchSnapshot()
 	end)
 end)
-
-return {}

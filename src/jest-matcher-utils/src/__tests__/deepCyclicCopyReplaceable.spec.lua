@@ -181,5 +181,3 @@ it("should keep metatable on copied table", function()
 	expect(getmetatable(deepCyclicCopyReplaceable(a))["test"]).toBe(1)
 end)
 -- ROBLOX deviation END
-
-return {}

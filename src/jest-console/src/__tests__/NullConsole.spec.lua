@@ -62,5 +62,3 @@ describe("NullConsole", function()
 		expect(_stdout).toBe("")
 	end)
 end)
-
-return {}

@@ -82,5 +82,3 @@ it("when using stderr as output, no stdout call is made", function()
 	jest.runAllTimers()
 	expect(stdoutWrite).never.toHaveBeenCalled()
 end)
-
-return {}

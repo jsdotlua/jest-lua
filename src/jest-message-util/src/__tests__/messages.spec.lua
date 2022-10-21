@@ -56,5 +56,3 @@ end)
 		ROBLOX deviation: skipped lines 130-366
 		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-message-util/src/__tests__/messages.test.ts#L130-L366
 	]]
-
-return {}

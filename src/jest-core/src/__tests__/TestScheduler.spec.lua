@@ -279,5 +279,3 @@ it.skip("should set runInBand to not run in serial", function()
 	-- 	:expect()
 end)
 -- ROBLOX deviation END
-
-return {}

@@ -43,5 +43,3 @@ describe("diffStringsRaw", function()
 		expect(received).toEqual(expected)
 	end)
 end)
-
-return {}

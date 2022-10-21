@@ -53,5 +53,3 @@ describe("getParent", function()
 		).toEqual("/Users/rng/jest-roblox/src/Submodules/expect/src/__tests__")
 	end)
 end)
-
-return {}

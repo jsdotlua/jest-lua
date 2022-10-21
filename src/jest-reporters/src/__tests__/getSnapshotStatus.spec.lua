@@ -56,5 +56,3 @@ it("Retrieves the snapshot status after a snapshot update", function()
 	}
 	expect(getSnapshotStatus(snapshotResult, true)).toMatchSnapshot()
 end)
-
-return {}

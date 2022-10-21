@@ -48,5 +48,3 @@ describe("convertDescriptorToString", function()
 		expect(convertDescriptorToString(foo)).toEqual("[Function anonymous]")
 	end)
 end)
-
-return {}

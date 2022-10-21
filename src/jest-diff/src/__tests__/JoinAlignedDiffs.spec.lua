@@ -133,5 +133,3 @@ describe("joinAlignedDiffsNoExpand", function()
 		expect(joinAlignedDiffsNoExpand(diffsCommonStartEnd, options)).toMatchSnapshot()
 	end)
 end)
-
-return {}

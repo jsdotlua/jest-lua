@@ -66,5 +66,3 @@ it("should not display test time for fast test ", function()
 	local result = getResultHeader((testResultFast :: any) :: TestResult, globalConfig)
 	expect(result).never.toContain(("%s s"):format(tostring(testTime / 1000)))
 end)
-
-return {}

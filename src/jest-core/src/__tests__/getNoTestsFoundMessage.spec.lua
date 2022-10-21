@@ -48,5 +48,3 @@ describe("getNoTestsFoundMessage", function()
 		expect(getNoTestsFoundMessage({}, config)).toMatchSnapshot()
 	end)
 end)
-
-return {}

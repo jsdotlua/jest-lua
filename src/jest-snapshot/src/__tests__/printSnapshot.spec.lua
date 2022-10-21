@@ -1137,5 +1137,3 @@ describe("printSnapshotAndReceived", function()
 		end)
 	end)
 end)
-
-return {}

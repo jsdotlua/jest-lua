@@ -410,5 +410,3 @@ describe("matcherHint", function()
 		expect(received).toMatch(substringPositive)
 	end)
 end)
-
-return {}

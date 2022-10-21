@@ -58,5 +58,3 @@ end)
 it("left pads the quantity properly when pad length is higher", function()
 	expect(formatTime(42, -3, 5)).toBe("   42 ms")
 end)
-
-return {}

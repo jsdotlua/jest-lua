@@ -83,5 +83,3 @@ describe("Spies", function()
 		-- spyOn function)
 	end)
 end)
-
-return {}

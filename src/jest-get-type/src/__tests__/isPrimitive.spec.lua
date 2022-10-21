@@ -68,5 +68,3 @@ describe(".isPrimitive()", function()
 	-- ROBLOX deviation: test omitted because lua has no primitive symbol type
 	-- ROBLOX deviation: test omitted because lua has no built-in RegExp, Map, Set or Date types
 end)
-
-return {}

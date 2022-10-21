@@ -224,5 +224,3 @@ describe("Replaceable", function()
 		end)
 	end)
 end)
-
-return {}

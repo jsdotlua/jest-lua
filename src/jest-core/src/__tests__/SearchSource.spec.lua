@@ -801,5 +801,3 @@ describe("SearchSource", function()
 	-- end)
 	-- ROBLOX deviation END
 end)
-
-return {}

@@ -77,5 +77,3 @@ describe("ReactElement Plugin", function()
 		expect(React.createElement(forwardRefExample)).toPrettyPrintTo("<ForwardRef(Display) />")
 	end)
 end)
-
-return {}

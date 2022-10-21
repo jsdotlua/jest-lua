@@ -48,5 +48,3 @@ describe(".hasAssertions()", function()
 
 	it("hasAssertions not leaking to global state", function() end)
 end)
-
-return {}

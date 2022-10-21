@@ -80,5 +80,3 @@ describe("JestRuntime", function()
 		expect(testFile1).never.toBe(testFile2)
 	end)
 end)
-
-return {}

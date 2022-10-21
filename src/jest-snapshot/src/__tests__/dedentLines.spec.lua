@@ -276,5 +276,3 @@ describe("dedentLines null", function()
 		expect(dedentLines(indented)).toEqual(nil)
 	end)
 end)
-
-return {}

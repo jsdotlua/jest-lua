@@ -1679,5 +1679,3 @@ end)
 -- 	end)
 -- end)
 -- ROBLOX deviation END
-
-return {}

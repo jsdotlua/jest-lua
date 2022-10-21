@@ -52,5 +52,3 @@ describe("test/it.todo error throwing", function()
 		end).toThrowError("Todo must be called with only a description.")
 	end)
 end)
-
-return {}

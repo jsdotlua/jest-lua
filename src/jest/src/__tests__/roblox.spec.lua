@@ -49,5 +49,3 @@ describe("Jest", function()
 		end)
 	end)
 end)
-
-return {}

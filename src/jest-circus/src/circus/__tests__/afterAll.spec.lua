@@ -128,5 +128,3 @@ it("child tests marked with only should not run if describe block is skipped", f
 		]])
 	expect(wrap(result.stdout)).toMatchSnapshot()
 end)
-
-return {}

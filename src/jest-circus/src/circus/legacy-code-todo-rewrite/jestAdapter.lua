@@ -95,7 +95,7 @@ local function jestAdapter(
 
 		for _, path in config.setupFilesAfterEnv do
 			-- ROBLOX deviation START: no esm modules in Lua
-			runtime:requireModule(path)
+			runtime:requireModule(path, nil, nil, nil, true)
 			-- local esm = runtime:unstable_shouldLoadAsEsm(path)
 			-- if esm then
 			-- 	runtime:unstable_importModule(path):expect()
@@ -105,7 +105,7 @@ local function jestAdapter(
 			-- ROBLOX deviation END
 		end
 		-- ROBLOX deviation START: no esm modules in Lua
-		runtime:requireModule(testPath)
+		runtime:requireModule(testPath, nil, nil, nil, true)
 		-- 	local esm = runtime:unstable_shouldLoadAsEsm(testPath)
 
 		-- if esm then

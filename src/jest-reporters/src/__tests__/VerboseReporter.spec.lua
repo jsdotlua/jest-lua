@@ -502,5 +502,3 @@ describe("groupTestsBySuites", function()
 		}))
 	end)
 end)
-
-return {}

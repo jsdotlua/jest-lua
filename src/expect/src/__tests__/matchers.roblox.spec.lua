@@ -294,5 +294,3 @@ describe("Instance matchers", function()
 		end)
 	end)
 end)
-
-return {}

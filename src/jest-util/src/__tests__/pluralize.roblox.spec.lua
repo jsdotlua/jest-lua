@@ -40,5 +40,3 @@ describe("pluralize", function()
 		end
 	end)
 end)
-
-return {}

@@ -91,5 +91,3 @@ it("any works with Roblox types", function()
 	expect(Color3.new()).toEqual(expect.any("Color3"))
 	expect(UDim2.new()).toEqual(expect.any("UDim2"))
 end)
-
-return {}

@@ -104,5 +104,3 @@ it("prints the config object", function()
 		expect(wrap(message)).toMatchSnapshot()
 	end)
 end)
-
-return {}

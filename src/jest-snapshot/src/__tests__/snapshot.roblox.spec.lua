@@ -76,5 +76,3 @@ end)
 it("test with newlines\nin the name\nand body", function()
 	expect("a\nb").toMatchSnapshot()
 end)
-
-return {}

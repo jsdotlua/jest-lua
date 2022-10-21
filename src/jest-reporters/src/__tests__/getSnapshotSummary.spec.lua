@@ -115,5 +115,3 @@ it("returns nothing if there are no updates", function()
 	)
 	expect(result).toMatchSnapshot()
 end)
-
-return {}

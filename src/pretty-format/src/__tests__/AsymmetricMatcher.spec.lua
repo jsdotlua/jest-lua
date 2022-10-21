@@ -305,5 +305,3 @@ it("min option", function()
 			.. "}"
 	)
 end)
-
-return {}

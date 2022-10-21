@@ -83,5 +83,3 @@ describe.skip("FakeTimers", function()
 		end)
 	end)
 end)
-
-return {}

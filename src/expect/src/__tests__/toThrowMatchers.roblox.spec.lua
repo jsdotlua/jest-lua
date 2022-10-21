@@ -183,5 +183,3 @@ describe("Lua toThrowMatcher tests", function()
 		end).toThrow("I am erroring!")
 	end)
 end)
-
-return {}

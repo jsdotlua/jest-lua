@@ -142,5 +142,3 @@ describe("CallTracker", function()
 		]]
 	end)
 end)
-
-return {}

@@ -213,5 +213,3 @@ describe("CustomConsole", function()
 		end)
 	end)
 end)
-
-return {}

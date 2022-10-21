@@ -438,5 +438,3 @@ end)
 test("StringNotMatching returns true if received value is not string", function()
 	expect(stringNotMatching("en"):asymmetricMatch(1)).toBe(true)
 end)
-
-return {}

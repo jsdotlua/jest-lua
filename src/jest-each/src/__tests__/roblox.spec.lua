@@ -62,5 +62,3 @@ describe("supports it.each with template syntax", function()
 		end
 	)
 end)
-
-return {}

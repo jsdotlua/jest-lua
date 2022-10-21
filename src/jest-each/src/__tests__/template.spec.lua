@@ -607,5 +607,3 @@ describe("jest-each", function()
 		)
 	end)
 end)
-
-return {}

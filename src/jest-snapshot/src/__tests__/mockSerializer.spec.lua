@@ -167,5 +167,3 @@ it("maxDepth option", function()
 	}, "\n")
 	expect(prettyFormat(val, { maxDepth = 3, plugins = { plugin_ } })).toBe(expected)
 end)
-
-return {}

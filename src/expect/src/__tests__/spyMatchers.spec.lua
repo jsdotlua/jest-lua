@@ -1208,5 +1208,3 @@ for _, returnedWith in ipairs({
 		end)
 	end)
 end
-
-return {}

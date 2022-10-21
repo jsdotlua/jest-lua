@@ -926,5 +926,3 @@ describe("internal timer never goes backwards", function()
 		expect(timers.osOverride.clock()).toBe(100)
 	end)
 end)
-
-return {}

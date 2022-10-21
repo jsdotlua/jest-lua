@@ -31,5 +31,3 @@ describe("tryRealpath", function()
 		expect(tryRealpath).toEqual({})
 	end)
 end)
-
-return {}

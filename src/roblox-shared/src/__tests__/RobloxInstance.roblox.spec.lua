@@ -262,5 +262,3 @@ describe("getInstanceSubset()", function()
 		}))
 	end)
 end)
-
-return {}

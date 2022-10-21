@@ -78,5 +78,3 @@ it("throws an error when not called with the right number of arguments", functio
 		)
 	end).toThrowErrorMatchingSnapshot()
 end)
-
-return {}

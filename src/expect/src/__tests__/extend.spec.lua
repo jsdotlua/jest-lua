@@ -241,5 +241,3 @@ it("works for asymmetric unary matchers with a table argument", function()
 	end).never.toThrow()
 end)
 -- ROBLOX deviation END
-
-return {}

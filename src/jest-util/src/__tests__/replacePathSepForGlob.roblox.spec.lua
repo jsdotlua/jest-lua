@@ -31,5 +31,3 @@ describe("replacePathSepForGlob", function()
 		expect(replacePathSepForGlob).toEqual({})
 	end)
 end)
-
-return {}

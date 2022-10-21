@@ -56,5 +56,3 @@ describe(".isRobloxBuiltin()", function()
 		expect(isRobloxBuiltin(newproxy())).toBe(false)
 	end)
 end)
-
-return {}

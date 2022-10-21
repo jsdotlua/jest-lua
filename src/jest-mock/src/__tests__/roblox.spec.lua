@@ -60,5 +60,3 @@ it("returns a function as the second return value", function()
 	expect(mockFn()).toBe(true)
 	expect(mock).toHaveLastReturnedWith(true)
 end)
-
-return {}

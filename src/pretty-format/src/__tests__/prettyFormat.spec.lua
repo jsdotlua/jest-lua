@@ -796,5 +796,3 @@ describe("prettyFormat()", function()
 		end)
 	end)
 end)
-
-return {}

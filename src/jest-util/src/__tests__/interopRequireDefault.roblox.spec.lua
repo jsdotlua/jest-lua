@@ -31,5 +31,3 @@ describe("interopRequireDefault", function()
 		expect(interopRequireDefault).toEqual({})
 	end)
 end)
-
-return {}

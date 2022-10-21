@@ -35,5 +35,3 @@ describe("eventHandler", function()
 		expect(state.testNamePattern).toEqual(RegExp(pattern, "i"))
 	end)
 end)
-
-return {}

@@ -43,5 +43,3 @@ describe("formatTestResults", function()
 		expect(result.testResults[1].assertionResults[1].fullName).toEqual(assertion.fullName)
 	end)
 end)
-
-return {}

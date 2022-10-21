@@ -50,5 +50,3 @@ describe("preRunMessage", function()
 		end).never.toThrow()
 	end)
 end)
-
-return {}

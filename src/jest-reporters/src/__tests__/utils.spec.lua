@@ -160,5 +160,3 @@ describe("printDisplayName", function()
 		expect(printDisplayName(makeProjectConfig({ displayName = { color = "green", name = "hello" } }))).toMatchSnapshot()
 	end)
 end)
-
-return {}

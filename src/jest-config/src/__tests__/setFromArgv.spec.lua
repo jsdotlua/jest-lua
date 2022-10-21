@@ -72,5 +72,3 @@ it("explicit flags override those from --config", function()
 	local argv = { config = '{"watch": false}', watch = true } :: Config_Argv
 	expect(setFromArgv(options, argv)).toMatchObject({ watch = true })
 end)
-
-return {}

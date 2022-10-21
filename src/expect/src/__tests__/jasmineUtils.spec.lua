@@ -176,5 +176,3 @@ describe("minor jasmineUtils functions", function()
 		end).toThrow()
 	end)
 end)
-
-return {}

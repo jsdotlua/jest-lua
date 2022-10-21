@@ -171,5 +171,3 @@ it("works like micromatch with negated extglobs", function()
 		false
 	)
 end)
-
-return {}

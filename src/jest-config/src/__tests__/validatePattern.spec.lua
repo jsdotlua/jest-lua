@@ -36,5 +36,3 @@ describe("validate pattern function", function()
 		expect(isValid).toBeFalsy()
 	end)
 end)
-
-return {}

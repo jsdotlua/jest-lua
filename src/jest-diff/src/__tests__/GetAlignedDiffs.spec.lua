@@ -206,5 +206,3 @@ describe("getAlignedDiffs", function()
 		end)
 	end)
 end)
-
-return {}

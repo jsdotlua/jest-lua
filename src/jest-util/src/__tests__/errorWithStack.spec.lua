@@ -35,5 +35,3 @@ describe("ErrorWithStack", function()
 		Error["captureStackTrace"] = originalCaptureStackTrace
 	end)
 end)
-
-return {}

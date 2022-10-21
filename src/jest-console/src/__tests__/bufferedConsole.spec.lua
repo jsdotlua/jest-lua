@@ -195,5 +195,3 @@ describe("BufferedConsole", function()
 		end)
 	end)
 end)
-
-return {}

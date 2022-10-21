@@ -108,5 +108,3 @@ describe(".getType()", function()
 	end)
 	-- ROBLOX deviation end
 end)
-
-return {}

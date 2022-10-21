@@ -525,5 +525,3 @@ itFIXME("stack traces - ready provided fn", function()
 		end)
 		:expect()
 end)
-
-return {}

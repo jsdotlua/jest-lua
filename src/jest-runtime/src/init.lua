@@ -103,7 +103,10 @@ export type Runtime = {
 		-- ROBLOX deviation: accept ModuleScript instead of string
 		scriptInstance: ModuleScript?,
 		options: any?,
-		isRequireActual: boolean?
+		isRequireActual: boolean?,
+		-- ROBLOX deviation START: added param to not require return from test files
+		noModuleReturnRequired: boolean?
+		-- ROBLOX deviation END
 	) -> any,
 	-- ROBLOX deviation: no default param <T = unknown>
 	requireInternalModule: <T>(
@@ -283,7 +286,10 @@ function Runtime:requireModule(
 	from: ModuleScript,
 	_scriptInstance: ModuleScript?,
 	options: any?,
-	isRequireActual: boolean?
+	isRequireActual: boolean?,
+	-- ROBLOX deviation START: added param to not require return from test files
+	noModuleReturnRequired: boolean?
+	-- ROBLOX deviation END
 ): any
 	-- ROBLOX deviation START
 	local scriptInstance = if _scriptInstance == nil then from else _scriptInstance
@@ -336,7 +342,7 @@ function Runtime:requireModule(
 	getfenv(moduleFunction).task = self._fakeTimersImplementation.taskOverride
 
 	moduleResult = moduleFunction()
-	if moduleResult == nil then
+	if moduleResult == nil and noModuleReturnRequired ~= true then
 		error(
 			string.format(
 				"[Module Error]: %s did not return a valid result\n" .. "\tModuleScripts must return a non-nil value",
@@ -346,7 +352,12 @@ function Runtime:requireModule(
 	end
 	-- ROBLOX deviation END
 
-	moduleRegistry:set(scriptInstance, moduleResult)
+	-- ROBLOX deviation START: added check to not store in moduleRegistry if moduleResult is nil
+	-- moduleRegistry:set(scriptInstance, moduleResult)
+	if moduleResult ~= nil then
+		moduleRegistry:set(scriptInstance, moduleResult)
+	end
+	-- ROBLOX deviation END
 	return moduleResult
 end
 

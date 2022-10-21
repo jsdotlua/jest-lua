@@ -16,5 +16,3 @@ local defaults = require(script.Parent.Parent).defaults
 it("get configuration defaults", function()
 	expect(defaults).toBeDefined()
 end)
-
-return {}

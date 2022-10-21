@@ -261,5 +261,3 @@ end)
 		ROBLOX deviation: skipped code:
 		original code lines 1462 - 1467
 	]]
-
-return {}

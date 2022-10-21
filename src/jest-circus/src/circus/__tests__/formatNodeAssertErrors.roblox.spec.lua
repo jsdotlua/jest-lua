@@ -129,5 +129,3 @@ describe("formatNodeAssertErrors", function()
 		end)
 	end
 end)
-
-return {}

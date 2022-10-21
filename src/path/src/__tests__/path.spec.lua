@@ -187,5 +187,3 @@ describe("path.relative correctly resolves relative paths", function()
 		end)
 	end
 end)
-
-return {}

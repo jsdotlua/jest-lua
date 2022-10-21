@@ -91,5 +91,3 @@ it("beforeAll is exectued correctly", function()
   	]]).stdout
 	expect(wrap(stdout)).toMatchSnapshot()
 end)
-
-return {}

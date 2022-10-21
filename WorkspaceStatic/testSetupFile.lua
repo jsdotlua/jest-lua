@@ -17,5 +17,3 @@ local ConvertAnsi = require(script.Parent.Parent.PrettyFormat).plugins.ConvertAn
 
 jestExpect.addSnapshotSerializer(JestSnapshotSerializerRaw)
 jestExpect.addSnapshotSerializer(ConvertAnsi)
-
-return {}

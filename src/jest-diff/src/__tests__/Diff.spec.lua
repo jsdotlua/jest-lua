@@ -1012,5 +1012,3 @@ describe("compare keys", function()
 	end)
 	-- ROBLOX deviation end
 end)
-
-return {}

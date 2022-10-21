@@ -50,5 +50,3 @@ describe("clearLine", function()
 		expect(writeMock).toHaveBeenCalledWith(stream, "\x1b[999D\x1b[K")
 	end)
 end)
-
-return {}

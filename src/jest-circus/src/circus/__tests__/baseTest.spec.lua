@@ -43,5 +43,3 @@ it("failures", function()
   		]]).stdout
 	expect(wrap(stdout)).toMatchSnapshot()
 end)
-
-return {}

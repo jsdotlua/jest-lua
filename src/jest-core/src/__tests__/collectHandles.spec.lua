@@ -127,5 +127,3 @@ describe("collectHandles - custom tests", function()
 	end)
 end)
 -- ROBLOX deviation END
-
-return {}

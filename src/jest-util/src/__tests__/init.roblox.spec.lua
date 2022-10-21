@@ -78,5 +78,3 @@ describe("jest-util init", function()
 		expect(typeof(initModule.formatTime)).toEqual("function")
 	end)
 end)
-
-return {}

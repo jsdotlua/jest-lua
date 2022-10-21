@@ -68,5 +68,3 @@ describe("bad plugin", function()
 		expect(result.message).toMatch("attempt to index number with 'foo'")
 	end)
 end)
-
-return {}

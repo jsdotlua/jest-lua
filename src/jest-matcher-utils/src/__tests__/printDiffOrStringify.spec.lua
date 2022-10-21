@@ -289,5 +289,3 @@ describe("printDiffOrStringify", function()
 		end)
 	end)
 end)
-
-return {}

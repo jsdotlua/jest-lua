@@ -559,5 +559,3 @@ describe("cleanupSemantic", function()
 		expect(equivalent(expected, diffs)).toBe(true)
 	end)
 end)
-
-return {}
