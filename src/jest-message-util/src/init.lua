@@ -29,6 +29,10 @@ local prettyFormat = require(Packages.PrettyFormat).format
 
 type Path = Config_Path
 
+-- ROBLOX deviation START: additional dependencies
+local normalizePromiseError = require(Packages.RobloxShared).normalizePromiseError
+-- ROBLOX deviation END
+
 -- ROBLOX deviation: forward declarations
 local formatStackTrace, getStackTraceLines, separateMessageFromStack
 
@@ -166,6 +170,11 @@ local function formatExecError(
 		-- ROBLOX FIXME Luau: error_ is guaranteed to be string at this point
 		stack = error_ :: string
 	else
+		-- ROBLOX deviation START: additional logic to handle Promise library error
+		if (error_ :: any).kind == "ExecutionError" then
+			error_ = normalizePromiseError(error_)
+		end
+		-- ROBLOX deviation END
 		message = error_.message
 		stack = if typeof(error_.stack) == "string"
 			then error_.stack

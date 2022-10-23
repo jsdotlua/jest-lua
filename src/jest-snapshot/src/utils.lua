@@ -291,7 +291,7 @@ local function saveSnapshotFile(snapshotData: SnapshotData, snapshotPath: Config
 		error(Error("Attempting to save snapshots in an environment where FileSystemService is inaccessible."))
 	end
 	ensureDirectoryExists(snapshotPath)
-	FileSystemService:WriteFile(snapshotPath, table.concat(snapshots, "\n\n"))
+	FileSystemService:WriteFile(snapshotPath, table.concat(snapshots, "\n") .. "\n")
 end
 
 local function deepMergeArray(target: Array<any>, source: Array<any>)

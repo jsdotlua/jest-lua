@@ -16,6 +16,7 @@ local instanceof = LuauPolyfill.instanceof
 -- ROBLOX deviation START: additional dependencies
 local RobloxShared = require(Packages.RobloxShared)
 local escapePatternCharacters = RobloxShared.escapePatternCharacters
+local normalizePromiseError = RobloxShared.normalizePromiseError
 -- ROBLOX deviation END
 
 type Record<K, T> = { [K]: T }
@@ -77,9 +78,7 @@ function formatNodeAssertErrors(_self: any, event: Circus_Event, state: Circus_S
 					error_ = asyncError
 					-- ROBLOX deviation START: additional logic to handle Promise library error
 				elseif originalError.kind == "ExecutionError" then
-					error_ = originalError
-					error_.message = error_.error
-					error_.stack = error_.trace
+					error_ = normalizePromiseError(originalError)
 					-- ROBLOX deviation END
 				elseif not Boolean.toJSBoolean(originalError.stack) then
 					error_ = asyncError

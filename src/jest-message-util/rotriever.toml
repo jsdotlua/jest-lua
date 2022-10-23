@@ -12,7 +12,9 @@ ChalkLua = { workspace = true }
 RegExp = { workspace = true }
 JestTypes = { path = "../jest-types"}
 PrettyFormat = { path = "../pretty-format"}
+RobloxShared = { path = "../roblox-shared"}
 
 [dev_dependencies]
 JestGlobals = { path = "../jest-globals" }
 JestSnapshotSerializerRaw = { path = "../jest-snapshot-serializer-raw" }
+Promise = { workspace = true }

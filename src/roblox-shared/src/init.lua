@@ -23,6 +23,7 @@ local exports = {
 	getRelativePath = require(CurrentModule.getRelativePath),
 	RobloxInstance = require(CurrentModule.RobloxInstance),
 	nodeUtils = nodeUtilsModule,
+	normalizePromiseError = require(CurrentModule.normalizePromiseError),
 }
 
 local WriteableModule = require(CurrentModule.Writeable)
