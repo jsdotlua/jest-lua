@@ -92,14 +92,10 @@ local sum = require(Workspace.sum)
 it('adds 1 + 2 to equal 3', function()
 	expect(sum(1, 2)).toBe(3)
 end)
-
-return {}
 ```
 
 :::caution
 Any functionality needed _must_ be explicitly required from `JestGlobals`, see [Globals](api).
-
-Additionally, every test file _must_ `return {}` since Roblox requires that every `ModuleScript` return exactly one value.
 :::
 
 Finally, run your project using `roblox-cli` to run the tests and your tests should pass!

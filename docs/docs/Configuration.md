@@ -153,8 +153,6 @@ expect.extend({
 afterEach(function()
 	jest.useRealTimers()
 end)
-
-return {}
 ```
 
 ```lua title="jest.config.lua"

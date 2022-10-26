@@ -18,12 +18,19 @@ local expect = require(Packages.Dev.JestGlobals).expect
 
 To use regular expressions in matchers that support it, you need to add [LuauRegExp](https://github.com/Roblox/luau-regexp) as a dependency in your `rotriever.toml` and require it in your code.
 ```yaml title="rotriever.toml"
-[dev_dependencies]
 RegExp = "github.com/roblox/luau-regexp@0.2.0"
 ```
 
 ```lua
 local RegExp = require(Packages.RegExp)
+```
+
+### Promise
+<img alt='Roblox only' src='img/roblox-only.svg'/>
+
+To use Promises in your tests, add [roblox-lua-promise](https://github.com/Roblox/roblox-lua-promise) as a dependency in your `rotriever.toml`
+```yaml
+Promise = "github.com/evaera/roblox-lua-promise@3.3.0"
 ```
 
 ### Error
@@ -509,6 +516,46 @@ it('the best flavor is not coconut', function()
 	expect(bestLaCroixFlavor()).never.toBe('coconut')
 end)
 ```
+
+### `.resolves`
+<a href='https://jestjs.io/docs/27.x/expect#resolves' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+
+Use `resolves` to unwrap the value of a fulfilled [promise](#promise) so any other matcher can be chained. If the promise is rejected the assertion fails.
+
+For example, this code tests that the promise resolves and that the resulting value is `'lemon'`:
+
+```lua
+test('resolves to lemon', function()
+	-- make sure to add a return statement
+	return expect(Promise.resolve('lemon')).resolves.toBe('lemon')
+end)
+```
+
+:::note
+
+Since you are still testing promises, the test is still asynchronous. Hence, you will need to [tell Jest Roblox to wait](asynchronous#promises) by returning the unwrapped assertion.
+
+:::
+
+### `.rejects`
+<a href='https://jestjs.io/docs/27.x/expect#rejects' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+
+Use `.rejects` to unwrap the reason of a rejected [promise](#promise) so any other matcher can be chained. If the promise is fulfilled the assertion fails.
+
+For example, this code tests that the promise rejects with reason `'octopus'`:
+
+```lua
+test('rejects to octopus', function()
+	-- make sure to add a return statement
+	return expect(Promise.reject(Error.new('octopus'))).rejects.toThrow('octopus')
+end)
+```
+
+:::note
+
+Since you are still testing promises, the test is still asynchronous. Hence, you will need to [tell Jest Roblox to wait](asynchronous#promises) by returning the unwrapped assertion.
+
+:::
 
 ### `.toBe(value)`
 <a href='https://jestjs.io/docs/27.x/expect#tobevalue' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>

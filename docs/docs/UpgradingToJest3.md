@@ -94,8 +94,6 @@ local it = JestGlobals.it
 it("1 does not equal 2", function()
 	expect(1).toBe(2)
 end)
-
-return {}
 ```
 
 There are a couple interesting differences:
