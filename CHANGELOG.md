@@ -1,6 +1,8 @@
 # Jest Roblox Changelog
 
 ## Unreleased
+
+## 3.1.1 (2022-11-1)
 * :bug: Fix `require` throwing on ModuleScripts that `return nil` and not throwing on ModuleScripts that return multiple values [#292](https://github.com/Roblox/jest-roblox/pull/292)
 
 ## 3.1.0 (2022-10-26)
