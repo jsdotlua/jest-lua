@@ -341,15 +341,16 @@ function Runtime:requireModule(
 	getfenv(moduleFunction).os = self._fakeTimersImplementation.osOverride
 	getfenv(moduleFunction).task = self._fakeTimersImplementation.taskOverride
 
-	moduleResult = moduleFunction()
-	if moduleResult == nil and noModuleReturnRequired ~= true then
+	moduleResult = table.pack(moduleFunction())
+	if moduleResult.n ~= 1 and noModuleReturnRequired ~= true then
 		error(
 			string.format(
-				"[Module Error]: %s did not return a valid result\n" .. "\tModuleScripts must return a non-nil value",
+				"[Module Error]: %s did not return a valid result\n" .. "\tModuleScripts must return exactly one value",
 				tostring(scriptInstance)
 			)
 		)
 	end
+	moduleResult = moduleResult[1]
 	-- ROBLOX deviation END
 
 	-- ROBLOX deviation START: added check to not store in moduleRegistry if moduleResult is nil
