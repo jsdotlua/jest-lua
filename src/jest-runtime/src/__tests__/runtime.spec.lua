@@ -26,7 +26,7 @@ local afterAll = JestGlobals.afterAll
 
 local JestRuntime = require(CurrentModule)
 -- ROBLOX TODO: using RuntimePrivate type until better approach is found
-type JestRuntime = JestRuntime.RuntimePrivate
+type JestRuntime = JestRuntime.Runtime
 type Jest = JestRuntime.Jest
 
 local _runtime: JestRuntime?
