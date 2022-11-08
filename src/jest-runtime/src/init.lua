@@ -2538,13 +2538,15 @@ function Runtime_private:_createJestObjectFor(from: ModuleScript): Jest
 		mock = mock,
 		-- ROBLOX deviation START: not implemented yet
 		-- mocked = mocked,
-		-- requireActual = self.requireActual:bind(self, from),
 		-- ROBLOX deviation END
-		-- ROBLOX deviation START: no built-in bind support in Luau
-		-- requireMock = self.requireMock:bind(self, from),
-		requireMock = function(__self, __from, moduleName)
-			return self.requireMock(__self, __from, moduleName)
+		-- ROBLOX deviation START: issue roblox/js-to-lua #686 - no built-in bind support in Luau
+		-- requireActual = self.requireActual:bind(self, from),
+		requireActual = function(moduleName)
+			return self:requireActual(from, moduleName)
 		end,
+		-- ROBLOX deviation END
+		-- ROBLOX deviation START: not implemented yet
+		-- requireMock = self.requireMock:bind(self, from),
 		-- ROBLOX deviation END
 		resetAllMocks = resetAllMocks,
 		resetModules = resetModules,
