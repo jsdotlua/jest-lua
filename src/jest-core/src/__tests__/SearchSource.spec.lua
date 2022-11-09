@@ -6,42 +6,51 @@
  * LICENSE file in the root directory of this source tree.
  *
  ]]
-
 local Packages = script.Parent.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
+-- ROBLOX deviation START: not used
 -- local Boolean = LuauPolyfill.Boolean
 -- local Object = LuauPolyfill.Object
 -- local Set = LuauPolyfill.Set
+-- ROBLOX deviation END
 type Array<T> = LuauPolyfill.Array<T>
 type Promise<T> = LuauPolyfill.Promise<T>
 local Promise = require(Packages.Promise)
-
 local JestGlobals = require(Packages.Dev.JestGlobals)
--- local jest = JestGlobals.jest
-type Function = (...any) -> ...any
-
-local describe = JestGlobals.describe
-local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
+local describe = JestGlobals.describe
 local expect = JestGlobals.expect
-
+local it = JestGlobals.it
+-- ROBLOX deviation START: not used
+-- local jest = JestGlobals.jest
 -- local path = require(Packages.path)
-local test_resultModule = require(Packages.JestTestResult)
-type Test = test_resultModule.Test
-local typesModule = require(Packages.JestTypes)
-type Config_Argv = typesModule.Config_Argv
-type Config_Path = typesModule.Config_Path
-type Config_ProjectConfig = typesModule.Config_ProjectConfig
+-- ROBLOX deviation END
+local jestTestResultModule = require(Packages.JestTestResult)
+type Test = jestTestResultModule.Test
+local jestTypesModule = require(Packages.JestTypes)
+-- ROBLOX deviation START: not used
+-- type Config = jestTypesModule.Config
+-- ROBLOX deviation END
+type Config_Argv = jestTypesModule.Config_Argv
+type Config_Path = jestTypesModule.Config_Path
+type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
 local normalize = require(Packages.JestConfig).normalize
--- local Runtime = require(Packages.JestRuntime)
+-- ROBLOX deviation START: not used
+-- local Runtime = require(Packages.JestRuntime).default
+-- ROBLOX deviation END
 local SearchSourceModule = require(script.Parent.Parent.SearchSource)
 local SearchSource = SearchSourceModule.default
+-- ROBLOX deviation START: add SearchSource type
 type SearchSource = SearchSourceModule.SearchSource
+-- ROBLOX deviation END
+-- ROBLOX deviation START: importing type
+-- local SearchResult = SearchSourceModule.SearchResult
 type SearchResult = SearchSourceModule.SearchResult
-
+-- ROBLOX deviation END
+-- ROBLOX deviation START: not used
 -- jest.setTimeout(15000)
-
+-- ROBLOX deviation END
 -- ROBLOX deviation START: additional variables
 local process = {
 	platform = "",
@@ -52,8 +61,7 @@ local path = {
 	end,
 }
 -- ROBLOX deviation END
-
--- ROBLOX deviation START: helper functions
+-- ROBLOX deviation START: add helper functions
 local function pathRelative(root: Instance, script_: ModuleScript)
 	local relativePath = script_.Name
 
@@ -70,7 +78,6 @@ local function toScripts(tests: Array<Test>)
 	end)
 end
 -- ROBLOX deviation END
-
 -- ROBLOX deviation START: not used
 -- jest.mock("graceful-fs", function()
 -- 	local realFs = jest.requireActual("fs")
@@ -88,452 +95,480 @@ end
 -- 	})
 -- end)
 -- ROBLOX deviation END
-
 -- ROBLOX deviation START: rootDir needs to be an Instance
 -- local rootDir = path:resolve(__dirname, "test_root")
 local rootDir = script.Parent.test_root
 -- ROBLOX deviation END
 -- ROBLOX deviation START: not used
--- local testRegex = "/" .. "__testtests__" .. "/"
+-- local testRegex = tostring(path.sep) .. "__testtests__" .. tostring(path.sep)
 -- local testMatch = { "**/__testtests__/**/*" }
 -- local maxWorkers = 1
 -- local function toPaths(tests: Array<Test>)
--- 	return Array.map(tests, function(ref)
--- 		local path = ref.path
+-- 	return Array.map(tests, function(ref0)
+-- 		local path = ref0.path
 -- 		return path
--- 	end)
+-- 	end) --[[ ROBLOX CHECK: check if 'tests' is an Array ]]
 -- end
 -- ROBLOX deviation END
 local findMatchingTests: (config: Config_ProjectConfig) -> Promise<SearchResult>
-
 describe("SearchSource", function()
 	local name = "SearchSource"
 	local searchSource: SearchSource
-
 	describe("isTestFilePath", function()
 		local config
-
 		beforeEach(function()
-			Promise.resolve()
-				:andThen(function()
-					config =
-						normalize({ name = name, rootDir = script.Parent, roots = {} }, {} :: Config_Argv):expect().options
-					-- ROBLOX deviation START: Runtime.createContext is not ported
-					-- return Runtime
-					-- 	:createContext(config, { maxWorkers = maxWorkers, watchman = false })
-					-- 	:andThen(function(context)
-					-- 		searchSource = SearchSource.new(context)
-					-- 	end)
-					searchSource = SearchSource.new({ config = config })
-					-- ROBLOX deviation END
-				end)
-				:expect()
-		end)
-
-		-- micromatch doesn't support '..' through the globstar ('**') to avoid
+			return Promise.resolve():andThen(function()
+				-- ROBLOX deviation START: needs to be an Instance
+				-- config = normalize({ name = name, rootDir = ".", roots = {} }, {} :: Config_Argv):expect().options
+				config =
+					normalize({ name = name, rootDir = script.Parent, roots = {} }, {} :: Config_Argv):expect().options
+				-- ROBLOX deviation END
+				-- ROBLOX deviation START: Runtime.createContext is not ported
+				-- return Runtime:createContext(config, { maxWorkers = maxWorkers, watchman = false })
+				-- 	:then_(function(context)
+				-- 		searchSource = SearchSource.new(context)
+				-- 	end)
+				searchSource = SearchSource.new({ config = config })
+				-- ROBLOX deviation END
+			end)
+		end) -- micromatch doesn't support '..' through the globstar ('**') to avoid
 		-- infinite recursion.
 		it("supports ../ paths and unix separators via testRegex", function()
-			return Promise.resolve()
-				:andThen(function()
-					if process.platform ~= "win32" then
-						config = normalize({
-							name = name,
-							rootDir = script.Parent,
-							roots = {},
-							testMatch = nil,
-							testRegex = "(/__tests__/.*|(\\.|/)(test|spec))\\.lua$",
-						}, {} :: Config_Argv):expect().options
-						-- ROBLOX deviation START: Runtime.createContext is not ported
-						-- return Runtime:createContext(config, { maxWorkers = maxWorkers, watchman = false })
-						-- 	:andThen(function(context)
-						-- 		searchSource = SearchSource.new(context)
-
-						-- 		local path = "/path/to/__tests__/foo/bar/baz/../../../test.js"
-						-- 		expect(searchSource:isTestFilePath(path)).toEqual(true)
-						-- 	end)
-						searchSource = SearchSource.new({ config = config })
-
-						-- ROBLOX NOTE: lua extension instead of js
-						local path = "/path/to/__tests__/foo/bar/baz/../../../test.lua"
-						expect(searchSource:isTestFilePath(path)).toEqual(true)
+			return Promise.resolve():andThen(function()
+				if process.platform ~= "win32" then
+					config = normalize({
+						name = name,
+						-- ROBLOX deviation START: needs to be an Instance
+						-- rootDir = ".",
+						rootDir = script.Parent,
 						-- ROBLOX deviation END
-					else
-						return
-					end
-				end)
-				:expect()
+						roots = {},
+						testMatch = nil,
+						-- ROBLOX deviation START: lua extension instead of jsx
+						-- testRegex = "(/__tests__/.*|(\\.|/)(test|spec))\\.jsx?$",
+						testRegex = "(/__tests__/.*|(\\.|/)(test|spec))\\.lua$",
+						-- ROBLOX deviation END
+					}, {} :: Config_Argv):expect().options
+					-- ROBLOX deviation START: Runtime.createContext is not ported
+					-- return Runtime:createContext(config, { maxWorkers = maxWorkers, watchman = false })
+					-- 	:then_(function(context)
+					-- 		searchSource = SearchSource.new(context)
+					-- 		local path = "/path/to/__tests__/foo/bar/baz/../../../test.js"
+					-- 		expect(searchSource:isTestFilePath(path)).toEqual(true)
+					-- 	end)
+					searchSource = SearchSource.new({ config = config })
+					-- ROBLOX NOTE: lua extension instead of js
+					local path = "/path/to/__tests__/foo/bar/baz/../../../test.lua"
+					expect(searchSource:isTestFilePath(path)).toEqual(true)
+					-- ROBLOX deviation END
+				else
+					-- ROBLOX deviation START: dont return nil
+					-- return nil
+					return
+					-- ROBLOX deviation END
+				end
+			end)
 		end)
-
 		it("supports unix separators", function()
 			if process.platform ~= "win32" then
 				-- ROBLOX deviation START: default testMatch matches .lua files
+				-- local path = "/path/to/__tests__/test.js"
 				local path = "/path/to/__tests__/test.lua"
 				-- ROBLOX deviation END
 				expect(searchSource:isTestFilePath(path)).toEqual(true)
 			end
 		end)
-
 		-- ROBLOX deviation START: no process.platform support
 		-- it("supports win32 separators", function()
 		-- 	if process.platform == "win32" then
-		-- 		local path = "\\path\\to\\__tests__\\test.lua"
+		-- 		local path = "\\path\\to\\__tests__\\test.js"
 		-- 		expect(searchSource:isTestFilePath(path)).toEqual(true)
 		-- 	end
 		-- end)
 		-- ROBLOX deviation END
 	end)
-
 	describe("testPathsMatching", function()
 		beforeEach(function()
 			findMatchingTests = function(config: Config_ProjectConfig)
 				-- ROBLOX deviation START: Runtime.createContext is not ported
 				-- return Runtime:createContext(config, { maxWorkers = maxWorkers, watchman = false })
-				-- 	:andThen(function(context)
+				-- 	:then_(function(context)
 				-- 		return SearchSource.new(context):findMatchingTests()
 				-- 	end)
 				return Promise.resolve(SearchSource.new({ config = config }):findMatchingTests())
 				-- ROBLOX deviation END
 			end
 		end)
-
 		it("finds tests matching a pattern via testRegex", function()
-			return Promise.resolve()
-				:andThen(function()
-					local config = normalize({
-						-- ROBLOX deviation START: not supported
-						-- moduleFileExtensions = { "js", "jsx", "txt" },
+			return Promise.resolve():andThen(function()
+				local config = normalize({
+					-- ROBLOX deviation START: not supported
+					-- moduleFileExtensions = { "js", "jsx", "txt" },
+					-- ROBLOX deviation END
+					name = name,
+					rootDir = rootDir,
+					testMatch = nil,
+					testRegex = "not-really-a-test",
+				}, {} :: Config_Argv):expect().options
+				-- ROBLOX deviation START: then_ not available, using andThen instead
+				-- return findMatchingTests(config):then_(function(data)
+				return findMatchingTests(config):andThen(function(data)
+					-- ROBLOX deviation END
+					-- ROBLOX deviation START: use scripts to calculate relative path
+					-- local relPaths = Array.sort(
+					-- 	Array.map(toPaths(data.tests), function(absPath)
+					-- 		return path:relative(rootDir, absPath)
+					-- 	end) --[[ ROBLOX CHECK: check if 'toPaths(data.tests)' is an Array ]]
+					-- )
+					local relPaths = Array.sort(Array.map(toScripts(data.tests), function(absPath)
+						return pathRelative(rootDir, absPath)
+					end))
+					-- ROBLOX deviation END
+					expect(relPaths).toEqual(Array.sort({
+						-- ROBLOX deviation START: issue #864
+						-- path:normalize(".hiddenFolder/not-really-a-test.txt"),
+						-- path:normalize("__testtests__/not-really-a-test.txt"),
+						path.normalize(".hiddenFolder/not-really-a-test.txt"),
+						path.normalize("__testtests__/not-really-a-test.txt"),
 						-- ROBLOX deviation END
-						name = name,
-						rootDir = rootDir,
-						testMatch = nil,
-						testRegex = "not-really-a-test",
-					}, {} :: Config_Argv):expect().options
-					return findMatchingTests(config):andThen(function(data)
-						-- ROBLOX deviation START: use scripts to calculate relative path
-						local relPaths = Array.sort(Array.map(toScripts(data.tests), function(absPath)
-							return pathRelative(rootDir, absPath)
-						end))
-						-- ROBLOX deviation END
-						expect(relPaths).toEqual(Array.sort({
-							path.normalize(".hiddenFolder/not-really-a-test.txt"),
-							path.normalize("__testtests__/not-really-a-test.txt"),
-						}))
-					end)
+					}))
 				end)
-				:expect()
+			end)
 		end)
-
 		it("finds tests matching a pattern via testMatch", function()
-			return Promise.resolve()
-				:andThen(function()
-					local config = normalize({
-						-- ROBLOX deviation START: not supported
-						-- moduleFileExtensions = { "js", "jsx", "txt" },
+			return Promise.resolve():andThen(function()
+				local config = normalize({
+					-- ROBLOX deviation START: not supported
+					-- moduleFileExtensions = { "js", "jsx", "txt" },
+					-- ROBLOX deviation END
+					name = name,
+					rootDir = rootDir,
+					testMatch = { "**/not-really-a-test.txt", "!**/do-not-match-me.txt" },
+					testRegex = "",
+				}, {} :: Config_Argv):expect().options
+				-- ROBLOX deviation START: then_ not available, using andThen instead
+				-- return findMatchingTests(config):then_(function(data)
+				return findMatchingTests(config):andThen(function(data)
+					-- ROBLOX deviation END
+					-- ROBLOX deviation START: use scripts to calculate relative path
+					-- local relPaths = Array.sort(
+					-- 	Array.map(toPaths(data.tests), function(absPath)
+					-- 		return path:relative(rootDir, absPath)
+					-- 	end) --[[ ROBLOX CHECK: check if 'toPaths(data.tests)' is an Array ]]
+					-- )
+					local relPaths = Array.sort(Array.map(toScripts(data.tests), function(absPath)
+						return pathRelative(rootDir, absPath)
+					end))
+					-- ROBLOX deviation END
+					expect(relPaths).toEqual(Array.sort({
+						-- ROBLOX deviation START: issue #864
+						-- path:normalize(".hiddenFolder/not-really-a-test.txt"),
+						-- path:normalize("__testtests__/not-really-a-test.txt"),
+						path.normalize(".hiddenFolder/not-really-a-test.txt"),
+						path.normalize("__testtests__/not-really-a-test.txt"),
 						-- ROBLOX deviation END
-						name = name,
-						rootDir = rootDir,
-						testMatch = { "**/not-really-a-test.txt", "!**/do-not-match-me.txt" },
-						testRegex = "",
-					}, {} :: Config_Argv):expect().options
-					return findMatchingTests(config):andThen(function(data)
-						-- ROBLOX deviation START: use scripts to calculate relative path
-						local relPaths = Array.sort(Array.map(toScripts(data.tests), function(absPath)
-							return pathRelative(rootDir, absPath)
-						end))
-						-- ROBLOX deviation END
-						expect(relPaths).toEqual(Array.sort({
-							path.normalize(".hiddenFolder/not-really-a-test.txt"),
-							path.normalize("__testtests__/not-really-a-test.txt"),
-						}))
-					end)
+					}))
 				end)
-				:expect()
+			end)
 		end)
-
 		it("finds tests matching a JS regex pattern", function()
-			return Promise.resolve()
-				:andThen(function()
-					local config = normalize({
-						-- ROBLOX deviation START: not supported
-						-- moduleFileExtensions = { "js", "jsx" },
-						-- ROBLOX deviation ENd
-						name = name,
-						rootDir = rootDir,
-						testMatch = nil,
-						testRegex = "test.jsx?",
-					}, {} :: Config_Argv):expect().options
-					return findMatchingTests(config):andThen(function(data)
-						-- ROBLOX deviation START: use scripts to calculate relative path
-						local relPaths = Array.map(toScripts(data.tests), function(absPath)
-							return pathRelative(rootDir, absPath)
-						end)
-						-- ROBLOX deviation END
-						expect(Array.sort(relPaths)).toEqual({
-							path.normalize("__testtests__/test.js"),
-							path.normalize("__testtests__/test.jsx"),
-						})
+			return Promise.resolve():andThen(function()
+				local config = normalize({
+					-- ROBLOX deviation START: not supported
+					-- moduleFileExtensions = { "js", "jsx" },
+					-- ROBLOX deviation END
+					name = name,
+					rootDir = rootDir,
+					testMatch = nil,
+					testRegex = "test.jsx?",
+				}, {} :: Config_Argv):expect().options
+				-- ROBLOX deviation START: then_ not available, using andThen instead
+				-- return findMatchingTests(config):then_(function(data)
+				return findMatchingTests(config):andThen(function(data)
+					-- ROBLOX deviation END
+					-- ROBLOX deviation START: use scripts to calculate relative path
+					-- local relPaths = Array.map(toPaths(data.tests), function(absPath)
+					-- 	return path:relative(rootDir, absPath)
+					-- end) --[[ ROBLOX CHECK: check if 'toPaths(data.tests)' is an Array ]]
+					local relPaths = Array.map(toScripts(data.tests), function(absPath)
+						return pathRelative(rootDir, absPath)
 					end)
+					-- ROBLOX deviation END
+					expect(
+						Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
+					).toEqual({
+						-- ROBLOX deviation START: issue #864
+						-- path:normalize("__testtests__/test.js"),
+						-- path:normalize("__testtests__/test.jsx"),
+						path.normalize("__testtests__/test.js"),
+						path.normalize("__testtests__/test.jsx"),
+						-- ROBLOX deviation END
+					})
 				end)
-				:expect()
+			end)
 		end)
-
 		it("finds tests matching a JS glob pattern", function()
-			return Promise.resolve()
-				:andThen(function()
-					local config = normalize({
-						-- ROBLOX deviation: not supported
-						-- moduleFileExtensions = { "js", "jsx" },
-						-- ROBLOX deviation ENd
-						name = name,
-						rootDir = rootDir,
-						testMatch = { "**/test.js?(x)" },
-						testRegex = "",
-					}, {} :: Config_Argv):expect().options
-					return findMatchingTests(config):andThen(function(data)
-						-- ROBLOX deviation START: use scripts to calculate relative path
-						local relPaths = Array.map(toScripts(data.tests), function(absPath)
-							return pathRelative(rootDir, absPath)
-						end)
-						-- ROBLOX deviation END
-						expect(Array.sort(relPaths)).toEqual({
-							path.normalize("__testtests__/test.js"),
-							path.normalize("__testtests__/test.jsx"),
-						})
+			return Promise.resolve():andThen(function()
+				local config = normalize({
+					-- ROBLOX deviation START: not supported
+					-- moduleFileExtensions = { "js", "jsx" },
+					-- ROBLOX deviation END
+					name = name,
+					rootDir = rootDir,
+					testMatch = { "**/test.js?(x)" },
+					testRegex = "",
+				}, {} :: Config_Argv):expect().options
+				-- ROBLOX deviation START: then_ not available, using andThen instead
+				-- return findMatchingTests(config):then_(function(data)
+				return findMatchingTests(config):andThen(function(data)
+					-- ROBLOX deviation END
+					-- ROBLOX deviation START: use scripts to calculate relative path
+					-- local relPaths = Array.map(toPaths(data.tests), function(absPath)
+					-- 	return path:relative(rootDir, absPath)
+					-- end) --[[ ROBLOX CHECK: check if 'toPaths(data.tests)' is an Array ]]
+					local relPaths = Array.map(toScripts(data.tests), function(absPath)
+						return pathRelative(rootDir, absPath)
 					end)
+					-- ROBLOX deviation END
+					expect(
+						Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
+					).toEqual({
+						-- ROBLOX deviation START: issue #864
+						-- path:normalize("__testtests__/test.js"),
+						-- path:normalize("__testtests__/test.jsx"),
+						path.normalize("__testtests__/test.js"),
+						path.normalize("__testtests__/test.jsx"),
+						-- ROBLOX deviation END
+					})
 				end)
-				:expect()
+			end)
 		end)
-
 		it("finds tests matching a JS with overriding glob patterns", function()
-			return Promise.resolve()
-				:andThen(function()
-					local config = normalize({
-						-- ROBLOX deviation START: not supported
-						-- moduleFileExtensions = { "js", "jsx" },
-						-- ROBLOX devation END
-						name = name,
-						rootDir = rootDir,
-						testMatch = {
-							"**/*.js?(x)",
-							"!**/test.js?(x)",
-							"**/test.js",
-							"!**/test.js",
-						},
-						testRegex = "",
-					}, {} :: Config_Argv):expect().options
-					return findMatchingTests(config):andThen(function(data)
-						-- ROBLOX deviation START: use scripts to calculate relative path
-						local relPaths = Array.map(toScripts(data.tests), function(absPath)
-							return pathRelative(rootDir, absPath)
-						end)
-						-- ROBLOX deviation END
-						expect(Array.sort(relPaths)).toEqual({
-							path.normalize("module.jsx"),
-							path.normalize("noTests.js"),
-						})
+			return Promise.resolve():andThen(function()
+				local config = normalize({
+					-- ROBLOX deviation START: not supported
+					-- moduleFileExtensions = { "js", "jsx" },
+					-- ROBLOX deviation END
+					name = name,
+					rootDir = rootDir,
+					testMatch = {
+						"**/*.js?(x)",
+						"!**/test.js?(x)",
+						"**/test.js",
+						"!**/test.js",
+					},
+					testRegex = "",
+				}, {} :: Config_Argv):expect().options
+				-- ROBLOX deviation START: then_ not available, using andThen instead
+				-- return findMatchingTests(config):then_(function(data)
+				return findMatchingTests(config):andThen(function(data)
+					-- ROBLOX deviation END
+					-- ROBLOX deviation START: use scripts to calculate relative path
+					-- local relPaths = Array.map(toPaths(data.tests), function(absPath)
+					-- 	return path:relative(rootDir, absPath)
+					-- end) --[[ ROBLOX CHECK: check if 'toPaths(data.tests)' is an Array ]]
+					local relPaths = Array.map(toScripts(data.tests), function(absPath)
+						return pathRelative(rootDir, absPath)
 					end)
+					-- ROBLOX deviation END
+					-- ROBLOX deviation START: issue #864
+					-- expect(
+					-- 	Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
+					-- ).toEqual({ path:normalize("module.jsx"), path:normalize("noTests.js") })
+					expect(
+						Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
+					).toEqual({ path.normalize("module.jsx"), path.normalize("noTests.js") })
+					-- ROBLOX deviation END
 				end)
-				:expect()
+			end)
 		end)
-
 		-- ROBLOX deviation START: only lua extensions are supported in Luau version
 		-- it("finds tests with default file extensions using testRegex", function()
-		-- 	return Promise.resolve()
-		-- 		:andThen(function()
-		-- 			local config = normalize(
-		-- 				{ name = name, rootDir = rootDir, testMatch = nil, testRegex = testRegex },
-		-- 				{} :: Config_Argv
-		-- 			):expect().options
-		-- 			return findMatchingTests(config):andThen(function(data)
-		-- 				-- ROBLOX deviation START: use scripts to calculate relative path
-		-- 				local relPaths = Array.map(toScripts(data.tests), function(absPath)
-		-- 					return pathRelative(rootDir, absPath)
-		-- 				end)
-		-- 				-- ROBLOX deviation END
-		-- 				expect(Array.sort(relPaths)).toEqual({
-		-- 					path.normalize("__testtests__/test.js"),
-		-- 					path.normalize("__testtests__/test.jsx"),
-		-- 				})
-		-- 			end)
+		-- 	return Promise.resolve():andThen(function()
+		-- 		local config = normalize(
+		-- 			{ name = name, rootDir = rootDir, testMatch = nil, testRegex = testRegex },
+		-- 			{} :: Config_Argv
+		-- 		):expect().options
+		-- 		return findMatchingTests(config):then_(function(data)
+		-- 			local relPaths = Array.map(toPaths(data.tests), function(absPath)
+		-- 				return path:relative(rootDir, absPath)
+		-- 			end) --[[ ROBLOX CHECK: check if 'toPaths(data.tests)' is an Array ]]
+		-- 			expect(
+		-- 				Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
+		-- 			).toEqual({
+		-- 				path:normalize("__testtests__/test.js"),
+		-- 				path:normalize("__testtests__/test.jsx"),
+		-- 			})
 		-- 		end)
-		-- 		:expect()
+		-- 	end)
 		-- end)
-
 		-- it("finds tests with default file extensions using testMatch", function()
-		-- 	return Promise.resolve()
-		-- 		:andThen(function()
-		-- 			local config = normalize(
-		-- 				{ name = name, rootDir = rootDir, testMatch = testMatch, testRegex = "" },
-		-- 				{} :: Config_Argv
-		-- 			):expect().options
-		-- 			return findMatchingTests(config):andThen(function(data)
-		-- 				-- ROBLOX deviation START: use scripts to calculate relative path
-		-- 				local relPaths = Array.map(toScripts(data.tests), function(absPath)
-		-- 					return pathRelative(rootDir, absPath)
-		-- 				end)
-		-- 				-- ROBLOX deviation END
-		-- 				expect(Array.sort(relPaths)).toEqual({
-		-- 					path.normalize("__testtests__/test.js"),
-		-- 					path.normalize("__testtests__/test.jsx"),
-		-- 				})
-		-- 			end)
+		-- 	return Promise.resolve():andThen(function()
+		-- 		local config = normalize(
+		-- 			{ name = name, rootDir = rootDir, testMatch = testMatch, testRegex = "" },
+		-- 			{} :: Config_Argv
+		-- 		):expect().options
+		-- 		return findMatchingTests(config):then_(function(data)
+		-- 			local relPaths = Array.map(toPaths(data.tests), function(absPath)
+		-- 				return path:relative(rootDir, absPath)
+		-- 			end) --[[ ROBLOX CHECK: check if 'toPaths(data.tests)' is an Array ]]
+		-- 			expect(
+		-- 				Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
+		-- 			).toEqual({
+		-- 				path:normalize("__testtests__/test.js"),
+		-- 				path:normalize("__testtests__/test.jsx"),
+		-- 			})
 		-- 		end)
-		-- 		:expect()
+		-- 	end)
 		-- end)
 		-- ROBLOX deviation END
-
 		it("finds tests with parentheses in their rootDir when using testMatch", function()
 			return Promise.resolve():andThen(function()
 				local config = normalize({
 					name = name,
+					-- ROBLOX deviation START: needs to be an Instance
+					-- rootDir = path:resolve(__dirname, "test_root_with_(parentheses)"),
 					rootDir = script.Parent["test_root_with_(parentheses)"],
+					-- ROBLOX deviation END
+					-- ROBLOX deviation START
+					-- testMatch = { "<rootDir>**/__testtests__/**/*" },
 					testMatch = { "**/__testtests__/**/*" },
+					-- ROBLOX deviation END
 					testRegex = nil,
 				}, {} :: Config_Argv):expect().options
-				return findMatchingTests(config)
-					:andThen(function(data)
-						-- ROBLOX deviation START: use scripts to calculate relative path
-						local relPaths = Array.map(toScripts(data.tests), function(absPath)
-							return pathRelative(rootDir, absPath)
-						end)
-						-- ROBLOX deviation END
-						expect(Array.sort(relPaths)).toEqual({
-							expect.stringContaining(path.normalize("__testtests__/test.js")),
-						})
+				-- ROBLOX deviation START: then_ not available, using andThen instead
+				-- return findMatchingTests(config):then_(function(data)
+				return findMatchingTests(config):andThen(function(data)
+					-- ROBLOX deviation END
+					-- ROBLOX deviation START: use scripts to calculate relative path
+					-- local relPaths = Array.map(toPaths(data.tests), function(absPath)
+					-- 	return path:relative(rootDir, absPath)
+					-- end) --[[ ROBLOX CHECK: check if 'toPaths(data.tests)' is an Array ]]
+					local relPaths = Array.map(toScripts(data.tests), function(absPath)
+						return pathRelative(rootDir, absPath)
 					end)
-					:expect()
+					-- ROBLOX deviation END
+					expect(
+						Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
+					).toEqual({
+						-- ROBLOX deviation START: issue #864
+						-- expect.stringContaining(path:normalize("__testtests__/test.js")),
+						expect.stringContaining(path.normalize("__testtests__/test.js")),
+						-- ROBLOX deviation END
+					})
+				end)
 			end)
 		end)
-
 		-- ROBLOX deviation START: only lua extensions are supported in Luau version
 		-- it("finds tests with similar but custom file extensions", function()
-		-- 	return Promise.resolve()
-		-- 		:andThen(function()
-		-- 			local config = normalize({
-		-- 				moduleFileExtensions = { "js", "jsx" },
-		-- 				name = name,
-		-- 				rootDir = rootDir,
-		-- 				testMatch = testMatch,
-		-- 			}, {} :: Config_Argv):expect().options
-		-- 			return findMatchingTests(config):andThen(function(data)
-		-- 				-- ROBLOX deviation START: use scripts to calculate relative path
-		-- 				local relPaths = Array.map(toScripts(data.tests), function(absPath)
-		-- 					return pathRelative(rootDir, absPath)
-		-- 				end)
-		-- 				-- ROBLOX deviation END
-		-- 				expect(Array.sort(relPaths)).toEqual({
-		-- 					path.normalize("__testtests__/test.js"),
-		-- 					path.normalize("__testtests__/test.jsx"),
-		-- 				})
-		-- 			end)
+		-- 	return Promise.resolve():andThen(function()
+		-- 		local config = normalize({
+		-- 			moduleFileExtensions = { "js", "jsx" },
+		-- 			name = name,
+		-- 			rootDir = rootDir,
+		-- 			testMatch = testMatch,
+		-- 		}, {} :: Config_Argv):expect().options
+		-- 		return findMatchingTests(config):then_(function(data)
+		-- 			local relPaths = Array.map(toPaths(data.tests), function(absPath)
+		-- 				return path:relative(rootDir, absPath)
+		-- 			end) --[[ ROBLOX CHECK: check if 'toPaths(data.tests)' is an Array ]]
+		-- 			expect(
+		-- 				Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
+		-- 			).toEqual({
+		-- 				path:normalize("__testtests__/test.js"),
+		-- 				path:normalize("__testtests__/test.jsx"),
+		-- 			})
 		-- 		end)
-		-- 		:expect()
+		-- 	end)
 		-- end)
-
 		-- it("finds tests with totally custom foobar file extensions", function()
-		-- 	return Promise.resolve()
-		-- 		:andThen(function()
-		-- 			local config = normalize({
-		-- 				moduleFileExtensions = { "js", "foobar" },
-		-- 				name = name,
-		-- 				rootDir = rootDir,
-		-- 				testMatch = testMatch,
-		-- 			}, {} :: Config_Argv):expect().options
-		-- 			return findMatchingTests(config):andThen(function(data)
-		-- 				-- ROBLOX deviation START: use scripts to calculate relative path
-		-- 				local relPaths = Array.map(toScripts(data.tests), function(absPath)
-		-- 					return pathRelative(rootDir, absPath)
-		-- 				end)
-		-- 				-- ROBLOX deviation END
-		-- 				expect(Array.sort(relPaths)).toEqual({
-		-- 					path.normalize("__testtests__/test.foobar"),
-		-- 					path.normalize("__testtests__/test.js"),
-		-- 				})
-		-- 			end)
+		-- 	return Promise.resolve():andThen(function()
+		-- 		local config = normalize({
+		-- 			moduleFileExtensions = { "js", "foobar" },
+		-- 			name = name,
+		-- 			rootDir = rootDir,
+		-- 			testMatch = testMatch,
+		-- 		}, {} :: Config_Argv):expect().options
+		-- 		return findMatchingTests(config):then_(function(data)
+		-- 			local relPaths = Array.map(toPaths(data.tests), function(absPath)
+		-- 				return path:relative(rootDir, absPath)
+		-- 			end) --[[ ROBLOX CHECK: check if 'toPaths(data.tests)' is an Array ]]
+		-- 			expect(
+		-- 				Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
+		-- 			).toEqual({
+		-- 				path:normalize("__testtests__/test.foobar"),
+		-- 				path:normalize("__testtests__/test.js"),
+		-- 			})
 		-- 		end)
-		-- 		:expect()
+		-- 	end)
 		-- end)
-
 		-- it("finds tests with many kinds of file extensions", function()
-		-- 	return Promise.resolve()
-		-- 		:andThen(function()
-		-- 			local config = normalize({
-		-- 				moduleFileExtensions = { "js", "jsx" },
-		-- 				name = name,
-		-- 				rootDir = rootDir,
-		-- 				testMatch = testMatch,
-		-- 			}, {} :: Config_Argv):expect().options
-		-- 			return findMatchingTests(config):andThen(function(data)
-		-- 				-- ROBLOX deviation START: use scripts to calculate relative path
-		-- 				local relPaths = Array.map(toScripts(data.tests), function(absPath)
-		-- 					return pathRelative(rootDir, absPath)
-		-- 				end)
-		-- 				-- ROBLOX deviation END
-		-- 				expect(Array.sort(relPaths)).toEqual({
-		-- 					path.normalize("__testtests__/test.js"),
-		-- 					path.normalize("__testtests__/test.jsx"),
-		-- 				})
-		-- 			end)
+		-- 	return Promise.resolve():andThen(function()
+		-- 		local config = normalize({
+		-- 			moduleFileExtensions = { "js", "jsx" },
+		-- 			name = name,
+		-- 			rootDir = rootDir,
+		-- 			testMatch = testMatch,
+		-- 		}, {} :: Config_Argv):expect().options
+		-- 		return findMatchingTests(config):then_(function(data)
+		-- 			local relPaths = Array.map(toPaths(data.tests), function(absPath)
+		-- 				return path:relative(rootDir, absPath)
+		-- 			end) --[[ ROBLOX CHECK: check if 'toPaths(data.tests)' is an Array ]]
+		-- 			expect(
+		-- 				Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
+		-- 			).toEqual({
+		-- 				path:normalize("__testtests__/test.js"),
+		-- 				path:normalize("__testtests__/test.jsx"),
+		-- 			})
 		-- 		end)
-		-- 		:expect()
+		-- 	end)
 		-- end)
-
 		-- it("finds tests using a regex only", function()
-		-- 	return Promise.resolve()
-		-- 		:andThen(function()
-		-- 			local config = normalize(
-		-- 				{ name = name, rootDir = rootDir, testMatch = nil, testRegex = testRegex },
-		-- 				{} :: Config_Argv
-		-- 			):expect().options
-		-- 			return findMatchingTests(config):andThen(function(data)
-		-- 				-- ROBLOX deviation START: use scripts to calculate relative path
-		-- 				local relPaths = Array.map(toScripts(data.tests), function(absPath)
-		-- 					return pathRelative(rootDir, absPath)
-		-- 				end)
-		-- 				-- ROBLOX deviation END
-		-- 				expect(Array.sort(relPaths)).toEqual({
-		-- 					path.normalize("__testtests__/test.js"),
-		-- 					path.normalize("__testtests__/test.jsx"),
-		-- 				})
-		-- 			end)
+		-- 	return Promise.resolve():andThen(function()
+		-- 		local config = normalize(
+		-- 			{ name = name, rootDir = rootDir, testMatch = nil, testRegex = testRegex },
+		-- 			{} :: Config_Argv
+		-- 		):expect().options
+		-- 		return findMatchingTests(config):then_(function(data)
+		-- 			local relPaths = Array.map(toPaths(data.tests), function(absPath)
+		-- 				return path:relative(rootDir, absPath)
+		-- 			end) --[[ ROBLOX CHECK: check if 'toPaths(data.tests)' is an Array ]]
+		-- 			expect(
+		-- 				Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
+		-- 			).toEqual({
+		-- 				path:normalize("__testtests__/test.js"),
+		-- 				path:normalize("__testtests__/test.jsx"),
+		-- 			})
 		-- 		end)
-		-- 		:expect()
+		-- 	end)
 		-- end)
-
 		-- it("finds tests using a glob only", function()
-		-- 	return Promise.resolve()
-		-- 		:andThen(function()
-		-- 			local config = normalize(
-		-- 				{ name = name, rootDir = rootDir, testMatch = testMatch, testRegex = "" },
-		-- 				{} :: Config_Argv
-		-- 			):expect().options
-		-- 			return findMatchingTests(config):andThen(function(data)
-		-- 				-- ROBLOX deviation START: use scripts to calculate relative path
-		-- 				local relPaths = Array.map(toScripts(data.tests), function(absPath)
-		-- 					return pathRelative(rootDir, absPath)
-		-- 				end)
-		-- 				-- ROBLOX deviation END
-		-- 				expect(
-		-- 					Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
-		-- 				).toEqual({
-		-- 					path.normalize("__testtests__/test.js"),
-		-- 					path.normalize("__testtests__/test.jsx"),
-		-- 				})
-		-- 			end)
+		-- 	return Promise.resolve():andThen(function()
+		-- 		local config = normalize(
+		-- 			{ name = name, rootDir = rootDir, testMatch = testMatch, testRegex = "" },
+		-- 			{} :: Config_Argv
+		-- 		):expect().options
+		-- 		return findMatchingTests(config):then_(function(data)
+		-- 			local relPaths = Array.map(toPaths(data.tests), function(absPath)
+		-- 				return path:relative(rootDir, absPath)
+		-- 			end) --[[ ROBLOX CHECK: check if 'toPaths(data.tests)' is an Array ]]
+		-- 			expect(
+		-- 				Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
+		-- 			).toEqual({
+		-- 				path:normalize("__testtests__/test.js"),
+		-- 				path:normalize("__testtests__/test.jsx"),
+		-- 			})
 		-- 		end)
-		-- 		:expect()
+		-- 	end)
 		-- end)
 		-- ROBLOX deviation END
 	end)
-
 	-- ROBLOX deviation START: not supported
 	-- describe("filterPathsWin32", function()
 	-- 	beforeEach(function()
 	-- 		return Promise.resolve():andThen(function()
-	-- 			local config =
-	-- 				normalize({ name = name, rootDir = script.Parent, roots = {} }, {} :: Config_Argv):expect().options
-	-- 			local context =
-	-- 				Runtime:createContext(config, { maxWorkers = maxWorkers, watchman = false }):expect()
+	-- 			local config = normalize({ name = name, rootDir = ".", roots = {} }, {} :: Config_Argv):expect().options
+	-- 			local context = Runtime:createContext(config, { maxWorkers = maxWorkers, watchman = false }):expect()
 	-- 			searchSource = SearchSource.new(context)
 	-- 			context.hasteFS.getAllFiles = function(_self: any)
 	-- 				return {
@@ -546,63 +581,49 @@ describe("SearchSource", function()
 	-- 			end
 	-- 		end)
 	-- 	end)
-
 	-- 	it("should allow a simple match", function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local result = searchSource:filterPathsWin32({ "packages/lib/my-lib.ts" })
 	-- 			expect(result).toEqual({ path:resolve("packages/lib/my-lib.ts") })
 	-- 		end)
 	-- 	end)
-
 	-- 	it("should allow to match a file inside a hidden directory", function()
 	-- 		return Promise.resolve():andThen(function()
-	-- 			local result = searchSource:filterPathsWin32({
-	-- 				"packages/.hidden/my-app-hidden.ts",
-	-- 			})
+	-- 			local result = searchSource:filterPathsWin32({ "packages/.hidden/my-app-hidden.ts" })
 	-- 			expect(result).toEqual({ path:resolve("packages/.hidden/my-app-hidden.ts") })
 	-- 		end)
 	-- 	end)
-
 	-- 	it('should allow to match a file inside a directory prefixed with a "@"', function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local result = searchSource:filterPathsWin32({ "packages/@core/my-app.ts" })
 	-- 			expect(result).toEqual({ path:resolve("packages/@core/my-app.ts") })
 	-- 		end)
 	-- 	end)
-
 	-- 	it('should allow to match a file inside a directory prefixed with a "+"', function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local result = searchSource:filterPathsWin32({ "packages/+cli/my-cli.ts" })
 	-- 			expect(result).toEqual({ path:resolve("packages/+cli/my-cli.ts") })
 	-- 		end)
 	-- 	end)
-
 	-- 	it("should allow an @(pattern)", function()
 	-- 		local result = searchSource:filterPathsWin32({ "packages/@(@core)/my-app.ts" })
 	-- 		expect(result).toEqual({ path:resolve("packages/@core/my-app.ts") })
 	-- 	end)
-
 	-- 	it("should allow a +(pattern)", function()
 	-- 		local result = searchSource:filterPathsWin32({ "packages/+(@core)/my-app.ts" })
 	-- 		expect(result).toEqual({ path:resolve("packages/@core/my-app.ts") })
 	-- 	end)
-
 	-- 	it("should allow for (pattern) in file path", function()
-	-- 		local result = searchSource:filterPathsWin32({
-	-- 			"packages/programs (x86)/my-program.ts",
-	-- 		})
+	-- 		local result = searchSource:filterPathsWin32({ "packages/programs (x86)/my-program.ts" })
 	-- 		expect(result).toEqual({ path:resolve("packages/programs (x86)/my-program.ts") })
 	-- 	end)
-
 	-- 	it("should allow no results found", function()
 	-- 		local result = searchSource:filterPathsWin32({ "not/exists" })
 	-- 		expect(result).toHaveLength(0)
 	-- 	end)
 	-- end)
-
 	-- describe("findRelatedTests", function()
-	-- 	local rootDir =
-	-- 		Array.join(path, __dirname, "..", "..", "..", "jest-runtime", "src", "__tests__", "test_root") --[[ ROBLOX CHECK: check if 'path' is an Array ]]
+	-- 	local rootDir = Array.join(path, __dirname, "..", "..", "..", "jest-runtime", "src", "__tests__", "test_root") --[[ ROBLOX CHECK: check if 'path' is an Array ]]
 	-- 	local rootPath = Array.join(path, rootDir, "root.js") --[[ ROBLOX CHECK: check if 'path' is an Array ]]
 	-- 	beforeEach(function()
 	-- 		return Promise.resolve():andThen(function()
@@ -618,24 +639,21 @@ describe("SearchSource", function()
 	-- 						"src",
 	-- 						"__tests__",
 	-- 						"haste_impl.js"
-	-- 					), --[[ ROBLOX CHECK: check if 'path' is an Array ]]
+	-- 					),--[[ ROBLOX CHECK: check if 'path' is an Array ]]
 	-- 				},
 	-- 				name = "SearchSource-findRelatedTests-tests",
 	-- 				rootDir = rootDir,
 	-- 			}, {} :: Config_Argv):expect().options
-	-- 			local context =
-	-- 				Runtime:createContext(config, { maxWorkers = maxWorkers, watchman = false }):expect()
+	-- 			local context = Runtime:createContext(config, { maxWorkers = maxWorkers, watchman = false }):expect()
 	-- 			searchSource = SearchSource.new(context)
 	-- 		end)
 	-- 	end)
-
 	-- 	it("makes sure a file is related to itself", function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local data = searchSource:findRelatedTests(Set.new({ rootPath }), false):expect()
 	-- 			expect(toPaths(data.tests)).toEqual({ rootPath })
 	-- 		end)
 	-- 	end)
-
 	-- 	it("finds tests that depend directly on the path", function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local filePath = Array.join(path, rootDir, "RegularModule.js") --[[ ROBLOX CHECK: check if 'path' is an Array ]]
@@ -647,24 +665,19 @@ describe("SearchSource", function()
 	-- 			).toEqual({ parentDep, filePath, file2Path, rootPath })
 	-- 		end)
 	-- 	end)
-
 	-- 	it("excludes untested files from coverage", function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local unrelatedFile = Array.join(path, rootDir, "JSONFile.json") --[[ ROBLOX CHECK: check if 'path' is an Array ]]
 	-- 			local regular = Array.join(path, rootDir, "RegularModule.js") --[[ ROBLOX CHECK: check if 'path' is an Array ]]
 	-- 			local requireRegular = Array.join(path, rootDir, "RequireRegularMode.js") --[[ ROBLOX CHECK: check if 'path' is an Array ]]
-	-- 			local data = searchSource
-	-- 				:findRelatedTests(Set.new({ regular, requireRegular, unrelatedFile }), true)
-	-- 				:expect()
-	-- 			expect(
-	-- 				Array.from(Boolean.toJSBoolean(data.collectCoverageFrom) and data.collectCoverageFrom or {})
-	-- 			).toEqual({
+	-- 			local data =
+	-- 				searchSource:findRelatedTests(Set.new({ regular, requireRegular, unrelatedFile }), true):expect()
+	-- 			expect(Array.from(Boolean.toJSBoolean(data.collectCoverageFrom) and data.collectCoverageFrom or {})).toEqual({
 	-- 				"RegularModule.js",
 	-- 			})
 	-- 		end)
 	-- 	end)
 	-- end)
-
 	-- describe("findRelatedTestsFromPattern", function()
 	-- 	beforeEach(function()
 	-- 		return Promise.resolve():andThen(function()
@@ -674,20 +687,17 @@ describe("SearchSource", function()
 	-- 				rootDir = rootDir,
 	-- 				testMatch = testMatch,
 	-- 			}, {} :: Config_Argv):expect().options
-	-- 			local context =
-	-- 				Runtime:createContext(config, { maxWorkers = maxWorkers, watchman = false }):expect()
+	-- 			local context = Runtime:createContext(config, { maxWorkers = maxWorkers, watchman = false }):expect()
 	-- 			searchSource = SearchSource.new(context)
 	-- 		end)
 	-- 	end)
-
-	-- it("returns empty search result for empty input", function()
-	-- 	return Promise.resolve():andThen(function()
-	-- 		local input: Array<Config_Path> = {}
-	-- 		local data = searchSource:findRelatedTestsFromPattern(input, false):expect()
-	-- 		expect(data.tests).toEqual({})
+	-- 	it("returns empty search result for empty input", function()
+	-- 		return Promise.resolve():andThen(function()
+	-- 			local input: Array<Config_Path> = {}
+	-- 			local data = searchSource:findRelatedTestsFromPattern(input, false):expect()
+	-- 			expect(data.tests).toEqual({})
+	-- 		end)
 	-- 	end)
-	-- end)
-
 	-- 	it("returns empty search result for invalid input", function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local input = { "non-existend.js" }
@@ -695,7 +705,6 @@ describe("SearchSource", function()
 	-- 			expect(data.tests).toEqual({})
 	-- 		end)
 	-- 	end)
-
 	-- 	it("returns empty search result if no related tests were found", function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local input = { "no_tests.js" }
@@ -703,7 +712,6 @@ describe("SearchSource", function()
 	-- 			expect(data.tests).toEqual({})
 	-- 		end)
 	-- 	end)
-
 	-- 	it("finds tests for a single file", function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local input = { "packages/jest-core/src/__tests__/test_root/module.jsx" }
@@ -711,12 +719,11 @@ describe("SearchSource", function()
 	-- 			expect(
 	-- 				Array.sort(toPaths(data.tests)) --[[ ROBLOX CHECK: check if 'toPaths(data.tests)' is an Array ]]
 	-- 			).toEqual({
-	-- 				Array.join(path, rootDir, "__testtests__", "test.js"), --[[ ROBLOX CHECK: check if 'path' is an Array ]]
-	-- 				Array.join(path, rootDir, "__testtests__", "test.jsx"), --[[ ROBLOX CHECK: check if 'path' is an Array ]]
+	-- 				Array.join(path, rootDir, "__testtests__", "test.js"),--[[ ROBLOX CHECK: check if 'path' is an Array ]]
+	-- 				Array.join(path, rootDir, "__testtests__", "test.jsx"),--[[ ROBLOX CHECK: check if 'path' is an Array ]]
 	-- 			})
 	-- 		end)
 	-- 	end)
-
 	-- 	it("finds tests for multiple files", function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local input = {
@@ -727,18 +734,17 @@ describe("SearchSource", function()
 	-- 			expect(
 	-- 				Array.sort(toPaths(data.tests)) --[[ ROBLOX CHECK: check if 'toPaths(data.tests)' is an Array ]]
 	-- 			).toEqual({
-	-- 				Array.join(path, rootDir, "__testtests__", "test.foobar"), --[[ ROBLOX CHECK: check if 'path' is an Array ]]
-	-- 				Array.join(path, rootDir, "__testtests__", "test.js"), --[[ ROBLOX CHECK: check if 'path' is an Array ]]
-	-- 				Array.join(path, rootDir, "__testtests__", "test.jsx"), --[[ ROBLOX CHECK: check if 'path' is an Array ]]
+	-- 				Array.join(path, rootDir, "__testtests__", "test.foobar"),--[[ ROBLOX CHECK: check if 'path' is an Array ]]
+	-- 				Array.join(path, rootDir, "__testtests__", "test.js"),--[[ ROBLOX CHECK: check if 'path' is an Array ]]
+	-- 				Array.join(path, rootDir, "__testtests__", "test.jsx"),--[[ ROBLOX CHECK: check if 'path' is an Array ]]
 	-- 			})
 	-- 		end)
 	-- 	end)
-
 	-- 	it("does not mistake roots folders with prefix names", function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			if process.platform ~= "win32" then
 	-- 				local config = normalize(
-	-- 					{ name = name, rootDir = script.Parent, roots = { "/foo/bar/prefix" } },
+	-- 					{ name = name, rootDir = ".", roots = { "/foo/bar/prefix" } },
 	-- 					{} :: Config_Argv
 	-- 				):expect().options
 	-- 				searchSource = SearchSource.new(
@@ -751,7 +757,6 @@ describe("SearchSource", function()
 	-- 		end)
 	-- 	end)
 	-- end)
-
 	-- describe("findRelatedSourcesFromTestsInChangedFiles", function()
 	-- 	local rootDir = path:resolve(__dirname, "../../../jest-runtime/src/__tests__/test_root")
 	-- 	beforeEach(function()
@@ -766,12 +771,10 @@ describe("SearchSource", function()
 	-- 				name = "SearchSource-findRelatedSourcesFromTestsInChangedFiles-tests",
 	-- 				rootDir = rootDir,
 	-- 			}, {} :: Config_Argv):expect().options
-	-- 			local context =
-	-- 				Runtime:createContext(config, { maxWorkers = maxWorkers, watchman = false }):expect()
+	-- 			local context = Runtime:createContext(config, { maxWorkers = maxWorkers, watchman = false }):expect()
 	-- 			searchSource = SearchSource.new(context)
 	-- 		end)
 	-- 	end)
-
 	-- 	it("return empty set if no SCM", function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local requireRegularModule = Array.join(path, rootDir, "RequireRegularModule.js") --[[ ROBLOX CHECK: check if 'path' is an Array ]]
@@ -784,7 +787,6 @@ describe("SearchSource", function()
 	-- 			expect(sources).toEqual({})
 	-- 		end)
 	-- 	end)
-
 	-- 	it("return sources required by tests", function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local regularModule = Array.join(path, rootDir, "RegularModule.js") --[[ ROBLOX CHECK: check if 'path' is an Array ]]
