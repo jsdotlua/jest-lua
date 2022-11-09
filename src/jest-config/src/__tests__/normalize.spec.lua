@@ -6,39 +6,57 @@
  * LICENSE file in the root directory of this source tree.
  *
  ]]
-
 local Packages = script.Parent.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Object = LuauPolyfill.Object
+-- ROBLOX deviation START: add String & console
 local String = LuauPolyfill.String
 local console = LuauPolyfill.console
+-- ROBLOX deviation END
 type Array<T> = LuauPolyfill.Array<T>
+-- ROBLOX deviation START: add Object
 type Object = LuauPolyfill.Object
+-- ROBLOX deviation END
+type Record<K, T> = { [K]: T } --[[ ROBLOX TODO: TS 'Record' built-in type is not available in Luau ]]
 local Promise = require(Packages.Promise)
+-- ROBLOX deviation START: add RegExp
 local RegExp = require(Packages.RegExp)
 type RegExp = RegExp.RegExp
-
+-- ROBLOX deviation END
 local JestGlobals = require(Packages.Dev.JestGlobals)
-local jest = JestGlobals.jest
-local expect = JestGlobals.expect
-local describe = JestGlobals.describe
-local it = JestGlobals.it
-local beforeEach = JestGlobals.beforeEach
+-- ROBLOX deviation START: not used
+-- local afterAll = JestGlobals.afterAll
+-- ROBLOX deviation END
 local afterEach = JestGlobals.afterEach
+-- ROBLOX deviation START: not used
+-- local beforeAll = JestGlobals.beforeAll
+-- ROBLOX deviation END
+local beforeEach = JestGlobals.beforeEach
+local describe = JestGlobals.describe
+local expect = JestGlobals.expect
+local it = JestGlobals.it
+local jest = JestGlobals.jest
+-- ROBLOX deviation START: not used
+-- local test = JestGlobals.test
+-- ROBLOX deviation END
+-- ROBLOX deviation START: add type
 type jest_SpyInstance = any
-
+-- ROBLOX deviation END
 -- ROBLOX deviation START: not used
 -- local createHash = require(Packages.crypto).createHash
 -- local path = require(Packages.path).default
--- local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).wrap
+-- local wrap = require(Packages["jest-snapshot-serializer-raw"]).wrap
 -- local semver = require(Packages.semver)
 -- local stripAnsi = require(Packages["strip-ansi"]).default
 -- ROBLOX deviation END
-local typesModule = require(Packages.JestTypes)
-type Config_Argv = typesModule.Config_Argv
-type Config_InitialOptions = typesModule.Config_InitialOptions
+local jestTypesModule = require(Packages.JestTypes)
+-- ROBLOX deviation START: not used
+-- type Config = jestTypesModule.Config
+-- ROBLOX deviation END
+type Config_Argv = jestTypesModule.Config_Argv
+type Config_InitialOptions = jestTypesModule.Config_InitialOptions
 -- ROBLOX deviation START: not used
 -- local escapeStrForRegex = require(Packages["jest-regex-util"]).escapeStrForRegex
 -- ROBLOX deviation END
@@ -47,12 +65,10 @@ local Defaults = require(script.Parent.Parent.Defaults).default
 -- local DEFAULT_JS_PATTERN = require(script.Parent.Parent.constants).DEFAULT_JS_PATTERN
 -- ROBLOX deviation END
 local normalize = require(script.Parent.Parent.normalize).default
-
 -- ROBLOX deviation START: not used
 -- local DEFAULT_CSS_PATTERN = "\\.(css)$"
 -- ROBLOX deviation END
-
--- ROBLOX deviation START: helper functions
+-- ROBLOX deviation START: add helper functions
 local function pathToInstance(path)
 	return Array.reduce(
 		Array.filter(String.split(path, "/"), Boolean.toJSBoolean),
@@ -79,7 +95,6 @@ local RobloxShared = require(Packages.RobloxShared)
 local JSON = RobloxShared.nodeUtils.JSON
 local getRelativePath = RobloxShared.getRelativePath
 -- ROBLOX deviation END
-
 -- ROBLOX deviation START: not used
 -- jest.mock("path", function()
 -- 	return jest.requireActual("path").posix
@@ -95,70 +110,77 @@ local getRelativePath = RobloxShared.getRelativePath
 -- 		end,
 -- 	})
 -- end)
-
 -- local root: string
 -- local expectedPathFooBar: string
 -- local expectedPathFooQux: string
 -- ROBLOX deviation END
 local expectedPathAbs: string
 local expectedPathAbsAnother: string
-
 -- ROBLOX deviation START: not used
 -- local virtualModuleRegexes: Array<RegExp>
-
 -- beforeEach(function()
 -- 	virtualModuleRegexes = {
--- 		RegExp("jest-circus"),
--- 		RegExp("babel-jest"),
+-- 		error("not implemented"),--[[ ROBLOX TODO: Unhandled node for type: RegExpLiteral ]]--[[ /jest-circus/ ]]
+-- 		error("not implemented"),--[[ ROBLOX TODO: Unhandled node for type: RegExpLiteral ]]--[[ /babel-jest/ ]]
 -- 	}
+-- 	return virtualModuleRegexes
 -- end)
-
 -- local findNodeModule = jest.fn(function(name)
--- 	if Array.some(virtualModuleRegexes, function(regex)
--- 		return regex:test(name)
--- 	end) then
+-- 	if
+-- 		Boolean.toJSBoolean(
+-- 			Array.some(virtualModuleRegexes, function(regex)
+-- 				return regex:test(name)
+-- 			end) --[[ ROBLOX CHECK: check if 'virtualModuleRegexes' is an Array ]]
+-- 		)
+-- 	then
 -- 		return name
 -- 	end
 -- 	return nil
--- end)
+-- end) -- Windows uses backslashes for path separators, which need to be escaped in
 -- ROBLOX deviation END
-
--- Windows uses backslashes for path separators, which need to be escaped in
 -- regular expressions. This little helper function helps us generate the
 -- expected strings for checking path patterns.
+-- ROBLOX deviation START: issue roblox/js-to-lua #847
+-- local function joinForPattern(
+-- 	...: any --[[ ROBLOX CHECK: check correct type of elements. Upstream type: <Array<string>> ]]
+-- )
 local function joinForPattern(...: string)
+	-- ROBLOX deviation END
 	local args = { ... }
+	-- ROBLOX deviation START
+	-- return Array.join(args, escapeStrForRegex(path.sep)) --[[ ROBLOX CHECK: check if 'args' is an Array ]]
 	return Array.join(args, "/")
+	-- ROBLOX deviation END
 end
-
+-- ROBLOX deviation START: add
 local originalWarn = console.warn
-
+-- ROBLOX deviation END
 beforeEach(function()
 	-- ROBLOX deviation START: not used
-	-- 	root = path:resolve("/")
-	-- 	expectedPathFooBar = Array.join(path, root, "root", "path", "foo", "bar", "baz") --[[ ROBLOX CHECK: check if 'path' is an Array ]]
-	-- 	expectedPathFooQux = Array.join(path, root, "root", "path", "foo", "qux", "quux") --[[ ROBLOX CHECK: check if 'path' is an Array ]]
+	-- root = path:resolve("/")
+	-- expectedPathFooBar = Array.join(path, root, "root", "path", "foo", "bar", "baz") --[[ ROBLOX CHECK: check if 'path' is an Array ]]
+	-- expectedPathFooQux = Array.join(path, root, "root", "path", "foo", "qux", "quux") --[[ ROBLOX CHECK: check if 'path' is an Array ]]
 	-- ROBLOX deviation END
 	-- ROBLOX deviation START: hardcode path
+	-- expectedPathAbs = Array.join(path, root, "an", "abs", "path") --[[ ROBLOX CHECK: check if 'path' is an Array ]]
+	-- expectedPathAbsAnother = Array.join(path, root, "another", "abs", "path") --[[ ROBLOX CHECK: check if 'path' is an Array ]]
 	expectedPathAbs = "/an/abs/path"
 	expectedPathAbsAnother = "/another/abs/path"
 	-- ROBLOX deviation END
 	-- ROBLOX deviation START: not used
-	-- 	require_("jest-resolve").default.findNodeModule = findNodeModule
+	-- require_("jest-resolve").default.findNodeModule = findNodeModule
 	-- ROBLOX deviation END
 	-- ROBLOX deviation START: jest.spyOn not available
-	--	jest.spyOn(console, "warn")
+	-- jest.spyOn(console, "warn")
 	console.warn = jest.fn()
 	-- ROBLOX deviation END
 end)
-
 afterEach(function()
 	-- ROBLOX deviation START: jest.spyOn not available
 	-- ((console.warn :: unknown) :: jest_SpyInstance):mockRestore()
 	console.warn = originalWarn
 	-- ROBLOX deviation END
 end)
-
 -- ROBLOX deviation START: additional tests
 describe("rootDir", function()
 	it("throws error when rootDir is string", function()
@@ -180,97 +202,96 @@ describe("rootDir", function()
 	end)
 end)
 -- ROBLOX deviation END
-
 it("picks a name based on the rootDir", function()
-	return Promise.resolve()
-		:andThen(function()
-			local rootDir = pathToInstance("/root/path/foo")
-			-- ROBLOX deviation START: createHash not available
-			local expected = "/root/path/foo"
-			-- local expected = createHash("md5"):update("/root/path/foo"):update(tostring(math.huge)):digest("hex")
-			-- ROBLOX deviation END
-			local options = normalize({ rootDir = rootDir }, {} :: Config_Argv):expect().options
-			expect(options.name).toBe(expected)
-		end)
-		:expect()
+	return Promise.resolve():andThen(function()
+		-- ROBLOX deviation START: uses pathToInstance helper function
+		-- local rootDir = "/root/path/foo"
+		local rootDir = pathToInstance("/root/path/foo")
+		-- ROBLOX deviation END
+		-- ROBLOX deviation START: createHash not available
+		-- local expected = createHash("md5"):update("/root/path/foo"):update(String(math.huge)):digest("hex")
+		local expected = "/root/path/foo"
+		-- ROBLOX deviation END
+		local options = normalize({ rootDir = rootDir }, {} :: Config_Argv):expect().options
+		expect(options.name).toBe(expected)
+	end)
 end)
-
 it("keeps custom project name based on the projects rootDir", function()
-	return Promise.resolve()
-		:andThen(function()
-			local name = "test"
-			local options = normalize({
+	return Promise.resolve():andThen(function()
+		local name = "test"
+		local options = normalize(
+			-- ROBLOX deviation START: uses pathToInstance helper function
+			-- { projects = { { name = name, rootDir = "/path/to/foo" } }, rootDir = "/root/path/baz" },
+			{
 				projects = { { name = name, rootDir = pathToInstance("/path/to/foo") } :: any },
 				rootDir = pathToInstance("/root/path/baz"),
-			}, {} :: Config_Argv):expect().options
-			expect((options.projects[1] :: any).name).toBe(name)
-		end)
-		:expect()
+			},
+			-- ROBLOX deviation END
+			{} :: Config_Argv
+		):expect().options
+		-- ROBLOX deviation START: add type
+		-- expect(options.projects[
+		-- 	1 --[[ ROBLOX adaptation: added 1 to array index ]]
+		-- ].name).toBe(name)
+		expect((options.projects[1] :: any).name).toBe(name)
+		-- ROBLOX deviation END
+	end)
 end)
-
 it("keeps custom names based on the rootDir", function()
-	return Promise.resolve()
-		:andThen(function()
-			local options = normalize(
-				{ name = "custom-name", rootDir = pathToInstance("/root/path/foo") },
-				{} :: Config_Argv
-			):expect().options
-			expect(options.name).toBe("custom-name")
-		end)
-		:expect()
+	return Promise.resolve():andThen(function()
+		local options =
+			-- ROBLOX deviation START: uses pathToInstance helper function
+			-- normalize({ name = "custom-name", rootDir = "/root/path/foo" }, {} :: Config_Argv):expect().options
+			normalize({ name = "custom-name", rootDir = pathToInstance("/root/path/foo") }, {} :: Config_Argv):expect().options
+		-- ROBLOX deviation END
+		expect(options.name).toBe("custom-name")
+	end)
 end)
-
 it("minimal config is stable across runs", function()
-	return Promise.resolve()
-		:andThen(function()
-			local rootDir = pathToInstance("/root/path/foo")
-			local firstNormalization = normalize({ rootDir = rootDir }, {} :: Config_Argv):expect()
-			local secondNormalization = normalize({ rootDir = rootDir }, {} :: Config_Argv):expect()
-			expect(firstNormalization).toEqual(secondNormalization)
-			expect(JSON.stringify(firstNormalization)).toBe(JSON.stringify(secondNormalization))
-		end)
-		:expect()
+	return Promise.resolve():andThen(function()
+		-- ROBLOX deviation START: uses pathToInstance helper function
+		-- local firstNormalization = normalize({ rootDir = "/root/path/foo" }, {} :: Config_Argv):expect()
+		-- local secondNormalization = normalize({ rootDir = "/root/path/foo" }, {} :: Config_Argv):expect()
+		local rootDir = pathToInstance("/root/path/foo")
+		local firstNormalization = normalize({ rootDir = rootDir }, {} :: Config_Argv):expect()
+		local secondNormalization = normalize({ rootDir = rootDir }, {} :: Config_Argv):expect()
+		-- ROBLOX deviation END
+		expect(firstNormalization).toEqual(secondNormalization)
+		-- ROBLOX deviation START: issue roblox/js-to-lua #864
+		-- expect(JSON:stringify(firstNormalization)).toBe(JSON:stringify(secondNormalization))
+		expect(JSON.stringify(firstNormalization)).toBe(JSON.stringify(secondNormalization))
+		-- ROBLOX deviation END
+	end)
 end)
-
 -- ROBLOX deviation START: not supported
 -- it("sets coverageReporters correctly when argv.json is set", function()
 -- 	return Promise.resolve():andThen(function()
--- 		local options = normalize({ rootDir = pathToInstance("/root/path/foo") }, { json = true } :: Config_Argv):expect().options
+-- 		local options = normalize({ rootDir = "/root/path/foo" }, { json = true } :: Config_Argv):expect().options
 -- 		expect(options.coverageReporters).toEqual({ "json", "lcov", "clover" })
 -- 	end)
 -- end)
 -- ROBLOX deviation END
-
 describe("rootDir", function()
 	it("throws if the options is missing a rootDir property", function()
-		return Promise.resolve()
-			:andThen(function()
-				-- ROBLOX deviation START: no .rejects and .assertions
-				-- expect:assertions(1)
-				expect(function()
-					normalize({}, {} :: Config_Argv):expect()
-				end).toThrowErrorMatchingSnapshot()
-				-- ROBLOX deviation END
-			end)
-			:expect()
+		return Promise.resolve():andThen(function()
+			expect.assertions(1)
+			expect(normalize({}, {} :: Config_Argv)).rejects.toThrowErrorMatchingSnapshot():expect()
+		end)
 	end)
 end)
-
 describe("automock", function()
 	it("falsy automock is not overwritten", function()
-		return Promise.resolve()
-			:andThen(function()
-				((console.warn :: unknown) :: jest_SpyInstance):mockImplementation(function() end)
-				local options = normalize(
-					{ automock = false, rootDir = pathToInstance("/root/path/foo") },
-					{} :: Config_Argv
-				):expect().options
-				expect(options.automock).toBe(false)
-			end)
-			:expect()
+		return Promise.resolve():andThen(function()
+			((console.warn :: unknown) :: jest_SpyInstance):mockImplementation(function() end)
+			local options =
+				-- ROBLOX deviation START: uses pathToInstance helper function
+				-- normalize({ automock = false, rootDir = "/root/path/foo" }, {} :: Config_Argv):expect().options
+				normalize({ automock = false, rootDir = pathToInstance("/root/path/foo") }, {} :: Config_Argv):expect().options
+			-- ROBLOX deviation END
+			expect(options.automock).toBe(false)
+		end)
 	end)
 end)
-
 -- ROBLOX deviation START: not supported
 -- describe("collectCoverageOnlyFrom", function()
 -- 	it("normalizes all paths relative to rootDir", function()
@@ -288,7 +309,10 @@ end)
 -- 	it("does not change absolute paths", function()
 -- 		return Promise.resolve():andThen(function()
 -- 			local options = normalize({
--- 				collectCoverageOnlyFrom = { ["/an/abs/path"] = true, ["/another/abs/path"] = true },
+-- 				collectCoverageOnlyFrom = {
+-- 					["/an/abs/path"] = true,
+-- 					["/another/abs/path"] = true,
+-- 				},
 -- 				rootDir = "/root/path/foo",
 -- 			}, {} :: Config_Argv):expect().options
 -- 			local expected = Object.create(nil)
@@ -299,10 +323,10 @@ end)
 -- 	end)
 -- 	it("substitutes <rootDir> tokens", function()
 -- 		return Promise.resolve():andThen(function()
--- 			local options = normalize(
--- 				{ collectCoverageOnlyFrom = { ["<rootDir>/bar/baz"] = true }, rootDir = "/root/path/foo" },
--- 				{} :: Config_Argv
--- 			):expect().options
+-- 			local options = normalize({
+-- 				collectCoverageOnlyFrom = { ["<rootDir>/bar/baz"] = true },
+-- 				rootDir = "/root/path/foo",
+-- 			}, {} :: Config_Argv):expect().options
 -- 			local expected = Object.create(nil)
 -- 			expected[tostring(expectedPathFooBar)] = true
 -- 			expect(options.collectCoverageOnlyFrom).toEqual(expected)
@@ -364,39 +388,45 @@ local function testPathArray(key: string)
 	-- 	end)
 	-- end)
 	-- ROBLOX deviation END
-
 	it("does not change absolute paths", function()
 		return Promise.resolve():andThen(function()
 			local options = normalize({
+				-- ROBLOX deviation START: uses pathToInstance helper function
+				-- [tostring(key)] = { "/an/abs/path", "/another/abs/path" },
+				-- rootDir = "/root/path/foo",
 				[key] = { pathToInstance("/an/abs/path"), pathToInstance("/another/abs/path") },
 				rootDir = pathToInstance("/root/path/foo"),
+				-- ROBLOX deviation END
+				-- ROBLOX deviation START: cast to type any to suppress type error
+				-- }, {} :: Config_Argv):expect().options
 			} :: any, {} :: Config_Argv):expect().options
+			-- ROBLOX deviation END
+			-- ROBLOX deviation START
+			-- expect(options[tostring(key)]).toEqual({ expectedPathAbs, expectedPathAbsAnother })
 			expect(Array.map((options :: Object)[key], function(path)
 				return getRelativePath(path, nil)
 			end)).toEqual({
 				expectedPathAbs,
 				expectedPathAbsAnother,
 			})
+			-- ROBLOX deviation END
 		end)
 	end)
-
 	-- ROBLOX deviation START: not supported
-	-- 	it("substitutes <rootDir> tokens", function()
-	-- 		return Promise.resolve():andThen(function()
-	-- 			local options = normalize(
-	-- 				{ [tostring(key)] = { "<rootDir>/bar/baz" }, rootDir = "/root/path/foo" },
-	-- 				{} :: Config_Argv
-	-- 			):expect().options
-	-- 			expect(options[tostring(key)]).toEqual({ expectedPathFooBar })
-	-- 		end)
+	-- it("substitutes <rootDir> tokens", function()
+	-- 	return Promise.resolve():andThen(function()
+	-- 		local options = normalize(
+	-- 			{ [tostring(key)] = { "<rootDir>/bar/baz" }, rootDir = "/root/path/foo" },
+	-- 			{} :: Config_Argv
+	-- 		):expect().options
+	-- 		expect(options[tostring(key)]).toEqual({ expectedPathFooBar })
 	-- 	end)
+	-- end)
 	-- ROBLOX deviation END
 end
-
 describe("roots", function()
 	testPathArray("roots")
 end)
-
 -- ROBLOX deviation START: not supported
 -- describe("transform", function()
 -- 	local Resolver
@@ -511,7 +541,11 @@ end)
 -- 	it("logs a deprecation warning when `setupTestFrameworkScriptFile` is used", function()
 -- 		return Promise.resolve():andThen(function()
 -- 			normalize({ rootDir = "/root/path/foo", setupTestFrameworkScriptFile = "bar/baz" }, {} :: Config_Argv):expect()
--- 			expect(((console.warn :: unknown) :: jest_SpyInstance).mock.calls[1][1]).toMatchSnapshot()
+-- 			expect(((console.warn :: unknown) :: jest_SpyInstance).mock.calls[
+-- 				1 --[[ ROBLOX adaptation: added 1 to array index ]]
+-- 			][
+-- 				1 --[[ ROBLOX adaptation: added 1 to array index ]]
+-- 			]).toMatchSnapshot()
 -- 		end)
 -- 	end)
 -- 	it("logs an error when `setupTestFrameworkScriptFile` and `setupFilesAfterEnv` are used", function()
@@ -531,10 +565,10 @@ end)
 -- 		return Promise.resolve():andThen(function()
 -- 			-- This is a list of patterns, so we can't assume any of them are
 -- 			-- directories
--- 			local options = normalize(
--- 				{ coveragePathIgnorePatterns = { "bar/baz", "qux/quux" }, rootDir = "/root/path/foo" },
--- 				{} :: Config_Argv
--- 			):expect().options
+-- 			local options = normalize({
+-- 				coveragePathIgnorePatterns = { "bar/baz", "qux/quux" },
+-- 				rootDir = "/root/path/foo",
+-- 			}, {} :: Config_Argv):expect().options
 -- 			expect(options.coveragePathIgnorePatterns).toEqual({
 -- 				joinForPattern("bar", "baz"),
 -- 				joinForPattern("qux", "quux"),
@@ -545,10 +579,10 @@ end)
 -- 		return Promise.resolve():andThen(function()
 -- 			-- This is a list of patterns, so we can't assume any of them are
 -- 			-- directories
--- 			local options = normalize(
--- 				{ coveragePathIgnorePatterns = { "bar/baz", "qux/quux/" }, rootDir = "/root/path/foo" },
--- 				{} :: Config_Argv
--- 			):expect().options
+-- 			local options = normalize({
+-- 				coveragePathIgnorePatterns = { "bar/baz", "qux/quux/" },
+-- 				rootDir = "/root/path/foo",
+-- 			}, {} :: Config_Argv):expect().options
 -- 			expect(options.coveragePathIgnorePatterns).toEqual({
 -- 				joinForPattern("bar", "baz"),
 -- 				joinForPattern("qux", "quux", ""),
@@ -557,10 +591,10 @@ end)
 -- 	end)
 -- 	it("substitutes <rootDir> tokens", function()
 -- 		return Promise.resolve():andThen(function()
--- 			local options = normalize(
--- 				{ coveragePathIgnorePatterns = { "hasNoToken", "<rootDir>/hasAToken" }, rootDir = "/root/path/foo" },
--- 				{} :: Config_Argv
--- 			):expect().options
+-- 			local options = normalize({
+-- 				coveragePathIgnorePatterns = { "hasNoToken", "<rootDir>/hasAToken" },
+-- 				rootDir = "/root/path/foo",
+-- 			}, {} :: Config_Argv):expect().options
 -- 			expect(options.coveragePathIgnorePatterns).toEqual({
 -- 				"hasNoToken",
 -- 				joinForPattern("", "root", "path", "foo", "hasAToken"),
@@ -599,10 +633,10 @@ end)
 -- 	end)
 -- 	it("substitutes <rootDir> tokens", function()
 -- 		return Promise.resolve():andThen(function()
--- 			local options = normalize(
--- 				{ rootDir = "/root/path/foo", watchPathIgnorePatterns = { "hasNoToken", "<rootDir>/hasAToken" } },
--- 				{} :: Config_Argv
--- 			):expect().options
+-- 			local options = normalize({
+-- 				rootDir = "/root/path/foo",
+-- 				watchPathIgnorePatterns = { "hasNoToken", "<rootDir>/hasAToken" },
+-- 			}, {} :: Config_Argv):expect().options
 -- 			expect(options.watchPathIgnorePatterns).toEqual({
 -- 				"hasNoToken",
 -- 				joinForPattern("", "root", "path", "foo", "hasAToken"),
@@ -610,15 +644,19 @@ end)
 -- 		end)
 -- 	end)
 -- end)
+-- ROBLOX deviation END
 describe("testPathIgnorePatterns", function()
 	it("does not normalize paths relative to rootDir", function()
 		return Promise.resolve():andThen(function()
 			-- This is a list of patterns, so we can't assume any of them are
 			-- directories
-			local options = normalize({
-				rootDir = pathToInstance("/root/path/foo"),
-				testPathIgnorePatterns = { "bar/baz", "qux/quux" },
-			}, {} :: Config_Argv):expect().options
+			local options = normalize(
+				-- ROBLOX deviation START: uses pathToInstance helper function
+				-- { rootDir = "/root/path/foo", testPathIgnorePatterns = { "bar/baz", "qux/quux" } },
+				{ rootDir = pathToInstance("/root/path/foo"), testPathIgnorePatterns = { "bar/baz", "qux/quux" } },
+				-- ROBLOX deviation END
+				{} :: Config_Argv
+			):expect().options
 			expect(options.testPathIgnorePatterns).toEqual({
 				joinForPattern("bar", "baz"),
 				joinForPattern("qux", "quux"),
@@ -629,10 +667,13 @@ describe("testPathIgnorePatterns", function()
 		return Promise.resolve():andThen(function()
 			-- This is a list of patterns, so we can't assume any of them are
 			-- directories
-			local options = normalize({
-				rootDir = pathToInstance("/root/path/foo"),
-				testPathIgnorePatterns = { "bar/baz", "qux/quux/" },
-			}, {} :: Config_Argv):expect().options
+			local options = normalize(
+				-- ROBLOX deviation START: uses pathToInstance helper function
+				-- { rootDir = "/root/path/foo", testPathIgnorePatterns = { "bar/baz", "qux/quux/" } },
+				{ rootDir = pathToInstance("/root/path/foo"), testPathIgnorePatterns = { "bar/baz", "qux/quux/" } },
+				-- ROBLOX deviation END
+				{} :: Config_Argv
+			):expect().options
 			expect(options.testPathIgnorePatterns).toEqual({
 				joinForPattern("bar", "baz"),
 				joinForPattern("qux", "quux", ""),
@@ -643,7 +684,7 @@ describe("testPathIgnorePatterns", function()
 	-- it("substitutes <rootDir> tokens", function()
 	-- 	return Promise.resolve():andThen(function()
 	-- 		local options = normalize({
-	-- 			rootDir = pathToInstance("/root/path/foo"),
+	-- 			rootDir = "/root/path/foo",
 	-- 			testPathIgnorePatterns = { "hasNoToken", "<rootDir>/hasAToken" },
 	-- 		}, {} :: Config_Argv):expect().options
 	-- 		expect(options.testPathIgnorePatterns).toEqual({
@@ -654,6 +695,7 @@ describe("testPathIgnorePatterns", function()
 	-- end)
 	-- ROBLOX deviation END
 end)
+-- ROBLOX deviation START
 -- describe("modulePathIgnorePatterns", function()
 -- 	it("does not normalize paths relative to rootDir", function()
 -- 		return Promise.resolve():andThen(function()
@@ -673,10 +715,10 @@ end)
 -- 		return Promise.resolve():andThen(function()
 -- 			-- This is a list of patterns, so we can't assume any of them are
 -- 			-- directories
--- 			local options = normalize(
--- 				{ modulePathIgnorePatterns = { "bar/baz", "qux/quux/" }, rootDir = "/root/path/foo" },
--- 				{} :: Config_Argv
--- 			):expect().options
+-- 			local options = normalize({
+-- 				modulePathIgnorePatterns = { "bar/baz", "qux/quux/" },
+-- 				rootDir = "/root/path/foo",
+-- 			}, {} :: Config_Argv):expect().options
 -- 			expect(options.modulePathIgnorePatterns).toEqual({
 -- 				joinForPattern("bar", "baz"),
 -- 				joinForPattern("qux", "quux", ""),
@@ -685,10 +727,10 @@ end)
 -- 	end)
 -- 	it("substitutes <rootDir> tokens", function()
 -- 		return Promise.resolve():andThen(function()
--- 			local options = normalize(
--- 				{ modulePathIgnorePatterns = { "hasNoToken", "<rootDir>/hasAToken" }, rootDir = "/root/path/foo" },
--- 				{} :: Config_Argv
--- 			):expect().options
+-- 			local options = normalize({
+-- 				modulePathIgnorePatterns = { "hasNoToken", "<rootDir>/hasAToken" },
+-- 				rootDir = "/root/path/foo",
+-- 			}, {} :: Config_Argv):expect().options
 -- 			expect(options.modulePathIgnorePatterns).toEqual({
 -- 				"hasNoToken",
 -- 				joinForPattern("", "root", "path", "foo", "hasAToken"),
@@ -792,19 +834,35 @@ end)
 -- 	it("correctly identifies and uses babel-jest", function()
 -- 		return Promise.resolve():andThen(function()
 -- 			local options = normalize({ rootDir = "/root" }, {} :: Config_Argv):expect().options
--- 			expect(options.transform[1][1]).toBe(DEFAULT_JS_PATTERN)
--- 			expect(options.transform[1][2]).toEqual(require_:resolve("babel-jest"))
+-- 			expect(options.transform[
+-- 				1 --[[ ROBLOX adaptation: added 1 to array index ]]
+-- 			][
+-- 				1 --[[ ROBLOX adaptation: added 1 to array index ]]
+-- 			]).toBe(DEFAULT_JS_PATTERN)
+-- 			expect(options.transform[
+-- 				1 --[[ ROBLOX adaptation: added 1 to array index ]]
+-- 			][
+-- 				2 --[[ ROBLOX adaptation: added 1 to array index ]]
+-- 			]).toEqual(require_:resolve("babel-jest"))
 -- 		end)
 -- 	end)
 -- 	it("uses babel-jest if babel-jest is explicitly specified in a custom transform options", function()
 -- 		return Promise.resolve():andThen(function()
 -- 			local customJSPattern = "\\.js$"
--- 			local options = normalize(
--- 				{ rootDir = "/root", transform = { [tostring(customJSPattern)] = "babel-jest" } },
--- 				{} :: Config_Argv
--- 			):expect().options
--- 			expect(options.transform[1][1]).toBe(customJSPattern)
--- 			expect(options.transform[1][2]).toEqual(require_:resolve("babel-jest"))
+-- 			local options = normalize({
+-- 				rootDir = "/root",
+-- 				transform = { [tostring(customJSPattern)] = "babel-jest" },
+-- 			}, {} :: Config_Argv):expect().options
+-- 			expect(options.transform[
+-- 				1 --[[ ROBLOX adaptation: added 1 to array index ]]
+-- 			][
+-- 				1 --[[ ROBLOX adaptation: added 1 to array index ]]
+-- 			]).toBe(customJSPattern)
+-- 			expect(options.transform[
+-- 				1 --[[ ROBLOX adaptation: added 1 to array index ]]
+-- 			][
+-- 				2 --[[ ROBLOX adaptation: added 1 to array index ]]
+-- 			]).toEqual(require_:resolve("babel-jest"))
 -- 		end)
 -- 	end)
 -- end)
@@ -840,95 +898,100 @@ end)
 -- 			expect(options)["not"].toHaveProperty("scriptPreprocessor")
 -- 			expect(options)["not"].toHaveProperty("preprocessorIgnorePatterns")
 -- 			expect(hasDeprecationWarnings).toBeTruthy()
--- 			expect(((console.warn :: unknown) :: jest_SpyInstance).mock.calls[1][1]).toMatchSnapshot()
+-- 			expect(((console.warn :: unknown) :: jest_SpyInstance).mock.calls[
+-- 				1 --[[ ROBLOX adaptation: added 1 to array index ]]
+-- 			][
+-- 				1 --[[ ROBLOX adaptation: added 1 to array index ]]
+-- 			]).toMatchSnapshot()
 -- 		end)
 -- 	end)
 -- end)
 -- ROBLOX deviation END
-
 describe("testRegex", function()
 	it("testRegex empty string is mapped to empty array", function()
-		return Promise.resolve()
-			:andThen(function()
-				local options =
-					normalize({ rootDir = pathToInstance("/root"), testRegex = "" }, {} :: Config_Argv):expect().options
-				expect(options.testRegex).toEqual({})
-			end)
-			:expect()
+		return Promise.resolve():andThen(function()
+			-- ROBLOX deviation START: uses pathToInstance helper function
+			-- local options = normalize({ rootDir = "/root", testRegex = "" }, {} :: Config_Argv):expect().options
+			local options =
+				normalize({ rootDir = pathToInstance("/root"), testRegex = "" }, {} :: Config_Argv):expect().options
+			-- ROBLOX deviation END
+			expect(options.testRegex).toEqual({})
+		end)
 	end)
-
 	it("testRegex string is mapped to an array", function()
-		return Promise.resolve()
-			:andThen(function()
-				local options =
-					normalize({ rootDir = pathToInstance("/root"), testRegex = ".*" }, {} :: Config_Argv):expect().options
-				expect(options.testRegex).toEqual({ ".*" })
-			end)
-			:expect()
+		return Promise.resolve():andThen(function()
+			-- ROBLOX deviation START: uses pathToInstance helper function
+			-- local options = normalize({ rootDir = "/root", testRegex = ".*" }, {} :: Config_Argv):expect().options
+			local options =
+				normalize({ rootDir = pathToInstance("/root"), testRegex = ".*" }, {} :: Config_Argv):expect().options
+			-- ROBLOX deviation END
+			expect(options.testRegex).toEqual({ ".*" })
+		end)
 	end)
-
 	it("testRegex array is preserved", function()
-		return Promise.resolve()
-			:andThen(function()
-				local options = normalize(
-					{ rootDir = pathToInstance("/root"), testRegex = { ".*", "foo\\.bar" } },
-					{} :: Config_Argv
-				):expect().options
-				expect(options.testRegex).toEqual({ ".*", "foo\\.bar" })
-			end)
-			:expect()
+		return Promise.resolve():andThen(function()
+			-- ROBLOX deviation START: uses pathToInstance helper function
+			-- local options =
+			-- 	normalize({ rootDir = "/root", testRegex = { ".*", "foo\\.bar" } }, {} :: Config_Argv):expect().options
+			local options = normalize(
+				{ rootDir = pathToInstance("/root"), testRegex = { ".*", "foo\\.bar" } },
+				{} :: Config_Argv
+			):expect().options
+			-- ROBLOX deviation END
+			expect(options.testRegex).toEqual({ ".*", "foo\\.bar" })
+		end)
 	end)
 end)
-
 describe("testMatch", function()
 	it("testMatch default not applied if testRegex is set", function()
-		return Promise.resolve()
-			:andThen(function()
-				local options =
-					normalize({ rootDir = pathToInstance("/root"), testRegex = ".*" }, {} :: Config_Argv):expect().options
-				expect(#options.testMatch).toBe(0)
-			end)
-			:expect()
+		return Promise.resolve():andThen(function()
+			-- ROBLOX deviation START: uses pathToInstance helper function
+			-- local options = normalize({ rootDir = "/root", testRegex = ".*" }, {} :: Config_Argv):expect().options
+			local options =
+				normalize({ rootDir = pathToInstance("/root"), testRegex = ".*" }, {} :: Config_Argv):expect().options
+			-- ROBLOX deviation END
+			-- ROBLOX deviation START: uses pound to get array length
+			-- expect(options.testMatch.length).toBe(0)
+			expect(#options.testMatch).toBe(0)
+			-- ROBLOX deviation END
+		end)
 	end)
-
 	it("testRegex default not applied if testMatch is set", function()
-		return Promise.resolve()
-			:andThen(function()
-				local options = normalize(
-					{ rootDir = pathToInstance("/root"), testMatch = { "**/*.js" } },
-					{} :: Config_Argv
-				):expect().options
-				expect(options.testRegex).toEqual({})
-			end)
-			:expect()
+		return Promise.resolve():andThen(function()
+			local options =
+				-- ROBLOX deviation START: uses pathToInstance helper function
+				-- normalize({ rootDir = "/root", testMatch = { "**/*.js" } }, {} :: Config_Argv):expect().options
+				normalize({ rootDir = pathToInstance("/root"), testMatch = { "**/*.js" } }, {} :: Config_Argv):expect().options
+			-- ROBLOX deviation END
+			expect(options.testRegex).toEqual({})
+		end)
 	end)
-
 	it("throws if testRegex and testMatch are both specified", function()
-		return Promise.resolve()
-			:andThen(function()
-				-- ROBLOX deviation START: no .rejects
-				expect(function()
+		return Promise.resolve():andThen(function()
+			-- ROBLOX deviation START: uses pathToInstance helper function
+			-- expect(normalize({ rootDir = "/root", testMatch = { "**/*.js" }, testRegex = ".*" }, {} :: Config_Argv)).rejects
+			expect(
 					normalize(
 						{ rootDir = pathToInstance("/root"), testMatch = { "**/*.js" }, testRegex = ".*" },
 						{} :: Config_Argv
-					):expect()
-				end).toThrowErrorMatchingSnapshot()
+					)
+				)
+				.rejects
 				-- ROBLOX deviation END
-			end)
-			:expect()
+				.toThrowErrorMatchingSnapshot()
+				:expect()
+		end)
 	end)
-
 	-- ROBLOX deviation START: not supported
 	-- it("normalizes testMatch", function()
 	-- 	return Promise.resolve():andThen(function()
 	-- 		local options =
-	-- 			normalize({ rootDir = pathToInstance("/root"), testMatch = { "<rootDir>/**/*.js" } }, {} :: Config_Argv):expect().options
+	-- 			normalize({ rootDir = "/root", testMatch = { "<rootDir>/**/*.js" } }, {} :: Config_Argv):expect().options
 	-- 		expect(options.testMatch).toEqual({ "/root/**/*.js" })
-	-- 	end):expect()
+	-- 	end)
 	-- end)
 	-- ROBLOX deviation END
 end)
-
 -- ROBLOX deviation START: not supported
 -- describe("moduleDirectories", function()
 -- 	it("defaults to node_modules", function()
@@ -939,10 +1002,10 @@ end)
 -- 	end)
 -- 	it("normalizes moduleDirectories", function()
 -- 		return Promise.resolve():andThen(function()
--- 			local options = normalize(
--- 				{ moduleDirectories = { "<rootDir>/src", "<rootDir>/node_modules" }, rootDir = "/root" },
--- 				{} :: Config_Argv
--- 			):expect().options
+-- 			local options = normalize({
+-- 				moduleDirectories = { "<rootDir>/src", "<rootDir>/node_modules" },
+-- 				rootDir = "/root",
+-- 			}, {} :: Config_Argv):expect().options
 -- 			expect(options.moduleDirectories).toEqual({ "/root/src", "/root/node_modules" })
 -- 		end)
 -- 	end)
@@ -1075,7 +1138,11 @@ end)
 -- 		return Promise.resolve():andThen(function()
 -- 			local Resolver = require_("jest-resolve").default
 -- 			normalize({ preset = "react-native", rootDir = "/root/path/foo" }, {} :: Config_Argv):expect()
--- 			local options = Resolver.findNodeModule.mock.calls[1][2]
+-- 			local options = Resolver.findNodeModule.mock.calls[
+-- 				1 --[[ ROBLOX adaptation: added 1 to array index ]]
+-- 			][
+-- 				2 --[[ ROBLOX adaptation: added 1 to array index ]]
+-- 			]
 -- 			expect(options.extensions).toEqual({ ".json", ".js", ".cjs", ".mjs" })
 -- 		end)
 -- 	end)
@@ -1114,10 +1181,11 @@ end)
 -- 			moduleNameMapper.b = "bb"
 -- 			moduleNameMapper.c = "cc"
 -- 			moduleNameMapper.a = "aa"
--- 			local options = normalize(
--- 				{ moduleNameMapper = moduleNameMapper, preset = "react-native", rootDir = "/root/path/foo" },
--- 				{} :: Config_Argv
--- 			):expect().options
+-- 			local options = normalize({
+-- 				moduleNameMapper = moduleNameMapper,
+-- 				preset = "react-native",
+-- 				rootDir = "/root/path/foo",
+-- 			}, {} :: Config_Argv):expect().options
 -- 			expect(options.moduleNameMapper).toEqual({
 -- 				{ "e", "ee" },
 -- 				{ "b", "bb" },
@@ -1187,7 +1255,10 @@ end)
 -- 			}, {} :: Config_Argv):expect().options
 -- 			expect(options.globals).toEqual({
 -- 				__DEV__ = true,
--- 				config = { hereToStay = "This should stay here", sideBySide = "This should also live another day" },
+-- 				config = {
+-- 					hereToStay = "This should stay here",
+-- 					sideBySide = "This should also live another day",
+-- 				},
 -- 				myString = "hello sunshine",
 -- 				textValue = "This is just text",
 -- 			})
@@ -1212,11 +1283,12 @@ end)
 -- 	end)
 -- 	it(("should normalize %s correctly"):format(tostring(configKey)), function()
 -- 		return Promise.resolve():andThen(function()
--- 			local options = normalize(
--- 				{ [tostring(configKey)] = { "a" }, preset = "react-foo", rootDir = "/root/path/foo" },
--- 				{} :: Config_Argv
--- 			):expect().options
--- 			expect(options).toEqual(expect:objectContaining({ [tostring(configKey)] = { "/node_modules/a" } }))
+-- 			local options = normalize({
+-- 				[tostring(configKey)] = { "a" },
+-- 				preset = "react-foo",
+-- 				rootDir = "/root/path/foo",
+-- 			}, {} :: Config_Argv):expect().options
+-- 			expect(options).toEqual(expect.objectContaining({ [tostring(configKey)] = { "/node_modules/a" } }))
 -- 		end)
 -- 	end)
 -- end)
@@ -1267,9 +1339,7 @@ end)
 -- 		Resolver = require_("jest-resolve").default
 -- 		Resolver.findNodeModule = jest.fn(function(name)
 -- 			if
--- 				Boolean.toJSBoolean(
--- 					Array.includes({ "typeahead", "jest-watch-typeahead", "my-watch-plugin" }, name)
--- 				)
+-- 				Boolean.toJSBoolean(Array.includes({ "typeahead", "jest-watch-typeahead", "my-watch-plugin" }, name))
 -- 			then
 -- 				return ("node_modules/%s"):format(tostring(name))
 -- 			end
@@ -1296,10 +1366,8 @@ end)
 -- 	end)
 -- 	it("resolves watch plugins that do not have the prefix", function()
 -- 		return Promise.resolve():andThen(function()
--- 			local options = normalize(
--- 				{ rootDir = "/root/", watchPlugins = { "my-watch-plugin" } },
--- 				{} :: Config_Argv
--- 			):expect().options
+-- 			local options =
+-- 				normalize({ rootDir = "/root/", watchPlugins = { "my-watch-plugin" } }, {} :: Config_Argv):expect().options
 -- 			expect(options.watchPlugins).toEqual({
 -- 				{ config = {} :: Config_Argv, path = "node_modules/my-watch-plugin" },
 -- 			})
@@ -1307,10 +1375,10 @@ end)
 -- 	end)
 -- 	it("normalizes multiple watchPlugins", function()
 -- 		return Promise.resolve():andThen(function()
--- 			local options = normalize(
--- 				{ rootDir = "/root/", watchPlugins = { "jest-watch-typeahead", "<rootDir>/path/to/plugin" } },
--- 				{} :: Config_Argv
--- 			):expect().options
+-- 			local options = normalize({
+-- 				rootDir = "/root/",
+-- 				watchPlugins = { "jest-watch-typeahead", "<rootDir>/path/to/plugin" },
+-- 			}, {} :: Config_Argv):expect().options
 -- 			expect(options.watchPlugins).toEqual({
 -- 				{ config = {} :: Config_Argv, path = "node_modules/jest-watch-typeahead" },
 -- 				{ config = {} :: Config_Argv, path = "/root/path/to/plugin" },
@@ -1326,75 +1394,82 @@ end)
 -- 	end)
 -- end)
 -- ROBLOX deviation END
-
 describe("testPathPattern", function()
+	-- ROBLOX deviation START: uses pathToInstance helper function
+	-- local initialOptions = { rootDir = "/root" }
 	local initialOptions = { rootDir = pathToInstance("/root") }
+	-- ROBLOX deviation END
 	local consoleLog = console.log
-
 	beforeEach(function()
 		console.log = jest.fn()
 	end)
-
 	afterEach(function()
 		console.log = consoleLog
 	end)
-
 	it("defaults to empty", function()
 		return Promise.resolve():andThen(function()
 			local options = normalize(initialOptions, {} :: Config_Argv):expect().options
 			expect(options.testPathPattern).toBe("")
 		end)
 	end)
-
 	local cliOptions = {
 		{ name = "--testPathPattern", property = "testPathPattern" },
 		{ name = "<regexForTestFiles>", property = "_" },
 	}
 	for _, opt in cliOptions do
 		describe(opt.name, function()
+			-- ROBLOX deviation START
+			-- it("uses " .. tostring(opt.name) .. " if set", function()
 			it("uses " .. opt.name .. " if set", function()
-				return Promise.resolve()
-					:andThen(function()
-						local argv = { [opt.property] = { "a/b" } } :: Config_Argv
-						local options = normalize(initialOptions, argv):expect().options
-						expect(options.testPathPattern).toBe("a/b")
-					end)
-					:expect()
-			end)
-
-			it("ignores invalid regular expressions and logs a warning", function()
-				return Promise.resolve()
-					:andThen(function()
-						local argv = { [opt.property] = { "a(" } } :: Config_Argv
-						local options = normalize(initialOptions, argv):expect().options
-						expect(options.testPathPattern).toBe("")
-						expect(((console.log :: unknown) :: jest_SpyInstance).mock.calls[1][1]).toMatchSnapshot()
-					end)
-					:expect()
-			end)
-
-			it("joins multiple " .. opt.name .. " if set", function()
-				return Promise.resolve()
-					:andThen(function()
-						local argv = { testPathPattern = { "a/b", "c/d" } } :: Config_Argv
-						local options = normalize(initialOptions, argv):expect().options
-						expect(options.testPathPattern).toBe("a/b|c/d")
-					end)
-					:expect()
-			end)
-
-			describe("posix", function()
-				it("should not escape the pattern", function()
-					return Promise.resolve()
-						:andThen(function()
-							local argv = { [opt.property] = { "a\\/b", "a/b", "a\\b", "a\\\\b" } } :: Config_Argv
-							local options = normalize(initialOptions, argv):expect().options
-							expect(options.testPathPattern).toBe("a\\/b|a/b|a\\b|a\\\\b")
-						end)
-						:expect()
+				-- ROBLOX deviation END
+				return Promise.resolve():andThen(function()
+					-- ROBLOX deviation START
+					-- local argv = { [tostring(opt.property)] = { "a/b" } } :: Config_Argv
+					local argv = { [opt.property] = { "a/b" } } :: Config_Argv
+					-- ROBLOX deviation END
+					local options = normalize(initialOptions, argv):expect().options
+					expect(options.testPathPattern).toBe("a/b")
 				end)
 			end)
-
+			it("ignores invalid regular expressions and logs a warning", function()
+				return Promise.resolve():andThen(function()
+					-- ROBLOX deviation START
+					-- local argv = { [tostring(opt.property)] = { "a(" } } :: Config_Argv
+					local argv = { [opt.property] = { "a(" } } :: Config_Argv
+					-- ROBLOX deviation END
+					local options = normalize(initialOptions, argv):expect().options
+					expect(options.testPathPattern).toBe("")
+					expect(((console.log :: unknown) :: jest_SpyInstance).mock.calls[
+						1 --[[ ROBLOX adaptation: added 1 to array index ]]
+					][
+						1 --[[ ROBLOX adaptation: added 1 to array index ]]
+					]).toMatchSnapshot()
+				end)
+			end)
+			-- ROBLOX deviation START
+			-- it("joins multiple " .. tostring(opt.name) .. " if set", function()
+			it("joins multiple " .. opt.name .. " if set", function()
+				-- ROBLOX deviation END
+				return Promise.resolve():andThen(function()
+					local argv = { testPathPattern = { "a/b", "c/d" } } :: Config_Argv
+					local options = normalize(initialOptions, argv):expect().options
+					expect(options.testPathPattern).toBe("a/b|c/d")
+				end)
+			end)
+			describe("posix", function()
+				it("should not escape the pattern", function()
+					return Promise.resolve():andThen(function()
+						local argv = {
+							-- ROBLOX deviation START
+							-- [tostring(opt.property)] = { "a\\/b", "a/b", "a\\b", "a\\\\b" },
+							[opt.property] = { "a\\/b", "a/b", "a\\b", "a\\\\b" },
+							-- ROBLOX deviation END
+						} :: Config_Argv
+						local options = normalize(initialOptions, argv):expect().options
+						expect(options.testPathPattern).toBe("a\\/b|a/b|a\\b|a\\\\b")
+					end)
+				end)
+			end)
 			-- ROBLOX deviation START: not supported
 			-- describe("win32", function()
 			-- 	beforeEach(function()
@@ -1438,46 +1513,47 @@ describe("testPathPattern", function()
 			-- ROBLOX deviation END
 		end)
 	end
-
 	it("joins multiple --testPathPatterns and <regexForTestFiles>", function()
-		return Promise.resolve()
-			:andThen(function()
-				local options = normalize(
-					initialOptions,
-					{ _ = { "a", "b" }, testPathPattern = { "c", "d" } } :: Config_Argv
-				):expect().options
-				expect(options.testPathPattern).toBe("a|b|c|d")
-			end)
-			:expect()
+		return Promise.resolve():andThen(function()
+			local options = normalize(
+				initialOptions,
+				{ _ = { "a", "b" }, testPathPattern = { "c", "d" } } :: Config_Argv
+			):expect().options
+			expect(options.testPathPattern).toBe("a|b|c|d")
+		end)
 	end)
-
 	-- ROBLOX deviation START: not supported
 	-- it("gives precedence to --all", function()
 	-- 	return Promise.resolve():andThen(function()
 	-- 		local options =
 	-- 			normalize(initialOptions, { all = true, onlyChanged = true } :: Config_Argv):expect().options
 	-- 		expect(options.onlyChanged).toBe(false)
-	-- 	end):expect()
+	-- 	end)
 	-- end)
 	-- ROBLOX deviation END
 end)
-
 -- ROBLOX deviation START: not supported
 -- describe("moduleFileExtensions", function()
 -- 	it("defaults to something useful", function()
 -- 		return Promise.resolve():andThen(function()
 -- 			local options = normalize({ rootDir = "/root" }, {} :: Config_Argv):expect().options
--- 			expect(options.moduleFileExtensions).toEqual({ "js", "jsx", "ts", "tsx", "json", "node" })
+-- 			expect(options.moduleFileExtensions).toEqual({
+-- 				"js",
+-- 				"jsx",
+-- 				"ts",
+-- 				"tsx",
+-- 				"json",
+-- 				"node",
+-- 			})
 -- 		end)
 -- 	end)
 -- 	it:each({ nil, "jest-runner" })("throws if missing `js` but using jest-runner", function(runner)
 -- 		return Promise.resolve():andThen(function()
--- 			expect(
--- 					normalize(
--- 						{ moduleFileExtensions = { "json", "jsx" }, rootDir = "/root/", runner = runner },
--- 						{} :: Config_Argv
--- 					)
--- 				).rejects
+-- 			expect(normalize({
+-- 					moduleFileExtensions = { "json", "jsx" },
+-- 					rootDir = "/root/",
+-- 					runner = runner,
+-- 				}, {} :: Config_Argv)).rejects
 -- 				.toThrowError("moduleFileExtensions must include 'js'")
 -- 				:expect()
 -- 		end)
@@ -1514,18 +1590,35 @@ end)
 -- 	end)
 -- end)
 -- ROBLOX deviation END
-
 describe("Defaults", function()
 	it("should be accepted by normalize", function()
 		return Promise.resolve():andThen(function()
+			-- ROBLOX deviation START
+			-- normalize(Object.assign({}, Defaults, { rootDir = "/root" }), {} :: Config_Argv):expect()
+			-- expect(console.warn)["not"].toHaveBeenCalled()
 			normalize(Object.assign({}, Defaults, { rootDir = pathToInstance("/root") }), {} :: Config_Argv):expect()
 			expect(console.warn).never.toHaveBeenCalled()
+			-- ROBLOX deviation END
 		end)
 	end)
 end)
-
 describe("displayName", function()
-	for _, ref in
+	-- ROBLOX deviation START
+	-- (error("not implemented") --[[ ROBLOX TODO: Unhandled node for type: TaggedTemplateExpression ]] --[[ test.each`
+	--   displayName             | description
+	--   ${{}}                   | ${'is an empty object'}
+	--   ${{
+	--   name: 'hello'
+	-- }}      | ${'missing color'}
+	--   ${{
+	--   color: 'green'
+	-- }}     | ${'missing name'}
+	--   ${{
+	--   color: 2,
+	--   name: []
+	-- }} | ${'using invalid values'}
+	-- ` ]])("should throw an error when displayName is $description", function(ref0)
+	for _, ref0 in
 		{
 			{ displayName = {}, description = "is an empty object" } :: any,
 			{ displayName = { name = "hello" }, description = "missing color" },
@@ -1533,20 +1626,22 @@ describe("displayName", function()
 			{ displayName = { color = 2, name = {} }, description = "using invalid values" },
 		}
 	do
-		it("should throw an error when displayName is " .. ref.description, function()
-			local displayName = ref.displayName
-			return Promise.resolve()
-				:andThen(function()
-					-- ROBLOX deviation START: no .rejects
-					expect(function()
-						normalize({ displayName = displayName, rootDir = pathToInstance("/root/") }, {} :: Config_Argv):expect()
-					end).toThrowErrorMatchingSnapshot()
+		it("should throw an error when displayName is " .. ref0.description, function()
+			-- ROBLOX deviation END
+			local displayName = ref0.displayName
+			return Promise.resolve():andThen(function()
+				-- ROBLOX deviation START: uses pathToInstance helper function
+				-- expect(normalize({ displayName = displayName, rootDir = "/root/" }, {} :: Config_Argv)).rejects
+				expect(normalize({ displayName = displayName, rootDir = pathToInstance("/root/") }, {} :: Config_Argv))
+					.rejects
 					-- ROBLOX deviation END
-				end)
-				:expect()
+					.toThrowErrorMatchingSnapshot()
+					:expect()
+			end)
 		end)
+		-- ROBLOX deviation START: add end for the for loop
 	end
-
+	-- ROBLOX deviation END
 	-- ROBLOX deviation START: not supported
 	-- it:each({ nil, "jest-runner", "jest-runner-eslint", "jest-runner-tslint", "jest-runner-tsc" })(
 	-- 	"generates a default color for the runner %s",
@@ -1567,51 +1662,51 @@ describe("displayName", function()
 	-- )
 	-- ROBLOX deviation END
 end)
-
 describe("testTimeout", function()
 	it("should return timeout value if defined", function()
-		return Promise.resolve()
-			:andThen(function()
-				((console.warn :: unknown) :: jest_SpyInstance):mockImplementation(function() end)
-				local options =
-					normalize({ rootDir = pathToInstance("/root/"), testTimeout = 1000 }, {} :: Config_Argv):expect().options
-				expect(options.testTimeout).toBe(1000)
-				expect(console.warn).never.toHaveBeenCalled()
-			end)
-			:expect()
+		return Promise.resolve():andThen(function()
+			((console.warn :: unknown) :: jest_SpyInstance):mockImplementation(function() end)
+			-- ROBLOX deviation START: uses pathToInstance helper function
+			-- local options = normalize({ rootDir = "/root/", testTimeout = 1000 }, {} :: Config_Argv):expect().options
+			local options =
+				normalize({ rootDir = pathToInstance("/root/"), testTimeout = 1000 }, {} :: Config_Argv):expect().options
+			-- ROBLOX deviation END
+			expect(options.testTimeout).toBe(1000)
+			-- ROBLOX deviation START
+			-- expect(console.warn)["not"].toHaveBeenCalled()
+			expect(console.warn).never.toHaveBeenCalled()
+			-- ROBLOX deviation END
+		end)
 	end)
-
 	it("should throw an error if timeout is a negative number", function()
-		return Promise.resolve()
-			:andThen(function()
-				-- ROBLOX deviation START: no .rejects
-				expect(function()
-					normalize({ rootDir = pathToInstance("/root/"), testTimeout = -1 }, {} :: Config_Argv):expect()
-				end).toThrowErrorMatchingSnapshot()
+		return Promise.resolve():andThen(function()
+			-- ROBLOX deviation START: uses pathToInstance helper function
+			-- expect(normalize({ rootDir = "/root/", testTimeout = -1 }, {} :: Config_Argv)).rejects
+			expect(normalize({ rootDir = pathToInstance("/root/"), testTimeout = -1 }, {} :: Config_Argv))
+				.rejects
 				-- ROBLOX deviation END
-			end)
-			:expect()
+				.toThrowErrorMatchingSnapshot()
+				:expect()
+		end)
 	end)
 end)
-
 -- ROBLOX deviation START: not supported
 -- describe("extensionsToTreatAsEsm", function()
 -- 	local function matchErrorSnapshot(
--- 		callback: { --[[ ROBLOX TODO: Unhandled node for type: TSCallSignatureDeclaration ]] --[[ (): Promise<{
---     hasDeprecationWarnings: boolean;
---     options: Config.ProjectConfig & Config.GlobalConfig;
---   }>; ]]
--- 			--[[ ROBLOX TODO: Unhandled node for type: TSCallSignatureDeclaration ]]
--- 			--[[ (): Promise<{
---     hasDeprecationWarnings: boolean;
---     options: Config.ProjectConfig & Config.GlobalConfig;
---   }>; ]]
--- 			--[[ ROBLOX TODO: Unhandled node for type: TSCallSignatureDeclaration ]]
--- 			--[[ (): any; ]]
+-- 		callback: {
+-- 			__unhandledIdentifier__: nil, --[[ ROBLOX TODO: Unhandled node for type: TSCallSignatureDeclaration ]] --[[ (): Promise<{
+--       hasDeprecationWarnings: boolean;
+--       options: Config.ProjectConfig & Config.GlobalConfig;
+--     }>; ]]
+-- 			__unhandledIdentifier__: nil, --[[ ROBLOX TODO: Unhandled node for type: TSCallSignatureDeclaration ]] --[[ (): Promise<{
+--       hasDeprecationWarnings: boolean;
+--       options: Config.ProjectConfig & Config.GlobalConfig;
+--     }>; ]]
+-- 			__unhandledIdentifier__: nil, --[[ ROBLOX TODO: Unhandled node for type: TSCallSignatureDeclaration ]] --[[ (): any; ]]
 -- 		}
 -- 	)
 -- 		return Promise.resolve():andThen(function()
--- 			expect:assertions(1)
+-- 			expect.assertions(1)
 -- 			do --[[ ROBLOX COMMENT: try-catch block conversion ]]
 -- 				local ok, result, hasReturned = xpcall(function()
 -- 					callback():expect()
@@ -1659,10 +1754,8 @@ end)
 -- 			expect(normalize({ haste = { enableSymlinks = true }, rootDir = "/root/", watchman = true }, {})).rejects
 -- 				.toThrow("haste.enableSymlinks is incompatible with watchman")
 -- 				:expect()
--- 			local options = normalize(
--- 				{ haste = { enableSymlinks = true }, rootDir = "/root/", watchman = false },
--- 				{}
--- 			):expect().options
+-- 			local options =
+-- 				normalize({ haste = { enableSymlinks = true }, rootDir = "/root/", watchman = false }, {}):expect().options
 -- 			expect(options.haste.enableSymlinks).toBe(true)
 -- 			expect(options.watchman).toBe(false)
 -- 		end)
