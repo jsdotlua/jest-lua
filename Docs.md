@@ -24,9 +24,104 @@ import {describe, expect, test} from '@jest/globals'.
 
 ## [Expect](https://jestjs.io/docs/27.x/expect)
 
+There are two variations of `expect` in `jest-roblox`:
+#### `expect` 
+This is strictly typed and is used with built in Jest matchers. For example:
+
+```lua
+-- ... JestGlobals, test defined prior to this
+local expect = JestGlobals.expect
+
+
+test('some test', function()
+  local foo;
+
+  expect(1).toBe(1) -- toBe is a built-in Jest matcher
+  expect(foo).toBeDefined() -- toBeDefined is a built-in Jest matcher
+end)
+```
+
+#### `expectExtended`
+
+This is loosely typed and is meant to be used with custom matchers. For example:
+
+```lua
+-- ... JestGlobals, test defined prior to this
+local expectExtended = JestGlobals.expectExtended
+
+-- extending expect to support our custom matcher `toBeEmptyString`
+expectExtended.extend({
+    toBeEmptyString = function(self, received: unknown, expected: unknown, options: OptionsReceived?)
+        -- dummy implementation
+        local pass = received == ""
+        local message = if pass
+            then ("%s is an empty string"):format(received)
+            else ("%s is an NOT empty string"):format(received)
+        return { actual = received, message = message, pass = pass }
+    end,
+})
+test("some test", function()
+    local foo
+
+    expectExtended(foo).toBeEmptyString() -- toBeEmptyString is a custom Jest matcher
+end)
+```
+In this case, since we are using a custom matcher `toBeEmptyString()`, if we had used the normal `expect` from `JestGlobals.expect`, then `roblox-analyze` would have thrown errors because of type issues.
+
+> **Note** 
+In converted code (ie. code converted by the JS to Lua tool), we often import `expectExtended` and assign it to a variable `expect` in order to reduce the amount of deviations in the file. We also mark this import as a deviation. Here's an example of such a situation:
+```lua
+-- ... JestGlobals, test defined prior to this
+-- ROBLOX deviation START: importing expectExtended to avoid analyze errors for additional matchers
+local expect = JestGlobals.expectExtended
+-- ROBLOX deviation END
+
+test('some test', function()
+  local foo;
+
+-- in this case, we get to preserve the originally converted code which uses `expect` by simply assigning `expectExtended` to `expect`
+  expect(foo).toBeEmptyString() 
+end)
+test('another test', function()
+  local bar = "fizz";
+
+-- in this case, we get to preserve the originally converted code which uses `expect` by simply assigning `expectExtended` to `expect`
+  expect(bar).toBeEmptyString() 
+end)
+```
+
+**Using both `expect` and `expectExtended`**
+In a manually written file where there are both tests that use both built-in and custom matchers, it may not be possible to simply re-assign `expectExtended` to a variable named `expect` since this would mean losing type safety for built-in matchers.
+
+In such a case, we opt for having two imports and using either `expect` or `expectExtended` depending on whether we are using built-in matchers or custom matchers.
+
+Example:
+```lua
+-- ... JestGlobals, test defined prior to this
+local expect = JestGlobals.expect
+local expectExtended = JestGlobals.expectExtended
+
+test('test using built-in matcher - uses expect', function()
+  local foo;
+
+  expect(foo).toBe(nil) 
+end)
+test('test using custom matcher - uses expectExtended', function()
+  local bar = "fizz";
+
+  expectExtended(bar).toBeEmptyString() 
+end)
+```
+
+This way, we can preserve the type-safety that comes with `expect` for built-in matchers and take advantage of the flexibility and extensibility that `expectExtended` provides when using custom matchers.
+
+**TL;DR - When to use `expect` vs `expectExtended`**
+- When writing your own tests, if you are using built-in Jest matchers, then you should use `expect`.
+- If you are using custom matchers, you should use `expectExtended`
+
 ### Supported
 
-> **Note:** `.not` is renamed to `.never` to avoid collision with Lua reserved key word
+> **Note:** `.not` is renamed to `.never` to avoid collision with Lua reserved key word. `expect` and `expectExtended` can also be swapped out with each other in the below examples. The differences between the two has been covered above.
 
 - `expect(value)`
 - `expect.extend(matchers)`
