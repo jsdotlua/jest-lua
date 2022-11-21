@@ -1,60 +1,84 @@
 --!nonstrict
 -- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/__tests__/asymmetricMatchers.test.ts
--- /**
---  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
---  *
---  * This source code is licensed under the MIT license found in the
---  * LICENSE file in the root directory of this source tree.
---  *
---  */
-
+--[[*
+ * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ ]]
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
-
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Array = LuauPolyfill.Array
+local Boolean = LuauPolyfill.Boolean
+-- ROBLOX deviation START: not used
+-- local Object = LuauPolyfill.Object
+-- local Symbol = LuauPolyfill.Symbol
+-- local Promise = require(Packages.Promise)
+-- ROBLOX deviation END
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local expect = JestGlobals.expect
+-- ROBLOX deviation START: not used
+-- local jest = JestGlobals.jest
+-- ROBLOX deviation END
 local test = JestGlobals.test
 
+-- ROBLOX deviation START: add RegExp
 local RegExp = require(Packages.RegExp)
-
-local AsymmetricMatchers = require(CurrentModule.asymmetricMatchers)
-local any = AsymmetricMatchers.any
-local anything = AsymmetricMatchers.anything
-local arrayContaining = AsymmetricMatchers.arrayContaining
-local arrayNotContaining = AsymmetricMatchers.arrayNotContaining
-local objectContaining = AsymmetricMatchers.objectContaining
-local objectNotContaining = AsymmetricMatchers.objectNotContaining
-local stringContaining = AsymmetricMatchers.stringContaining
-local stringNotContaining = AsymmetricMatchers.stringNotContaining
-local stringMatching = AsymmetricMatchers.stringMatching
-local stringNotMatching = AsymmetricMatchers.stringNotMatching
+-- ROBLOX deviation END
+-- ROBLOX deviation START: jestExpect
+-- local jestExpect = require(script.Parent.Parent).default
+local jestExpect = require(script.Parent.Parent)
+-- ROBLOX deviation END
+local asymmetricMatchersModule = require(script.Parent.Parent.asymmetricMatchers)
+local any = asymmetricMatchersModule.any
+local anything = asymmetricMatchersModule.anything
+local arrayContaining = asymmetricMatchersModule.arrayContaining
+local arrayNotContaining = asymmetricMatchersModule.arrayNotContaining
+local objectContaining = asymmetricMatchersModule.objectContaining
+local objectNotContaining = asymmetricMatchersModule.objectNotContaining
+local stringContaining = asymmetricMatchersModule.stringContaining
+local stringMatching = asymmetricMatchersModule.stringMatching
+local stringNotContaining = asymmetricMatchersModule.stringNotContaining
+local stringNotMatching = asymmetricMatchersModule.stringNotMatching
 
 -- ROBLOX deviation START: additional dependencies
 local RobloxShared = require(Packages.RobloxShared)
-local nodeUtils = RobloxShared.nodeUtils
-local JSON = nodeUtils.JSON
+local JSON = RobloxShared.nodeUtils.JSON
 -- ROBLOX deviation END
-
 test("Any.asymmetricMatch()", function()
-	-- ROBLOX deviation START: no primitive constructors in lua, we just supply a primitive
-	for _, test in
-		{
-			any("string"):asymmetricMatch("jest"),
-			any("number"):asymmetricMatch(1),
-			any("function"):asymmetricMatch(function() end),
-			any("boolean"):asymmetricMatch(true),
-			-- ROBLOX deviation: omitted BigInt and Symbol
-			any("table"):asymmetricMatch({}),
-			-- ROBLOX deviation: typeof(nil) is nil in Lua, not object, so test below is omitted
-			-- any("table"):asymmetricMatch(nil),
-		}
-	do
-		expect(test).toBe(true)
+	type Thing = {}
+	type Thing_statics = { new: () -> Thing }
+	local Thing = {} :: Thing & Thing_statics;
+	(Thing :: any).__index = Thing
+	function Thing.new(): Thing
+		local self = setmetatable({}, Thing)
+		return (self :: any) :: Thing
 	end
-	-- ROBLOX deviation END
+	Array.forEach({
+		-- ROBLOX deviation START: no primitive constructors in lua, we just supply a primitive
+		-- any(String):asymmetricMatch("jest"),
+		-- any(Number):asymmetricMatch(1),
+		-- any(Function):asymmetricMatch(function() end),
+		-- any(Boolean):asymmetricMatch(true),
+		-- any(BigInt):asymmetricMatch(1),
+		-- any(Symbol):asymmetricMatch(Symbol()),
+		-- any(Object):asymmetricMatch({}),
+		-- any(Object):asymmetricMatch(nil),
+		-- any(Array):asymmetricMatch({}),
+		-- any(Thing):asymmetricMatch(Thing.new()),
+		any("string"):asymmetricMatch("jest"),
+		any("number"):asymmetricMatch(1),
+		any("function"):asymmetricMatch(function() end),
+		any("boolean"):asymmetricMatch(true),
+		any("table"):asymmetricMatch({}),
+		-- ROBLOX deviation END
+	}, function(test)
+		jestExpect(test).toBe(true)
+	end)
 end)
-
--- ROBLOX deviation START: custom test for the Any matcher with Lua prototypes
+-- ROBLOX deviation START: add custom test for the Any matcher with Lua prototypes
 test("Any.asymmetricMatch() with Lua prototypical classes", function()
 	local ThingOne = {}
 	ThingOne.__index = ThingOne
@@ -106,106 +130,157 @@ test("Any.asymmetricMatch() with Lua prototypical classes", function()
 end)
 -- ROBLOX deviation END
 
--- ROBLOX deviation start: ommiting because Lua doesn't have primitive wrapper classes
--- test('Any.asymmetricMatch() on primitive wrapper classes', function()
--- 	for _, test in ipairs({
--- 		-- eslint-disable-next-line no-new-wrappers
--- 		any("string"):asymmetricMatch(new String('jest')),
--- 		-- eslint-disable-next-line no-new-wrappers
--- 		any("number"):asymmetricMatch(new Number(1)),
--- 		-- eslint-disable-next-line no-new-func
--- 		any("function"):asymmetricMatch(new Function('() => {}')),
--- 		-- eslint-disable-next-line no-new-wrappers
--- 		any("boolean"):asymmetricMatch(new Boolean(true)),
--- 		-- ROBLOX deviation: omitted BigInt and Symbol
--- 	}) do
--- 	expect(test).toBe(true);
--- 	end
--- end)
--- ROBLOX deviation end
+test("Any.asymmetricMatch() on primitive wrapper classes", function()
+	Array.forEach({
+		-- ROBLOX deviation START: ommiting because Lua doesn't have primitive wrapper classes
+		-- -- eslint-disable-next-line no-new-wrappers
+		-- any(String):asymmetricMatch(String.new("jest")),
+		-- -- eslint-disable-next-line no-new-wrappers
+		-- any(Number):asymmetricMatch(Number.new(1)),
+		-- -- eslint-disable-next-line no-new-func
+		-- any(Function):asymmetricMatch(Function.new("() => {}")),
+		-- -- eslint-disable-next-line no-new-wrappers
+		-- any(Boolean):asymmetricMatch(Boolean.new(true)),
+		-- any(BigInt):asymmetricMatch(Object(1)),
+		-- any(Symbol):asymmetricMatch(Object(Symbol())),
+		-- ROBLOX deviation END
+	}, function(test)
+		jestExpect(test).toBe(true)
+	end)
+end)
 
 test("Any.toAsymmetricMatcher()", function()
-	expect(any("number"):toAsymmetricMatcher()).toBe("Any<number>")
+	-- ROBLOX deviation START: no primitive constructors in lua, we just supply a primitive
+	-- jestExpect(any(Number):toAsymmetricMatcher()).toBe("Any<Number>")
+	jestExpect(any("function"):toAsymmetricMatcher()).toBe("Any<function>")
+	-- ROBLOX deviation END
 end)
-
-test("Any.toAsymmetricMatcher() with function", function()
-	expect(any("function"):toAsymmetricMatcher()).toBe("Any<function>")
-end)
-
+-- ROBLOX deviation START: not supported
+-- test("Any.toAsymmetricMatcher() with function name", function()
+-- 	Array.forEach({
+-- 		{ "someFunc", function() end },
+-- 		{ "$someFunc", function() end },
+-- 		{
+-- 			"$someFunc2",
+-- 			(function()
+-- 				local function _someFunc2 --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $someFunc2 ]]() end
+-- 				Object.defineProperty(
+-- 					_someFunc2, --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $someFunc2 ]]
+-- 					"name",
+-- 					{ value = "" }
+-- 				)
+-- 				return _someFunc2 --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $someFunc2 ]]
+-- 			end)(),
+-- 		},
+-- 		{
+-- 			"$someAsyncFunc",
+-- 			(function()
+-- 				local function _someAsyncFunc --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $someAsyncFunc ]]()
+-- 					return Promise.resolve(nil)
+-- 				end
+-- 				Object.defineProperty(
+-- 					_someAsyncFunc, --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $someAsyncFunc ]]
+-- 					"name",
+-- 					{ value = "" }
+-- 				)
+-- 				return _someAsyncFunc --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $someAsyncFunc ]]
+-- 			end)(),
+-- 		},
+-- 		{
+-- 			"$someGeneratorFunc",
+-- 			(function()
+-- 				local function _someGeneratorFunc --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $someGeneratorFunc ]]() end
+-- 				Object.defineProperty(
+-- 					_someGeneratorFunc, --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $someGeneratorFunc ]]
+-- 					"name",
+-- 					{ value = "" }
+-- 				)
+-- 				return _someGeneratorFunc --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $someGeneratorFunc ]]
+-- 			end)(),
+-- 		},
+-- 		{
+-- 			"$someFuncWithFakeToString",
+-- 			(function()
+-- 				local function _someFuncWithFakeToString --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $someFuncWithFakeToString ]]() end
+-- 				_someFuncWithFakeToString --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $someFuncWithFakeToString ]].toString =
+-- 					function(_self: any)
+-- 						return "Fake to string"
+-- 					end
+-- 				return _someFuncWithFakeToString --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $someFuncWithFakeToString ]]
+-- 			end)(),
+-- 		},
+-- 	}, function(ref0)
+-- 		local name, fn = table.unpack(ref0, 1, 2)
+-- 		jestExpect(any(fn):toAsymmetricMatcher()).toBe(("Any<%s>"):format(tostring(name)))
+-- 	end)
+-- end)
+-- ROBLOX deviation END
 test("Any throws when called with empty constructor", function()
-	expect(function()
-		any()
+	jestExpect(function()
+		return any()
 	end).toThrow()
 end)
 
 test("Anything matches any type", function()
-	for _, test in ipairs({
+	Array.forEach({
 		anything():asymmetricMatch("jest"),
 		anything():asymmetricMatch(1),
 		anything():asymmetricMatch(function() end),
 		anything():asymmetricMatch(true),
-		anything():asymmetricMatch({ x = 1 }),
-		anything():asymmetricMatch({ 1, 2 }),
-	}) do
-		expect(test).toBe(true)
-	end
+		anything():asymmetricMatch({}),
+		anything():asymmetricMatch({}),
+	}, function(test)
+		jestExpect(test).toBe(true)
+	end)
 end)
 
--- ROBLOX deviation: no undefined
-test("Anything does not match nil", function()
-	expect(anything():asymmetricMatch(nil)).toBe(false)
+test("Anything does not match null and undefined", function()
+	Array.forEach({ anything():asymmetricMatch(nil), anything():asymmetricMatch(nil) }, function(test)
+		jestExpect(test).toBe(false)
+	end)
 end)
-
 test("Anything.toAsymmetricMatcher()", function()
-	expect(anything():toAsymmetricMatcher()).toBe("Anything")
+	jestExpect(anything():toAsymmetricMatcher()).toBe("Anything")
 end)
 
 test("ArrayContaining matches", function()
-	for _, test in
-		{
-			arrayContaining({}):asymmetricMatch("jest"),
-			arrayContaining({ "foo" }):asymmetricMatch({ "foo" }),
-			arrayContaining({ "foo" }):asymmetricMatch({ "foo", "bar" }),
-			arrayContaining({}):asymmetricMatch({}),
-		}
-	do
-		expect(test).toEqual(true)
-	end
+	Array.forEach({
+		arrayContaining({}):asymmetricMatch("jest"),
+		arrayContaining({ "foo" }):asymmetricMatch({ "foo" }),
+		arrayContaining({ "foo" }):asymmetricMatch({ "foo", "bar" }),
+		arrayContaining({}):asymmetricMatch({}),
+	}, function(test)
+		jestExpect(test).toEqual(true)
+	end)
 end)
 
 test("ArrayContaining does not match", function()
-	expect(arrayContaining({ "foo" }):asymmetricMatch({ "bar" })).toBe(false)
+	jestExpect(arrayContaining({ "foo" }):asymmetricMatch({ "bar" })).toBe(false)
 end)
 
 test("ArrayContaining throws for non-arrays", function()
-	expect(function()
+	jestExpect(function()
 		arrayContaining("foo"):asymmetricMatch({})
-	end).toThrow()
-	-- ROBLOX deviation: additional test for non-arraylike tables
-	expect(function()
-		arrayContaining({ x = 1 }):asymmetricMatch({})
 	end).toThrow()
 end)
 
 test("ArrayNotContaining matches", function()
-	expect(arrayNotContaining({ "foo" }):asymmetricMatch({ "bar" })).toBe(true)
+	jestExpect(arrayNotContaining({ "foo" }):asymmetricMatch({ "bar" })).toBe(true)
 end)
 
 test("ArrayNotContaining does not match", function()
-	for _, test in
-		{
-			arrayNotContaining({}):asymmetricMatch("jest"),
-			arrayNotContaining({ "foo" }):asymmetricMatch({ "foo" }),
-			arrayNotContaining({ "foo" }):asymmetricMatch({ "foo", "bar" }),
-			arrayNotContaining({}):asymmetricMatch({}),
-		}
-	do
-		expect(test).toEqual(false)
-	end
+	Array.forEach({
+		arrayNotContaining({}):asymmetricMatch("jest"),
+		arrayNotContaining({ "foo" }):asymmetricMatch({ "foo" }),
+		arrayNotContaining({ "foo" }):asymmetricMatch({ "foo", "bar" }),
+		arrayNotContaining({}):asymmetricMatch({}),
+	}, function(test)
+		jestExpect(test).toEqual(false)
+	end)
 end)
 
 test("ArrayNotContaining throws for non-arrays", function()
-	expect(function()
+	jestExpect(function()
 		arrayNotContaining("foo"):asymmetricMatch({})
 	end).toThrow()
 	-- ROBLOX deviation START: additional test for non-arraylike tables
@@ -216,225 +291,243 @@ test("ArrayNotContaining throws for non-arrays", function()
 end)
 
 test("ObjectContaining matches", function()
-	for _, test in ipairs({
+	Array.forEach({
 		objectContaining({}):asymmetricMatch("jest"),
 		objectContaining({ foo = "foo" }):asymmetricMatch({ foo = "foo", jest = "jest" }),
-		-- ROBLOX deviation START: can't have nil values in table
-		objectContaining({ foo = "undefined" }):asymmetricMatch({ foo = "undefined" }),
-		-- ROBLOX deviation END
+		objectContaining({ foo = nil }):asymmetricMatch({ foo = nil }),
 		objectContaining({ first = objectContaining({ second = {} }) }):asymmetricMatch({
 			first = { second = {} },
 		}),
-		-- ROBLOX deviation start: skipping - Lua doesn't have buffer type
-		-- objectContaining({foo = Buffer.from('foo')}):asymmetricMatch({
-		-- 	foo = Buffer.from('foo'),
-		-- 	jest = 'jest',
+		-- ROBLOX deviation START: Lua doesn't have buffer type
+		-- objectContaining({
+		-- 	foo = Array.from(Buffer, "foo"),--[[ ROBLOX CHECK: check if 'Buffer' is an Array ]]
+		-- }):asymmetricMatch({
+		-- 	foo = Array.from(Buffer, "foo"),--[[ ROBLOX CHECK: check if 'Buffer' is an Array ]]
+		-- 	jest = "jest",
 		-- }),
-		-- ROBLOX deviation end
-	}) do
-		expect(test).toEqual(true)
-	end
+		-- ROBLOX deviation END
+	}, function(test)
+		jestExpect(test).toEqual(true)
+	end)
 end)
 
 test("ObjectContaining does not match", function()
-	for _, test in
-		{
-			objectContaining({ foo = "foo" }):asymmetricMatch({ bar = "bar" }),
-			objectContaining({ foo = "foo" }):asymmetricMatch({ foo = "foox" }),
-			-- ROBLOX deviation: can't have nil values in table
-			objectContaining({ foo = "undefined" }):asymmetricMatch({}),
-			objectContaining({
-				answer = 42,
-				foo = { bar = "baz", foobar = "qux" },
-			}):asymmetricMatch({ foo = { bar = "baz" } }),
-		}
-	do
-		expect(test).toEqual(false)
-	end
+	Array.forEach({
+		objectContaining({ foo = "foo" }):asymmetricMatch({ bar = "bar" }),
+		objectContaining({ foo = "foo" }):asymmetricMatch({ foo = "foox" }),
+		-- ROBLOX deviation START: can't have nil values in table
+		-- objectContaining({ foo = nil }):asymmetricMatch({}),
+		objectContaining({ foo = "undefined" }):asymmetricMatch({}),
+		-- ROBLOX deviation END
+		objectContaining({ answer = 42, foo = { bar = "baz", foobar = "qux" } }):asymmetricMatch({
+			foo = { bar = "baz" },
+		}),
+	}, function(test)
+		jestExpect(test).toEqual(false)
+	end)
 end)
 
 test("ObjectContaining matches defined properties", function()
 	local definedPropertyObject = {}
+	-- ROBLOX deviation START: not implemented
+	-- Object.defineProperty(definedPropertyObject, "foo", {
+	-- 	get = function()
+	-- 		return "bar"
+	-- 	end,
+	-- })
 	definedPropertyObject.foo = "bar"
-	expect(objectContaining({ foo = "bar" }):asymmetricMatch(definedPropertyObject)).toBe(true)
+	-- ROBLOX deviation END
+	jestExpect(objectContaining({ foo = "bar" }):asymmetricMatch(definedPropertyObject)).toBe(true)
 end)
-
--- ROBLOX deviation: omitted prototype properties test, same as the others in Lua
-
+-- ROBLOX deviation START: omitted prototype properties test, same as the others in Lua
+-- test("ObjectContaining matches prototype properties", function()
+-- 	local prototypeObject = { foo = "bar" }
+-- 	local obj
+-- 	if Boolean.toJSBoolean(Object.create) then
+-- 		obj = Object.create(prototypeObject)
+-- 	else
+-- 		local function Foo() end
+-- 		Foo.prototype = prototypeObject
+-- 		Foo.prototype.constructor = Foo
+-- 		obj = Foo.new()
+-- 	end
+-- 	jestExpect(objectContaining({ foo = "bar" }):asymmetricMatch(obj)).toBe(true)
+-- end)
+-- ROBLOX deviation END
 test("ObjectContaining throws for non-objects", function()
-	expect(function()
-		objectContaining(1337):asymmetricMatch()
+	jestExpect(function()
+		return objectContaining(1337):asymmetricMatch()
 	end).toThrow()
 end)
 
 test("ObjectContaining does not mutate the sample", function()
 	local sample = { foo = { bar = {} } }
 	local sample_json = JSON.stringify(sample)
-	expect({ foo = { bar = {} } }).toEqual(objectContaining(sample))
-	objectContaining(sample)
-
+	expect({ foo = { bar = {} } }).toEqual(expect.objectContaining(sample))
 	expect(JSON.stringify(sample)).toEqual(sample_json)
 end)
 
 test("ObjectNotContaining matches", function()
-	for _, test in
-		{
-			objectNotContaining({ foo = "foo" }):asymmetricMatch({ bar = "bar" }),
-			objectNotContaining({ foo = "foo" }):asymmetricMatch({ foo = "foox" }),
-			-- ROBLOX deviation: can't have nil values in table
-			objectNotContaining({ foo = "undefined" }):asymmetricMatch({}),
-			objectNotContaining({
-				first = objectNotContaining({ second = {} }),
-			}):asymmetricMatch({ first = { second = {} } }),
-			objectNotContaining({ first = { second = {}, third = {} } }):asymmetricMatch({
-				first = { second = {} },
-			}),
-			objectNotContaining({ first = { second = {} } }):asymmetricMatch({
-				first = { second = {}, third = {} },
-			}),
-			objectNotContaining({ foo = "foo", jest = "jest" }):asymmetricMatch({
-				foo = "foo",
-			}),
-		}
-	do
-		expect(test).toEqual(true)
-	end
+	Array.forEach({
+		objectNotContaining({ foo = "foo" }):asymmetricMatch({ bar = "bar" }),
+		objectNotContaining({ foo = "foo" }):asymmetricMatch({ foo = "foox" }),
+		-- ROBLOX deviation START: can't have nil values in table
+		-- objectNotContaining({ foo = nil }):asymmetricMatch({}),
+		objectNotContaining({ foo = "undefined" }):asymmetricMatch({}),
+		-- ROBLOX deviation END
+		objectNotContaining({ first = objectNotContaining({ second = {} }) }):asymmetricMatch({
+			first = { second = {} },
+		}),
+		objectNotContaining({ first = { second = {}, third = {} } }):asymmetricMatch({
+			first = { second = {} },
+		}),
+		objectNotContaining({ first = { second = {} } }):asymmetricMatch({
+			first = { second = {}, third = {} },
+		}),
+		objectNotContaining({ foo = "foo", jest = "jest" }):asymmetricMatch({ foo = "foo" }),
+	}, function(test)
+		jestExpect(test).toEqual(true)
+	end)
 end)
 
 test("ObjectNotContaining does not match", function()
-	for _, test in ipairs({
+	Array.forEach({
 		objectNotContaining({}):asymmetricMatch("jest"),
-		objectNotContaining({ foo = "foo" }):asymmetricMatch({
-			foo = "foo",
-			jest = "jest",
-		}),
-		-- ROBLOX deviation: can't have nil values in table
+		objectNotContaining({ foo = "foo" }):asymmetricMatch({ foo = "foo", jest = "jest" }),
+		-- ROBLOX deviation START: can't have nil values in table
+		-- objectNotContaining({ foo = nil }):asymmetricMatch({ foo = nil }),
 		objectNotContaining({ foo = "undefined" }):asymmetricMatch({ foo = "undefined" }),
+		-- ROBLOX deviation END
 		objectNotContaining({ first = { second = {} } }):asymmetricMatch({
 			first = { second = {} },
 		}),
-		objectNotContaining({
-			first = objectContaining({ second = {} }),
-		}):asymmetricMatch({ first = { second = {} } }),
+		objectNotContaining({ first = objectContaining({ second = {} }) }):asymmetricMatch({
+			first = { second = {} },
+		}),
 		objectNotContaining({}):asymmetricMatch(nil),
 		objectNotContaining({}):asymmetricMatch({}),
-	}) do
-		expect(test).toBe(false)
-	end
+	}, function(test)
+		jestExpect(test).toEqual(false)
+	end)
 end)
 
 test("ObjectNotContaining inverts ObjectContaining", function()
-	for _, ref in
-		{
-			{ {}, nil },
-			{ { foo = "foo" }, { foo = "foo", jest = "jest" } },
-			{ { foo = "foo", jest = "jest" }, { foo = "foo" } },
-			-- ROBLOX deviation: can't have nil values in table
-			{ { foo = "undefined" }, { foo = "undefined" } },
-			-- ROBLOX deviation: can't have nil values in table
-			{ { foo = "undefined" }, {} },
-			{ { first = { second = {} } }, { first = { second = {} } } },
-			{ { first = objectContaining({ second = {} }) }, { first = { second = {} } } },
-			{ { first = objectNotContaining({ second = {} }) }, { first = { second = {} } } },
-			-- ROBLOX deviation: can't have nil values in table
-			{ {}, { foo = "undefined" } },
-		}
-	do
-		local sample, received = table.unpack(ref, 1, 2)
-		expect(objectNotContaining(sample):asymmetricMatch(received)).toEqual(
-			not objectContaining(sample):asymmetricMatch(received)
+	Array.forEach({
+		{ {}, nil },
+		{ { foo = "foo" }, { foo = "foo", jest = "jest" } },
+		{ { foo = "foo", jest = "jest" }, { foo = "foo" } },
+		-- ROBLOX deviation START: can't have nil values in table
+		-- { { foo = nil }, { foo = nil } },
+		-- { { foo = nil }, {} },
+		{ { foo = "undefined" }, { foo = "undefined" } },
+		{ { foo = "undefined" }, {} },
+		-- ROBLOX deviation END
+		{ { first = { second = {} } }, { first = { second = {} } } },
+		{ { first = objectContaining({ second = {} }) }, { first = { second = {} } } },
+		{ { first = objectNotContaining({ second = {} }) }, { first = { second = {} } } },
+		-- ROBLOX deviation START: can't have nil values in table
+		-- { {}, { foo = nil } },
+		{ {}, { foo = "undefined" } },
+		-- ROBLOX deviation END
+	}, function(ref0)
+		local sample, received = table.unpack(ref0, 1, 2)
+		jestExpect(objectNotContaining(sample):asymmetricMatch(received)).toEqual(
+			not Boolean.toJSBoolean(objectContaining(sample):asymmetricMatch(received))
 		)
-	end
+	end)
 end)
 
 test("ObjectNotContaining throws for non-objects", function()
-	expect(function()
-		objectNotContaining(1337):asymmetricMatch()
+	jestExpect(function()
+		return objectNotContaining(1337):asymmetricMatch()
 	end).toThrow()
 end)
 
 test("StringContaining matches string against string", function()
-	expect(stringContaining("en*"):asymmetricMatch("queen*")).toBe(true)
-	expect(stringContaining("en"):asymmetricMatch("queue")).toBe(false)
+	jestExpect(stringContaining("en*"):asymmetricMatch("queen*")).toBe(true)
+	jestExpect(stringContaining("en"):asymmetricMatch("queue")).toBe(false)
 end)
 
 test("StringContaining throws if expected value is not string", function()
-	expect(function()
+	jestExpect(function()
 		stringContaining({ 1 }):asymmetricMatch("queen")
 	end).toThrow()
 end)
 
 test("StringContaining returns false if received value is not string", function()
-	expect(stringContaining("en*"):asymmetricMatch(1)).toBe(false)
+	jestExpect(stringContaining("en*"):asymmetricMatch(1)).toBe(false)
 end)
 
 test("StringNotContaining matches string against string", function()
-	expect(stringNotContaining("en*"):asymmetricMatch("queen*")).toBe(false)
-	expect(stringNotContaining("en"):asymmetricMatch("queue")).toBe(true)
+	jestExpect(stringNotContaining("en*"):asymmetricMatch("queen*")).toBe(false)
+	jestExpect(stringNotContaining("en"):asymmetricMatch("queue")).toBe(true)
 end)
 
 test("StringNotContaining throws if expected value is not string", function()
-	expect(function()
+	jestExpect(function()
 		stringNotContaining({ 1 }):asymmetricMatch("queen")
 	end).toThrow()
 end)
 
 test("StringNotContaining returns true if received value is not string", function()
-	expect(stringNotContaining("en*"):asymmetricMatch(1)).toBe(true)
+	jestExpect(stringNotContaining("en*"):asymmetricMatch(1)).toBe(true)
 end)
 
 test("StringMatching matches string against regexp", function()
-	expect(stringMatching(RegExp("en")):asymmetricMatch("queen")).toBe(true)
-	expect(stringMatching(RegExp("en")):asymmetricMatch("queue")).toBe(false)
-end)
-
--- ROBLOX deviation: Lua pattern test not included in upstream
-test("StringMatching matches string against pattern", function()
-	expect(stringMatching("e+"):asymmetricMatch("queen")).toBe(true)
-	expect(stringMatching("%s"):asymmetricMatch("queue")).toBe(false)
+	-- ROBLOX deviation START: not implemented - RegExpLiteral
+	-- jestExpect(stringMatching(
+	-- 	error("not implemented") --[[ ROBLOX TODO: Unhandled node for type: RegExpLiteral ]] --[[ /en/ ]]
+	-- ):asymmetricMatch("queen")).toBe(true)
+	-- jestExpect(stringMatching(
+	-- 	error("not implemented") --[[ ROBLOX TODO: Unhandled node for type: RegExpLiteral ]] --[[ /en/ ]]
+	-- ):asymmetricMatch("queue")).toBe(false)
+	jestExpect(stringMatching(RegExp("en")):asymmetricMatch("queen")).toBe(true)
+	jestExpect(stringMatching(RegExp("en")):asymmetricMatch("queue")).toBe(false)
+	-- ROBLOX deviation END
 end)
 
 test("StringMatching matches string against string", function()
-	expect(stringMatching("en"):asymmetricMatch("queen")).toBe(true)
-	expect(stringMatching("en"):asymmetricMatch("queue")).toBe(false)
+	jestExpect(stringMatching("en"):asymmetricMatch("queen")).toBe(true)
+	jestExpect(stringMatching("en"):asymmetricMatch("queue")).toBe(false)
 end)
 
 test("StringMatching throws if expected value is neither string nor regexp", function()
-	expect(function()
+	jestExpect(function()
 		stringMatching({ 1 }):asymmetricMatch("queen")
 	end).toThrow()
 end)
 
 test("StringMatching returns false if received value is not string", function()
-	expect(stringMatching("en"):asymmetricMatch(1)).toBe(false)
+	jestExpect(stringMatching("en"):asymmetricMatch(1)).toBe(false)
 end)
-
 test("StringMatching returns false even if coerced non-string received value matches pattern", function()
-	expect(stringMatching("nil"):asymmetricMatch(nil)).toBe(false)
+	jestExpect(stringMatching("null"):asymmetricMatch(nil)).toBe(false)
 end)
 
 test("StringNotMatching matches string against regexp", function()
-	expect(stringNotMatching(RegExp("en")):asymmetricMatch("queen")).toBe(false)
-	expect(stringNotMatching(RegExp("en")):asymmetricMatch("queue")).toBe(true)
-end)
-
--- ROBLOX deviation: Lua pattern test not included in upstream
-test("StringNotMatching matches string against pattern", function()
-	expect(stringNotMatching("e+"):asymmetricMatch("queen")).toBe(false)
-	expect(stringNotMatching("%s"):asymmetricMatch("queue")).toBe(true)
+	-- ROBLOX deviation START: not implemented - RegExpLiteral
+	-- jestExpect(stringNotMatching(
+	-- 	error("not implemented") --[[ ROBLOX TODO: Unhandled node for type: RegExpLiteral ]] --[[ /en/ ]]
+	-- ):asymmetricMatch("queen")).toBe(false)
+	-- jestExpect(stringNotMatching(
+	-- 	error("not implemented") --[[ ROBLOX TODO: Unhandled node for type: RegExpLiteral ]] --[[ /en/ ]]
+	-- ):asymmetricMatch("queue")).toBe(true)
+	jestExpect(stringNotMatching(RegExp("en")):asymmetricMatch("queen")).toBe(false)
+	jestExpect(stringNotMatching(RegExp("en")):asymmetricMatch("queue")).toBe(true)
+	-- ROBLOX deviation END
 end)
 
 test("StringNotMatching matches string against string", function()
-	expect(stringNotMatching("en"):asymmetricMatch("queen")).toBe(false)
-	expect(stringNotMatching("en"):asymmetricMatch("queue")).toBe(true)
+	jestExpect(stringNotMatching("en"):asymmetricMatch("queen")).toBe(false)
+	jestExpect(stringNotMatching("en"):asymmetricMatch("queue")).toBe(true)
 end)
 
 test("StringNotMatching throws if expected value is neither string nor regexp", function()
-	expect(function()
+	jestExpect(function()
 		stringNotMatching({ 1 }):asymmetricMatch("queen")
 	end).toThrow()
 end)
 
 test("StringNotMatching returns true if received value is not string", function()
-	expect(stringNotMatching("en"):asymmetricMatch(1)).toBe(true)
+	jestExpect(stringNotMatching("en"):asymmetricMatch(1)).toBe(true)
 end)
