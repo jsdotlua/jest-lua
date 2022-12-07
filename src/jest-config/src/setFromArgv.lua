@@ -20,8 +20,8 @@ type Config_InitialOptions = typesModule.Config_InitialOptions
 local isJSONString = require(script.Parent.utils).isJSONString
 
 -- ROBLOX deviation START: added missing variables to limit nr deviations
-local RobloxShared = require(Packages.RobloxShared)
-local nodeUtils = RobloxShared.nodeUtils
+local JestRobloxShared = require(Packages.JestRobloxShared)
+local nodeUtils = JestRobloxShared.nodeUtils
 local JSON = nodeUtils.JSON
 -- ROBLOX deviation END
 

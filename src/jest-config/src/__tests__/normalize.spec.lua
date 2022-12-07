@@ -91,9 +91,9 @@ local function pathToInstance(path)
 		Object.None
 	).leaf
 end
-local RobloxShared = require(Packages.RobloxShared)
-local JSON = RobloxShared.nodeUtils.JSON
-local getRelativePath = RobloxShared.getRelativePath
+local JestRobloxShared = require(Packages.JestRobloxShared)
+local JSON = JestRobloxShared.nodeUtils.JSON
+local getRelativePath = JestRobloxShared.getRelativePath
 -- ROBLOX deviation END
 -- ROBLOX deviation START: not used
 -- jest.mock("path", function()

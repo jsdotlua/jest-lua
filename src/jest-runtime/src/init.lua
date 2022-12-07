@@ -449,6 +449,9 @@ type Runtime_private = { --
 	-- _mockRegistry: Map<string, any>,
 	-- _isolatedMockRegistry: Map<string, any> | nil,
 	_mockRegistry: Map<ModuleScript, any>,
+	-- ROBLOX deviation START: add cache of loaded module functions to a test runner
+	_loadedModuleFns: Map<ModuleScript, { any }> | nil,
+	-- ROBLOX deviation END
 	_isolatedMockRegistry: Map<ModuleScript, any> | nil,
 	-- ROBLOX deviation END
 	-- ROBLOX deviation START: skipped
@@ -631,9 +634,10 @@ type Runtime_statics = {
 	-- 	coverageOptions: ShouldInstrumentOptions,
 	-- 	testPath: Config_Path
 	-- ) -> Runtime,
-	new: () -> Runtime,
+	new: (loadedModuleFns: Map<ModuleScript, any>?) -> Runtime,
 	-- ROBLOX deviation END
 }
+
 local Runtime = {} :: Runtime & Runtime_statics
 local Runtime_private = Runtime :: Runtime_private & Runtime_statics;
 (Runtime :: any).__index = Runtime
@@ -650,7 +654,7 @@ local Runtime_private = Runtime :: Runtime_private & Runtime_statics;
 -- 	coverageOptions: ShouldInstrumentOptions,
 -- 	testPath: Config_Path
 -- ): Runtime
-function Runtime.new(): Runtime
+function Runtime.new(loadedModuleFns: Map<ModuleScript, { any }>?): Runtime
 	-- ROBLOX deviation START: cast to private type to access methods properly
 	-- local self = setmetatable({}, Runtime)
 	local self = (setmetatable({}, Runtime) :: any) :: Runtime_private
@@ -680,6 +684,9 @@ function Runtime.new(): Runtime
 	-- ROBLOX deviation END
 	self._mockFactories = Map.new()
 	self._mockRegistry = Map.new()
+	-- ROBLOX deviation START: add cache of loaded module functions to a test runner
+	self._loadedModuleFns = loadedModuleFns
+	-- ROBLOX deviation END
 	-- ROBLOX deviation START: skipped
 	-- self._moduleMockRegistry = Map.new()
 	-- self._moduleMockFactories = Map.new()
@@ -1415,19 +1422,31 @@ function Runtime_private:_loadModule(
 	-- 	self:_execModule(localModule, options, moduleRegistry, fromPath)
 	-- end
 
-	-- Narrowing this type here lets us appease the type checker while still
-	-- counting on types for the rest of this file
-	local loadmodule: (ModuleScript) -> (any, string, () -> any) = debug["loadmodule"]
-	local moduleFunction, errorMessage, cleanupFn = loadmodule(modulePath)
-	assert(moduleFunction ~= nil, errorMessage)
+	-- ROBLOX note: each test runner stores its own cache of loaded module functions
+	local moduleFunction, errorMessage, cleanupFn
 
-	if cleanupFn ~= nil then
-		table.insert(self._cleanupFns, cleanupFn)
+	if self._loadedModuleFns and self._loadedModuleFns:has(modulePath) then
+		moduleFunction = (self._loadedModuleFns:get(modulePath) :: any)[1]
+	else
+		-- Narrowing this type here lets us appease the type checker while still
+		-- counting on types for the rest of this file
+		local loadmodule: (ModuleScript) -> (any, string, () -> any) = debug["loadmodule"]
+		moduleFunction, errorMessage, cleanupFn = loadmodule(modulePath)
+		assert(moduleFunction ~= nil, errorMessage)
+
+		if self._loadedModuleFns then
+			self._loadedModuleFns:set(modulePath, { moduleFunction, cleanupFn })
+		else
+			if cleanupFn ~= nil then
+				table.insert(self._cleanupFns, cleanupFn)
+			end
+		end
 	end
 
 	getfenv(moduleFunction).require = function(scriptInstance: ModuleScript)
 		return self:requireModuleOrMock(scriptInstance)
 	end
+
 	getfenv(moduleFunction).delay = self._fakeTimersImplementation.delayOverride
 	getfenv(moduleFunction).tick = self._fakeTimersImplementation.tickOverride
 	getfenv(moduleFunction).time = self._fakeTimersImplementation.timeOverride
@@ -1468,6 +1487,24 @@ function Runtime_private:requireModuleOrMock<T>(moduleName: ModuleScript): T
 
 	-- ROBLOX deviation START: additional interception. We need to make sure LuauPolyfill is only loaded once
 	if moduleName.Name == "LuauPolyfill" then
+		return (require :: any)(moduleName)
+	end
+	-- ROBLOX deviation END
+
+	-- ROBLOX deviation START: add not resetting some Jest dependencies to avoid overhead
+	if
+		moduleName.Name == "Expect"
+		or moduleName.Name == "JestUtil"
+		or moduleName.Name == "JestMessageUtil"
+		or moduleName.Name == "JestDiff"
+		or moduleName.Name == "PrettyFormat"
+		or moduleName.Name == "RegExp"
+		or moduleName.Name == "JestFakeTimers"
+		or moduleName.Name == "JestMatcherUtils"
+		or moduleName.Name == "JestTypes"
+		or moduleName.Name == "RobloxInstance"
+		or moduleName.Name == "JestRobloxShared"
+	then
 		return (require :: any)(moduleName)
 	end
 	-- ROBLOX deviation END

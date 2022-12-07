@@ -15,7 +15,7 @@ JestUtil = { path = '../jest-util' }
 TestUtils = { path = '../test-utils' }
 JestConsole = { path = '../jest-console' }
 JestMock = { path = '../jest-mock' }
-RobloxShared = { path = '../roblox-shared' }
+JestRobloxShared = { path = '../jest-roblox-shared' }
 Path = { path = '../path' }
 
 [dev_dependencies]

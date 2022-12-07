@@ -79,8 +79,8 @@ type Process = NodeJS_Process
 type JestGlobals = Global_TestFrameworkGlobals & { expect: Expect, expectExtended: any }
 
 -- ROBLOX deviation START: additional deps
-local RobloxShared = require(Packages.RobloxShared)
-local getRelativePath = RobloxShared.getRelativePath
+local JestRobloxShared = require(Packages.JestRobloxShared)
+local getRelativePath = JestRobloxShared.getRelativePath
 -- ROBLOX deviation END
 
 -- ROBLOX deviation START: predeclare variables

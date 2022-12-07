@@ -43,8 +43,8 @@ type LogTimers = typesModule.LogTimers
 type LogType = typesModule.LogType
 type InspectOptions = typesModule.InspectOptions
 
-local RobloxShared = require(Packages.RobloxShared)
-type Writeable = RobloxShared.Writeable
+local JestRobloxShared = require(Packages.JestRobloxShared)
+type Writeable = JestRobloxShared.Writeable
 
 export type BufferedConsole = {
 	Console: Console,

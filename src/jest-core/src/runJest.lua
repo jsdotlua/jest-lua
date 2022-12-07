@@ -86,11 +86,11 @@ type Filter = typesModule.Filter
 type TestRunData = typesModule.TestRunData
 
 -- ROBLOX deviation START: added missing variables to limit nr deviations
-local RobloxShared = require(Packages.RobloxShared)
-local nodeUtils = RobloxShared.nodeUtils
+local JestRobloxShared = require(Packages.JestRobloxShared)
+local nodeUtils = JestRobloxShared.nodeUtils
 local process = nodeUtils.process
 local exit = nodeUtils.exit
-type NodeJS_WriteStream = RobloxShared.NodeJS_WriteStream
+type NodeJS_WriteStream = JestRobloxShared.NodeJS_WriteStream
 local JSON = nodeUtils.JSON
 -- ROBLOX deviation END
 

@@ -19,7 +19,7 @@ local ModuleMocker = require(Packages.JestMock).ModuleMocker
 local moduleMocker = ModuleMocker.new()
 
 local DefaultReporter = require(CurrentModule.DefaultReporter).default
-local Writeable = require(Packages.RobloxShared).Writeable
+local Writeable = require(Packages.JestRobloxShared).Writeable
 
 local aggregatedResults = {}
 local options = {}

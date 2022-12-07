@@ -30,9 +30,9 @@ type ReporterOnStartOptions = typesModule.ReporterOnStartOptions
 type Test = typesModule.Test
 type NodeProcessMock = typesModule.NodeProcessMock
 
-local RobloxShared = require(Packages.RobloxShared)
-local Writeable = RobloxShared.Writeable
-type Writeable = RobloxShared.Writeable
+local JestRobloxShared = require(Packages.JestRobloxShared)
+local Writeable = JestRobloxShared.Writeable
+type Writeable = JestRobloxShared.Writeable
 
 export type BaseReporter = {
 	log: (self: BaseReporter, message: string) -> (),

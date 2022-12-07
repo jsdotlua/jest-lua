@@ -334,7 +334,7 @@ function SnapshotState:match(snapshotMatchOptions: SnapshotMatchOptions): Snapsh
 		(hasSnapshot and self._updateSnapshot == "all")
 		or (
 			(not hasSnapshot or not snapshotIsPersisted)
-			and (self._updateSnapshot == "new" or self._updateSnapshot == "all")
+			and (self._updateSnapshot == "new" or (self._updateSnapshot :: any) == "all")
 		)
 	then
 		if self._updateSnapshot == "all" then

@@ -28,7 +28,7 @@ JestTestResult = { path = "../jest-test-result" }
 JestEnvironment = { path = "../jest-environment" }
 JestSnapshot = { path = "../jest-snapshot" }
 Expect = { path = "../expect" }
-RobloxShared = { path = "../roblox-shared" }
+JestRobloxShared = { path = "../jest-roblox-shared" }
 JestRuntime = { path = "../jest-runtime" }
 Throat = { path = "../throat" }
 

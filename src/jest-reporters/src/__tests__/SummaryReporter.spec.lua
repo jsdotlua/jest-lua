@@ -20,7 +20,7 @@ local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 local afterEach = JestGlobals.afterEach
 
-local Writeable = require(Packages.RobloxShared).Writeable
+local Writeable = require(Packages.JestRobloxShared).Writeable
 
 local SummaryReporter
 

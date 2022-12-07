@@ -13,7 +13,7 @@ ChalkLua = { workspace = true }
 RegExp = { workspace = true }
 Picomatch = { workspace = true }
 JestTypes = { path = "../jest-types" }
-RobloxShared = { path = "../roblox-shared" }
+JestRobloxShared = { path = "../jest-roblox-shared" }
 
 [dev_dependencies]
 JestGlobals = { path = "../jest-globals" }

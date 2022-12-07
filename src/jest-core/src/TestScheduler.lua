@@ -25,7 +25,7 @@ local exports = {}
 
 --[[ eslint-disable local/ban-types-eventually ]]
 local chalk = require(Packages.ChalkLua)
-local exit = require(Packages.RobloxShared).nodeUtils.exit
+local exit = require(Packages.JestRobloxShared).nodeUtils.exit
 local reportersModule = require(Packages.JestReporters)
 -- ROBLOX deviation START: not needed
 -- local CoverageReporter = reportersModule.CoverageReporter
@@ -406,6 +406,10 @@ function TestScheduler:scheduleTests(tests: Array<Test>, watcher: TestWatcher): 
 							)
 							:expect()
 					end
+					-- ROBLOX deviation START: add cache of loaded module functions to a test runner
+					-- test runner should call clean up functions when it is done
+					testRunner:cleanup()
+					-- ROBLOX deviation END
 				end
 			end)
 

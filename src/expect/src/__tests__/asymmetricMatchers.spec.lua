@@ -44,8 +44,8 @@ local stringNotContaining = asymmetricMatchersModule.stringNotContaining
 local stringNotMatching = asymmetricMatchersModule.stringNotMatching
 
 -- ROBLOX deviation START: additional dependencies
-local RobloxShared = require(Packages.RobloxShared)
-local JSON = RobloxShared.nodeUtils.JSON
+local JestRobloxShared = require(Packages.JestRobloxShared)
+local JSON = JestRobloxShared.nodeUtils.JSON
 -- ROBLOX deviation END
 test("Any.asymmetricMatch()", function()
 	type Thing = {}

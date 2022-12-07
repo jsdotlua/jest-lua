@@ -58,7 +58,7 @@ type TestPathCases = typesModule.TestPathCases
 -- ROBLOX deviation START: custom implementation for getting all files
 type FileInfo = { path: Config_Path, script: ModuleScript }
 
-local getRelativePath = require(Packages.RobloxShared).getRelativePath
+local getRelativePath = require(Packages.JestRobloxShared).getRelativePath
 
 local function getAllFiles(context: Context): Array<FileInfo>
 	local descendants = context.config.rootDir:GetDescendants()

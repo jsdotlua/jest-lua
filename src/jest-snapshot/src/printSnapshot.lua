@@ -19,7 +19,7 @@ type Array<T> = LuauPolyfill.Array<T>
 
 local chalk = (require(Packages.ChalkLua) :: any) :: Chalk
 
-local getObjectSubset = require(Packages.RobloxShared).expect.getObjectSubset
+local getObjectSubset = require(Packages.JestRobloxShared).expect.getObjectSubset
 
 local JestDiff = require(Packages.JestDiff)
 local DIFF_DELETE = JestDiff.DIFF_DELETE

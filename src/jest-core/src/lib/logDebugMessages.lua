@@ -21,9 +21,9 @@ local VERSION = "27.4.7"
 -- ROBLOX FIXME END
 
 -- ROBLOX deviation START: added missing variables to limit nr deviations
-local RobloxShared = require(Packages.RobloxShared)
-local nodeUtils = RobloxShared.nodeUtils
-type NodeJS_WriteStream = RobloxShared.NodeJS_WriteStream
+local JestRobloxShared = require(Packages.JestRobloxShared)
+local nodeUtils = JestRobloxShared.nodeUtils
+type NodeJS_WriteStream = JestRobloxShared.NodeJS_WriteStream
 local JSON = nodeUtils.JSON
 -- ROBLOX deviation END
 

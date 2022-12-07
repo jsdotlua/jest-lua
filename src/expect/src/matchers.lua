@@ -70,9 +70,9 @@ local subsetEquality = Utils.subsetEquality
 local typeEquality = Utils.typeEquality
 
 -- ROBLOX deviation: Roblox Instance matchers
-local RobloxShared = require(Packages.RobloxShared)
-local instanceSubsetEquality = RobloxShared.RobloxInstance.instanceSubsetEquality
-local getInstanceSubset = RobloxShared.RobloxInstance.getInstanceSubset
+local JestRobloxShared = require(Packages.JestRobloxShared)
+local instanceSubsetEquality = JestRobloxShared.RobloxInstance.instanceSubsetEquality
+local getInstanceSubset = JestRobloxShared.RobloxInstance.getInstanceSubset
 
 -- Omit colon and one or more spaces, so can call getLabelPrinter.
 local EXPECTED_LABEL = "Expected"

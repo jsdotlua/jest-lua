@@ -23,10 +23,10 @@ local showTestPathPatternError
 -- ROBLOX deviation END
 
 -- ROBLOX deviation START: added missing variables to limit nr deviations
-local RobloxShared = require(Packages.RobloxShared)
-local nodeUtils = RobloxShared.nodeUtils
+local JestRobloxShared = require(Packages.JestRobloxShared)
+local nodeUtils = JestRobloxShared.nodeUtils
 local process = nodeUtils.process
-local getRelativePath = RobloxShared.getRelativePath
+local getRelativePath = JestRobloxShared.getRelativePath
 -- ROBLOX deviation END
 
 -- ROBLOX deviation START: not needed

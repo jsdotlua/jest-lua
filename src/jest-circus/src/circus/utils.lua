@@ -37,7 +37,7 @@ local exports = {}
 -- local co = require(Packages.co).default
 -- ROBLOX deviation END
 -- ROBLOX deviation: use dedent implementation from graphql-lua
-local dedent = require(Packages.RobloxShared).dedent
+local dedent = require(Packages.JestRobloxShared).dedent
 -- ROBLOX deviation: generator functions are not supported in Lua
 -- local isGeneratorFn = require(Packages["is-generator-fn"]).default
 --[[

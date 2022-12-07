@@ -285,7 +285,7 @@ local function joinAlignedDiffsExpand(diffs: Array<Diff>, options: DiffOptionsNo
 			-- ROBLOX deviation: 1-indexing
 			local isFirstOrLast = i == 1 or i == #diffs_
 
-			local case = diff[1]
+			local case = diff[1] :: number
 			if case == DIFF_DELETE then
 				return printDeleteLine(line, isFirstOrLast, options)
 			elseif case == DIFF_INSERT then

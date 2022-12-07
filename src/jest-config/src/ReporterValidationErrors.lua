@@ -28,8 +28,8 @@ local BULLET = utilsModule.BULLET
 local DOCUMENTATION_NOTE = utilsModule.DOCUMENTATION_NOTE
 
 -- ROBLOX deviation START: added missing variables to limit nr deviations
-local RobloxShared = require(Packages.RobloxShared)
-local nodeUtils = RobloxShared.nodeUtils
+local JestRobloxShared = require(Packages.JestRobloxShared)
+local nodeUtils = JestRobloxShared.nodeUtils
 local JSON = nodeUtils.JSON
 -- ROBLOX deviation END
 

@@ -23,9 +23,9 @@ local helpersModule = require(CurrentModule.helpers)
 local format = helpersModule.format
 local formatWithOptions = helpersModule.formatWithOptions
 
-local RobloxShared = require(Packages.RobloxShared)
-type Writeable = RobloxShared.Writeable
-type NodeJS_WriteStream = RobloxShared.NodeJS_WriteStream
+local JestRobloxShared = require(Packages.JestRobloxShared)
+type Writeable = JestRobloxShared.Writeable
+type NodeJS_WriteStream = JestRobloxShared.NodeJS_WriteStream
 
 -- ROBLOX deviation END
 

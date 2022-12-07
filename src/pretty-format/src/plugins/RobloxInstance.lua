@@ -25,7 +25,7 @@ local getType = JestGetType.getType
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local instanceof = LuauPolyfill.instanceof
 
-local RobloxInstance = require(Packages.RobloxShared).RobloxInstance
+local RobloxInstance = require(Packages.JestRobloxShared).RobloxInstance
 local getRobloxProperties = RobloxInstance.getRobloxProperties
 local InstanceSubset = RobloxInstance.InstanceSubset
 

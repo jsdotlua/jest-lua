@@ -12,7 +12,7 @@ ChalkLua = { workspace = true }
 LuauPolyfill = { workspace = true }
 RegExp = { workspace = true }
 ReactIs = { workspace = true }
-RobloxShared = { path = "../roblox-shared" }
+JestRobloxShared = { path = "../jest-roblox-shared" }
 
 [dev_dependencies]
 React = { workspace = true }

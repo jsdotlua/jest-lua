@@ -14,7 +14,7 @@ local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
-local Writeable = require(Packages.RobloxShared).Writeable
+local Writeable = require(Packages.JestRobloxShared).Writeable
 
 local chalk = require(Packages.ChalkLua)
 local CustomConsoleModule = require(CurrentModule.Parent.CustomConsole)

@@ -14,9 +14,9 @@ local Boolean = LuauPolyfill.Boolean
 local instanceof = LuauPolyfill.instanceof
 
 -- ROBLOX deviation START: additional dependencies
-local RobloxShared = require(Packages.RobloxShared)
-local escapePatternCharacters = RobloxShared.escapePatternCharacters
-local normalizePromiseError = RobloxShared.normalizePromiseError
+local JestRobloxShared = require(Packages.JestRobloxShared)
+local escapePatternCharacters = JestRobloxShared.escapePatternCharacters
+local normalizePromiseError = JestRobloxShared.normalizePromiseError
 -- ROBLOX deviation END
 
 type Record<K, T> = { [K]: T }

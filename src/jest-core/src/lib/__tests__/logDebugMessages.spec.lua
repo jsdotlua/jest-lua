@@ -10,10 +10,10 @@
 local Packages = script.Parent.Parent.Parent.Parent
 local Promise = require(Packages.Promise)
 
-local RobloxShared = require(Packages.RobloxShared)
-local nodeUtils = RobloxShared.nodeUtils
+local JestRobloxShared = require(Packages.JestRobloxShared)
+local nodeUtils = JestRobloxShared.nodeUtils
 local JSON = nodeUtils.JSON
-type NodeJS_WriteStream = RobloxShared.NodeJS_WriteStream
+type NodeJS_WriteStream = JestRobloxShared.NodeJS_WriteStream
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local it = JestGlobals.it

@@ -252,7 +252,7 @@ function Status:get(): Cache
 	assert(contentLength ~= nil)
 	while i < contentLength do
 		-- ROBLOX deviation END
-		if String.charCodeAt(content, i) == "\n" then
+		if (String.charCodeAt(content, i) :: any) == "\n" then
 			height += 1
 		end
 		i += 1

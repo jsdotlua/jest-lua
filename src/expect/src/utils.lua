@@ -17,7 +17,7 @@ local instanceof = LuauPolyfill.instanceof
 local Object = LuauPolyfill.Object
 local RegExp = require(Packages.RegExp)
 
-local RobloxShared = require(Packages.RobloxShared)
+local JestRobloxShared = require(Packages.JestRobloxShared)
 
 -- ROBLOX deviation: omitted isPrimitive import
 local jasmineUtils = require(CurrentModule.jasmineUtils)
@@ -37,8 +37,8 @@ type GetPath = {
 	value: any?,
 }
 
--- ROBLOX deviation: helper function moved to RobloxShared and no longer needed here
--- local hasPropertyInObject = RobloxShared.expect.hasPropertyInObject
+-- ROBLOX deviation: helper function moved to JestRobloxShared and no longer needed here
+-- local hasPropertyInObject = JestRobloxShared.expect.hasPropertyInObject
 
 local function getPath(object: { [string]: any }, propertyPath): GetPath
 	if not Array.isArray(propertyPath) then
@@ -94,8 +94,8 @@ local function getPath(object: { [string]: any }, propertyPath): GetPath
 	}
 end
 
--- ROBLOX deviation: moved to RobloxShared to avoid reaching into internals with rotriever workspaces
-local getObjectSubset = RobloxShared.expect.getObjectSubset
+-- ROBLOX deviation: moved to JestRobloxShared to avoid reaching into internals with rotriever workspaces
+local getObjectSubset = JestRobloxShared.expect.getObjectSubset
 
 -- ROBLOX deviation: omitted IteratorSymbol
 
@@ -107,13 +107,13 @@ local getObjectSubset = RobloxShared.expect.getObjectSubset
 -- 	return typeof(object) == "table" or typeof(object) == "string"
 -- end
 
-local iterableEquality = RobloxShared.expect.iterableEquality
+local iterableEquality = JestRobloxShared.expect.iterableEquality
 
--- ROBLOX deviation: helper function moved to RobloxShared and no longer needed here
--- local isObject = RobloxShared.expect.isObject
--- local isObjectWithKeys = RobloxShared.expect.isObjectWithKeys
+-- ROBLOX deviation: helper function moved to JestRobloxShared and no longer needed here
+-- local isObject = JestRobloxShared.expect.isObject
+-- local isObjectWithKeys = JestRobloxShared.expect.isObjectWithKeys
 
-local subsetEquality = RobloxShared.expect.subsetEquality
+local subsetEquality = JestRobloxShared.expect.subsetEquality
 
 local function typeEquality(a: any, b: any): boolean | nil
 	if a == nil or b == nil then
@@ -278,7 +278,7 @@ return {
 	subsetEquality = subsetEquality,
 	-- ROBLOX deviation: Roblox Instance matchers
 	-- ROBLOX TODO: uncomment when implementing snapshot property matchers on Instances
-	-- instanceSubsetEquality = RobloxShared.RobloxInstance.instanceSubsetEquality,
+	-- instanceSubsetEquality = JestRobloxShared.RobloxInstance.instanceSubsetEquality,
 	typeEquality = typeEquality,
 	-- ROBLOX deviation: skipped as Lua doesn't support ArrayBuffer
 	-- arrayBufferEquality = arrayBufferEquality,

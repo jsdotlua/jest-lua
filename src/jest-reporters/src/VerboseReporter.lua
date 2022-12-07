@@ -38,8 +38,8 @@ type DefaultReporter = DefaultReporterModule.DefaultReporter
 local typesModule = require(CurrentModule.types)
 type Test = typesModule.Test
 
-local RobloxShared = require(Packages.RobloxShared)
-type Writeable = RobloxShared.Writeable
+local JestRobloxShared = require(Packages.JestRobloxShared)
+type Writeable = JestRobloxShared.Writeable
 
 export type VerboseReporter = DefaultReporter & {
 	onTestResult: (self: VerboseReporter, test: Test, result: TestResult, aggregatedResults: AggregatedResult) -> (),

@@ -22,7 +22,7 @@
 local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent
 
-local RobloxShared = require(Packages.RobloxShared)
+local JestRobloxShared = require(Packages.JestRobloxShared)
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 type Array<T> = LuauPolyfill.Array<T>
@@ -34,20 +34,20 @@ type Array<T> = LuauPolyfill.Array<T>
 
 type Tester = (any, any) -> any
 
-local equals = RobloxShared.expect.equals
+local equals = JestRobloxShared.expect.equals
 
 -- ROBLOX deviation: omitted functionToString since we don't use it
 
--- ROBLOX deviation: moved to RobloxShared to avoid reaching into internals with rotriever workspaces
--- local isAsymmetric = RobloxShared.expect.isAsymmetric
--- local asymmetricMatch = RobloxShared.expect.asymmetricMatch
--- local eq = RobloxShared.expect.eq
--- local keys = RobloxShared.expect.keys
+-- ROBLOX deviation: moved to JestRobloxShared to avoid reaching into internals with rotriever workspaces
+-- local isAsymmetric = JestRobloxShared.expect.isAsymmetric
+-- local asymmetricMatch = JestRobloxShared.expect.asymmetricMatch
+-- local eq = JestRobloxShared.expect.eq
+-- local keys = JestRobloxShared.expect.keys
 
 -- ROBLOX deviation: we have no concept of undefined so hasDefinedKey is the same as hasKey
--- local hasDefinedKey = RobloxShared.expect.hasDefinedKey
--- local hasKey = RobloxShared.expect.hasKey
-local isA = RobloxShared.expect.isA
+-- local hasDefinedKey = JestRobloxShared.expect.hasDefinedKey
+-- local hasKey = JestRobloxShared.expect.hasKey
+local isA = JestRobloxShared.expect.isA
 
 -- DOM code omitted for now but translated below:
 --[[
