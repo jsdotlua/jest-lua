@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## 3.2.0 (2022-12-06)
+* :sparkles: Added `jest.mock` and `jest.unmock` ([#243](https://github.com/Roblox/jest-roblox/pull/243))
+* :sparkles: Added `jest.requireActual`([#294](https://github.com/Roblox/jest-roblox/pull/294))
+* :sparkles: Jest runner caches loaded module functions to improve runtime ([#317](https://github.com/Roblox/jest-roblox/pull/317))
+* :bug: Fixes error when no config is provided ([#314](https://github.com/Roblox/jest-roblox/pull/314))
+* :hammer_and_wrench: Realigned packages
+  * `jest-runtime` ([#281](https://github.com/Roblox/jest-roblox/pull/281))
+  * `jest-config` ([#297](https://github.com/Roblox/jest-roblox/pull/297))
+  * `jest-core` ([#299](https://github.com/Roblox/jest-roblox/pull/299)) ([#304](https://github.com/Roblox/jest-roblox/pull/304))
+  * `expect` ([#309](https://github.com/Roblox/jest-roblox/pull/299))
+
 ## 3.1.1 (2022-11-1)
 * :bug: Fix `require` throwing on ModuleScripts that `return nil` and not throwing on ModuleScripts that return multiple values [#292](https://github.com/Roblox/jest-roblox/pull/292)
 
