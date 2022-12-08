@@ -1423,10 +1423,12 @@ function Runtime_private:_loadModule(
 	-- end
 
 	-- ROBLOX note: each test runner stores its own cache of loaded module functions
-	local moduleFunction, errorMessage, cleanupFn
+	local moduleFunction, defaultEnvironment, errorMessage, cleanupFn
 
 	if self._loadedModuleFns and self._loadedModuleFns:has(modulePath) then
-		moduleFunction = (self._loadedModuleFns:get(modulePath) :: any)[1]
+		local loadedModule = self._loadedModuleFns:get(modulePath) :: { any }
+		moduleFunction = loadedModule[1]
+		defaultEnvironment = loadedModule[2]
 	else
 		-- Narrowing this type here lets us appease the type checker while still
 		-- counting on types for the rest of this file
@@ -1434,8 +1436,11 @@ function Runtime_private:_loadModule(
 		moduleFunction, errorMessage, cleanupFn = loadmodule(modulePath)
 		assert(moduleFunction ~= nil, errorMessage)
 
+		-- Cache initial environment table to inherit from later
+		defaultEnvironment = getfenv(moduleFunction)
+
 		if self._loadedModuleFns then
-			self._loadedModuleFns:set(modulePath, { moduleFunction, cleanupFn })
+			self._loadedModuleFns:set(modulePath, { moduleFunction, defaultEnvironment, cleanupFn })
 		else
 			if cleanupFn ~= nil then
 				table.insert(self._cleanupFns, cleanupFn)
@@ -1443,16 +1448,26 @@ function Runtime_private:_loadModule(
 		end
 	end
 
-	getfenv(moduleFunction).require = function(scriptInstance: ModuleScript)
-		return self:requireModuleOrMock(scriptInstance)
-	end
-
-	getfenv(moduleFunction).delay = self._fakeTimersImplementation.delayOverride
-	getfenv(moduleFunction).tick = self._fakeTimersImplementation.tickOverride
-	getfenv(moduleFunction).time = self._fakeTimersImplementation.timeOverride
-	getfenv(moduleFunction).DateTime = self._fakeTimersImplementation.dateTimeOverride
-	getfenv(moduleFunction).os = self._fakeTimersImplementation.osOverride
-	getfenv(moduleFunction).task = self._fakeTimersImplementation.taskOverride
+	-- The default behavior for function environments is to inherit the table instance from the
+	-- parent environment. This means that each invocation of `moduleFunction()` will return
+	-- a new module instance but with the same environment table as `moduleFunction` itself at the
+	-- time of invocation. In order to properly sanbox module instances, we need to ensure that
+	-- each instance has its own distinct environment table containing the specific overrides for it,
+	-- but still inherits from the default parent environment for non-overriden environment goodies.
+	setfenv(
+		moduleFunction,
+		setmetatable({
+			require = function(scriptInstance: ModuleScript)
+				return self:requireModuleOrMock(scriptInstance)
+			end,
+			delay = self._fakeTimersImplementation.delayOverride,
+			tick = self._fakeTimersImplementation.tickOverride,
+			time = self._fakeTimersImplementation.timeOverride,
+			DateTime = self._fakeTimersImplementation.dateTimeOverride,
+			os = self._fakeTimersImplementation.osOverride,
+			task = self._fakeTimersImplementation.taskOverride,
+		}, { __index = defaultEnvironment }) :: any
+	)
 
 	local moduleResult = table.pack(moduleFunction())
 	if moduleResult.n ~= 1 and noModuleReturnRequired ~= true then

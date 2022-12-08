@@ -407,7 +407,7 @@ end
 -- test runner should call clean up functions when it is done
 function TestRunner:cleanup()
 	self._loadedModuleFns:forEach(function(val)
-		local cleanup = val[2]
+		local cleanup = val[3]
 		if cleanup ~= nil then
 			cleanup()
 		end
