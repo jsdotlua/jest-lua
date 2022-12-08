@@ -14,7 +14,7 @@ JestGetType = { path = "../jest-get-type" }
 JestMessageUtil = { path = "../jest-message-util" }
 JestMatcherUtils = { path = "../jest-matcher-utils" }
 JestSnapshot = { path = "../jest-snapshot" }
-JestRobloxShared = { path = "../jest-roblox-shared" }
+RobloxShared = { path = "../roblox-shared" }
 
 [dev_dependencies]
 JestGlobals = { path = "../jest-globals" }

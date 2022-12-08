@@ -15,6 +15,6 @@ LuauPolyfill = { workspace = true }
 RegExp = { workspace = true }
 
 [dev_dependencies]
-JestRobloxShared = { path = "../jest-roblox-shared" }
+RobloxShared = { path = "../roblox-shared" }
 JestGlobals = { path = "../jest-globals" }
 TestUtils = { path = "../test-utils" }

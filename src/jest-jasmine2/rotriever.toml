@@ -13,4 +13,4 @@ LuauPolyfill = { workspace = true }
 JestGlobals = { path = "../jest-globals" }
 Expect = { path = "../expect" }
 Promise = { workspace = true }
-JestRobloxShared = { path = "../jest-roblox-shared" }
+RobloxShared = { path = "../roblox-shared" }

@@ -21,7 +21,7 @@ local PrettyFormat = require(CurrentModule)
 local prettyFormat = PrettyFormat.default
 local RobloxInstance = PrettyFormat.plugins.RobloxInstance
 
-local InstanceSubset = require(Packages.JestRobloxShared).RobloxInstance.InstanceSubset
+local InstanceSubset = require(Packages.RobloxShared).RobloxInstance.InstanceSubset
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local expect = JestGlobals.expect

@@ -25,7 +25,7 @@ local exports = {}
 
 --[[ eslint-disable local/ban-types-eventually ]]
 local chalk = require(Packages.ChalkLua)
-local exit = require(Packages.JestRobloxShared).nodeUtils.exit
+local exit = require(Packages.RobloxShared).nodeUtils.exit
 local reportersModule = require(Packages.JestReporters)
 -- ROBLOX deviation START: not needed
 -- local CoverageReporter = reportersModule.CoverageReporter

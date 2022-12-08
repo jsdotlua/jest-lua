@@ -30,7 +30,7 @@ local prettyFormat = require(Packages.PrettyFormat).format
 type Path = Config_Path
 
 -- ROBLOX deviation START: additional dependencies
-local normalizePromiseError = require(Packages.JestRobloxShared).normalizePromiseError
+local normalizePromiseError = require(Packages.RobloxShared).normalizePromiseError
 -- ROBLOX deviation END
 
 -- ROBLOX deviation: forward declarations

@@ -1,5 +1,5 @@
 [package]
-name = "JestRobloxShared"
+name = "RobloxShared"
 version = { workspace = true }
 license = { workspace = true }
 author = "Roblox"

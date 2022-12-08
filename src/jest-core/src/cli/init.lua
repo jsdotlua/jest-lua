@@ -70,11 +70,11 @@ local preRunMessagePrint = preRunMessage.print
 type OnCompleteCallback = (results: AggregatedResult) -> ...nil
 
 -- ROBLOX deviation START: added missing variables to limit nr deviations
-local JestRobloxShared = require(Packages.JestRobloxShared)
-local nodeUtils = JestRobloxShared.nodeUtils
+local RobloxShared = require(Packages.RobloxShared)
+local nodeUtils = RobloxShared.nodeUtils
 local process = nodeUtils.process
 local exit = nodeUtils.exit
-type NodeJS_WriteStream = JestRobloxShared.NodeJS_WriteStream
+type NodeJS_WriteStream = RobloxShared.NodeJS_WriteStream
 -- ROBLOX deviation END
 
 -- ROBLOX deviation START: predefine functions

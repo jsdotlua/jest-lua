@@ -1491,24 +1491,6 @@ function Runtime_private:requireModuleOrMock<T>(moduleName: ModuleScript): T
 	end
 	-- ROBLOX deviation END
 
-	-- ROBLOX deviation START: add not resetting some Jest dependencies to avoid overhead
-	if
-		moduleName.Name == "Expect"
-		or moduleName.Name == "JestUtil"
-		or moduleName.Name == "JestMessageUtil"
-		or moduleName.Name == "JestDiff"
-		or moduleName.Name == "PrettyFormat"
-		or moduleName.Name == "RegExp"
-		or moduleName.Name == "JestFakeTimers"
-		or moduleName.Name == "JestMatcherUtils"
-		or moduleName.Name == "JestTypes"
-		or moduleName.Name == "RobloxInstance"
-		or moduleName.Name == "JestRobloxShared"
-	then
-		return (require :: any)(moduleName)
-	end
-	-- ROBLOX deviation END
-
 	-- ROBLOX deviation START: custom JestGlobals interception
 	-- -- this module is unmockable
 	-- if moduleName == "@jest/globals" then

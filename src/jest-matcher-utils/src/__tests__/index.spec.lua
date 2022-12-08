@@ -15,7 +15,7 @@ local Symbol = LuauPolyfill.Symbol
 
 local RegExp = require(Packages.RegExp)
 
-local equals = require(Packages.Dev.JestRobloxShared).expect.equals
+local equals = require(Packages.Dev.RobloxShared).expect.equals
 
 local chalk = require(Packages.ChalkLua)
 

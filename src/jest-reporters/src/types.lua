@@ -43,8 +43,8 @@ type worker = any
 -- ROBLOX deviation END
 
 -- ROBLOX deviation START: type for mock process param used added to Reporters
-local JestRobloxShared = require(Packages.JestRobloxShared)
-type Writeable = JestRobloxShared.Writeable
+local RobloxShared = require(Packages.RobloxShared)
+type Writeable = RobloxShared.Writeable
 export type NodeProcessMock = {
 	env: {
 		[string]: unknown,

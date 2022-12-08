@@ -11,8 +11,8 @@ local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Boolean = LuauPolyfill.Boolean
-local JestRobloxShared = require(Packages.JestRobloxShared)
-type Writeable = JestRobloxShared.Writeable
+local RobloxShared = require(Packages.RobloxShared)
+type Writeable = RobloxShared.Writeable
 local exports = {}
 
 local function clearLine(stream: Writeable): ()

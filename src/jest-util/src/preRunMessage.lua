@@ -15,8 +15,8 @@ local chalk = require(Packages.ChalkLua)
 local clearLine = require(script.Parent.clearLine).default
 local isInteractive = require(script.Parent.isInteractive).default
 
-local JestRobloxShared = require(Packages.JestRobloxShared)
-type Writeable = JestRobloxShared.Writeable
+local RobloxShared = require(Packages.RobloxShared)
+type Writeable = RobloxShared.Writeable
 
 local function print(stream: Writeable): ()
 	if isInteractive then

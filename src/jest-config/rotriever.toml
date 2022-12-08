@@ -18,7 +18,7 @@ JestGetType = { path = "../jest-get-type" }
 JestUtil = { path = "../jest-util" }
 JestEnvironmentLuau = { path = "../jest-environment-luau" }
 JestValidate = { path = "../jest-validate" }
-JestRobloxShared = { path = "../jest-roblox-shared" }
+RobloxShared = { path = "../roblox-shared" }
 
 [dev_dependencies]
 JestGlobals = { path = "../jest-globals" }

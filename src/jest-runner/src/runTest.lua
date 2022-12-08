@@ -17,7 +17,7 @@ local Promise = require(Packages.Promise)
 type Promise<T> = LuauPolyfill.Promise<T>
 
 -- ROBLOX deviation START: additional function to construct file path from ModuleScript
-local getRelativePath = require(Packages.JestRobloxShared).getRelativePath
+local getRelativePath = require(Packages.RobloxShared).getRelativePath
 -- ROBLOX deviation END
 
 local exports = {}
@@ -70,7 +70,7 @@ local typesModule = require(script.Parent.types)
 type TestFramework = typesModule.TestFramework
 type TestRunnerContext = typesModule.TestRunnerContext
 
-local Writeable = require(Packages.JestRobloxShared).Writeable
+local Writeable = require(Packages.RobloxShared).Writeable
 type LeakDetector = nil
 type RunTestInternalResult = {
 	leakDetector: LeakDetector | nil,

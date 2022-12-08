@@ -22,7 +22,7 @@ JestUtil = { path = "../jest-util" }
 JestMessageUtil = { path = "../jest-message-util" }
 JestSnapshot = { path = "../jest-snapshot" }
 PrettyFormat = { path = "../pretty-format" }
-JestRobloxShared = { path = "../jest-roblox-shared" }
+RobloxShared = { path = "../roblox-shared" }
 Emittery = { path = "../emittery" }
 
 [dev_dependencies]

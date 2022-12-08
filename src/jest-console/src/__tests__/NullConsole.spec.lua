@@ -22,7 +22,7 @@ local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 
-local Writeable = require(Packages.JestRobloxShared).Writeable
+local Writeable = require(Packages.RobloxShared).Writeable
 
 local NullConsoleModule = require(CurrentModule.Parent.NullConsole)
 local NullConsole = NullConsoleModule.default

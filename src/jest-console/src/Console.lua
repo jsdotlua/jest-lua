@@ -28,8 +28,8 @@ local Packages = CurrentModule.Parent
 
 local format = require(CurrentModule.helpers).format
 
-local JestRobloxShared = require(Packages.JestRobloxShared)
-type Writeable = JestRobloxShared.Writeable
+local RobloxShared = require(Packages.RobloxShared)
+type Writeable = RobloxShared.Writeable
 
 export type Console = {
 	error: (...unknown) -> (),
