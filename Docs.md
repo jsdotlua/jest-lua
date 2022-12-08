@@ -238,12 +238,9 @@ Adjusted note:
 
 - `jest.resetModules()`
 - `jest.isolateModules(fn)`
-
-#### To be supported
-
-- `jest.mock(moduleName, factory, options)` **Not supported YET**
-- `jest.unmock(moduleName)` **Not supported YET**
-- `jest.requireActual(moduleName)` **Not supported YET**
+- `jest.mock(moduleName, factory, options)` 
+- `jest.unmock(moduleName)`
+- `jest.requireActual(moduleName)` 
 
 #### Not supported
 
