@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+## 3.2.1 (2022-12-08)
+* :bug: Fix `loadmodule` environment table separation ([#320](https://github.com/Roblox/jest-roblox/pull/320))
+
 ## 3.2.0 (2022-12-06)
 * :sparkles: Added `jest.mock` and `jest.unmock` ([#243](https://github.com/Roblox/jest-roblox/pull/243))
 * :sparkles: Added `jest.requireActual`([#294](https://github.com/Roblox/jest-roblox/pull/294))
