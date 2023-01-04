@@ -1457,6 +1457,12 @@ function Runtime_private:_loadModule(
 	setfenv(
 		moduleFunction,
 		setmetatable({
+			--[[
+				ROBLOX NOTE:
+				Adding `script` directly into a table so that it is accessible to the debugger
+				It seems to be a similar issue to code inside of __index function not being debuggable
+			]]
+			script = defaultEnvironment.script,
 			require = function(scriptInstance: ModuleScript)
 				return self:requireModuleOrMock(scriptInstance)
 			end,

@@ -1,6 +1,7 @@
 # Jest Roblox Changelog
 
 ## Unreleased
+* :bug: Fix debugging capabilities broken recently ([#325](https://github.com/Roblox/jest-roblox/pull/325))
 
 ## 3.2.1 (2022-12-08)
 * :bug: Fix `loadmodule` environment table separation ([#320](https://github.com/Roblox/jest-roblox/pull/320))
