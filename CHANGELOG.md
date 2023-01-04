@@ -1,6 +1,8 @@
 # Jest Roblox Changelog
 
 ## Unreleased
+
+## 3.2.2 (2022-01-04)
 * :bug: Fix debugging capabilities broken recently ([#325](https://github.com/Roblox/jest-roblox/pull/325))
 
 ## 3.2.1 (2022-12-08)
