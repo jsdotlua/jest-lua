@@ -1,6 +1,7 @@
 # Jest Roblox Changelog
 
 ## Unreleased
+* :bug: Fix missing stacktraces when throwing bare strings ([#324](https://github.com/Roblox/jest-roblox/pull/324))
 
 ## 3.2.2 (2022-01-04)
 * :bug: Fix debugging capabilities broken recently ([#325](https://github.com/Roblox/jest-roblox/pull/325))
