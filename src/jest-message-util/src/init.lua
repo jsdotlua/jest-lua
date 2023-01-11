@@ -184,7 +184,14 @@ local function formatExecError(
 	local separated = separateMessageFromStack(Boolean.toJSBoolean(stack) and stack or "")
 	stack = separated.stack
 
-	if separated.message:find(trim(message)) ~= nil then
+	-- ROBLOX deviation START: using string.find instead
+	-- 	if
+	-- 		Boolean.toJSBoolean(
+	-- 			Array.includes(separated.message, trim(message)) --[[ ROBLOX CHECK: check if 'separated.message' is an Array ]]
+	-- 		)
+	-- 	then
+	if string.find(separated.message, trim(message), 1, true) ~= nil then
+		-- ROBLOX deviation END
 		-- Often stack trace already contains the duplicate of the message
 		message = separated.message
 	end

@@ -1434,7 +1434,10 @@ function Runtime_private:_loadModule(
 		-- counting on types for the rest of this file
 		local loadmodule: (ModuleScript) -> (any, string, () -> any) = debug["loadmodule"]
 		moduleFunction, errorMessage, cleanupFn = loadmodule(modulePath)
-		assert(moduleFunction ~= nil, errorMessage)
+		-- ROBLOX NOTE: we are not using assert() as it throws a bare string and we need to throw an Error object
+		if moduleFunction == nil then
+			error(Error.new(errorMessage))
+		end
 
 		-- Cache initial environment table to inherit from later
 		defaultEnvironment = getfenv(moduleFunction)
