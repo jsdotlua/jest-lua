@@ -188,29 +188,29 @@ describe("FakeTimers", function()
 				table.insert(runOrder, "mock4")
 			end)
 
-			timers.delayOverride(100, mock1)
+			timers.delayOverride(100 / 1000, mock1)
 			timers.delayOverride(0, mock2)
 			timers.delayOverride(0, mock3)
-			timers.delayOverride(200, mock4)
+			timers.delayOverride(200 / 1000, mock4)
 
 			-- Move forward to t=50
 			timers:advanceTimersByTime(50)
-			expect(timers.osOverride.clock()).toEqual(50)
+			expect(timers.osOverride.clock()).toEqual(50 / 1000)
 			expect(runOrder).toEqual({ "mock2", "mock3" })
 
 			-- Move forward to t=60
 			timers:advanceTimersByTime(10)
-			expect(timers.osOverride.clock()).toEqual(60)
+			expect(timers.osOverride.clock()).toEqual(60 / 1000)
 			expect(runOrder).toEqual({ "mock2", "mock3" })
 
 			-- Move forward to t=100
 			timers:advanceTimersByTime(40)
-			expect(timers.osOverride.clock()).toEqual(100)
+			expect(timers.osOverride.clock()).toEqual(100 / 1000)
 			expect(runOrder).toEqual({ "mock2", "mock3", "mock1" })
 
 			-- Move forward to t=200
 			timers:advanceTimersByTime(100)
-			expect(timers.osOverride.clock()).toEqual(200)
+			expect(timers.osOverride.clock()).toEqual(200 / 1000)
 			expect(runOrder).toEqual({ "mock2", "mock3", "mock1", "mock4" })
 		end)
 
@@ -355,14 +355,14 @@ describe("FakeTimers", function()
 			local mock1 = jest.fn()
 			timers.delayOverride(100, mock1)
 			timers:advanceTimersByTime(50)
-			expect(timers.osOverride.clock()).toEqual(50)
+			expect(timers.osOverride.clock()).toEqual(50 / 1000)
 
 			timers:reset()
 			expect(timers.osOverride.clock()).toEqual(0)
 			timers.delayOverride(100, mock1)
 
 			timers:advanceTimersByTime(50)
-			expect(timers.osOverride.clock()).toEqual(50)
+			expect(timers.osOverride.clock()).toEqual(50 / 1000)
 			expect(mock1).toHaveBeenCalledTimes(0)
 		end)
 	end)
@@ -440,7 +440,7 @@ describe("FakeTimers", function()
 
 			timers.delayOverride(0, function() end)
 			timers.delayOverride(0, function() end)
-			timers.delayOverride(10, function() end)
+			timers.delayOverride(10 / 1000, function() end)
 
 			expect(timers:getTimerCount()).toEqual(3)
 
@@ -588,7 +588,7 @@ describe("os", function()
 
 			expect(timers.osOverride.clock()).toBe(0)
 			timers:advanceTimersByTime(100)
-			expect(timers.osOverride.clock()).toBe(100)
+			expect(timers.osOverride.clock()).toBe(100 / 1000)
 		end)
 	end)
 
@@ -653,7 +653,7 @@ describe("time", function()
 
 		expect(timers.timeOverride()).toBe(0)
 		timers:advanceTimersByTime(100)
-		expect(timers.timeOverride()).toBe(100)
+		expect(timers.timeOverride()).toBe(100 / 1000)
 	end)
 end)
 
@@ -811,13 +811,13 @@ describe("recursive timer", function()
 		local runOrder = {}
 		local loopFn = function() end
 		loopFn = function()
-			table.insert(runOrder, timers.osOverride.clock())
-			timers.delayOverride(10, loopFn)
+			table.insert(runOrder, timers.osOverride.clock() * 1000)
+			timers.delayOverride(10 / 1000, loopFn)
 		end
 
 		timers.delayOverride(0, loopFn)
-		timers.delayOverride(51, function()
-			table.insert(runOrder, timers.osOverride.clock())
+		timers.delayOverride(51 / 1000, function()
+			table.insert(runOrder, timers.osOverride.clock() * 1000)
 		end)
 		expect(timers.delayOverride).toHaveBeenCalledTimes(2)
 
@@ -830,11 +830,11 @@ describe("recursive timer", function()
 
 		timers:advanceTimersByTime(20)
 		expect(runOrder).toEqual({ 0, 10, 20, 30 })
-		expect(timers.osOverride.clock()).toBe(31)
+		expect(timers.osOverride.clock()).toBe(31 / 1000)
 
 		timers:advanceTimersByTime(24)
 		expect(runOrder).toEqual({ 0, 10, 20, 30, 40, 50, 51 })
-		expect(timers.osOverride.clock()).toBe(55)
+		expect(timers.osOverride.clock()).toBe(55 / 1000)
 	end)
 
 	it("advanceTimersToNextTimer", function()

@@ -21,6 +21,7 @@ local JestGlobals = require(Packages.Dev.JestGlobals)
 local it = JestGlobals.it
 local describe = JestGlobals.describe
 local beforeAll = JestGlobals.beforeAll
+local expect = JestGlobals.expect
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Error = LuauPolyfill.Error
@@ -30,7 +31,7 @@ local AssertionError = LuauPolyfill.AssertionError
 
 local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
 
-local expect = require(CurrentModule)
+local jestExpect = require(CurrentModule)
 
 describe("Lua toThrowMatcher tests", function()
 	beforeAll(function()
@@ -40,7 +41,7 @@ describe("Lua toThrowMatcher tests", function()
 	local CustomError = extends(Error, "CustomError", function(self, message)
 		self.message = message
 		self.name = "Error"
-		self.stack = "  at expect" .. " (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)"
+		self.stack = "  at jestExpect" .. " (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)"
 	end)
 
 	it("works well for single errors", function()
@@ -81,7 +82,7 @@ describe("Lua toThrowMatcher tests", function()
 
 	it("prints the stack trace for Lua Error error", function()
 		expect(function()
-			expect(function()
+			jestExpect(function()
 				test1()
 			end).never.toThrow()
 		end).toThrowErrorMatchingSnapshot()
@@ -89,7 +90,7 @@ describe("Lua toThrowMatcher tests", function()
 
 	it("prints the stack trace for Lua string error", function()
 		expect(function()
-			expect(function()
+			jestExpect(function()
 				test2()
 			end).never.toThrow()
 		end).toThrowErrorMatchingSnapshot()
@@ -97,7 +98,7 @@ describe("Lua toThrowMatcher tests", function()
 
 	it("prints the stack trace for Lua string error 2", function()
 		expect(function()
-			expect(function()
+			jestExpect(function()
 				test2()
 			end).toThrow("wrong information")
 		end).toThrowErrorMatchingSnapshot()
@@ -105,30 +106,30 @@ describe("Lua toThrowMatcher tests", function()
 
 	it("prints the stack trace for Lua AssertionError error", function()
 		expect(function()
-			expect(function()
+			jestExpect(function()
 				test3()
 			end).never.toThrow()
 		end).toThrowErrorMatchingSnapshot()
 	end)
 
 	it("matches Error", function()
-		expect(function()
+		jestExpect(function()
 			error(Error("error msg"))
 		end).toThrow(Error("error msg"))
-		expect(function()
+		jestExpect(function()
 			error(CustomError("error msg"))
 		end).toThrow(CustomError("error msg"))
-		expect(function()
+		jestExpect(function()
 			error(CustomError("error msg"))
 		end).toThrow(Error("error msg"))
 		-- this would match in upstream Jest even though it is somewhat nonsensical
-		expect(function()
+		jestExpect(function()
 			error(Error("error msg"))
 		end).toThrow(CustomError("error msg"))
 	end)
 
 	it("matches empty Error", function()
-		expect(function()
+		jestExpect(function()
 			error(Error())
 		end).toThrow(Error())
 	end)
@@ -142,7 +143,7 @@ describe("Lua toThrowMatcher tests", function()
 
 		-- 2 lines in stack trace
 		expect(function()
-			expect(function()
+			jestExpect(function()
 				func2()
 			end).never.toThrow()
 		end).toThrowErrorMatchingSnapshot()
@@ -150,7 +151,7 @@ describe("Lua toThrowMatcher tests", function()
 
 	it("toThrow should fail if expected is a string and thrown message is a table", function()
 		expect(function()
-			expect(function()
+			jestExpect(function()
 				error({ message = { key = "value" } })
 			end).toThrow("string")
 		end).toThrowErrorMatchingSnapshot()
@@ -159,10 +160,10 @@ describe("Lua toThrowMatcher tests", function()
 	local jest = require(Packages.Dev.JestGlobals).jest
 	it("makes sure that jest.fn() is callable", function()
 		local mock = jest.fn()
-		expect(mock).never.toThrow()
+		jestExpect(mock).never.toThrow()
 	end)
 
-	expect.extend({
+	jestExpect.extend({
 		toErrorString = function(self)
 			error("I am erroring!")
 		end,
@@ -173,13 +174,13 @@ describe("Lua toThrowMatcher tests", function()
 
 	it("works for custom throwing matchers that throw strings", function()
 		expect(function()
-			(expect(true) :: any).toErrorString()
+			(jestExpect(true) :: any).toErrorString()
 		end).toThrow("I am erroring!")
 	end)
 
 	it("works for custom throwing matchers that throw tables", function()
 		expect(function()
-			(expect(true) :: any).toErrorTable()
+			(jestExpect(true) :: any).toErrorTable()
 		end).toThrow("I am erroring!")
 	end)
 end)

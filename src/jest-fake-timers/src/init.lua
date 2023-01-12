@@ -91,7 +91,7 @@ function FakeTimers.new(): FakeTimers
 		_fakingTime = false,
 		_timeouts = {},
 		_mock = mock,
-		_mockTime = 0,
+		_mockTimeMs = 0,
 		_mockSystemTime = realDateTime.now().UnixTimestamp,
 		delayOverride = delayOverride,
 		tickOverride = tickOverride,
@@ -107,10 +107,10 @@ end
 
 function FakeTimers:_advanceToTime(time_): ()
 	-- Make sure we don't go back in time due to a queued timer
-	if time_ > self._mockTime then
-		local timeDiff = time_ - self._mockTime
+	if time_ > self._mockTimeMs then
+		local timeDiff = time_ - self._mockTimeMs
 		-- Move mockTime to target time, in case the callback reads it via `tick`
-		self._mockTime = time_
+		self._mockTimeMs = time_
 		self._mockSystemTime = self._mockSystemTime + timeDiff
 	end
 end
@@ -164,7 +164,7 @@ function FakeTimers:advanceTimersToNextTimer(steps_: number?): ()
 				self:_advanceToTime(nextTime)
 				steps = steps - 1
 			end
-			if self._mockTime >= timeout.time then
+			if self._mockTimeMs >= timeout.time then
 				timeout.callback(unpack(timeout.args))
 			else
 				table.insert(newTimeouts, timeout)
@@ -176,7 +176,7 @@ end
 
 function FakeTimers:advanceTimersByTime(msToRun: number): ()
 	if self:_checkFakeTimers() then
-		local targetTime = self._mockTime + msToRun
+		local targetTime = self._mockTimeMs + msToRun
 		local newTimeouts = {}
 		for _, timeout in self._timeouts do
 			if targetTime >= timeout.time then
@@ -211,7 +211,8 @@ function FakeTimers:useRealTimers(): ()
 end
 
 local function fakeDelay(self, delayTime, callback, ...)
-	local targetTime = self._mockTime + delayTime
+	local delayTimeMs = delayTime * 1000
+	local targetTime = self._mockTimeMs + delayTimeMs
 	local timeout = {
 		time = targetTime,
 		callback = callback,
@@ -240,7 +241,7 @@ function FakeTimers:useFakeTimers(): ()
 			return self._mockSystemTime
 		end)
 		self.timeOverride.mockImplementation(function()
-			return self._mockTime
+			return self._mockTimeMs / 1000
 		end)
 		self.dateTimeOverride.now.mockImplementation(function()
 			return realDateTime.fromUnixTimestamp(self._mockSystemTime)
@@ -260,7 +261,7 @@ function FakeTimers:useFakeTimers(): ()
 			return self._mockSystemTime
 		end)
 		self.osOverride.clock.mockImplementation(function()
-			return self._mockTime
+			return self._mockTimeMs / 1000
 		end)
 		self.taskOverride.delay.mockImplementation(function(delayTime, callback, ...)
 			fakeDelay(self, delayTime, callback, ...)
@@ -274,7 +275,7 @@ function FakeTimers:reset(): ()
 	if self:_checkFakeTimers() then
 		self._mock:clearAllMocks()
 		self._timeouts = {}
-		self._mockTime = 0
+		self._mockTimeMs = 0
 		self._mockSystemTime = realDateTime.now().UnixTimestamp
 	end
 end

@@ -2339,7 +2339,7 @@ Expected has type:  string
 Expected has value: <g>"3"</>
 ]=]
 
-snapshots[".toHaveLength matcher error expected length number inf 1"] = [=[
+snapshots[".toHaveLength matcher error expected length number Infinity 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>toHaveLength<d>(</><g>expected</><d>)</>
 
@@ -2349,7 +2349,7 @@ Expected has type:  number
 Expected has value: <g>inf</>
 ]=]
 
-snapshots[".toHaveLength matcher error expected length number nan 1"] = [=[
+snapshots[".toHaveLength matcher error expected length number NaN 1"] = [=[
 
 <d>expect(</><r>received</><d>).</>never<d>.</>toHaveLength<d>(</><g>expected</><d>)</>
 

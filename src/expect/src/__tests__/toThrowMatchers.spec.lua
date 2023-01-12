@@ -34,7 +34,7 @@ end)
 local CustomError = extends(Error, "CustomError", function(self, message)
 	self.message = message
 	self.name = "Error"
-	self.stack = "  at expect" .. " (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)"
+	self.stack = "  at jestExpect" .. " (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)"
 end)
 
 local matchers = { "toThrowError", "toThrow" }
@@ -44,40 +44,41 @@ for _, toThrow in ipairs(matchers) do
 		local Err = extends(CustomError, "Err", function(self, message)
 			self.name = "Error"
 			self.message = message
-			self.stack = "  at expect" .. " (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)"
+			self.stack = "  at jestExpect" .. " (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)"
 		end)
 		local Err2 = extends(CustomError, "Err2", function(self, message)
 			self.name = "Error"
 			self.message = message
-			self.stack = "  at expect" .. " (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)"
+			self.stack = "  at jestExpect" .. " (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)"
 		end)
 
 		it("to throw or not to throw", function()
-			expect(function()
+			jestExpect(function()
 				error(CustomError("apple"))
 			end)[toThrow]()
-			expect(function() end).never[toThrow]()
+			jestExpect(function() end).never[toThrow]()
 		end)
 
 		describe("substring", function()
 			it("passes", function()
-				expect(function()
+				jestExpect(function()
 					error(CustomError("apple"))
 				end)[toThrow]("apple")
-				expect(function()
+				jestExpect(function()
 					error(CustomError("banana"))
 				end).never[toThrow]("apple")
+				jestExpect(function() end).never[toThrow]("apple")
 			end)
 
 			it("did not throw at all", function()
 				expect(function()
-					expect(function() end)[toThrow]("apple")
+					jestExpect(function() end)[toThrow]("apple")
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it("threw, but message did not match (error)", function()
 				expect(function()
-					expect(function()
+					jestExpect(function()
 						error(CustomError("apple"))
 					end)[toThrow]("banana")
 				end).toThrowErrorMatchingSnapshot()
@@ -85,21 +86,21 @@ for _, toThrow in ipairs(matchers) do
 
 			it("threw, but message did not match (non-error falsey)", function()
 				expect(function()
-					expect(function()
+					jestExpect(function()
 						error("")
 					end)[toThrow]("Server Error")
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it("properly escapes strings when matching against errors", function()
-				expect(function()
+				jestExpect(function()
 					error(Error('"this"? throws.'))
 				end)[toThrow]('"this"? throws.')
 			end)
 
 			it("threw, but message should not match (error)", function()
 				expect(function()
-					expect(function()
+					jestExpect(function()
 						error(CustomError("Invalid array length"))
 					end).never[toThrow]("array")
 				end).toThrowErrorMatchingSnapshot()
@@ -107,7 +108,7 @@ for _, toThrow in ipairs(matchers) do
 
 			it("threw, but message should not match (non-error truthy)", function()
 				expect(function()
-					expect(function()
+					jestExpect(function()
 						error("Internal Server Error")
 					end).never[toThrow]("Server Error")
 				end).toThrowErrorMatchingSnapshot()
@@ -116,24 +117,24 @@ for _, toThrow in ipairs(matchers) do
 
 		describe("regexp", function()
 			it("passes", function()
-				expect(function()
+				jestExpect(function()
 					error(CustomError("apple"))
 				end)[toThrow](RegExp("apple"))
-				expect(function()
+				jestExpect(function()
 					error(CustomError("banana"))
 				end).never[toThrow](RegExp("apple"))
-				expect(function() end).never[toThrow](RegExp("apple"))
+				jestExpect(function() end).never[toThrow](RegExp("apple"))
 			end)
 
 			it("did not throw at all", function()
 				expect(function()
-					expect(function() end)[toThrow](RegExp("apple"))
+					jestExpect(function() end)[toThrow](RegExp("apple"))
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it("threw, but message did not match (error)", function()
 				expect(function()
-					expect(function()
+					jestExpect(function()
 						error(CustomError("apple"))
 					end)[toThrow](RegExp("banana"))
 				end).toThrowErrorMatchingSnapshot()
@@ -145,7 +146,7 @@ for _, toThrow in ipairs(matchers) do
 			-- similar deviations hold for other tests that error integers
 			it("threw, but message did not match (non-error falsey)", function()
 				expect(function()
-					expect(function()
+					jestExpect(function()
 						error(0)
 					end)[toThrow](RegExp("^[123456789]\\d*"))
 				end).toThrowErrorMatchingSnapshot()
@@ -153,7 +154,7 @@ for _, toThrow in ipairs(matchers) do
 
 			it("threw, but message should not match (error)", function()
 				expect(function()
-					expect(function()
+					jestExpect(function()
 						error(CustomError("Invalid array length"))
 					end).never[toThrow](RegExp(" array "))
 				end).toThrowErrorMatchingSnapshot()
@@ -163,7 +164,7 @@ for _, toThrow in ipairs(matchers) do
 			-- the output for the same reason as above
 			it("threw, but message should not match (non-error truthy)", function()
 				expect(function()
-					expect(function()
+					jestExpect(function()
 						error(404)
 					end).never[toThrow](RegExp("^[123456789]\\d*"))
 				end).toThrowErrorMatchingSnapshot()
@@ -174,37 +175,36 @@ for _, toThrow in ipairs(matchers) do
 			local SubErr = extends(Err, "SubErr", function(self, message)
 				self.message = message
 				self.name = "SubErr"
-				self.stack = "  at expect" .. " (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)"
+				self.stack = "  at jestExpect" .. " (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)"
 			end)
 			local SubSubErr = extends(SubErr, "SubSubErr", function(self, message)
 				self.message = message
 				self.name = "SubSubErr"
-				self.stack = "  at expect" .. " (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)"
+				self.stack = "  at jestExpect" .. " (packages/expect/src/__tests__/toThrowMatchers-test.js:24:74)"
 			end)
 
 			it("passes", function()
-				expect(function()
+				jestExpect(function()
 					error(Err())
 				end)[toThrow](Err)
-				expect(function()
+				jestExpect(function()
 					error(Err())
 				end)[toThrow](CustomError)
-				expect(function()
+				jestExpect(function()
 					error(Err())
 				end).never[toThrow](Err2)
-				expect(function() end).never[toThrow](Err)
+				jestExpect(function() end).never[toThrow](Err)
 			end)
 
 			it("did not throw at all", function()
 				expect(function()
-					-- FIXME in REVIEW: upstream writes 'expect' but the intention must have been to write expect
-					expect(function() end)[toThrow](Err)
+					jestExpect(function() end)[toThrow](Err)
 				end).toThrowErrorMatchingSnapshot()
 			end)
 
 			it("threw, but class did not match (error)", function()
 				expect(function()
-					expect(function()
+					jestExpect(function()
 						error(Err("apple"))
 					end)[toThrow](Err2)
 				end).toThrowErrorMatchingSnapshot()
@@ -212,7 +212,7 @@ for _, toThrow in ipairs(matchers) do
 
 			it("threw, but class did not match (non-error falsey)", function()
 				expect(function()
-					expect(function()
+					jestExpect(function()
 						error(nil)
 					end)[toThrow](Err2)
 				end).toThrowErrorMatchingSnapshot()
@@ -220,7 +220,7 @@ for _, toThrow in ipairs(matchers) do
 
 			it("threw, but class should not match (error)", function()
 				expect(function()
-					expect(function()
+					jestExpect(function()
 						error(Err("apple"))
 					end).never[toThrow](Err)
 				end).toThrowErrorMatchingSnapshot()
@@ -228,7 +228,7 @@ for _, toThrow in ipairs(matchers) do
 
 			it("threw, but class should not match (error subclass)", function()
 				expect(function()
-					expect(function()
+					jestExpect(function()
 						error(SubErr("apple"))
 					end).never[toThrow](Err)
 				end).toThrowErrorMatchingSnapshot()
@@ -236,7 +236,7 @@ for _, toThrow in ipairs(matchers) do
 
 			it("threw, but class should not match (error subsubclass)", function()
 				expect(function()
-					expect(function()
+					jestExpect(function()
 						error(SubSubErr("apple"))
 					end).never[toThrow](Err)
 				end).toThrowErrorMatchingSnapshot()
@@ -261,13 +261,13 @@ for _, toThrow in ipairs(matchers) do
 
 			describe("pass", function()
 				it("isNot false", function()
-					expect(function()
+					jestExpect(function()
 						error(ErrorMessage("apple"))
 					end)[toThrow](expected)
 				end)
 
 				it("isNot true", function()
-					expect(function()
+					jestExpect(function()
 						error(ErrorMessage("banana"))
 					end).never[toThrow](expected)
 				end)
@@ -276,7 +276,7 @@ for _, toThrow in ipairs(matchers) do
 			describe("fail", function()
 				it("isNot false", function()
 					expect(function()
-						expect(function()
+						jestExpect(function()
 							error(ErrorMessage("banana"))
 						end)[toThrow](expected)
 					end).toThrowErrorMatchingSnapshot()
@@ -285,7 +285,7 @@ for _, toThrow in ipairs(matchers) do
 				it("isNot true", function()
 					local message = "Invalid array length"
 					expect(function()
-						expect(function()
+						jestExpect(function()
 							error(ErrorMessage(message))
 						end).never[toThrow]({ message = message })
 					end).toThrowErrorMatchingSnapshot()
@@ -295,7 +295,7 @@ for _, toThrow in ipairs(matchers) do
 					local a = "There is no route defined for key Settings. \nMust be one of: 'Home'"
 					local b = "There is no route defined for key Settings.\nMust be one of: 'Home'"
 					expect(function()
-						expect(function()
+						jestExpect(function()
 							error(ErrorMessage(b))
 						end)[toThrow]({ message = a })
 					end).toThrowErrorMatchingSnapshot()
@@ -307,13 +307,13 @@ for _, toThrow in ipairs(matchers) do
 			describe("any-Class", function()
 				describe("pass", function()
 					it("isNot false", function()
-						expect(function()
+						jestExpect(function()
 							error(Err("apple"))
 						end)[toThrow](expect.any(Err))
 					end)
 
 					it("isNot true", function()
-						expect(function()
+						jestExpect(function()
 							error(Err("apple"))
 						end).never[toThrow](expect.any(Err2))
 					end)
@@ -322,7 +322,7 @@ for _, toThrow in ipairs(matchers) do
 				describe("fail", function()
 					it("isNot false", function()
 						expect(function()
-							expect(function()
+							jestExpect(function()
 								error(Err("apple"))
 							end)[toThrow](expect.any(Err2))
 						end).toThrowErrorMatchingSnapshot()
@@ -330,7 +330,7 @@ for _, toThrow in ipairs(matchers) do
 
 					it("isNot true", function()
 						expect(function()
-							expect(function()
+							jestExpect(function()
 								error(Err("apple"))
 							end).never[toThrow](expect.any(Err))
 						end).toThrowErrorMatchingSnapshot()
@@ -341,7 +341,7 @@ for _, toThrow in ipairs(matchers) do
 			describe("anything", function()
 				describe("pass", function()
 					it("isNot false", function()
-						expect(function()
+						jestExpect(function()
 							error(CustomError("apple"))
 						end)[toThrow](expect.anything())
 					end)
@@ -349,8 +349,8 @@ for _, toThrow in ipairs(matchers) do
 					-- ROBLOX deviation: skipped test because we have no undefined
 					-- type and nil does not match expect.anything()
 					it.skip("isNot true", function()
-						-- expect(function() end).never[toThrow](expect.anything())
-						-- expect(function()
+						-- jestExpect(function() end).never[toThrow](expect.anything())
+						-- jestExpect(function()
 						-- 	error(nil)
 						-- end).never[toThrow](expect.anything())
 					end)
@@ -363,7 +363,7 @@ for _, toThrow in ipairs(matchers) do
 					-- expect.anything()
 					it.skip("isNot false", function()
 						expect(function()
-							expect(function()
+							jestExpect(function()
 								error(nil)
 							end)[toThrow](expect.anything())
 						end).toThrowErrorMatchingSnapshot()
@@ -371,7 +371,7 @@ for _, toThrow in ipairs(matchers) do
 
 					it("isNot true", function()
 						expect(function()
-							expect(function()
+							jestExpect(function()
 								error(CustomError("apple"))
 							end).never[toThrow](expect.anything())
 						end).toThrowErrorMatchingSnapshot()
@@ -397,13 +397,13 @@ for _, toThrow in ipairs(matchers) do
 
 				describe("pass", function()
 					it("isNot false", function()
-						expect(function()
+						jestExpect(function()
 							error(CustomError("apple"))
 						end)[toThrow](matchError)
 					end)
 
 					it("isNot true", function()
-						expect(function()
+						jestExpect(function()
 							error(CustomError("apple"))
 						end).never[toThrow](matchNotError)
 					end)
@@ -412,7 +412,7 @@ for _, toThrow in ipairs(matchers) do
 				describe("fail", function()
 					it("isNot false", function()
 						expect(function()
-							expect(function()
+							jestExpect(function()
 								error(CustomError("apple"))
 							end)[toThrow](matchNotError)
 						end).toThrowErrorMatchingSnapshot()
@@ -420,7 +420,7 @@ for _, toThrow in ipairs(matchers) do
 
 					it("isNot true", function()
 						expect(function()
-							expect(function()
+							jestExpect(function()
 								error(CustomError("apple"))
 							end).never[toThrow](matchError)
 						end).toThrowErrorMatchingSnapshot()
@@ -438,13 +438,13 @@ for _, toThrow in ipairs(matchers) do
 
 				describe("pass", function()
 					it("isNot false", function()
-						expect(function()
+						jestExpect(function()
 							error(CustomError("apple"))
 						end)[toThrow](matchError)
 					end)
 
 					it("isNot true", function()
-						expect(function()
+						jestExpect(function()
 							error(CustomError("apple"))
 						end).never[toThrow](matchNotError)
 					end)
@@ -453,7 +453,7 @@ for _, toThrow in ipairs(matchers) do
 				describe("fail", function()
 					it("isNot false", function()
 						expect(function()
-							expect(function()
+							jestExpect(function()
 								error(CustomError("apple"))
 							end)[toThrow](matchNotError)
 						end).toThrowErrorMatchingSnapshot()
@@ -461,7 +461,7 @@ for _, toThrow in ipairs(matchers) do
 
 					it("isNot true", function()
 						expect(function()
-							expect(function()
+							jestExpect(function()
 								error(CustomError("apple"))
 							end).never[toThrow](matchError)
 						end).toThrowErrorMatchingSnapshot()
@@ -552,7 +552,7 @@ for _, toThrow in ipairs(matchers) do
 		describe("expected is undefined", function()
 			it("threw, but should not have (non-error falsey)", function()
 				expect(function()
-					expect(function()
+					jestExpect(function()
 						error(nil)
 					end).never[toThrow]()
 				end).toThrowErrorMatchingSnapshot()
@@ -561,13 +561,13 @@ for _, toThrow in ipairs(matchers) do
 
 		it("invalid arguments", function()
 			expect(function()
-				expect(function() end).never[toThrow](111)
+				jestExpect(function() end).never[toThrow](111)
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
 		it("invalid actual", function()
 			expect(function()
-				expect("a string")[toThrow]()
+				jestExpect("a string")[toThrow]()
 			end).toThrowErrorMatchingSnapshot()
 		end)
 	end)

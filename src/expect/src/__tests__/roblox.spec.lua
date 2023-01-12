@@ -15,6 +15,13 @@
 ]]
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
+
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local setTimeout = LuauPolyfill.setTimeout
+local Error = LuauPolyfill.Error
+
+local Promise = require(Packages.Promise)
+
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local describe = JestGlobals.describe
 local expect = JestGlobals.expect
@@ -67,5 +74,42 @@ describe("assertions & hasAssertions", function()
 
 		expect(assertionsErrors[1].error.message).toMatchSnapshot()
 		expect(assertionsErrors[1].error.stack).toMatchSnapshot()
+	end)
+end)
+
+describe("rejects", function()
+	it("passes when rejects in setTimeout", function()
+		expect(Promise.resolve():andThen(function()
+				return Promise.new(function(resolve, reject)
+					setTimeout(function()
+						reject(Error.new("kaboom"))
+					end, 100)
+				end)
+			end)).rejects
+			.toThrow(Error.new("kaboom"))
+			:expect()
+	end)
+
+	it("passes when errors in delayed Promise", function()
+		expect(Promise.resolve():andThen(function()
+				error(Error.new("kaboom"))
+				return Promise.delay(0.1):andThen(function()
+					error(Error.new("kaboom"))
+				end)
+			end)).rejects
+			.toThrow(Error.new("kaboom"))
+			:expect()
+	end)
+
+	it("passes when rejects immediately", function()
+		expect(Promise.reject(Error.new("kaboom"))).rejects.toThrow():expect()
+	end)
+
+	it("passes when returns rejected in delayed Promise", function()
+		expect(Promise.delay(0.1):andThen(function()
+				return Promise.reject(Error.new("kaboom"))
+			end)).rejects
+			.toThrow(Error.new("kaboom"))
+			:expect()
 	end)
 end)
