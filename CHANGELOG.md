@@ -1,6 +1,8 @@
 # Jest Roblox Changelog
 
 ## Unreleased
+
+## 3.2.3 (2022-01-12)
 * :bug: Fix missing stacktraces when throwing bare strings ([#324](https://github.com/Roblox/jest-roblox/pull/324))
 * :bug: Fix bad error message when test contains syntax error ([#326](https://github.com/Roblox/jest-roblox/pull/326))
 * :bug: Fix setTimeout not mocked with useFakeTimers() ([#329](https://github.com/Roblox/jest-roblox/pull/329))
