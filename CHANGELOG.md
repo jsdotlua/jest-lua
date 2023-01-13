@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+## 3.2.4 (2022-01-13)
+* :bug: Fix separateMessageFromStack not working when there is no stack available ([#332](https://github.com/Roblox/jest-roblox/pull/332))
+
 ## 3.2.3 (2022-01-12)
 * :bug: Fix missing stacktraces when throwing bare strings ([#324](https://github.com/Roblox/jest-roblox/pull/324))
 * :bug: Fix bad error message when test contains syntax error ([#326](https://github.com/Roblox/jest-roblox/pull/326))

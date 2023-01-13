@@ -35,14 +35,14 @@ local function separateMessageFromStack(content: string): { message: string, sta
 	if not content then
 		return { message = "", stack = "" }
 	end
-	local re = RegExp([=[^(\s*LoadedCode.*:\d+)(: )?(.*)$]=])
+	local message = content
+	local stack = ""
+	local re = RegExp([=[^(\s*LoadedCode.*:\d+)?(: )?(.*)$]=])
 	local messageMatch = re:exec(content)
-	if not messageMatch then
-		-- For typescript
-		error("If you hit this error, the regex above is buggy.")
+	if messageMatch then
+		message = messageMatch[4]
+		stack = messageMatch[2]
 	end
-	local message = messageMatch[4]
-	local stack = messageMatch[2]
 	return { message = message, stack = stack }
 end
 -- ROBLOX deviation END
