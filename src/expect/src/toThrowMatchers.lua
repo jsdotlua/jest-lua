@@ -234,8 +234,12 @@ local function createMatcher(matcherName: string, fromPromise: boolean?): RawMat
 					local errorObject = Error.new(error_)
 					-- ROBLOX NOTE: using LuauPolyfill's private method to capture the stacktrace without this function
 					Error.__captureStackTrace(errorObject, 3)
-					local _, end_ =
-						string.find(errorObject.stack :: string, getTopStackEntry(errorObject.stack :: string), 1, true)
+					local _, end_ = string.find(
+						errorObject.stack :: string,
+						getTopStackEntry(errorObject.stack :: string) :: string,
+						1,
+						true
+					)
 					errorObject.stack = string.sub(errorObject.stack :: string, (end_ :: number) + 1 + string.len("\n"))
 					errorObject.stack = diffStack(compareStack, errorObject.stack :: string)
 					errorObject["$$robloxInternalJestError"] = true

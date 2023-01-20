@@ -237,8 +237,10 @@ local function ensureDirectoryExists(filePath: string)
 
 	if not ok and err:find("Error%(13%): Access Denied%. Path is outside of sandbox%.") then
 		error(
-			"Provided path is invalid: you likely need to provide a different argument to --fs.readwrite.\n"
-				.. "You may need to pass in `--fs.readwrite=$PWD`"
+			Error.new(
+				"Provided path is invalid: you likely need to provide a different argument to --fs.readwrite.\n"
+					.. "You may need to pass in `--fs.readwrite=$PWD`"
+			)
 		)
 	end
 end

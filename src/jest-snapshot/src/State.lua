@@ -224,7 +224,7 @@ function SnapshotState:save(): SaveStatus
 	}
 
 	if (self._dirty or self._uncheckedKeys.size > 0) and not isEmpty then
-		if hasExternalSnapshots then
+		if hasExternalSnapshots and (self._dirty or self._updateSnapshot == "all") then
 			saveSnapshotFile(
 				self._snapshotData,
 				-- ROBLOX deviation START: custom logic

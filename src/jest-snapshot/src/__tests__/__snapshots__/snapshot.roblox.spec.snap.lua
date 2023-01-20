@@ -8,6 +8,10 @@ exports[ [=[custom snapshot matchers: toMatchTrimmedSnapshot 1]=] ] = [=[
 exports[ [=[native lua errors 1]=] ] = [=[
 "LoadedCode.JestRoblox._Workspace.JestSnapshot.JestSnapshot.__tests__.snapshot.roblox.spec:35: oops"]=]
 
+-- this should not fail the test run
+exports[ [=[obsolete snapshot 1]=] ] = [=[
+]=]
+
 exports[ [=[test with newlines
 in the name
 and body 1]=] ] = [=[

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+## 3.2.5 (2022-01-19)
+* :bug: Fix error when obsolete snapshots and no file system access ([#334](https://github.com/Roblox/jest-roblox/pull/334))
+
 ## 3.2.4 (2022-01-13)
 * :bug: Fix separateMessageFromStack not working when there is no stack available ([#332](https://github.com/Roblox/jest-roblox/pull/332))
 

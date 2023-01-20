@@ -11,6 +11,9 @@ local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent
 local exports = {}
 
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Error = LuauPolyfill.Error
+
 -- ROBLOX deviation: using FileSystemService instead of fs
 local getFileSystemService = require(CurrentModule.getFileSystemService)
 local typesModule = require(Packages.JestTypes)
@@ -28,8 +31,10 @@ local function createDirectory(path: Config_Path): ()
 		-- ROBLOX deviation START: additional error handling for AccessDenied case
 		if e:find("Error%(13%): Access Denied%. Path is outside of sandbox%.") then
 			error(
-				"Provided path is invalid: you likely need to provide a different argument to --fs.readwrite.\n"
-					.. "You may need to pass in `--fs.readwrite=$PWD`"
+				Error.new(
+					"Provided path is invalid: you likely need to provide a different argument to --fs.readwrite.\n"
+						.. "You may need to pass in `--fs.readwrite=$PWD`"
+				)
 			)
 		end
 		-- ROBLOX deviation END

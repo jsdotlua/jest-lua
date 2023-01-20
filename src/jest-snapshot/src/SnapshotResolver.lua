@@ -151,7 +151,34 @@ function createDefaultSnapshotResolver(): SnapshotResolver
 						)
 					end
 
-					local parentPath = getParent(CoreScriptSyncService:GetScriptFilePath(testPath), 1)
+					local ok, result = pcall(function()
+						return CoreScriptSyncService:GetScriptFilePath(testPath)
+					end)
+					if not ok then
+						local err = result
+						if string.find(err, "lacking permission 5") then
+							error(
+								Error.new(
+									string.format(
+										"Could not get a snapshot path for test file '%s'. You may need to pass in --load.asRobloxScript",
+										testPath.Name
+									)
+								)
+							)
+						else
+							error(
+								Error.new(
+									string.format(
+										"Could not get a snapshot path for test file '%s' because of the following error: %s",
+										testPath.Name,
+										err
+									)
+								)
+							)
+						end
+					end
+					local snapshotPath = result
+					local parentPath = getParent(snapshotPath, 1)
 					local snapshotFileName = testPath.Name .. DOT_EXTENSION .. ".lua"
 
 					return ("%s/__snapshots__/%s"):format(parentPath, snapshotFileName)
