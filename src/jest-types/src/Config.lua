@@ -250,9 +250,7 @@ export type InitialProjectOptions = {
 	-- snapshotResolver: Path?,
 	-- ROBLOX deviation END
 	snapshotSerializers: Array<Path>?,
-	-- ROBLOX deviation START: not supported
-	-- snapshotFormat: PrettyFormatOptions?,
-	-- ROBLOX deviation END
+	snapshotFormat: PrettyFormatOptions?,
 	testEnvironment: string?,
 	testEnvironmentOptions: Record<string, any>?,
 	testLocationInResults: boolean?,
@@ -403,8 +401,8 @@ export type InitialOptions = {
 	-- snapshotResolver: Path?,
 	-- ROBLOX deviation END
 	snapshotSerializers: Array<Path>?,
+	snapshotFormat: PrettyFormatOptions?,
 	-- ROBLOX deviation START: not supported
-	-- snapshotFormat: PrettyFormatOptions?,
 	-- errorOnDeprecated: boolean?,
 	-- ROBLOX deviation END
 	testEnvironment: string?,
@@ -516,8 +514,8 @@ export type GlobalConfig = {
 	-- ROBLOX deviation END
 	silent: boolean?,
 	skipFilter: boolean,
+	snapshotFormat: PrettyFormatOptions,
 	-- ROBLOX deviation START: not supported
-	-- snapshotFormat: PrettyFormatOptions,
 	-- errorOnDeprecated: boolean,
 	-- ROBLOX deviation END
 	testFailureExitCode: number,
@@ -614,9 +612,7 @@ export type ProjectConfig = {
 	-- snapshotResolver: Path?,
 	-- ROBLOX deviation END
 	snapshotSerializers: Array<Path>,
-	-- ROBLOX deviation START: not supported
-	-- snapshotFormat: PrettyFormatOptions,
-	-- ROBLOX deviation END
+	snapshotFormat: PrettyFormatOptions,
 	testEnvironment: string,
 	testEnvironmentOptions: Record<string, any>,
 	testMatch: Array<Glob>,

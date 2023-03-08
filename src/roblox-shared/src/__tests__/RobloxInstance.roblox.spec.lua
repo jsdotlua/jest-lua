@@ -24,6 +24,7 @@ local RobloxInstance = require(CurrentModule.RobloxInstance)
 local instanceSubsetEquality = RobloxInstance.instanceSubsetEquality
 local getInstanceSubset = RobloxInstance.getInstanceSubset
 local getRobloxProperties = RobloxInstance.getRobloxProperties
+local getRobloxDefaults = RobloxInstance.getRobloxDefaults
 local InstanceSubset = RobloxInstance.InstanceSubset
 
 describe("getRobloxProperties()", function()
@@ -74,6 +75,18 @@ describe("getRobloxProperties()", function()
 			"Visible",
 			"ZIndex",
 		})
+	end)
+end)
+
+describe("getRobloxDefaults()", function()
+	it("returns default properties and values for TextLabel", function()
+		local defaults = getRobloxDefaults("TextLabel")
+		expect(defaults).toMatchSnapshot()
+	end)
+
+	it("returns default properties and values for Camera", function()
+		local defaults = getRobloxDefaults("Camera")
+		expect(defaults).toMatchSnapshot()
 	end)
 end)
 

@@ -1,6 +1,8 @@
 # Jest Roblox Changelog
 
 ## Unreleased
+* :sparkles: `pretty-format`: Added `printInstanceDefaults` formatting option that toggles whether unmodified Instance properties are printed ([#341](https://github.com/Roblox/jest-roblox/pull/341))
+* :sparkles: Added `snapshotFormat` configuration option ([#341](https://github.com/Roblox/jest-roblox/pull/341))
 
 ## 3.2.5 (2022-01-19)
 * :bug: Fix error when obsolete snapshots and no file system access ([#334](https://github.com/Roblox/jest-roblox/pull/334))

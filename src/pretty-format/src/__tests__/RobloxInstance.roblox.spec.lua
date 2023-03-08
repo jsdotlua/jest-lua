@@ -24,6 +24,8 @@ local RobloxInstance = PrettyFormat.plugins.RobloxInstance
 local InstanceSubset = require(Packages.RobloxShared).RobloxInstance.InstanceSubset
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
+local beforeEach = JestGlobals.beforeEach
+local afterEach = JestGlobals.afterEach
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
@@ -31,6 +33,7 @@ local it = JestGlobals.it
 local prettyFormatResult = function(val: any)
 	return prettyFormat(val, {
 		plugins = { RobloxInstance },
+		printInstanceDefaults = true,
 	})
 end
 
@@ -57,6 +60,8 @@ describe("Instance", function()
 			a = SpotLight,
 			b = Sky,
 		})).toMatchSnapshot()
+		SpotLight:Destroy()
+		Sky:Destroy()
 	end)
 
 	it("serializes nested Roblox Instance", function()
@@ -136,6 +141,7 @@ describe("Instance", function()
 		end
 
 		expect(prettyFormatResult(screenGui)).toMatchSnapshot()
+		screenGui:Destroy()
 	end)
 
 	it("collapses circular references in properties", function()
@@ -147,6 +153,8 @@ describe("Instance", function()
 		rightFrame.NextSelectionRight = leftFrame
 
 		expect(prettyFormatResult(leftFrame)).toMatchSnapshot()
+		leftFrame:Destroy()
+		rightFrame:Destroy()
 	end)
 end)
 
@@ -170,6 +178,49 @@ describe("InstanceSubset", function()
 				.. '    "Name": "ChildFrame",\n'
 				.. "  },\n"
 				.. '  "Name": "ParentFrame",\n'
+				.. "}"
+		)
+	end)
+end)
+
+describe("config.printInstanceDefaults", function()
+	local created
+	beforeEach(function()
+		created = Instance.new("TextLabel")
+	end)
+	afterEach(function()
+		created:Destroy()
+	end)
+
+	local prettyFormatResult = function(val: any)
+		return prettyFormat(val, {
+			plugins = { RobloxInstance },
+			printInstanceDefaults = false,
+		})
+	end
+
+	it("serializes unmodified Instances", function()
+		expect(prettyFormatResult(created)).toEqual("TextLabel {}")
+	end)
+
+	it("serializes modified values", function()
+		created.Name = "ModifiedTextLabel"
+		created.Text = "not default"
+		expect(prettyFormatResult(created)).toEqual(
+			"TextLabel {\n" .. '  "Name": "ModifiedTextLabel",\n' .. '  "Text": "not default",\n' .. "}"
+		)
+	end)
+
+	it("serializes nested Instances", function()
+		created.Name = "ParentInstance"
+		local child = Instance.new("TextLabel")
+		child.Parent = created
+		expect(prettyFormatResult(created)).toEqual(
+			"TextLabel {\n"
+				.. '  "Name": "ParentInstance",\n'
+				.. '  "TextLabel": TextLabel {\n'
+				.. '    "Parent": "ParentInstance" [TextLabel],\n'
+				.. "  },\n"
 				.. "}"
 		)
 	end)

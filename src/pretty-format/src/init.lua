@@ -341,6 +341,8 @@ local DEFAULT_OPTIONS = {
 	min = false,
 	plugins = {},
 	printBasicPrototype = true,
+	-- ROBLOX deviation: option to omit default Roblox Instance values
+	printInstanceDefaults = true,
 	printFunctionName = true,
 	-- ROBLOX deviation: color formatting omitted
 	theme = nil,
@@ -413,6 +415,8 @@ local function getConfig(options: OptionsReceived?): Config
 		printBasicPrototype = if options ~= nil and options.printBasicPrototype ~= nil
 			then options.printBasicPrototype
 			else true,
+		-- ROBLOX deviation: option to omit default Roblox Instance values
+		printInstanceDefaults = getOption(options, "printInstanceDefaults"),
 		printFunctionName = getOption(options, "printFunctionName"),
 		spacingInner = getSpacingInner(options),
 		spacingOuter = getSpacingOuter(options),

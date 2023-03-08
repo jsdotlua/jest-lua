@@ -4,7 +4,7 @@ import json
 import re
 from urllib.request import urlopen
 
-VERSION = urlopen("http://setup.roblox.com/versionQTStudio").read().decode()
+VERSION = urlopen("https://s3.amazonaws.com/setup.roblox.com/versionQTStudio").read().decode()
 URL = "https://s3.amazonaws.com/setup.roblox.com/" + VERSION + "-API-Dump.json"
 
 instances = {}

@@ -242,8 +242,8 @@ local function initialize(
 				expand = expand,
 				-- ROBLOX deviation START: not supported
 				-- prettierPath = config.prettierPath,
-				-- snapshotFormat = config.snapshotFormat,
 				-- ROBLOX deviation END
+				snapshotFormat = config.snapshotFormat,
 				updateSnapshot = updateSnapshot,
 			} :: any
 		)

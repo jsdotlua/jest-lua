@@ -40,6 +40,7 @@ export type PrettyFormatOptions = {
 	min: boolean?,
 	plugins: Plugins?,
 	printBasicPrototype: boolean?,
+	printInstanceDefaults: boolean?,
 	printFunctionName: boolean?,
 	theme: ThemeReceived?,
 }

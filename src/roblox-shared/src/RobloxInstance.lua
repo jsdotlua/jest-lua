@@ -30,17 +30,48 @@ local isObjectWithKeys = CurrentModuleExpect.isObjectWithKeys
 local hasPropertyInObject = CurrentModuleExpect.hasPropertyInObject
 local isAsymmetric = CurrentModuleExpect.isAsymmetric
 
+local _cachedPropertyValues = {}
+
+local function tryPropertyName(instance, propertyName)
+	return instance[propertyName]
+end
+
 local function getRobloxProperties(class: string): { string }
 	local instanceClass = RobloxApi[class]
 	local t = {}
 	while instanceClass do
-		for _, v in ipairs(instanceClass.Properties) do
-			table.insert(t, v)
+		for _, property in ipairs(instanceClass.Properties) do
+			table.insert(t, property)
 		end
 		instanceClass = RobloxApi[instanceClass.Superclass]
 	end
 	table.sort(t)
 	return t
+end
+
+local function getRobloxDefaults(className: string): ({ [string]: any }, { string })
+	local propertiesList = getRobloxProperties(className)
+
+	local classCache = _cachedPropertyValues[className]
+	if classCache then
+		return classCache, propertiesList
+	else
+		classCache = {}
+		_cachedPropertyValues[className] = classCache
+	end
+
+	local created = Instance.new(className)
+
+	for _, propertyName in ipairs(propertiesList) do
+		local ok, defaultValue = pcall(tryPropertyName, created, propertyName)
+
+		if ok then
+			classCache[propertyName] = defaultValue
+		end
+	end
+
+	created:Destroy()
+	return classCache, propertiesList
 end
 
 -- given an Instance and a property-value table subset
@@ -158,6 +189,7 @@ end
 
 return {
 	getRobloxProperties = getRobloxProperties,
+	getRobloxDefaults = getRobloxDefaults,
 	instanceSubsetEquality = instanceSubsetEquality,
 	InstanceSubset = InstanceSubset,
 	getInstanceSubset = getInstanceSubset,

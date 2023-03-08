@@ -226,9 +226,7 @@ function groupOptions(options: Config_ProjectConfig & Config_GlobalConfig): {
 					runTestsByPath = options.runTestsByPath,
 					silent = options.silent,
 					skipFilter = options.skipFilter,
-					-- ROBLOX deviation START: not supported
-					-- snapshotFormat = options.snapshotFormat,
-					-- ROBLOX deviation END
+					snapshotFormat = options.snapshotFormat,
 					testFailureExitCode = options.testFailureExitCode,
 					testNamePattern = options.testNamePattern,
 					testPathPattern = options.testPathPattern,
@@ -305,8 +303,8 @@ function groupOptions(options: Config_ProjectConfig & Config_GlobalConfig): {
 			-- skipNodeResolution = options.skipNodeResolution,
 			-- ROBLOX deviation END
 			slowTestThreshold = options.slowTestThreshold,
+			snapshotFormat = options.snapshotFormat,
 			-- ROBLOX deviation START: not supported
-			-- snapshotFormat = options.snapshotFormat,
 			-- snapshotResolver = options.snapshotResolver,
 			-- ROBLOX deviation END
 			snapshotSerializers = options.snapshotSerializers,

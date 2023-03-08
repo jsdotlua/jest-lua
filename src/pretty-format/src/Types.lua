@@ -46,6 +46,7 @@ export type Options = {
 	min: boolean,
 	plugins: Plugins,
 	printBasicPrototype: boolean,
+	printInstanceDefaults: boolean,
 	printFunctionName: boolean,
 	theme: Theme,
 }
@@ -61,6 +62,7 @@ export type PrettyFormatOptions = {
 	min: boolean?,
 	plugins: Plugins?,
 	printBasicPrototype: boolean?,
+	printInstanceDefaults: boolean?,
 	printFunctionName: boolean?,
 	theme: ThemeReceived?,
 }
@@ -79,6 +81,7 @@ export type Config = {
 	min: boolean,
 	plugins: Plugins,
 	printBasicPrototype: boolean,
+	printInstanceDefaults: boolean,
 	printFunctionName: boolean,
 	spacingInner: string,
 	spacingOuter: string,

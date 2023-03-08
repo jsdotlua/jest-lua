@@ -168,6 +168,41 @@ Default: `5`
 
 The number of seconds after which a test is considered as slow and reported as such in the results.
 
+### `snapshotFormat` \[table]
+<a href='https://jestjs.io/docs/27.x/configuration#snapshotformat-object' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+
+Default: `nil`
+
+Allows overriding specific snapshot formatting options documented in the [pretty-format readme](https://github.com/facebook/jest/blob/main/packages/pretty-format/README.md#usage-with-options), with the exceptions of `compareKeys` and `plugins`.
+
+<img alt='deviation' src='img/deviation.svg'/>
+
+`pretty-format` also supports the formatting option `printInstanceDefaults` (default: `true`) which can be set to `false` to only print properties of a Roblox `Instance` that have been changed.
+
+For example, this config would have the snapshot formatter not print out any unmodified values of `TextLabel`.
+```lua title="jest.config.lua"
+return {
+	testMatch = { "**/*.spec" },
+	snapshotFormat = { printInstanceDefaults = false }
+}
+```
+```lua title="test.spec.lua"
+test('printInstanceDefaults', function()
+	local label = Instance.new("TextLabel")
+	label.Text = "Hello"
+	expect(label).toMatchSnapshot()
+end)
+```
+```lua title="test.spec.snap.lua"
+exports[ [=[printInstanceDefaults 1]=] ] = [=[
+
+TextLabel {
+  "Text": "Hello",
+}
+]=]
+```
+
+
 ### `snapshotSerializers` \[array&lt;serializer&gt;]
 <a href='https://jestjs.io/docs/27.x/configuration#snapshotserializers-arraystring' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
 
