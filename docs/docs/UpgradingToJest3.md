@@ -99,8 +99,10 @@ end)
 There are a couple interesting differences:
 * Jest Roblox v3.0 no longer relies on test files returning a callback so the test file does not need to be wrapped in a callback function.
 
-:::caution
-Every ModuleScript must return a value, so every test file should return an empty table.
+:::tip
+Jest Roblox v2.x required that all test modules return a function with test contents. In Jest Roblox v3.0.0 - v3.1.1, test modules no longer relied on a wrapping function, but still expected a non-nil return.
+
+As of Jest Roblox v3.1.1, test modules are treated specially and are no longer expected to return any value.
 :::
 
 * In addition to `expect`, `it` is also imported from `JestGlobals`. Unlike TestEZ or Jest Roblox v2.x, no values are magically injected into the environment. 
