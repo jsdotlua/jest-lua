@@ -13,6 +13,7 @@ local afterEach = JestGlobals.afterEach
 local describe = JestGlobals.describe
 local test = JestGlobals.test
 local jest = JestGlobals.jest
+local FRAME_TIME = 15
 
 describe("timers", function()
 	beforeEach(function()
@@ -111,4 +112,17 @@ describe("timers", function()
 		jest.advanceTimersByTime(10000)
 		expect(triggered).toBe(true)
 	end, 1000)
+end)
+
+describe("timers with configurable frame time", function()
+	test("setTimeout - should trigger", function()
+		jest.useFakeTimers()
+		jest.setEngineFrameTime(FRAME_TIME)
+		local triggered = false
+		setTimeout(function()
+			triggered = true
+		end, 10)
+		jest.advanceTimersByTime(0)
+		expect(triggered).toBe(true)
+	end)
 end)

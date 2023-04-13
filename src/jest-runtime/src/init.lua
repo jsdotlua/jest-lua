@@ -2579,6 +2579,14 @@ function Runtime_private:_createJestObjectFor(from: ModuleScript): Jest
 		advanceTimersToNextTimer = function(steps: number?)
 			return _getFakeTimers():advanceTimersToNextTimer(steps)
 		end,
+		-- ROBLOX deviation START: additional method to allow mocking of game-engine timer behavior
+		getEngineFrameTime = function()
+			return _getFakeTimers():getEngineFrameTime()
+		end,
+		setEngineFrameTime = function(frameTimeMs: number)
+			return _getFakeTimers():setEngineFrameTime(frameTimeMs)
+		end,
+		-- ROBLOX deviation END
 		-- ROBLOX TODO START: not implemented yet
 		-- autoMockOff = disableAutomock,
 		-- autoMockOn = enableAutomock,

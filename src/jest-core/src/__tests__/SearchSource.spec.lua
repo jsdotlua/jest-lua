@@ -208,7 +208,9 @@ describe("SearchSource", function()
 					name = name,
 					rootDir = rootDir,
 					testMatch = nil,
-					testRegex = "not-really-a-test",
+					-- TODO: change back to "not-really-a-test once https://roblox.atlassian.net/browse/LUATOOLS-146 is resolved
+					-- Ticket to remove: https://roblox.atlassian.net/browse/ADO-2644
+					testRegex = "not-really-a-test.txt",
 				}, {} :: Config_Argv):expect().options
 				-- ROBLOX deviation START: then_ not available, using andThen instead
 				-- return findMatchingTests(config):then_(function(data)

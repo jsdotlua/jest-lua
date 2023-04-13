@@ -505,7 +505,7 @@ describe("prettyFormat()", function()
 						return v.payload
 					end,
 					test = function(v)
-						return v and typeof(v.payload) == "string"
+						return typeof(v) == "table" and typeof(v.payload) == "string"
 					end,
 				},
 			},

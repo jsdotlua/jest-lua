@@ -27,6 +27,7 @@ local afterEach = JestGlobals.afterEach
 
 local FakeTimers = require(CurrentModule)
 local timers = FakeTimers.new()
+local FRAME_TIME = 15
 
 afterEach(function()
 	timers:useRealTimers()
@@ -451,6 +452,112 @@ describe("FakeTimers", function()
 			timers:advanceTimersByTime(5)
 
 			expect(timers:getTimerCount()).toEqual(0)
+		end)
+	end)
+end)
+
+describe("FakeTimers with frame time", function()
+	describe("construction", function()
+		it("gets and sets frame time", function()
+			timers:useFakeTimers()
+			timers:setEngineFrameTime(FRAME_TIME)
+			expect(timers:getEngineFrameTime()).toEqual(FRAME_TIME)
+		end)
+	end)
+
+	describe("advanceTimersByTime", function()
+		it("advances time by the minimum multiple of frame time greater than the timeout", function()
+			timers:useFakeTimers()
+			timers:setEngineFrameTime(FRAME_TIME)
+
+			local callback = jest.fn()
+			timers.delayOverride(0, callback)
+			timers:advanceTimersByTime(0)
+			expect(callback).toHaveBeenCalled()
+
+			expect(timers.osOverride.clock()).toEqual(FRAME_TIME / 1000)
+		end)
+
+		it("advances time by the minimum multiple of frame time greater than the timeout", function()
+			timers:useFakeTimers()
+			timers:setEngineFrameTime(FRAME_TIME)
+
+			local callback1 = jest.fn()
+			local callback2 = jest.fn()
+			timers.delayOverride(0.01, callback1)
+			timers.delayOverride(0, callback2)
+			timers:advanceTimersByTime(0)
+			expect(callback2).toHaveBeenCalled()
+			expect(callback1).toHaveBeenCalled()
+
+			expect(timers.osOverride.clock()).toEqual(FRAME_TIME / 1000)
+		end)
+
+		it("does nothing when no timers have been scheduled", function()
+			timers:useFakeTimers()
+			timers:setEngineFrameTime(FRAME_TIME)
+			timers:advanceTimersByTime(100)
+
+			expect(timers.osOverride.clock()).toEqual(FRAME_TIME * 7 / 1000)
+		end)
+	end)
+
+	describe("advanceTimersToNextTimer", function()
+		it("runs timers in order", function()
+			timers:useFakeTimers()
+			timers:setEngineFrameTime(FRAME_TIME)
+
+			local runOrder = {}
+			local mock1 = jest.fn(function()
+				table.insert(runOrder, "mock1")
+			end)
+			local mock2 = jest.fn(function()
+				table.insert(runOrder, "mock2")
+			end)
+			local mock3 = jest.fn(function()
+				table.insert(runOrder, "mock3")
+			end)
+
+			timers.delayOverride(0.01, mock1)
+			timers.delayOverride(0, mock2)
+			timers.delayOverride(0, mock3)
+
+			timers:advanceTimersToNextTimer()
+			-- Move forward to first frame after t=0
+			local targetTime = FRAME_TIME
+			expect(timers.osOverride.clock()).toEqual(targetTime / 1000)
+			expect(runOrder).toEqual({ "mock2", "mock3", "mock1" })
+		end)
+
+		it("run correct amount of steps", function()
+			timers:useFakeTimers()
+			timers:setEngineFrameTime(FRAME_TIME)
+
+			local runOrder = {}
+			local mock1 = jest.fn(function()
+				table.insert(runOrder, "mock1")
+			end)
+			local mock2 = jest.fn(function()
+				table.insert(runOrder, "mock2")
+			end)
+			local mock3 = jest.fn(function()
+				table.insert(runOrder, "mock3")
+			end)
+			local mock4 = jest.fn(function()
+				table.insert(runOrder, "mock4")
+			end)
+
+			timers.delayOverride(0.01, mock1)
+			timers.delayOverride(0, mock2)
+			timers.delayOverride(0, mock3)
+			timers.delayOverride(200, mock4)
+
+			-- We expect to advance two steps, so we move forward to first frame after t=200
+			-- because mock1, mock2, and mock3 all fire in the same frame / step
+			timers:advanceTimersToNextTimer(2)
+			local targetTime = math.floor((200 * 1000 / FRAME_TIME) + 1) * FRAME_TIME
+			expect(timers.osOverride.clock()).toEqual(targetTime / 1000)
+			expect(runOrder).toEqual({ "mock2", "mock3", "mock1", "mock4" })
 		end)
 	end)
 end)

@@ -136,12 +136,12 @@ When this API is called, all pending macro-tasks will be executed. If those task
 
 This is often useful for synchronously executing `delay`s during a test in order to synchronously assert about some behavior that would only happen after the `delay` callbacks executed. See the [Timer mocks](timer-mocks) doc for more information.
 
-### `jest.advanceTimersByTime(secsToRun)`
-<a href='https://jestjs.io/docs/27.x/jest-object#jestadvancetimersbytimemstorun' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+### `jest.advanceTimersByTime(msToRun)`
+<a href='https://jestjs.io/docs/27.x/jest-object#jestadvancetimersbytimemstorun' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
 
 Executes only the macro task queue (i.e., all tasks queued by `delay`).
 
-When this API is called, all timers are advanced by `secsToRun` seconds. All pending "macro-tasks" that have been queued, and would be executed within this time frame will be executed. Additionally, if those macro-tasks schedule new macro-tasks that would be executed within the same time frame, those will be executed until there are no more macro-tasks remaining in the queue, that should be run within `secsToRun` seconds.
+When this API is called, all timers are advanced by `msToRun` milliseconds. All pending "macro-tasks" that have been queued, and would be executed within this time frame will be executed. Additionally, if those macro-tasks schedule new macro-tasks that would be executed within the same time frame, those will be executed until there are no more macro-tasks remaining in the queue, that should be run within `msToRun` milliseconds.
 
 ### `jest.runOnlyPendingTimers()`
 <a href='https://jestjs.io/docs/27.x/jest-object#jestrunonlypendingtimers' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>

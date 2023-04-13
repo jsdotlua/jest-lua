@@ -53,6 +53,8 @@ export type FakeTimers = {
 	setSystemTime: (self: FakeTimers, now: any) -> (),
 	getRealSystemTime: (self: FakeTimers) -> (),
 	getTimerCount: (self: FakeTimers) -> number,
+	setEngineFrameTime: (self: FakeTimers, frameTimeMs: number) -> (),
+	getEngineFrameTime: (self: FakeTimers) -> number,
 	delayOverride: typeof(delay),
 	tickOverride: typeof(tick),
 	timeOverride: typeof(time),
@@ -93,6 +95,7 @@ function FakeTimers.new(): FakeTimers
 		_mock = mock,
 		_mockTimeMs = 0,
 		_mockSystemTime = realDateTime.now().UnixTimestamp,
+		_engineFrameTime = 0,
 		delayOverride = delayOverride,
 		tickOverride = tickOverride,
 		timeOverride = timeOverride,
@@ -106,11 +109,15 @@ function FakeTimers.new(): FakeTimers
 end
 
 function FakeTimers:_advanceToTime(time_): ()
+	local targetTime = time_
 	-- Make sure we don't go back in time due to a queued timer
 	if time_ > self._mockTimeMs then
-		local timeDiff = time_ - self._mockTimeMs
+		if self._engineFrameTime > 0 then
+			targetTime = math.floor(time_ / self._engineFrameTime) * self._engineFrameTime
+		end
+		local timeDiff = targetTime - self._mockTimeMs
 		-- Move mockTime to target time, in case the callback reads it via `tick`
-		self._mockTimeMs = time_
+		self._mockTimeMs = targetTime
 		self._mockSystemTime = self._mockSystemTime + timeDiff
 	end
 end
@@ -128,7 +135,7 @@ end
 function FakeTimers:runAllTimers(): ()
 	if self:_checkFakeTimers() then
 		for _, timeout in self._timeouts do
-			self:_advanceToTime(timeout.time)
+			self:_advanceToTime(timeout.time + self._engineFrameTime)
 			timeout.callback(unpack(timeout.args))
 		end
 	end
@@ -145,7 +152,7 @@ function FakeTimers:runOnlyPendingTimers(): ()
 		-- Call all pending timeouts
 		self._timeouts = {}
 		for _, timeout in pendingTimeouts do
-			self:_advanceToTime(timeout.time)
+			self:_advanceToTime(timeout.time + self._engineFrameTime)
 			timeout.callback(unpack(timeout.args))
 		end
 	end
@@ -160,7 +167,11 @@ function FakeTimers:advanceTimersToNextTimer(steps_: number?): ()
 		local nextTime = -1
 		for _, timeout in self._timeouts do
 			if timeout.time > nextTime and steps > 0 then
-				nextTime = timeout.time
+				if self._engineFrameTime > 0 then
+					nextTime = math.floor((timeout.time / self._engineFrameTime) + 1) * self._engineFrameTime
+				else
+					nextTime = timeout.time
+				end
 				self:_advanceToTime(nextTime)
 				steps = steps - 1
 			end
@@ -177,10 +188,13 @@ end
 function FakeTimers:advanceTimersByTime(msToRun: number): ()
 	if self:_checkFakeTimers() then
 		local targetTime = self._mockTimeMs + msToRun
+		if self._engineFrameTime > 0 then
+			targetTime = (math.floor(targetTime / self._engineFrameTime) + 1) * self._engineFrameTime
+		end
 		local newTimeouts = {}
 		for _, timeout in self._timeouts do
 			if targetTime >= timeout.time then
-				self:_advanceToTime(timeout.time)
+				self:_advanceToTime(timeout.time + self._engineFrameTime)
 				timeout.callback(unpack(timeout.args))
 			else
 				table.insert(newTimeouts, timeout)
@@ -277,6 +291,7 @@ function FakeTimers:reset(): ()
 		self._timeouts = {}
 		self._mockTimeMs = 0
 		self._mockSystemTime = realDateTime.now().UnixTimestamp
+		self._engineFrameTime = 0
 	end
 end
 
@@ -290,6 +305,23 @@ function FakeTimers:setSystemTime(now: any): ()
 		end
 		self._mockSystemTime = now
 	end
+end
+
+function FakeTimers:setEngineFrameTime(frameTimeMs: number): ()
+	if self:_checkFakeTimers() then
+		if frameTimeMs < 0 then
+			error("Frame Time should be greater than 0")
+		end
+
+		self._engineFrameTime = frameTimeMs
+	end
+end
+
+function FakeTimers:getEngineFrameTime(): number
+	if self:_checkFakeTimers() then
+		return self._engineFrameTime
+	end
+	return 0
 end
 
 function FakeTimers:getRealSystemTime(): ()

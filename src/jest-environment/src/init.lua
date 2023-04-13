@@ -310,6 +310,21 @@ export type Jest = {
 	]]
 	isolateModules: (fn: () -> ()) -> Jest,
 	--[[*
+	* ROBLOX deviation START: configurable engine frame time
+	* Because the Roblox game engine processes things in frames rather than in continuous time, users can configure
+	* an engine frame time when using fake timers to more simulate engine timer behavior more accurately.
+	]]
+	--[[*
+	* When using the fake versions of the standard timer functions, returns the frame time (in ms). By default, this is 0 (i.e. continuous time).
+	]]
+	getEngineFrameTime: () -> number,
+	--[[*
+	* When using the fake versions of the standard timer functions, set the frame time (in ms) for processing timeouts. Simulates the way
+	* the engine scheduler processes timeouts (i.e. in batches delineated by frames). Timers process in the first frame greater than their set time.
+	]]
+	setEngineFrameTime: (frameTimeMs: number) -> (),
+	-- ROBLOX deviation END
+	--[[*
 	* When mocking time, `Date.now()` will also be mocked. If you for some reason need access to the real current time, you can invoke this function.
 	*
 	* > Note: This function is only available when using Lolex as fake timers implementation
