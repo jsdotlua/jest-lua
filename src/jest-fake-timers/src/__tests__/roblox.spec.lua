@@ -466,6 +466,55 @@ describe("FakeTimers with frame time", function()
 	end)
 
 	describe("advanceTimersByTime", function()
+		it("advanceTimersByTime below frame time", function()
+			timers:useFakeTimers()
+			timers:setEngineFrameTime(FRAME_TIME)
+
+			expect(timers.osOverride.clock()).toBe(0)
+			timers:advanceTimersByTime(0)
+			-- Advances by at least one frame
+			expect(timers.osOverride.clock()).toBe(FRAME_TIME / 1000)
+
+			timers:advanceTimersByTime(FRAME_TIME - 5)
+			expect(timers.osOverride.clock()).toBe((FRAME_TIME * 2) / 1000)
+		end)
+
+		it("correctly sets delays below frame time", function()
+			timers:useFakeTimers()
+			timers:setEngineFrameTime(FRAME_TIME)
+
+			local callback = jest.fn()
+			timers.delayOverride(0, callback)
+			timers.delayOverride(0, callback)
+			timers.delayOverride((FRAME_TIME - 5) / 1000, callback)
+			expect(callback).toHaveBeenCalledTimes(0)
+
+			timers:advanceTimersByTime(0)
+			expect(timers.osOverride.clock()).toBe(FRAME_TIME / 1000)
+			expect(callback).toHaveBeenCalledTimes(3)
+		end)
+
+		it("recursive delay(0)", function()
+			timers:useFakeTimers()
+			timers:setEngineFrameTime(FRAME_TIME)
+
+			local loopFn = function() end
+			loopFn = jest.fn(function()
+				timers.delayOverride(0, loopFn)
+			end)
+			timers.delayOverride(0, loopFn)
+
+			timers:advanceTimersByTime(0)
+			-- The minimum amount of time needed to complete a 0 second timer is 1 frame
+			expect(loopFn).toHaveBeenCalledTimes(1)
+			expect(timers.osOverride.clock()).toBe(FRAME_TIME / 1000)
+
+			-- Advance by just under the frame time for 10 frames to advance by 10 frames
+			timers:advanceTimersByTime((FRAME_TIME * 10) - 1)
+			expect(loopFn).toHaveBeenCalledTimes(11)
+			expect(timers.osOverride.clock()).toBe((FRAME_TIME * 11) / 1000)
+		end)
+
 		it("advances time by the minimum multiple of frame time greater than the timeout", function()
 			timers:useFakeTimers()
 			timers:setEngineFrameTime(FRAME_TIME)
@@ -518,9 +567,9 @@ describe("FakeTimers with frame time", function()
 				table.insert(runOrder, "mock3")
 			end)
 
-			timers.delayOverride(0.01, mock1)
+			timers.delayOverride(0.012, mock1)
 			timers.delayOverride(0, mock2)
-			timers.delayOverride(0, mock3)
+			timers.delayOverride(0.01, mock3)
 
 			timers:advanceTimersToNextTimer()
 			-- Move forward to first frame after t=0

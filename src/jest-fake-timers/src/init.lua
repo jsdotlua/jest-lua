@@ -225,7 +225,8 @@ function FakeTimers:useRealTimers(): ()
 end
 
 local function fakeDelay(self, delayTime, callback, ...)
-	local delayTimeMs = delayTime * 1000
+	-- Small hack to make sure 0 second recursive timers don't trigger twice in a single frame
+	local delayTimeMs = (self._engineFrameTime / 1000) + delayTime * 1000
 	local targetTime = self._mockTimeMs + delayTimeMs
 	local timeout = {
 		time = targetTime,
