@@ -1,8 +1,11 @@
 # Jest Roblox Changelog
 
 ## Unreleased
+
+## 3.3.0 (2022-04-26)
 * :sparkles: `pretty-format`: Added `printInstanceDefaults` formatting option that toggles whether unmodified Instance properties are printed ([#341](https://github.com/Roblox/jest-roblox/pull/341))
 * :sparkles: Added `snapshotFormat` configuration option ([#341](https://github.com/Roblox/jest-roblox/pull/341))
+* :sparkles: Added support for a configurable engine frame time for fake timers ([#343](https://github.com/Roblox/jest-roblox/pull/343))
 
 ## 3.2.5 (2022-01-19)
 * :bug: Fix error when obsolete snapshots and no file system access ([#334](https://github.com/Roblox/jest-roblox/pull/334))

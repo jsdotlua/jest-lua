@@ -21,6 +21,63 @@ import TOCInline from "@theme/TOCInline";
 
 ## Mock Modules
 
+### `jest.mock(module, factory)`
+<a href='https://jestjs.io/docs/jest-object#jestmockmodulename-factory-options' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+
+Mocks a module with an mocked version when it is being required.　The second argument must be used to specify the value of the mocked module.
+```lua title="mockedModule.lua"
+return {}
+```
+```lua title="__tests__/testMockedModule.spec.lua"
+beforeEach(function()
+	jest.resetModules()
+	jest.mock(Workspace.mockedModule, function()
+		return {
+			default = jest.fn(function() return 42 end),
+			foo = jest.fn(function() return 43 end)
+		}
+	end)
+end)
+
+local mockedModule
+
+it("mockedModule should be mocked", function()
+	mockedModule = require(Workspace.mockedModule)
+	expect(mockedModule.default()).toBe(42)
+	expect(mockedModule.foo()).toBe(43)
+end)
+```
+
+Modules that are mocked with `jest.mock` are mocked only for the file that calls `jest.mock`. Another file that imports the module will get the original implementation even if it runs after the test file that mocks the module.
+
+Returns the `jest` object for chaining.
+
+### `jest.unmock(module)`
+<a href='https://jestjs.io/docs/jest-object#jestunmockmodulename' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+
+Indicates that the module system should never return a mocked version of the specified module from `require()` (e.g. that it should always return the real module).
+
+Returns the `jest` object for chaining.
+```lua title="__tests__/testMockedModule.spec.lua"
+it("mockedModule should not be mocked", function()
+	jest.unmock(Workspace.mockedModule)
+	mockedModule = require(Workspace.mockedModule)
+	expect(mockedModule).toEqual({})
+end)
+```
+
+### `jest.requireActual(module)`
+<a href='https://jestjs.io/docs/jest-object#jestrequireactualmodulename' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+
+Returns the actual module instead of a mock, bypassing all checks on whether the module should receive a mock implementation or not.
+
+```lua title="__tests__/testMockedModule.spec.lua"
+it("mockedModule also should not be mocked", function()
+	mockedModule = jest.requireActual(Workspace.mockedModule)
+	expect(mockedModule).toEqual({})
+end)
+```
+
 ### `jest.isolateModules(fn)`
 <a href='https://jestjs.io/docs/27.x/jest-object#jestisolatemodulesfn' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
 
@@ -178,3 +235,13 @@ Set the current system time used by fake timers. Simulates a user changing the s
 <a href='https://jestjs.io/docs/27.x/jest-object#jestgetrealsystemtime' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
 
 When mocking time, `DateTime.now()` will also be mocked. If you for some reason need access to the real current time, you can invoke this function.
+
+### `jest.setEngineFrameTime(frameTimeMs)`
+<img alt='Roblox only' src='img/roblox-only.svg'/>
+
+`jest.setEngineFrameTime` sets the frame time, in milliseconds, by which all advance timer methods process timers. `frameTimeMs` must be a value greater than or equal to 0; by default, `frameTimeMs` is set to `0` (i.e. continuous time).
+
+### `jest.getEngineFrameTime()`
+<img alt='Roblox only' src='img/roblox-only.svg'/>
+
+`jest.getEngineFrameTime` gets the frame time by which timers are processed.

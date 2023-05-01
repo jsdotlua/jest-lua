@@ -65,7 +65,7 @@ Currently, Jest Roblox will error if no configuration file is found.
 :::
 
 ### Updating Tests
-Jest Roblox v3.0 no longer relies on test files returning a callback. However, because ModuleScripts are required to return a value, you can return an empty table.
+Jest Roblox v3.0 no longer relies on test files returning a callback.
 A simple test file in v2.x may look like the following:
 ```lua title="test.spec.lua"
 return function()

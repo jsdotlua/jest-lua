@@ -504,7 +504,7 @@ expect.addSnapshotSerializer(serializer)
 -- affects expect(value).toMatchSnapshot() assertions in the test file
 ```
 
-See [configuring Jest Roblox] for more information.
+See [configuring Jest Roblox](configuration) for more information.
 
 ### `.never`
 <a href='https://jestjs.io/docs/27.x/expect#not' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>

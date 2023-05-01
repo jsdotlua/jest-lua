@@ -120,14 +120,6 @@ local instance1 = mockFn.new()
 
 The supported timers are `delay`, `tick`, `time`, `DateTime`, `task.delay`, `os.time`, and `os.clock`.
 
-### `jest.setEngineFrameTime(frameTimeMs)`
-
-`jest.setEngineFrameTime` sets the frame time, in milliseconds, by which all advance timer methods process timers. `frameTimeMs` must be a value greater than or equal to 0; by default, `frameTimeMs` is set to `0` (i.e. continuous time).
-
-### `jest.getEngineFrameTime()`
-
-`jest.getEngineFrameTime` gets the frame time by which timers are processed.
-
 ## Configuration
 
 ### `projects`

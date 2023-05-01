@@ -16,12 +16,12 @@ Also see [Fake Timers API](jest-object#fake-timers) documentation.
 
 ## Enable Fake Timers
 
-In the following example we enable fake timers by calling `jest.useFakeTimers()`. This is replacing the original implementation of `delay()` and other timer functions. Timers can be restored to their normal behavior with `jest.useRealTimers()`.
+In the following example we enable fake timers by calling `jest.useFakeTimers()`. This is replacing the original implementation of `task.delay()` and other timer functions. Timers can be restored to their normal behavior with `jest.useRealTimers()`.
 
 ```lua title="timerGame.lua"
 return function(callback)
 	print('Ready....go!')
-	delay(1, function()
+	task.delay(1, function()
 		print("Time's up -- stop!")
 		if callback do
 			callback()
@@ -75,13 +75,13 @@ If that is your case, using `jest.runOnlyPendingTimers()` will solve the problem
 local function infiniteTimerGame(callback)
 	print('Ready....go!')
 
-	delay(1, function()
+	task.delay(1, function()
 		print("Time's up! 10 seconds before the next game starts...");
 		if callback then
 			callback()
 		end
 
-		delay(10, function()
+		task.delay(10, function()
 			infiniteTimerGame(callback)
 		end)
 	end)
@@ -120,7 +120,7 @@ Another possibility is use `jest.advanceTimersByTime(secsToRun)`. When this API 
 ```lua title="timerGame.lua"
 return function(callback)
 	print('Ready....go!')
-	delay(1, function()
+	task.delay(1, function()
 		print("Time's up -- stop!")
 		if callback do
 			callback()
@@ -153,14 +153,18 @@ end)
 Lastly, it may occasionally be useful in some tests to be able to clear all of the pending timers. For this, we have `jest.clearAllTimers()`.
 
 ## Setting Engine Frame Time
-<img alt='deviation' src='img/deviation.svg'/>
+<img alt='Roblox only' src='img/roblox-only.svg'/>
 
-By default, Jest Roblox processes fake timers in continuous time. However, because the Roblox engine processes timers only once per frame, this may not accurately reflect engine behavior. To more closely mock engine behavior, Jest Roblox allows you to configure an engine frame time. Roblox currently runs at a 60 frames a second, which can be configured with `jest.setEngineFrameTime(1000/60)`.
+By default, Jest Roblox processes fake timers in continuous time. However, because the Roblox engine processes timers only once per frame, this may not accurately reflect engine behavior.
+
+To more closely mock engine behavior, Jest Roblox allows you to configure an engine frame time, which ensures that timers are queued and run more similarly to how the engine [task scheduler](https://create.roblox.com/docs/optimization/microprofiler/task-scheduler) queues and runs timers. `jest.advanceTimersByTime()` will behave like an equivalent `task.wait()`, particularly at micro time-scales.
+
+Roblox currently runs at a 60 frames a second, which can be configured with `jest.setEngineFrameTime(1000/60)`.
 
 ```lua title="timerGame.lua"
 return function(callback)
 	print('Ready....go!')
-	delay(0.01, function()
+	task.delay(0.01, function()
 		print("Time's up -- stop!")
 		if callback do
 			callback()
@@ -184,7 +188,7 @@ test('calls the callback after advanceTimersByTime advances by 1 frame', functio
 	-- At this point in time, the callback should not have been called yet
 	expect(callback).never.toBeCalled()
 
-	-- advanceTimersByTime advances by 1 frame, since a timeout is processed in the minimum multiple of frame time GREATER than the timeout
+	-- Timer is advanced by about 16ms, since a 0 second timer is processed in the next frame
 	jest.advanceTimersByTime(0)
 
 	-- Now our callback should have been called!
