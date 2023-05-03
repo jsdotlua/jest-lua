@@ -1,5 +1,5 @@
 --!nocheck
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/__tests__/spyMatchers.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/expect/src/__tests__/spyMatchers.test.ts
 -- /**
 -- * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 -- *
@@ -25,6 +25,18 @@ local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiSt
 local jestExpect = require(CurrentModule)
 
 local jestMock = require(Packages.Dev.JestMock).ModuleMocker
+
+expect.extend({
+	optionalFn = function(_, fn)
+		local pass = fn == nil or typeof(fn) == "function"
+		return {
+			message = function()
+				return "expect either a function or undefined"
+			end,
+			pass = pass,
+		}
+	end,
+})
 
 local function createSpy(fn)
 	local spy = {}
@@ -261,6 +273,122 @@ for _, calledWith in ipairs({
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
+		-- ROBLOX deviation START: replace mock fn, tostring and not with never.
+		-- test("works with arguments that don't match in number of arguments", function()
+		-- 	local fn = jest.fn()
+		-- 	fn("foo", "bar", "plop")
+		-- 	caller(jestExpect(createSpy(fn))["not"][tostring(calledWith)], "foo", "bar")
+		-- 	caller(jestExpect(fn)["not"][tostring(calledWith)], "foo", "bar")
+		-- 	expect(function()
+		-- 		return caller(jestExpect(fn)[tostring(calledWith)], "foo", "bar")
+		-- 	end).toThrowErrorMatchingSnapshot()
+		-- end)
+		-- test("works with arguments that don't match with matchers", function()
+		-- 	local fn = jest.fn()
+		-- 	fn("foo", "bar")
+		-- 	caller(
+		-- 		jestExpect(createSpy(fn))["not"][tostring(calledWith)],
+		-- 		jestExpect:any(String),
+		-- 		jestExpect:any(Number)
+		-- 	)
+		-- 	caller(
+		-- 		jestExpect(fn)["not"][tostring(calledWith)],
+		-- 		jestExpect:any(String),
+		-- 		jestExpect:any(Number)
+		-- 	)
+		-- 	expect(function()
+		-- 		return caller(
+		-- 			jestExpect(fn)[tostring(calledWith)],
+		-- 			jestExpect:any(String),
+		-- 			jestExpect:any(Number)
+		-- 		)
+		-- 	end).toThrowErrorMatchingSnapshot()
+		-- end)
+		-- test(
+		-- 	"works with arguments that don't match with matchers even when argument is undefined",
+		-- 	function()
+		-- 		local fn = jest.fn()
+		-- 		fn("foo", nil)
+		-- 		caller(
+		-- 			jestExpect(createSpy(fn))["not"][tostring(calledWith)],
+		-- 			"foo",
+		-- 			jestExpect:any(String)
+		-- 		)
+		-- 		caller(jestExpect(fn)["not"][tostring(calledWith)], "foo", jestExpect:any(String))
+		-- 		expect(function()
+		-- 			return caller(
+		-- 				jestExpect(fn)[tostring(calledWith)],
+		-- 				"foo",
+		-- 				jestExpect:any(String)
+		-- 			)
+		-- 		end).toThrowErrorMatchingSnapshot()
+		-- 	end
+		-- )
+		-- test(
+		-- 	"works with arguments that don't match in size even if one is an optional matcher",
+		-- 	function()
+		-- 		-- issue 12463
+		-- 		local fn = jest.fn()
+		-- 		fn("foo")
+		-- 		caller(jestExpect(fn)["not"][tostring(calledWith)], "foo", jestExpect:optionalFn())
+		-- 		expect(function()
+		-- 			return caller(
+		-- 				jestExpect(fn)[tostring(calledWith)],
+		-- 				"foo",
+		-- 				jestExpect:optionalFn()
+		-- 			)
+		-- 		end).toThrowErrorMatchingSnapshot()
+		-- 	end
+		-- )
+		test("works with arguments that don't match in number of arguments", function()
+			local fn = mock:fn()
+			fn("foo", "bar", "plop")
+
+			caller(expect(createSpy(fn)).never[calledWith], "foo", "bar")
+			caller(expect(fn).never[calledWith], "foo", "bar")
+
+			expect(function()
+				return caller(expect(fn)[calledWith], "foo", "bar")
+			end).toThrowErrorMatchingSnapshot()
+		end)
+
+		test("works with arguments that don't match with matchers", function()
+			local fn = mock:fn()
+			fn("foo", "bar")
+
+			caller(expect(createSpy(fn)).never[calledWith], expect.any("string"), expect.any("number"))
+			caller(expect(fn).never[calledWith], expect.any("string"), expect.any("number"))
+
+			expect(function()
+				return caller(expect(fn)[calledWith], expect.any("string"), expect.any("number"))
+			end).toThrowErrorMatchingSnapshot()
+		end)
+
+		test("works with arguments that don't match with matchers even when argument is undefined", function()
+			local fn = mock:fn()
+			fn("foo", nil)
+
+			caller(expect(createSpy(fn)).never[calledWith], "foo", expect.any("string"))
+			caller(expect(fn).never[calledWith], "foo", expect.any("string"))
+
+			expect(function()
+				return caller(expect(fn)[calledWith], "foo", expect.any("string"))
+			end).toThrowErrorMatchingSnapshot()
+		end)
+
+		test.skip("works with arguments that don't match in size even if one is an optional matcher", function()
+			-- issue 12463
+			local fn = mock:fn()
+			fn("foo")
+
+			caller(expect(fn).never[calledWith], "foo", expect:optionalFn())
+
+			expect(function()
+				return caller(expect(fn)[calledWith], "foo", expect:optionalFn())
+			end).toThrowErrorMatchingSnapshot()
+		end)
+		-- ROBLOX deviation END
+
 		test("works with arguments that match", function()
 			local fn = mock:fn()
 			fn("foo", "bar")
@@ -273,6 +401,49 @@ for _, calledWith in ipairs({
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
+		-- ROBLOX deviation START: replace mock fn, tostring and not with never.
+		-- test("works with arguments that match with matchers", function()
+		-- 	local fn = jest.fn()
+		-- 	fn("foo", "bar")
+		-- 	caller(
+		-- 		jestExpect(createSpy(fn))[tostring(calledWith)],
+		-- 		jestExpect:any(String),
+		-- 		jestExpect:any(String)
+		-- 	)
+		-- 	caller(
+		-- 		jestExpect(fn)[tostring(calledWith)],
+		-- 		jestExpect:any(String),
+		-- 		jestExpect:any(String)
+		-- 	)
+		-- 	expect(function()
+		-- 		return caller(
+		-- 			jestExpect(fn)["not"][tostring(calledWith)],
+		-- 			jestExpect:any(String),
+		-- 			jestExpect:any(String)
+		-- 		)
+		-- 	end).toThrowErrorMatchingSnapshot()
+		-- end)
+		test("works with arguments that match with matchers", function()
+			local fn = mock:fn()
+			fn("foo", "bar")
+
+			caller(expect(createSpy(fn))[calledWith], expect.any("string"), expect.any("string"))
+			caller(expect(fn)[calledWith], expect.any("string"), expect.any("string"))
+
+			expect(function()
+				return caller(expect(fn).never[calledWith], expect.any("string"), expect.any("string"))
+			end).toThrowErrorMatchingSnapshot()
+		end)
+		-- ROBLOX deviation END
+
+		-- ROBLOX deviation START: replace mock fn, tostring and not with never.
+		-- test("works with trailing undefined arguments", function()
+		-- 	local fn = jest.fn()
+		-- 	fn("foo", nil)
+		-- 	expect(function()
+		-- 		return caller(jestExpect(fn)[tostring(calledWith)], "foo")
+		-- 	end).toThrowErrorMatchingSnapshot()
+		-- end)
 		test("works with trailing undefined arguments", function()
 			local fn = mock:fn()
 			fn("foo", nil)
@@ -281,8 +452,45 @@ for _, calledWith in ipairs({
 				caller(jestExpect(fn)[calledWith], "foo")
 			end).toThrowErrorMatchingSnapshot()
 		end)
+		-- ROBLOX deviation END
+
+		-- ROBLOX deviation START: replace mock fn, tostring and not with never.
+		-- test("works with trailing undefined arguments if requested by the match query", function()
+		-- 	local fn = jest.fn()
+		-- 	fn("foo", nil)
+		-- 	caller(jestExpect(fn)[tostring(calledWith)], "foo", nil)
+		-- 	expect(function()
+		-- 		return caller(jestExpect(fn)["not"][tostring(calledWith)], "foo", nil)
+		-- 	end).toThrowErrorMatchingSnapshot()
+		-- end)
+		test("works with trailing undefined arguments if requested by the match query", function()
+			local fn = mock:fn()
+			fn("foo", nil)
+
+			caller(expect(fn)[calledWith], "foo", nil)
+
+			expect(function()
+				return caller(expect(fn).never[calledWith], "foo", nil)
+			end).toThrowErrorMatchingSnapshot()
+		end)
+		-- ROBLOX deviation END
 
 		-- ROBLOX deviation: test changed from Map to table
+		-- test("works with Map", function()
+		-- 	local fn = jest.fn()
+		-- 	local m1 = Map.new({ { 1, 2 }, { 2, 1 } })
+		-- 	local m2 = Map.new({ { 1, 2 }, { 2, 1 } })
+		-- 	local m3 = Map.new({ { "a", "b" }, { "b", "a" } })
+		-- 	fn(m1)
+		-- 	caller(jestExpect(fn)[tostring(calledWith)], m2)
+		-- 	caller(jestExpect(fn)["not"][tostring(calledWith)], m3)
+		-- 	expect(function()
+		-- 		return caller(jestExpect(fn)["not"][tostring(calledWith)], m2)
+		-- 	end).toThrowErrorMatchingSnapshot()
+		-- 	expect(function()
+		-- 		return caller(jestExpect(fn)[tostring(calledWith)], m3)
+		-- 	end).toThrowErrorMatchingSnapshot()
+		-- end)
 		test("works with Map", function()
 			local fn = mock:fn()
 
@@ -313,6 +521,22 @@ for _, calledWith in ipairs({
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
+		-- ROBLOX deviation START: use mock.fn, never and remove tostring
+		-- test("works with Set", function()
+		-- 	local fn = jest.fn()
+		-- 	local s1 = Set.new({ 1, 2 })
+		-- 	local s2 = Set.new({ 1, 2 })
+		-- 	local s3 = Set.new({ 3, 4 })
+		-- 	fn(s1)
+		-- 	caller(jestExpect(fn)[tostring(calledWith)], s2)
+		-- 	caller(jestExpect(fn)["not"][tostring(calledWith)], s3)
+		-- 	expect(function()
+		-- 		return caller(jestExpect(fn)["not"][tostring(calledWith)], s2)
+		-- 	end).toThrowErrorMatchingSnapshot()
+		-- 	expect(function()
+		-- 		return caller(jestExpect(fn)[tostring(calledWith)], s3)
+		-- 	end).toThrowErrorMatchingSnapshot()
+		-- end)
 		test("works with Set", function()
 			local fn = mock:fn()
 
@@ -333,18 +557,41 @@ for _, calledWith in ipairs({
 				caller(jestExpect(fn)[calledWith], s3)
 			end).toThrowErrorMatchingSnapshot()
 		end)
+		-- ROBLOX deviation END
 
-		-- ROBLOX deviation: skipped test that relies on Immutable.js
+		-- ROBLOX deviation START: skipped test that relies on Immutable.js
+		-- test("works with Immutable.js objects", function()
+		-- 	local fn = jest.fn()
+		-- 	local directlyCreated = Immutable:Map({ { "a", { b = "c" } } })
+		-- 	local indirectlyCreated = Immutable:Map():set("a", { b = "c" })
+		-- 	fn(directlyCreated, indirectlyCreated)
+		-- 	caller(jestExpect(fn)[tostring(calledWith)], indirectlyCreated, directlyCreated)
+		-- 	expect(function()
+		-- 		return caller(
+		-- 			jestExpect(fn)["not"][tostring(calledWith)],
+		-- 			indirectlyCreated,
+		-- 			directlyCreated
+		-- 		)
+		-- 	end).toThrowErrorMatchingSnapshot()
+		-- end)
 		test.skip("works with Immutable.js objects", function() end)
+		-- ROBLOX deviation END
 
 		-- ROBLOX deviation: changed from array to table with keys as array
 		-- entries and value as true for quick lookup
+		-- local basicCalledWith = {
+		-- 	"lastCalledWith",
+		-- 	"toHaveBeenLastCalledWith",
+		-- 	"toBeCalledWith",
+		-- 	"toHaveBeenCalledWith",
+		-- }
 		local basicCalledWith = {
 			lastCalledWith = true,
 			toHaveBeenLastCalledWith = true,
 			toBeCalledWith = true,
 			toHaveBeenCalledWith = true,
 		}
+		-- ROBLOX deviation END
 
 		if basicCalledWith[calledWith] then
 			test("works with many arguments", function()
@@ -374,12 +621,14 @@ for _, calledWith in ipairs({
 			end)
 		end
 
-		-- ROBLOX deviation: changed from array to table with keys as array
-		-- entries and value as true for quick lookup
+		-- ROBLOX deviation START: changed from array to table with keys as
+		-- array entries and value as true for quick lookup
+		-- local nthCalled = { "toHaveBeenNthCalledWith", "nthCalledWith" }
 		local nthCalled = {
 			toHaveBeenNthCalledWith = true,
 			nthCalledWith = true,
 		}
+		-- ROBLOX deviation END
 
 		if nthCalled[calledWith] then
 			test("works with three calls", function()
@@ -467,6 +716,7 @@ for _, returned in ipairs({ "toReturn", "toHaveReturned" }) do
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
+		-- ROBLOX deviation: changed undefined to nil
 		test("passes when undefined is returned", function()
 			local fn = mock:fn(function()
 				return nil
@@ -530,6 +780,7 @@ for _, returned in ipairs({ "toReturn", "toHaveReturned" }) do
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
+		-- ROBLOX deviation: changed undefined to nil
 		test(".not passes when a call throws undefined", function()
 			local fn = mock:fn(function()
 				error(nil)
@@ -649,6 +900,7 @@ for _, returnedTimes in ipairs({ "toReturnTimes", "toHaveReturnedTimes" }) do
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
+		-- ROBLOX deviation: changed undefined to nil
 		test("calls that return undefined are counted as returns", function()
 			local fn = mock:fn(function()
 				return nil
@@ -937,6 +1189,7 @@ for _, returnedWith in ipairs({
 			end).toThrowErrorMatchingSnapshot()
 		end)
 
+		-- ROBLOX deviation: changed undefined to nil
 		test("a call that throws undefined is not considered to have returned", function()
 			local fn = mock:fn(function()
 				error(nil)

@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-config/src/__tests__/normalize.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-config/src/__tests__/normalize.test.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -202,7 +202,8 @@ describe("rootDir", function()
 	end)
 end)
 -- ROBLOX deviation END
-it("picks a name based on the rootDir", function()
+
+it("picks an id based on the rootDir", function()
 	return Promise.resolve():andThen(function()
 		-- ROBLOX deviation START: uses pathToInstance helper function
 		-- local rootDir = "/root/path/foo"
@@ -213,17 +214,18 @@ it("picks a name based on the rootDir", function()
 		local expected = "/root/path/foo"
 		-- ROBLOX deviation END
 		local options = normalize({ rootDir = rootDir }, {} :: Config_Argv):expect().options
-		expect(options.name).toBe(expected)
+		expect(options.id).toBe(expected)
 	end)
 end)
-it("keeps custom project name based on the projects rootDir", function()
+
+it("keeps custom project id based on the projects rootDir", function()
 	return Promise.resolve():andThen(function()
-		local name = "test"
+		local id = "test"
 		local options = normalize(
 			-- ROBLOX deviation START: uses pathToInstance helper function
-			-- { projects = { { name = name, rootDir = "/path/to/foo" } }, rootDir = "/root/path/baz" },
+			-- { projects = { { id = id, rootDir = "/path/to/foo" } }, rootDir = "/root/path/baz" },
 			{
-				projects = { { name = name, rootDir = pathToInstance("/path/to/foo") } :: any },
+				projects = { { id = id, rootDir = pathToInstance("/path/to/foo") } :: any },
 				rootDir = pathToInstance("/root/path/baz"),
 			},
 			-- ROBLOX deviation END
@@ -232,19 +234,20 @@ it("keeps custom project name based on the projects rootDir", function()
 		-- ROBLOX deviation START: add type
 		-- expect(options.projects[
 		-- 	1 --[[ ROBLOX adaptation: added 1 to array index ]]
-		-- ].name).toBe(name)
-		expect((options.projects[1] :: any).name).toBe(name)
+		-- ].id).toBe(id)
+		expect((options.projects[1] :: any).id).toBe(id)
 		-- ROBLOX deviation END
 	end)
 end)
-it("keeps custom names based on the rootDir", function()
+
+it("keeps custom ids based on the rootDir", function()
 	return Promise.resolve():andThen(function()
 		local options =
 			-- ROBLOX deviation START: uses pathToInstance helper function
-			-- normalize({ name = "custom-name", rootDir = "/root/path/foo" }, {} :: Config_Argv):expect().options
-			normalize({ name = "custom-name", rootDir = pathToInstance("/root/path/foo") }, {} :: Config_Argv):expect().options
+			-- normalize({ name = "custom-id", rootDir = "/root/path/foo" }, {} :: Config_Argv):expect().options
+			normalize({ id = "custom-id", rootDir = pathToInstance("/root/path/foo") }, {} :: Config_Argv):expect().options
 		-- ROBLOX deviation END
-		expect(options.name).toBe("custom-name")
+		expect(options.id).toBe("custom-id")
 	end)
 end)
 it("minimal config is stable across runs", function()
@@ -428,6 +431,85 @@ describe("roots", function()
 	testPathArray("roots")
 end)
 -- ROBLOX deviation START: not supported
+-- describe("reporters", function()
+-- 	local Resolver
+-- 	beforeEach(function()
+-- 		Resolver = require_("jest-resolve").default
+-- 		Resolver.findNodeModule = jest.fn(function(name)
+-- 			return name
+-- 		end)
+-- 	end)
+-- 	it("allows empty list", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			local options =
+-- 				normalize({ reporters = {}, rootDir = "/root/" }, {} :: Config_Argv):expect().options
+-- 			expect(options.reporters).toEqual({})
+-- 		end)
+-- 	end)
+-- 	it("normalizes the path and options object", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			local options = normalize({
+-- 				reporters = {
+-- 					"default",
+-- 					"github-actions",
+-- 					"<rootDir>/custom-reporter.js",
+-- 					{ "<rootDir>/custom-reporter.js", { banana = "yes", pineapple = "no" } },
+-- 					{ "jest-junit", { outputName = "report.xml" } },
+-- 				},
+-- 				rootDir = "/root/",
+-- 			}, {} :: Config_Argv):expect().options
+-- 			expect(options.reporters).toEqual({
+-- 				{ "default", {} },
+-- 				{ "github-actions", {} },
+-- 				{ "/root/custom-reporter.js", {} },
+-- 				{ "/root/custom-reporter.js", { banana = "yes", pineapple = "no" } },
+-- 				{ "jest-junit", { outputName = "report.xml" } },
+-- 			})
+-- 		end)
+-- 	end)
+-- 	it("throws an error if value is neither string nor array", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			expect.assertions(1)
+-- 			expect(normalize({ reporters = { 123 }, rootDir = "/root/" }, {} :: Config_Argv)).rejects
+-- 				.toThrowErrorMatchingSnapshot()
+-- 				:expect()
+-- 		end)
+-- 	end)
+-- 	it("throws an error if first value in the tuple is not a string", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			expect.assertions(1)
+-- 			expect(normalize({ reporters = { { 123 } }, rootDir = "/root/" }, {} :: Config_Argv)).rejects
+-- 				.toThrowErrorMatchingSnapshot()
+-- 				:expect()
+-- 		end)
+-- 	end)
+-- 	it("throws an error if second value is missing in the tuple", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			expect.assertions(1)
+-- 			expect(
+-- 					normalize(
+-- 						{ reporters = { { "some-reporter" } }, rootDir = "/root/" },
+-- 						{} :: Config_Argv
+-- 					)
+-- 				).rejects
+-- 				.toThrowErrorMatchingSnapshot()
+-- 				:expect()
+-- 		end)
+-- 	end)
+-- 	it("throws an error if second value in the tuple is not an object", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			expect.assertions(1)
+-- 			expect(
+-- 					normalize(
+-- 						{ reporters = { { "some-reporter", true } }, rootDir = "/root/" },
+-- 						{} :: Config_Argv
+-- 					)
+-- 				).rejects
+-- 				.toThrowErrorMatchingSnapshot()
+-- 				:expect()
+-- 		end)
+-- 	end)
+-- end)
 -- describe("transform", function()
 -- 	local Resolver
 -- 	beforeEach(function()
@@ -1502,13 +1584,6 @@ describe("testPathPattern", function()
 			-- 			expect(options.testPathPattern).toBe("a\\\\b|c\\\\d")
 			-- 		end)
 			-- 	end)
-			-- 	it("coerces all patterns to strings", function()
-			-- 		return Promise.resolve():andThen(function()
-			-- 			local argv = { [tostring(opt.property)] = { 1 } } :: Config_Argv
-			-- 			local options = normalize(initialOptions, argv):expect().options
-			-- 			expect(options.testPathPattern).toBe("1")
-			-- 		end)
-			-- 	end)
 			-- end)
 			-- ROBLOX deviation END
 		end)
@@ -1769,6 +1844,134 @@ end)
 -- 			expect(options.haste.forceNodeFilesystemAPI).toBe(true)
 -- 			expect(console.warn)["not"].toHaveBeenCalled()
 -- 		end)
+-- 	end)
+-- end)
+-- ROBLOX deviation END
+
+-- ROBLOX deviation START: evaluate these tests to see if they need to be ported
+-- describe("updateSnapshot", function()
+-- 	it("should be all if updateSnapshot is true", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			local options = normalize({ rootDir = "/root/" }, { updateSnapshot = true } :: Config_Argv):expect().options
+-- 			expect(options.updateSnapshot).toBe("all")
+-- 		end)
+-- 	end)
+-- 	it("should be new if updateSnapshot is falsy", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			do
+-- 				local options = normalize({ ci = false, rootDir = "/root/" }, {} :: Config_Argv):expect().options
+-- 				expect(options.updateSnapshot).toBe("new")
+-- 			end
+-- 			do
+-- 				local options =
+-- 					normalize({ ci = false, rootDir = "/root/" }, { updateSnapshot = false } :: Config_Argv):expect().options
+-- 				expect(options.updateSnapshot).toBe("new")
+-- 			end
+-- 		end)
+-- 	end)
+-- 	it("should be none if updateSnapshot is falsy and ci mode is true", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			local defaultCiConfig = Defaults.ci
+-- 			do
+-- 				Defaults.ci = false
+-- 				local options = normalize({ rootDir = "/root/" }, { ci = true } :: Config_Argv):expect().options
+-- 				expect(options.updateSnapshot).toBe("none")
+-- 			end
+-- 			do
+-- 				Defaults.ci = true
+-- 				local options = normalize({ rootDir = "/root/" }, {} :: Config_Argv):expect().options
+-- 				expect(options.updateSnapshot).toBe("none")
+-- 			end
+-- 			Defaults.ci = defaultCiConfig
+-- 		end)
+-- 	end)
+-- end)
+-- describe("shards", function()
+-- 	it("should be object if defined", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			local options = normalize({ rootDir = "/root/" }, { shard = "1/2" } :: Config_Argv):expect().options
+-- 			expect(options.shard).toEqual({ shardCount = 2, shardIndex = 1 })
+-- 		end)
+-- 	end)
+-- end)
+-- local test = it
+-- describe("logs a deprecation warning", function()
+-- 	beforeEach(function()
+-- 		jest.mocked(console.warn):mockImplementation(function() end)
+-- 	end)
+-- 	test("when 'browser' option is passed", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			normalize({ browser = true, rootDir = "/root/" }, {} :: Config_Argv):expect()
+-- 			expect(console.warn).toMatchSnapshot()
+-- 		end)
+-- 	end)
+-- 	test("when 'collectCoverageOnlyFrom' option is passed", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			normalize({
+-- 				collectCoverageOnlyFrom = {
+-- 					["<rootDir>/this-directory-is-covered/Covered.js"] = true,
+-- 				},
+-- 				rootDir = "/root/",
+-- 			}, {} :: Config_Argv):expect()
+-- 			expect(console.warn).toMatchSnapshot()
+-- 		end)
+-- 	end)
+-- 	test("when 'extraGlobals' option is passed", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			normalize({ extraGlobals = { "Math" }, rootDir = "/root/" }, {} :: Config_Argv):expect()
+-- 			expect(console.warn).toMatchSnapshot()
+-- 		end)
+-- 	end)
+-- 	test("when 'moduleLoader' option is passed", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			normalize({ moduleLoader = "<rootDir>/runtime.js", rootDir = "/root/" }, {} :: Config_Argv):expect()
+-- 			expect(console.warn).toMatchSnapshot()
+-- 		end)
+-- 	end)
+-- 	test("when 'preprocessorIgnorePatterns' option is passed", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			normalize({ preprocessorIgnorePatterns = { "/node_modules/" }, rootDir = "/root/" }, {} :: Config_Argv):expect()
+-- 			expect(console.warn).toMatchSnapshot()
+-- 		end)
+-- 	end)
+-- 	test("when 'scriptPreprocessor' option is passed", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			normalize({ rootDir = "/root/", scriptPreprocessor = "preprocessor.js" }, {} :: Config_Argv):expect()
+-- 			expect(console.warn).toMatchSnapshot()
+-- 		end)
+-- 	end)
+-- 	test("when 'setupTestFrameworkScriptFile' option is passed", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			normalize({ rootDir = "/root/", setupTestFrameworkScriptFile = "setup.js" }, {} :: Config_Argv):expect()
+-- 			expect(console.warn).toMatchSnapshot()
+-- 		end)
+-- 	end)
+-- 	test("when 'testPathDirs' option is passed", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			normalize({ rootDir = "/root/", testPathDirs = { "<rootDir>" } }, {} :: Config_Argv):expect()
+-- 			expect(console.warn).toMatchSnapshot()
+-- 		end)
+-- 	end)
+-- 	test("when 'testURL' option is passed", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			normalize({ rootDir = "/root/", testURL = "https://jestjs.io" }, {} :: Config_Argv):expect()
+-- 			expect(console.warn).toMatchSnapshot()
+-- 		end)
+-- 	end)
+-- 	test("when 'timers' option is passed", function()
+-- 		return Promise.resolve():andThen(function()
+-- 			normalize({ rootDir = "/root/", timers = "real" }, {} :: Config_Argv):expect()
+-- 			expect(console.warn).toMatchSnapshot()
+-- 		end)
+-- 	end)
+-- end)
+-- it("parses workerIdleMemoryLimit", function()
+-- 	return Promise.resolve():andThen(function()
+-- 		local options = normalize(
+-- 			{ rootDir = "/root/", workerIdleMemoryLimit = "45MiB" },
+-- 			{} :: Config_Argv
+-- 		):expect().options
+-- 		expect(options.workerIdleMemoryLimit).toEqual(47185920)
 -- 	end)
 -- end)
 -- ROBLOX deviation END

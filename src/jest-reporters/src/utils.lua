@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-reporters/src/utils.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-reporters/src/utils.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -83,7 +83,7 @@ exports.printDisplayName = printDisplayName
 local function trimAndFormatPath(
 	pad: number,
 	config: Config_ProjectConfig | Config_GlobalConfig,
-	testPath: Config_Path,
+	testPath: string,
 	columns: number
 ): string
 	local maxLength = columns - pad
@@ -134,7 +134,7 @@ exports.formatTestPath = formatTestPath
 
 function relativePath(
 	config: Config_GlobalConfig | Config_ProjectConfig,
-	testPath: Config_Path
+	testPath: string
 ): { basename: string, dirname: string }
 	-- this function can be called with ProjectConfigs or GlobalConfigs. GlobalConfigs
 	-- do not have config.cwd, only config.rootDir. Try using config.cwd, fallback

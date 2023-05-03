@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/pretty-format/src/__tests__/prettyFormat.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/pretty-format/src/__tests__/prettyFormat.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -12,6 +12,7 @@ local Packages = CurrentModule.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
+local Map = LuauPolyfill.Map
 local Set = LuauPolyfill.Set
 
 local RegExp = require(Packages.RegExp)
@@ -440,6 +441,59 @@ describe("prettyFormat()", function()
 			-- '  "typed array": Uint8Array [],',
 			"}",
 		}, "\n"))
+	end)
+
+	describe("maxWidth option", function()
+		it("applies to arrays", function()
+			-- ROBLOX deviation START: use loop to fill array as Array polyfill doesn't have 'fill'
+			-- local val = Array(1_000_000):fill("x")
+			local val = {}
+			for i = 1, 1_000_000 do
+				val[i] = "x"
+			end
+			-- ROBLOX deviation END
+			expect(prettyFormat(val, { maxWidth = 5 })).toEqual(Array.join({
+				"Table {",
+				'  "x",',
+				'  "x",',
+				'  "x",',
+				'  "x",',
+				'  "x",',
+				"  \u{2026}",
+				"}",
+			}, "\n"))
+		end)
+
+		it("applies to sets", function()
+			local val = Set.new({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 })
+			expect(prettyFormat(val, { maxWidth = 5 })).toEqual(
+				Array.join({ "Set {", "  1,", "  2,", "  3,", "  4,", "  5,", "  \u{2026}", "}" }, "\n")
+			)
+		end)
+
+		it("applies to maps", function()
+			local val = Map.new()
+			val:set("a", 1)
+			val:set("b", 2)
+			val:set("c", 3)
+			val:set("d", 4)
+			val:set("e", 5)
+			val:set("f", 6)
+			val:set("g", 7)
+			val:set("h", 8)
+			val:set("i", 9)
+			val:set("j", 10)
+			expect(prettyFormat(val, { maxWidth = 5 })).toEqual(Array.join({
+				"Map {",
+				'  "a" => 1,',
+				'  "b" => 2,',
+				'  "c" => 3,',
+				'  "d" => 4,',
+				'  "e" => 5,',
+				"  \u{2026}",
+				"}",
+			}, "\n"))
+		end)
 	end)
 
 	-- ROBLOX deviation: modified since we don't have most of these types

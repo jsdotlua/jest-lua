@@ -1,11 +1,11 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-circus/src/__tests__/__snapshots__/hooks.test.ts.snap
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-circus/src/__tests__/__snapshots__/hooks.test.ts.snap
 -- Jest Snapshot v1, https://goo.gl/fbAQLP
 
 local exports = {}
 
 exports["beforeAll is exectued correctly 1"] = [[
 
-start_describe_definition: describe 1
+"start_describe_definition: describe 1
 add_hook: beforeAll
 add_test: test 1
 start_describe_definition: 2nd level describe
@@ -44,12 +44,12 @@ run_describe_finish: describe 1
 run_describe_finish: ROOT_DESCRIBE_BLOCK
 run_finish
 
-unhandledErrors: 0
+unhandledErrors: 0"
 ]]
 
 exports["beforeEach is executed before each test in current/child describe blocks 1"] = [[
 
-start_describe_definition: describe
+"start_describe_definition: describe
 add_hook: beforeEach
 add_test: one
 add_test: two
@@ -129,12 +129,12 @@ run_describe_finish: 2nd describe
 run_describe_finish: ROOT_DESCRIBE_BLOCK
 run_finish
 
-unhandledErrors: 0
+unhandledErrors: 0"
 ]]
 
 exports["multiple before each hooks in one describe are executed in the right order 1"] = [[
 
-start_describe_definition: describe 1
+"start_describe_definition: describe 1
 add_hook: beforeEach
 add_hook: beforeEach
 start_describe_definition: 2nd level describe
@@ -160,7 +160,7 @@ run_describe_finish: describe 1
 run_describe_finish: ROOT_DESCRIBE_BLOCK
 run_finish
 
-unhandledErrors: 0
+unhandledErrors: 0"
 ]]
 
 return exports

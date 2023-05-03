@@ -1,5 +1,5 @@
 --!nocheck
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/__tests__/matchers.test.js
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/expect/src/__tests__/matchers.test.js
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -35,6 +35,18 @@ local jestExpect = require(CurrentModule)
 -- ROBLOX deviation: chalk enabled by default
 
 -- ROBLOX deviation: omitted isBigIntDefined variable declaration
+
+jestExpect.extend({
+	optionalFn = function(_, fn)
+		local pass = fn == nil or typeof(fn) == "function"
+		return {
+			message = function()
+				return "expect either a function or undefined"
+			end,
+			pass = pass,
+		}
+	end,
+})
 
 beforeAll(function()
 	expect.addSnapshotSerializer(alignedAnsiStyleSerializer)
@@ -362,6 +374,30 @@ describe(".toStrictEqual()", function()
 		]]
 end)
 
+it("fails for missing keys even if backed by an asymmetric matcher accepting them", function()
+	-- issue 12463
+	expect({ a = 1 }).never.toStrictEqual({ a = 1, b = jestExpect:optionalFn() })
+	expect({ a = 1, b = jestExpect:optionalFn() }).never.toStrictEqual({ a = 1 })
+	expect({ 1 }).never.toStrictEqual({ 1, jestExpect:optionalFn() })
+	expect({ 1, jestExpect:optionalFn() }).never.toStrictEqual({ 1 })
+end)
+
+it("passes if keys are present and asymmetric matcher accept them", function()
+	-- issue 12463
+	-- with a proper function
+	expect({ a = 1, b = function() end }).toStrictEqual({ a = 1, b = jestExpect:optionalFn() })
+	expect({ a = 1, b = jestExpect:optionalFn() }).toStrictEqual({ a = 1, b = function() end })
+	expect({ 1, function() end }).toStrictEqual({ 1, jestExpect:optionalFn() })
+	expect({ 1, jestExpect:optionalFn() }).toStrictEqual({ 1, function() end })
+	-- ROBLOX deviation START: undefined is not supported by luau
+	-- with undefined
+	-- expect({ a = 1, b = nil }).toStrictEqual({ a = 1, b = jestExpect:optionalFn() })
+	-- expect({ a = 1, b = jestExpect:optionalFn() }).toStrictEqual({ a = 1, b = nil })
+	-- expect({ 1, nil }).toStrictEqual({ 1, jestExpect:optionalFn() })
+	-- expect({ 1, jestExpect:optionalFn() }).toStrictEqual({ 1, nil })
+	-- ROBLOX deviation END
+end)
+
 --[[
 			ROBLOX deviation: omitted test cases that become redundant in our Lua translation i.e.
 
@@ -673,8 +709,7 @@ describe(".toEqual()", function()
 			});
 		]=]
 
-	-- ROBLOX TODO: assertion error currently returns strings, not an object
-	it.skip("assertion error matcherResult property contains matcher name, expected and actual values", function()
+	it("assertion error matcherResult property contains matcher name, expected and actual values", function()
 		local actual = { a = 1 }
 		local expected = { a = 2 }
 		local ok, error_ = pcall(function()

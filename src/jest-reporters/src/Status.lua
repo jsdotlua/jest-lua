@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-reporters/src/Status.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-reporters/src/Status.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -129,7 +129,7 @@ export type Status = {
 	runStarted: (self: Status, aggregatedResults: AggregatedResult, options: ReporterOnStartOptions) -> (),
 	runFinished: (self: Status) -> (),
 	addTestCaseResult: (self: Status, test: Test, testCaseResult: TestCaseResult) -> (),
-	testStarted: (self: Status, testPath: Config_Path, config: Config_ProjectConfig) -> (),
+	testStarted: (self: Status, testPath: string, config: Config_ProjectConfig) -> (),
 	testFinished: (
 		self: Status,
 		_config: Config_ProjectConfig,
@@ -227,7 +227,7 @@ function Status:get(): Cache
 		if Boolean.toJSBoolean(record) then
 			local config, testPath = record.config, record.testPath
 			local projectDisplayName = if Boolean.toJSBoolean(config.displayName)
-				then tostring(printDisplayName(config)) .. " "
+				then ("%s "):format(tostring(printDisplayName(config)))
 				else ""
 			local prefix = RUNNING .. projectDisplayName
 			-- ROBLOX deviation START: assert prefixLen is a valid number

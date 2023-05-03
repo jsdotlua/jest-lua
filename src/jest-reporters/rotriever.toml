@@ -11,6 +11,7 @@ LuauPolyfill = { workspace = true }
 ChalkLua = { workspace = true }
 JestTypes = { path = "../jest-types" }
 JestTestResult = { path = '../jest-test-result' }
+JestMessageUtil = { path = "../jest-message-util" }
 JestUtil = { path = '../jest-util' }
 TestUtils = { path = '../test-utils' }
 JestConsole = { path = '../jest-console' }

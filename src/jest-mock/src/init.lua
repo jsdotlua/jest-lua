@@ -1,5 +1,5 @@
 --!nonstrict
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-mock/src/index.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-mock/src/index.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -35,7 +35,9 @@ type MockDefaultY = Array<any>
 type MockFunctionState<T, Y> = {
 	calls: Array<Y>,
 	instances: Array<T>,
+	contexts: Array<T>,
 	invocationCallOrder: Array<number>,
+	lastCall: Array<T>?,
 	results: Array<MockFunctionResult>,
 }
 
@@ -150,6 +152,18 @@ function ModuleMockerClass:_ensureMockState(f): MockFunctionState<any, any>
 		self._mockState[f] = state
 	end
 
+	-- ROBLOX deviation START: replace .length usages
+	-- if
+	-- 	state.calls.length
+	-- 	> 0 --[[ ROBLOX CHECK: operator '>' works only if either both arguments are strings or both are a number ]]
+	-- then
+	-- 	state.lastCall = state.calls[tostring(state.calls.length - 1)]
+	-- end
+	if #state.calls > 0 then
+		state.lastCall = state.calls[#state.calls]
+	end
+	-- ROBLOX deviation END
+
 	return state
 end
 
@@ -165,6 +179,7 @@ end
 function ModuleMockerClass:_defaultMockState()
 	return {
 		calls = {},
+		contexts = {},
 		instances = {},
 		invocationCallOrder = {},
 		results = {},
@@ -181,7 +196,13 @@ function ModuleMockerClass:_makeComponent(metadata: any, restore)
 			local mockState = mocker:_ensureMockState(f)
 			local mockConfig = mocker:_ensureMockConfig(f)
 
+			-- ROBLOX deviation START: upstream 'this' replaced with f and first arg
+			-- table.insert(mockState.instances, self) --[[ ROBLOX CHECK: check if 'mockState.instances' is an Array ]]
+			-- table.insert(mockState.contexts, self) --[[ ROBLOX CHECK: check if 'mockState.contexts' is an Array ]]
 			table.insert(mockState.instances, f)
+			table.insert(mockState.contexts, args[1])
+			-- ROBLOX deviation END
+
 			-- ROBLOX deviation: We use a Symbol meant to represent nil instead of
 			-- actual nil values to help with handling nil values
 			for i = 1, select("#", ...) do
@@ -202,7 +223,7 @@ function ModuleMockerClass:_makeComponent(metadata: any, restore)
 
 			table.insert(mockState.results, mockResult)
 			table.insert(mockState.invocationCallOrder, mocker._invocationCallCounter)
-			self._invocationCallCounter = self._invocationCallCounter + 1
+			mocker._invocationCallCounter = mocker._invocationCallCounter + 1
 
 			-- ROBLOX deviation: omitted finalReturnValue, thrownError, and
 			-- callDidThrowError as we get this state for free with our
@@ -241,19 +262,19 @@ function ModuleMockerClass:_makeComponent(metadata: any, restore)
 
 		f._isMockFunction = true
 		f.getMockImplementation = function()
-			return self:_ensureMockConfig(f).mockImpl
+			return mocker:_ensureMockConfig(f).mockImpl
 		end
 
 		if typeof(restore) == "function" then
-			self._spyState.add(restore)
+			mocker._spyState.add(restore)
 		end
 
-		self._mockState[f] = self._defaultMockState()
-		self._mockConfigRegistry[f] = self._defaultMockConfig()
+		mocker._mockState[f] = mocker._defaultMockState()
+		mocker._mockConfigRegistry[f] = mocker._defaultMockConfig()
 
 		f.mock = setmetatable({}, {
 			__index = function(tbl, key)
-				return self:_ensureMockState(f)[key]
+				return mocker:_ensureMockState(f)[key]
 			end,
 			-- ROBLOX deviation: for now we don't have newindex defined as we don't have any use cases
 			-- but it should look something like the following
@@ -265,13 +286,13 @@ function ModuleMockerClass:_makeComponent(metadata: any, restore)
 		})
 
 		f.mockClear = function()
-			self._mockState[f] = nil
+			mocker._mockState[f] = nil
 			return f
 		end
 
 		f.mockReset = function()
 			f.mockClear()
-			self._mockConfigRegistry[f] = nil
+			mocker._mockConfigRegistry[f] = nil
 			return f
 		end
 
@@ -289,14 +310,14 @@ function ModuleMockerClass:_makeComponent(metadata: any, restore)
 		f.mockImplementationOnce = function(fn)
 			-- next function call will use this mock implementation return value
 			-- or default mock implementation return value
-			local mockConfig = self:_ensureMockConfig(f)
+			local mockConfig = mocker:_ensureMockConfig(f)
 			table.insert(mockConfig.specificMockImpls, fn)
 			return f
 		end
 
 		f.mockImplementation = function(fn)
 			-- next function call will use mock implementation return value
-			local mockConfig = self:_ensureMockConfig(f)
+			local mockConfig = mocker:_ensureMockConfig(f)
 			mockConfig.mockImpl = fn
 			return f
 		end
@@ -325,14 +346,14 @@ function ModuleMockerClass:_makeComponent(metadata: any, restore)
 
 		f.mockName = function(name)
 			if name then
-				local mockConfig = self:_ensureMockConfig(f)
+				local mockConfig = mocker:_ensureMockConfig(f)
 				mockConfig.mockName = name
 			end
 			return f
 		end
 
 		f.getMockName = function()
-			local mockConfig = self:_ensureMockConfig(f)
+			local mockConfig = mocker:_ensureMockConfig(f)
 			return mockConfig.mockName or "jest.fn()"
 		end
 

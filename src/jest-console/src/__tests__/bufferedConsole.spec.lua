@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-console/src/__tests__/bufferedConsole.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/tree/v28.0.0/packages/jest-console/src/__tests__/bufferedConsole.test.ts
 --[[*
 * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 *

@@ -30,12 +30,12 @@ describe("convertDescriptorToString", function()
 		expect(convertDescriptorToString("foo")).toBe("foo")
 	end)
 
-	it("should return same value it provided number", function()
-		expect(convertDescriptorToString(1)).toBe(1)
+	it("should return the value converted to string if provided a number", function()
+		expect(convertDescriptorToString(1)).toBe("1")
 	end)
 
-	it("should return same value it provided nil", function()
-		expect(convertDescriptorToString(nil)).toBe(nil)
+	it("should return the value converted to string if provided nil", function()
+		expect(convertDescriptorToString(nil)).toBe("nil")
 	end)
 
 	it("should return function name", function()
@@ -43,8 +43,12 @@ describe("convertDescriptorToString", function()
 		expect(convertDescriptorToString(foo)).toEqual("foo")
 	end)
 
-	it('should return "[Function anonymous]" for anonymous function', function()
+	it("should throw an error for anonymous functions", function()
 		local foo = function() end
-		expect(convertDescriptorToString(foo)).toEqual("[Function anonymous]")
+		expect(function()
+			convertDescriptorToString(foo)
+		end).toThrowError(
+			"Invalid first argument, [Function anonymous]. It must be a named function, number, or string."
+		)
 	end)
 end)

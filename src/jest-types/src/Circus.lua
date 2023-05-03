@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-types/src/Circus.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-types/src/Circus.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -29,6 +29,8 @@ type Process = Object
 export type DoneFn = GlobalModule.DoneFn
 export type BlockFn = GlobalModule.BlockFn
 export type BlockName = GlobalModule.BlockName
+export type BlockNameLike = GlobalModule.BlockNameLike
+export type TestNameLike = GlobalModule.TestNameLike
 export type BlockMode = void | "skip" | "only" | "todo"
 export type TestMode = BlockMode
 export type TestName = GlobalModule.TestName
@@ -81,7 +83,9 @@ export type SyncEvent = {
 	testName: TestName,
 	fn: TestFn,
 	mode: TestMode?,
+	concurrent: boolean,
 	timeout: number | nil,
+	failing: boolean,
 } | {
 	-- Any unhandled error that happened outside of test/hooks (unless it is
 	-- an `afterAll` hook)
@@ -168,6 +172,7 @@ export type TestResult = {
 	invocations: number,
 	status: TestStatus,
 	location: ({ column: number, line: number } | nil)?,
+	retryReasons: Array<FormattedError>,
 	testPath: Array<TestName | BlockName>,
 }
 
@@ -215,6 +220,7 @@ export type TestEntry = {
 	type: "test",
 	asyncError: Exception, -- Used if the test failure contains no usable stack trace
 	errors: Array<TestError>,
+	retryReasons: Array<TestError>,
 	fn: TestFn,
 	invocations: number,
 	mode: TestMode,

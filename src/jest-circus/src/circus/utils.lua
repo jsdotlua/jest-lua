@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-circus/src/utils.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-circus/src/utils.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -166,6 +166,7 @@ local function makeTest(
 		mode = mode,
 		name = convertDescriptorToString(name),
 		parent = parent,
+		retryReasons = {},
 		seenDone = false,
 		startedAt = nil,
 		status = nil,
@@ -493,6 +494,7 @@ local function makeSingleTestResult(test: Circus_TestEntry): Circus_TestResult
 		errorsDetailed = errorsDetailed,
 		invocations = test.invocations,
 		location = location,
+		retryReasons = Array.map(Array.map(test.retryReasons, _getError), getErrorStack),
 		-- ROBLOX FIXME Luau: assert above should narrow the type to non-nil
 		status = status :: Circus_TestStatus,
 		testPath = Array.from(testPath),
@@ -618,6 +620,7 @@ local function parseSingleTestResult(testResult: Circus_TestResult): AssertionRe
 		invocations = testResult.invocations,
 		location = testResult.location,
 		numPassingAsserts = 0,
+		retryReasons = Array.from(testResult.retryReasons),
 		status = status,
 		title = testResult.testPath[#testResult.testPath],
 	}

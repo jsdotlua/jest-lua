@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-matcher-utils/src/__tests__/index.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-matcher-utils/src/__tests__/index.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -11,6 +11,9 @@ local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
+-- ROBLOX deviation START: not used
+-- local Array = LuauPolyfill.Array
+-- ROBLOX deviation END
 local Symbol = LuauPolyfill.Symbol
 
 local RegExp = require(Packages.RegExp)
@@ -25,6 +28,8 @@ local JestGlobals = require(Packages.Dev.JestGlobals)
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
+local jest = JestGlobals.jest
+local test = JestGlobals.test
 local beforeAll = JestGlobals.beforeAll
 
 local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
@@ -118,14 +123,38 @@ describe("stringify()", function()
 		local big: any = { a = 1, b = {} }
 		local small: any = { a = 1, b = {} }
 		for i = 0, 9999 do
-			big.b[i] = "test"
+			big.b[tostring(i)] = "test"
 		end
 
 		for i = 0, 9 do
-			small.b[i] = "test"
+			small.b[tostring(i)] = "test"
 		end
 
 		expect(stringify(big)).toBe(prettyFormat(big, { maxDepth = 1, min = true }))
+		expect(stringify(small)).toBe(prettyFormat(small, { min = true }))
+	end)
+	it("reduces maxWidth if stringifying very large arrays", function()
+		local big: any = {}
+		local small: any = {}
+		-- ROBLOX deviation START: use string.rep from Luau instead of joining a long array
+		-- local testString = Array.join(Array(1000), "x") --[[ ROBLOX CHECK: check if 'Array(1000)' is an Array ]]
+		local testString = ("x"):rep(1000)
+		-- ROBLOX deviation END
+		do
+			local i = 0
+			while i < 100 do
+				big[i + 1] = testString
+				i += 1
+			end
+		end
+		do
+			local i = 0
+			while i < 3 do
+				small[i + 1] = testString
+				i += 1
+			end
+		end
+		expect(stringify(big)).toBe(prettyFormat(big, { maxWidth = 5, min = true }))
 		expect(stringify(small)).toBe(prettyFormat(small, { min = true }))
 	end)
 end)
@@ -408,5 +437,24 @@ describe("matcherHint", function()
 
 		expect(received).never.toMatch(substringNegative)
 		expect(received).toMatch(substringPositive)
+	end)
+end)
+
+describe("printDiffOrStringify", function()
+	test("expected asymmetric matchers should be diffable", function()
+		jest.dontMock("jest-diff")
+		jest.resetModules()
+
+		-- ROBLOX deviation START: fix incorrect 'require' call
+		-- local printDiffOrStringify = require_("../").printDiffOrStringify
+		local printDiffOrStringify = require(script.Parent.Parent).printDiffOrStringify
+		-- ROBLOX deviation END
+
+		local expected = expect.objectContaining({
+			array = { { [tostring(3)] = "three", four = "4", one = 1, two = 2 } },
+			foo = "bar",
+		})
+		local received = { array = { { [tostring(3)] = "three", four = "4", one = 1, two = 1 } }, foo = "bar" }
+		expect(printDiffOrStringify(expected, received, "Expected", "Received", false)).toMatchSnapshot()
 	end)
 end)

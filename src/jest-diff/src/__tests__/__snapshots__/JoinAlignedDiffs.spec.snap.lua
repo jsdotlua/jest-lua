@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-diff/src/__tests__/__snapshots__/joinAlignedDiffs.test.ts.snap
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-diff/src/__tests__/__snapshots__/joinAlignedDiffs.test.ts.snap
 
 local snapshots = {}
 

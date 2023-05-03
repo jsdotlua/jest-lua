@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-reporters/src/index.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-reporters/src/index.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -9,6 +9,8 @@
 local exports = {}
 
 local getResultHeader = require(script.getResultHeader).default
+local getSnapshotStatus = require(script.getSnapshotStatus).default
+local getSnapshotSummary = require(script.getSnapshotSummary).default
 
 local utilsModule = require(script.utils)
 local formatTestPath = utilsModule.formatTestPath
@@ -37,12 +39,15 @@ local typesModule = require(script.types)
 export type Context = typesModule.Context
 export type Reporter = typesModule.Reporter
 export type ReporterOnStartOptions = typesModule.ReporterOnStartOptions
+export type ReporterContext = typesModule.ReporterContext
 export type SummaryOptions = typesModule.SummaryOptions
 export type Test = typesModule.Test
 
 local utils = {
 	formatTestPath = formatTestPath,
 	getResultHeader = getResultHeader,
+	getSnapshotStatus = getSnapshotStatus,
+	getSnapshotSummary = getSnapshotSummary,
 	getSummary = getSummary,
 	printDisplayName = printDisplayName,
 	relativePath = relativePath,

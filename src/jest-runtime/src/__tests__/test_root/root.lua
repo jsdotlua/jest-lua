@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/jest-runtime/src/__tests__/test_root/root.js
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/jest-runtime/src/__tests__/test_root/root.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *

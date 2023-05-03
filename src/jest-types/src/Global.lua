@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-types/src/Global.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-types/src/Global.ts
 --[[*
 * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 *
@@ -40,11 +40,15 @@ export type DoneTakingTestFn = (this: TestContext | nil, done: DoneFn) -> ValidT
 export type PromiseReturningTestFn = (this: TestContext | nil) -> TestReturnValue
 export type GeneratorReturningTestFn = (this: TestContext | nil) -> TestReturnValueGenerator
 
+type Fn = (...any) -> ...any
+export type NameLike = number | Fn
 export type TestName = string
+export type TestNameLike = TestName | NameLike
 export type TestFn = PromiseReturningTestFn | GeneratorReturningTestFn | DoneTakingTestFn
 export type ConcurrentTestFn = () -> TestReturnValuePromise
 export type BlockFn = () -> ()
 export type BlockName = string
+export type BlockNameLike = BlockName | NameLike
 export type HookFn = TestFn
 
 export type Col = any

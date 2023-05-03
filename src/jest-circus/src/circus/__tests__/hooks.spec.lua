@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-circus/src/__tests__/hooks.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-circus/src/__tests__/hooks.test.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -9,7 +9,6 @@
 local CurrentModule = script.Parent
 local SrcModule = CurrentModule.Parent
 local Packages = SrcModule.Parent.Parent
-local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).default
 local runTest = require(script.Parent.Parent.__mocks__.testUtils).runTest
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
@@ -45,7 +44,7 @@ it("beforeEach is executed before each test in current/child describe blocks", f
 				test("2nd describe test", function() end)
 			end)
   	]]).stdout
-	expect(wrap(stdout)).toMatchSnapshot()
+	expect(stdout).toMatchSnapshot()
 end)
 
 it("multiple before each hooks in one describe are executed in the right order", function()
@@ -63,7 +62,7 @@ it("multiple before each hooks in one describe are executed in the right order",
 				end)
 			end)
   	]]).stdout
-	expect(wrap(stdout)).toMatchSnapshot()
+	expect(stdout).toMatchSnapshot()
 end)
 
 it("beforeAll is exectued correctly", function()
@@ -89,5 +88,5 @@ it("beforeAll is exectued correctly", function()
 				end)
 			end)
   	]]).stdout
-	expect(wrap(stdout)).toMatchSnapshot()
+	expect(stdout).toMatchSnapshot()
 end)

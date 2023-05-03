@@ -1,11 +1,11 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-circus/src/__tests__/__snapshots__/afterAll.test.ts.snap
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-circus/src/__tests__/__snapshots__/afterAll.test.ts.snap
 -- Jest Snapshot v1, https://goo.gl/fbAQLP
 
 local exports = {}
 
 exports["child tests marked with only should not run if describe block is skipped 1"] = [[
 
-start_describe_definition: describe
+"start_describe_definition: describe
 add_hook: afterAll
 add_hook: beforeAll
 add_test: my test
@@ -19,12 +19,12 @@ run_describe_finish: describe
 run_describe_finish: ROOT_DESCRIBE_BLOCK
 run_finish
 
-unhandledErrors: 0
+unhandledErrors: 0"
 ]]
 
 exports["child tests marked with todo should not run if describe block is skipped 1"] = [[
 
-start_describe_definition: describe
+"start_describe_definition: describe
 add_hook: afterAll
 add_hook: beforeAll
 add_test: my test
@@ -38,12 +38,12 @@ run_describe_finish: describe
 run_describe_finish: ROOT_DESCRIBE_BLOCK
 run_finish
 
-unhandledErrors: 0
+unhandledErrors: 0"
 ]]
 
 exports["describe block _can_ have hooks if a child describe block has tests 1"] = [[
 
-start_describe_definition: describe
+"start_describe_definition: describe
 add_hook: afterEach
 add_hook: beforeEach
 add_hook: afterAll
@@ -78,12 +78,12 @@ run_describe_finish: describe
 run_describe_finish: ROOT_DESCRIBE_BLOCK
 run_finish
 
-unhandledErrors: 0
+unhandledErrors: 0"
 ]]
 
 exports["describe block cannot have hooks and no tests 1"] = [[
 
-start_describe_definition: describe
+"start_describe_definition: describe
 add_hook: afterEach
 add_hook: beforeEach
 add_hook: afterAll
@@ -96,12 +96,12 @@ run_describe_finish: describe
 run_describe_finish: ROOT_DESCRIBE_BLOCK
 run_finish
 
-unhandledErrors: 4
+unhandledErrors: 4"
 ]]
 
 exports["describe block hooks must not run if describe block is skipped 1"] = [[
 
-start_describe_definition: describe
+"start_describe_definition: describe
 add_hook: afterAll
 add_hook: beforeAll
 add_test: my test
@@ -115,7 +115,7 @@ run_describe_finish: describe
 run_describe_finish: ROOT_DESCRIBE_BLOCK
 run_finish
 
-unhandledErrors: 0
+unhandledErrors: 0"
 ]]
 
 exports["tests are not marked done until their parent afterAll runs 1"] = [[

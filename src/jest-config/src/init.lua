@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-config/src/index.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-config/src/index.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -274,6 +274,7 @@ function groupOptions(options: Config_ProjectConfig & Config_GlobalConfig): {
 			-- globals = options.globals,
 			-- haste = options.haste,
 			-- ROBLOX deviation END
+			id = options.id,
 			injectGlobals = options.injectGlobals,
 			-- ROBLOX deviation START: not supported
 			-- moduleDirectories = options.moduleDirectories,
@@ -282,9 +283,6 @@ function groupOptions(options: Config_ProjectConfig & Config_GlobalConfig): {
 			-- moduleNameMapper = options.moduleNameMapper,
 			-- modulePathIgnorePatterns = options.modulePathIgnorePatterns,
 			-- modulePaths = options.modulePaths,
-			-- ROBLOX deviation END
-			name = options.name,
-			-- ROBLOX deviation START: not supported
 			-- prettierPath = options.prettierPath,
 			-- ROBLOX deviation END
 			resetMocks = options.resetMocks,
@@ -296,6 +294,8 @@ function groupOptions(options: Config_ProjectConfig & Config_GlobalConfig): {
 			rootDir = options.rootDir,
 			roots = options.roots,
 			runner = options.runner,
+			runtime = options.runtime,
+			sandboxInjectedGlobals = options.sandboxInjectedGlobals,
 			setupFiles = options.setupFiles,
 			setupFilesAfterEnv = options.setupFilesAfterEnv,
 			-- ROBLOX deviation START: not supported

@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-reporters/src/DefaultReporter.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-reporters/src/DefaultReporter.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -33,6 +33,11 @@ local jestTypesModule = require(Packages.JestTypes)
 type Config_GlobalConfig = jestTypesModule.Config_GlobalConfig
 type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
 type Config_Path = jestTypesModule.Config_Path
+
+local jestMessageUtilModule = require(Packages.JestMessageUtil)
+local formatStackTrace = jestMessageUtilModule.formatStackTrace
+local indentAllLines = jestMessageUtilModule.indentAllLines
+local separateMessageFromStack = jestMessageUtilModule.separateMessageFromStack
 
 local jestUtilModule = require(Packages.JestUtil)
 local clearLine = jestUtilModule.clearLine
@@ -78,13 +83,13 @@ export type DefaultReporter = {
 	) -> (),
 	printTestFileHeader: (
 		self: DefaultReporter,
-		_testPath: Config_Path,
+		testPath: string,
 		config: Config_ProjectConfig,
 		result: TestResult
 	) -> (),
 	printTestFileFailureMessage: (
 		self: DefaultReporter,
-		_testPath: Config_Path,
+		_testPath: string,
 		_config: Config_ProjectConfig,
 		result: TestResult
 	) -> (),
@@ -281,6 +286,35 @@ function DefaultReporter:printTestFileHeader(
 	config: Config_ProjectConfig,
 	result: TestResult
 ): ()
+	-- log retry errors if any exist
+	Array.forEach(result.testResults, function(testResult)
+		local testRetryReasons = testResult.retryReasons
+		if testRetryReasons and #testRetryReasons > 0 then
+			self:log(
+				("%s %s"):format(
+					tostring(chalk.reset.inverse.bold:yellow(" LOGGING RETRY ERRORS ")),
+					chalk.bold(testResult.fullName)
+				)
+			)
+			Array.forEach(testRetryReasons, function(retryReasons, index: number)
+				local message, stack
+				do
+					local ref = separateMessageFromStack(retryReasons)
+					message, stack = ref.message, ref.stack
+				end
+				stack = if Boolean.toJSBoolean(self._globalConfig.noStackTrace)
+					then ""
+					else chalk.dim(formatStackTrace(stack, config, self._globalConfig, _testPath))
+				message = indentAllLines(message)
+				self:log(
+					("%s\n"):format(
+						tostring(chalk.reset.inverse.bold:blueBright((" RETRY %s "):format(tostring(index + 1))))
+					)
+				)
+				self:log(("%s\n%s\n"):format(tostring(message), tostring(stack)))
+			end) --[[ ROBLOX CHECK: check if 'testRetryReasons' is an Array ]]
+		end
+	end) --[[ ROBLOX CHECK: check if 'result.testResults' is an Array ]]
 	self:log(getResultHeader(result, self._globalConfig, config))
 	if result.console ~= nil then
 		self:log("  " .. TITLE_BULLET .. "Console\n\n" .. getConsoleOutput(result.console, config, self._globalConfig))

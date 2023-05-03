@@ -12,7 +12,7 @@
 	* See the License for the specific language governing permissions and
 	* limitations under the License.
 ]]
--- ROBLOX NOTE: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-globals/src/__tests__/index.ts
+-- ROBLOX NOTE: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-globals/src/__tests__/index.ts
 
 return (function()
 	type Function = (...any) -> ...any

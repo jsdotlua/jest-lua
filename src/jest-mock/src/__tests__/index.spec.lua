@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-mock/src/__tests__/index.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-mock/src/__tests__/index.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -50,6 +50,43 @@ describe("moduleMocker", function()
 				-- ROBLOX deviation: We have to call fn.new() because we don't have a new keyword
 				local instance2 = fn.new()
 				expect(fn.mock.instances[2]).toBe(instance2)
+			end)
+
+			it("tracks context objects passed to mock calls", function()
+				local fn = moduleMocker:fn()
+				expect(fn.mock.instances).toEqual({})
+				local ctx0 = {}
+				fn(ctx0, {})
+				expect(fn.mock.contexts[1]).toBe(ctx0)
+				local ctx1 = {}
+				fn(ctx1)
+				expect(fn.mock.contexts[2]).toBe(ctx1)
+
+				local ctx2 = {}
+				local bound2 = function(...)
+					return fn(ctx2, ...)
+				end
+				bound2()
+				expect(fn.mock.contexts[
+					3 --[[ ROBLOX adaptation: added 1 to array index ]]
+				]).toBe(ctx2)
+
+				-- null context
+				fn(nil, table.unpack({}))
+				expect(fn.mock.contexts[4]).toBe(nil)
+				fn(nil)
+				expect(fn.mock.contexts[5]).toBe(nil);
+
+				(function(...)
+					return fn(nil, ...)
+				end)()
+				expect(fn.mock.contexts[
+					6 --[[ ROBLOX adaptation: added 1 to array index ]]
+				]).toBe(nil)
+
+				-- Unspecified context is `undefined` in strict mode (like in this test) and `window` otherwise.
+				fn()
+				expect(fn.mock.contexts[7]).toBe(nil)
 			end)
 
 			it("supports clearing mock calls", function()

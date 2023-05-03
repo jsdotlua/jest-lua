@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/jasmineUtils.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/expect/src/jasmineUtils.ts
 -- /*
 -- Copyright (c) 2008-2016 Pivotal Labs
 -- Permission is hereby granted, free of charge, to any person obtaining

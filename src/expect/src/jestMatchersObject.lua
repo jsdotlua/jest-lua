@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/jestMatchersObject.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/expect/src/jestMatchersObject.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -12,14 +12,16 @@ local Packages = CurrentModule.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Symbol = LuauPolyfill.Symbol
 local Object = LuauPolyfill.Object
+local Error = LuauPolyfill.Error
 type Partial<T> = any
 
+local getType = require(Packages.JestGetType).getType
 local AsymmetricMatcher = require(CurrentModule.asymmetricMatchers).AsymmetricMatcher
 
 local Types = require(CurrentModule.types)
 type Expect = Types.Expect
 type MatcherState = Types.MatcherState
-type MatchersObject<T> = Types.MatchersObject<T>
+type MatchersObject = Types.MatchersObject
 
 local jestMatchersObject_extracted = require(CurrentModule.jestMatchersObject_extracted)
 -- Global matchers object holds the list of available matchers and
@@ -30,6 +32,10 @@ local JEST_MATCHERS_OBJECT = jestMatchersObject_extracted.JEST_MATCHERS_OBJECT
 -- Notes a built-in/internal Jest matcher.
 -- Jest may override the stack trace of Errors thrown by internal matchers.
 local INTERNAL_MATCHER_FLAG = Symbol.for_("$$jest-internal-matcher")
+
+-- ROBLOX deviation START: add type alias to reduce deviations
+local TypeError = Error
+-- ROBLOX deviation END
 
 if not _G[JEST_MATCHERS_OBJECT] then
 	local defaultState = {
@@ -64,7 +70,7 @@ end
 	  State extends MatcherState = MatcherState,
 	>(): MatchersObject<State> => (global as any)[JEST_MATCHERS_OBJECT].matchers;
 ]]
-local function getMatchers<State>(): MatchersObject<State>
+local function getMatchers(): MatchersObject
 	return _G[JEST_MATCHERS_OBJECT].matchers
 end
 
@@ -75,10 +81,21 @@ end
 	original code:
 	export const setMatchers = <State extends MatcherState = MatcherState>(
 ]]
-local function setMatchers<State>(matchers: MatchersObject<State>, isInternal: boolean, expect: Expect): ()
+local function setMatchers(matchers: MatchersObject, isInternal: boolean, expect: Expect): ()
 	for key, matcher in pairs(matchers) do
 		-- ROBLOX TODO: assign INTERNAL_MATCHER_FLAG to matchers
 		if not isInternal then
+			if typeof(matcher) ~= "function" then
+				error(
+					TypeError.new(
+						('expect.extend: `%s` is not a valid matcher. Must be a function, is "%s"'):format(
+							tostring(key),
+							tostring(getType(matcher))
+						)
+					)
+				)
+			end
+
 			local CustomMatcher = {}
 			CustomMatcher.__index = CustomMatcher
 			setmetatable(CustomMatcher, AsymmetricMatcher)

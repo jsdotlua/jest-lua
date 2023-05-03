@@ -1,7 +1,7 @@
 --!nonstrict
 -- ROBLOX upstream: https://github.com/jasmine/jasmine/blob/v3.6.0/spec/core/CallTrackerSpec.js
 --[[
-	Our usual upstream of jest v27.4.7 doesn't include any tests for the
+	Our usual upstream of jest v28.0.0 doesn't include any tests for the
 	CallTracker file so we instead look to the source that the jest/jasmine2
 	is based off of, jasmine
 ]]

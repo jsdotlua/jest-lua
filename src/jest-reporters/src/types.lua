@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-reporters/src/types.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-reporters/src/types.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -28,6 +28,7 @@ type TestResult = testResultModule.TestResult
 local jestTypesModule = require(Packages.JestTypes)
 type Config_Path = jestTypesModule.Config_Path
 type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
+type Config_GlobalConfig = jestTypesModule.Config_GlobalConfig
 
 -- ROBLOX deviation START: any types that aren't ported and we don't need
 -- local jest_haste_mapModule = require(Packages["jest-haste-map"])
@@ -104,6 +105,14 @@ export type Reporter = {
 	onTestFileStart: ((self: Reporter, test: Test) -> Promise<void> | void)?,
 	onRunComplete: (self: Reporter, contexts: Set<Context>, results: AggregatedResult) -> Promise<void> | void,
 	getLastError: (self: Reporter) -> Error | void,
+}
+
+export type ReporterContext = {
+	firstRun: boolean,
+	previousSuccess: boolean,
+	changedFiles: Set<Config_Path>?,
+	sourcesRelatedToTestsInChangedFiles: Set<Config_Path>?,
+	startRun: ((globalConfig: Config_GlobalConfig) -> unknown)?,
 }
 
 export type SummaryOptions = {

@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-each/src/__tests__/__snapshots__/template.test.ts.snap
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-each/src/__tests__/__snapshots__/template.test.ts.snap
 -- Jest Snapshot v1, https://goo.gl/fbAQLP
 local exports = {}
 

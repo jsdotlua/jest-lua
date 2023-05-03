@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-message-util/src/index.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-message-util/src/index.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -80,13 +80,14 @@ local STACK_PATH_REGEXP_NATIVE = "%s*at.*%(?native%)?"
 local EXEC_ERROR_MESSAGE = "Test suite failed to run"
 
 -- ROBLOX deviation START: rewrote this because Lua doesn't have negative lookahead
-local function indentAllLines(lines: string, indent: string): string
+local function indentAllLines(lines: string, indent: string?): string
 	local t = string.split(lines, "\n")
 	for i, l in t do
-		t[i] = indent .. l
+		t[i] = (indent or "") .. l
 	end
 	return table.concat(t, "\n")
 end
+exports.indentAllLines = indentAllLines
 -- ROBLOX deviation END
 
 -- string trim5 implementation from http://lua-users.org/wiki/StringTrim
@@ -152,7 +153,7 @@ local function formatExecError(
 	error_: Error | TestResult_SerializableError | string | nil,
 	config: StackTraceConfig,
 	options: StackTraceOptions,
-	testPath: Path?,
+	testPath: string?,
 	reuseMessage: boolean?
 ): string
 	if not Boolean.toJSBoolean(error_) or typeof(error_) == "number" then
@@ -390,5 +391,6 @@ function separateMessageFromStack(content: string): { message: string, stack: st
 	local stack = removeBlankErrorLine(messageMatch[3])
 	return { message = message, stack = stack }
 end
+exports.separateMessageFromStack = separateMessageFromStack
 
 return exports

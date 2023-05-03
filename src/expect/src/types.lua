@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/types.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/expect/src/types.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -21,6 +21,7 @@ type Promise<T> = LuauPolyfill.Promise<T>
 type PromiseLike<T> = LuauPolyfill.PromiseLike<T>
 type Function = (...any) -> any
 type Object = LuauPolyfill.Object
+local JestMatcherUtils = require(Packages.JestMatcherUtils)
 
 export type SyncExpectationResult = {
 	pass: boolean,
@@ -50,6 +51,13 @@ export type RawMatcherFn_ = RawMatcherFn<MatcherState>
 export type ThrowingMatcherFn = (any) -> ()
 export type PromiseMatcherFn = (any) -> Promise<nil>
 
+export type MatcherUtils = {
+	dontThrow: (self: MatcherUtils) -> (),
+	equals: EqualsFunction,
+	utils: typeof(JestMatcherUtils) & { iterableEquality: Tester, subsetEquality: Tester },
+}
+
+type EqualsFunction = (a: unknown, b: unknown, customTesters: Array<Tester>?, strictCheck: boolean?) -> boolean
 export type Tester = (any, any) -> boolean?
 
 export type MatcherState = {
@@ -85,9 +93,8 @@ export type AsymmetricMatcher = {
 	original code:
 	export type MatchersObject<T extends MatcherState = MatcherState> = {
 ]]
-export type MatchersObject<T> = { [string]: RawMatcherFn<T> }
+export type MatchersObject = { [string]: RawMatcherFn_ }
 -- ROBLOX FIXME: workaround for defult generic param
-export type MatchersObject_ = MatchersObject<MatcherState>
 export type ExpectedAssertionsErrors = Array<{
 	actual: string | number,
 	error: Error,
@@ -97,6 +104,7 @@ export type ExpectedAssertionsErrors = Array<{
 -- ROBLOX deviation start: no Omit utility in Luau
 type AsymmetricMatchersOmitAnyAndAnything = {
 	arrayContaining: (Array<unknown>) -> AsymmetricMatcher,
+	closeTo: (number, number?) -> AsymmetricMatcher,
 	objectContaining: (Record<string, unknown>) -> AsymmetricMatcher,
 	stringContaining: (string) -> AsymmetricMatcher,
 	stringMatching: (string | RegExp) -> AsymmetricMatcher,
@@ -113,7 +121,7 @@ export type ExpectObj<State = MatcherState> = {
 	addSnapshotSerializer: (any) -> (),
 	assertions: (number) -> (),
 	-- TODO: remove this `T extends` - should get from some interface merging
-	extend: <T>(MatchersObject<T>) -> (),
+	extend: (MatchersObject) -> (),
 	extractExpectedAssertionsErrors: () -> ExpectedAssertionsErrors,
 	getState: () -> State,
 	hasAssertions: () -> (),

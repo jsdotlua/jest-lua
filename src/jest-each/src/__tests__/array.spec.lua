@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-each/src/__tests__/array.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-each/src/__tests__/array.test.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -497,8 +497,47 @@ describe("jest-each", function()
 					nil
 				)
 			end)
+
+			it("calls global with title containing param values when using %#", function()
+				local globalTestMocks = getGlobalTestMocks()
+				local eachObject = each.withGlobal(globalTestMocks)({
+					{ name = "foo" },
+					{ name = "bar" },
+				})
+				local testFunction = (get(eachObject, keyPath) :: any) :: Function
+				testFunction("expected index: %#", noop)
+
+				local globalMock = get(globalTestMocks, keyPath)
+				expect(globalMock).toHaveBeenCalledTimes(2)
+				-- ROBLOX deviation START: increase indices by 1
+				-- expect(globalMock).toHaveBeenCalledWith("expected index: 0", expectFunction, nil)
+				-- expect(globalMock).toHaveBeenCalledWith("expected index: 1", expectFunction, nil)
+				expect(globalMock).toHaveBeenCalledWith("expected index: 1", expectFunction, nil)
+				expect(globalMock).toHaveBeenCalledWith("expected index: 2", expectFunction, nil)
+				-- ROBLOX deviation END
+			end)
+
+			it("calls global with title containing param values when using $#", function()
+				local globalTestMocks = getGlobalTestMocks()
+				local eachObject = each.withGlobal(globalTestMocks)({
+					{ name = "foo" },
+					{ name = "bar" },
+				})
+				local testFunction = (get(eachObject, keyPath) :: any) :: Function
+				testFunction("expected index: $#", noop)
+
+				local globalMock = get(globalTestMocks, keyPath)
+				expect(globalMock).toHaveBeenCalledTimes(2)
+				-- ROBLOX deviation START: increase indices by 1
+				-- expect(globalMock).toHaveBeenCalledWith("expected index: 0", expectFunction, nil)
+				-- expect(globalMock).toHaveBeenCalledWith("expected index: 1", expectFunction, nil)
+				expect(globalMock).toHaveBeenCalledWith("expected index: 1", expectFunction, nil)
+				expect(globalMock).toHaveBeenCalledWith("expected index: 2", expectFunction, nil)
+				-- ROBLOX deviation END
+			end)
 		end)
 	end)
+
 	describe("done callback", function()
 		-- ROBLOX TODO: should be bound in jestCircus (itEACH?)
 		-- it.each({

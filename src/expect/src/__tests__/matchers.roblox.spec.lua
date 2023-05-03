@@ -193,8 +193,7 @@ local nestedFnWithError = function(fn)
 	end
 end
 
--- TODO: ADO-1716 unskip this test and determine how to reconcile behavior
-it.skip("tests stack traces for calls within pcalls with Error polyfill", function()
+it("tests stack traces for calls within pcalls with Error polyfill", function()
 	expect(function()
 		jestExpect(function()
 			nestedFnWithError(function()

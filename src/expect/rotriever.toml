@@ -12,6 +12,7 @@ Promise = { workspace = true }
 RegExp = { workspace = true }
 JestGetType = { path = "../jest-get-type" }
 JestMessageUtil = { path = "../jest-message-util" }
+JestUtil = { path = "../jest-util" }
 JestMatcherUtils = { path = "../jest-matcher-utils" }
 JestSnapshot = { path = "../jest-snapshot" }
 RobloxShared = { path = "../roblox-shared" }

@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-reporters/src/__tests__/__snapshots__/getSnapshotStatus.test.js.snap
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-reporters/src/__tests__/__snapshots__/getSnapshotStatus.test.js.snap
 local exports = {}
 
 exports[ [=[Retrieves the snapshot status 1]=] ] = [=[

@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/pretty-format/src/__tests__/setPrettyPrint.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/pretty-format/src/__tests__/setPrettyPrint.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -37,8 +37,7 @@ local function setPrettyPrint(plugins: Plugins)
 			local pass = prettyFormatted == expected
 			local message = if Boolean.toJSBoolean(pass)
 				then function()
-					return tostring(self.utils.matcherHint(".not.toBe"))
-						.. "\n\n"
+					return ("%s\n\n"):format(tostring(self.utils:matcherHint(".not.toBe")))
 						.. "Expected value to not be:\n"
 						.. ("  %s\n"):format(self.utils:printExpected(expected))
 						.. "Received:\n"
@@ -46,8 +45,7 @@ local function setPrettyPrint(plugins: Plugins)
 				end
 				else function()
 					local diffString = self.utils:diff(expected, prettyFormatted, { expand = self.expand })
-					return tostring(self.utils.matcherHint(".toBe"))
-						.. "\n\n"
+					return ("%s\n\n"):format(tostring(self.utils:matcherHint(".toBe")))
 						.. "Expected value to be:\n"
 						.. ("  %s\n"):format(self.utils:printExpected(expected))
 						.. "Received:\n"

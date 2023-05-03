@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/pretty-format/src/types.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/pretty-format/src/types.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -78,6 +78,7 @@ export type Config = {
 	escapeString: boolean,
 	indent: string,
 	maxDepth: number,
+	maxWidth: number,
 	min: boolean,
 	plugins: Plugins,
 	printBasicPrototype: boolean,

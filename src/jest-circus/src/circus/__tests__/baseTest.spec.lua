@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-circus/src/__tests__/baseTest.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-circus/src/__tests__/baseTest.test.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -9,14 +9,13 @@
 local CurrentModule = script.Parent
 local SrcModule = CurrentModule.Parent
 local Packages = SrcModule.Parent.Parent
-local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).default
 local runTest = require(script.Parent.Parent.__mocks__.testUtils).runTest
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local expect = JestGlobals.expect
-local it = JestGlobals.it
+local test = JestGlobals.test
 
-it("simple test", function()
+test("simple test", function()
 	local stdout = runTest([[
 			describe("describe", function()
 				beforeEach(function() end)
@@ -24,11 +23,21 @@ it("simple test", function()
 				test("one", function() end)
 				test("two", function() end)
 			end)
-		]]).stdout
-	expect(wrap(stdout)).toMatchSnapshot()
+	]]).stdout
+	expect(stdout).toMatchSnapshot()
 end)
-
-it("failures", function()
+-- ROBLOX deviation START: see if we can make this work later
+-- test("function descriptors", function()
+test.skip("function descriptors", function()
+	-- ROBLOX deviation END
+	local stdout = runTest([[
+		describe(function describer() end, function()
+			test(class One {}, function() end);
+		end)
+  	]]).stdout
+	expect(stdout).toMatchSnapshot()
+end)
+test("failures", function()
 	local stdout = runTest([[
 			describe("describe", function()
 				beforeEach(function() end)
@@ -41,5 +50,5 @@ it("failures", function()
 				test("two", function() end)
 			end)
   		]]).stdout
-	expect(wrap(stdout)).toMatchSnapshot()
+	expect(stdout).toMatchSnapshot()
 end)

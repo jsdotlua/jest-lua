@@ -1,5 +1,5 @@
 --!nonstrict
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/__tests__/asymmetricMatchers.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/expect/src/__tests__/asymmetricMatchers.test.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -18,6 +18,7 @@ local Boolean = LuauPolyfill.Boolean
 -- local Promise = require(Packages.Promise)
 -- ROBLOX deviation END
 local JestGlobals = require(Packages.Dev.JestGlobals)
+local describe = JestGlobals.describe
 local expect = JestGlobals.expect
 -- ROBLOX deviation START: not used
 -- local jest = JestGlobals.jest
@@ -36,11 +37,13 @@ local any = asymmetricMatchersModule.any
 local anything = asymmetricMatchersModule.anything
 local arrayContaining = asymmetricMatchersModule.arrayContaining
 local arrayNotContaining = asymmetricMatchersModule.arrayNotContaining
+local closeTo = asymmetricMatchersModule.closeTo
+local notCloseTo = asymmetricMatchersModule.notCloseTo
 local objectContaining = asymmetricMatchersModule.objectContaining
 local objectNotContaining = asymmetricMatchersModule.objectNotContaining
 local stringContaining = asymmetricMatchersModule.stringContaining
-local stringMatching = asymmetricMatchersModule.stringMatching
 local stringNotContaining = asymmetricMatchersModule.stringNotContaining
+local stringMatching = asymmetricMatchersModule.stringMatching
 local stringNotMatching = asymmetricMatchersModule.stringNotMatching
 
 -- ROBLOX deviation START: additional dependencies
@@ -530,4 +533,130 @@ end)
 
 test("StringNotMatching returns true if received value is not string", function()
 	jestExpect(stringNotMatching("en"):asymmetricMatch(1)).toBe(true)
+end)
+
+describe("closeTo", function()
+	Array.forEach({
+		{ 0, 0 },
+		{ 0, 0.001 },
+		{ 1.23, 1.229 },
+		{ 1.23, 1.226 },
+		{ 1.23, 1.225 },
+		{ 1.23, 1.234 },
+		{ math.huge, math.huge },
+		{ -math.huge, -math.huge },
+	}, function(ref0)
+		local expected, received = table.unpack(ref0, 1, 2)
+
+		test(("%s closeTo %s return true"):format(tostring(expected), tostring(received)), function()
+			jestExpect(closeTo(expected):asymmetricMatch(received)).toBe(true)
+		end)
+
+		test(("%s notCloseTo %s return false"):format(tostring(expected), tostring(received)), function()
+			jestExpect(notCloseTo(expected):asymmetricMatch(received)).toBe(false)
+		end)
+	end)
+
+	Array.forEach({
+		{ 0, 0.01 },
+		{ 1, 1.23 },
+		{ 1.23, 1.2249999 },
+		{ math.huge, -math.huge },
+		{ math.huge, 1.23 },
+		{ -math.huge, -1.23 },
+	}, function(ref0)
+		local expected, received = table.unpack(ref0, 1, 2)
+
+		test(("%s closeTo %s return false"):format(tostring(expected), tostring(received)), function()
+			jestExpect(closeTo(expected):asymmetricMatch(received)).toBe(false)
+		end)
+
+		test(("%s notCloseTo %s return true"):format(tostring(expected), tostring(received)), function()
+			jestExpect(notCloseTo(expected):asymmetricMatch(received)).toBe(true)
+		end)
+	end)
+
+	Array.forEach({ { 0, 0.1, 0 }, { 0, 0.0001, 3 }, { 0, 0.000004, 5 }, { 2.0000002, 2, 5 } }, function(ref0)
+		local expected, received, precision = table.unpack(ref0, 1, 3)
+
+		test(
+			("%s closeTo %s with precision %s return true"):format(
+				tostring(expected),
+				tostring(received),
+				tostring(precision)
+			),
+			function()
+				jestExpect(closeTo(expected, precision):asymmetricMatch(received)).toBe(true)
+			end
+		)
+
+		test(
+			("%s notCloseTo %s with precision %s return false"):format(
+				tostring(expected),
+				tostring(received),
+				tostring(precision)
+			),
+			function()
+				jestExpect(notCloseTo(expected, precision):asymmetricMatch(received)).toBe(false)
+			end
+		)
+	end)
+
+	Array.forEach({ { 3.141592e-7, 3e-7, 8 }, { 56789, 51234, -4 } }, function(ref0)
+		local expected, received, precision = table.unpack(ref0, 1, 3)
+
+		test(
+			("%s closeTo %s with precision %s return false"):format(
+				tostring(expected),
+				tostring(received),
+				tostring(precision)
+			),
+			function()
+				jestExpect(closeTo(expected, precision):asymmetricMatch(received)).toBe(false)
+			end
+		)
+
+		test(
+			("%s notCloseTo %s with precision %s return true"):format(
+				tostring(expected),
+				tostring(received),
+				tostring(precision)
+			),
+			function()
+				jestExpect(notCloseTo(expected, precision):asymmetricMatch(received)).toBe(true)
+			end
+		)
+	end)
+
+	test("closeTo throw if expected is not number", function()
+		jestExpect(function()
+			closeTo("a")
+		end).toThrow()
+	end)
+
+	test("notCloseTo throw if expected is not number", function()
+		jestExpect(function()
+			notCloseTo("a")
+		end).toThrow()
+	end)
+
+	test("closeTo throw if precision is not number", function()
+		jestExpect(function()
+			closeTo(1, "a")
+		end).toThrow()
+	end)
+
+	test("notCloseTo throw if precision is not number", function()
+		jestExpect(function()
+			notCloseTo(1, "a")
+		end).toThrow()
+	end)
+
+	test("closeTo return false if received is not number", function()
+		jestExpect(closeTo(1):asymmetricMatch("a")).toBe(false)
+	end)
+
+	test("notCloseTo return false if received is not number", function()
+		jestExpect(notCloseTo(1):asymmetricMatch("a")).toBe(false)
+	end)
 end)

@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/matchers.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/expect/src/matchers.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -56,7 +56,7 @@ local printReceivedStringContainExpectedSubstring = Print.printReceivedStringCon
 
 local Types = require(CurrentModule.types)
 type MatcherState = Types.MatcherState
-type MatchersObject = Types.MatchersObject_
+type MatchersObject = Types.MatchersObject
 
 local Utils = require(CurrentModule.utils)
 -- ROBLOX deviation: skipped as Lua doesn't support ArrayBuffer

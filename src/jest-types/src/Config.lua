@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-types/src/Config.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-types/src/Config.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -33,6 +33,90 @@ type Arguments<T> = T & Object
 
 type CoverageProvider = "babel" | "v8"
 
+export type FakeableAPI =
+	"Date"
+	| "hrtime"
+	| "nextTick"
+	| "performance"
+	| "queueMicrotask"
+	| "requestAnimationFrame"
+	| "cancelAnimationFrame"
+	| "requestIdleCallback"
+	| "cancelIdleCallback"
+	| "setImmediate"
+	| "clearImmediate"
+	| "setInterval"
+	| "clearInterval"
+	| "setTimeout"
+	| "clearTimeout"
+
+export type GlobalFakeTimersConfig = { --[[*
+   * Whether fake timers should be enabled globally for all test files.
+   *
+   * @defaultValue
+   * The default is `false`.
+   ]]
+	enableGlobally: boolean?,
+}
+
+export type FakeTimersConfig = { --[[*
+   * If set to `true` all timers will be advanced automatically
+   * by 20 milliseconds every 20 milliseconds. A custom time delta
+   * may be provided by passing a number.
+   *
+   * @defaultValue
+   * The default is `false`.
+   ]]
+	advanceTimers: (boolean | number)?,
+	--[[*
+   * List of names of APIs (e.g. `Date`, `nextTick()`, `setImmediate()`,
+   * `setTimeout()`) that should not be faked.
+   *
+   * @defaultValue
+   * The default is `[]`, meaning all APIs are faked.
+   ]]
+	doNotFake: Array<FakeableAPI>?,
+	--[[*
+   * Sets current system time to be used by fake timers.
+   *
+   * @defaultValue
+   * The default is `Date.now()`.
+   ]]
+	now: (number | DateTime)?,
+	--[[*
+   * The maximum number of recursive timers that will be run when calling
+   * `jest.runAllTimers()`.
+   *
+   * @defaultValue
+   * The default is `100_000` timers.
+   ]]
+	timerLimit: number?,
+	--[[*
+   * Use the old fake timers implementation instead of one backed by
+   * [`@sinonjs/fake-timers`](https://github.com/sinonjs/fake-timers).
+   *
+   * @defaultValue
+   * The default is `false`.
+   ]]
+	legacyFakeTimers: (false)?,
+}
+
+export type LegacyFakeTimersConfig = { --[[*
+   * Use the old fake timers implementation instead of one backed by
+   * [`@sinonjs/fake-timers`](https://github.com/sinonjs/fake-timers).
+   *
+   * @defaultValue
+   * The default is `false`.
+   ]]
+	legacyFakeTimers: (true)?,
+}
+
+-- ROBLOX deviation START: handle TSParenthesizedType, remove Exclude<T> and replace 'Date' with 'DateTime'
+type FakeTimers = GlobalFakeTimersConfig & ((FakeTimersConfig & {
+	now: DateTime?,
+}) | LegacyFakeTimersConfig)
+-- ROBLOX deviation STOP
+
 type Timers = "real" | "fake" | "modern" | "legacy"
 
 export type Path = string
@@ -52,7 +136,7 @@ export type HasteConfig = {
   	 *   Projects with `watchman` set to true will error if this option is set to true.
   	 ]]
 	enableSymlinks: boolean?,
-	--[[* Path to a custom implementation of Haste. ]]
+	--[[* string to a custom implementation of Haste. ]]
 	hasteImplModulePath: string?,
 	--[[* All platforms to target, e.g ['ios', 'android']. ]]
 	platforms: Array<string>?,
@@ -60,6 +144,8 @@ export type HasteConfig = {
 	throwOnModuleCollision: boolean?,
 	--[[* Custom HasteMap module ]]
 	hasteMapModulePath: string?,
+	--[[* Whether to retain all files, allowing e.g. search for tests in `node_modules`. ]]
+	retainAllFiles: boolean?,
 }
 
 export type CoverageReporterName = string --[[ ROBLOX TODO: Unhandled node for type: TSTypeOperator ]] --[[ keyof ReportOptions ]]
@@ -135,7 +221,7 @@ export type DefaultOptions = {
 	resetMocks: boolean,
 	resetModules: boolean,
 	restoreMocks: boolean,
-	roots: Array<Path>,
+	roots: Array<string>,
 	runTestsByPath: boolean,
 	runner: string,
 	setupFiles: Array<
@@ -150,12 +236,12 @@ export type DefaultOptions = {
 	>,
 	skipFilter: boolean,
 	slowTestThreshold: number,
-	snapshotSerializers: Array<Path>,
+	snapshotSerializers: Array<string>,
 	testEnvironment: string,
 	testEnvironmentOptions: Record<string, any>,
 	testFailureExitCode: string | number,
 	testLocationInResults: boolean,
-	testMatch: Array<Glob>,
+	testMatch: Array<string>,
 	testPathIgnorePatterns: Array<string>,
 	testRegex: Array<string>,
 	-- ROBLOX deviation START: not supported
@@ -217,9 +303,6 @@ export type InitialProjectOptions = {
 	-- moduleNameMapper: { [string]: string | Array<string> }?,
 	-- modulePathIgnorePatterns: Array<string>?,
 	-- modulePaths: Array<string>?,
-	-- ROBLOX deviation END
-	name: string?,
-	-- ROBLOX deviation START: not supported
 	-- prettierPath: (string | nil)?,
 	-- ROBLOX deviation END
 	resetMocks: boolean?,
@@ -339,7 +422,7 @@ export type InitialOptions = {
 	-- modulePathIgnorePatterns: Array<string>?,
 	-- modulePaths: Array<string>?,
 	-- ROBLOX deviation END
-	name: string?,
+	id: string?,
 	noStackTrace: boolean?,
 	-- ROBLOX deviation START: not supported
 	-- notify: boolean?,
@@ -373,6 +456,8 @@ export type InitialOptions = {
 	roots: Array<Path>?,
 	runner: string?,
 	runTestsByPath: boolean?,
+	runtime: string?,
+	sandboxInjectedGlobals: Array<string>?,
 	--[[*
   	 * @deprecated Use `transform` options instead.
   	 ]]
@@ -559,6 +644,7 @@ export type ProjectConfig = {
 	-- ROBLOX deviation START: not supported
 	-- errorOnDeprecated: boolean,
 	-- extensionsToTreatAsEsm: Array<Path>,
+	fakeTimers: FakeTimers,
 	-- extraGlobals: Array<string>, -- ROBLOX deviation: Array<keyof typeof globalThis>;
 	-- ROBLOX deviation END
 	filter: Path?,
@@ -569,6 +655,7 @@ export type ProjectConfig = {
 	-- globals: ConfigGlobals,
 	-- haste: HasteConfig,
 	-- ROBLOX deviation END
+	id: string,
 	injectGlobals: boolean,
 	-- ROBLOX deviation START: not supported
 	-- moduleDirectories: Array<string>,
@@ -577,9 +664,6 @@ export type ProjectConfig = {
 	-- moduleNameMapper: Array<Array<string>>,
 	-- modulePathIgnorePatterns: Array<string>,
 	-- modulePaths: Array<string>?,
-	-- ROBLOX deviation END
-	name: string,
-	-- ROBLOX deviation START: not supported
 	-- prettierPath: string,
 	-- ROBLOX deviation END
 	resetMocks: boolean,
@@ -593,6 +677,8 @@ export type ProjectConfig = {
 	-- ROBLOX deviation END
 	roots: Array<Path>,
 	runner: string,
+	runtime: string?,
+	sandboxInjectedGlobals: Array<ProjectConfig>,
 	setupFiles: Array<
 		-- ROBLOX deviation START: using ModuleScript instead of Path
 		ModuleScript

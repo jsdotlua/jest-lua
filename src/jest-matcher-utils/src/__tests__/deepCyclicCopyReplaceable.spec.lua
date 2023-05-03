@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-matcher-utils/src/__tests__/deepCyclicCopyReplaceable.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-matcher-utils/src/__tests__/deepCyclicCopyReplaceable.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -62,7 +62,7 @@ end)
 
 -- ROBLOX deviation: test skipped because Lua has no concept of enumerables and
 -- non-enumerables
-it.skip("shuold not skips non-enumerables", function()
+it.skip("should not skips non-enumerables", function()
 	--[[
 			const obj = {};
 			Object.defineProperty(obj, 'foo', {enumerable: false, value: 'bar'});

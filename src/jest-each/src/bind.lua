@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-each/src/bind.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-each/src/bind.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -26,7 +26,10 @@ type Global_TemplateData = typesModule.Global_TemplateData
 type Global_ArrayTable = typesModule.Global_ArrayTable
 type Global_DoneFn = typesModule.Global_DoneFn
 
-local ErrorWithStack = require(Packages.JestUtil).ErrorWithStack
+local jestutilModule = require(Packages.JestUtil)
+local ErrorWithStack = jestutilModule.ErrorWithStack
+local convertDescriptorToString = jestutilModule.convertDescriptorToString
+
 local convertArrayTable = require(script.Parent.table.array).default
 local convertTemplateTable = require(script.Parent.table.template).default
 local validationModule = require(script.Parent.validation)
@@ -64,6 +67,8 @@ local function default<EachCallback>(cb_: GlobalCallback?, supportsDone_: boolea
 		local taggedTemplateData = if select("#", ...) > 0 then { ... } else {}
 
 		local function eachBind(title: string, test: Global_EachTestFn<EachCallback>, timeout: number?): ()
+			title = convertDescriptorToString(title)
+
 			local ok, result = pcall(function()
 				local tests = if isArrayTable(taggedTemplateData)
 					then buildArrayTests(title, table_)

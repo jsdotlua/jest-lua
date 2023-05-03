@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/pretty-format/src/plugins/AsymmetricMatcher.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/pretty-format/src/plugins/AsymmetricMatcher.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -9,7 +9,8 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
-local Symbol = require(Packages.LuauPolyfill).Symbol
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Symbol = LuauPolyfill.Symbol
 
 local Collections = require(CurrentModule.Collections)
 local printListItems = Collections.printListItems
@@ -68,6 +69,19 @@ local function serialize(
 
 	if stringedValue == "StringContaining" or stringedValue == "StringNotContaining" then
 		return stringedValue .. SPACE .. printer(unescape(val.sample), config, indentation, depth, refs)
+	end
+
+	if typeof(val.toAsymmetricMatcher) ~= "function" then
+		-- ROBLOX deviation START: do not print constructor name as we don't have it
+		-- error(
+		-- 	Error.new(
+		-- 		("Asymmetric matcher %s does not implement toAsymmetricMatcher()"):format(
+		-- 			tostring(val.constructor.name)
+		-- 		)
+		-- 	)
+		-- )
+		error("Asymmetric matcher does not implement toAsymmetricMatcher()")
+		-- ROBLOX deviation END
 	end
 
 	return val:toAsymmetricMatcher()

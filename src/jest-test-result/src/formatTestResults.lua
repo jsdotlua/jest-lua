@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-test-result/src/formatTestResults.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-test-result/src/formatTestResults.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -66,6 +66,7 @@ end
 function formatTestAssertion(assertion: AssertionResult): FormattedAssertionResult
 	local result: FormattedAssertionResult = {
 		ancestorTitles = assertion.ancestorTitles,
+		duration = assertion.duration,
 		failureMessages = nil,
 		fullName = assertion.fullName,
 		location = assertion.location,

@@ -1,5 +1,5 @@
 --!nonstrict
--- ROBLOX derived from: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-fake-timers/src/modernFakeTimers.ts
+-- ROBLOX derived from: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-fake-timers/src/modernFakeTimers.ts
 --[[
 	* Copyright (c) Roblox Corporation. All rights reserved.
 	* Licensed under the MIT License (the "License");

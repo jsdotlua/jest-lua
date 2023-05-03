@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-circus/src/__tests__/circusItTestError.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-circus/src/__tests__/circusItTestError.test.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -51,13 +51,13 @@ describe("test/it error throwing", function()
 		)
 	end)
 
-	it("it throws an error when first argument isn't a string", function()
+	it("it throws an error when first argument isn't valid", function()
 		expect(function()
 				-- @ts-expect-error: Easy, we're testing runtime errors here
 				(circusIt :: any)(function() end)
 			end)
 			-- ROBLOX deviation: function printing is different in lua
-			.toThrowError("Invalid first argument, [Function anonymous]. It must be a string.")
+			.toThrowError("Invalid first argument, [Function anonymous]. It must be a named function, number, or string.")
 	end)
 
 	it("it throws an error when callback function is not a function", function()
@@ -87,8 +87,10 @@ describe("test/it error throwing", function()
 	it("test throws an error when first argument isn't a string", function()
 		expect(function()
 			-- @ts-expect-error: Easy, we're testing runtime errors here
-			(circusIt :: any)(function() end)
-		end).toThrowError("Invalid first argument, [Function anonymous]. It must be a string.")
+			(circusTest :: any)(function() end)
+		end).toThrowError(
+			"Invalid first argument, [Function anonymous]. It must be a named function, number, or string."
+		)
 	end)
 
 	it("test throws an error when callback function is not a function", function()

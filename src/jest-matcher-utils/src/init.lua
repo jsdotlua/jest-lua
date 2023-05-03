@@ -1,5 +1,5 @@
 --!nonstrict
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-matcher-utils/src/index.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-matcher-utils/src/index.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -96,12 +96,14 @@ local SUGGEST_TO_CONTAIN_EQUAL =
 local replaceTrailingSpaces, getCommonAndChangedSubstrings, isLineDiffable, shouldPrintDiff, replaceMatchedToAsymmetricMatcher, isAsymmetricMatcher
 local matcherErrorMessage, matcherHint
 
-local function stringify(object: any, maxDepth: number?): string
-	-- ROBLOX deviation: Added this if logic to deal with handling nil values in Lua tables
+local function stringify(object: unknown, maxDepth_: number?, maxWidth_: number?): string
+	-- ROBLOX deviation START: Added this if logic to deal with handling nil values in Lua tables
 	if object == Symbol.for_("$$nil") then
 		object = nil
 	end
-	maxDepth = maxDepth or 10
+	-- ROBLOX deviation END
+	local maxDepth: number = if maxDepth_ ~= nil then maxDepth_ else 10
+	local maxWidth: number = if maxWidth_ ~= nil then maxWidth_ else 10
 
 	local MAX_LENGTH = 10000
 	local result
@@ -109,6 +111,7 @@ local function stringify(object: any, maxDepth: number?): string
 	local ok = pcall(function()
 		result = prettyFormat(object, {
 			maxDepth = maxDepth,
+			maxWidth = maxWidth,
 			min = true,
 			plugins = PLUGINS,
 		})
@@ -118,21 +121,31 @@ local function stringify(object: any, maxDepth: number?): string
 		result = prettyFormat(object, {
 			callToJSON = false,
 			maxDepth = maxDepth,
+			maxWidth = maxWidth,
 			min = true,
 			plugins = PLUGINS,
 		})
 	end
 
-	if #result >= MAX_LENGTH and maxDepth > 1 then
-		--[[
-			ROBLOX TODO: Remove the "if maxDepth" check once it can pass through
-			Luau cleanly
-		]]
-		if maxDepth then
-			return stringify(object, math.floor(maxDepth / 2))
-		end
+	if
+		-- ROBLOX deviation START: fix length check
+		-- result.length >= MAX_LENGTH --[[ ROBLOX CHECK: operator '>=' works only if either both arguments are strings or both are a number ]]
+		#result >= MAX_LENGTH
+		-- ROBLOX deviation END
+		and maxDepth > 1 --[[ ROBLOX CHECK: operator '>' works only if either both arguments are strings or both are a number ]]
+	then
+		return stringify(object, math.floor(maxDepth / 2), maxWidth)
+	elseif
+		-- ROBLOX deviation START: fix length check
+		-- result.length >= MAX_LENGTH --[[ ROBLOX CHECK: operator '>=' works only if either both arguments are strings or both are a number ]]
+		#result >= MAX_LENGTH
+		-- ROBLOX deviation END
+		and maxWidth > 1 --[[ ROBLOX CHECK: operator '>' works only if either both arguments are strings or both are a number ]]
+	then
+		return stringify(object, maxDepth, math.floor(maxWidth / 2))
+	else
+		return result
 	end
-	return result
 end
 
 local function highlightTrailingWhitespace(text: string): string

@@ -1,6 +1,7 @@
 # Jest Roblox Changelog
 
 ## Unreleased
+* :hammer_and_wrench: Upgrade to [v28.0.0](https://github.com/jestjs/jest/tree/v28.0.0) ([#266](https://github.com/Roblox/jest-roblox/pull/266))
 
 ## 3.3.0 (2022-04-26)
 * :sparkles: `pretty-format`: Added `printInstanceDefaults` formatting option that toggles whether unmodified Instance properties are printed ([#341](https://github.com/Roblox/jest-roblox/pull/341))

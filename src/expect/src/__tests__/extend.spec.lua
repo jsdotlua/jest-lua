@@ -1,5 +1,5 @@
 --!nocheck
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/__tests__/extend.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/expect/src/__tests__/extend.test.ts
 
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -226,6 +226,23 @@ it("allows overriding existing extension", function()
 		end,
 	})
 	jestExpect("foo").toAllowOverridingExistingMatcher()
+end)
+
+it("throws descriptive errors for invalid matchers", function()
+	-- ROBLOX deviation START: undefined check isn't valid for luau
+	-- expect(function()
+	-- 	return jestExpect.extend({ default = nil })
+	-- end).toThrow(
+	-- 	'expect.extend: `default` is not a valid matcher. Must be a function, is "undefined"'
+	-- )
+	-- ROBLOX deviation END
+
+	expect(function()
+		return jestExpect.extend({ default = 42 })
+	end).toThrow('expect.extend: `default` is not a valid matcher. Must be a function, is "number"')
+	expect(function()
+		return jestExpect.extend({ default = "foobar" })
+	end).toThrow('expect.extend: `default` is not a valid matcher. Must be a function, is "string"')
 end)
 
 -- ROBLOX deviation START: lua specific test to handle asymmetric unary matcher with a table argument

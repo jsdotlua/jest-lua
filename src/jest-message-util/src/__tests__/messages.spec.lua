@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-message-util/src/__tests__/messages.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-message-util/src/__tests__/messages.test.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -30,7 +30,7 @@ local formatExecError = CurentModule.formatExecError
 
 --[[
 		ROBLOX deviation: skipped lines 14-80
-		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-message-util/src/__tests__/messages.test.ts#L14-L80
+		original code: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-message-util/src/__tests__/messages.test.ts#L14-L80
 	]]
 
 beforeEach(function()
@@ -39,7 +39,7 @@ end)
 
 --[[
 		ROBLOX deviation: skipped lines 86-109
-		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-message-util/src/__tests__/messages.test.ts#L86-L109
+		original code: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-message-util/src/__tests__/messages.test.ts#L86-L109
 	]]
 
 it(".formatExecError()", function()
@@ -54,5 +54,5 @@ end)
 
 --[[
 		ROBLOX deviation: skipped lines 130-366
-		original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-message-util/src/__tests__/messages.test.ts#L130-L366
+		original code: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-message-util/src/__tests__/messages.test.ts#L130-L366
 	]]

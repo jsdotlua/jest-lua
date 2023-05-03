@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-config/src/__tests__/__snapshots__/normalize.test.ts.snap
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-config/src/__tests__/__snapshots__/normalize.test.ts.snap
 -- Jest Snapshot v1, https://goo.gl/fbAQLP
 
 local exports = {}
@@ -26,23 +26,6 @@ exports["rootDir throws error when rootDir is table 1"] = [[
 ]]
 
 -- ROBLOX deviation START: not supported
--- exports["Upgrade help logs a warning when `scriptPreprocessor` and/or `preprocessorIgnorePatterns` are used 1"] = [[
--- "<yellow><bold><bold>●</><bold> Deprecation Warning</>:</>
--- <yellow></>
--- <yellow>  Option <bold>\"preprocessorIgnorePatterns\"</> was replaced by <bold>\"transformIgnorePatterns\"</>, which support multiple preprocessors.</>
--- <yellow></>
--- <yellow>  Jest now treats your current configuration as:</>
--- <yellow>  {</>
--- <yellow>    <bold>\"transformIgnorePatterns\"</>: <bold>[\"bar/baz\", \"qux/quux\"]</></>
--- <yellow>  }</>
--- <yellow></>
--- <yellow>  Please update your configuration.</>
--- <yellow></>
--- <yellow>  <bold>Configuration Documentation:</></>
--- <yellow>  https://jestjs.io/docs/configuration</>
--- <yellow></>"
--- ]]
-
 -- exports["displayName generates a default color for the runner jest-runner 1"] = [["yellow"]]
 
 -- exports["displayName generates a default color for the runner jest-runner-eslint 1"] = [["magenta"]]

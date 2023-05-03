@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-reporters/src/__tests__/DefaultReporter.test.js
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-reporters/src/__tests__/DefaultReporter.test.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -34,6 +34,7 @@ local testResult = {
 		updated = 0,
 	},
 	testFilePath = "/foo",
+	testResults = {},
 }
 
 local stdoutWrite = moduleMocker:fn()

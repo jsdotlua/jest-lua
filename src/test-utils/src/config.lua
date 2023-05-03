@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/test-utils/src/config.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/test-utils/src/config.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -23,6 +23,7 @@ local DEFAULT_GLOBAL_CONFIG: Config_GlobalConfig = {
 	bail = 0,
 	changedFilesWithAncestor = false,
 	changedSince = "",
+	ci = false,
 	collectCoverage = false,
 	collectCoverageFrom = {},
 	collectCoverageOnlyFrom = nil,
@@ -91,21 +92,20 @@ local DEFAULT_PROJECT_CONFIG: Config_ProjectConfig = {
 	displayName = nil,
 	errorOnDeprecated = false,
 	extensionsToTreatAsEsm = {},
-	extraGlobals = {},
+	fakeTimers = { enableGlobally = false },
 	filter = nil,
 	forceCoverageMatch = {},
 	globalSetup = nil,
 	globalTeardown = nil,
 	globals = {},
 	haste = {},
+	id = "test_name",
 	injectGlobals = true,
 	moduleDirectories = {},
 	moduleFileExtensions = { "js" },
-	moduleLoader = "/test_module_loader_path",
 	moduleNameMapper = {},
 	modulePathIgnorePatterns = {},
 	modulePaths = {},
-	name = "test_name",
 	prettierPath = "prettier",
 	resetMocks = false,
 	resetModules = false,
@@ -114,6 +114,8 @@ local DEFAULT_PROJECT_CONFIG: Config_ProjectConfig = {
 	rootDir = "/test_root_dir/" :: any,
 	roots = {},
 	runner = "jest-runner",
+	runtime = "/test_module_loader_path",
+	sandboxInjectedGlobals = {},
 	setupFiles = {},
 	setupFilesAfterEnv = {},
 	skipFilter = false,
@@ -152,7 +154,7 @@ exports.makeGlobalConfig = function(overrides_: { [string]: any }?): Config_Glob
 		error("Properties that are not part of GlobalConfig type were passed:" .. inspect(overridesKeys))
 	end
 
-	return Object.assign(DEFAULT_GLOBAL_CONFIG, overrides)
+	return Object.assign({}, DEFAULT_GLOBAL_CONFIG, overrides)
 end
 
 exports.makeProjectConfig = function(overrides: { [string]: any }): Config_ProjectConfig
@@ -170,7 +172,7 @@ exports.makeProjectConfig = function(overrides: { [string]: any }): Config_Proje
 		error("Properties that are not part of ProjectConfig type were passed:" .. inspect(overridesKeys))
 	end
 
-	return Object.assign(DEFAULT_PROJECT_CONFIG, overrides)
+	return Object.assign({}, DEFAULT_PROJECT_CONFIG, overrides)
 end
 
 return exports

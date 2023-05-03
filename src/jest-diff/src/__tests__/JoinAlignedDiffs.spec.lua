@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-diff/src/__tests__/joinAlignedDiffs.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-diff/src/__tests__/joinAlignedDiffs.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -32,7 +32,7 @@ local normalizeDiffOptions = require(CurrentModule.NormalizeDiffOptions).normali
 
 -- 1. Use options to omit line colors.
 local changeColor = function(s: string)
-	return "<i>" .. s .. "</i>"
+	return ("<i>%s</i>"):format(s)
 end
 local optionsNoColor = {
 	aColor = noColor,

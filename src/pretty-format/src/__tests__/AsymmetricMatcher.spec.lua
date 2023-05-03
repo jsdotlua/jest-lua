@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/pretty-format/src/__tests__/AsymmetricMatcher.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/pretty-format/src/__tests__/AsymmetricMatcher.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -9,6 +9,9 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Symbol = LuauPolyfill.Symbol
+
 local PrettyFormat = require(CurrentModule)
 local prettyFormat = PrettyFormat.default
 local plugins = PrettyFormat.plugins
@@ -17,9 +20,14 @@ local AsymmetricMatcher = plugins.AsymmetricMatcher
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local expect = JestGlobals.expect
+local test = JestGlobals.test
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
+
+-- ROBLOX deviation START: add predeclared variables
+local DummyMatcher
+-- ROBLOX deviation END
 
 -- ROBLOX deviation: don't need fnNameFor
 
@@ -108,6 +116,45 @@ end)
 it("stringNotMatching(string)", function()
 	local result = prettyFormat(expect.never.stringMatching("jest"), options)
 	expect(result).toBe('StringNotMatching "jest"')
+end)
+
+it("closeTo(number, precision)", function()
+	local result = prettyFormat(expect.closeTo(1.2345, 4), options)
+	expect(result).toEqual("NumberCloseTo 1.2345 (4 digits)")
+end)
+
+it("notCloseTo(number, precision)", function()
+	local result = prettyFormat(expect.never.closeTo(1.2345, 1), options)
+	expect(result).toEqual("NumberNotCloseTo 1.2345 (1 digit)")
+end)
+
+it("closeTo(number)", function()
+	local result = prettyFormat(expect.closeTo(1.2345), options)
+	expect(result).toEqual("NumberCloseTo 1.2345 (2 digits)")
+end)
+
+it("closeTo(inf)", function()
+	local result = prettyFormat(expect.closeTo(-math.huge), options)
+	expect(result).toEqual("NumberCloseTo -inf (2 digits)")
+end)
+
+it("closeTo(scientific number)", function()
+	local result = prettyFormat(expect.closeTo(1.56e-3, 4), options)
+	expect(result).toEqual("NumberCloseTo 0.00156 (4 digits)")
+end)
+
+it("closeTo(very small scientific number)", function()
+	local result = prettyFormat(expect.closeTo(1.56e-10, 4), options)
+	expect(result).toEqual("NumberCloseTo 1.56e-10 (4 digits)")
+end)
+
+test("correctly handles inability to pretty-print matcher", function()
+	expect(function()
+		return prettyFormat(DummyMatcher.new(1), options)
+		-- ROBLOX deviation START: constructor name is not tested for in output
+		-- end).toThrow("Asymmetric matcher DummyMatcher does not implement toAsymmetricMatcher()")
+	end).toThrow("Asymmetric matcher does not implement toAsymmetricMatcher()")
+	-- ROBLOX deviation END
 end)
 
 it("supports multiple nested asymmetric matchers", function()
@@ -305,3 +352,51 @@ it("min option", function()
 			.. "}"
 	)
 end)
+
+-- ROBLOX deviation START: use old class scheme
+-- type DummyMatcher = AbstractAsymmetricMatcher<number> & {
+type DummyMatcher = {
+	["$$typeof"]: any,
+	new: (sample: number) -> DummyMatcher,
+	-- ROBLOX deviation END
+	asymmetricMatch: (self: DummyMatcher, other: number) -> any,
+	toString: (self: DummyMatcher) -> any,
+	getExpectedType: (self: DummyMatcher) -> any,
+	-- ROBLOX deviation START: pull in props from upstream superclass
+	sample: number,
+	-- ROBLOX deviation END
+}
+
+-- ROBLOX deviation START: use old class scheme
+-- type DummyMatcher_statics = { new: (sample: number) -> DummyMatcher }
+-- local DummyMatcher = (
+-- 	setmetatable({}, { __index = AbstractAsymmetricMatcher }) :: any
+-- ) :: DummyMatcher & DummyMatcher_statics;
+DummyMatcher = {} :: DummyMatcher;
+-- ROBLOX deviation END
+
+(DummyMatcher :: any).__index = DummyMatcher
+
+function DummyMatcher.new(sample: number): DummyMatcher
+	local self = setmetatable({}, DummyMatcher)
+	-- ROBLOX deviation START: set props directly since super can't be used
+	-- (error("not implemented") --[[ ROBLOX TODO: Unhandled node for type: Super ]] --[[ super ]])(
+	-- 	sample
+	-- )
+	self.sample = sample
+	self["$$typeof"] = Symbol.for_("jest.asymmetricMatcher")
+	-- ROBLOX deviation END
+	return (self :: any) :: DummyMatcher
+end
+
+function DummyMatcher:asymmetricMatch(other: number)
+	return self.sample == other
+end
+
+function DummyMatcher:toString()
+	return "DummyMatcher"
+end
+
+function DummyMatcher:getExpectedType()
+	return "number"
+end

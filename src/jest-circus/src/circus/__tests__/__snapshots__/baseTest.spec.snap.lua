@@ -1,11 +1,11 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-circus/src/__tests__/__snapshots__/baseTest.test.ts.snap
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-circus/src/__tests__/__snapshots__/baseTest.test.ts.snap
 -- Jest Snapshot v1, https://goo.gl/fbAQLP
 
 local exports = {}
 
-exports["failures 1"] = [[
+exports[ [=[failures 1]=] ] = [=[
 
-start_describe_definition: describe
+"start_describe_definition: describe
 add_hook: beforeEach
 add_hook: afterEach
 add_test: one
@@ -34,12 +34,31 @@ run_describe_finish: describe
 run_describe_finish: ROOT_DESCRIBE_BLOCK
 run_finish
 
-unhandledErrors: 0
-]]
+unhandledErrors: 0"
+]=]
 
-exports["simple test 1"] = [[
+exports[ [=[function descriptors 1]=] ] = [=[
 
-start_describe_definition: describe
+"start_describe_definition: describer
+add_test: One
+finish_describe_definition: describer
+run_start
+run_describe_start: ROOT_DESCRIBE_BLOCK
+run_describe_start: describer
+test_start: One
+test_fn_start: One
+test_fn_success: One
+test_done: One
+run_describe_finish: describer
+run_describe_finish: ROOT_DESCRIBE_BLOCK
+run_finish
+
+unhandledErrors: 0"
+]=]
+
+exports[ [=[simple test 1]=] ] = [=[
+
+"start_describe_definition: describe
 add_hook: beforeEach
 add_hook: afterEach
 add_test: one
@@ -68,7 +87,7 @@ run_describe_finish: describe
 run_describe_finish: ROOT_DESCRIBE_BLOCK
 run_finish
 
-unhandledErrors: 0
-]]
+unhandledErrors: 0"
+]=]
 
 return exports

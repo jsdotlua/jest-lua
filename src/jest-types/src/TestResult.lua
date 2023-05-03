@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-types/src/TestResult.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-types/src/TestResult.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -26,6 +26,7 @@ export type AssertionResult = {
 	invocations: number?,
 	location: (Callsite | nil)?,
 	numPassingAsserts: number,
+	retryReasons: Array<string>?,
 	status: Status,
 	title: string,
 }

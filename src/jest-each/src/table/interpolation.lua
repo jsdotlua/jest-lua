@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-each/src/table/interpolation.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-each/src/table/interpolation.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -24,8 +24,9 @@ local isPrimitive = require(Packages.JestGetType).isPrimitive
 
 local pretty = require(Packages.PrettyFormat).format
 
--- ROBLOX deviation predefine variables
+-- ROBLOX deviation START: predefine variables
 local getMatchingKeyPaths, replaceKeyPathWithValue, getPath
+-- ROBLOX deviation END
 
 export type Template = Record<string, any>
 export type Templates = Array<Template>
@@ -36,11 +37,12 @@ local function interpolateVariables(title: string, template: Template, index: nu
 		Array.reduce(Object.keys(template), getMatchingKeyPaths(title), {}), -- aka flatMap
 		replaceKeyPathWithValue(template),
 		title
-	):gsub(
-		"%$#", -- ROBLOX deviation: escaped string
-		tostring(index),
-		1
+		-- ROBLOX deviation START: use gsub to replace variable strings
+		-- ):replace("$#", ("%s"):format(tostring(index)))
 	)
+		:gsub("%$#", tostring(index), 1)
+		:gsub("%%#", tostring(index), 1)
+	-- ROBLOX deviation END
 end
 exports.interpolateVariables = interpolateVariables
 

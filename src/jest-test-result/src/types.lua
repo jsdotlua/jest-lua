@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-test-result/src/types.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-test-result/src/types.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -146,7 +146,7 @@ export type TestResult = {
 	skipped: boolean,
 	snapshot: Snapshot,
 	testExecError: SerializableError?,
-	testFilePath: Config_Path,
+	testFilePath: string,
 	testResults: Array<AssertionResult>,
 	v8Coverage: V8CoverageResult?,
 }
@@ -222,7 +222,7 @@ export type TestEvents = {
 	["test-file-start"]: Array<Test>,
 	["test-file-success"]: Array<Test | TestResult>,
 	["test-file-failure"]: Array<Test | SerializableError>,
-	["test-case-result"]: Array<Config_Path | AssertionResult>,
+	["test-case-result"]: Array<string | AssertionResult>,
 }
 
 -- ROBLOX deviation START: unroll `keyof TestEvents` as this operation is not supported in Luau

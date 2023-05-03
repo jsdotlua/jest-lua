@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/__tests__/__snapshots__/matchers.test.js.snap
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/expect/src/__tests__/__snapshots__/matchers.test.js.snap
 
 --[[
   deviation: We changed output from If it should pass with deep equality, replace "toBe" with "toEqual"

@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-reporters/src/__tests__/__snapshots__/SummaryReporter.test.js.snap
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-reporters/src/__tests__/__snapshots__/SummaryReporter.test.js.snap
 -- Jest Snapshot v1, https://goo.gl/fbAQLP
 local exports = {}
 

@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-matcher-utils/src/__tests__/__snapshots__/index.test.ts.snap
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-matcher-utils/src/__tests__/__snapshots__/index.test.ts.snap
 local snapshots = {}
 
 --[=[
@@ -139,5 +139,11 @@ snapshots["diff forwards to jest-diff 5"] = [=[
 
 snapshots["diff forwards to jest-diff 6"] = [=[
   Comparing two different types of values. Expected <g>number</> but received <r>boolean</>.]=]
+
+snapshots["printDiffOrStringify expected asymmetric matchers should be diffable 1"] = [=[
+
+Expected: <g>ObjectContaining {"array": {{"3": "three", "four": "4", "one": 1, "two": 2}}, "foo": "bar"}</>
+Received: <r>{"array": {{"3": "three", "four": "4", "one": 1, "two": 1}}, "foo": "bar"}</>
+]=]
 
 return snapshots

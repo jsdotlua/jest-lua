@@ -1,9 +1,5 @@
--- ROBLOX NOTE: no upstream
-
 -- Jest Roblox Snapshot v1, http://roblox.github.io/jest-roblox/snapshot-testing
-
 local exports = {}
-
 exports[ [=[Instance matchers .toMatchInstance does not match properties of instance 1]=] ] = [=[
 
 <d>expect(</><r>received</><d>).</>toMatchInstance<d>(</><g>expected</><d>)</>
@@ -774,6 +770,20 @@ Error message: <r>"<d>expect(</><r>received</><r><d>).</>toBe<d>(</><g>expected<
       LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:170
       LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:169
       LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:180
+]=]
+
+exports[ [=[tests stack traces for calls within pcalls with Error polyfill 1]=] ] = [=[
+
+<d>expect(</><r>received</><d>).</>never<d>.</>toThrow<d>()</>
+
+Thrown value: <r>"attempt to concatenate string with table"</>
+
+      LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.Error.Error.global:81 function __recalculateStacktrace
+      LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.Error.Error.global:73 function __captureStackTrace
+      LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.Error.Error.global:40 function __createError
+      LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.Error.Error.global:89 function __call
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:192
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:199
 ]=]
 
 return exports

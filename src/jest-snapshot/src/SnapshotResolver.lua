@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-snapshot/src/SnapshotResolver.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-snapshot/src/SnapshotResolver.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -197,7 +197,7 @@ end
 
 --[[
 	ROBLOX deviation: skipped lines 56-132
-	original code: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-snapshot/src/SnapshotResolver.ts#L56-L132
+	original code: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-snapshot/src/SnapshotResolver.ts#L56-L132
 ]]
 
 return exports

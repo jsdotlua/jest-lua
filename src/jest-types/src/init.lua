@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-types/src/index.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-types/src/index.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -8,6 +8,8 @@
 local CircusModule = require(script.Circus)
 export type Circus_DoneFn = CircusModule.DoneFn
 export type Circus_BlockFn = CircusModule.BlockFn
+export type Circus_BlockNameLike = CircusModule.BlockNameLike
+export type Circus_TestNameLike = CircusModule.TestNameLike
 export type Circus_BlockName = CircusModule.BlockName
 export type Circus_BlockMode = CircusModule.BlockMode
 export type Circus_TestMode = CircusModule.TestMode

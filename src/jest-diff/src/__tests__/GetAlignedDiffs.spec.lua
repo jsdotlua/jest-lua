@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-diff/src/__tests__/getAlignedDiffs.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-diff/src/__tests__/getAlignedDiffs.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -23,7 +23,7 @@ local identity = function(s)
 end
 -- ROBLOX FIXME Luau: Luau should know s is string since changeColor var gets assigned to options, which gets passed to a function that types that table's field as DiffOptionsColor = (string) -> string
 local changeColor = function(s: string)
-	return "<i>" .. s .. "</i>"
+	return ("<i>%s</i>"):format(s)
 end
 local options = {
 	aColor = identity,

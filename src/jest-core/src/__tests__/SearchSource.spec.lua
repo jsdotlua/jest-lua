@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-core/src/__tests__/SearchSource.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-core/src/__tests__/SearchSource.test.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -34,6 +34,7 @@ local jestTypesModule = require(Packages.JestTypes)
 -- ROBLOX deviation END
 type Config_Argv = jestTypesModule.Config_Argv
 type Config_Path = jestTypesModule.Config_Path
+type Config_InitialOptions = jestTypesModule.Config_InitialOptions
 type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
 local normalize = require(Packages.JestConfig).normalize
 -- ROBLOX deviation START: not used
@@ -112,16 +113,15 @@ local rootDir = script.Parent.test_root
 -- ROBLOX deviation END
 local findMatchingTests: (config: Config_ProjectConfig) -> Promise<SearchResult>
 describe("SearchSource", function()
-	local name = "SearchSource"
+	local id = "SearchSource"
 	local searchSource: SearchSource
 	describe("isTestFilePath", function()
 		local config
 		beforeEach(function()
 			return Promise.resolve():andThen(function()
 				-- ROBLOX deviation START: needs to be an Instance
-				-- config = normalize({ name = name, rootDir = ".", roots = {} }, {} :: Config_Argv):expect().options
-				config =
-					normalize({ name = name, rootDir = script.Parent, roots = {} }, {} :: Config_Argv):expect().options
+				-- config = normalize({ id = id, rootDir = ".", roots = {} }, {} :: Config_Argv):expect().options
+				config = normalize({ id = id, rootDir = script.Parent, roots = {} }, {} :: Config_Argv):expect().options
 				-- ROBLOX deviation END
 				-- ROBLOX deviation START: Runtime.createContext is not ported
 				-- return Runtime:createContext(config, { maxWorkers = maxWorkers, watchman = false })
@@ -137,7 +137,7 @@ describe("SearchSource", function()
 			return Promise.resolve():andThen(function()
 				if process.platform ~= "win32" then
 					config = normalize({
-						name = name,
+						id = id,
 						-- ROBLOX deviation START: needs to be an Instance
 						-- rootDir = ".",
 						rootDir = script.Parent,
@@ -205,7 +205,7 @@ describe("SearchSource", function()
 					-- ROBLOX deviation START: not supported
 					-- moduleFileExtensions = { "js", "jsx", "txt" },
 					-- ROBLOX deviation END
-					name = name,
+					id = id,
 					rootDir = rootDir,
 					testMatch = nil,
 					-- TODO: change back to "not-really-a-test once https://roblox.atlassian.net/browse/LUATOOLS-146 is resolved
@@ -243,7 +243,7 @@ describe("SearchSource", function()
 					-- ROBLOX deviation START: not supported
 					-- moduleFileExtensions = { "js", "jsx", "txt" },
 					-- ROBLOX deviation END
-					name = name,
+					id = id,
 					rootDir = rootDir,
 					testMatch = { "**/not-really-a-test.txt", "!**/do-not-match-me.txt" },
 					testRegex = "",
@@ -279,7 +279,7 @@ describe("SearchSource", function()
 					-- ROBLOX deviation START: not supported
 					-- moduleFileExtensions = { "js", "jsx" },
 					-- ROBLOX deviation END
-					name = name,
+					id = id,
 					rootDir = rootDir,
 					testMatch = nil,
 					testRegex = "test.jsx?",
@@ -315,7 +315,7 @@ describe("SearchSource", function()
 					-- ROBLOX deviation START: not supported
 					-- moduleFileExtensions = { "js", "jsx" },
 					-- ROBLOX deviation END
-					name = name,
+					id = id,
 					rootDir = rootDir,
 					testMatch = { "**/test.js?(x)" },
 					testRegex = "",
@@ -350,8 +350,8 @@ describe("SearchSource", function()
 				local config = normalize({
 					-- ROBLOX deviation START: not supported
 					-- moduleFileExtensions = { "js", "jsx" },
-					-- ROBLOX deviation END
-					name = name,
+					-- ROBLOX devation END
+					id = id,
 					rootDir = rootDir,
 					testMatch = {
 						"**/*.js?(x)",
@@ -388,7 +388,7 @@ describe("SearchSource", function()
 		-- it("finds tests with default file extensions using testRegex", function()
 		-- 	return Promise.resolve():andThen(function()
 		-- 		local config = normalize(
-		-- 			{ name = name, rootDir = rootDir, testMatch = nil, testRegex = testRegex },
+		-- 			{ id = id, rootDir = rootDir, testMatch = nil, testRegex = testRegex },
 		-- 			{} :: Config_Argv
 		-- 		):expect().options
 		-- 		return findMatchingTests(config):then_(function(data)
@@ -407,7 +407,7 @@ describe("SearchSource", function()
 		-- it("finds tests with default file extensions using testMatch", function()
 		-- 	return Promise.resolve():andThen(function()
 		-- 		local config = normalize(
-		-- 			{ name = name, rootDir = rootDir, testMatch = testMatch, testRegex = "" },
+		-- 			{ id = id, rootDir = rootDir, testMatch = testMatch, testRegex = "" },
 		-- 			{} :: Config_Argv
 		-- 		):expect().options
 		-- 		return findMatchingTests(config):then_(function(data)
@@ -427,7 +427,7 @@ describe("SearchSource", function()
 		it("finds tests with parentheses in their rootDir when using testMatch", function()
 			return Promise.resolve():andThen(function()
 				local config = normalize({
-					name = name,
+					id = id,
 					-- ROBLOX deviation START: needs to be an Instance
 					-- rootDir = path:resolve(__dirname, "test_root_with_(parentheses)"),
 					rootDir = script.Parent["test_root_with_(parentheses)"],
@@ -466,7 +466,7 @@ describe("SearchSource", function()
 		-- 	return Promise.resolve():andThen(function()
 		-- 		local config = normalize({
 		-- 			moduleFileExtensions = { "js", "jsx" },
-		-- 			name = name,
+		-- 			id = id,
 		-- 			rootDir = rootDir,
 		-- 			testMatch = testMatch,
 		-- 		}, {} :: Config_Argv):expect().options
@@ -487,7 +487,7 @@ describe("SearchSource", function()
 		-- 	return Promise.resolve():andThen(function()
 		-- 		local config = normalize({
 		-- 			moduleFileExtensions = { "js", "foobar" },
-		-- 			name = name,
+		-- 			id = id,
 		-- 			rootDir = rootDir,
 		-- 			testMatch = testMatch,
 		-- 		}, {} :: Config_Argv):expect().options
@@ -508,7 +508,7 @@ describe("SearchSource", function()
 		-- 	return Promise.resolve():andThen(function()
 		-- 		local config = normalize({
 		-- 			moduleFileExtensions = { "js", "jsx" },
-		-- 			name = name,
+		-- 			id = id,
 		-- 			rootDir = rootDir,
 		-- 			testMatch = testMatch,
 		-- 		}, {} :: Config_Argv):expect().options
@@ -528,7 +528,7 @@ describe("SearchSource", function()
 		-- it("finds tests using a regex only", function()
 		-- 	return Promise.resolve():andThen(function()
 		-- 		local config = normalize(
-		-- 			{ name = name, rootDir = rootDir, testMatch = nil, testRegex = testRegex },
+		-- 			{ id = id, rootDir = rootDir, testMatch = nil, testRegex = testRegex },
 		-- 			{} :: Config_Argv
 		-- 		):expect().options
 		-- 		return findMatchingTests(config):then_(function(data)
@@ -547,7 +547,7 @@ describe("SearchSource", function()
 		-- it("finds tests using a glob only", function()
 		-- 	return Promise.resolve():andThen(function()
 		-- 		local config = normalize(
-		-- 			{ name = name, rootDir = rootDir, testMatch = testMatch, testRegex = "" },
+		-- 			{ id = id, rootDir = rootDir, testMatch = testMatch, testRegex = "" },
 		-- 			{} :: Config_Argv
 		-- 		):expect().options
 		-- 		return findMatchingTests(config):then_(function(data)
@@ -569,7 +569,7 @@ describe("SearchSource", function()
 	-- describe("filterPathsWin32", function()
 	-- 	beforeEach(function()
 	-- 		return Promise.resolve():andThen(function()
-	-- 			local config = normalize({ name = name, rootDir = ".", roots = {} }, {} :: Config_Argv):expect().options
+	-- 			local config = normalize({ id = id, rootDir = ".", roots = {} }, {} :: Config_Argv):expect().options
 	-- 			local context = Runtime:createContext(config, { maxWorkers = maxWorkers, watchman = false }):expect()
 	-- 			searchSource = SearchSource.new(context)
 	-- 			context.hasteFS.getAllFiles = function(_self: any)
@@ -685,7 +685,7 @@ describe("SearchSource", function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			local config = normalize({
 	-- 				moduleFileExtensions = { "js", "jsx", "foobar" },
-	-- 				name = name,
+	-- 				id = id,
 	-- 				rootDir = rootDir,
 	-- 				testMatch = testMatch,
 	-- 			}, {} :: Config_Argv):expect().options
@@ -746,7 +746,7 @@ describe("SearchSource", function()
 	-- 		return Promise.resolve():andThen(function()
 	-- 			if process.platform ~= "win32" then
 	-- 				local config = normalize(
-	-- 					{ name = name, rootDir = ".", roots = { "/foo/bar/prefix" } },
+	-- 					{ id = id, rootDir = ".", roots = { "/foo/bar/prefix" } },
 	-- 					{} :: Config_Argv
 	-- 				):expect().options
 	-- 				searchSource = SearchSource.new(

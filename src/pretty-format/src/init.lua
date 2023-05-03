@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/pretty-format/src/index.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/pretty-format/src/index.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -19,6 +19,7 @@ local isNaN = LuauPolyfill.Number.isNaN
 
 local Collections = require(CurrentModule.Collections)
 local printTableEntries = Collections.printTableEntries
+local printMapEntries = Collections.printMapEntries
 local printListItems = Collections.printListItems
 
 local AsymmetricMatcher = require(CurrentModule.plugins.AsymmetricMatcher)
@@ -243,6 +244,14 @@ local function printComplexValue(
 		end
 	end
 
+	if getType(val) == "map" then
+		if hitMaxDepth then
+			return "[Map]"
+		else
+			return "Map {" .. printMapEntries(val._map, config, indentation, depth, refs, printer) .. "}"
+		end
+	end
+
 	return retval .. "{" .. printTableEntries(val, config, indentation, depth, refs, printer) .. "}"
 	-- ROBLOX deviation end
 end
@@ -338,6 +347,7 @@ local DEFAULT_OPTIONS = {
 	highlight = false,
 	indent = 2,
 	maxDepth = math.huge,
+	maxWidth = math.huge,
 	min = false,
 	plugins = {},
 	printBasicPrototype = true,
@@ -410,6 +420,7 @@ local function getConfig(options: OptionsReceived?): Config
 		escapeString = getOption(options, "escapeString"),
 		indent = getIndent(options),
 		maxDepth = getOption(options, "maxDepth"),
+		maxWidth = getOption(options, "maxWidth"),
 		min = getOption(options, "min"),
 		plugins = getOption(options, "plugins"),
 		printBasicPrototype = if options ~= nil and options.printBasicPrototype ~= nil

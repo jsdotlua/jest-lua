@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/toThrowMatchers.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/expect/src/toThrowMatchers.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -47,7 +47,7 @@ local printReceivedStringContainExpectedSubstring = Print.printReceivedStringCon
 local Types = require(CurrentModule.types)
 type ExpectationResult = Types.ExpectationResult
 type MatcherState = Types.MatcherState
-type MatchersObject = Types.MatchersObject_
+type MatchersObject = Types.MatchersObject
 type RawMatcherFn = Types.RawMatcherFn_
 type SyncExpectationResult = Types.SyncExpectationResult
 

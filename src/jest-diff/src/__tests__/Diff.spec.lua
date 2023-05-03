@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-diff/src/__tests__/diff.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-diff/src/__tests__/diff.test.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -487,7 +487,7 @@ end)
 
 describe("trailing newline in multiline string not enclosed in quotes", function()
 	local a = table.concat({ "line 1", "line 2", "line 3" }, "\n")
-	local b = a .. "\n"
+	local b = ("%s\n"):format(tostring(a))
 
 	describe("from less to more", function()
 		local expected = table.concat({ "  line 1", "  line 2", "  line 3", "+" }, "\n")
@@ -678,7 +678,7 @@ describe("diffLinesUnified2 edge cases", function()
 		it("a", function()
 			local aDisplay = "MiXeD cAsE"
 			local bDisplay = "Mixed case\nUPPER CASE"
-			local aCompare = string.lower(aDisplay) .. "\nlower case"
+			local aCompare = ("%s\nlower case"):format(string.lower(aDisplay))
 			local bCompare = string.lower(bDisplay)
 
 			local received = diffLinesUnified2(

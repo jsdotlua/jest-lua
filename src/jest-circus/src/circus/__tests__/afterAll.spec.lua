@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/jest-circus/src/__tests__/afterAll.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-circus/src/__tests__/afterAll.test.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -9,7 +9,6 @@
 local CurrentModule = script.Parent
 local SrcModule = CurrentModule.Parent
 local Packages = SrcModule.Parent.Parent
-local wrap = require(Packages.Dev.JestSnapshotSerializerRaw).default
 local runTest = require(script.Parent.Parent.__mocks__.testUtils).runTest
 
 local JestGlobals = require(Packages.Dev.JestGlobals)
@@ -52,7 +51,7 @@ it("describe block cannot have hooks and no tests", function()
 				beforeAll(function() end)
 			end)
   		]])
-	expect(wrap(result.stdout)).toMatchSnapshot()
+	expect(result.stdout).toMatchSnapshot()
 end)
 
 it("describe block _can_ have hooks if a child describe block has tests", function()
@@ -77,7 +76,7 @@ it("describe block _can_ have hooks if a child describe block has tests", functi
 				end)
 			end)
 		]])
-	expect(wrap(result.stdout)).toMatchSnapshot()
+	expect(result.stdout).toMatchSnapshot()
 end)
 
 it("describe block hooks must not run if describe block is skipped", function()
@@ -94,7 +93,7 @@ it("describe block hooks must not run if describe block is skipped", function()
 				end)
 			end)
 		]])
-	expect(wrap(result.stdout)).toMatchSnapshot()
+	expect(result.stdout).toMatchSnapshot()
 end)
 
 it("child tests marked with todo should not run if describe block is skipped", function()
@@ -109,7 +108,7 @@ it("child tests marked with todo should not run if describe block is skipped", f
 				test.todo("my test")
 			end)
 		]])
-	expect(wrap(result.stdout)).toMatchSnapshot()
+	expect(result.stdout).toMatchSnapshot()
 end)
 
 it("child tests marked with only should not run if describe block is skipped", function()
@@ -126,5 +125,5 @@ it("child tests marked with only should not run if describe block is skipped", f
 				end)
 			end)
 		]])
-	expect(wrap(result.stdout)).toMatchSnapshot()
+	expect(result.stdout).toMatchSnapshot()
 end)

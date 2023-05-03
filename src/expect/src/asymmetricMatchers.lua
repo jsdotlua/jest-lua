@@ -1,5 +1,5 @@
 --!nonstrict
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/asymmetricMatchers.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/expect/src/asymmetricMatchers.ts
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 --  *
@@ -13,6 +13,8 @@ local Packages = CurrentModule.Parent
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
+local Boolean = LuauPolyfill.Boolean
+local Error = LuauPolyfill.Error
 local Object = LuauPolyfill.Object
 local Symbol = LuauPolyfill.Symbol
 local instanceof = LuauPolyfill.instanceof
@@ -26,6 +28,7 @@ local getType = require(Packages.JestGetType).getType
 -- ROBLOX TODO: import jest-matcher-utils when available
 -- import * as matcherUtils from 'jest-matcher-utils';
 local matcherUtils = {} :: any
+local pluralize = require(Packages.JestUtil).pluralize
 local JasmineUtils = require(CurrentModule.jasmineUtils)
 local equals = JasmineUtils.equals
 local hasProperty = JasmineUtils.hasProperty
@@ -47,44 +50,109 @@ local utils = Object.freeze(Object.assign({}, matcherUtils, {
 	subsetEquality = subsetEquality,
 }))
 
-type AsymmetricMatcher = {
-	getMatcherContext: (self: AsymmetricMatcher) -> State_,
-	asymmetricMatch: (self: AsymmetricMatcher, other: unknown) -> boolean,
-	toString: (self: AsymmetricMatcher) -> string,
-	getExpectedType: ((self: AsymmetricMatcher) -> string)?,
-	toAsymmetricMatcher: ((self: AsymmetricMatcher) -> string)?,
-}
+-- ROBLOX deviation START: use old class scheme
+-- type AsymmetricMatcher<T> = {
+-- 	getMatcherContext: (self: AsymmetricMatcher<T>) -> State_,
+-- 	asymmetricMatch: (self: AsymmetricMatcher<T>, other: unknown) -> boolean,
+-- 	toString: (self: AsymmetricMatcher<T>) -> string,
+-- 	getExpectedType: ((self: AsymmetricMatcher<T>) -> string)?,
+-- 	toAsymmetricMatcher: ((self: AsymmetricMatcher<T>) -> string)?,
+-- }
+-- local AsymmetricMatcher = {}
+-- AsymmetricMatcher.__index = AsymmetricMatcher
+-- ROBLOX deviation END
 
-local AsymmetricMatcher = {}
-AsymmetricMatcher.__index = AsymmetricMatcher
-function AsymmetricMatcher.new(sample: any, inverse: boolean?): AsymmetricMatcher
+export type AsymmetricMatcher<T> = {
+	-- ROBLOX deviation START: use '$' characters in typeof
+	-- __typeof --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $$typeof ]]: any,
+	["$$typeof"]: any,
+	-- ROBLOX deviation END
+	-- ROBLOX deviation START: add missing generic parameters
+	-- asymmetricMatch: (self: AsymmetricMatcher, other: unknown) -> boolean,
+	-- toString: (self: AsymmetricMatcher) -> string,
+	-- getExpectedType: (self: AsymmetricMatcher) -> string,
+	-- toAsymmetricMatcher: (self: AsymmetricMatcher) -> string,
+	asymmetricMatch: (self: AsymmetricMatcher<T>, other: unknown) -> boolean,
+	toString: (self: AsymmetricMatcher<T>) -> string,
+	getExpectedType: (self: AsymmetricMatcher<T>) -> string,
+	toAsymmetricMatcher: (self: AsymmetricMatcher<T>) -> string,
+	-- ROBLOX deviation END
+}
+type AsymmetricMatcher_private<T> = { --
+	-- *** PUBLIC ***
+	--
+	-- ROBLOX deviation START: use '$' characters in typeof
+	-- __typeof --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $$typeof ]]: any,
+	["$$typeof"]: any,
+	-- ROBLOX deviation END
+
+	-- ROBLOX deviation START: add missing generic parameters
+	-- asymmetricMatch: (self: AsymmetricMatcher_private, other: unknown) -> boolean,
+	-- toString: (self: AsymmetricMatcher_private) -> string,
+	-- getExpectedType: (self: AsymmetricMatcher_private) -> string,
+	-- toAsymmetricMatcher: (self: AsymmetricMatcher_private) -> string,
+	asymmetricMatch: (self: AsymmetricMatcher_private<T>, other: unknown) -> boolean,
+	toString: (self: AsymmetricMatcher_private<T>) -> string,
+	getExpectedType: (self: AsymmetricMatcher_private<T>) -> string,
+	toAsymmetricMatcher: (self: AsymmetricMatcher_private<T>) -> string,
+	-- ROBLOX deviation END
+
+	--
+	-- *** PROTECTED ***
+	--
+	sample: T,
+	inverse: boolean,
+
+	-- ROBLOX deviation START: add missing generic parameters
+	-- getMatcherContext: (self: AsymmetricMatcher_private) -> MatcherState,
+	getMatcherContext: (self: AsymmetricMatcher_private<T>) -> MatcherState,
+	-- ROBLOX deviation END
+}
+type AsymmetricMatcher_statics = { new: <T>(sample: T, inverse_: boolean?) -> AsymmetricMatcher<T> }
+local AsymmetricMatcher = {} :: AsymmetricMatcher<any> & AsymmetricMatcher_statics
+local AsymmetricMatcher_private = AsymmetricMatcher :: AsymmetricMatcher_private<any> & AsymmetricMatcher_statics;
+(AsymmetricMatcher :: any).__index = AsymmetricMatcher
+
+function AsymmetricMatcher_private.new<T>(sample: T, inverse_: boolean?): AsymmetricMatcher<T>
+	-- ROBLOX deviation START: define self differently so typeof can be set
+	-- local self = setmetatable({}, AsymmetricMatcher)
+	-- ROBLOX deviation END
+	local inverse: boolean = if inverse_ ~= nil then inverse_ else false
+
+	-- ROBLOX deviation START: define self differently so typeof can be set
+	-- self.sample = sample
+	-- self.inverse = inverse
+	-- self.__typeof --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $$typeof ]] =
+	-- 	Symbol:for_("jest.asymmetricMatcher")
 	local self = {
 		sample = sample,
 		inverse = if inverse == nil then false else inverse,
 		["$$typeof"] = Symbol.for_("jest.asymmetricMatcher"),
 	}
-
 	setmetatable(self, AsymmetricMatcher)
-	return (self :: any) :: AsymmetricMatcher
+	-- ROBLOX deviation END
+
+	return (self :: any) :: AsymmetricMatcher<T>
 end
 
-type State_ = MatcherState
-function AsymmetricMatcher:getMatcherContext(): State_
-	return Object.assign({}, getState(), {
-		equals = equals,
-		isNot = self.inverse,
-		utils = utils,
-	})
+function AsymmetricMatcher_private:getMatcherContext(): MatcherState
+	return Object.assign({}, getState(), { equals = equals, isNot = self.inverse, utils = utils })
 end
 
---[[
-	ROBLOX NOTE: AssymetricMatcher method declarations
-	original code:
-	abstract asymmetricMatch(other: unknown): boolean;
-	abstract toString(): string;
-	getExpectedType?(): string;
-	toAsymmetricMatcher?(): string;
-]]
+-- ROBLOX deviation START: abstract methods that cannot be implemented
+-- function AsymmetricMatcher_private:asymmetricMatch(other: unknown): boolean
+-- 	error("not implemented abstract method")
+-- end
+-- function AsymmetricMatcher_private:toString(): string
+-- 	error("not implemented abstract method")
+-- end
+-- function AsymmetricMatcher_private:getExpectedType(): string
+-- 	error("not implemented method")
+-- end
+-- function AsymmetricMatcher_private:toAsymmetricMatcher(): string
+-- 	error("not implemented method")
+-- end
+-- ROBLOX deviation END
 
 -- ROBLOX deviation: our implementation of any has significant deviations, check README for more info
 -- > any("number"):asymmetricMatch(1) -- true
@@ -321,6 +389,81 @@ function StringMatching:getExpectedType(): string
 	return "string"
 end
 
+type CloseTo = AsymmetricMatcher<number> & {
+	asymmetricMatch: (self: CloseTo, other: number) -> any,
+	toString: (self: CloseTo) -> any,
+	getExpectedType: (self: CloseTo) -> any,
+	toAsymmetricMatcher: (self: CloseTo) -> string,
+}
+
+type CloseTo_private = AsymmetricMatcher<number> & { --
+	-- *** PUBLIC ***
+	--
+	asymmetricMatch: (self: CloseTo_private, other: number) -> any,
+	toString: (self: CloseTo_private) -> any,
+	getExpectedType: (self: CloseTo_private) -> any,
+	toAsymmetricMatcher: (self: CloseTo_private) -> string,
+	--
+	-- *** PRIVATE ***
+	--
+	precision: number,
+}
+
+type CloseTo_statics = { new: (sample: number, precision_: number?, inverse_: boolean?) -> CloseTo }
+
+local CloseTo = (setmetatable({}, { __index = AsymmetricMatcher }) :: any) :: CloseTo & CloseTo_statics
+local CloseTo_private = CloseTo :: CloseTo_private & CloseTo_statics;
+(CloseTo :: any).__index = CloseTo
+
+function CloseTo.new(sample: number, precision_: number?, inverse_: boolean?): CloseTo
+	local precision: number = if precision_ ~= nil then precision_ else 2
+	local inverse: boolean = if inverse_ ~= nil then inverse_ else false
+	if not Boolean.toJSBoolean(isA("number", sample)) then
+		error(Error.new("Expected is not a Number"))
+	end
+	if not Boolean.toJSBoolean(isA("number", precision)) then
+		error(Error.new("Precision is not a Number"))
+	end
+
+	local self = AsymmetricMatcher.new(sample)
+	setmetatable(self, CloseTo)
+	self.inverse = inverse
+	self.precision = precision
+
+	return (self :: any) :: CloseTo
+end
+
+function CloseTo_private:asymmetricMatch(other: number)
+	if not Boolean.toJSBoolean(isA("number", other)) then
+		return false
+	end
+	local result = false
+	if other == math.huge and self.sample == math.huge then
+		result = true -- Infinity - Infinity is NaN
+	elseif other == -math.huge and self.sample == -math.huge then
+		result = true -- -Infinity - -Infinity is NaN
+	else
+		result = math.abs(self.sample - other) < math.pow(10, -self.precision) / 2 --[[ ROBLOX CHECK: operator '<' works only if either both arguments are strings or both are a number ]]
+	end
+	return if Boolean.toJSBoolean(self.inverse) then not Boolean.toJSBoolean(result) else result
+end
+
+function CloseTo_private:toString()
+	return ("Number%sCloseTo"):format(if Boolean.toJSBoolean(self.inverse) then "Not" else "")
+end
+
+function CloseTo_private:getExpectedType()
+	return "number"
+end
+
+function CloseTo_private:toAsymmetricMatcher(): string
+	return Array.join({
+		self:toString(),
+		self.sample,
+		("(%s)"):format(tostring(pluralize("digit", self.precision))),
+	}, " ")
+end
+
 return {
 	AsymmetricMatcher = AsymmetricMatcher,
 	any = function(expectedObject: any)
@@ -352,5 +495,11 @@ return {
 	end,
 	stringNotMatching = function(expected: string | RegExp)
 		return StringMatching.new(expected, true)
+	end,
+	closeTo = function(expected: number, precision: number?): CloseTo
+		return CloseTo.new(expected, precision)
+	end,
+	notCloseTo = function(expected: number, precision: number?): CloseTo
+		return CloseTo.new(expected, precision, true)
 	end,
 }

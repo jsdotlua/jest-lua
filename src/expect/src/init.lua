@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v27.4.7/packages/expect/src/index.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/expect/src/index.ts
 
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -27,11 +27,13 @@ local any = AsymmetricMatchers.any
 local anything = AsymmetricMatchers.anything
 local arrayContaining = AsymmetricMatchers.arrayContaining
 local arrayNotContaining = AsymmetricMatchers.arrayNotContaining
+local closeTo = AsymmetricMatchers.closeTo
+local notCloseTo = AsymmetricMatchers.notCloseTo
 local objectContaining = AsymmetricMatchers.objectContaining
 local objectNotContaining = AsymmetricMatchers.objectNotContaining
 local stringContaining = AsymmetricMatchers.stringContaining
-local stringNotContaining = AsymmetricMatchers.stringNotContaining
 local stringMatching = AsymmetricMatchers.stringMatching
+local stringNotContaining = AsymmetricMatchers.stringNotContaining
 local stringNotMatching = AsymmetricMatchers.stringNotMatching
 local extractExpectedAssertionsErrors = require(CurrentModule.extractExpectedAssertionsErrors).default
 local JasmineUtils = require(CurrentModule.jasmineUtils)
@@ -56,7 +58,7 @@ export type ExpectObj = Types.ExpectObj<any>
 type ExpectationResult = Types.ExpectationResult
 type JestMatcherState = Types.MatcherState
 type MatcherInterface<R> = Types.Matchers_<R>
-type MatchersObject<T> = Types.MatchersObject<T>
+type MatchersObject = Types.MatchersObject
 type PromiseMatcherFn = Types.PromiseMatcherFn
 type RawMatcherFn = Types.RawMatcherFn_
 type SyncExpectationResult = Types.SyncExpectationResult
@@ -360,7 +362,7 @@ local Expect = {} :: Expect
 	original code:
 	expect.extend = <T extends JestMatcherState = JestMatcherState>(
 ]]
-Expect.extend = function<T>(matchers: MatchersObject<T>): ()
+Expect.extend = function(matchers: MatchersObject): ()
 	setMatchers(matchers, false, Expect)
 end
 
@@ -370,6 +372,7 @@ Expect.any = any
 -- ROBLOX deviation: not is a reserved keyword in Lua, we use never instead
 Expect.never = {
 	arrayContaining = arrayNotContaining,
+	closeTo = notCloseTo,
 	objectContaining = objectNotContaining,
 	stringContaining = stringNotContaining,
 	stringMatching = stringNotMatching,
@@ -377,6 +380,7 @@ Expect.never = {
 
 Expect.objectContaining = objectContaining
 Expect.arrayContaining = arrayContaining
+Expect.closeTo = closeTo
 Expect.stringContaining = stringContaining
 Expect.stringMatching = stringMatching
 
