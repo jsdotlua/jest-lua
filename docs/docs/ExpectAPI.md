@@ -62,7 +62,7 @@ end
 import TOCInline from "@theme/TOCInline";
 
 <TOCInline toc={
-	toc[toc.length - 1].children
+	toc.slice(3).filter((node) => node.level === 3)
 }/>
 
 ---

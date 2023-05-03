@@ -31,7 +31,7 @@ end)
 import TOCInline from "@theme/TOCInline";
 
 <TOCInline toc={
-	toc[toc.length - 1].children
+	toc.filter((node) => node.level === 3)
 }/>
 
 ## Reference
