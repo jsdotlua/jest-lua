@@ -318,10 +318,9 @@ end
 
 function deepMerge(target: any, source: any): any
 	if isObject(target) and isObject(source) then
-		local mergedOutput = {}
-		for key, value in pairs(target) do
-			mergedOutput[key] = value
-		end
+		-- ROBLOX deviation START: use table.clone instead of manual copy
+		local mergedOutput = table.clone(target)
+		-- ROBLOX deviation END
 
 		for key, value in pairs(source) do
 			if isObject(source[key]) and not source[key]["$$typeof"] then

@@ -51,7 +51,7 @@ export type EachTests = Array<{
 }>
 
 -- type TestFn = (done?: Global.DoneFn) => Promise<any> | void | undefined;
-type GlobalCallbackFn = ((testName: string, fn: Global_ConcurrentTestFn, timeout: number?) -> ())
+type GlobalCallbackFn = (testName: string, fn: Global_ConcurrentTestFn, timeout: number?) -> ()
 type GlobalCallback = GlobalCallbackFn | typeof(setmetatable({}, {
 	__call = function(_, testName: string, fn: Global_ConcurrentTestFn, timeout: number?): () end,
 }))

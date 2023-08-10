@@ -41,7 +41,7 @@ export type BaseReporter = {
 	onTestResult: (self: BaseReporter, _test: Test?, _testResult: TestResult?, _results: AggregatedResult?) -> (),
 	onTestStart: (self: BaseReporter, _test: Test?) -> (),
 	onRunComplete: (self: BaseReporter, _contexts: Set<Context>?, _aggregatedResults: AggregatedResult?) -> (),
-	getLastError: (self: BaseReporter) -> (Error | nil),
+	getLastError: (self: BaseReporter) -> Error | nil,
 	_process: NodeProcessMock,
 }
 
@@ -82,7 +82,7 @@ end
 
 -- Return an error that occurred during reporting. This error will
 -- define whether the test run was successful or failed.
-function BaseReporter:getLastError(): (Error | nil)
+function BaseReporter:getLastError(): Error | nil
 	return self._error
 end
 

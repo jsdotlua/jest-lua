@@ -49,14 +49,11 @@ local stripped = function(a: any, b: any)
 	return result
 end
 
--- ROBLOX deviation: added a table copy method to set options
+-- ROBLOX deviation START: added a table copy method to set options
 local function tableCopy<T>(t: T & Object): T
-	local copy = {}
-	for key, value in pairs((t :: any) :: Object) do
-		copy[key] = value
-	end
-	return (copy :: any) :: T
+	return (table.clone(t) :: any) :: T
 end
+-- ROBLOX deviation END
 
 -- Use in toBe assertions for comparison lines.
 local optionsBe = {

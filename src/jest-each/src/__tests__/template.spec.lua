@@ -559,9 +559,7 @@ describe("jest-each", function()
 		{ "describeSKIP" },
 	}, function(keyPath)
 		describe(
-			(".%s"):format(
-				Array.join(keyPath, ".") --[[ ROBLOX CHECK: check if 'keyPath' is an Array ]]
-			),
+			(".%s"):format(Array.join(keyPath, ".") --[[ ROBLOX CHECK: check if 'keyPath' is an Array ]]),
 			function()
 				it("calls global with given title", function()
 					local globalTestMocks = getGlobalTestMocks()

@@ -58,7 +58,7 @@ function createProjectFilter(
 
 	-- ROBLOX deviation START: use length check instead of JSBoolean check for table
 	-- local selected = if Boolean.toJSBoolean(selectProjects)
-	local selected: (string?) -> (boolean | string?) = if #selectProjects > 0
+	local selected: (string?) -> boolean | string? = if #selectProjects > 0
 		-- ROBLOX deviation END
 		then function(name: string | nil)
 			return if Boolean.toJSBoolean(name) then Array.includes(selectProjects, name) else name
@@ -67,7 +67,7 @@ function createProjectFilter(
 
 	-- ROBLOX deviation START: use length check instead of JSBoolean check for table
 	-- local notIgnore = if Boolean.toJSBoolean(ignoreProjects)
-	local notIgnore: ((string?) -> boolean) = if #ignoreProjects > 0
+	local notIgnore: (string?) -> boolean = if #ignoreProjects > 0
 		-- ROBLOX deviation END
 		then function(name: string | nil)
 			return not Boolean.toJSBoolean(

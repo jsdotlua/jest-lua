@@ -94,12 +94,11 @@ local function buildSnapshotResolver(
 		local ref = cache:get(key)
 		local resolver = if ref ~= nil
 			then ref
-			else
-				createSnapshotResolver(
-					-- ROBLOX deviation: not supported
-					-- localRequire:expect(), config.snapshotResolver
-					-- ROBLOX deviation END
-				):expect()
+			else createSnapshotResolver(
+				-- ROBLOX deviation: not supported
+				-- localRequire:expect(), config.snapshotResolver
+				-- ROBLOX deviation END
+			):expect()
 		cache:set(key, resolver)
 		return resolver
 	end)

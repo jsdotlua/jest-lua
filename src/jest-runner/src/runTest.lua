@@ -194,9 +194,9 @@ local function runTestInternal(
 
 		if typeof(environment.getVmContext) ~= "function" then
 			console.error(
-				(
-					'Test environment found at "%s" does not export a "getVmContext" method, which is mandatory from Jest 27. This method is a replacement for "runScript".'
-				):format(tostring(testEnvironment))
+				('Test environment found at "%s" does not export a "getVmContext" method, which is mandatory from Jest 27. This method is a replacement for "runScript".'):format(
+					tostring(testEnvironment)
+				)
 			)
 			-- ROBLOX deviation START: no process.exit in Luau
 			error(1)

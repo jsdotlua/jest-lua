@@ -52,7 +52,7 @@ export type Hook = {
 }
 
 -- ROBLOX deviation: combined both possible function signatures into one so that it's considered callable by Luau analyze
-export type EventHandler = ((self: any, event: AsyncEvent | SyncEvent, state: State) -> (...Promise<void>))
+export type EventHandler = (self: any, event: AsyncEvent | SyncEvent, state: State) -> ...Promise<void>
 
 export type Event = SyncEvent | AsyncEvent
 

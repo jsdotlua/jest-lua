@@ -152,8 +152,7 @@ function printElement(
 			then tagColor.close .. printedProps .. config.spacingOuter .. indentation .. tagColor.open
 			else printedProps)
 		.. (if Boolean.toJSBoolean(printedChildren)
-			then
-				">"
+			then ">"
 				.. tagColor.close
 				.. printedChildren
 				.. config.spacingOuter

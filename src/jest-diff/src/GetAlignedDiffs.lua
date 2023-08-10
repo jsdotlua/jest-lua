@@ -83,10 +83,9 @@ function ChangeBuffer:pushLine(): ()
 		self.lines,
 		if #self.line ~= 1
 			then Diff.new(self.op, concatenateRelevantDiffs(self.op, self.line, self.changeColor))
-			else
-				if self.line[1][1] == self.op
-					then self.line[1] -- can use instance
-					else Diff.new(self.op, self.line[1][2]) -- was common diff
+			else if self.line[1][1] == self.op
+				then self.line[1] -- can use instance
+				else Diff.new(self.op, self.line[1][2]) -- was common diff
 	)
 	self.line = {}
 end

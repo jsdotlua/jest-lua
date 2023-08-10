@@ -73,7 +73,7 @@ export type JestEnvironment<Timer = any> = {
 	fakeTimers: FakeTimers | nil,
 	-- ROBLOX deviation END
 	moduleMocker: ModuleMocker | nil,
-	getVmContext: (self: JestEnvironment<Timer>) -> (Context | nil),
+	getVmContext: (self: JestEnvironment<Timer>) -> Context | nil,
 	setup: (self: JestEnvironment<Timer>) -> Promise<void>,
 	teardown: (self: JestEnvironment<Timer>) -> Promise<void>,
 	handleTestEvent: Circus_EventHandler?,
@@ -173,7 +173,7 @@ export type Jest = {
 	-- ROBLOX TODO: add default generic. <T = any>
 	unstable_mockModule: <T>(
 		moduleName: string,
-		moduleFactory: () -> (Promise<T> | T),
+		moduleFactory: () -> Promise<T> | T,
 		options: { virtual: boolean? }?
 	) -> Jest,
 	--[[*

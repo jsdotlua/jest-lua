@@ -371,7 +371,7 @@ export type Matchers<R, T> = {
 	--     propertyMatchers: Partial<T>,
 	--     hint?: string,
 	--   ): R;
-	toMatchSnapshot: <T>(hintOrPropertyMatchers: (string?) | Partial<T>, hint: string?) -> R,
+	toMatchSnapshot: <T>(hintOrPropertyMatchers: string? | Partial<T>, hint: string?) -> R,
 	-- ROBLOX deviation END
 
 	-- /**

@@ -40,9 +40,7 @@ local function getProjectNamesMissingWarning(
 	end
 	return chalk.yellow(
 		("You provided values for %s but %s.\n"):format(
-			tostring(
-				Array.join(args, " and ") --[[ ROBLOX CHECK: check if 'args' is an Array ]]
-			),
+			tostring(Array.join(args, " and ") --[[ ROBLOX CHECK: check if 'args' is an Array ]]),
 			if numberOfProjectsWithoutAName == 1
 				then "a project does not have a name"
 				else ("%s projects do not have a name"):format(tostring(numberOfProjectsWithoutAName))

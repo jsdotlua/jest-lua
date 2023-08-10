@@ -71,7 +71,7 @@ type Jasmine = { _DEFAULT_TIMEOUT_INTERVAL: number?, addMatchers: (matchers: Rec
 
 -- ROBLOX FIXME: add type constraint <EachCallback extends TestCallback>
 type Each<EachCallback> =
-	((table: EachTable, ...any) -> ((title: string, test: EachTestFn<EachCallback>, timeout: number?) -> ()))
+	((table: EachTable, ...any) -> (title: string, test: EachTestFn<EachCallback>, timeout: number?) -> ())
 	| (() -> () -> ())
 
 export type HookBase = (fn: TestFn, timeout: number?) -> ()

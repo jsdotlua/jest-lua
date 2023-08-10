@@ -103,7 +103,7 @@ export type TestRunner = {
 			eventData: any
 			--[[ ROBLOX TODO: Unhandled node for type: TSIndexedAccessType ]]
 			--[[ TestEvents[Name] ]]
-		) -> (...Promise<nil>)
+		) -> ...Promise<nil>
 	) -> Emittery_UnsubscribeFn,
 
 	-- ROBLOX NOTE: private

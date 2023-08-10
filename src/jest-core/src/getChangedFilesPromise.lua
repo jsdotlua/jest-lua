@@ -65,14 +65,16 @@ type ChangedFilesPromise = Promise<nil>
 -- 	end
 -- 	return nil
 -- end
-exports.default =
-	function(_globalConfig: Config_GlobalConfig, _configs: Array<Config_ProjectConfig>): ChangedFilesPromise | nil
-		--[[
+exports.default = function(
+	_globalConfig: Config_GlobalConfig,
+	_configs: Array<Config_ProjectConfig>
+): ChangedFilesPromise | nil
+	--[[
 			ROBLOX deviation: skipped lines 17-41
 			original code: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-core/src/getChangedFilesPromise.ts#L17-L41
 		]]
-		return nil
-	end
+	return nil
+end
 -- ROBLOX deviation END
 
 return exports

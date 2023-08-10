@@ -62,8 +62,7 @@ local function getNoTestFoundVerbose(
 			then ("In %s\n"):format(chalk.bold(tostring(config.rootDir))) .. ("  %s checked.\n"):format(
 				pluralize("file", Boolean.toJSBoolean(testRun.matches.total) and testRun.matches.total or 0, "s")
 			) .. statsMessage
-			else
-				("No files found in %s.\n"):format(tostring(config.rootDir))
+			else ("No files found in %s.\n"):format(tostring(config.rootDir))
 				.. "Make sure Jest's configuration does not exclude this directory."
 				.. "\nTo set up Jest, make sure a package.json file exists.\n"
 				.. "Jest Documentation: "
@@ -83,9 +82,7 @@ local function getNoTestFoundVerbose(
 	if Boolean.toJSBoolean(willExitWith0) then
 		return ("%s\n%s\n%s"):format(
 			chalk.bold("No tests found, exiting with code 0"),
-			tostring(
-				Array.join(individualResults, "\n") --[[ ROBLOX CHECK: check if 'individualResults' is an Array ]]
-			),
+			tostring(Array.join(individualResults, "\n") --[[ ROBLOX CHECK: check if 'individualResults' is an Array ]]),
 			tostring(dataMessage)
 		)
 	end

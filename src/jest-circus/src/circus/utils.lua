@@ -185,12 +185,11 @@ local function hasEnabledTest(describeBlock: Circus_DescribeBlock): boolean
 	return Array.some(describeBlock.children, function(child: Circus_DescribeBlock | Circus_TestEntry)
 		return if child.type == "describeBlock"
 			then hasEnabledTest(child)
-			else
-				not (
-					child.mode == "skip"
-					or (hasFocusedTests and child.mode ~= "only")
-					or (testNamePattern and not testNamePattern:test(getTestID(child :: Circus_TestEntry)))
-				)
+			else not (
+				child.mode == "skip"
+				or (hasFocusedTests and child.mode ~= "only")
+				or (testNamePattern and not testNamePattern:test(getTestID(child :: Circus_TestEntry)))
+			)
 	end)
 end
 
@@ -257,9 +256,10 @@ end
 exports.describeBlockHasTests = describeBlockHasTests
 
 local function _makeTimeoutMessage(timeout: number, isHook: boolean)
-	return (
-		"Exceeded timeout of %s for a %s.\nUse jest.setTimeout(newTimeout) to increase the timeout value, if this is a long-running test."
-	):format(formatTime(timeout), if isHook then "hook" else "test")
+	return ("Exceeded timeout of %s for a %s.\nUse jest.setTimeout(newTimeout) to increase the timeout value, if this is a long-running test."):format(
+		formatTime(timeout),
+		if isHook then "hook" else "test"
+	)
 end
 
 -- Global values can be overwritten by mocks or tests. We'll capture

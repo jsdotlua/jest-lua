@@ -21,7 +21,7 @@ export type NullConsole = {
 	time: (...any) -> (),
 	timeEnd: (...any) -> (),
 	timeLog: (...any) -> (),
-	trace: () -> (...any),
+	trace: () -> ...any,
 	warn: (...any) -> (),
 	group: (...any) -> (),
 	groupCollapsed: (...any) -> (),

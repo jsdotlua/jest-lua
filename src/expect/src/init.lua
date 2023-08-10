@@ -91,7 +91,7 @@ type JestAssertionError = Error & {
 type JestAssertionError_statics = { new: (message: string?) -> JestAssertionError }
 local JestAssertionError = (
 	setmetatable({}, { __index = Error }) :: any
-) :: (JestAssertionError & JestAssertionError_statics);
+) :: JestAssertionError & JestAssertionError_statics;
 
 (JestAssertionError :: any).__index = JestAssertionError
 function JestAssertionError.new(message: string?): JestAssertionError

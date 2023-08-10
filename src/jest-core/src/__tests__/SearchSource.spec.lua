@@ -296,9 +296,7 @@ describe("SearchSource", function()
 						return pathRelative(rootDir, absPath)
 					end)
 					-- ROBLOX deviation END
-					expect(
-						Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
-					).toEqual({
+					expect(Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]).toEqual({
 						-- ROBLOX deviation START: issue #864
 						-- path:normalize("__testtests__/test.js"),
 						-- path:normalize("__testtests__/test.jsx"),
@@ -332,9 +330,7 @@ describe("SearchSource", function()
 						return pathRelative(rootDir, absPath)
 					end)
 					-- ROBLOX deviation END
-					expect(
-						Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
-					).toEqual({
+					expect(Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]).toEqual({
 						-- ROBLOX deviation START: issue #864
 						-- path:normalize("__testtests__/test.js"),
 						-- path:normalize("__testtests__/test.jsx"),
@@ -377,9 +373,10 @@ describe("SearchSource", function()
 					-- expect(
 					-- 	Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
 					-- ).toEqual({ path:normalize("module.jsx"), path:normalize("noTests.js") })
-					expect(
-						Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
-					).toEqual({ path.normalize("module.jsx"), path.normalize("noTests.js") })
+					expect(Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]).toEqual({
+						path.normalize("module.jsx"),
+						path.normalize("noTests.js"),
+					})
 					-- ROBLOX deviation END
 				end)
 			end)
@@ -450,9 +447,7 @@ describe("SearchSource", function()
 						return pathRelative(rootDir, absPath)
 					end)
 					-- ROBLOX deviation END
-					expect(
-						Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]
-					).toEqual({
+					expect(Array.sort(relPaths) --[[ ROBLOX CHECK: check if 'relPaths' is an Array ]]).toEqual({
 						-- ROBLOX deviation START: issue #864
 						-- expect.stringContaining(path:normalize("__testtests__/test.js")),
 						expect.stringContaining(path.normalize("__testtests__/test.js")),

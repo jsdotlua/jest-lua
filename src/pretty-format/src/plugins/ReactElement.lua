@@ -102,8 +102,9 @@ local function getType(element: any)
 					typeof(type_.type) == "table" -- ROBLOX deviation: can't index functions in Lua
 					and Boolean.toJSBoolean(type_.type.displayName)
 				then type_.type.displayName
-				elseif typeof(type_.type) == "function" and Boolean.toJSBoolean(debug.info(type_.type, "n")) then
-					debug.info(type_.type, "n")
+				elseif
+					typeof(type_.type) == "function" and Boolean.toJSBoolean(debug.info(type_.type, "n"))
+				then debug.info(type_.type, "n")
 				else ""
 
 			return if functionName ~= "" then "Memo(" .. functionName .. ")" else "Memo"

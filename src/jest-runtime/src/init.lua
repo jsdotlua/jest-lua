@@ -494,7 +494,7 @@ type Runtime_private = { --
 	isTornDown: boolean,
 	-- ROBLOX deviation START: additional properties
 	_jestObject: Jest,
-	_cleanupFns: Array<(...any) -> (...any)>,
+	_cleanupFns: Array<(...any) -> ...any>,
 	-- ROBLOX deviation END
 	-- ROBLOX deviation START: skipped
 	-- loadEsmModule: (self: Runtime_private, modulePath: Config_Path, query_: string?) -> Promise<VMModule>,

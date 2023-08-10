@@ -98,7 +98,7 @@ export type FakeTimersConfig = { --[[*
    * @defaultValue
    * The default is `false`.
    ]]
-	legacyFakeTimers: (false)?,
+	legacyFakeTimers: false?,
 }
 
 export type LegacyFakeTimersConfig = { --[[*
@@ -108,7 +108,7 @@ export type LegacyFakeTimersConfig = { --[[*
    * @defaultValue
    * The default is `false`.
    ]]
-	legacyFakeTimers: (true)?,
+	legacyFakeTimers: true?,
 }
 
 -- ROBLOX deviation START: handle TSParenthesizedType, remove Exclude<T> and replace 'Date' with 'DateTime'

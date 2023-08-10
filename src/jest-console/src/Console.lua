@@ -51,7 +51,7 @@ function Console.new(stdout: ConsoleOptions | Writeable, stderr: Writeable?, opt
 	local self = setmetatable({}, Console)
 	local opts = (options or {}) :: ConsoleOptions
 
-	if typeof(stdout.write) == "function" then
+	if typeof((stdout :: Writeable).write) == "function" then
 		opts.stdout = stdout :: Writeable
 		opts.stderr = stderr
 	end

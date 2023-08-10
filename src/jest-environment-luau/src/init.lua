@@ -52,7 +52,7 @@ type JestEnvironmentLuau = {
 	fakeTimers: FakeTimers | nil,
 	-- ROBLOX deviation END
 	moduleMocker: ModuleMocker | nil,
-	getVmContext: (self: JestEnvironmentLuau) -> (Context | nil),
+	getVmContext: (self: JestEnvironmentLuau) -> Context | nil,
 	setup: (self: JestEnvironmentLuau) -> Promise<nil>,
 	teardown: (self: JestEnvironmentLuau) -> Promise<nil>,
 	context: any,
