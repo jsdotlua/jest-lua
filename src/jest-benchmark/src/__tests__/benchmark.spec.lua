@@ -103,3 +103,32 @@ it("should run a benchmark", function()
 	expect(testPrint).toHaveBeenCalledWith("test_SectionTime_2", 1)
 	expect(testPrint).toHaveBeenCalledWith("test_SectionTime_total", 2)
 end)
+
+it("should allow sections with no values reported", function()
+	benchmark("test", function(Profiler, reporters)
+		Profiler.start("1")
+		-- Less than a frame at 60 fps
+		jest.advanceTimersByTime(10)
+		Profiler.stop()
+
+		Profiler.start("2")
+		for i = 1, 6 do
+			reporters.sum.report(i)
+		end
+		capturedConnectFn(0.02)
+		jest.advanceTimersByTime(1000)
+		Profiler.stop()
+	end)
+
+	expect(testPrint).toHaveBeenCalledWith("test_sum_1", 0)
+	expect(testPrint).toHaveBeenCalledWith("test_sum_2", 21)
+	expect(testPrint).toHaveBeenCalledWith("test_sum_total", 21)
+
+	expect(testPrint).toHaveBeenCalledWith("test_FPS_1", math.huge)
+	expect(testPrint).toHaveBeenCalledWith("test_FPS_2", 50)
+	expect(testPrint).toHaveBeenCalledWith("test_FPS_total", 50)
+
+	expect(testPrint).toHaveBeenCalledWith("test_SectionTime_1", 0.01)
+	expect(testPrint).toHaveBeenCalledWith("test_SectionTime_2", 1)
+	expect(testPrint).toHaveBeenCalledWith("test_SectionTime_total", 1.01)
+end)

@@ -172,3 +172,29 @@ it("should accept prefix argument", function()
 	expect(testPrint).toHaveBeenCalledWith("profiler_average_1", 3.5)
 	expect(testPrint).toHaveBeenCalledWith("profiler_sum_1", 21)
 end)
+
+it("should allow sections with no values reported", function()
+	local testPrint = jest.fn()
+	local averageReporter = initializeReporter("average", average)
+	local sumReporter = initializeReporter("sum", sum)
+	local Profiler = initializeProfiler({ averageReporter, sumReporter }, testPrint, "profiler")
+
+	Profiler.start("1")
+
+	for i = 1, 6 do
+		sumReporter.report(i)
+		averageReporter.report(i)
+	end
+
+	Profiler.stop()
+
+	Profiler.start("2")
+	Profiler.stop()
+
+	Profiler.finish()
+
+	expect(testPrint).toHaveBeenCalledWith("profiler_average_1", 3.5)
+	expect(testPrint).toHaveBeenCalledWith("profiler_sum_1", 21)
+	expect(testPrint).toHaveBeenCalledWith("profiler_average_2", 0)
+	expect(testPrint).toHaveBeenCalledWith("profiler_sum_2", 0)
+end)

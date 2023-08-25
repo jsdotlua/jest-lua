@@ -124,3 +124,26 @@ it("should allow nested reporting", function()
 	expect(sectionValues[2]).toBeCloseTo(30)
 	expect(sectionValues[3]).toBeCloseTo(40)
 end)
+
+it("should allow sections without a value reported", function()
+	local Reporter = initializeFpsReporter()
+
+	Reporter.start("total")
+
+	Reporter.start("1")
+	Reporter.stop()
+
+	Reporter.start("2")
+	-- 30 FPS
+	capturedConnectFn(0.032)
+	capturedConnectFn(0.034)
+	capturedConnectFn(0.034)
+	Reporter.stop()
+	Reporter.stop()
+
+	local sectionNames, sectionValues = Reporter.finish()
+	expect(sectionNames).toEqual({ "FPS_1", "FPS_2", "FPS_total" })
+	expect(sectionValues[1]).toBeCloseTo(math.huge)
+	expect(sectionValues[2]).toBeCloseTo(30)
+	expect(sectionValues[3]).toBeCloseTo(30)
+end)

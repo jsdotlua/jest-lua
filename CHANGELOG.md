@@ -1,5 +1,10 @@
 # Jest Roblox Changelog
 
+## 3.4.1 (2022-08-25)
+* :hammer_and_wrench: Relax requirement to report a value in a JestBenchmark profiler section
+* :hammer_and_wrench: Catch error in JestBenchmark.HeartbeatReporter when a heartbeat occurs outside of a reporting section
+* :hammer_and_wrench: Export `benchmark` through `JestBenchmark.benchmark` instead of `JestBenchmark.benchmark.benchmark`
+
 ## 3.4.0 (2022-08-17)
 * :sparkles: Added the [JestBenchmark](./docs/docs/JestBenchmarkAPI.md) module
 * :hammer_and_wrench: Upgrade to [v28.0.0](https://github.com/jestjs/jest/tree/v28.0.0) ([#266](https://github.com/Roblox/jest-roblox/pull/266))

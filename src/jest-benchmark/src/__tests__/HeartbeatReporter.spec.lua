@@ -119,3 +119,42 @@ it("should allow nested reporting", function()
 	expect(sectionValues[2]).toBeCloseTo(0.05)
 	expect(sectionValues[3]).toBeCloseTo(0.035)
 end)
+
+it("should not report heartbeats that occur outside of a reporting section", function()
+	local Reporter = initializeHeartbeatReporter("average", average)
+
+	Reporter.start("1")
+	capturedConnectFn(0.02)
+	Reporter.stop()
+
+	-- Should not be reported
+	capturedConnectFn(0.04)
+
+	Reporter.start("2")
+	capturedConnectFn(0.06)
+	Reporter.stop()
+
+	-- Should not be reported
+	capturedConnectFn(0.04)
+
+	local sectionNames, sectionValues = Reporter.finish()
+	expect(sectionNames).toEqual({ "average_1", "average_2" })
+	expect(sectionValues[1]).toBeCloseTo(0.02)
+	expect(sectionValues[2]).toBeCloseTo(0.06)
+end)
+
+it("should allow sections without a heartbeat reported", function()
+	local Reporter = initializeHeartbeatReporter("average", average)
+
+	Reporter.start("1")
+	Reporter.stop()
+
+	Reporter.start("2")
+	capturedConnectFn(0.06)
+	Reporter.stop()
+
+	local sectionNames, sectionValues = Reporter.finish()
+	expect(sectionNames).toEqual({ "average_1", "average_2" })
+	expect(sectionValues[1]).toBeCloseTo(0)
+	expect(sectionValues[2]).toBeCloseTo(0.06)
+end)
