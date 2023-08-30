@@ -262,6 +262,12 @@ local function createMatcher(matcherName: string, fromPromise: boolean?): RawMat
 			return toThrowExpectedString(matcherName, options, thrown, expected)
 		elseif getType(expected) == "regexp" then
 			return toThrowExpectedRegExp(matcherName, options, thrown, expected)
+		elseif
+			typeof(expected) == "table"
+			and typeof(expected.test) == "function"
+			and typeof(expected.exec) == "function"
+		then
+			return toThrowExpectedRegExp(matcherName, options, thrown, expected)
 			-- ROBLOX deviation: we have different logic for determining if expected is an Error class
 		elseif typeof(expected) == "table" and not expected.message then
 			return toThrowExpectedClass(matcherName, options, thrown, expected)

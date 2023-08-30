@@ -128,6 +128,31 @@ describe("Lua toThrowMatcher tests", function()
 		end).toThrow(CustomError("error msg"))
 	end)
 
+	local jest = require(Packages.Dev.JestGlobals).jest
+	it("accepts RegExp-shaped objects", function()
+		local execMock, execFn = jest.fn()
+		local testMock, testFn = jest.fn(function(_, _)
+			execFn()
+			return true
+		end)
+
+		local fakeRegExp = {
+			exec = execFn,
+			test = testFn,
+		}
+		fakeRegExp = setmetatable(fakeRegExp, {
+			__call = function(self, arg)
+				return self
+			end,
+		})
+
+		jestExpect(function()
+			error(CustomError("apple"))
+		end).toThrow(fakeRegExp("apple"))
+		jestExpect(execMock).toHaveBeenCalledTimes(1)
+		jestExpect(testMock).toHaveBeenCalledTimes(1)
+	end)
+
 	it("matches empty Error", function()
 		jestExpect(function()
 			error(Error())
@@ -157,7 +182,6 @@ describe("Lua toThrowMatcher tests", function()
 		end).toThrowErrorMatchingSnapshot()
 	end)
 
-	local jest = require(Packages.Dev.JestGlobals).jest
 	it("makes sure that jest.fn() is callable", function()
 		local mock = jest.fn()
 		jestExpect(mock).never.toThrow()

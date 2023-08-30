@@ -1,5 +1,8 @@
 # Jest Roblox Changelog
 
+## Unreleased
+* :sparkles: Allow toThrow to match on regular expressions if the expected error matches the RegExp type (has a test and exec function) ([#357](https://github.com/Roblox/jest-roblox/pull/357))
+
 ## 3.4.1 (2022-08-25)
 * :hammer_and_wrench: Relax requirement to report a value in a JestBenchmark profiler section
 * :hammer_and_wrench: Catch error in JestBenchmark.HeartbeatReporter when a heartbeat occurs outside of a reporting section

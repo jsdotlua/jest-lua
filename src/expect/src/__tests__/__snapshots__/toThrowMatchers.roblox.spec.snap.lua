@@ -8,8 +8,8 @@ exports[ [=[Lua toThrowMatcher tests cleans stack trace and prints correct files
 
 Thrown value: <r>"attempt to perform arithmetic (add) on nil and number"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:141 function func2
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:147
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:166 function func2
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.roblox.spec:172
 ]=]
 
 exports[ [=[Lua toThrowMatcher tests prints the stack trace for Lua AssertionError error 1]=] ] = [=[
