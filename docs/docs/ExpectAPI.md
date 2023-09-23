@@ -266,6 +266,22 @@ end)
 
 In addition to Lua prototype classes, it also supports Roblox types like [`DateTime`](https://developer.roblox.com/en-us/api-reference/datatype/DateTime), Luau types like `thread`, `RegExp` from the LuauRegExp library, and LuauPolyfill types like `Symbol`, `Set`, `Error` etc.
 
+### `expect.nothing()`
+<a href='https://jestjs.io/docs/27.x/expect#expectnothing' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='deviation' src='img/deviation.svg'/>
+
+`expect.nothing()` matches only `nil`. You can use it inside `toEqual`, `toMatchObject`, `toBeCalledWith`, or similar matchers instead of a literal value. For example, if you want to check that a value is left undefined in a table:
+
+```lua
+it('mock calls its argument with a nil argument', function()
+	local expected = {
+		foo = "bar",
+		baz = expect.nothing(),
+	}
+	mock()
+	expect({ foo = "bar" }).toMatchObject({ expected })
+end)
+```
+
 ### `expect.arrayContaining(array)`
 <a href='https://jestjs.io/docs/27.x/expect#expectarraycontainingarray' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
 

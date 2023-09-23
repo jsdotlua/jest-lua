@@ -39,6 +39,7 @@ local arrayContaining = asymmetricMatchersModule.arrayContaining
 local arrayNotContaining = asymmetricMatchersModule.arrayNotContaining
 local closeTo = asymmetricMatchersModule.closeTo
 local notCloseTo = asymmetricMatchersModule.notCloseTo
+local nothing = asymmetricMatchersModule.nothing
 local objectContaining = asymmetricMatchersModule.objectContaining
 local objectNotContaining = asymmetricMatchersModule.objectNotContaining
 local stringContaining = asymmetricMatchersModule.stringContaining
@@ -244,6 +245,27 @@ test("Anything does not match null and undefined", function()
 end)
 test("Anything.toAsymmetricMatcher()", function()
 	jestExpect(anything():toAsymmetricMatcher()).toBe("Anything")
+end)
+
+test("Nothing matches match null and undefined", function()
+	Array.forEach({ nothing():asymmetricMatch(nil), nothing():asymmetricMatch(nil) }, function(test)
+		jestExpect(test).toBe(true)
+	end)
+end)
+test("Nothing does not match any other type", function()
+	Array.forEach({
+		nothing():asymmetricMatch("jest"),
+		nothing():asymmetricMatch(1),
+		nothing():asymmetricMatch(function() end),
+		nothing():asymmetricMatch(true),
+		nothing():asymmetricMatch({}),
+		nothing():asymmetricMatch({}),
+	}, function(test)
+		jestExpect(test).toBe(false)
+	end)
+end)
+test("Anything.toAsymmetricMatcher()", function()
+	jestExpect(nothing():toAsymmetricMatcher()).toBe("Nothing")
 end)
 
 test("ArrayContaining matches", function()

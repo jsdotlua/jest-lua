@@ -113,6 +113,7 @@ type AsymmetricMatchersOmitAnyAndAnything = {
 type AsymmetricMatchers = {
 	any: (unknown) -> AsymmetricMatcher,
 	anything: () -> AsymmetricMatcher,
+	nothing: () -> AsymmetricMatcher,
 } & AsymmetricMatchersOmitAnyAndAnything
 -- ROBLOX deviation end
 

@@ -29,6 +29,7 @@ local arrayContaining = AsymmetricMatchers.arrayContaining
 local arrayNotContaining = AsymmetricMatchers.arrayNotContaining
 local closeTo = AsymmetricMatchers.closeTo
 local notCloseTo = AsymmetricMatchers.notCloseTo
+local nothing = AsymmetricMatchers.nothing
 local objectContaining = AsymmetricMatchers.objectContaining
 local objectNotContaining = AsymmetricMatchers.objectNotContaining
 local stringContaining = AsymmetricMatchers.stringContaining
@@ -368,6 +369,7 @@ end
 
 Expect.anything = anything
 Expect.any = any
+Expect.nothing = nothing
 
 -- ROBLOX deviation: not is a reserved keyword in Lua, we use never instead
 Expect.never = {

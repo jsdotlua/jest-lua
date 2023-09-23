@@ -2045,6 +2045,14 @@ Expected: <g>Anything</>
 Received: <r>nil</>
 ]=]
 
+snapshots[".toEqual() {pass: false} expect(true).toEqual(Nothing) 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
+
+Expected: <g>Nothing</>
+Received: <r>true</>
+]=]
+
 snapshots['.toEqual() {pass: true} expect("Alice").never.toEqual({"asymmetricMatch": [Function asymmetricMatch]}) 1'] =
 	[=[
 
@@ -2213,6 +2221,14 @@ snapshots[".toEqual() {pass: true} expect(true).never.toEqual(Anything) 1"] = [=
 
 Expected: never <g>Anything</>
 Received:       <r>true</>
+]=]
+
+snapshots[".toEqual() {pass: true} expect(nil).never.toEqual(Nothing) 1"] = [=[
+
+<d>expect(</><r>received</><d>).</>never<d>.</>toEqual<d>(</><g>expected</><d>) -- deep equality</>
+
+Expected: never <g>Nothing</>
+Received:       <r>nil</>
 ]=]
 
 snapshots[".toEqual() {pass: true} expect(true).never.toEqual(true) 1"] = [=[

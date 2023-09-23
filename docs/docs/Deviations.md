@@ -53,6 +53,9 @@ Lua doesn't have constructors for primitive types, so `expect.any` accepts eithe
 - If a typename string is passed in, it checks that the received value has the `typeof()` value as the expected string
 - If a table is passed in, it checks that the received value in is an instance (or a derived instance) of the expected table, using the [`instanceof` method in LuauPolyfill](https://github.com/Roblox/luau-polyfill/blob/main/src/instanceof.lua)
 
+### `expect.nothing()`
+`expect.nothing` allows for matching against nil and undefined values. You can use it inside `toMatchObject` and other similar matchers to ensure something is undefined or `nil`.
+
 ### `expect.stringMatching(string | regexp)`
 `expect.stringMatching(string | regexp)` can either accept a [Lua string pattern](https://developer.roblox.com/en-us/articles/string-patterns-reference) or a [RegExp](expect#regexp).
 

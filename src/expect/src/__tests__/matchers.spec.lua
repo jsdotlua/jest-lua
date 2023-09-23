@@ -473,6 +473,7 @@ describe(".toEqual()", function()
 		{ "abd", jestExpect.stringContaining("bc") },
 		{ "abd", jestExpect.stringMatching("bc") },
 		{ nil, jestExpect.anything() },
+		{ true, jestExpect.nothing() },
 		{ nil, jestExpect.any("function") },
 		{
 			"Eve",
@@ -627,6 +628,7 @@ describe(".toEqual()", function()
 		{ "abcd", jestExpect.stringContaining("bc") },
 		{ "abcd", jestExpect.stringMatching("bc") },
 		{ true, jestExpect.anything() },
+		{ nil, jestExpect.nothing() },
 		{ function() end, jestExpect.any("function") },
 		{
 			{

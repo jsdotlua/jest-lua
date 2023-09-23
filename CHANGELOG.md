@@ -2,6 +2,7 @@
 
 ## Unreleased
 * :sparkles: Allow toThrow to match on regular expressions if the expected error matches the RegExp type (has a test and exec function) ([#357](https://github.com/Roblox/jest-roblox/pull/357))
+* :sparkles: Add nil asymmetric matcher `expect.nothing()` to match against `nil` and undefined values
 
 ## 3.4.1 (2022-08-25)
 * :hammer_and_wrench: Relax requirement to report a value in a JestBenchmark profiler section

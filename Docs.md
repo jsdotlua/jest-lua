@@ -25,7 +25,7 @@ import {describe, expect, test} from '@jest/globals'.
 ## [Expect](https://jestjs.io/docs/27.x/expect)
 
 There are two variations of `expect` in `jest-roblox`:
-#### `expect` 
+#### `expect`
 This is strictly typed and is used with built in Jest matchers. For example:
 
 ```lua
@@ -68,7 +68,7 @@ end)
 ```
 In this case, since we are using a custom matcher `toBeEmptyString()`, if we had used the normal `expect` from `JestGlobals.expect`, then `roblox-analyze` would have thrown errors because of type issues.
 
-> **Note** 
+> **Note**
 In converted code (ie. code converted by the JS to Lua tool), we often import `expectExtended` and assign it to a variable `expect` in order to reduce the amount of deviations in the file. We also mark this import as a deviation. Here's an example of such a situation:
 ```lua
 -- ... JestGlobals, test defined prior to this
@@ -80,13 +80,13 @@ test('some test', function()
   local foo;
 
 -- in this case, we get to preserve the originally converted code which uses `expect` by simply assigning `expectExtended` to `expect`
-  expect(foo).toBeEmptyString() 
+  expect(foo).toBeEmptyString()
 end)
 test('another test', function()
   local bar = "fizz";
 
 -- in this case, we get to preserve the originally converted code which uses `expect` by simply assigning `expectExtended` to `expect`
-  expect(bar).toBeEmptyString() 
+  expect(bar).toBeEmptyString()
 end)
 ```
 
@@ -104,12 +104,12 @@ local expectExtended = JestGlobals.expectExtended
 test('test using built-in matcher - uses expect', function()
   local foo;
 
-  expect(foo).toBe(nil) 
+  expect(foo).toBe(nil)
 end)
 test('test using custom matcher - uses expectExtended', function()
   local bar = "fizz";
 
-  expectExtended(bar).toBeEmptyString() 
+  expectExtended(bar).toBeEmptyString()
 end)
 ```
 
@@ -127,6 +127,7 @@ This way, we can preserve the type-safety that comes with `expect` for built-in 
 - `expect.extend(matchers)`
 - `expect.anything()`
 - `expect.any(constructor)`
+- `expect.nothing()`
 
 - `expect.never`
 - `expect.arrayContaining`
@@ -238,9 +239,9 @@ Adjusted note:
 
 - `jest.resetModules()`
 - `jest.isolateModules(fn)`
-- `jest.mock(moduleName, factory, options)` 
+- `jest.mock(moduleName, factory, options)`
 - `jest.unmock(moduleName)`
-- `jest.requireActual(moduleName)` 
+- `jest.requireActual(moduleName)`
 
 #### Not supported
 

@@ -226,6 +226,33 @@ function Anything:toAsymmetricMatcher(): string
 	return "Anything"
 end
 
+-- ROBLOX deviation START: asymmetric matcher that matches undefined/nil
+local Nothing = {}
+Nothing.__index = Nothing
+setmetatable(Nothing, AsymmetricMatcher)
+function Nothing.new(sample: any)
+	local self = AsymmetricMatcher.new(sample)
+	setmetatable(self, Nothing)
+	return self
+end
+
+function Nothing:asymmetricMatch(other: any): boolean
+	return isUndefined(other)
+end
+
+function Nothing:toString(): string
+	return "Nothing"
+end
+
+function Nothing:getExpectedType(): string
+	return "nil"
+end
+
+function Nothing:toAsymmetricMatcher(): string
+	return "Nothing"
+end
+-- ROBLOX deviation END
+
 local ArrayContaining = {}
 ArrayContaining.__index = ArrayContaining
 setmetatable(ArrayContaining, AsymmetricMatcher)
@@ -471,6 +498,9 @@ return {
 	end,
 	anything = function()
 		return Anything.new()
+	end,
+	nothing = function()
+		return Nothing.new()
 	end,
 	arrayContaining = function(sample: { any })
 		return ArrayContaining.new(sample)
