@@ -634,8 +634,9 @@ describe("DateTime", function()
 		timers:useFakeTimers()
 
 		local time_ = timers.dateTimeOverride.now().UnixTimestamp
-		timers:advanceTimersByTime(100)
-		expect(timers.dateTimeOverride.now().UnixTimestamp).toEqual(time_ + 100)
+		-- advanceTimersByTime is in ms, while system time is in s
+		timers:advanceTimersByTime(1000)
+		expect(timers.dateTimeOverride.now().UnixTimestamp).toEqual(time_ + 1000 / 1000)
 	end)
 
 	describe("setSystemTime", function()
@@ -733,8 +734,9 @@ describe("os", function()
 			timers:useFakeTimers()
 
 			local time_ = timers.osOverride.time()
-			timers:advanceTimersByTime(100)
-			expect(timers.osOverride.time()).toBe(time_ + 100)
+			-- advanceTimersByTime is in ms, while system time is in s
+			timers:advanceTimersByTime(1000)
+			expect(timers.osOverride.time()).toBe(time_ + 1)
 		end)
 	end)
 
@@ -793,9 +795,10 @@ describe("tick", function()
 		timers:useFakeTimers()
 
 		timers:setSystemTime(0)
-		timers:advanceTimersByTime(100)
+		timers:advanceTimersByTime(1000)
 
-		expect(timers.tickOverride()).toBe(100)
+		-- ticks are in s, while advanceTimersByTime is in ms
+		expect(timers.tickOverride()).toBe(1)
 	end)
 end)
 

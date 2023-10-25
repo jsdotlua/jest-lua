@@ -118,7 +118,8 @@ function FakeTimers:_advanceToTime(time_): ()
 		local timeDiff = targetTime - self._mockTimeMs
 		-- Move mockTime to target time, in case the callback reads it via `tick`
 		self._mockTimeMs = targetTime
-		self._mockSystemTime = self._mockSystemTime + timeDiff
+		-- _mockSystemTime is in s, while timeDiff is in ms
+		self._mockSystemTime = self._mockSystemTime + timeDiff / 1000
 	end
 end
 
