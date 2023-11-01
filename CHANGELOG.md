@@ -1,35 +1,36 @@
 # Jest Roblox Changelog
 
-## Unreleased
+## 3.5.0 (2023-11-01)
+* :hammer_and_wrench: Fix an issue that was hiding error messages in test failure output ([#360](https://github.com/Roblox/jest-roblox/pull/360))
 * :sparkles: Allow toThrow to match on regular expressions if the expected error matches the RegExp type (has a test and exec function) ([#357](https://github.com/Roblox/jest-roblox/pull/357))
 * :sparkles: Add nil asymmetric matcher `expect.nothing()` to match against `nil` and undefined values
 
-## 3.4.1 (2022-08-25)
+## 3.4.1 (2023-08-25)
 * :hammer_and_wrench: Relax requirement to report a value in a JestBenchmark profiler section
 * :hammer_and_wrench: Catch error in JestBenchmark.HeartbeatReporter when a heartbeat occurs outside of a reporting section
 * :hammer_and_wrench: Export `benchmark` through `JestBenchmark.benchmark` instead of `JestBenchmark.benchmark.benchmark`
 
-## 3.4.0 (2022-08-17)
+## 3.4.0 (2023-08-17)
 * :sparkles: Added the [JestBenchmark](./docs/docs/JestBenchmarkAPI.md) module
 * :hammer_and_wrench: Upgrade to [v28.0.0](https://github.com/jestjs/jest/tree/v28.0.0) ([#266](https://github.com/Roblox/jest-roblox/pull/266))
 
-## 3.3.0 (2022-04-26)
+## 3.3.0 (2023-04-26)
 * :sparkles: `pretty-format`: Added `printInstanceDefaults` formatting option that toggles whether unmodified Instance properties are printed ([#341](https://github.com/Roblox/jest-roblox/pull/341))
 * :sparkles: Added `snapshotFormat` configuration option ([#341](https://github.com/Roblox/jest-roblox/pull/341))
 * :sparkles: Added support for a configurable engine frame time for fake timers ([#343](https://github.com/Roblox/jest-roblox/pull/343))
 
-## 3.2.5 (2022-01-19)
+## 3.2.5 (2023-01-19)
 * :bug: Fix error when obsolete snapshots and no file system access ([#334](https://github.com/Roblox/jest-roblox/pull/334))
 
-## 3.2.4 (2022-01-13)
+## 3.2.4 (2023-01-13)
 * :bug: Fix separateMessageFromStack not working when there is no stack available ([#332](https://github.com/Roblox/jest-roblox/pull/332))
 
-## 3.2.3 (2022-01-12)
+## 3.2.3 (2023-01-12)
 * :bug: Fix missing stacktraces when throwing bare strings ([#324](https://github.com/Roblox/jest-roblox/pull/324))
 * :bug: Fix bad error message when test contains syntax error ([#326](https://github.com/Roblox/jest-roblox/pull/326))
 * :bug: Fix setTimeout not mocked with useFakeTimers() ([#329](https://github.com/Roblox/jest-roblox/pull/329))
 
-## 3.2.2 (2022-01-04)
+## 3.2.2 (2023-01-04)
 * :bug: Fix debugging capabilities broken recently ([#325](https://github.com/Roblox/jest-roblox/pull/325))
 
 ## 3.2.1 (2022-12-08)
