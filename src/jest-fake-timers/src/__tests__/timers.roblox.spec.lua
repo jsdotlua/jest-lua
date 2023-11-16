@@ -112,6 +112,42 @@ describe("timers", function()
 		jest.advanceTimersByTime(10000)
 		expect(triggered).toBe(true)
 	end, 1000)
+
+	test("task.cancel - timeout should be canceled and not trigger", function()
+		local triggered = false
+		local timeout = task.delay(2, function()
+			triggered = true
+		end)
+		task.cancel(timeout)
+		jest.advanceTimersByTime(2000)
+		expect(triggered).toBe(false)
+	end)
+
+	test("task.cancel - one timeout should be canceled and not trigger", function()
+		local triggered1 = false
+		local triggered2 = false
+		local timeout1 = task.delay(2, function()
+			triggered1 = true
+		end)
+		local _timeout2 = task.delay(2, function()
+			triggered2 = true
+		end)
+
+		task.cancel(timeout1)
+		jest.advanceTimersByTime(2000)
+		expect(triggered1).toBe(false)
+		expect(triggered2).toBe(true)
+	end)
+
+	test("task.cancel - cancel after delayed task runs", function()
+		local triggered = false
+		local timeout = task.delay(2, function()
+			triggered = true
+		end)
+		jest.advanceTimersByTime(2000)
+		task.cancel(timeout)
+		expect(triggered).toBe(true)
+	end)
 end)
 
 describe("timers with configurable frame time", function()

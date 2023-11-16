@@ -86,6 +86,7 @@ function FakeTimers.new(): FakeTimers
 	setmetatable(osOverride, { __index = realOs })
 	local taskOverride = {
 		delay = mock:fn(realTask.delay),
+		cancel = mock:fn(realTask.cancel),
 	}
 	setmetatable(taskOverride, { __index = realTask })
 
@@ -221,11 +222,12 @@ function FakeTimers:useRealTimers(): ()
 		self.osOverride.time.mockImplementation(realOs.time)
 		self.osOverride.clock.mockImplementation(realOs.clock)
 		self.taskOverride.delay.mockImplementation(realTask.delay)
+		self.taskOverride.cancel.mockImplementation(realTask.cancel)
 		self._fakingTime = false
 	end
 end
 
-local function fakeDelay(self, delayTime, callback, ...)
+local function fakeDelay(self, delayTime, callback, ...): Timeout
 	-- Small hack to make sure 0 second recursive timers don't trigger twice in a single frame
 	local delayTimeMs = (self._engineFrameTime / 1000) + delayTime * 1000
 	local targetTime = self._mockTimeMs + delayTimeMs
@@ -246,12 +248,22 @@ local function fakeDelay(self, delayTime, callback, ...)
 		end
 	end
 	table.insert(self._timeouts, insertIndex, timeout)
+	return timeout
+end
+
+local function fakeCancel(self, timeout)
+	for i, timeout_ in self._timeouts do
+		if timeout_ == timeout then
+			table.remove(self._timeouts, i)
+			break
+		end
+	end
 end
 
 function FakeTimers:useFakeTimers(): ()
 	if not self._fakingTime then
 		self.delayOverride.mockImplementation(function(delayTime, callback)
-			fakeDelay(self, delayTime, callback)
+			return fakeDelay(self, delayTime, callback)
 		end)
 		self.tickOverride.mockImplementation(function()
 			return self._mockSystemTime
@@ -280,8 +292,13 @@ function FakeTimers:useFakeTimers(): ()
 			return self._mockTimeMs / 1000
 		end)
 		self.taskOverride.delay.mockImplementation(function(delayTime, callback, ...)
-			fakeDelay(self, delayTime, callback, ...)
+			return fakeDelay(self, delayTime, callback, ...)
 		end)
+
+		self.taskOverride.cancel.mockImplementation(function(timeout)
+			fakeCancel(self, timeout)
+		end)
+
 		self._fakingTime = true
 		self:reset()
 	end

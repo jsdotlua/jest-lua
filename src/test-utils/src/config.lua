@@ -9,6 +9,7 @@ local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent
 
 local jestTypesModule = require(Packages.JestTypes)
+
 type Config_GlobalConfig = jestTypesModule.Config_GlobalConfig
 type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
 
@@ -16,6 +17,7 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 local inspect = LuauPolyfill.util.inspect
+local Set = LuauPolyfill.Set
 
 local exports = {}
 
@@ -26,7 +28,7 @@ local DEFAULT_GLOBAL_CONFIG: Config_GlobalConfig = {
 	ci = false,
 	collectCoverage = false,
 	collectCoverageFrom = {},
-	collectCoverageOnlyFrom = nil,
+	collectCoverageOnlyFrom = Object.None,
 	coverageDirectory = "coverage",
 	coverageProvider = "babel",
 	coverageReporters = {},
@@ -35,28 +37,28 @@ local DEFAULT_GLOBAL_CONFIG: Config_GlobalConfig = {
 	detectOpenHandles = false,
 	errorOnDeprecated = false,
 	expand = false,
-	filter = nil,
+	filter = Object.None,
 	findRelatedTests = false,
 	forceExit = false,
-	globalSetup = nil,
-	globalTeardown = nil,
+	globalSetup = Object.None,
+	globalTeardown = Object.None,
 	json = false,
 	lastCommit = false,
 	listTests = false,
 	logHeapUsage = false,
 	maxConcurrency = 5,
 	maxWorkers = 2,
-	noSCM = nil,
+	noSCM = Object.None,
 	noStackTrace = false,
 	nonFlagArgs = {},
 	notify = false,
 	notifyMode = "failure-change",
 	onlyChanged = false,
 	onlyFailures = false,
-	outputFile = nil,
+	outputFile = Object.None,
 	passWithNoTests = false,
 	projects = {},
-	replname = nil,
+	replname = Object.None,
 	reporters = {},
 	rootDir = "/test_root_dir/" :: any,
 	runTestsByPath = false,
@@ -66,7 +68,7 @@ local DEFAULT_GLOBAL_CONFIG: Config_GlobalConfig = {
 	testFailureExitCode = 1,
 	testNamePattern = "",
 	testPathPattern = "",
-	testResultsProcessor = nil,
+	testResultsProcessor = Object.None,
 	testSequencer = "@jest/test-sequencer",
 	testTimeout = 5000,
 	updateSnapshot = "none",
@@ -89,14 +91,14 @@ local DEFAULT_PROJECT_CONFIG: Config_ProjectConfig = {
 	cwd = "/test_root_dir/",
 	detectLeaks = false,
 	detectOpenHandles = false,
-	displayName = nil,
+	displayName = Object.None,
 	errorOnDeprecated = false,
 	extensionsToTreatAsEsm = {},
 	fakeTimers = { enableGlobally = false },
-	filter = nil,
+	filter = Object.None,
 	forceCoverageMatch = {},
-	globalSetup = nil,
-	globalTeardown = nil,
+	globalSetup = Object.None,
+	globalTeardown = Object.None,
 	globals = {},
 	haste = {},
 	id = "test_name",
@@ -109,7 +111,7 @@ local DEFAULT_PROJECT_CONFIG: Config_ProjectConfig = {
 	prettierPath = "prettier",
 	resetMocks = false,
 	resetModules = false,
-	resolver = nil,
+	resolver = Object.None,
 	restoreMocks = false,
 	rootDir = "/test_root_dir/" :: any,
 	roots = {},
@@ -122,7 +124,7 @@ local DEFAULT_PROJECT_CONFIG: Config_ProjectConfig = {
 	skipNodeResolution = false,
 	slowTestThreshold = 5,
 	snapshotFormat = {},
-	snapshotResolver = nil,
+	snapshotResolver = Object.None,
 	snapshotSerializers = {},
 	testEnvironment = Packages.JestEnvironmentLuau,
 	testEnvironmentOptions = {},
@@ -135,23 +137,20 @@ local DEFAULT_PROJECT_CONFIG: Config_ProjectConfig = {
 	timers = "real",
 	transform = {},
 	transformIgnorePatterns = {},
-	unmockedModulePathPatterns = nil,
+	unmockedModulePathPatterns = Object.None,
 	watchPathIgnorePatterns = {},
 }
 
 exports.makeGlobalConfig = function(overrides_: { [string]: any }?): Config_GlobalConfig
 	local overrides = overrides_ or {}
-	local overridesKeys = Array.reduce(Object.keys(overrides), function(acc, key)
-		acc[key] = key
-		return acc
-	end, {})
+	local overridesKeys = Set.new(Object.keys(overrides))
 
 	Array.forEach(Object.keys(DEFAULT_GLOBAL_CONFIG), function(key)
-		overridesKeys[key] = nil
+		overridesKeys:delete(key)
 	end)
 
-	if #overridesKeys > 0 then
-		error("Properties that are not part of GlobalConfig type were passed:" .. inspect(overridesKeys))
+	if overridesKeys.size > 0 then
+		error("Properties that are not part of GlobalConfig type were passed:" .. inspect(Array.from(overridesKeys)))
 	end
 
 	return Object.assign({}, DEFAULT_GLOBAL_CONFIG, overrides)
@@ -159,17 +158,14 @@ end
 
 exports.makeProjectConfig = function(overrides: { [string]: any }): Config_ProjectConfig
 	overrides = overrides or {}
-	local overridesKeys = Array.reduce(Object.keys(overrides), function(acc, key)
-		acc[key] = key
-		return acc
-	end, {})
+	local overridesKeys = Set.new(Object.keys(overrides))
 
 	Array.forEach(Object.keys(DEFAULT_PROJECT_CONFIG), function(key)
-		overridesKeys[key] = nil
+		overridesKeys:delete(key)
 	end)
 
-	if #overridesKeys > 0 then
-		error("Properties that are not part of ProjectConfig type were passed:" .. inspect(overridesKeys))
+	if overridesKeys.size > 0 then
+		error("Properties that are not part of ProjectConfig type were passed:" .. inspect(Array.from(overridesKeys)))
 	end
 
 	return Object.assign({}, DEFAULT_PROJECT_CONFIG, overrides)
