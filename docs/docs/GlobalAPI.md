@@ -573,6 +573,53 @@ test.each('a | b | expected',
 end)
 ```
 
+### `test.failing(name, fn, timeout)`
+<a href='https://jest-archive-august-2023.netlify.app/docs/next/api#testfailingname-fn-timeout' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+
+Also under the alias: `it.failing(name, fn, timeout)`
+
+:::
+
+Use `test.failing` when you are writing a test and expecting it to fail. These tests will behave the other way normal tests do. If `failing` test will throw any errors then it will pass. If it does not throw it will fail.
+
+:::tip
+
+You can use this type of tests i.e. when writing code in a BDD way. In that case the tests will not show up as failing until they pass. Then you can just remove the `failing` modifier to make them pass.
+
+It can also be a nice way to contribute failing tests to a project, even if you don't know how to fix the bug.
+
+:::
+
+Example:
+
+```lua
+test.failing('it is not equal', function()
+  expect(5).toBe(6) -- this test will pass
+end)
+
+test.failing('it is equal', function()
+  expect(10).toBe(10) -- this test will fail
+end)
+```
+
+### `test.only.failing(name, fn, timeout)`
+<a href='https://jest-archive-august-2023.netlify.app/docs/next/api#testonlyfailingname-fn-timeout' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+
+Also under the aliases: `it.only.failing(name, fn, timeout)`
+
+:::
+
+Use `test.only.failing` if you want to only run a specific failing test.
+
+### `test.skip.failing(name, fn, timeout)`
+<a href='https://jest-archive-august-2023.netlify.app/docs/next/api#testskipfailingname-fn-timeout' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+
+Also under the aliases: `it.skip.failing(name, fn, timeout)`
+
+:::
+
+Use `test.skip.failing` if you want to skip running a specific failing test.
+
 ### `test.only(name, fn, timeout)`
 <a href='https://jestjs.io/docs/27.x/api#testonlyname-fn-timeout' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
 

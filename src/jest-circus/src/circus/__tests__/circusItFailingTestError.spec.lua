@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-circus/src/__tests__/circusItTestError.test.ts
+-- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.1.0/packages/jest-circus/src/__tests__/circusItFailingTestError.test.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
  *
@@ -30,22 +30,18 @@ local function aliasCircusIt()
 	circusIt = it
 	circusTest = test
 end
-
 aliasCircusIt()
 
-describe("test/it error throwing", function()
-	-- ROBLOX FIXME START: we can't run circusTest inside of circus's it
-	it.skip("it doesn't throw an error with valid arguments", function()
+describe("test/it.failing error throwing", function()
+	it("it doesn't throw an error with valid arguments", function()
 		expect(function()
-			circusIt("test1", function() end)
-		end).never.toThrow()
+			(circusIt :: any).failing("test1", function() end)
+		end).never.toThrowError()
 	end)
-	-- ROBLOX FIXME END
 
 	it("it throws error with missing callback function", function()
 		expect(function()
-			-- @ts-expect-error: Easy, we're testing runtime errors here
-			(circusIt :: any)("test2")
+			(circusIt :: any).failing("test2")
 		end).toThrowError(
 			"Missing second argument. It must be a callback function. Perhaps you want to use `test.todo` for a test placeholder."
 		)
@@ -53,32 +49,21 @@ describe("test/it error throwing", function()
 
 	it("it throws an error when first argument isn't valid", function()
 		expect(function()
-				-- @ts-expect-error: Easy, we're testing runtime errors here
-				(circusIt :: any)(function() end)
-			end)
-			-- ROBLOX deviation: function printing is different in lua
-			.toThrowError("Invalid first argument, [Function anonymous]. It must be a named function, number, or string.")
+			(circusIt :: any).failing(function() end)
+		end).toThrowError(
+			"Invalid first argument, [Function anonymous]. It must be a named function, number, or string."
+		)
 	end)
 
 	it("it throws an error when callback function is not a function", function()
 		expect(function()
-			-- @ts-expect-error: Easy, we're testing runtime errors here
-			(circusIt :: any)("test4", "test4b")
+			(circusIt :: any).failing("test4", "test4b")
 		end).toThrowError("Invalid second argument, test4b. It must be a callback function.")
 	end)
 
-	-- ROBLOX FIXME START: we can't run circusTest insinde of circus's it
-	it.skip("test doesn't throw an error with valid arguments", function()
-		expect(function()
-			circusTest("test5", function() end)
-		end).never.toThrow()
-	end)
-	-- ROBLOX FIXME END
-
 	it("test throws error with missing callback function", function()
 		expect(function()
-			-- @ts-expect-error: Easy, we're testing runtime errors here
-			(circusIt :: any)("test6")
+			(circusTest :: any).failing("test5")
 		end).toThrowError(
 			"Missing second argument. It must be a callback function. Perhaps you want to use `test.todo` for a test placeholder."
 		)
@@ -86,17 +71,14 @@ describe("test/it error throwing", function()
 
 	it("test throws an error when first argument isn't a string", function()
 		expect(function()
-			-- @ts-expect-error: Easy, we're testing runtime errors here
-			(circusTest :: any)(function() end)
+			(circusTest :: any).failing(function() end)
 		end).toThrowError(
 			"Invalid first argument, [Function anonymous]. It must be a named function, number, or string."
 		)
 	end)
-
 	it("test throws an error when callback function is not a function", function()
 		expect(function()
-			-- @ts-expect-error: Easy, we're testing runtime errors here
-			(circusIt :: any)("test8", "test8b")
+			(circusTest :: any).failing("test7", "test8b")
 		end).toThrowError("Invalid second argument, test8b. It must be a callback function.")
 	end)
 end)

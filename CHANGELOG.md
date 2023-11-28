@@ -1,5 +1,10 @@
 # Jest Roblox Changelog
 
+## Unreleased Changes
+
+* :sparkles: Added `task.failing` support to easily mark tests that are suppose to fail ([#370](https://github.com/Roblox/jest-roblox/pull/370))
+* :sparkles: Added `task.cancel` support to cancel timeouts started with `task.delays` ([#368](https://github.com/Roblox/jest-roblox/pull/368))
+
 ## 3.5.0 (2023-11-01)
 * :hammer_and_wrench: Fix an issue that was hiding error messages in test failure output ([#360](https://github.com/Roblox/jest-roblox/pull/360))
 * :sparkles: Allow toThrow to match on regular expressions if the expected error matches the RegExp type (has a test and exec function) ([#357](https://github.com/Roblox/jest-roblox/pull/357))

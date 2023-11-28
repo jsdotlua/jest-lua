@@ -231,6 +231,7 @@ export type TestEntry = {
 	seenDone: boolean,
 	status: (TestStatus | nil)?, -- whether the test has been skipped or run already
 	timeout: number?,
+	failing: boolean,
 }
 
 return {}

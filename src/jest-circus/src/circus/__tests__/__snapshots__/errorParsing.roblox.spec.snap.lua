@@ -5,12 +5,12 @@ exports[ [=[formats a string error into proper output with message 1]=] ] = [=[
 Table {
   "thrown: \"something went wrong!!\"
 Error
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:553 function _getError
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:555 function _getError
 LoadedCode.JestRoblox._Index.Collections.Collections.Array.map:50
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:441 function makeRunResult
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:443 function makeRunResult
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.errorParsing.roblox.spec:53
 LoadedCode.JestRoblox._Workspace.JestEach.JestEach.bind:170
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:367
+LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
 LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
 LoadedCode.JestRoblox._Index.Promise.Promise:262
 ",

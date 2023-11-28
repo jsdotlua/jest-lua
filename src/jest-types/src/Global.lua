@@ -76,15 +76,20 @@ type Each<EachCallback> =
 
 export type HookBase = (fn: TestFn, timeout: number?) -> ()
 
-export type ItBase = typeof(setmetatable({} :: { each: Each<TestFn> }, {
-	__call = function(_, testName: TestName, fn: TestFn, timeout: number?): () end,
-}))
+export type ItBase = typeof(setmetatable(
+	{} :: { each: Each<TestFn>, failing: (testName: TestNameLike, fn: TestFn, timeout: number?) -> () },
+	{ __call = function(_, testName: TestName, fn: TestFn, timeout: number?): () end }
+))
 
 export type It = ItBase & { only: ItBase, skip: ItBase, todo: (testName: TestName) -> () }
 
-export type ItConcurrentBase = typeof(setmetatable({} :: { each: Each<ConcurrentTestFn> }, {
-	__call = function(_, testName: string, testFn: ConcurrentTestFn, timeout: number?): () end,
-}))
+export type ItConcurrentBase = typeof(setmetatable(
+	{} :: {
+		each: Each<ConcurrentTestFn>,
+		failing: (testName: TestNameLike, fn: ConcurrentTestFn, timeout: number?) -> (),
+	},
+	{ __call = function(_, testName: string, testFn: ConcurrentTestFn, timeout: number?): () end }
+))
 
 export type ItConcurrentExtended = ItConcurrentBase & { only: ItConcurrentBase, skip: ItConcurrentBase }
 
