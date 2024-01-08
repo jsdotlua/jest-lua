@@ -31,6 +31,8 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local Error = LuauPolyfill.Error
 local Set = LuauPolyfill.Set
 
+local RegExp = require(Packages.RegExp)
+
 local CustomClass = {}
 CustomClass.__index = CustomClass
 
@@ -201,6 +203,14 @@ it("tests stack traces for calls within pcalls with Error polyfill", function()
 			end)
 		end).never.toThrow()
 	end).toThrowErrorMatchingSnapshot()
+end)
+
+it("compares RegExp objects correctly", function()
+	jestExpect(RegExp("test")).toEqual(RegExp("test"))
+	jestExpect({ a = RegExp("test") }).toEqual({ a = RegExp("test") })
+
+	jestExpect(RegExp("test")).never.toEqual(RegExp("other"))
+	jestExpect({ a = RegExp("test") }).never.toEqual({ a = RegExp("other") })
 end)
 
 describe("Instance matchers", function()

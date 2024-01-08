@@ -766,10 +766,10 @@ Error message: <r>"<d>expect(</><r>received</><r><d>).</>toBe<d>(</><g>expected<
       Error: <d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
       Expected: <g>2</>
       Received: <r>4</>
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:181
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:170
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:169
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:180
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:183
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:172
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:171
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:182
 ]=]
 
 exports[ [=[tests stack traces for calls within pcalls with Error polyfill 1]=] ] = [=[
@@ -782,8 +782,8 @@ Thrown value: <r>"attempt to concatenate string with table"</>
       LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.Error.Error.global:73 function __captureStackTrace
       LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.Error.Error.global:40 function __createError
       LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.Error.Error.global:89 function __call
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:192
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:199
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:194
+      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:201
 ]=]
 
 return exports

@@ -233,7 +233,7 @@ end
 
 -- ROBLOX MOVED: expect/utils.lua
 local function isObject(a: any)
-	return a ~= nil and typeof(a) == "table"
+	return a ~= nil and getType(a) == "table"
 end
 
 -- ROBLOX MOVED: expect/utils.lua
