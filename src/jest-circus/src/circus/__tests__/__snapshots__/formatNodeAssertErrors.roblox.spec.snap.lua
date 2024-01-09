@@ -1,8 +1,5 @@
--- ROBLOX NOTE: no upstream
 -- Jest Roblox Snapshot v1, http://roblox.github.io/jest-roblox/snapshot-testing
-
 local exports = {}
-
 exports[ [=[formatNodeAssertErrors should format AssertionError with message 1]=] ] = [=[
 
 Table {
@@ -19,8 +16,8 @@ Difference:
 <dim>Compared values have no visual difference.</>
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:36
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
-LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
-LoadedCode.JestRoblox._Index.Promise.Promise:262
+LoadedCode.JestRoblox._Index.Promise.Promise:172 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:299
 ",
   },
 }
@@ -48,8 +45,8 @@ Difference:
 <dim>  }</>
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:114
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
-LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
-LoadedCode.JestRoblox._Index.Promise.Promise:262
+LoadedCode.JestRoblox._Index.Promise.Promise:172 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:299
 ",
   },
 }
@@ -77,8 +74,8 @@ Difference:
 <dim>  }</>
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:114
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
-LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
-LoadedCode.JestRoblox._Index.Promise.Promise:262
+LoadedCode.JestRoblox._Index.Promise.Promise:172 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:299
 ",
   },
 }
@@ -100,8 +97,8 @@ Difference:
 <dim>Compared values have no visual difference.</>
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:114
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
-LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
-LoadedCode.JestRoblox._Index.Promise.Promise:262
+LoadedCode.JestRoblox._Index.Promise.Promise:172 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:299
 ",
   },
 }
@@ -123,8 +120,8 @@ Difference:
 <dim>Compared values have no visual difference.</>
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:114
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
-LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
-LoadedCode.JestRoblox._Index.Promise.Promise:262
+LoadedCode.JestRoblox._Index.Promise.Promise:172 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:299
 ",
   },
 }
@@ -146,8 +143,8 @@ Difference:
 <dim>Compared values have no visual difference.</>
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:114
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
-LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
-LoadedCode.JestRoblox._Index.Promise.Promise:262
+LoadedCode.JestRoblox._Index.Promise.Promise:172 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:299
 ",
   },
 }
@@ -169,8 +166,8 @@ Difference:
 <dim>Compared values have no visual difference.</>
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:114
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
-LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
-LoadedCode.JestRoblox._Index.Promise.Promise:262
+LoadedCode.JestRoblox._Index.Promise.Promise:172 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:299
 ",
   },
 }
@@ -192,8 +189,8 @@ Difference:
 <dim>Compared values have no visual difference.</>
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:114
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
-LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
-LoadedCode.JestRoblox._Index.Promise.Promise:262
+LoadedCode.JestRoblox._Index.Promise.Promise:172 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:299
 ",
   },
 }
@@ -215,8 +212,8 @@ Difference:
 <dim>Compared values have no visual difference.</>
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:114
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
-LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
-LoadedCode.JestRoblox._Index.Promise.Promise:262
+LoadedCode.JestRoblox._Index.Promise.Promise:172 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:299
 ",
   },
 }
@@ -244,8 +241,8 @@ Difference:
 <dim>  }</>
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:114
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
-LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
-LoadedCode.JestRoblox._Index.Promise.Promise:262
+LoadedCode.JestRoblox._Index.Promise.Promise:172 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:299
 ",
   },
 }
@@ -273,8 +270,8 @@ Difference:
 <dim>  }</>
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:114
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
-LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
-LoadedCode.JestRoblox._Index.Promise.Promise:262
+LoadedCode.JestRoblox._Index.Promise.Promise:172 function runExecutor
+LoadedCode.JestRoblox._Index.Promise.Promise:299
 ",
   },
 }
