@@ -1,7 +1,7 @@
 [workspace]
 members = ["src/*"]
 version = "3.5.0"
-license = "Apache2"
+license = "MIT"
 
 [workspace.dependencies]
 ChalkLua = "github.com/roblox/chalk-lua@0.2.0"

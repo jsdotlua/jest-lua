@@ -45,4 +45,4 @@ Jest Roblox is a Roblox port of the open source JavaScript testing framework [Je
 Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for information.
 
 ## License
-Jest Roblox is available under the Apache 2.0 license. See [LICENSE](LICENSE) for details.
+Jest Roblox is available under the MIT license. See [LICENSE](LICENSE) for details.
