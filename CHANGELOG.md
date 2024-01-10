@@ -2,6 +2,9 @@
 
 ## Unreleased Changes
 
+## 3.6.0 (2024-01-09)
+* :hammer_and_wrench: Upgrade promise dependency, but keep constraint wide so that all future 3.x versions are valid ([#374](https://github.com/Roblox/jest-roblox/pull/374))
+* :hammer_and_wrench: Fix matching logic for RegExp objects ([#371](https://github.com/Roblox/jest-roblox/pull/371))
 * :sparkles: Added `task.failing` support to easily mark tests that are suppose to fail ([#370](https://github.com/Roblox/jest-roblox/pull/370))
 * :sparkles: Added `task.cancel` support to cancel timeouts started with `task.delays` ([#368](https://github.com/Roblox/jest-roblox/pull/368))
 
