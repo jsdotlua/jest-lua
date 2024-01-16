@@ -24,6 +24,9 @@ type Circus_TestEntry = typesModule.Circus_TestEntry
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local AssertionError = LuauPolyfill.AssertionError
 
+local RobloxShared = require(Packages.RobloxShared)
+local pruneDeps = RobloxShared.pruneDeps
+
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
@@ -112,6 +115,7 @@ describe("formatNodeAssertErrors", function()
 	for _, case in ipairs(cases) do
 		it("should format AssertionError with operator: " .. case.operator, function()
 			local assertionError = AssertionError.new(case)
+			assertionError.stack = pruneDeps(assertionError.stack)
 			local test: Circus_TestEntry = {
 				type = "test",
 				asyncError = nil,

@@ -22,6 +22,9 @@ local Error = LuauPolyfill.Error
 
 local Promise = require(Packages.Promise)
 
+local RobloxShared = require(Packages.RobloxShared)
+local pruneDeps = RobloxShared.pruneDeps
+
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local describe = JestGlobals.describe
 local expect = JestGlobals.expect
@@ -51,7 +54,7 @@ describe("assertions & hasAssertions", function()
 		expect(#assertionsErrors).toBe(1)
 
 		expect(assertionsErrors[1].error.message).toMatchSnapshot()
-		expect(assertionsErrors[1].error.stack).toMatchSnapshot()
+		expect(pruneDeps(assertionsErrors[1].error.stack)).toMatchSnapshot()
 	end)
 
 	it("hasAssertions works", function()
@@ -73,7 +76,7 @@ describe("assertions & hasAssertions", function()
 		expect(#assertionsErrors).toBe(1)
 
 		expect(assertionsErrors[1].error.message).toMatchSnapshot()
-		expect(assertionsErrors[1].error.stack).toMatchSnapshot()
+		expect(pruneDeps(assertionsErrors[1].error.stack)).toMatchSnapshot()
 	end)
 end)
 

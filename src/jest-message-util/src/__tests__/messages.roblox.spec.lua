@@ -21,6 +21,9 @@ local it = JestGlobals.it
 local Promise = require(Packages.Dev.Promise)
 local Error = require(Packages.LuauPolyfill).Error
 
+local RobloxShared = require(Packages.RobloxShared)
+local pruneDeps = RobloxShared.pruneDeps
+
 local CurentModule = require(script.Parent.Parent)
 local formatExecError = CurentModule.formatExecError
 
@@ -36,7 +39,7 @@ it(".formatExecError() - Promise throw string", function()
 	expect(ok).toBe(false)
 
 	local message = formatExecError(err, { rootDir = "" :: any, testMatch = {} }, { noStackTrace = false }, "path_test")
-	expect(message).toMatchSnapshot()
+	expect(pruneDeps(message)).toMatchSnapshot()
 end)
 
 it(".formatExecError() - Promise throw Error", function()
@@ -51,7 +54,7 @@ it(".formatExecError() - Promise throw Error", function()
 	expect(ok).toBe(false)
 
 	local message = formatExecError(err, { rootDir = "" :: any, testMatch = {} }, { noStackTrace = false }, "path_test")
-	expect(message).toMatchSnapshot()
+	expect(pruneDeps(message)).toMatchSnapshot()
 end)
 
 it(".formatExecError() - nested Promise throw string", function()
@@ -68,7 +71,7 @@ it(".formatExecError() - nested Promise throw string", function()
 	expect(ok).toBe(false)
 
 	local message = formatExecError(err, { rootDir = "" :: any, testMatch = {} }, { noStackTrace = false }, "path_test")
-	expect(message).toMatchSnapshot()
+	expect(pruneDeps(message)).toMatchSnapshot()
 end)
 
 it(".formatExecError() - nested Promise throw Error", function()
@@ -85,7 +88,7 @@ it(".formatExecError() - nested Promise throw Error", function()
 	expect(ok).toBe(false)
 
 	local message = formatExecError(err, { rootDir = "" :: any, testMatch = {} }, { noStackTrace = false }, "path_test")
-	expect(message).toMatchSnapshot()
+	expect(pruneDeps(message)).toMatchSnapshot()
 end)
 
 return {}

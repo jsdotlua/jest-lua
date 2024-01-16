@@ -24,6 +24,7 @@ local exports = {
 	RobloxInstance = require(CurrentModule.RobloxInstance),
 	nodeUtils = nodeUtilsModule,
 	normalizePromiseError = require(CurrentModule.normalizePromiseError),
+	pruneDeps = require(CurrentModule.pruneDeps),
 }
 
 local WriteableModule = require(CurrentModule.Writeable)

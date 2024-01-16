@@ -8,6 +8,9 @@ local Error = LuauPolyfill.Error
 local typesModule = require(Packages.JestTypes)
 type Circus_DescribeBlock = typesModule.Circus_DescribeBlock
 
+local RobloxShared = require(Packages.RobloxShared)
+local pruneDeps = RobloxShared.pruneDeps
+
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local expect = JestGlobals.expect
 local it = JestGlobals.it
@@ -51,6 +54,10 @@ local errors: { { name: string, err: LuauPolyfill.Error } } = {
 
 (it.each :: FIXME_ANALYZE)(errors)("formats $name into proper output with message", function(errorData)
 	local result = utils.makeRunResult(mockDescribeBlock(), { errorData.err })
+	local prunedErrors = {}
+	for _, err in result.unhandledErrors do
+		table.insert(prunedErrors, pruneDeps(err))
+	end
 
-	expect(result.unhandledErrors).toMatchSnapshot()
+	expect(prunedErrors).toMatchSnapshot()
 end)
