@@ -1,5 +1,5 @@
 -- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/expect/src/__tests__/__snapshots__/toThrowMatchers.test.ts.snap
--- Jest Roblox Snapshot v1, http://roblox.github.io/jest-roblox/snapshot-testing
+-- Jest Roblox Snapshot v1, http://roblox.github.io/jest-roblox-internal/snapshot-testing
 
 -- ROBLOX deviation: We don't print 'Thrown value:' or 'Received value:' for strings
 -- we print 'Received message:' since the treatment of

@@ -1,4 +1,4 @@
--- Jest Roblox Snapshot v1, http://roblox.github.io/jest-roblox/snapshot-testing
+-- Jest Roblox Snapshot v1, http://roblox.github.io/jest-roblox-internal/snapshot-testing
 local exports = {}
 exports[ [=[formats a string error into proper output with message 1]=] ] = [=[
 

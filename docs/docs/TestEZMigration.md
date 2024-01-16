@@ -11,7 +11,7 @@ Replace TestEZ with `JestGlobals` in your `rotriever.toml`.
 ```diff title="rotriever.toml"
 [dev_dependencies]
 - TestEZ = "github.com/roblox/testez@0.4.1"
-+ JestGlobals = "github.com/roblox/jest-roblox@2.4.1"
++ JestGlobals = "github.com/Roblox/jest-roblox@2.4.1"
 ```
 
 Unlike TestEZ, which is injected into the global environment, you will need to explicitly require anything you need from `JestGlobals`. For example, to use the new Jest Roblox assertion library, add this to the top of your test file.

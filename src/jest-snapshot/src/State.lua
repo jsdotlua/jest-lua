@@ -247,7 +247,7 @@ function SnapshotState:save(): SaveStatus
 		-- robust final solution for I/O. This may not even be needed in our translation?
 		if self._updateSnapshot == "all" then
 			error(
-				"Jest-Roblox: You shouldn't reach this code path. Please file an issue at github.com/Roblox/jest-roblox or in #jest-roblox"
+				"Jest-Roblox: You shouldn't reach this code path. Please file an issue at github.com/Roblox/jest-roblox-internal or in #jest-roblox"
 			)
 			--	fs.unlinkSync(this._snapshotPath)
 		end

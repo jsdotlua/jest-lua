@@ -10,7 +10,7 @@ module.exports = {
     },
     downstream: {
         owner: "roblox",
-        repo: "jest-roblox",
+        repo: "jest-roblox-internal",
         primaryBranch: "master",
         patterns: [
             "src/**/*.lua"

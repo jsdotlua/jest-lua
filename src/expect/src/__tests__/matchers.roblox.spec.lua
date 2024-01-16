@@ -120,7 +120,7 @@ beforeAll(function()
 	end
 end)
 
--- test cases devised from https://github.com/Roblox/jest-roblox/pull/27#discussion_r561374828
+-- test cases devised from https://github.com/Roblox/jest-roblox-internal/pull/27#discussion_r561374828
 it("tests toStrictEqual matcher with example class", function()
 	jestExpect(CustomClass.new()).never.toBe(CustomClass.new()) -- not the same table
 	jestExpect(CustomClass.new()).toStrictEqual(CustomClass.new()) -- not the same table, but same shape and same class

@@ -1,4 +1,4 @@
--- Jest Roblox Snapshot v1, http://roblox.github.io/jest-roblox/snapshot-testing
+-- Jest Roblox Snapshot v1, http://roblox.github.io/jest-roblox-internal/snapshot-testing
 local exports = {}
 exports[ [=[lastCalledWith includes the custom mock name in the error message 1]=] ] = [=[
 

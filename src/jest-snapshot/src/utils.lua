@@ -50,7 +50,7 @@ type SnapshotData = types.SnapshotData
 
 local SNAPSHOT_VERSION = "1"
 -- local SNAPSHOT_VERSION_REGEXP = "^// Jest Snapshot v(.+),"
-local SNAPSHOT_GUIDE_LINK = "http://roblox.github.io/jest-roblox/snapshot-testing"
+local SNAPSHOT_GUIDE_LINK = "http://roblox.github.io/jest-roblox-internal/snapshot-testing"
 -- local SNAPSHOT_VERSION_WARNING = chalk.yellow(
 -- 	chalk.bold('Warning') .. ": Before you upgrade snapshots, " ..
 -- 	"we recommend that you revert any local changes to tests or other code, " ..

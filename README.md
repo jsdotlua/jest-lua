@@ -1,13 +1,13 @@
 <h1 align="center">Jest Roblox</h1>
 <div align="center">
-	<a href="https://github.com/Roblox/jest-roblox/actions?query=workflow%3ACI">
-		<img src="https://github.com/Roblox/jest-roblox/workflows/CI/badge.svg" alt="GitHub Actions Build Status" />
+	<a href="https://github.com/Roblox/jest-roblox-internal/actions?query=workflow%3ACI">
+		<img src="https://github.com/Roblox/jest-roblox-internal/workflows/CI/badge.svg" alt="GitHub Actions Build Status" />
 	</a>
-	<a href="https://roblox.github.io/jest-roblox/">
+	<a href="https://roblox.github.io/jest-roblox-internal/">
 			<img src="https://img.shields.io/badge/docs-website-green.svg" alt="Documentation" />
 	</a>
-	<a href='https://coveralls.io/github/Roblox/jest-roblox'>
-		<img src='https://coveralls.io/repos/github/Roblox/jest-roblox/badge.svg?t=4czPqO&kill_cache=1' alt='Coverage Status' />
+	<a href='https://coveralls.io/github/Roblox/jest-roblox-internal'>
+		<img src='https://coveralls.io/repos/github/Roblox/jest-roblox-internal/badge.svg?t=4czPqO&kill_cache=1' alt='Coverage Status' />
 	</a>
 </div>
 
@@ -25,7 +25,7 @@ We use Jest Roblox at Roblox for testing our apps, in-game core scripts, built-i
 
 Add this package to your `dev_dependencies` in your `rotriever.toml`, for example:
 ```
-JestGlobals = "github.com/roblox/jest-roblox@2.2.0"
+JestGlobals = "github.com/Roblox/jest-roblox@2.2.0"
 ```
 
 Then, require anything you need from `JestGlobals`:

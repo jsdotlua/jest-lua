@@ -1,5 +1,5 @@
 -- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/expect/src/__tests__/__snapshots__/assertionCounts.test.ts.snap
--- Jest Roblox Snapshot v1, http://roblox.github.io/jest-roblox/snapshot-testing
+-- Jest Roblox Snapshot v1, http://roblox.github.io/jest-roblox-internal/snapshot-testing
 
 local exports = {}
 
