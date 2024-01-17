@@ -2,6 +2,9 @@
 
 ## Unreleased Changes
 
+## 3.6.1 (2024-01-16)
+* Re-release of 3.6.0 with widened promise dependency that includes older versions for maximum flexibility ([#378](https://github.com/Roblox/jest-roblox-internal/pull/378))
+
 ## 3.6.0 (2024-01-09)
 * :hammer_and_wrench: Upgrade promise dependency, but keep constraint wide so that all future 3.x versions are valid ([#374](https://github.com/Roblox/jest-roblox-internal/pull/374))
 * :hammer_and_wrench: Fix matching logic for RegExp objects ([#371](https://github.com/Roblox/jest-roblox-internal/pull/371))
