@@ -14,7 +14,7 @@ Version: v27.4.7
     * `--lua.globals=UPDATESNAPSHOT="new"` to only create new snapshots, existing failing snapshots will continue to fail
 * We intentionally exclude inline snapshot testing as it introduces a lot of code complexity for not much added utility.
 * Major deviations on snapshot read/write implementation details because we handle reading snapshots through various Roblox-specific mechanisms like `ModuleScript`, `FileSystemService`, and `CoreScriptSyncService`.
-* New snapshot tests pass by default in Jest because snapshots get automatically created for tests that do not already have a snapshot written to file, Jest Roblox cannot do this because elevated permissions are required to write snapshots to file, therefore new snapshot tests fail by default (Jest Roblox tries to match against an empty snapshot) until a snapshot update is run.
+* New snapshot tests pass by default in Jest because snapshots get automatically created for tests that do not already have a snapshot written to file, Jest Lua cannot do this because elevated permissions are required to write snapshots to file, therefore new snapshot tests fail by default (Jest Lua tries to match against an empty snapshot) until a snapshot update is run.
 * Detailed implementation notes and deviations on snapshot handling for future reference:
     * Snapshots are written to file as a `.snap.lua` that can then be `require`'d as a valid `ModuleScript`. It exports a table with `{ [key] = "snapshot" }`.
     * The TestEZ runner writes and updates three pieces of information into a `JEST_TEST_CONTEXT` global state for Jest snapshots to access:
@@ -31,7 +31,7 @@ Version: v27.4.7
     * Because `FileSystemService` and `CoreScriptSyncService` are heavily sandboxed and require elevated privileges, we opted to require absolutely no additional permissions to *match* against existing snapshots, but elevated permissions are needed to *update* snapshots.
         * New snapshot tests fail by default (mentioned above).
         * Obsolete snapshots (snapshots without a corresponding test) are not pruned unless done in an update snapshot run.
-            * Obsolete snapshot *files* are not pruned. If a `.spec.lua` no longer contains any snapshot tests, the `.snap.lua` will not be removed even through an update snapshot run. This is because of separation between the TestEZ runner and Jest Roblox, resulting in Jest Roblox initializing the `SnapshotState` and not the runner. This can be addressed when Jest Roblox gets its own runner.
+            * Obsolete snapshot *files* are not pruned. If a `.spec.lua` no longer contains any snapshot tests, the `.snap.lua` will not be removed even through an update snapshot run. This is because of separation between the TestEZ runner and Jest Lua, resulting in Jest Lua initializing the `SnapshotState` and not the runner. This can be addressed when Jest Lua gets its own runner.
 
 ### :x: Excluded
 ```

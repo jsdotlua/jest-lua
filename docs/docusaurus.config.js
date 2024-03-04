@@ -1,20 +1,20 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
-const VERSION = '3.6.0';
+const VERSION = '3.6.1-rc.2';
 
 module.exports = {
-  title: 'Jest Roblox',
-  tagline: 'Lovely Luau Testing',
-  url: 'https://roblox.github.io',
-  baseUrl: '/jest-roblox-internal/',
-  organizationName: 'roblox',
-  projectName: 'jest-roblox-internal',
+  title: 'Jest Lua',
+  tagline: 'Delightful Luau Testing',
+  url: 'https://jsdotlua.github.io',
+  baseUrl: '/jest-lua/',
+  organizationName: 'jsdotlua',
+  projectName: 'jest-lua',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.svg',
   themeConfig: {
     navbar: {
-      title: `Jest Roblox v${VERSION}`,
+      title: `Jest Lua v${VERSION}`,
       items: [
         {
           label: 'Docs',
@@ -29,7 +29,7 @@ module.exports = {
           position: 'right',
         },
         {
-          href: 'https://github.com/Roblox/jest-roblox-internal',
+          href: 'https://github.com/jsdotlua/jest-lua',
           label: 'GitHub',
           position: 'right',
         },
@@ -39,9 +39,9 @@ module.exports = {
       style: 'dark',
     },
     prism: {
-      theme: require('prism-react-renderer/themes/github'),
-      darkTheme: require('prism-react-renderer/themes/dracula'),
-      additionalLanguages: ['lua'],
+      theme: require('prism-react-renderer').themes.github,
+      darkTheme: require('prism-react-renderer').themes.dracula,
+      additionalLanguages: ['lua', 'json', 'toml', 'diff'],
     }
   },
   presets: [

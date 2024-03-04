@@ -10,7 +10,7 @@ When you're writing tests, you often need to check that values meet certain cond
 
 It must be imported explicitly from `JestGlobals`.
 ```lua
-local expect = require(Packages.Dev.JestGlobals).expect
+local expect = require("@DevPackages/JestGlobals").expect
 ```
 
 ### RegExp
@@ -22,7 +22,7 @@ RegExp = "github.com/roblox/luau-regexp@0.2.0"
 ```
 
 ```lua
-local RegExp = require(Packages.RegExp)
+local RegExp = require("@Packages/RegExp")
 ```
 
 ### Promise
@@ -39,7 +39,7 @@ Promise = "github.com/evaera/roblox-lua-promise@3.3.0"
 LuauPolyfill also provides an extensible `Error` class that can be used with throwing matchers.
 
 ```lua
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@Packages/LuauPolyfill")
 local Error = LuauPolyfill.Error
 ```
 
@@ -89,7 +89,7 @@ The argument to `expect` should be the value that your code produces, and any ar
 ### `expect.extend(matchers)`
 <a href='https://jestjs.io/docs/27.x/expect#expectextendmatchers' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
 
-You can use `expect.extend` to add your own matchers to Jest Roblox. For example, let's say that you're testing a number utility library and you're frequently asserting that numbers appear within particular ranges of other numbers. You could abstract that into a `toBeWithinRange` matcher:
+You can use `expect.extend` to add your own matchers to Jest Lua. For example, let's say that you're testing a number utility library and you're frequently asserting that numbers appear within particular ranges of other numbers. You could abstract that into a `toBeWithinRange` matcher:
 
 ```lua
 expect.extend({
@@ -212,7 +212,7 @@ To use snapshot testing inside of your custom matcher you can import `JestSnapsh
 Here's a snapshot matcher that trims a string to store for a given length, `.toMatchTrimmedSnapshot(length)`:
 
 ```lua
-local JestSnapshot = require(Packages.JestSnapshot)
+local JestSnapshot = require("@DevPackages/JestSnapshot")
 local toMatchSnapshot = JestRoblox.JestSnapshot.toMatchSnapshot
 
 expect.extend({
@@ -520,7 +520,7 @@ expect.addSnapshotSerializer(serializer)
 -- affects expect(value).toMatchSnapshot() assertions in the test file
 ```
 
-See [configuring Jest Roblox](configuration) for more information.
+See [configuring Jest Lua](configuration) for more information.
 
 ### `.never`
 <a href='https://jestjs.io/docs/27.x/expect#not' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
@@ -549,7 +549,7 @@ end)
 
 :::note
 
-Since you are still testing promises, the test is still asynchronous. Hence, you will need to [tell Jest Roblox to wait](asynchronous#promises) by returning the unwrapped assertion.
+Since you are still testing promises, the test is still asynchronous. Hence, you will need to [tell Jest Lua to wait](asynchronous#promises) by returning the unwrapped assertion.
 
 :::
 
@@ -569,7 +569,7 @@ end)
 
 :::note
 
-Since you are still testing promises, the test is still asynchronous. Hence, you will need to [tell Jest Roblox to wait](asynchronous#promises) by returning the unwrapped assertion.
+Since you are still testing promises, the test is still asynchronous. Hence, you will need to [tell Jest Lua to wait](asynchronous#promises) by returning the unwrapped assertion.
 
 :::
 

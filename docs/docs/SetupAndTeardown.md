@@ -4,7 +4,7 @@ title: Setup and Teardown
 ---
 <p><a href='https://jestjs.io/docs/27.x/setup-teardown' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a></p>
 
-Often while writing tests you have some setup work that needs to happen before tests run, and you have some finishing work that needs to happen after tests run. Jest Roblox provides helper functions to handle this.
+Often while writing tests you have some setup work that needs to happen before tests run, and you have some finishing work that needs to happen after tests run. Jest Lua provides helper functions to handle this.
 
 ## Repeating Setup
 
@@ -131,7 +131,7 @@ end)
 ```
 
 ## Order of Execution
-Jest Roblox executes all describe handlers in a test file _before_ it executes any of the actual tests. This is another reason to do setup and teardown inside `before*` and `after*` handlers rather than inside the `describe` blocks. Once the `describe` blocks are complete, by default Jest Roblox runs all the tests serially in the order they were encountered in the collection phase, waiting for each to finish and be tidied up before moving on.
+Jest Lua executes all describe handlers in a test file _before_ it executes any of the actual tests. This is another reason to do setup and teardown inside `before*` and `after*` handlers rather than inside the `describe` blocks. Once the `describe` blocks are complete, by default Jest Lua runs all the tests serially in the order they were encountered in the collection phase, waiting for each to finish and be tidied up before moving on.
 
 ```lua
 describe('describe outer', function()
@@ -172,7 +172,7 @@ end)
 -- test 3
 ```
 
-Just like the `describe` and `test` blocks Jest Roblox calls the `before*` and `after*` hooks in the order of declaration. Note that the `after*` hooks of the enclosing scope are called first. For example, here is how you can set up and tear down resources which depend on each other:
+Just like the `describe` and `test` blocks Jest Lua calls the `before*` and `after*` hooks in the order of declaration. Note that the `after*` hooks of the enclosing scope are called first. For example, here is how you can set up and tear down resources which depend on each other:
 ```lua
 beforeEach(function() print('connection setup') end)
 beforeEach(function() print('database setup') end)
@@ -211,7 +211,7 @@ end)
 
 ## General Advice
 
-If a test is failing, one of the first things to check should be whether the test is failing when it's the only test that runs. To run only one test with Jest Roblox, temporarily change that `test` command to a `test.only`:
+If a test is failing, one of the first things to check should be whether the test is failing when it's the only test that runs. To run only one test with Jest Lua, temporarily change that `test` command to a `test.only`:
 ```lua
 test.only('this will be the only test that runs', function()
 	expect(true).toBe(false)

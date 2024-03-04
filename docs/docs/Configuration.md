@@ -4,7 +4,7 @@ title: Configuring Jest
 ---
 <p><a href='https://jestjs.io/docs/27.x/configuration' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a></p>
 
-The Jest Roblox philosophy is to work great by default, but sometimes you just need more configuration power.
+The Jest Lua philosophy is to work great by default, but sometimes you just need more configuration power.
 
 <img alt='deviation' src='img/deviation.svg'/>
 
@@ -56,7 +56,7 @@ return {
 }
 ```
 
-Alternatively, a table with the keys `name` and `color` can be passed. This allows for a custom configuration of the background color of the displayName. `displayName` defaults to white when its value is a string. Jest Roblox uses [`chalk-lua`](https://github.com/Roblox/chalk-lua) to provide the color. As such, all of the valid options for colors supported by `chalk-lua` are also supported by Jest Roblox.
+Alternatively, a table with the keys `name` and `color` can be passed. This allows for a custom configuration of the background color of the displayName. `displayName` defaults to white when its value is a string. Jest Lua uses [`chalk-lua`](https://github.com/Roblox/chalk-lua) to provide the color. As such, all of the valid options for colors supported by `chalk-lua` are also supported by Jest Lua.
 
 ```lua
 return {
@@ -72,7 +72,7 @@ return {
 
 Default: `nil`
 
-When the `projects` configuration is provided with an array of instances, Jest Roblox will run tests in all of the specified projects at the same time. This is great for monorepos or when working on multiple projects at the same time.
+When the `projects` configuration is provided with an array of instances, Jest Lua will run tests in all of the specified projects at the same time. This is great for monorepos or when working on multiple projects at the same time.
 
 ```lua
 return {
@@ -80,7 +80,7 @@ return {
 }
 ```
 
-This example configuration will run Jest Roblox in the `ProjectA` as well as the `ProjectB` directories. You can have an unlimited amount of projects running in the same Jest Roblox instance.
+This example configuration will run Jest Lua in the `ProjectA` as well as the `ProjectB` directories. You can have an unlimited amount of projects running in the same Jest Lua instance.
 
 :::tip
 
@@ -98,13 +98,13 @@ Automatically restore mock state and implementation before every test. Equivalen
 ### `rootDir` \[Instance]
 <a href='https://jestjs.io/docs/27.x/configuration#rootdir-string' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
 
-Default: The root of the directory containing your Jest Roblox [config file](#).
+Default: The root of the directory containing your Jest Lua [config file](#).
 
-The root directory that Jest Roblox should scan for tests and modules within.
+The root directory that Jest Lua should scan for tests and modules within.
 
 Oftentimes, you'll want to set this to your main workspace, corresponding to where in your repository the code is stored.
 
-<!-- The root directory that Jest Roblox should scan for tests and modules within. If you put your Jest config inside your `package.json` and want the root directory to be the root of your repo, the value for this config param will default to the directory of the `package.json`.
+<!-- The root directory that Jest Lua should scan for tests and modules within. If you put your Jest config inside your `package.json` and want the root directory to be the root of your repo, the value for this config param will default to the directory of the `package.json`.
 
 Oftentimes, you'll want to set this to `'src'` or `'lib'`, corresponding to where in your repository the code is stored.
 
@@ -119,9 +119,9 @@ Using `'<rootDir>'` as a string token in any other path-based configuration sett
 
 Default: `{<rootDir>}`
 
-A list of paths to directories that Jest Roblox should use to search for files in.
+A list of paths to directories that Jest Lua should use to search for files in.
 
-There are times where you only want Jest Roblox to search in a single sub-directory (such as cases where you have a `src/` directory in your repo), but prevent it from accessing the rest of the repo.
+There are times where you only want Jest Lua to search in a single sub-directory (such as cases where you have a `src/` directory in your repo), but prevent it from accessing the rest of the repo.
 
 ### `setupFiles` \[array&lt;ModuleScript&gt;]
 <a href='https://jestjs.io/docs/27.x/configuration#setupfiles-array' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
@@ -139,7 +139,7 @@ A list of ModuleScripts that run some code to configure or set up the testing fr
 
 In other words, `setupFilesAfterEnv` modules are meant for code which is repeating in each test file. Having the test framework installed makes Jest [globals](api), [`jest` object](jest-object) and [`expect`](expect) accessible in the modules. For example, you can add [extra matchers](expect#expectextendmatchers) or call [setup and teardown](setup-teardown) hooks:
 ```lua title="setupJest.lua"
-local JestGlobals = require(Packages.JestGlobals)
+local JestGlobals = require("@DevPackages/JestGlobals")
 local jest = JestGlobals.jest
 local expect = JestGlobals.expect
 local afterEach = JestGlobals.afterEach
@@ -208,9 +208,9 @@ TextLabel {
 
 Default: `{}`
 
-A list of snapshot serializers Jest Roblox should use for snapshot testing.
+A list of snapshot serializers Jest Lua should use for snapshot testing.
 
-Jest Roblox has default serializers for built-in Lua types, Roblox types and Instances, and React Roblox elements.
+Jest Lua has default serializers for built-in Lua types, Roblox types and Instances, and React Roblox elements.
 
 ```lua title="customSerializer.lua"
 local function serialize(val, config, indentation, depth, refs, printer)
@@ -230,7 +230,7 @@ return {
 
 `printer` is a function that serializes a value using existing plugins.
 
-Add `customSerializer` to your Jest Roblox configuration:
+Add `customSerializer` to your Jest Lua configuration:
 ```lua
 return {
 	snapshotSerializers = { Workspace.customSerializer }
@@ -267,11 +267,11 @@ More about serializers API can be found [here](https://github.com/facebook/jest/
 
 Default: `1`
 
-The exit code Jest Roblox returns on test failure.
+The exit code Jest Lua returns on test failure.
 
 :::info
 
-This does not change the exit code in the case of Jest Roblox errors (e.g. invalid configuration).
+This does not change the exit code in the case of Jest Lua errors (e.g. invalid configuration).
 
 :::
 
@@ -280,7 +280,7 @@ This does not change the exit code in the case of Jest Roblox errors (e.g. inval
 
 Default: `{ "**/__tests__/**/*", "**/?(*.)+(spec|test)" }`
 
-The glob patterns Jest Roblox uses to detect test files. 
+The glob patterns Jest Lua uses to detect test files. 
 By default it looks for `.spec` or `.test` files inside of `__tests__` folders, as well as any files with a suffix of `.test` or `.spec` (e.g. `Component.test.lua` or `Component.spec.lua`). It will also find files called `test.lua` or `spec.lua`.
 
 See the [micromatch](https://github.com/micromatch/micromatch) package for details of the patterns you can specify.
@@ -307,7 +307,7 @@ An array of regexp pattern strings that are matched against all test paths befor
 
 Default: `{}`
 
-The pattern or patterns Jest Roblox uses to detect test files. See also [`testMatch` [array&lt;string&gt;]](#testmatch-arraystring), but note that you cannot specify both options.
+The pattern or patterns Jest Lua uses to detect test files. See also [`testMatch` [array&lt;string&gt;]](#testmatch-arraystring), but note that you cannot specify both options.
 
 :::info
 

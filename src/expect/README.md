@@ -36,7 +36,7 @@ Version: v27.4.7
 * :warning: isError returns `true` for string and table types since we don't have a designated error type in Lua and these two types are what can be used to trigger an error
 * The throwing matchers (e.g. `toThrow()`) will print out stack traces for ALL types (except `nil`) that are thrown whereas in Javascript the stack trace is only printed if you error with an Error type. In other words, executing a `toThrow` matcher on something like `throw ''` in Javascript will not end up printing the stack trace but doing so with `error("")` will print the stack trace for our Lua equivalent.
 * :warning: When writing custom matchers with `expect.extend()`, a first argument `self` is needed to receive the `matcherContext`. It can be left empty with `_` if the `matcherContext` is not be needed.
-* :warning: Custom throwing matchers should throw errors that follow one of three patterns. Jest Roblox will attempt to `tostring` values that do not match these patterns and may result in undefined behavior.
+* :warning: Custom throwing matchers should throw errors that follow one of three patterns. Jest Lua will attempt to `tostring` values that do not match these patterns and may result in undefined behavior.
     * strings
     * tables with a `message` key that has a string value
     * objects with a `__tostring` metamethod

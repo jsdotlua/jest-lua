@@ -1,13 +1,13 @@
-# Jest Roblox Docs
+# Jest Lua Docs
 
-The Jest Roblox API is similar to [the API used by JavaScript Jest.](https://jestjs.io/docs/27.x/api)
+The Jest Lua API is similar to [the API used by JavaScript Jest.](https://jestjs.io/docs/27.x/api)
 
 # Usage
 
-Jest Roblox doesn't inject any global variables. Every jest functionality needs to be imported from `JestGlobals`. For example:
+Jest Lua doesn't inject any global variables. Every jest functionality needs to be imported from `JestGlobals`. For example:
 
 ```lua
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@DevPackages/JestGlobals")
 
 local describe = JestGlobals.describe
 local expect = JestGlobals.expect
@@ -444,13 +444,13 @@ Should be the same taking into account [not supported matchers](#expect)
 
 ### [Promises](https://jestjs.io/docs/27.x/asynchronous#promises)
 
-Tests can return a [Promise](https://github.com/evaera/roblox-lua-promise) and Jest Roblox will wait for the promise to resolve.
+Tests can return a [Promise](https://github.com/evaera/roblox-lua-promise) and Jest Lua will wait for the promise to resolve.
 
 > **Note:** It is also worth noting that tests can ONLY return either a `Promise` or `nil`.
 
 ### [Callbacks](https://jestjs.io/docs/27.x/asynchronous#callbacks)
 
-Jest Roblox supports `done` callback as a second param to the test function
+Jest Lua supports `done` callback as a second param to the test function
 eg.
 
 ```lua
