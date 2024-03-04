@@ -9,26 +9,23 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: "latest"
+          cache: "yarn"
+          cache-dependency-path: "yarn.lock"
 
-      - name: Install NPM dependencies
-        uses: bahmutov/npm-install@v1.4.5
-        with:
-          working-directory: docs
-        
+      - name: Install packages
+        working-directory: docs
+        run: yarn install --immutable
+
       - name: Build
         working-directory: docs
-        run: npm run build
+        run: yarn build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
