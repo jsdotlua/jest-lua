@@ -3,11 +3,18 @@ rotriever.lock
 Packages/*
 !Packages/.robloxrc
 
+# Package manager
+**/node_modules
+.yarn
+
 # Test places and build artifacts
 /*.rbxlx
 /*.rbxl
 /*.rbxmx
 /*.rbxm
+**/sourcemap.json
+/build
+/roblox
 
 # LuaCov reports
 /luacov.*

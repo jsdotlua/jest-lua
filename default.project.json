@@ -1,0 +1,9 @@
+{
+  "name": "JestLua",
+  "tree": {
+    "$path": "roblox-model",
+    "node_modules": {
+      "$path": "node_modules"
+    }
+  }
+}
