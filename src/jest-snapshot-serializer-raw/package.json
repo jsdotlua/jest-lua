@@ -1,0 +1,20 @@
+{
+  "name": "@jsdotlua/jest-snapshot-serializer-raw",
+  "version": "3.6.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsdotlua/jest-lua.git",
+    "directory": "src/jest-snapshot-serializer-raw"
+  },
+  "license": "MIT",
+  "main": "src/init.lua",
+  "scripts": {
+    "prepare": "npmluau"
+  },
+  "dependencies": {
+    "@jsdotlua/luau-polyfill": "^1.2.6"
+  },
+  "devDependencies": {
+    "npmluau": "^0.1.1"
+  }
+}

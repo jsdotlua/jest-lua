@@ -1,0 +1,31 @@
+{
+  "name": "@jsdotlua/expect",
+  "version": "3.6.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsdotlua/jest-lua.git",
+    "directory": "src/expect"
+  },
+  "license": "MIT",
+  "main": "src/init.lua",
+  "scripts": {
+    "prepare": "npmluau"
+  },
+  "dependencies": {
+    "@jsdotlua/jest-get-type": "workspace:^",
+    "@jsdotlua/jest-matcher-utils": "workspace:^",
+    "@jsdotlua/jest-message-util": "workspace:^",
+    "@jsdotlua/jest-roblox-shared": "workspace:^",
+    "@jsdotlua/jest-snapshot": "workspace:^",
+    "@jsdotlua/jest-util": "workspace:^",
+    "@jsdotlua/luau-polyfill": "^1.2.6",
+    "@jsdotlua/promise": "^3.5.0",
+    "luau-regexp": "^0.2.1"
+  },
+  "devDependencies": {
+    "@jsdotlua/jest-globals": "workspace:^",
+    "@jsdotlua/jest-mock": "workspace:^",
+    "@jsdotlua/test-utils": "workspace:^",
+    "npmluau": "^0.1.1"
+  }
+}

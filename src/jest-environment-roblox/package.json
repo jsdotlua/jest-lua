@@ -1,0 +1,25 @@
+{
+  "name": "@jsdotlua/jest-environment-roblox",
+  "version": "3.6.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsdotlua/jest-lua.git",
+    "directory": "src/jest-environment-roblox"
+  },
+  "license": "MIT",
+  "main": "src/init.lua",
+  "scripts": {
+    "prepare": "npmluau"
+  },
+  "dependencies": {
+    "@jsdotlua/jest-environment": "workspace:^",
+    "@jsdotlua/jest-fake-timers": "workspace:^",
+    "@jsdotlua/jest-mock": "workspace:^",
+    "@jsdotlua/jest-types": "workspace:^",
+    "@jsdotlua/luau-polyfill": "^1.2.6",
+    "@jsdotlua/promise": "^3.5.0"
+  },
+  "devDependencies": {
+    "npmluau": "^0.1.1"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "@jsdotlua/jest-jasmine2",
+  "version": "3.6.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsdotlua/jest-lua.git",
+    "directory": "src/jest-jasmine2"
+  },
+  "license": "MIT",
+  "main": "src/init.lua",
+  "scripts": {
+    "prepare": "npmluau"
+  },
+  "dependencies": {
+    "@jsdotlua/luau-polyfill": "^1.2.6"
+  },
+  "devDependencies": {
+    "@jsdotlua/expect": "workspace:^",
+    "@jsdotlua/jest-globals": "workspace:^",
+    "@jsdotlua/jest-roblox-shared": "workspace:^",
+    "@jsdotlua/promise": "^3.5.0",
+    "npmluau": "^0.1.1"
+  }
+}
