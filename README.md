@@ -5,7 +5,6 @@
 <h3>Delightful Lua Testing.</h3>
 
 [![Tests](https://github.com/jsdotlua/jest-lua/actions/workflows/test.yml/badge.svg)](https://github.com/jsdotlua/jest-lua/actions/workflows/test.yml)
-<!-- [![Coverage Status](https://coveralls.io/repos/github/Roblox/roact-alignment/badge.svg?branch=master&t=TvTSze)](https://coveralls.io/github/Roblox/roact-alignment?branch=master) -->
 [![Docs](https://img.shields.io/badge/docs-website-green.svg)](https://jsdotlua.github.io/jest-lua/)
 
 ---
