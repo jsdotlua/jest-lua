@@ -7,18 +7,15 @@
 --  *
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Number = LuauPolyfill.Number
 
-local deepCyclicCopyReplaceable = require(CurrentModule.deepCyclicCopyReplaceable)
+local deepCyclicCopyReplaceable = require("../deepCyclicCopyReplaceable")
 
 type anyTable = { [any]: any }
 

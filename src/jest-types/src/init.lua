@@ -5,7 +5,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  ]]
-local CircusModule = require(script.Circus)
+local CircusModule = require("./Circus")
 export type Circus_DoneFn = CircusModule.DoneFn
 export type Circus_BlockFn = CircusModule.BlockFn
 export type Circus_BlockNameLike = CircusModule.BlockNameLike
@@ -38,7 +38,7 @@ export type Circus_DescribeBlock = CircusModule.DescribeBlock
 export type Circus_TestError = CircusModule.TestError
 export type Circus_TestEntry = CircusModule.TestEntry
 
-local ConfigModule = require(script.Config)
+local ConfigModule = require("./Config")
 export type Config_Path = ConfigModule.Path
 export type Config_Glob = ConfigModule.Glob
 export type Config_HasteConfig = ConfigModule.HasteConfig
@@ -60,7 +60,7 @@ export type Config_GlobalConfig = ConfigModule.GlobalConfig
 export type Config_ProjectConfig = ConfigModule.ProjectConfig
 export type Config_Argv = ConfigModule.Argv
 
-local GlobalModule = require(script.Global)
+local GlobalModule = require("./Global")
 export type Global_ValidTestReturnValues = GlobalModule.ValidTestReturnValues
 export type Global_TestReturnValue = GlobalModule.TestReturnValue
 export type Global_TestContext = GlobalModule.TestContext
@@ -95,14 +95,14 @@ export type Global_TestFrameworkGlobals = GlobalModule.TestFrameworkGlobals
 export type Global_GlobalAdditions = GlobalModule.GlobalAdditions
 export type Global_Global = GlobalModule.Global
 
-local TestResultModule = require(script.TestResult)
+local TestResultModule = require("./TestResult")
 export type TestResult_Milliseconds = TestResultModule.Milliseconds
 export type TestResult_AssertionResult = TestResultModule.AssertionResult
 export type TestResult_SerializableError = TestResultModule.SerializableError
 export type TestResult_Callsite = TestResultModule.Callsite
 export type TestResult_Status = TestResultModule.Status
 
-local TransformModule = require(script.Transform)
+local TransformModule = require("./Transform")
 export type TransformTypes_TransformResult = TransformModule.TransformResult
 
 return {}

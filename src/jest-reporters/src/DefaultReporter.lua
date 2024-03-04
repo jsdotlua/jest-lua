@@ -6,10 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Set = LuauPolyfill.Set
@@ -20,41 +17,41 @@ type Set<T> = LuauPolyfill.Set<T>
 
 local exports = {}
 
-local chalk = require(Packages.ChalkLua)
+local chalk = require("@pkg/@jsdotlua/chalk")
 
-local getConsoleOutput = require(Packages.JestConsole).getConsoleOutput
+local getConsoleOutput = require("@pkg/@jsdotlua/jest-console").getConsoleOutput
 
-local testResultModule = require(Packages.JestTestResult)
+local testResultModule = require("@pkg/@jsdotlua/jest-test-result")
 type AggregatedResult = testResultModule.AggregatedResult
 type TestCaseResult = testResultModule.TestCaseResult
 type TestResult = testResultModule.TestResult
 
-local jestTypesModule = require(Packages.JestTypes)
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_GlobalConfig = jestTypesModule.Config_GlobalConfig
 type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
 type Config_Path = jestTypesModule.Config_Path
 
-local jestMessageUtilModule = require(Packages.JestMessageUtil)
+local jestMessageUtilModule = require("@pkg/@jsdotlua/jest-message-util")
 local formatStackTrace = jestMessageUtilModule.formatStackTrace
 local indentAllLines = jestMessageUtilModule.indentAllLines
 local separateMessageFromStack = jestMessageUtilModule.separateMessageFromStack
 
-local jestUtilModule = require(Packages.JestUtil)
+local jestUtilModule = require("@pkg/@jsdotlua/jest-util")
 local clearLine = jestUtilModule.clearLine
 
-local BaseReporter = require(CurrentModule.BaseReporter).default
-local statusModule = require(CurrentModule.Status)
+local BaseReporter = require("./BaseReporter").default
+local statusModule = require("./Status")
 local Status = statusModule.default
 type Status = statusModule.Status
-local getResultHeader = require(CurrentModule.getResultHeader).default
-local getSnapshotStatus = require(CurrentModule.getSnapshotStatus).default
+local getResultHeader = require("./getResultHeader").default
+local getSnapshotStatus = require("./getSnapshotStatus").default
 
-local typesModule = require(CurrentModule.types)
+local typesModule = require("./types")
 type ReporterOnStartOptions = typesModule.ReporterOnStartOptions
 type Test = typesModule.Test
 type NodeProcessMock = typesModule.NodeProcessMock
 
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 local Writeable = RobloxShared.Writeable
 type Writeable = RobloxShared.Writeable
 

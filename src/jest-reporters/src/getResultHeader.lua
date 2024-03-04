@@ -6,28 +6,25 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Boolean = LuauPolyfill.Boolean
 
 local exports = {}
 
-local chalk = require(Packages.ChalkLua)
+local chalk = require("@pkg/@jsdotlua/chalk")
 
 -- ROBLOX deviation: Makes urls clickable in the terminal. Not able to support
--- local terminalLink = require(Packages["terminal-link"])
-local testResultModule = require(Packages.JestTestResult)
+-- local terminalLink = require("@pkg/terminal-link")
+local testResultModule = require("@pkg/@jsdotlua/jest-test-result")
 type TestResult = testResultModule.TestResult
 
-local jestTypesModule = require(Packages.JestTypes)
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_GlobalConfig = jestTypesModule.Config_GlobalConfig
 type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
 
-local formatTime = require(Packages.JestUtil).formatTime
+local formatTime = require("@pkg/@jsdotlua/jest-util").formatTime
 
-local utilsModule = require(CurrentModule.utils)
+local utilsModule = require("./utils")
 local formatTestPath = utilsModule.formatTestPath
 local printDisplayName = utilsModule.printDisplayName
 

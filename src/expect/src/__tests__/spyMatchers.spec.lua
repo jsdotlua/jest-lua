@@ -7,24 +7,21 @@
 -- * LICENSE file in the root directory of this source tree.
 -- */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local describe = JestGlobals.describe
 local beforeAll = JestGlobals.beforeAll
 local expect = JestGlobals.expect
 local test = JestGlobals.test
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
 local Set = LuauPolyfill.Set
 
-local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
-local jestExpect = require(CurrentModule)
+local alignedAnsiStyleSerializer = require("@pkg/@jsdotlua/test-utils").alignedAnsiStyleSerializer
+local jestExpect = require("../init")
 
-local jestMock = require(Packages.Dev.JestMock).ModuleMocker
+local jestMock = require("@pkg/@jsdotlua/jest-mock").ModuleMocker
 
 expect.extend({
 	optionalFn = function(_, fn)

@@ -7,10 +7,9 @@
 --  */
 
 -- ROBLOX deviation START: add export for additional Expect types
-local Packages = script.Parent
-local ExpectModule = require(Packages.Expect)
+local ExpectModule = require("@pkg/@jsdotlua/expect")
 export type MatcherState = ExpectModule.MatcherState
 export type ExpectExtended<E, State = MatcherState> = ExpectModule.ExpectExtended<E, State>
 -- ROBLOX deviation END
 
-return require(script.index)
+return require("./index")

@@ -14,25 +14,21 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local CurrentModule = script.Parent
-local SrcModule = CurrentModule.Parent
-local Packages = SrcModule.Parent.Parent
-
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Circus_TestEntry = typesModule.Circus_TestEntry
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local AssertionError = LuauPolyfill.AssertionError
 
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 local pruneDeps = RobloxShared.pruneDeps
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local formatNodeAssertErrors = require(SrcModule.formatNodeAssertErrors).default
+local formatNodeAssertErrors = require("../formatNodeAssertErrors").default
 
 describe("formatNodeAssertErrors", function()
 	it("should format AssertionError with message", function()

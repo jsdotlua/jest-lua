@@ -7,37 +7,35 @@
  *
  ]]
 
-local Packages = script.Parent.Parent.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 type Array<T> = LuauPolyfill.Array<T>
 
-local RegExp = require(Packages.RegExp)
+local RegExp = require("@pkg/luau-regexp")
 
 local exports = {}
 
 -- ROBLOX deviation START: package not available using local implementation
--- local util = require(Packages.util)
-local format = require(script.Parent.format)
+-- local util = require("@pkg/util")
+local format = require("./format")
 -- ROBLOX deviation END
 
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Global_ArrayTable = typesModule.Global_ArrayTable
 type Global_Col = typesModule.Global_Col
 type Global_Row = typesModule.Global_Row
 type Global_Table = typesModule.Global_Table
-local pretty = require(Packages.PrettyFormat).format
+local pretty = require("@pkg/@jsdotlua/pretty-format").format
 
 -- ROBLOX devation: Circular dependency, inline type
--- local bindModule = require(script.Parent.Parent.bind)
+-- local bindModule = require("../bind")
 -- type EachTests = bindModule.EachTests
 type EachTests = Array<{
 	title: string,
 	arguments: Array<any>,
 }>
-local interpolationModule = require(script.Parent.interpolation)
+local interpolationModule = require("./interpolation")
 type Templates = interpolationModule.Templates
 local interpolateVariables = interpolationModule.interpolateVariables
 

@@ -14,13 +14,10 @@
 ]]
 -- ROBLOX note: no upstream
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent.Parent
+local Writeable = require("../Writeable").Writeable
 
-local Writeable = require(CurrentModule.Parent.Writeable).Writeable
-
-local ModuleMocker = require(Packages.JestMock).ModuleMocker
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local ModuleMocker = require("@pkg/@jsdotlua/jest-mock").ModuleMocker
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it

@@ -6,17 +6,15 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Array<T> = LuauPolyfill.Array<T>
 type Error = LuauPolyfill.Error
 type Record<K, T> = { [K]: T }
 
 -- ROBLOX deviation START: collect-v8-coverage package not available
--- local collect_v8_coverageModule = require(Packages["collect-v8-coverage"])
+-- local collect_v8_coverageModule = require("@pkg/collect-v8-coverage")
 -- type V8Coverage = collect_v8_coverageModule.V8Coverage
--- local istanbul_lib_coverageModule = require(Packages["istanbul-lib-coverage"])
+-- local istanbul_lib_coverageModule = require("@pkg/istanbul-lib-coverage")
 -- type any = istanbul_lib_coverageModule.any
 -- type CoverageMapData = istanbul_lib_coverageModule.CoverageMapData
 type CoverageMap = any
@@ -24,10 +22,10 @@ type CoverageMapData = any
 -- ROBLOX deviation END
 
 -- ROBLOX TODO: once jest-console package is available
--- local consoleModule = require(Packages.JestConsole)
+-- local consoleModule = require("@pkg/@jsdotlua/jest-console")
 type ConsoleBuffer = any -- [[ consoleModule.ConsoleBuffer ]]
 
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_Path = typesModule.Config_Path
 type Config_ProjectConfig = typesModule.Config_ProjectConfig
 type Config_DisplayName = typesModule.Config_DisplayName
@@ -39,12 +37,12 @@ type TestResult_Milliseconds = typesModule.TestResult_Milliseconds
 type TransformTypes_TransformResult = typesModule.TransformTypes_TransformResult
 
 -- ROBLOX TODO: once jest-haste-map package is available
--- local jest_haste_mapModule = require(Packages["jest-haste-map"])
+-- local jest_haste_mapModule = require("@pkg/jest-haste-map")
 type HasteFS = any -- [[ jest_haste_mapModule.FS ]]
 type ModuleMap = any -- [[ jest_haste_mapModule.ModuleMap ]]
 
 -- ROBLOX TODO: once jest-resolve package is available
--- local jest_resolveModule = require(Packages["jest-resolve"])
+-- local jest_resolveModule = require("@pkg/jest-resolve")
 type Resolver = any -- [[ jest_resolveModule.default ]]
 
 export type RuntimeTransformResult = TransformTypes_TransformResult & { wrapperLength: number }

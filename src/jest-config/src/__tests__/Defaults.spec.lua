@@ -6,12 +6,11 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 
-local defaults = require(script.Parent.Parent).defaults
+local defaults = require("..").defaults
 
 it("get configuration defaults", function()
 	expect(defaults).toBeDefined()

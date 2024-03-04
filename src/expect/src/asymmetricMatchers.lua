@@ -8,10 +8,7 @@
 --  *
 --  */
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Error = LuauPolyfill.Error
@@ -20,30 +17,30 @@ local Symbol = LuauPolyfill.Symbol
 local instanceof = LuauPolyfill.instanceof
 
 type Array<T> = LuauPolyfill.Array<T>
-local RegExp = require(Packages.RegExp)
+local RegExp = require("@pkg/luau-regexp")
 type RegExp = RegExp.RegExp
 
-local getType = require(Packages.JestGetType).getType
+local getType = require("@pkg/@jsdotlua/jest-get-type").getType
 
 -- ROBLOX TODO: import jest-matcher-utils when available
 -- import * as matcherUtils from 'jest-matcher-utils';
 local matcherUtils = {} :: any
-local pluralize = require(Packages.JestUtil).pluralize
-local JasmineUtils = require(CurrentModule.jasmineUtils)
+local pluralize = require("@pkg/@jsdotlua/jest-util").pluralize
+local JasmineUtils = require("./jasmineUtils")
 local equals = JasmineUtils.equals
 local hasProperty = JasmineUtils.hasProperty
 local isA = JasmineUtils.isA
 local isUndefined = JasmineUtils.isUndefined
 
-local getState = require(CurrentModule.jestMatchersObject_extracted).getState
-local Types = require(CurrentModule.types)
+local getState = require("./jestMatchersObject_extracted").getState
+local Types = require("./types")
 -- ROBLOX TODO: import correct types
 type AssymetricMatcherInterface = any
 type MatcherState = Types.MatcherState
-local Utils = require(CurrentModule.utils)
+local Utils = require("./utils")
 local iterableEquality = Utils.iterableEquality
 local subsetEquality = Utils.subsetEquality
--- local emptyObject = require(CurrentModule.utils).emptyObject
+-- local emptyObject = require("./utils").emptyObject
 
 local utils = Object.freeze(Object.assign({}, matcherUtils, {
 	iterableEquality = iterableEquality,

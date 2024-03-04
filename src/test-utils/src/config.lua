@@ -5,15 +5,12 @@
 --  * This source code is licensed under the MIT license found in the
 --  * LICENSE file in the root directory of this source tree.
 --  */
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local jestTypesModule = require(Packages.JestTypes)
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 
 type Config_GlobalConfig = jestTypesModule.Config_GlobalConfig
 type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 local inspect = LuauPolyfill.util.inspect

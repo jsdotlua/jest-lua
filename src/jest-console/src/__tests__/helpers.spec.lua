@@ -14,14 +14,12 @@
 ]]
 -- ROBLOX note: no upstream
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local helpersModule = require(CurrentModule.Parent.helpers)
+local helpersModule = require("../helpers")
 local format = helpersModule.format
 local formatWithOptions = helpersModule.formatWithOptions
 

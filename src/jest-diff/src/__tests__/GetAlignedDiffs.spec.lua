@@ -6,16 +6,13 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
 
-local diffStringsUnified = require(CurrentModule.PrintDiffs).diffStringsUnified
+local diffStringsUnified = require("../PrintDiffs").diffStringsUnified
 
 -- 1. Use options to omit line colors.
 local identity = function(s)

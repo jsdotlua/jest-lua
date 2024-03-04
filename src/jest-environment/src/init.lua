@@ -5,8 +5,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  ]]
-local Packages = script.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Array<T> = LuauPolyfill.Array<T>
 type Object = LuauPolyfill.Object
 type Promise<T> = LuauPolyfill.Promise<T>
@@ -22,14 +21,14 @@ type void = nil
 type Context = Object
 -- ROBLOX deviation END
 
-local FakeTimersModule = require(Packages.JestFakeTimers)
+local FakeTimersModule = require("@pkg/@jsdotlua/jest-fake-timers")
 -- ROBLOX deviation START: no Legacy/Modern timers
 -- type LegacyFakeTimers<TimerRef> = FakeTimersModule.LegacyFakeTimers<TimerRef>
 -- type ModernFakeTimers = FakeTimersModule.ModernFakeTimers
 type FakeTimers = FakeTimersModule.FakeTimers
 -- ROBLOX deviation END
 
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 -- ROBLOX deviation START: Import types with namespace
 type Circus_EventHandler = typesModule.Circus_EventHandler
 type Config_Path = typesModule.Config_Path
@@ -37,7 +36,7 @@ type Config_ProjectConfig = typesModule.Config_ProjectConfig
 type Global_Global = typesModule.Global_Global
 -- ROBLOX deviation END
 
-local jestMockModule = require(Packages.JestMock)
+local jestMockModule = require("@pkg/@jsdotlua/jest-mock")
 local JestMockFn = jestMockModule.fn
 local JestMockMocked = jestMockModule.mocked
 -- ROBLOX TODO: spyOn is not implemented

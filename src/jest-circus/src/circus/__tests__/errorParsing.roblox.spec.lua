@@ -1,21 +1,17 @@
-local CurrentModule = script.Parent
-local SrcModule = CurrentModule.Parent
-local Packages = SrcModule.Parent.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Circus_DescribeBlock = typesModule.Circus_DescribeBlock
 
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 local pruneDeps = RobloxShared.pruneDeps
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 
-local utils = require(SrcModule.utils)
+local utils = require("../utils")
 
 type FIXME_ANALYZE = any
 

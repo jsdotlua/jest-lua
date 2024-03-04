@@ -8,8 +8,7 @@
 
 local exports = {}
 
-local CurrentModule = script.Parent
-local CustomConsole = require(CurrentModule.CustomConsole).default
+local CustomConsole = require("./CustomConsole").default
 
 export type NullConsole = {
 	assert: (...any) -> (),

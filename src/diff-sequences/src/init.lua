@@ -7,10 +7,7 @@
 --  * LICENSE file in the root directory of this source tree.
 --  *
 --  */
-local CurrentModule = script
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Number = LuauPolyfill.Number
 type Array<T> = LuauPolyfill.Array<T>
 

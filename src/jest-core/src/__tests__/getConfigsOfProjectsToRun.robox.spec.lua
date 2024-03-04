@@ -1,15 +1,14 @@
 -- ROBLOX NOTE: no upstream
 
-local Packages = script.Parent.Parent.Parent
-local test_utilsModule = require(Packages.Dev.TestUtils)
+local test_utilsModule = require("@pkg/@jsdotlua/test-utils")
 local makeProjectConfig = test_utilsModule.makeProjectConfig
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local expect = JestGlobals.expect
 
-local getConfigsOfProjectsToRun = require(script.Parent.Parent.getConfigsOfProjectsToRun).default
+local getConfigsOfProjectsToRun = require("../getConfigsOfProjectsToRun").default
 
 describe("getConfigsOfProjectsToRun", function()
 	local config1 = makeProjectConfig({

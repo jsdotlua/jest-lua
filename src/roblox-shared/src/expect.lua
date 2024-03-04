@@ -8,12 +8,9 @@
 --  *
 --  */
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
+local getType = require("@pkg/@jsdotlua/jest-get-type").getType
 
-local getType = require(Packages.JestGetType).getType
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local toJSBoolean = LuauPolyfill.Boolean.toJSBoolean
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object

@@ -6,21 +6,20 @@
  * LICENSE file in the root directory of this source tree.
  *
  ]]
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Boolean = LuauPolyfill.Boolean
 local Error = LuauPolyfill.Error
 local Object = LuauPolyfill.Object
 local exports = {}
-local jest_matcher_utilsModule = require(Packages.JestMatcherUtils)
+local jest_matcher_utilsModule = require("@pkg/@jsdotlua/jest-matcher-utils")
 local EXPECTED_COLOR = jest_matcher_utilsModule.EXPECTED_COLOR
 local RECEIVED_COLOR = jest_matcher_utilsModule.RECEIVED_COLOR
 local matcherHint = jest_matcher_utilsModule.matcherHint
 local pluralize = jest_matcher_utilsModule.pluralize
-local jestMatchersObjectModule = require(script.Parent.jestMatchersObject)
+local jestMatchersObjectModule = require("./jestMatchersObject")
 local getState = jestMatchersObjectModule.getState
 local setState = jestMatchersObjectModule.setState
-local typesModule = require(script.Parent.types)
+local typesModule = require("./types")
 type Expect = typesModule.Expect
 type ExpectedAssertionsErrors = typesModule.ExpectedAssertionsErrors
 local function resetAssertionsLocalState()

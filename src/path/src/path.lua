@@ -12,9 +12,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ]]
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Array<T> = LuauPolyfill.Array<T>
 
 local process = {

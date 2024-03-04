@@ -9,28 +9,25 @@
 --  *
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
 local expect = JestGlobals.expect
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 local Symbol = LuauPolyfill.Symbol
 
-local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
+local alignedAnsiStyleSerializer = require("@pkg/@jsdotlua/test-utils").alignedAnsiStyleSerializer
 
-local matcherUtils = require(Packages.JestMatcherUtils)
+local matcherUtils = require("@pkg/@jsdotlua/jest-matcher-utils")
 
-local iterableEquality = require(CurrentModule.utils).iterableEquality
-local subsetEquality = require(CurrentModule.utils).subsetEquality
+local iterableEquality = require("../utils").iterableEquality
+local subsetEquality = require("../utils").subsetEquality
 
-local equals = require(CurrentModule.jasmineUtils).equals
+local equals = require("../jasmineUtils").equals
 
-local jestExpect = require(CurrentModule)
+local jestExpect = require("../init")
 
 beforeAll(function()
 	expect.addSnapshotSerializer(alignedAnsiStyleSerializer)

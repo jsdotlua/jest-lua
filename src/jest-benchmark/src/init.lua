@@ -17,11 +17,11 @@
 
 local exports = {}
 
-exports.benchmark = require(script.benchmark).benchmark
-exports.Profiler = require(script.Profiler)
-exports.Reporter = require(script.reporters.Reporter)
-exports.HeartbeatReporter = require(script.reporters.HeartbeatReporter)
-exports.MetricLogger = require(script.MetricLogger)
-exports.CustomReporters = require(script.CustomReporters)
+exports.benchmark = require("./benchmark").benchmark
+exports.Profiler = require("./Profiler")
+exports.Reporter = require("./reporters/Reporter")
+exports.HeartbeatReporter = require("./reporters/HeartbeatReporter")
+exports.MetricLogger = require("./MetricLogger")
+exports.CustomReporters = require("./CustomReporters")
 
 return exports

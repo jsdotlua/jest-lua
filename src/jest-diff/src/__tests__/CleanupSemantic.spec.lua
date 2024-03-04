@@ -23,14 +23,12 @@
 * limitations under the License.
 --]]
 
-local Packages = script.Parent.Parent.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local CleanupSemantic = require(script.Parent.Parent.CleanupSemantic)
+local CleanupSemantic = require("../CleanupSemantic")
 local Diff = CleanupSemantic.Diff
 local DIFF_DELETE = CleanupSemantic.DIFF_DELETE
 local DIFF_INSERT = CleanupSemantic.DIFF_INSERT

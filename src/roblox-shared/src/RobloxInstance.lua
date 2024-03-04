@@ -13,18 +13,15 @@
 	* See the License for the specific language governing permissions and
 	* limitations under the License.
 ]]
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
+local RobloxApi = require("./RobloxApiDump")
 
-local RobloxApi = require(CurrentModule.RobloxApiDump)
+local getType = require("@pkg/@jsdotlua/jest-get-type").getType
 
-local getType = require(Packages.JestGetType).getType
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 
-local CurrentModuleExpect = require(CurrentModule.expect)
+local CurrentModuleExpect = require("./expect")
 local equals = CurrentModuleExpect.equals
 local isObjectWithKeys = CurrentModuleExpect.isObjectWithKeys
 local hasPropertyInObject = CurrentModuleExpect.hasPropertyInObject

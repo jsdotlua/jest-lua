@@ -21,12 +21,11 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
 ]]
-local Packages = script.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
 type Array<T> = LuauPolyfill.Array<T>
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 type Promise<T> = LuauPolyfill.Promise<T>
 
 local TypeError = Error

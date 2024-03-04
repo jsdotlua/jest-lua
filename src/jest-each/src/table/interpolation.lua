@@ -7,9 +7,7 @@
  *
  ]]
 
-local Packages = script.Parent.Parent.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Object = LuauPolyfill.Object
@@ -20,9 +18,9 @@ type Record<T, U> = { [T]: U }
 
 local exports = {}
 
-local isPrimitive = require(Packages.JestGetType).isPrimitive
+local isPrimitive = require("@pkg/@jsdotlua/jest-get-type").isPrimitive
 
-local pretty = require(Packages.PrettyFormat).format
+local pretty = require("@pkg/@jsdotlua/pretty-format").format
 
 -- ROBLOX deviation START: predefine variables
 local getMatchingKeyPaths, replaceKeyPathWithValue, getPath

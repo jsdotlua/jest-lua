@@ -6,18 +6,23 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local exports = {}
 type ExecaSyncReturnValue = any
 
 type Result = ExecaSyncReturnValue & { status: number, error_: string }
 local function runTest(source: string)
 	local content = ([[
-		return function(script_)
+		return function(__script, __env)
 			-- ROBLOX deviation START
-			local Module = require(script_.Parent.Module)
+			local Module = __env.Module
 			Module.resetModules()
 			local require = Module.requireOverride
-			local LuauPolyfill = require(script_.Parent.Parent.Parent.Parent.LuauPolyfill)
+			local LuauPolyfill = require(
+				__script.Parent.Parent.Parent.Parent.Parent
+					:FindFirstChild("luau-polyfill")
+					:FindFirstChild("src")
+			)
 			local Array = LuauPolyfill.Array
 			local Error = LuauPolyfill.Error
 			local console = LuauPolyfill.console
@@ -37,9 +42,10 @@ local function runTest(source: string)
 			local global = getfenv()
 			-- ROBLOX deviation END
 
-			local circus = require(script_.Parent.Parent)
+			local circus = require(__script.Parent.Parent)
 
 
+			global.console = console
 			global.test = circus.test
 			global.describe = circus.describe
 			global.beforeEach = circus.beforeEach
@@ -47,13 +53,13 @@ local function runTest(source: string)
 			global.beforeAll = circus.beforeAll
 			global.afterAll = circus.afterAll
 
-			local testEventHandler = require(script_.Parent.testEventHandler).default
-			local addEventHandler = require(script_.Parent.Parent.state).addEventHandler
+			local testEventHandler = require(__script.Parent.testEventHandler).default
+			local addEventHandler = require(__script.Parent.Parent.state).addEventHandler
 			addEventHandler(testEventHandler)
 
 			%s
 
-			local run = require(script_.Parent.Parent.run).default
+			local run = require(__script.Parent.Parent.run).default
 
 			run();
 
@@ -67,7 +73,10 @@ local function runTest(source: string)
 
 	local run = getTest()
 
-	local stdout = run(script)
+	local stdout = run(script, {
+		LuauPolyfill = LuauPolyfill,
+		Module = require("./Module"),
+	})
 
 	return {
 		stdout = stdout,

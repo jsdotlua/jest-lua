@@ -14,12 +14,9 @@
 ]]
 -- ROBLOX note: no upstream
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent.Parent
+local pruneDeps = require("../pruneDeps")
 
-local pruneDeps = require(CurrentModule.Parent.pruneDeps)
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 

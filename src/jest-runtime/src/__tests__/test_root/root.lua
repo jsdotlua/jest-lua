@@ -6,8 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  ]]
-local Packages = script.Parent.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 
 local exports = {}
@@ -23,11 +22,11 @@ local exports = {}
 -- 	require_("dog.png")
 -- end
 -- exports.lazyRequire = lazyRequire
--- require(script.Parent.ExclusivelyManualMock)
-require(script.Parent.ManuallyMocked)
--- require(script.Parent.ModuleWithSideEffects)
--- require(script.Parent.ModuleWithState)
-require(script.Parent.RegularModule)
+-- require("./ExclusivelyManualMock")
+require("./ManuallyMocked")
+-- require("./ModuleWithSideEffects")
+-- require("./ModuleWithState")
+require("./RegularModule")
 -- ROBLOX deviation END
 
 exports.jest = jest

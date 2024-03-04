@@ -9,19 +9,17 @@
 
 type Jest_Mock = any
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 
--- local vmModule = require(Packages.vm)
+-- local vmModule = require("@pkg/vm")
 -- local createContext = vmModule.createContext
 -- local runInContext = vmModule.runInContext
 local installCommonGlobals: typeof({} :: any --[[ ROBLOX TODO: Unhandled node for type: TSImportType ]] --[[ import('../installCommonGlobals').default ]])
@@ -38,7 +36,7 @@ describe("installCommonGlobals", function()
 	beforeEach(function()
 		fake = jest.fn() -- @ts-expect-error
 		_G.DTRACE_NET_SERVER_CONNECTION = fake
-		installCommonGlobals = require(script.Parent.Parent.installCommonGlobals)().default
+		installCommonGlobals = require("../installCommonGlobals")().default
 	end)
 
 	it("returns the passed object", function()

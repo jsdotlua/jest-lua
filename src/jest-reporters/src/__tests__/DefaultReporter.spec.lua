@@ -6,20 +6,17 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 
-local ModuleMocker = require(Packages.JestMock).ModuleMocker
+local ModuleMocker = require("@pkg/@jsdotlua/jest-mock").ModuleMocker
 local moduleMocker = ModuleMocker.new()
 
-local DefaultReporter = require(CurrentModule.DefaultReporter).default
-local Writeable = require(Packages.RobloxShared).Writeable
+local DefaultReporter = require("../DefaultReporter").default
+local Writeable = require("@pkg/@jsdotlua/jest-roblox-shared").Writeable
 
 local aggregatedResults = {}
 local options = {}

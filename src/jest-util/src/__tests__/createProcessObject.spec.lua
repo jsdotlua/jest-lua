@@ -7,18 +7,15 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local it = JestGlobals.it --(JestGlobals.it :: any) :: Function
 --[[
 		ROBLOX deviation:
 		skipped whole file as it seems unnecessary in Lua environment
 	]]
--- local LuauPolyfill = require(Packages.LuauPolyfill)
+-- local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- local Array = LuauPolyfill.Array
--- -- local EventEmitter = require(Packages.events).EventEmitter
+-- -- local EventEmitter = require("@pkg/events").EventEmitter
 -- local createProcessObject
 -- local function requireCreateProcessObject()
 -- 	jest:isolateModules(function()

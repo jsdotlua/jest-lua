@@ -6,13 +6,12 @@
  * LICENSE file in the root directory of this source tree.
  *
  ]]
-local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local describe = JestGlobals.describe
 local expect = JestGlobals.expect
 local it = JestGlobals.it
-local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
-local jestExpect = require(script.Parent.Parent)
+local alignedAnsiStyleSerializer = require("@pkg/@jsdotlua/test-utils").alignedAnsiStyleSerializer
+local jestExpect = require("..")
 
 expect.addSnapshotSerializer(alignedAnsiStyleSerializer)
 

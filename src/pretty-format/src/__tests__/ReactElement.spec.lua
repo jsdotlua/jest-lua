@@ -6,16 +6,14 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-local React = require(Packages.Dev.React)
+local React = require("@pkg/@jsdotlua/react")
 
 type ReactElement = React.ReactElement
-local PrettyFormat = require(CurrentModule)
+local PrettyFormat = require("../init")
 local plugins = PrettyFormat.plugins
-local setPrettyPrint = require(script.Parent.setPrettyPrint).default
+local setPrettyPrint = require("./setPrettyPrint").default
 local ReactElement = plugins.ReactElement
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 -- ROBLOX deviation START: importing expectExtended to avoid analyze errors for additional matchers
 local expect = JestGlobals.expectExtended
 -- ROBLOX deviation END

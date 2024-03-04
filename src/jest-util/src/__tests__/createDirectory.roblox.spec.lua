@@ -14,18 +14,14 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local CurrentModule = script.Parent
-local SrcModule = CurrentModule.Parent
-local Packages = SrcModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 local afterEach = JestGlobals.afterEach
 
-local createDirectory = require(SrcModule.createDirectory).default
+local createDirectory = require("../createDirectory").default
 
 describe("createDirectory", function()
 	local mockFileSystem: any

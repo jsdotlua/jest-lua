@@ -6,24 +6,21 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
+local Symbol = require("@pkg/@jsdotlua/luau-polyfill").Symbol
 
-local Symbol = require(Packages.LuauPolyfill).Symbol
-
-local printDiffOrStringify = require(CurrentModule).printDiffOrStringify
+local printDiffOrStringify = require("../init").printDiffOrStringify
 -- ROBLOX deviation: omitted INVERTED_COLOR import because it doesn't have an
 -- actual implementation yet
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
 
-local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
+local alignedAnsiStyleSerializer = require("@pkg/@jsdotlua/test-utils").alignedAnsiStyleSerializer
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Array<T> = LuauPolyfill.Array<T>
 type Map<X, Y> = { [X]: Y }
 

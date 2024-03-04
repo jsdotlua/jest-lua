@@ -17,11 +17,11 @@
 
 local exports = {}
 
-local reporterModule = require(script.Parent.Reporter)
+local reporterModule = require("./Reporter")
 type Reporter<T> = reporterModule.Reporter<T>
 type CollectorFn<T> = reporterModule.CollectorFn<T>
 local initializeReporter = reporterModule.initializeReporter
-local heartbeat = require(script.Parent.Parent.heartbeatModule)
+local heartbeat = require("../heartbeatModule")
 
 local function initializeHeartbeatReporter(metricName: string, collectorFn: CollectorFn<number>): Reporter<number>
 	local reporter = initializeReporter(metricName, collectorFn)

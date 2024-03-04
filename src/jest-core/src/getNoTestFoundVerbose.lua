@@ -6,8 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Object = LuauPolyfill.Object
@@ -16,11 +15,11 @@ type Record<K, T> = { [K]: T }
 
 local exports = {}
 
-local chalk = require(Packages.ChalkLua)
-local jestTypesModule = require(Packages.JestTypes)
+local chalk = require("@pkg/@jsdotlua/chalk")
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_GlobalConfig = jestTypesModule.Config_GlobalConfig
-local pluralize = require(script.Parent.pluralize).default
-local typesModule = require(script.Parent.types)
+local pluralize = require("./pluralize").default
+local typesModule = require("./types")
 type Stats = typesModule.Stats
 type TestRunData = typesModule.TestRunData
 

@@ -7,14 +7,11 @@
 --  *
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local setTimeout = LuauPolyfill.setTimeout
 local clearTimeout = LuauPolyfill.clearTimeout
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe

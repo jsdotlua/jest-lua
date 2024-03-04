@@ -7,12 +7,10 @@
 --  *
 --  */
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 local Array = LuauPolyfill.Array
-local Types = require(CurrentModule.Types)
+local Types = require("./Types")
 type CompareKeys = Types.CompareKeys
 type Config = Types.Config
 type Refs = Types.Refs

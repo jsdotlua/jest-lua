@@ -6,31 +6,28 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Error = LuauPolyfill.Error
 local String = LuauPolyfill.String
 type Array<T> = LuauPolyfill.Array<T>
 type Error = LuauPolyfill.Error
-local RegExp = require(Packages.RegExp)
+local RegExp = require("@pkg/luau-regexp")
 
 local exports = {}
 
-local chalk = require(Packages.ChalkLua)
-local jestTypesModule = require(Packages.JestTypes)
+local chalk = require("@pkg/@jsdotlua/chalk")
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_Path = jestTypesModule.Config_Path
 type TestResult_SerializableError = jestTypesModule.TestResult_SerializableError
 type TestResult_AssertionResult = jestTypesModule.TestResult_AssertionResult
-local prettyFormat = require(Packages.PrettyFormat).format
+local prettyFormat = require("@pkg/@jsdotlua/pretty-format").format
 
 type Path = Config_Path
 
 -- ROBLOX deviation START: additional dependencies
-local normalizePromiseError = require(Packages.RobloxShared).normalizePromiseError
+local normalizePromiseError = require("@pkg/@jsdotlua/jest-roblox-shared").normalizePromiseError
 -- ROBLOX deviation END
 
 -- ROBLOX deviation: forward declarations

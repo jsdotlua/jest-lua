@@ -5,11 +5,10 @@
 	Copyright (c) Ika <ikatyang@gmail.com> (https://github.com/ikatyang)
 ]]
 
-local Packages = script.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Symbol = LuauPolyfill.Symbol
 
-local always = require(script.always)
+local always = require("./always")
 
 local exports = {}
 

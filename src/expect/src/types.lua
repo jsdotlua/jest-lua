@@ -7,12 +7,9 @@
 --  *
 --  */
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local RegExp = require(Packages.RegExp)
+local RegExp = require("@pkg/luau-regexp")
 type RegExp = RegExp.RegExp
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Error = LuauPolyfill.Error
 type Array<T> = LuauPolyfill.Array<T>
 type Record<K, T> = { [K]: T }
@@ -21,7 +18,7 @@ type Promise<T> = LuauPolyfill.Promise<T>
 type PromiseLike<T> = LuauPolyfill.PromiseLike<T>
 type Function = (...any) -> any
 type Object = LuauPolyfill.Object
-local JestMatcherUtils = require(Packages.JestMatcherUtils)
+local JestMatcherUtils = require("@pkg/@jsdotlua/jest-matcher-utils")
 
 export type SyncExpectationResult = {
 	pass: boolean,

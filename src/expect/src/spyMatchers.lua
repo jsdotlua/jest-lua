@@ -7,20 +7,17 @@
 -- * LICENSE file in the root directory of this source tree.
 -- */
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
 local Number = LuauPolyfill.Number
 local String = LuauPolyfill.String
 local Symbol = LuauPolyfill.Symbol
 
-local getType = require(Packages.JestGetType).getType
-local isPrimitive = require(Packages.JestGetType).isPrimitive
+local getType = require("@pkg/@jsdotlua/jest-get-type").getType
+local isPrimitive = require("@pkg/@jsdotlua/jest-get-type").isPrimitive
 
-local JestMatcherUtils = require(Packages.JestMatcherUtils)
+local JestMatcherUtils = require("@pkg/@jsdotlua/jest-matcher-utils")
 local DIM_COLOR = JestMatcherUtils.DIM_COLOR
 local EXPECTED_COLOR = JestMatcherUtils.EXPECTED_COLOR
 local RECEIVED_COLOR = JestMatcherUtils.RECEIVED_COLOR
@@ -43,10 +40,10 @@ type SyncExpectationResult = (any, any, any) -> {
 	message: () -> string,
 }
 
-local jasmineUtils = require(CurrentModule.jasmineUtils)
+local jasmineUtils = require("./jasmineUtils")
 local equals = jasmineUtils.equals
 
-local utils = require(CurrentModule.utils)
+local utils = require("./utils")
 local iterableEquality = utils.iterableEquality
 
 local isExpand, printExpectedArgs, printReceivedArgs, printCommon, isEqualValue, isEqualCall, isEqualReturn, countReturns, printNumberOfReturns, getRightAlignedPrinter, printReceivedCallsNegative, printExpectedReceivedCallsPositive, printDiffCall, isLineDiffableCall, isLineDiffableArg, printResult, printReceivedResults, isMock, isSpy, ensureMockOrSpy, ensureMock

@@ -7,9 +7,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 
 local exports = {}
 

@@ -6,34 +6,33 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local instanceof = LuauPolyfill.instanceof
 type Array<T> = LuauPolyfill.Array<T>
 type Error = LuauPolyfill.Error
 type Promise<T> = LuauPolyfill.Promise<T>
 type Set<T> = LuauPolyfill.Set<T>
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 type Function = (...any) -> ...any
 
 local exports = {}
 
 --[[ eslint-disable local/ban-types-eventually ]]
 
-local reportersModule = require(Packages.JestReporters)
+local reportersModule = require("@pkg/@jsdotlua/jest-reporters")
 type Reporter = reportersModule.Reporter
 type ReporterOnStartOptions = reportersModule.ReporterOnStartOptions
-local test_resultModule = require(Packages.JestTestResult)
+local test_resultModule = require("@pkg/@jsdotlua/jest-test-result")
 type AggregatedResult = test_resultModule.AggregatedResult
 type Test = test_resultModule.Test
 type TestCaseResult = test_resultModule.TestCaseResult
 type TestResult = test_resultModule.TestResult
-local jest_runtimeModule = require(Packages.JestRuntime)
+local jest_runtimeModule = require("@pkg/@jsdotlua/jest-runtime")
 type Context = jest_runtimeModule.Context
 
 -- ROBLOX deviation START: add additional imports and types
-local types = require(script.Parent.types)
+local types = require("./types")
 type ReporterConstructor = types.ReporterConstructor
 -- ROBLOX deviation END
 

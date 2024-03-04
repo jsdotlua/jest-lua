@@ -4,11 +4,7 @@
 
 	Copyright (c) GraphQL Contributors
 ]]
-local srcWorkspace = script.Parent
-local rootWorkspace = srcWorkspace.Parent
-local Packages = rootWorkspace
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local String = LuauPolyfill.String
 type Array<T> = LuauPolyfill.Array<T>

@@ -1,8 +1,5 @@
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local path = require(CurrentModule).path
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local path = require("../init").path
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it

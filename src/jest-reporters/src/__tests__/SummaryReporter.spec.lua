@@ -6,21 +6,18 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 local Set = LuauPolyfill.Set
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 local afterEach = JestGlobals.afterEach
 
-local Writeable = require(Packages.RobloxShared).Writeable
+local Writeable = require("@pkg/@jsdotlua/jest-roblox-shared").Writeable
 
 local SummaryReporter
 
@@ -36,7 +33,7 @@ local globalConfig = { rootDir = "root", watch = false }
 local results = {}
 
 local function requireReporter()
-	SummaryReporter = require(CurrentModule.SummaryReporter).default
+	SummaryReporter = require("../SummaryReporter").default
 end
 
 beforeEach(function()
@@ -49,7 +46,7 @@ beforeEach(function()
 		end,
 	})
 
-	local utilsModule = require(CurrentModule.utils)
+	local utilsModule = require("../utils")
 	local actual = getfenv(utilsModule.getSummary)
 	originalDateTime = actual.DateTime
 	actual.DateTime = {
@@ -66,7 +63,7 @@ afterEach(function()
 	results = {}
 	process.env = env
 	process.stderr.write = write
-	local utilsModule = require(CurrentModule.utils)
+	local utilsModule = require("../utils")
 	local actual = getfenv(utilsModule.getSummary)
 	actual.DateTime = originalDateTime
 	setfenv(utilsModule.getSummary, actual)

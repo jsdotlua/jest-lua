@@ -6,8 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 local Set = LuauPolyfill.Set
@@ -15,18 +14,18 @@ local console = LuauPolyfill.console
 type Array<T> = LuauPolyfill.Array<T>
 type Object = LuauPolyfill.Object
 type Promise<T> = LuauPolyfill.Promise<T>
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 
 local exports = {}
 
 -- ROBLOX deviation START: unused
--- local path = require(Packages.path)
--- local chalk = require(Packages.ChalkLua)
--- local exit = require(Packages.exit)
--- local fs = require(Packages["graceful-fs"])
+-- local path = require("@pkg/@jsdotlua/path")
+-- local chalk = require("@pkg/@jsdotlua/chalk")
+-- local exit = require("@pkg/exit")
+-- local fs = require("@pkg/graceful-fs")
 -- ROBLOX deviation END
-local CustomConsole = require(Packages.JestConsole).CustomConsole
-local test_resultModule = require(Packages.JestTestResult)
+local CustomConsole = require("@pkg/@jsdotlua/jest-console").CustomConsole
+local test_resultModule = require("@pkg/@jsdotlua/jest-test-result")
 type AggregatedResult = test_resultModule.AggregatedResult
 type Test = test_resultModule.Test
 type TestContext = test_resultModule.TestContext
@@ -39,55 +38,55 @@ local makeEmptyAggregatedTestResult = test_resultModule.makeEmptyAggregatedTestR
 -- local test_sequencerModule = require(Packages["@jest"]["test-sequencer"])
 -- type TestSequencer = test_sequencerModule.default
 -- ROBLOX deviation END
-local jestTypesModule = require(Packages.JestTypes)
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_GlobalConfig = jestTypesModule.Config_GlobalConfig
 type Config_Path = jestTypesModule.Config_Path
 -- ROBLOX deviation START: changed files not supported
--- local jest_changed_filesModule = require(Packages["jest-changed-files"])
+-- local jest_changed_filesModule = require("@pkg/jest-changed-files")
 -- type ChangedFiles = jest_changed_filesModule.ChangedFiles
 type ChangedFiles = nil
 -- type ChangedFilesPromise = jest_changed_filesModule.ChangedFilesPromise
 type ChangedFilesPromise = Promise<ChangedFiles>
--- local Resolver = require(Packages["jest-resolve"]).default
+-- local Resolver = require("@pkg/jest-resolve").default
 -- ROBLOX deviation END
-local jest_runtimeModule = require(Packages.JestRuntime)
+local jest_runtimeModule = require("@pkg/@jsdotlua/jest-runtime")
 type Context = jest_runtimeModule.Context
 -- ROBLOX deviation START:
--- local jest_utilModule = require(Packages.JestUtil)
+-- local jest_utilModule = require("@pkg/@jsdotlua/jest-util")
 -- local requireOrImportModule = jest_utilModule.requireOrImportModule
 -- local tryRealpath = jest_utilModule.tryRealpath
--- local jest_watcherModule = require(Packages["jest-watcher"])
+-- local jest_watcherModule = require("@pkg/jest-watcher")
 -- local JestHook = jest_watcherModule.JestHook
 -- local JestHookEmitter = jest_watcherModule.JestHookEmitter
 type JestHookEmitter = nil
--- local FailedTestsCacheModule = require(script.Parent.FailedTestsCache)
+-- local FailedTestsCacheModule = require("./FailedTestsCache")
 -- type FailedTestsCache = FailedTestsCacheModule.FailedTestsCache
 type FailedTestsCache = nil
 -- ROBLOX deviation END
-local searchSourceModule = require(script.Parent.SearchSource)
+local searchSourceModule = require("./SearchSource")
 local SearchSource = searchSourceModule.default
 type SearchSource = searchSourceModule.SearchSource
-local TestSchedulerModule = require(script.Parent.TestScheduler)
+local TestSchedulerModule = require("./TestScheduler")
 type TestSchedulerContext = TestSchedulerModule.TestSchedulerContext
 local createTestScheduler = TestSchedulerModule.createTestScheduler
-local TestWatcherModule = require(script.Parent.TestWatcher)
+local TestWatcherModule = require("./TestWatcher")
 type TestWatcher = TestWatcherModule.TestWatcher
 -- ROBLOX deviation START: collectHandles not supported
--- local collectHandlesModule = require(script.Parent.collectHandles)
+-- local collectHandlesModule = require("./collectHandles")
 -- local collectNodeHandles = collectHandlesModule.default
 -- type HandleCollectionResult = collectHandlesModule.HandleCollectionResult
 type HandleCollectionResult = nil
 -- ROBLOX deviation END
-local getNoTestsFoundMessage = require(script.Parent.getNoTestsFoundMessage).default
+local getNoTestsFoundMessage = require("./getNoTestsFoundMessage").default
 -- ROBLOX deviation START: no global hooks supported yet
--- local runGlobalHook = require(script.Parent.runGlobalHook).default
+-- local runGlobalHook = require("./runGlobalHook").default
 -- ROBLOX deviation END
-local typesModule = require(script.Parent.types)
+local typesModule = require("./types")
 type Filter = typesModule.Filter
 type TestRunData = typesModule.TestRunData
 
 -- ROBLOX deviation START: added missing variables to limit nr deviations
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 local nodeUtils = RobloxShared.nodeUtils
 local process = nodeUtils.process
 local exit = nodeUtils.exit

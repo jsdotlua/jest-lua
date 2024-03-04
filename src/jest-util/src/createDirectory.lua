@@ -7,16 +7,14 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
 local exports = {}
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 
 -- ROBLOX deviation: using FileSystemService instead of fs
-local getFileSystemService = require(CurrentModule.getFileSystemService)
-local typesModule = require(Packages.JestTypes)
+local getFileSystemService = require("./getFileSystemService")
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_Path = typesModule.Config_Path
 
 local function createDirectory(path: Config_Path): ()

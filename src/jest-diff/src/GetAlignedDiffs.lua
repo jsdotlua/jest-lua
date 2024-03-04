@@ -6,21 +6,18 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 type Array<T> = LuauPolyfill.Array<T>
 
-local CleanupSemantic = require(CurrentModule.CleanupSemantic)
+local CleanupSemantic = require("./CleanupSemantic")
 local DIFF_DELETE = CleanupSemantic.DIFF_DELETE
 local DIFF_EQUAL = CleanupSemantic.DIFF_EQUAL
 local DIFF_INSERT = CleanupSemantic.DIFF_INSERT
 local Diff = CleanupSemantic.Diff
 type Diff = CleanupSemantic.Diff
 
-local Types = require(CurrentModule.types)
+local Types = require("./types")
 type DiffOptionsColor = Types.DiffOptionsColor
 
 -- Given change op and array of diffs, return concatenated string:

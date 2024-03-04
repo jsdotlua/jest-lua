@@ -6,10 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local String = LuauPolyfill.String
@@ -21,24 +18,24 @@ type Array<T> = LuauPolyfill.Array<T>
 
 local exports = {}
 
-local chalk = require(Packages.ChalkLua)
+local chalk = require("@pkg/@jsdotlua/chalk")
 
 local stringLength = utf8.len
 
-local testResultModule = require(Packages.JestTestResult)
+local testResultModule = require("@pkg/@jsdotlua/jest-test-result")
 type AggregatedResult = testResultModule.AggregatedResult
 type TestCaseResult = testResultModule.TestCaseResult
 type TestResult = testResultModule.TestResult
 
-local jestTypesModule = require(Packages.JestTypes)
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_Path = jestTypesModule.Config_Path
 type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
 
-local typesModule = require(CurrentModule.types)
+local typesModule = require("./types")
 type ReporterOnStartOptions = typesModule.ReporterOnStartOptions
 type Test = typesModule.Test
 
-local utilsModule = require(CurrentModule.utils)
+local utilsModule = require("./utils")
 local getSummary = utilsModule.getSummary
 local printDisplayName = utilsModule.printDisplayName
 local trimAndFormatPath = utilsModule.trimAndFormatPath

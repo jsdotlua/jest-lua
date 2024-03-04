@@ -6,29 +6,26 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 type Array<T> = LuauPolyfill.Array<T>
 
-local CleanupSemantic = require(CurrentModule.CleanupSemantic)
+local CleanupSemantic = require("./CleanupSemantic")
 local DIFF_EQUAL = CleanupSemantic.DIFF_EQUAL
 local cleanupSemantic = CleanupSemantic.cleanupSemantic
 type Diff = CleanupSemantic.Diff
 
-local DiffLines = require(CurrentModule.DiffLines)
+local DiffLines = require("./DiffLines")
 local diffLinesUnified = DiffLines.diffLinesUnified
 local printDiffLines = DiffLines.printDiffLines
 
-local diffStrings = require(CurrentModule.DiffStrings)
+local diffStrings = require("./DiffStrings")
 
-local getAlignedDiffs = require(CurrentModule.GetAlignedDiffs)
+local getAlignedDiffs = require("./GetAlignedDiffs")
 
-local normalizeDiffOptions = require(CurrentModule.NormalizeDiffOptions).normalizeDiffOptions
+local normalizeDiffOptions = require("./NormalizeDiffOptions").normalizeDiffOptions
 
-local Types = require(CurrentModule.types)
+local Types = require("./types")
 type DiffOptions = Types.DiffOptions
 
 local diffStringsRaw

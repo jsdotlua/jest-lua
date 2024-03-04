@@ -6,17 +6,14 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Symbol = LuauPolyfill.Symbol
 
-local Collections = require(CurrentModule.Collections)
+local Collections = require("../Collections")
 local printListItems = Collections.printListItems
 local printObjectProperties = Collections.printTableEntries
 
-local Types = require(CurrentModule.Types)
+local Types = require("../Types")
 type Config = Types.Config
 type Refs = Types.Refs
 type Printer = Types.Printer

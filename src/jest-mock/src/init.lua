@@ -13,10 +13,7 @@
 -- a need for more functionality, we will revisit this file and continue the translation
 -- efforts.
 
-local CurrentModule = script
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Set = LuauPolyfill.Set
 local Symbol = LuauPolyfill.Symbol

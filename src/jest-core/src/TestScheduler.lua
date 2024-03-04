@@ -6,8 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Error = LuauPolyfill.Error
@@ -17,16 +16,16 @@ local WeakMap = LuauPolyfill.WeakMap
 type Array<T> = LuauPolyfill.Array<T>
 type Promise<T> = LuauPolyfill.Promise<T>
 type Set<T> = LuauPolyfill.Set<T>
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 type Function = (...any) -> ...any
 type Record<K, T> = { [K]: T }
 
 local exports = {}
 
 --[[ eslint-disable local/ban-types-eventually ]]
-local chalk = require(Packages.ChalkLua)
-local exit = require(Packages.RobloxShared).nodeUtils.exit
-local reportersModule = require(Packages.JestReporters)
+local chalk = require("@pkg/@jsdotlua/chalk")
+local exit = require("@pkg/@jsdotlua/jest-roblox-shared").nodeUtils.exit
+local reportersModule = require("@pkg/@jsdotlua/jest-reporters")
 -- ROBLOX deviation START: not needed
 -- local CoverageReporter = reportersModule.CoverageReporter
 -- ROBLOX deviation END
@@ -39,7 +38,7 @@ type Reporter = reportersModule.Reporter
 type ReporterContext = reportersModule.ReporterContext
 local SummaryReporter = reportersModule.SummaryReporter
 local VerboseReporter = reportersModule.VerboseReporter
-local test_resultModule = require(Packages.JestTestResult)
+local test_resultModule = require("@pkg/@jsdotlua/jest-test-result")
 type AggregatedResult = test_resultModule.AggregatedResult
 type SerializableError = test_resultModule.SerializableError
 type Test = test_resultModule.Test
@@ -50,31 +49,31 @@ local makeEmptyAggregatedTestResult = test_resultModule.makeEmptyAggregatedTestR
 -- ROBLOX deviation START: not needed
 -- local createScriptTransformer = require(Packages["@jest"].transform).createScriptTransformer
 -- ROBLOX deviation END
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_GlobalConfig = typesModule.Config_GlobalConfig
 type Config_Path = typesModule.Config_Path
 type Config_ReporterConfig = typesModule.Config_ReporterConfig
-local formatExecError = require(Packages.JestMessageUtil).formatExecError
-local jest_runnerModule = require(Packages.JestRunner)
+local formatExecError = require("@pkg/@jsdotlua/jest-message-util").formatExecError
+local jest_runnerModule = require("@pkg/@jsdotlua/jest-runner")
 type TestRunner = jest_runnerModule.TestRunner
 type TestRunnerContext = jest_runnerModule.TestRunnerContext
-local jest_runtimeModule = require(Packages.JestRuntime)
+local jest_runtimeModule = require("@pkg/@jsdotlua/jest-runtime")
 type Context = jest_runtimeModule.Context
 -- ROBLOX deviation START: snapshot not used yet
--- local snapshot = require(Packages.JestSnapshot)
+-- local snapshot = require("@pkg/@jsdotlua/jest-snapshot")
 -- ROBLOX deviation END
 -- ROBLOX deviation START: not needed
--- local requireOrImportModule = require(Packages.JestUtil).requireOrImportModule
+-- local requireOrImportModule = require("@pkg/@jsdotlua/jest-util").requireOrImportModule
 -- ROBLOX deviation END
-local ReporterDispatcherModule = require(script.Parent.ReporterDispatcher)
+local ReporterDispatcherModule = require("./ReporterDispatcher")
 local ReporterDispatcher = ReporterDispatcherModule.default
 type ReporterDispatcher = ReporterDispatcherModule.ReporterDispatcher
-local TestWatcherModule = require(script.Parent.TestWatcher)
+local TestWatcherModule = require("./TestWatcher")
 type TestWatcher = TestWatcherModule.TestWatcher
-local shouldRunInBand = require(script.Parent.testSchedulerHelper).shouldRunInBand
+local shouldRunInBand = require("./testSchedulerHelper").shouldRunInBand
 
 -- ROBLOX deviation START: add additional imports and types
-local types = require(script.Parent.types)
+local types = require("./types")
 type ReporterConstructor = types.ReporterConstructor
 -- ROBLOX deviation END
 
@@ -308,7 +307,7 @@ function TestScheduler:scheduleTests(tests: Array<Test>, watcher: TestWatcher): 
 					-- ROBLOX deviation START: use regular require to load TestRunner
 					-- local transformer = createScriptTransformer(config):expect()
 					-- local Runner: TestRunner = transformer:requireAndTranspileModule(config.runner):expect()
-					local Runner: TestRunner = require(Packages.JestRunner).default
+					local Runner: TestRunner = require("@pkg/@jsdotlua/jest-runner").default
 					-- ROBLOX deviation END
 					local runner = Runner.new(self._globalConfig, {
 						changedFiles = self._context.changedFiles,

@@ -6,24 +6,22 @@
 --  * LICENSE file in the root directory of this source tree.
 --  *
 --  */
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Symbol = LuauPolyfill.Symbol
 local Object = LuauPolyfill.Object
 local Error = LuauPolyfill.Error
 type Partial<T> = any
 
-local getType = require(Packages.JestGetType).getType
-local AsymmetricMatcher = require(CurrentModule.asymmetricMatchers).AsymmetricMatcher
+local getType = require("@pkg/@jsdotlua/jest-get-type").getType
+local AsymmetricMatcher = require("./asymmetricMatchers").AsymmetricMatcher
 
-local Types = require(CurrentModule.types)
+local Types = require("./types")
 type Expect = Types.Expect
 type MatcherState = Types.MatcherState
 type MatchersObject = Types.MatchersObject
 
-local jestMatchersObject_extracted = require(CurrentModule.jestMatchersObject_extracted)
+local jestMatchersObject_extracted = require("./jestMatchersObject_extracted")
 -- Global matchers object holds the list of available matchers and
 -- the state, that can hold matcher specific values that change over time.
 -- ROBLOX deviation: extracted JEST_MATCHERS_OBJECT to jestMatchersObject_extracted to avoid circular dependency

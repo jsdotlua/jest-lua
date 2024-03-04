@@ -8,21 +8,18 @@
 --  *
 --  */
 
-local CurrentModule = script
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Boolean = LuauPolyfill.Boolean
 local Error = LuauPolyfill.Error
 local Object = LuauPolyfill.Object
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 type Array<T> = LuauPolyfill.Array<T>
 type Error = LuauPolyfill.Error
 type Promise<T> = LuauPolyfill.Promise<T>
 
-local matcherUtils = require(Packages.JestMatcherUtils)
+local matcherUtils = require("@pkg/@jsdotlua/jest-matcher-utils")
 
-local AsymmetricMatchers = require(CurrentModule.asymmetricMatchers)
+local AsymmetricMatchers = require("./asymmetricMatchers")
 local any = AsymmetricMatchers.any
 local anything = AsymmetricMatchers.anything
 local arrayContaining = AsymmetricMatchers.arrayContaining
@@ -36,23 +33,23 @@ local stringContaining = AsymmetricMatchers.stringContaining
 local stringMatching = AsymmetricMatchers.stringMatching
 local stringNotContaining = AsymmetricMatchers.stringNotContaining
 local stringNotMatching = AsymmetricMatchers.stringNotMatching
-local extractExpectedAssertionsErrors = require(CurrentModule.extractExpectedAssertionsErrors).default
-local JasmineUtils = require(CurrentModule.jasmineUtils)
+local extractExpectedAssertionsErrors = require("./extractExpectedAssertionsErrors").default
+local JasmineUtils = require("./jasmineUtils")
 local equals = JasmineUtils.equals
 
-local JestMatchersObject = require(CurrentModule.jestMatchersObject)
+local JestMatchersObject = require("./jestMatchersObject")
 --local INTERNAL_MATCHER_FLAG = JestMatchersObject.INTERNAL_MATCHER_FLAG
 local getMatchers = JestMatchersObject.getMatchers
 local getState = JestMatchersObject.getState
 local setMatchers = JestMatchersObject.setMatchers
 local setState = JestMatchersObject.setState
-local matchers = require(CurrentModule.matchers)
-local spyMatchers = require(CurrentModule.spyMatchers)
-local toThrowMatchersModule = require(CurrentModule.toThrowMatchers)
+local matchers = require("./matchers")
+local spyMatchers = require("./spyMatchers")
+local toThrowMatchersModule = require("./toThrowMatchers")
 local toThrowMatchers = toThrowMatchersModule.matchers
 local createThrowMatcher = toThrowMatchersModule.createMatcher
 
-local Types = require(CurrentModule.types)
+local Types = require("./types")
 type AsyncExpectationResult = Types.AsyncExpectationResult
 export type Expect = Types.Expect_
 export type ExpectObj = Types.ExpectObj<any>
@@ -69,7 +66,7 @@ type ThrowingMatcherFn = Types.ThrowingMatcherFn
 export type ExpectExtended<E, State = JestMatcherState> = Types.ExpectExtended<E, State>
 -- ROBLOX deviation END
 
-local utils = require(CurrentModule.utils)
+local utils = require("./utils")
 local iterableEquality = utils.iterableEquality
 local subsetEquality = utils.subsetEquality
 -- ROBLOX deviation: Roblox Instance matchers
@@ -414,7 +411,7 @@ setMatchers(spyMatchers, true, Expect)
 setMatchers(toThrowMatchers, true, Expect)
 
 -- ROBLOX deviation START: defining addSnapshotSerializer override here
-local plugins = require(Packages.JestSnapshot).plugins
+local plugins = require("@pkg/@jsdotlua/jest-snapshot").plugins
 Expect.addSnapshotSerializer = plugins.addSerializer
 -- ROBLOX deviation END
 Expect.assertions = assertions
@@ -427,7 +424,7 @@ Expect.extractExpectedAssertionsErrors = extractExpectedAssertionsErrors
 -- appropriate locations
 -- ROBLOX deviation START: for now we extend the snapshot matchers in the Expect file instead
 -- of jest-jasmine2/jestExpect
-local JestSnapshot = require(Packages.JestSnapshot)
+local JestSnapshot = require("@pkg/@jsdotlua/jest-snapshot")
 local toMatchSnapshot = JestSnapshot.toMatchSnapshot
 local toThrowErrorMatchingSnapshot = JestSnapshot.toThrowErrorMatchingSnapshot
 setMatchers({

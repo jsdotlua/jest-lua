@@ -7,11 +7,8 @@
 --  *
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local ModuleMocker = require(CurrentModule).ModuleMocker
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local ModuleMocker = require("../init").ModuleMocker
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it

@@ -6,19 +6,16 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local DIFF_DELETE = require(CurrentModule).DIFF_DELETE
-local DIFF_EQUAL = require(CurrentModule).DIFF_EQUAL
-local DIFF_INSERT = require(CurrentModule).DIFF_INSERT
-local Diff = require(CurrentModule).Diff
-local diffStringsRaw = require(CurrentModule).diffStringsRaw
+local DIFF_DELETE = require("../init").DIFF_DELETE
+local DIFF_EQUAL = require("../init").DIFF_EQUAL
+local DIFF_INSERT = require("../init").DIFF_INSERT
+local Diff = require("../init").Diff
+local diffStringsRaw = require("../init").diffStringsRaw
 
 describe("diffStringsRaw", function()
 	it("one-line with cleanup", function()

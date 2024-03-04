@@ -6,10 +6,9 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Boolean = LuauPolyfill.Boolean
-local RegExp = require(Packages.RegExp)
+local RegExp = require("@pkg/luau-regexp")
 
 local exports = {}
 

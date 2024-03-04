@@ -6,9 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  *
  ]]
-local Packages = script.Parent.Parent.Parent
-local Promise = require(Packages.Promise)
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local Promise = require("@pkg/@jsdotlua/promise")
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 -- ROBLOX deviation START: not used
 -- local beforeEach = JestGlobals.beforeEach
 -- ROBLOX deviation END
@@ -17,7 +16,7 @@ local expect = JestGlobals.expect
 -- local jest = JestGlobals.jest
 -- ROBLOX deviation END
 local test = JestGlobals.test
-local jestReportersModule = require(Packages.JestReporters)
+local jestReportersModule = require("@pkg/@jsdotlua/jest-reporters")
 -- ROBLOX deviation START: not used
 -- local CoverageReporter = jestReportersModule.CoverageReporter
 -- local DefaultReporter = jestReportersModule.DefaultReporter
@@ -32,15 +31,15 @@ local SummaryReporter = jestReportersModule.SummaryReporter
 -- ROBLOX deviation START: resolve import name
 -- local jestTestUtilsModule = require(Packages["@jest"]["test-utils"])
 -- local makeGlobalConfig = jestTestUtilsModule.makeGlobalConfig
-local jestTestUtilsModule = require(Packages.Dev.TestUtils)
+local jestTestUtilsModule = require("@pkg/@jsdotlua/test-utils")
 local makeGlobalConfig = jestTestUtilsModule.makeGlobalConfig
 -- ROBLOX deviation END
 -- ROBLOX deviation START: not used
 -- local makeProjectConfig = require(Packages["@jest"]["test-utils"]).makeProjectConfig
 -- ROBLOX deviation END
-local createTestScheduler = require(script.Parent.Parent.TestScheduler).createTestScheduler
+local createTestScheduler = require("../TestScheduler").createTestScheduler
 -- ROBLOX deviation START: not used
--- local testSchedulerHelper = require(script.Parent.Parent.testSchedulerHelper)
+-- local testSchedulerHelper = require("../testSchedulerHelper")
 -- jest.mock("@jest/reporters")
 -- local mockSerialRunner = { isSerial = true, runTests = jest.fn() }
 -- jest.mock("jest-runner-serial", function()

@@ -19,12 +19,9 @@
 -- WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -- */
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 
-local RobloxShared = require(Packages.RobloxShared)
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Array<T> = LuauPolyfill.Array<T>
 -- ROBLOX deviation: Tester type defined in file since type imports are not yet
 -- supported

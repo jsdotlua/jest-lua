@@ -6,9 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent.Parent.Parent
-local Packages = CurrentModule.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 type Array<T> = LuauPolyfill.Array<T>
@@ -25,11 +23,11 @@ local printElement
 local printElementAsLeaf
 -- ROBLOX deviation END
 
-local typesModule = require(script.Parent.Parent.Parent.Types)
+local typesModule = require("../../Types")
 type Config = typesModule.Config
 type Printer = typesModule.Printer
 type Refs = typesModule.Refs
-local escapeHTML = require(script.Parent.escapeHTML).default
+local escapeHTML = require("./escapeHTML").default
 
 -- ROBLOX deviation START: adding default colors since we don't currently support colors
 type Colors = typesModule.Colors

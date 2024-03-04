@@ -6,17 +6,15 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Symbol = LuauPolyfill.Symbol
 
 local exports = {}
 
 -- Used as type
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Circus_State = typesModule.Circus_State
-local expect = require(Packages.Expect)
+local expect = require("@pkg/@jsdotlua/expect")
 
 local STATE_SYM = (Symbol("JEST_STATE_SYMBOL") :: unknown) :: "STATE_SYM_SYMBOL"
 exports.STATE_SYM = STATE_SYM

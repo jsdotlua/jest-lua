@@ -27,10 +27,7 @@
 -- WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -- */
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 
 --[[
@@ -38,8 +35,8 @@ local Array = LuauPolyfill.Array
 	We can't define this Spy type because it has a keyword "and" as one of
 	its table keys
 ]]
-local CallTracker = require(CurrentModule.CallTracker)
-local SpyStrategy = require(CurrentModule.SpyStrategy)
+local CallTracker = require("./CallTracker")
+local SpyStrategy = require("./SpyStrategy")
 
 -- ROBLOX deviation: we don't define a type like Fn
 

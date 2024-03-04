@@ -6,33 +6,32 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 type Promise<T> = LuauPolyfill.Promise<T>
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 
 local exports = {}
 
 -- ROBLOX deviation START: not needed
--- local path = require(Packages.path)
--- local fs = require(Packages["graceful-fs"])
--- local ts_nodeModule = require(Packages["ts-node"])
+-- local path = require("@pkg/@jsdotlua/path")
+-- local fs = require("@pkg/graceful-fs")
+-- local ts_nodeModule = require("@pkg/ts-node")
 -- type Service = ts_nodeModule.Service
 -- ROBLOX deviation END
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_InitialOptions = typesModule.Config_InitialOptions
 -- ROBLOX deviation START: not needed
 -- type Config_Path = typesModule.Config_Path
--- local jest_utilModule = require(Packages.JestUtil)
+-- local jest_utilModule = require("@pkg/@jsdotlua/jest-util")
 -- local interopRequireDefault = jest_utilModule.interopRequireDefault
 -- local requireOrImportModule = jest_utilModule.requireOrImportModule
--- local constantsModule = require(script.Parent.constants)
+-- local constantsModule = require("./constants")
 -- local JEST_CONFIG_EXT_JSON = constantsModule.JEST_CONFIG_EXT_JSON
 -- local JEST_CONFIG_EXT_TS = constantsModule.JEST_CONFIG_EXT_TS
 -- local PACKAGE_JSON = constantsModule.PACKAGE_JSON
 -- @ts-expect-error: vendored
--- local jsonlint = require(script.Parent.vendor.jsonlint).default
+-- local jsonlint = require("./vendor/jsonlint").default
 -- ROBLOX deviation END
 
 -- Read the configuration and set its `rootDir`

@@ -7,15 +7,15 @@
 ]]
 local exports = {}
 
-exports.formatTestResults = require(script.formatTestResults).default
+exports.formatTestResults = require("./formatTestResults").default
 
-local helpersModule = require(script.helpers)
+local helpersModule = require("./helpers")
 exports.addResult = helpersModule.addResult
 exports.buildFailureTestResult = helpersModule.buildFailureTestResult
 exports.createEmptyTestResult = helpersModule.createEmptyTestResult
 exports.makeEmptyAggregatedTestResult = helpersModule.makeEmptyAggregatedTestResult
 
-local typesModule = require(script.types)
+local typesModule = require("./types")
 export type AggregatedResult = typesModule.AggregatedResult
 export type AssertionLocation = typesModule.AssertionLocation
 export type AssertionResult = typesModule.AssertionResult

@@ -6,27 +6,26 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local rootWorkspace = script.Parent.Parent
-local LuauPolyfill = require(rootWorkspace.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Array<T> = LuauPolyfill.Array<T>
 type Object = LuauPolyfill.Object
 
-local RegExp = require(rootWorkspace.RegExp)
+local RegExp = require("@pkg/luau-regexp")
 type RegExp = RegExp.RegExp
 
 type Record<T, U> = { [T]: U }
 type TemplateStringsArray = Array<string>
 
 -- ROBLOX deviation START: Libraries/types not available
--- local chalkModule = require(rootWorkspace.chalk)
+-- local chalkModule = require("../chalk")
 -- type ForegroundColor = chalkModule.ForegroundColor
 type ForegroundColor = string
 
--- local istanbul_reportsModule = require(rootWorkspace["istanbul-reports"])
+-- local istanbul_reportsModule = require("../istanbul-reports")
 -- type ReportOptions = istanbul_reportsModule.ReportOptions
 type ReportOptions = Object
 
--- local yargsModule = require(rootWorkspace.yargs)
+-- local yargsModule = require("../yargs")
 -- type Arguments = yargsModule.Arguments
 type Arguments<T> = T & Object
 -- ROBLOX deviation END: Libraries/types not available

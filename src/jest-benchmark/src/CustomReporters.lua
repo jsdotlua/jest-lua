@@ -15,10 +15,9 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local Packages = script:FindFirstAncestor("JestBenchmark").Parent
-local Object = require(Packages.LuauPolyfill).Object
+local Object = require("@pkg/@jsdotlua/luau-polyfill").Object
 
-local reporterModule = require(script.Parent.reporters.Reporter)
+local reporterModule = require("./reporters/Reporter")
 type Reporter<T = any> = reporterModule.Reporter<T>
 type ReporterMap = { [string]: Reporter }
 

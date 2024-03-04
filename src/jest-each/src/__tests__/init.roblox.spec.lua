@@ -7,15 +7,14 @@
  *
  ]]
 
-local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local NIL = require(script.Parent.Parent.nilPlaceholder)
+local NIL = require("../nilPlaceholder")
 
-local each = require(script.Parent.Parent).default({ it = it })
+local each = require("..").default({ it = it })
 
 describe("array", function()
 	describe(".add", function()

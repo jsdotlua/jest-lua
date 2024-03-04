@@ -7,8 +7,7 @@
  *
  ]]
 
-local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Number = LuauPolyfill.Number
 local NaN = Number.NaN
@@ -16,18 +15,18 @@ type Array<T> = LuauPolyfill.Array<T>
 type Object = LuauPolyfill.Object
 type Function = (...any) -> ...any
 
-local NIL = require(script.Parent.Parent.nilPlaceholder)
+local NIL = require("../nilPlaceholder")
 
 local HttpService = game:GetService("HttpService")
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local pretty = require(Packages.PrettyFormat).default
-local each = require(script.Parent.Parent).default()
+local pretty = require("@pkg/@jsdotlua/pretty-format").default
+local each = require("..").default()
 
 local function noop() end
 local expectFunction = expect.any("function")

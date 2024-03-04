@@ -7,20 +7,17 @@
 -- *
 -- */
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
 local instanceof = LuauPolyfill.instanceof
 local Object = LuauPolyfill.Object
-local RegExp = require(Packages.RegExp)
+local RegExp = require("@pkg/luau-regexp")
 
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 
 -- ROBLOX deviation: omitted isPrimitive import
-local jasmineUtils = require(CurrentModule.jasmineUtils)
+local jasmineUtils = require("./jasmineUtils")
 local equals = jasmineUtils.equals
 -- ROBLOX deviation: omitted isA, isImmutableUnorderedKeyed, isImmutableUnorderedSet
 

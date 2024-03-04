@@ -6,12 +6,11 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
-local getNoTestsFoundMessage = require(script.Parent.Parent.getNoTestsFoundMessage).default
+local getNoTestsFoundMessage = require("../getNoTestsFoundMessage").default
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local expect = JestGlobals.expect

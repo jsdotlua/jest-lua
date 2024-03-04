@@ -14,7 +14,7 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local WriteableModule = require(script.Parent.Writeable)
+local WriteableModule = require("./Writeable")
 local Writeable = WriteableModule.Writeable
 type Writeable = WriteableModule.Writeable
 local process = {

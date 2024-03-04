@@ -6,38 +6,35 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 type Object = LuauPolyfill.Object
 
-local chalk = require(Packages.ChalkLua)
-local JestTypes = require(Packages.JestTypes)
+local chalk = require("@pkg/@jsdotlua/chalk")
+local JestTypes = require("@pkg/@jsdotlua/jest-types")
 
 type Global_ItBase = JestTypes.Global_It
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
 
-local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
+local alignedAnsiStyleSerializer = require("@pkg/@jsdotlua/test-utils").alignedAnsiStyleSerializer
 
-local Number = require(Packages.LuauPolyfill).Number
+local Number = require("@pkg/@jsdotlua/luau-polyfill").Number
 
-local diff = require(CurrentModule).diff
-local diffLinesUnified = require(CurrentModule.DiffLines).diffLinesUnified
-local diffLinesUnified2 = require(CurrentModule.DiffLines).diffLinesUnified2
+local diff = require("../init").diff
+local diffLinesUnified = require("../DiffLines").diffLinesUnified
+local diffLinesUnified2 = require("../DiffLines").diffLinesUnified2
 
-local noColor = require(CurrentModule.NormalizeDiffOptions).noColor
+local noColor = require("../NormalizeDiffOptions").noColor
 
-local diffStringsUnified = require(CurrentModule.PrintDiffs).diffStringsUnified
+local diffStringsUnified = require("../PrintDiffs").diffStringsUnified
 
-local NO_DIFF_MESSAGE = require(CurrentModule.Constants).NO_DIFF_MESSAGE
+local NO_DIFF_MESSAGE = require("../Constants").NO_DIFF_MESSAGE
 
 local optionsCounts = {
 	includeChangeCounts = true,
@@ -71,7 +68,7 @@ expandedBe["expand"] = true
 local unexpanded = { expand = false }
 local expanded = { expand = true }
 
--- local elementSymbol = require(CurrentModule.Parent.React.Shared).REACT_ELEMENT_TYPE
+-- local elementSymbol = require("../../React/Shared").REACT_ELEMENT_TYPE
 
 beforeAll(function()
 	expect.addSnapshotSerializer(alignedAnsiStyleSerializer)

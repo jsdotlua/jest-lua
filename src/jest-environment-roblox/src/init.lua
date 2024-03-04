@@ -17,29 +17,27 @@
 	based on: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-environment-node/src/index.ts
 ]]
 
-local Packages = script.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 type Object = LuauPolyfill.Object
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 type Promise<T> = LuauPolyfill.Promise<T>
 
 type Context = Object
 
-local JestEnvironmentModule = require(Packages.JestEnvironment)
+local JestEnvironmentModule = require("@pkg/@jsdotlua/jest-environment")
 type JestEnvironment = JestEnvironmentModule.JestEnvironment
 
-local JestFakeTimers = require(Packages.JestFakeTimers)
+local JestFakeTimers = require("@pkg/@jsdotlua/jest-fake-timers")
 
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_ProjectConfig = typesModule.Config_ProjectConfig
 type Global_Global = typesModule.Global_Global
 
-local FakeTimersModule = require(Packages.JestFakeTimers)
+local FakeTimersModule = require("@pkg/@jsdotlua/jest-fake-timers")
 type FakeTimers = FakeTimersModule.FakeTimers
 
-local jestMockModule = require(Packages.JestMock)
+local jestMockModule = require("@pkg/@jsdotlua/jest-mock")
 type ModuleMocker = jestMockModule.ModuleMocker
 
 -- ROBLOX NOTE: redefine props and methods to have proper `self` typing

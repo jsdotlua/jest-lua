@@ -13,7 +13,7 @@
 	* See the License for the specific language governing permissions and
 	* limitations under the License.
 ]]
-local circusModule = require(script.circus)
+local circusModule = require("./circus")
 
 local exports = circusModule
 
@@ -21,7 +21,7 @@ export type Event = circusModule.Event
 export type State = circusModule.State
 
 -- ROBLOX deviation: exporting runner alongside the main entry point
-local runner = require(script.runner);
+local runner = require('./runner');
 (exports :: any).runner = runner
 
 return exports :: typeof(circusModule) & { runner: typeof(runner) }

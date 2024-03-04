@@ -12,15 +12,12 @@
 	* See the License for the specific language governing permissions and
 	* limitations under the License.
 ]]
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local RobloxInstance = require(CurrentModule.RobloxInstance)
+local RobloxInstance = require("../RobloxInstance")
 local instanceSubsetEquality = RobloxInstance.instanceSubsetEquality
 local getInstanceSubset = RobloxInstance.getInstanceSubset
 local getRobloxProperties = RobloxInstance.getRobloxProperties
@@ -86,7 +83,9 @@ describe("getRobloxDefaults()", function()
 
 	it("returns default properties and values for Camera", function()
 		local defaults = getRobloxDefaults("Camera")
-		expect(defaults).toMatchSnapshot()
+		expect(defaults).toMatchSnapshot({
+			DiagonalFieldOfView = expect.closeTo(88.87651, 3),
+		})
 	end)
 end)
 

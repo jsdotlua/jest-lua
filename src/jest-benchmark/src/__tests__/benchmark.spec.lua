@@ -15,14 +15,13 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local Packages = script:FindFirstAncestor("JestBenchmark").Parent
-local JestGlobals = require(Packages.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local it = JestGlobals.it
 local expect = JestGlobals.expect
 local beforeEach = JestGlobals.beforeEach
 local afterEach = JestGlobals.afterEach
 local jest = JestGlobals.jest
-local sum = require(script.Parent.utils).sum
+local sum = require("./utils").sum
 local benchmark
 local capturedConnectFn
 
@@ -48,18 +47,18 @@ beforeEach(function()
 			end,
 		}
 	end)
-	benchmark = require(script.Parent.Parent.benchmark).benchmark
+	benchmark = require("../benchmark").benchmark
 	jest.useFakeTimers()
 
-	initializeReporter = require(script.Parent.Parent.reporters.Reporter).initializeReporter
+	initializeReporter = require("../reporters/Reporter").initializeReporter
 
 	--[[
 		In regular use, you should not need to re-require these after resetModules().
 		In this test, we need to re-require benchmark to mock test, which resets the module state
 		for CustomReporters and MetricLogger
 	]]
-	CustomReporters = require(script.Parent.Parent.CustomReporters)
-	MetricLogger = require(script.Parent.Parent.MetricLogger)
+	CustomReporters = require("../CustomReporters")
+	MetricLogger = require("../MetricLogger")
 
 	CustomReporters.useCustomReporters({ sum = initializeReporter("sum", sum) })
 	testPrint = jest.fn()

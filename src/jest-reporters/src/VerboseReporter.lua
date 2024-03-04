@@ -6,39 +6,36 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 type Array<T> = LuauPolyfill.Array<T>
 
 local exports = {}
 
-local chalk = require(Packages.ChalkLua)
-local testResultModule = require(Packages.JestTestResult)
+local chalk = require("@pkg/@jsdotlua/chalk")
+local testResultModule = require("@pkg/@jsdotlua/jest-test-result")
 type AggregatedResult = testResultModule.AggregatedResult
 type AssertionResult = testResultModule.AssertionResult
 type Suite = testResultModule.Suite
 type TestResult = testResultModule.TestResult
 
-local jestTypesModule = require(Packages.JestTypes)
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_GlobalConfig = jestTypesModule.Config_GlobalConfig
 type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
 type Config_Path = jestTypesModule.Config_Path
 
-local jestUtilModule = require(Packages.JestUtil)
+local jestUtilModule = require("@pkg/@jsdotlua/jest-util")
 local formatTime = jestUtilModule.formatTime
 local ICONS = jestUtilModule.ICONS
 
-local DefaultReporterModule = require(CurrentModule.DefaultReporter)
+local DefaultReporterModule = require("./DefaultReporter")
 local DefaultReporter = DefaultReporterModule.default
 type DefaultReporter = DefaultReporterModule.DefaultReporter
-local typesModule = require(CurrentModule.types)
+local typesModule = require("./types")
 type Test = typesModule.Test
 
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 type Writeable = RobloxShared.Writeable
 
 export type VerboseReporter = DefaultReporter & {

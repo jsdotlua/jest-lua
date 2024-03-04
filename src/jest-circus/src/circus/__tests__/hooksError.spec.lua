@@ -6,20 +6,17 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local SrcModule = CurrentModule.Parent
-local Packages = SrcModule.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Symbol = LuauPolyfill.Symbol
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local JestTypesModule = require(Packages.JestTypes)
+local JestTypesModule = require("@pkg/@jsdotlua/jest-types")
 type Circus_HookType = JestTypesModule.Circus_HookType
-local circus = require(script.Parent.Parent).default
+local circus = require("..").default
 
 -- ROBLOX deviation START: using for in loops instead of desribe.each and test.each
 for _, fn in ipairs({ "beforeEach", "beforeAll", "afterEach", "afterAll" }) do

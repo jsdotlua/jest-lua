@@ -23,12 +23,9 @@
 
 local exports = {}
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
+local format = require("./helpers").format
 
-local format = require(CurrentModule.helpers).format
-
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 type Writeable = RobloxShared.Writeable
 
 export type Console = {

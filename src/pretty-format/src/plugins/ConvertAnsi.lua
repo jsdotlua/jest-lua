@@ -7,16 +7,14 @@
 --  *
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Boolean = LuauPolyfill.Boolean
-local Types = require(CurrentModule.Types)
+local Types = require("../Types")
 type Config = Types.Config
 type Refs = Types.Refs
 type Printer = Types.Printer
 
-local chalk = require(Packages.ChalkLua)
+local chalk = require("@pkg/@jsdotlua/chalk")
 
 -- ROBLOX deviation: this regex attempts to match both ansi16 and ansi256 regexes
 local ansiRegex = string.char(27) .. "%[%d+;?5?;?%d*m"

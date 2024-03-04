@@ -6,10 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent
-
 local exports = {}
-local coreModule = require(Packages.JestCore)
+local coreModule = require("@pkg/@jsdotlua/jest-core")
 exports.SearchSource = coreModule.SearchSource
 exports.TestWatcher = coreModule.TestWatcher
 exports.createTestScheduler = coreModule.createTestScheduler
@@ -18,6 +16,6 @@ exports.createTestScheduler = coreModule.createTestScheduler
 -- ROBLOX deviation END
 exports.runCLI = coreModule.runCLI
 -- ROBLOX deviation START: JestCli is not ported
--- exports.run = require(Packages.JestCli).run
+-- exports.run = require("@pkg/JestCli").run
 -- ROBLOX deviation END
 return exports

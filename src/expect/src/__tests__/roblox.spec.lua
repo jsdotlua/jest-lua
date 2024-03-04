@@ -13,19 +13,16 @@
 	* See the License for the specific language governing permissions and
 	* limitations under the License.
 ]]
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local setTimeout = LuauPolyfill.setTimeout
 local Error = LuauPolyfill.Error
 
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 local pruneDeps = RobloxShared.pruneDeps
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local describe = JestGlobals.describe
 local expect = JestGlobals.expect
 local it = JestGlobals.it

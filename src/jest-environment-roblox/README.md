@@ -1,4 +1,4 @@
-# jest-environment-luau
+# jest-environment-roblox
 
 Status: :hammer: In Progress
 

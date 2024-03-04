@@ -6,8 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  ]]
-local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Object = LuauPolyfill.Object
@@ -20,12 +19,12 @@ type Array<T> = LuauPolyfill.Array<T>
 type Object = LuauPolyfill.Object
 -- ROBLOX deviation END
 type Record<K, T> = { [K]: T } --[[ ROBLOX TODO: TS 'Record' built-in type is not available in Luau ]]
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 -- ROBLOX deviation START: add RegExp
-local RegExp = require(Packages.RegExp)
+local RegExp = require("@pkg/luau-regexp")
 type RegExp = RegExp.RegExp
 -- ROBLOX deviation END
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 -- ROBLOX deviation START: not used
 -- local afterAll = JestGlobals.afterAll
 -- ROBLOX deviation END
@@ -45,26 +44,26 @@ local jest = JestGlobals.jest
 type jest_SpyInstance = any
 -- ROBLOX deviation END
 -- ROBLOX deviation START: not used
--- local createHash = require(Packages.crypto).createHash
--- local path = require(Packages.path).default
--- local wrap = require(Packages["jest-snapshot-serializer-raw"]).wrap
--- local semver = require(Packages.semver)
--- local stripAnsi = require(Packages["strip-ansi"]).default
+-- local createHash = require("@pkg/crypto").createHash
+-- local path = require("@pkg/@jsdotlua/path").default
+-- local wrap = require("@pkg/jest-snapshot-serializer-raw").wrap
+-- local semver = require("@pkg/semver")
+-- local stripAnsi = require("@pkg/strip-ansi").default
 -- ROBLOX deviation END
-local jestTypesModule = require(Packages.JestTypes)
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 -- ROBLOX deviation START: not used
 -- type Config = jestTypesModule.Config
 -- ROBLOX deviation END
 type Config_Argv = jestTypesModule.Config_Argv
 type Config_InitialOptions = jestTypesModule.Config_InitialOptions
 -- ROBLOX deviation START: not used
--- local escapeStrForRegex = require(Packages["jest-regex-util"]).escapeStrForRegex
+-- local escapeStrForRegex = require("@pkg/jest-regex-util").escapeStrForRegex
 -- ROBLOX deviation END
-local Defaults = require(script.Parent.Parent.Defaults).default
+local Defaults = require("../Defaults").default
 -- ROBLOX deviation START: not used
--- local DEFAULT_JS_PATTERN = require(script.Parent.Parent.constants).DEFAULT_JS_PATTERN
+-- local DEFAULT_JS_PATTERN = require("../constants").DEFAULT_JS_PATTERN
 -- ROBLOX deviation END
-local normalize = require(script.Parent.Parent.normalize).default
+local normalize = require("../normalize").default
 -- ROBLOX deviation START: not used
 -- local DEFAULT_CSS_PATTERN = "\\.(css)$"
 -- ROBLOX deviation END
@@ -91,7 +90,7 @@ local function pathToInstance(path)
 		Object.None
 	).leaf
 end
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 local JSON = RobloxShared.nodeUtils.JSON
 local getRelativePath = RobloxShared.getRelativePath
 -- ROBLOX deviation END

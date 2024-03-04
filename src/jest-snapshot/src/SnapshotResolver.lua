@@ -6,31 +6,30 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+ local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 local Map = LuauPolyfill.Map
 local String = LuauPolyfill.String
 type Array<T> = LuauPolyfill.Array<T>
 type Promise<T> = LuauPolyfill.Promise<T>
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 
 local exports = {}
 
 -- ROBLOX deviation START: not needed
--- local path = require(Packages.path)
--- local chalk = require(Packages.ChalkLua)
+-- local path = require("@pkg/@jsdotlua/path")
+-- local chalk = require("@pkg/@jsdotlua/chalk")
 -- local createTranspilingRequire = require(Packages["@jest"].transform).createTranspilingRequire
 -- ROBLOX deviation END
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_Path = typesModule.Config_Path
 type Config_ProjectConfig = typesModule.Config_ProjectConfig
 -- ROBLOX deviation START: not needed
--- local interopRequireDefault = require(Packages.JestUtil).interopRequireDefault
+-- local interopRequireDefault = require("@pkg/@jsdotlua/jest-util").interopRequireDefault
 -- ROBLOX deviation END
 
 -- ROBLOX deviation START: additinal dependencies
-local utils = require(script.Parent.utils)
+local utils = require("./utils")
 local getParent = utils.robloxGetParent
 
 local function getCoreScriptSyncService()

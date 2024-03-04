@@ -5,17 +5,16 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  ]]
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 type Array<T> = LuauPolyfill.Array<T>
 
 local exports = {}
 
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_ProjectConfig = typesModule.Config_ProjectConfig
-local getProjectDisplayName = require(script.Parent.getProjectDisplayName).default
+local getProjectDisplayName = require("./getProjectDisplayName").default
 
 -- ROBLOX deviation START: add hoisted function declarations
 local createProjectFilter

@@ -6,8 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Error = LuauPolyfill.Error
@@ -15,52 +14,52 @@ local Map = LuauPolyfill.Map
 local Object = LuauPolyfill.Object
 type Array<T> = LuauPolyfill.Array<T>
 type Promise<T> = LuauPolyfill.Promise<T>
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 
 local exports = {}
 
 -- ROBLOX deviation START: not needed
--- local path = require(Packages.path)
+-- local path = require("@pkg/@jsdotlua/path")
 -- ROBLOX deviation END
-local chalk = require(Packages.ChalkLua)
+local chalk = require("@pkg/@jsdotlua/chalk")
 -- ROBLOX deviation START: not needed
--- local fs = require(Packages["graceful-fs"])
+-- local fs = require("@pkg/graceful-fs")
 -- ROBLOX deviation END
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_Argv = typesModule.Config_Argv
 type Config_GlobalConfig = typesModule.Config_GlobalConfig
 type Config_InitialOptions = typesModule.Config_InitialOptions
 type Config_Path = typesModule.Config_Path
 type Config_ProjectConfig = typesModule.Config_ProjectConfig
 -- ROBLOX deviation START: not needed
--- local tryRealpath = require(Packages.JestUtil).tryRealpath
+-- local tryRealpath = require("@pkg/@jsdotlua/jest-util").tryRealpath
 -- ROBLOX deviation END
-local constants = require(script.constants)
-local normalize = require(script.normalize).default
-local readConfigFileAndSetRootDir = require(script.readConfigFileAndSetRootDir).default
-local resolveConfigPath = require(script.resolveConfigPath).default
-local utilsModule = require(script.utils)
+local constants = require("./constants")
+local normalize = require("./normalize").default
+local readConfigFileAndSetRootDir = require("./readConfigFileAndSetRootDir").default
+local resolveConfigPath = require("./resolveConfigPath").default
+local utilsModule = require("./utils")
 local isJSONString = utilsModule.isJSONString
 
 -- ROBLOX deviation START: not needed
 -- local replaceRootDirInPath = utilsModule.replaceRootDirInPath
 -- TODO: remove export in Jest 28
--- exports.getTestEnvironment = require(Packages["jest-resolve"]).resolveTestEnvironment
+-- exports.getTestEnvironment = require("@pkg/jest-resolve").resolveTestEnvironment
 -- ROBLOX deviation END
-exports.isJSONString = require(script.utils).isJSONString
-exports.normalize = require(script.normalize).default
+exports.isJSONString = require("./utils").isJSONString
+exports.normalize = require("./normalize").default
 -- ROBLOX deviation START: not needed
--- exports.deprecationEntries = require(script.Deprecated).default
--- exports.replaceRootDirInPath = require(script.utils).replaceRootDirInPath
+-- exports.deprecationEntries = require("./Deprecated").default
+-- exports.replaceRootDirInPath = require("./utils").replaceRootDirInPath
 -- ROBLOX deviation END
-exports.defaults = require(script.Defaults).default
+exports.defaults = require("./Defaults").default
 -- ROBLOX deviation START: not needed
--- exports.descriptions = require(script.Descriptions).default
+-- exports.descriptions = require("./Descriptions").default
 -- ROBLOX deviation END
 exports.constants = constants
 
 -- ROBLOX deviation START: added missing variables to limit nr deviations
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 local nodeUtils = RobloxShared.nodeUtils
 type NodeJS_WriteStream = RobloxShared.NodeJS_WriteStream
 local JSON = nodeUtils.JSON

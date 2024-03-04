@@ -13,11 +13,7 @@
 	* limitations under the License.
 ]]
 -- ROBLOX NOTE: no upstream
-local srcWorkspace = script.Parent
-local rootWorkspace = srcWorkspace.Parent
-local Packages = rootWorkspace
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Boolean = LuauPolyfill.Boolean
 type Object = LuauPolyfill.Object
 

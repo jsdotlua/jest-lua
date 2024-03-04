@@ -17,10 +17,10 @@
 
 local exports = {}
 
-local reporterModule = require(script.Parent.reporters.Reporter)
+local reporterModule = require("./reporters/Reporter")
 type Reporter<T = any> = reporterModule.Reporter<T>
 
-local metricLoggerModule = require(script.Parent.MetricLogger)
+local metricLoggerModule = require("./MetricLogger")
 type metricLoggerFn = metricLoggerModule.metricLoggerFn
 
 export type Profiler = {

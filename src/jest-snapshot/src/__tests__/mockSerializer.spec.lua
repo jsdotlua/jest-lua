@@ -7,20 +7,17 @@
 -- *
 -- */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Symbol = LuauPolyfill.Symbol
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 
-local prettyFormat = require(Packages.PrettyFormat).format
+local prettyFormat = require("@pkg/@jsdotlua/pretty-format").format
 
-local plugin_ = require(CurrentModule.mockSerializer)
+local plugin_ = require("../mockSerializer")
 
 it("mock with 0 calls and default name", function()
 	local fn = jest.fn()

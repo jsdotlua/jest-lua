@@ -5,21 +5,20 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  ]]
-local Packages = script.Parent.Parent.Parent
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 -- ROBLOX deviation START: not needed
--- local path = require(Packages.path).default
+-- local path = require("@pkg/@jsdotlua/path").default
 -- local Map = LuauPolyfill.Map
--- local JestGlobals = require(Packages.Dev.JestGlobals)
+-- local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 -- local expect = JestGlobals.expect
--- local tmpdir = require(Packages.os).tmpdir
+-- local tmpdir = require("@pkg/os").tmpdir
 -- local makeProjectConfig = require(Packages["@jest"]["test-utils"]).makeProjectConfig
 -- local createScriptTransformer = require(Packages["@jest"].transform).createScriptTransformer
--- local NodeEnvironment = require(Packages["jest-environment-node"]).default
--- local JestEnvironmentLuau = require(Packages.Dev.JestEnvironmentLuau).default
--- local tryRealpath = require(Packages.JestUtil).tryRealpath
+-- local NodeEnvironment = require("@pkg/jest-environment-node").default
+-- local JestEnvironmentLuau = require("@pkg/JestEnvironmentLuau").default
+-- local tryRealpath = require("@pkg/@jsdotlua/jest-util").tryRealpath
 -- ROBLOX deviation END
-local Runtime = require(script.Parent.Parent) -- Copy from jest-config (since we don't want to depend on this package)
+local Runtime = require("..") -- Copy from jest-config (since we don't want to depend on this package)
 -- ROBLOX deviation START: not used
 -- local function getCacheDirectory()
 -- 	local getuid = process.getuid

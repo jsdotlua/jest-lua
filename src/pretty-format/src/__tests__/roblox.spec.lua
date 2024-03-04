@@ -14,15 +14,12 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 local describe = JestGlobals.describe
 
-local prettyFormat = require(CurrentModule).default
+local prettyFormat = require("../init").default
 
 it("userdata", function()
 	local testObject = newproxy()

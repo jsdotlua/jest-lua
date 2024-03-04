@@ -6,9 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  ]]
-local Packages = script.Parent.Parent.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 type Array<T> = LuauPolyfill.Array<T>
@@ -18,18 +16,18 @@ local exports = {}
 -- ROBLOX deviation: predefine variables
 local convertRowToTable, convertTableToTemplates
 
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Global_Row = typesModule.Global_Row
 type Global_Table = typesModule.Global_Table
 
--- local bindModule = require(script.Parent.Parent.bind)
+-- local bindModule = require("../bind")
 -- type EachTests = bindModule.EachTests
 type EachTests = any
-local interpolationModule = require(script.Parent.interpolation)
+local interpolationModule = require("./interpolation")
 type Headings = interpolationModule.Headings
 type Template = interpolationModule.Template
 type Templates = interpolationModule.Templates
-local interpolateVariables = require(script.Parent.interpolation).interpolateVariables
+local interpolateVariables = require("./interpolation").interpolateVariables
 
 local function default(title: string, headings: Headings, row: Global_Row): EachTests
 	local table_ = convertRowToTable(row, headings)

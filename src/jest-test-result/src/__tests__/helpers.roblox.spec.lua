@@ -14,18 +14,15 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local makeEmptyAggregatedTestResult = require(CurrentModule.helpers).makeEmptyAggregatedTestResult
-local buildFailureTestResult = require(CurrentModule.helpers).buildFailureTestResult
-local createEmptyTestResult = require(CurrentModule.helpers).createEmptyTestResult
-local addResult = require(CurrentModule.helpers).addResult
+local makeEmptyAggregatedTestResult = require("../helpers").makeEmptyAggregatedTestResult
+local buildFailureTestResult = require("../helpers").buildFailureTestResult
+local createEmptyTestResult = require("../helpers").createEmptyTestResult
+local addResult = require("../helpers").addResult
 
 describe("helpers", function()
 	it("creates an empty AggregatedTestResult", function()

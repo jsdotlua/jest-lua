@@ -6,18 +6,15 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 
-local makeGlobalConfig = require(Packages.TestUtils).makeGlobalConfig
-local testResultModule = require(Packages.JestTestResult)
+local makeGlobalConfig = require("@pkg/@jsdotlua/test-utils").makeGlobalConfig
+local testResultModule = require("@pkg/@jsdotlua/jest-test-result")
 type TestResult = testResultModule.TestResult
 
-local getResultHeader = require(CurrentModule.getResultHeader).default
+local getResultHeader = require("../getResultHeader").default
 
 local endTime = 1577717671160
 local testTime = 5500

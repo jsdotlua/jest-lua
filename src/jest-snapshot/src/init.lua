@@ -8,21 +8,18 @@
 
 -- ROBLOX deviation: omitting imports for file system interaction
 
-local CurrentModule = script
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 local instanceof = LuauPolyfill.instanceof
 local AssertionError = LuauPolyfill.AssertionError
 
-local getType = require(Packages.JestGetType).getType
+local getType = require("@pkg/@jsdotlua/jest-get-type").getType
 
 -- ROBLOX TODO: ADO-1633 fix Jest Types imports
--- local Config = require(Packages.JestTypes).Config
+-- local Config = require("@pkg/@jsdotlua/jest-types").Config
 type ConfigPath = string
 
-local JestMatcherUtils = require(Packages.JestMatcherUtils)
+local JestMatcherUtils = require("@pkg/@jsdotlua/jest-matcher-utils")
 local BOLD_WEIGHT = JestMatcherUtils.BOLD_WEIGHT
 local EXPECTED_COLOR = JestMatcherUtils.EXPECTED_COLOR
 -- local MatcherHintOptions = JestMatcherUtils.MatcherHintOptions
@@ -32,21 +29,21 @@ local matcherHint = JestMatcherUtils.matcherHint
 local printWithType = JestMatcherUtils.printWithType
 local stringify = JestMatcherUtils.stringify
 
-local SnapshotResolverModule = require(script.SnapshotResolver)
+local SnapshotResolverModule = require("./SnapshotResolver")
 local EXTENSION = SnapshotResolverModule.EXTENSION
 type JestSnapshotResolver = SnapshotResolverModule.SnapshotResolver
 local buildSnapshotResolver = SnapshotResolverModule.buildSnapshotResolver
 local isSnapshotPath = SnapshotResolverModule.isSnapshotPath
 
-local SnapshotStateModule = require(CurrentModule.State)
+local SnapshotStateModule = require("./State")
 local SnapshotState = SnapshotStateModule.default
 type SnapshotState = SnapshotStateModule.SnapshotState
 
-local plugins = require(CurrentModule.plugins)
+local plugins = require("./plugins")
 local addSerializer = plugins.addSerializer
 local getSerializers = plugins.getSerializers
 
-local printSnapshot = require(CurrentModule.printSnapshot)
+local printSnapshot = require("./printSnapshot")
 local PROPERTIES_ARG = printSnapshot.PROPERTIES_ARG
 -- local SNAPSHOT_ARG = printSnapshot.SNAPSHOT_ARG
 local bReceivedColor = printSnapshot.bReceivedColor
@@ -57,10 +54,10 @@ local printPropertiesAndReceived = printSnapshot.printPropertiesAndReceived
 local printReceived = printSnapshot.printReceived
 local printSnapshotAndReceived = printSnapshot.printSnapshotAndReceived
 
-local types = require(CurrentModule.types)
+local types = require("./types")
 type MatchSnapshotConfig = types.MatchSnapshotConfig
 
-local utils = require(CurrentModule.utils)
+local utils = require("./utils")
 
 local _toMatchSnapshot, _toThrowErrorMatchingSnapshot
 
@@ -433,7 +430,7 @@ local JestSnapshot = {
 	toThrowErrorMatchingSnapshot = toThrowErrorMatchingSnapshot,
 	utils = utils,
 	-- WORKSPACES FIXME: needs to be exported for consumption by workspace neighbors
-	plugins = require(CurrentModule.plugins),
+	plugins = require("./plugins"),
 }
 
 export type JestSnapshot_SnapshotResolver = JestSnapshotResolver

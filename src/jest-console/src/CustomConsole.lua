@@ -8,34 +8,31 @@
 
 local exports = {}
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
+local Console = require("./Console").default
 
-local Console = require(CurrentModule.Console).default
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Boolean = LuauPolyfill.Boolean
 local inspect = LuauPolyfill.util.inspect
 type Error = LuauPolyfill.Error
 
 -- ROBLOX deviation START: use custom implementations instead of unavailable node API
-local helpersModule = require(CurrentModule.helpers)
+local helpersModule = require("./helpers")
 local format = helpersModule.format
 local formatWithOptions = helpersModule.formatWithOptions
 
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 type Writeable = RobloxShared.Writeable
 type NodeJS_WriteStream = RobloxShared.NodeJS_WriteStream
 
 -- ROBLOX deviation END
 
-local chalk = require(Packages.ChalkLua)
+local chalk = require("@pkg/@jsdotlua/chalk")
 
-local JestUtil = require(Packages.JestUtil)
+local JestUtil = require("@pkg/@jsdotlua/jest-util")
 local clearLine = JestUtil.clearLine
 local formatTime = JestUtil.formatTime
 
-local typesModule = require(CurrentModule.types)
+local typesModule = require("./types")
 type LogCounters = typesModule.LogCounters
 type LogMessage = typesModule.LogMessage
 type LogTimers = typesModule.LogTimers

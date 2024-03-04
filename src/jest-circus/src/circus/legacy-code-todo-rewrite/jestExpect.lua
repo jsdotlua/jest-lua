@@ -6,14 +6,12 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent.Parent.Parent
-
 local exports = {}
 
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_GlobalConfig = typesModule.Config_GlobalConfig
-local expect = require(Packages.Expect)
-local jest_snapshotModule = require(Packages.JestSnapshot)
+local expect = require("@pkg/@jsdotlua/expect")
+local jest_snapshotModule = require("@pkg/@jsdotlua/jest-snapshot")
 local addSerializer = jest_snapshotModule.addSerializer
 -- ROBLOX TODO: not implemented yet
 -- local toMatchInlineSnapshot = jest_snapshotModule.toMatchInlineSnapshot

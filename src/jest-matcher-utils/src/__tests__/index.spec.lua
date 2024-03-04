@@ -7,24 +7,21 @@
 --  *
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- ROBLOX deviation START: not used
 -- local Array = LuauPolyfill.Array
 -- ROBLOX deviation END
 local Symbol = LuauPolyfill.Symbol
 
-local RegExp = require(Packages.RegExp)
+local RegExp = require("@pkg/luau-regexp")
 
-local equals = require(Packages.Dev.RobloxShared).expect.equals
+local equals = require("@pkg/@jsdotlua/jest-roblox-shared").expect.equals
 
-local chalk = require(Packages.ChalkLua)
+local chalk = require("@pkg/@jsdotlua/chalk")
 
-local prettyFormat = require(Packages.PrettyFormat).format
+local prettyFormat = require("@pkg/@jsdotlua/pretty-format").format
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
@@ -32,9 +29,9 @@ local jest = JestGlobals.jest
 local test = JestGlobals.test
 local beforeAll = JestGlobals.beforeAll
 
-local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
+local alignedAnsiStyleSerializer = require("@pkg/@jsdotlua/test-utils").alignedAnsiStyleSerializer
 
-local JestMatcherUtils = require(CurrentModule)
+local JestMatcherUtils = require("../init")
 -- ROBLOX deviation: omitted MatcherHintOptions import
 local diff = JestMatcherUtils.diff
 local ensureNoExpected = JestMatcherUtils.ensureNoExpected
@@ -447,7 +444,7 @@ describe("printDiffOrStringify", function()
 
 		-- ROBLOX deviation START: fix incorrect 'require' call
 		-- local printDiffOrStringify = require_("../").printDiffOrStringify
-		local printDiffOrStringify = require(script.Parent.Parent).printDiffOrStringify
+		local printDiffOrStringify = require("..").printDiffOrStringify
 		-- ROBLOX deviation END
 
 		local expected = expect.objectContaining({

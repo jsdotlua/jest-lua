@@ -6,10 +6,8 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script
-
-local alignedAnsiStyleSerializer = require(CurrentModule.alignedAnsiStyleSerializer)
-local configModule = require(CurrentModule.config)
+local alignedAnsiStyleSerializer = require("./alignedAnsiStyleSerializer")
+local configModule = require("./config")
 
 --[[
 	ROBLOX deviation: ommiting ConditionalTest and config imports

@@ -6,70 +6,69 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Error = LuauPolyfill.Error
 local console = LuauPolyfill.console
 type Array<T> = LuauPolyfill.Array<T>
 type Promise<T> = LuauPolyfill.Promise<T>
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 
 local exports = {}
 
-local chalk = require(Packages.ChalkLua)
+local chalk = require("@pkg/@jsdotlua/chalk")
 -- ROBLOX deviation START: not needed
--- local exit = require(Packages.exit)
--- local rimraf = require(Packages.rimraf)
--- local CustomConsole = require(Packages.JestConsole).CustomConsole
+-- local exit = require("@pkg/exit")
+-- local rimraf = require("@pkg/rimraf")
+-- local CustomConsole = require("@pkg/@jsdotlua/jest-console").CustomConsole
 -- ROBLOX deviation END
-local test_resultModule = require(Packages.JestTestResult)
+local test_resultModule = require("@pkg/@jsdotlua/jest-test-result")
 type AggregatedResult = test_resultModule.AggregatedResult
 type TestContext = test_resultModule.TestContext
-local jestTypesModule = require(Packages.JestTypes)
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_Argv = jestTypesModule.Config_Argv
 type Config_GlobalConfig = jestTypesModule.Config_GlobalConfig
 type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
 -- ROBLOX deviation START: not used
--- local jest_changed_filesModule = require(Packages["jest-changed-files"])
+-- local jest_changed_filesModule = require("@pkg/jest-changed-files")
 -- type ChangedFilesPromise = jest_changed_filesModule.ChangedFilesPromise
 type ChangedFilesPromise = Promise<any>
-local readConfigs = require(Packages.JestConfig).readConfigs
--- local jest_haste_mapModule = require(Packages["jest-haste-map"])
+local readConfigs = require("@pkg/@jsdotlua/jest-config").readConfigs
+-- local jest_haste_mapModule = require("@pkg/jest-haste-map")
 -- type HasteMap = jest_haste_mapModule.default
 type HasteMap = any
 -- ROBLOX deviation END
-local Runtime = require(Packages.JestRuntime)
+local Runtime = require("@pkg/@jsdotlua/jest-runtime")
 type Context = Runtime.Context
-local jest_utilModule = require(Packages.JestUtil)
+local jest_utilModule = require("@pkg/@jsdotlua/jest-util")
 -- ROBLOX deviation START: not needed
 -- local createDirectory = jest_utilModule.createDirectory
 -- ROBLOX deviation END
 local preRunMessage = jest_utilModule.preRunMessage
-local TestWatcher = require(script.Parent.TestWatcher).default
-local formatHandleErrors = require(script.Parent.collectHandles).formatHandleErrors
-local getChangedFilesPromise = require(script.Parent.getChangedFilesPromise).default
-local getProjectNamesMissingWarning = require(script.Parent.getProjectNamesMissingWarning).default
-local getSelectProjectsMessage = require(script.Parent.getSelectProjectsMessage).default
-local createContext = require(script.Parent.lib.createContext).default
+local TestWatcher = require("../TestWatcher").default
+local formatHandleErrors = require("../collectHandles").formatHandleErrors
+local getChangedFilesPromise = require("../getChangedFilesPromise").default
+local getProjectNamesMissingWarning = require("../getProjectNamesMissingWarning").default
+local getSelectProjectsMessage = require("../getSelectProjectsMessage").default
+local createContext = require("../lib/createContext").default
 -- ROBLOX deviation START: not needed
--- local handleDeprecationWarnings = require(script.Parent.lib.handleDeprecationWarnings).default
+-- local handleDeprecationWarnings = require("./lib/handleDeprecationWarnings").default
 -- ROBLOX deviation END
-local logDebugMessages = require(script.Parent.lib.logDebugMessages).default
-local pluralize = require(script.Parent.pluralize).default
-local runJest = require(script.Parent.runJest).default
-local typesModule = require(script.Parent.types)
+local logDebugMessages = require("../lib/logDebugMessages").default
+local pluralize = require("../pluralize").default
+local runJest = require("../runJest").default
+local typesModule = require("../types")
 type Filter = typesModule.Filter
 -- ROBLOX deviation START: not needed
--- local watch = require(script.Parent.watch).default
+-- local watch = require("./watch").default
 -- ROBLOX deviation END
 local preRunMessagePrint = preRunMessage.print
 
 type OnCompleteCallback = (results: AggregatedResult) -> ...nil
 
 -- ROBLOX deviation START: added missing variables to limit nr deviations
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 local nodeUtils = RobloxShared.nodeUtils
 local process = nodeUtils.process
 local exit = nodeUtils.exit

@@ -7,8 +7,7 @@
  *
  ]]
 
-local Packages = script.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Error = LuauPolyfill.Error
@@ -17,11 +16,11 @@ type Object = LuauPolyfill.Object
 
 type ReturnType<T> = any
 
-local NIL = require(script.nilPlaceholder)
+local NIL = require("./nilPlaceholder")
 
 local exports = {}
 
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Global_BlockFn = typesModule.Global_BlockFn
 type Global_Global = typesModule.Global_Global
 type Global_EachTable = typesModule.Global_EachTable
@@ -29,7 +28,7 @@ type Global_EachTestFn<EachCallback> = typesModule.Global_EachTestFn<EachCallbac
 type Global_TemplateData = typesModule.Global_TemplateData
 type Global_TestFn = typesModule.Global_TestFn
 
-local bind = require(script.bind).default
+local bind = require("./bind").default
 
 type Global = Global_Global
 

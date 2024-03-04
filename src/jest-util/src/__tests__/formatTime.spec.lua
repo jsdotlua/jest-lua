@@ -7,14 +7,11 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 
-local formatTime = require(script.Parent.Parent.formatTime).default
+local formatTime = require("../formatTime").default
 it("defaults to milliseconds", function()
 	expect(formatTime(42)).toBe("42 ms")
 end)

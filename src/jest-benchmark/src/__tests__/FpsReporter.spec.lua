@@ -15,8 +15,7 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local Packages = script:FindFirstAncestor("JestBenchmark").Parent
-local JestGlobals = require(Packages.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local it = JestGlobals.it
 local expect = JestGlobals.expect
 local jest = JestGlobals.jest
@@ -38,7 +37,7 @@ beforeEach(function()
 			end,
 		}
 	end)
-	local FpsReporterModule = require(script.Parent.Parent.reporters.FpsReporter)
+	local FpsReporterModule = require("../reporters/FpsReporter")
 	initializeFpsReporter = FpsReporterModule.initializeFpsReporter
 end)
 

@@ -7,16 +7,15 @@
  *
  ]]
 
-local Packages = script.Parent.Parent.Parent
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 
 type Config_Argv = typesModule.Config_Argv
 type Config_InitialOptions = typesModule.Config_InitialOptions
-local setFromArgv = require(script.Parent.Parent.setFromArgv).default
+local setFromArgv = require("../setFromArgv").default
 
 it("maps special values to valid options", function()
 	local options = {} :: Config_InitialOptions

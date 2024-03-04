@@ -15,32 +15,31 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local Packages = script:FindFirstAncestor("JestBenchmark").Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
-local test = require(script.Parent.testModule)
+local test = require("./testModule")
 
-local profilerModule = require(script.Parent.Profiler)
+local profilerModule = require("./Profiler")
 local initializeProfiler = profilerModule.initializeProfiler
 type Profiler = profilerModule.Profiler
 
-local reporterModule = require(script.Parent.reporters.Reporter)
+local reporterModule = require("./reporters/Reporter")
 type Reporter<T = any> = reporterModule.Reporter<T>
-local sectionTimeReporterModule = require(script.Parent.reporters.SectionTimeReporter)
+local sectionTimeReporterModule = require("./reporters/SectionTimeReporter")
 local initializeSectionTimeReporter = sectionTimeReporterModule.initializeSectionTimeReporter
-local fpsReporterModule = require(script.Parent.reporters.FpsReporter)
+local fpsReporterModule = require("./reporters/FpsReporter")
 local initializeFpsReporter = fpsReporterModule.initializeFpsReporter
 
-local MetricLogger = require(script.Parent.MetricLogger)
+local MetricLogger = require("./MetricLogger")
 type metricLoggerFn = MetricLogger.metricLoggerFn
 
-local CustomReporters = require(script.Parent.CustomReporters)
+local CustomReporters = require("./CustomReporters")
 
 local exports = {}
 
 type ReporterMap = { [string]: Reporter }
 
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Circus_TestName = typesModule.Circus_TestName
 type BenchFn = (profiler: Profiler, reporters: ReporterMap) -> ()
 

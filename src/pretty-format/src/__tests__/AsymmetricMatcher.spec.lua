@@ -6,19 +6,16 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Symbol = LuauPolyfill.Symbol
 
-local PrettyFormat = require(CurrentModule)
+local PrettyFormat = require("../init")
 local prettyFormat = PrettyFormat.default
 local plugins = PrettyFormat.plugins
 
 local AsymmetricMatcher = plugins.AsymmetricMatcher
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local test = JestGlobals.test
 local describe = JestGlobals.describe

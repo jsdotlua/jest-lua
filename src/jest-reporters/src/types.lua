@@ -8,10 +8,7 @@
 
 type void = nil
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Array<T> = LuauPolyfill.Array<T>
 type Error = LuauPolyfill.Error
 type Promise<T> = LuauPolyfill.Promise<T>
@@ -19,32 +16,32 @@ type Set<T> = LuauPolyfill.Set<T>
 
 local exports = {}
 
-local testResultModule = require(Packages.JestTestResult)
+local testResultModule = require("@pkg/@jsdotlua/jest-test-result")
 type AggregatedResult = testResultModule.AggregatedResult
 type SerializableError = testResultModule.SerializableError
 type TestCaseResult = testResultModule.TestCaseResult
 type TestResult = testResultModule.TestResult
 
-local jestTypesModule = require(Packages.JestTypes)
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_Path = jestTypesModule.Config_Path
 type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
 type Config_GlobalConfig = jestTypesModule.Config_GlobalConfig
 
 -- ROBLOX deviation START: any types that aren't ported and we don't need
--- local jest_haste_mapModule = require(Packages["jest-haste-map"])
+-- local jest_haste_mapModule = require("@pkg/jest-haste-map")
 type HasteFS = any
 type ModuleMap = any
 
--- local jest_resolveModule = require(Packages["jest-resolve"])
+-- local jest_resolveModule = require("@pkg/jest-resolve")
 type Resolver = any
 
--- local CoverageWorkerModule = require(CurrentModule.CoverageWorker)
+-- local CoverageWorkerModule = require("./CoverageWorker")
 -- type worker = CoverageWorkerModule.worker
 type worker = any
 -- ROBLOX deviation END
 
 -- ROBLOX deviation START: type for mock process param used added to Reporters
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 type Writeable = RobloxShared.Writeable
 export type NodeProcessMock = {
 	env: {

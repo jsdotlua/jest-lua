@@ -14,16 +14,13 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local getType = require(CurrentModule).getType
-local isRobloxBuiltin = require(CurrentModule).isRobloxBuiltin
+local getType = require("../init").getType
+local isRobloxBuiltin = require("../init").isRobloxBuiltin
 
 describe(".getType()", function()
 	it("supports tables with a throwing __index metamethod", function()
