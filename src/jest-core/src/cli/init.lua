@@ -179,20 +179,20 @@ local function buildContextsAndHasteMaps(
 	return Promise.resolve():andThen(function()
 		-- ROBLOX deviation START: no haste maps support
 		-- local hasteMapInstances = {}
-		local contexts = Promise.all(Array.map(configs, function(config, index)
-			return Promise.resolve():andThen(function()
-				-- createDirectory(config.cacheDirectory)
-				-- local hasteMapInstance = Runtime:createHasteMap(config, {
-				-- 	console = CustomConsole.new(outputStream, outputStream),
-				-- 	maxWorkers = math.max(1, math.floor(globalConfig.maxWorkers / #configs)),
-				-- 	resetCache = not Boolean.toJSBoolean(config.cache),
-				-- 	watch = Boolean.toJSBoolean(globalConfig.watch) and globalConfig.watch or globalConfig.watchAll,
-				-- 	watchman = globalConfig.watchman,
-				-- })
-				-- hasteMapInstances[index] = hasteMapInstance
-				return createContext(config, nil)
-			end)
-		end)):expect()
+		local configPromises = Array.map(configs, function(config, index)
+			-- createDirectory(config.cacheDirectory)
+			-- local hasteMapInstance = Runtime:createHasteMap(config, {
+			-- 	console = CustomConsole.new(outputStream, outputStream),
+			-- 	maxWorkers = math.max(1, math.floor(globalConfig.maxWorkers / #configs)),
+			-- 	resetCache = not Boolean.toJSBoolean(config.cache),
+			-- 	watch = Boolean.toJSBoolean(globalConfig.watch) and globalConfig.watch or globalConfig.watchAll,
+			-- 	watchman = globalConfig.watchman,
+			-- })
+			-- hasteMapInstances[index] = hasteMapInstance
+			return Promise.resolve(createContext(config, nil))
+		end)
+
+		local contexts = Promise.all(configPromises):expect()
 		return {
 			contexts = contexts,
 			-- hasteMapInstances = hasteMapInstances,
@@ -223,30 +223,24 @@ function _run10000(
 			if Boolean.toJSBoolean(rawFilter.setup) then
 				-- Wrap filter setup Promise to avoid "uncaught Promise" error.
 				-- If an error is returned, we surface it in the return value.
-				filterSetupPromise = (function()
-					return Promise.resolve():andThen(function()
-						local ok, result = pcall(function()
-							rawFilter:setup():expect()
-						end)
-						if not ok then
-							return result
-						end
-						return nil
-					end)
-				end)()
-			end
-			filter = function(testPaths: Array<string>)
-				return Promise.resolve():andThen(function()
-					if filterSetupPromise ~= nil then
-						-- Expect an undefined return value unless there was an error.
-						local err = filterSetupPromise:expect()
-						if Boolean.toJSBoolean(err) then
-							error(err)
-						end
+				filterSetupPromise = Promise.try(function()
+					local ok, result = rawFilter:setup():await()
+					if not ok then
+						return result
 					end
-					return rawFilter(testPaths)
+					return nil
 				end)
 			end
+			filter = Promise.promisify(function(testPaths: Array<string>)
+				if filterSetupPromise ~= nil then
+					-- Expect an undefined return value unless there was an error.
+					local err = filterSetupPromise:expect()
+					if Boolean.toJSBoolean(err) then
+						error(err)
+					end
+				end
+				return rawFilter(testPaths)
+			end)
 		end
 
 		local ref = buildContextsAndHasteMaps(configs, globalConfig, outputStream):expect()

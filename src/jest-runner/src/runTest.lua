@@ -144,9 +144,28 @@ local function runTestInternal(
 		-- local cacheFS = Map.new({ { path, testSource } })
 		-- local transformer = createScriptTransformer(config, cacheFS):expect()
 		-- ROBLOX deviation END
-		local TestEnvironment: JestEnvironment =
-			-- ROBLOX deviation: need to cast as require doesn't allow to import unknown paths
-			(require :: any)(testEnvironment)
+		local TestEnvironment: JestEnvironment
+		-- ROBLOX deviation: need to cast as require doesn't allow to import unknown paths
+		if type(testEnvironment) == "string" then
+			if _G.LUA_ENV == nil or _G.LUA_ENV == "roblox" then
+				local environmentModule = script.Parent
+					and script.Parent.Parent
+					and script.Parent.Parent.Parent
+					-- and script.Parent.Parent.Parent
+					and script.Parent.Parent.Parent:FindFirstDescendant(testEnvironment)
+				if environmentModule and environmentModule.ClassName == "Folder" then
+					environmentModule = environmentModule:FindFirstChild("src")
+				end
+				if environmentModule == nil then
+					error(Error.new(`unable to find environment '{testEnvironment}'`))
+				end
+				TestEnvironment = (require :: any)(environmentModule)
+			else
+				TestEnvironment = (require :: any)(testEnvironment)
+			end
+		else
+			TestEnvironment = (require :: any)(testEnvironment)
+		end
 		-- transformer:requireAndTranspileModule(testEnvironment):expect()
 		-- ROBLOX deviation START: use only JestCircus runner
 		local testFramework: TestFramework = require("@pkg/@jsdotlua/jest-circus").runner

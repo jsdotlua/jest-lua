@@ -35,7 +35,7 @@ local function separateMessageFromStack(content: string): { message: string, sta
 	end
 	local message = content
 	local stack = ""
-	local re = RegExp([=[^(\s*LoadedCode.*:\d+)?(: )?(.*)$]=])
+	local re = RegExp([=[^(\s*.*:\d+)?(: )?(.*)$]=])
 	local messageMatch = re:exec(content)
 	if messageMatch then
 		message = messageMatch[4]

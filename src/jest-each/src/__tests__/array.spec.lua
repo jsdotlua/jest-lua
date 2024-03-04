@@ -135,7 +135,7 @@ local function getGlobalTestMocks()
 end
 
 describe("jest-each", function()
-	Array.forEach({
+	for _, keyPath in {
 		{ "test" },
 		-- ROBLOX deviation START: concurrent is not supported
 		-- { "test", "concurrent" },
@@ -154,7 +154,7 @@ describe("jest-each", function()
 		{ "itFOCUS" },
 		{ "describeFOCUS" },
 		-- ROBLOX deviation END
-	}, function(keyPath)
+	} do
 		describe((".%s"):format(Array.join(keyPath, ".")), function()
 			it("throws an error when not called with an array", function()
 				local globalTestMocks = getGlobalTestMocks()
@@ -535,7 +535,7 @@ describe("jest-each", function()
 				-- ROBLOX deviation END
 			end)
 		end)
-	end)
+	end
 
 	describe("done callback", function()
 		-- ROBLOX TODO: should be bound in jestCircus (itEACH?)
@@ -576,7 +576,7 @@ describe("jest-each", function()
 		-- )
 	end)
 
-	Array.forEach({
+	for _, keyPath in {
 		{ "xtest" },
 		{ "test", "skip" },
 		-- ROBLOX deviation: concurrent is not available
@@ -588,7 +588,7 @@ describe("jest-each", function()
 		{ "testSKIP" },
 		{ "itSKIP" },
 		{ "describeSKIP" },
-	}, function(keyPath)
+	} do
 		describe((".%s"):format(Array.join(keyPath, ".")), function()
 			it("calls global with given title", function()
 				local globalTestMocks = getGlobalTestMocks()
@@ -672,5 +672,5 @@ describe("jest-each", function()
 				)
 			end)
 		end)
-	end)
+	end
 end)

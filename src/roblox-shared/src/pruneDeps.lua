@@ -12,6 +12,12 @@
 	* See the License for the specific language governing permissions and
 	* limitations under the License.
 ]]
+local pruneMatch = {
+	"JestRoblox._Index.",
+	"@jsdotlua.jest.",
+	"@jsdotlua.promise.",
+}
+
 local function pruneDeps(str: string?): string?
 	if str == nil then
 		return nil
@@ -19,10 +25,16 @@ local function pruneDeps(str: string?): string?
 
 	local newLines = {}
 	for _, line in (str :: string):split("\n") do
-		if line:find("LoadedCode.JestRoblox._Index.") then
-			continue
+		local matched = false
+		for _, match in pruneMatch do
+			if string.find(line, match, 1, true) then
+				matched = true
+				break
+			end
 		end
-		table.insert(newLines, line)
+		if not matched then
+			table.insert(newLines, line)
+		end
 	end
 	return table.concat(newLines, "\n")
 end

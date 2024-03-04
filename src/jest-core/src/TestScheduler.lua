@@ -300,8 +300,10 @@ function TestScheduler:scheduleTests(tests: Array<Test>, watcher: TestWatcher): 
 
 		local testRunners: { [string]: TestRunner } = {}
 		local contextsByTestRunner = WeakMap.new()
-		Promise.all(Array.map(Array.from(testContexts), function(context)
-			return Promise.resolve():andThen(function()
+		local testContextsArray = Array.from(testContexts)
+		local testContextPromises = Array.map(
+			testContextsArray,
+			Promise.promisify(function(context)
 				local config = context.config
 				if not Boolean.toJSBoolean(testRunners[config.runner]) then
 					-- ROBLOX deviation START: use regular require to load TestRunner
@@ -317,7 +319,8 @@ function TestScheduler:scheduleTests(tests: Array<Test>, watcher: TestWatcher): 
 					contextsByTestRunner:set(runner, context)
 				end
 			end)
-		end)):expect()
+		)
+		Promise.all(testContextPromises):expect()
 
 		local testsByRunner = self:_partitionTests(testRunners, tests)
 
@@ -340,29 +343,34 @@ function TestScheduler:scheduleTests(tests: Array<Test>, watcher: TestWatcher): 
 					 * for third party test runners.
 					]]
 					if testRunner.__PRIVATE_UNSTABLE_API_supportsEventEmitters__ then
+						local function onFileStart(ref)
+							local test = ref[1]
+							return onTestFileStart(test)
+						end
+						local function onFileSuccess(ref)
+							local test, testResult = table.unpack(ref, 1, 2)
+							return onResult(test, testResult)
+						end
+						local function onFileFailure(ref)
+							local test, error_ = table.unpack(ref, 1, 2)
+							return onFailure(test, error_)
+						end
+						local function onCaseResult(ref)
+							local testPath, testCaseResult = table.unpack(ref, 1, 2)
+							local test: Test = {
+								context = context,
+								-- ROBLOX FIXME: need script path
+								path = testPath.Name,
+								script = testPath,
+							}
+							self._dispatcher:onTestCaseResult(test, testCaseResult)
+						end
+
 						local unsubscribes = {
-							testRunner:on("test-file-start", function(ref)
-								local test = ref[1]
-								return onTestFileStart(test)
-							end),
-							testRunner:on("test-file-success", function(ref)
-								local test, testResult = table.unpack(ref, 1, 2)
-								return onResult(test, testResult)
-							end),
-							testRunner:on("test-file-failure", function(ref)
-								local test, error_ = table.unpack(ref, 1, 2)
-								return onFailure(test, error_)
-							end),
-							testRunner:on("test-case-result", function(ref)
-								local testPath, testCaseResult = table.unpack(ref, 1, 2)
-								local test: Test = {
-									context = context,
-									-- ROBLOX FIXME: need script path
-									path = testPath.Name,
-									script = testPath,
-								}
-								self._dispatcher:onTestCaseResult(test, testCaseResult)
-							end),
+							testRunner:on("test-file-start", onFileStart),
+							testRunner:on("test-file-success", onFileSuccess),
+							testRunner:on("test-file-failure", onFileFailure),
+							testRunner:on("test-case-result", onCaseResult),
 						}
 
 						testRunner
@@ -377,9 +385,9 @@ function TestScheduler:scheduleTests(tests: Array<Test>, watcher: TestWatcher): 
 							)
 							:expect()
 
-						Array.forEach(unsubscribes, function(sub)
-							return sub()
-						end)
+						for _, sub in unsubscribes do
+							sub()
+						end
 					else
 						testRunner
 							:runTests(
@@ -575,9 +583,8 @@ function TestScheduler:_bailIfNeeded(
 				return
 			end
 
-			local ok, result = pcall(function()
-				self._dispatcher:onRunComplete(contexts, aggregatedResults):expect()
-			end)
+			local ok, result = self._dispatcher:onRunComplete(contexts, aggregatedResults):await()
+
 			local exitCode = self._globalConfig.testFailureExitCode
 			exit(exitCode)
 			if not ok then
