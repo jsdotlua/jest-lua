@@ -152,7 +152,7 @@ local function runTestInternal(
 					and script.Parent.Parent
 					and script.Parent.Parent.Parent
 					-- and script.Parent.Parent.Parent
-					and script.Parent.Parent.Parent:FindFirstDescendant(testEnvironment)
+					and script.Parent.Parent.Parent:FindFirstChild(testEnvironment, true)
 				if environmentModule and environmentModule.ClassName == "Folder" then
 					environmentModule = environmentModule:FindFirstChild("src")
 				end
