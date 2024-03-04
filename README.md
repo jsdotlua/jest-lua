@@ -10,7 +10,7 @@
 
 ---
 
-Jest Lua can currently only run inside of Roblox. Help is wanted to get it running in other Lua environments, such as [Lune](https://lune.gitbook.io/lune/) or [Luvit](https://luvit.io/). See issue #1.
+Jest Lua can currently only run inside of Roblox. Help is wanted to get it running in other Lua environments, such as [Lune](https://lune.gitbook.io/lune/) or [Luvit](https://luvit.io/). See issue [#2](https://github.com/jsdotlua/jest-lua/issues/2).
 
 Roblox uses Jest Lua internally for testing their apps, in-game core scripts, built-in Roblox Studio plugins, as well as libraries like [Roact Navigation](https://github.com/Roblox/roact-navigation). This library should be considered battle-tested and ready for production use.
 

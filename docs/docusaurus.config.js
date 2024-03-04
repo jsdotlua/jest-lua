@@ -39,9 +39,9 @@ module.exports = {
       style: 'dark',
     },
     prism: {
-      theme: require('prism-react-renderer/themes/github'),
-      darkTheme: require('prism-react-renderer/themes/dracula'),
-      additionalLanguages: ['lua'],
+      theme: require('prism-react-renderer').themes.github,
+      darkTheme: require('prism-react-renderer').themes.dracula,
+      additionalLanguages: ['lua', 'json', 'toml'],
     }
   },
   presets: [
