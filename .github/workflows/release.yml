@@ -1,0 +1,269 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "The version to release starting with `v`"
+        required: true
+        type: string
+
+      release_ref:
+        description: "The branch, tag or SHA to checkout (default to latest)"
+        default: ""
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  publish-package:
+    name: Publish package
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "latest"
+          cache: "yarn"
+          cache-dependency-path: "yarn.lock"
+
+      - name: Install packages
+        run: yarn install --immutable
+
+      - name: Run npmluau
+        run: yarn run prepare
+
+      - name: Authenticate yarn
+        run: |
+          yarn config set npmAlwaysAuth true
+          yarn config set npmScopes.jsdotlua.npmAuthToken $NPM_AUTH_TOKEN
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - run: yarn workspaces foreach --all --no-private npm publish --access public
+
+  publish-wally-package:
+    needs: publish-package
+
+    name: Publish wally package
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: Roblox/setup-foreman@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "latest"
+          cache: "yarn"
+          cache-dependency-path: "yarn.lock"
+
+      - name: Install packages
+        run: yarn install --immutable
+
+      - name: Run npmluau
+        run: yarn run prepare
+
+      - name: Build assets
+        run: yarn run build-assets
+
+      - name: Login to wally
+        run: wally login --project-path build/wally/diff-sequences --token ${{ secrets.WALLY_ACCESS_TOKEN }}
+
+      - name: Publish diff-sequences to wally
+        run: wally publish --project-path build/wally/diff-sequences
+
+      - name: Publish emittery to wally
+        run: wally publish --project-path build/wally/emittery
+
+      - name: Publish path to wally
+        run: wally publish --project-path build/wally/path
+
+      - name: Publish throat to wally
+        run: wally publish --project-path build/wally/throat
+
+      - name: Publish jest-snapshot-serializer-raw to wally
+        run: wally publish --project-path build/wally/jest-snapshot-serializer-raw
+
+      - name: Publish jest-get-type to wally
+        run: wally publish --project-path build/wally/jest-get-type
+
+      - name: Publish jest-validate to wally
+        run: wally publish --project-path build/wally/jest-validate
+
+      - name: Publish jest-types to wally
+        run: wally publish --project-path build/wally/jest-types
+
+      - name: Publish jest-mock to wally
+        run: wally publish --project-path build/wally/jest-mock
+
+      - name: Publish jest-roblox-shared to wally
+        run: wally publish --project-path build/wally/jest-roblox-shared
+
+      - name: Publish jest-util to wally
+        run: wally publish --project-path build/wally/jest-util
+
+      - name: Publish pretty-format to wally
+        run: wally publish --project-path build/wally/pretty-format
+
+      - name: Publish jest-diff to wally
+        run: wally publish --project-path build/wally/jest-diff
+
+      - name: Publish jest-matcher-utils to wally
+        run: wally publish --project-path build/wally/jest-matcher-utils
+
+      - name: Publish jest-message-util to wally
+        run: wally publish --project-path build/wally/jest-message-util
+
+      - name: Publish jest-snapshot to wally
+        run: wally publish --project-path build/wally/jest-snapshot
+
+      - name: Publish jest-fake-timers to wally
+        run: wally publish --project-path build/wally/jest-fake-timers
+
+      - name: Publish jest-environment to wally
+        run: wally publish --project-path build/wally/jest-environment
+
+      - name: Publish jest-environment-roblox to wally
+        run: wally publish --project-path build/wally/jest-environment-roblox
+
+      - name: Publish jest-each to wally
+        run: wally publish --project-path build/wally/jest-each
+
+      - name: Publish jest-config to wally
+        run: wally publish --project-path build/wally/jest-config
+
+      - name: Publish expect to wally
+        run: wally publish --project-path build/wally/expect
+
+      - name: Publish jest-console to wally
+        run: wally publish --project-path build/wally/jest-console
+
+      - name: Publish jest-test-result to wally
+        run: wally publish --project-path build/wally/jest-test-result
+
+      - name: Publish jest-reporters to wally
+        run: wally publish --project-path build/wally/jest-reporters
+
+      - name: Publish jest-runtime to wally
+        run: wally publish --project-path build/wally/jest-runtime
+
+      - name: Publish jest-circus to wally
+        run: wally publish --project-path build/wally/jest-circus
+
+      - name: Publish jest-runner to wally
+        run: wally publish --project-path build/wally/jest-runner
+
+      - name: Publish jest-core to wally
+        run: wally publish --project-path build/wally/jest-core
+
+      - name: Publish jest-jasmine2 to wally
+        run: wally publish --project-path build/wally/jest-jasmine2
+
+      - name: Publish jest-globals to wally
+        run: wally publish --project-path build/wally/jest-globals
+
+      - name: Publish jest to wally
+        run: wally publish --project-path build/wally/jest
+
+
+  create-release:
+    needs: publish-package
+
+    name: Create release
+    runs-on: ubuntu-latest
+
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create tag
+        run: |
+          git fetch --tags --no-recurse-submodules
+          if [ ! $(git tag -l ${{ inputs.release_tag }}) ]; then
+            git tag ${{ inputs.release_tag }}
+            git push origin ${{ inputs.release_tag }}
+          fi
+
+      - name: Create release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ inputs.release_tag }}
+          name: ${{ inputs.release_tag }}
+          draft: false
+
+  build-assets:
+    needs: create-release
+
+    name: Add assets
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - artifact-name: jest-lua.rbxm
+            path: build/jest-lua.rbxm
+            asset-type: application/octet-stream
+
+          - artifact-name: jest-lua-dev.rbxm
+            path: build/debug/jest-lua.rbxm
+            asset-type: application/octet-stream
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: Roblox/setup-foreman@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "latest"
+          cache: "yarn"
+          cache-dependency-path: "yarn.lock"
+
+      - name: Install packages
+        run: yarn install --immutable
+
+      - name: Run npmluau
+        run: yarn run prepare
+
+      - name: Build assets
+        run: yarn run build-assets
+
+      - name: Upload asset
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.artifact-name }}
+          path: ${{ matrix.path }}
+
+      - name: Add asset to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: ${{ matrix.path }}
+          asset_name: ${{ matrix.artifact-name }}
+          asset_content_type: ${{ matrix.asset-type }}

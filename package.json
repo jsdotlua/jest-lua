@@ -7,9 +7,9 @@
   "scripts": {
     "prepare": "npmluau",
     "build-assets": "sh ./scripts/build-assets.sh",
-    "lint": "selene modules",
-    "format": "stylua modules",
-    "style-check": "stylua modules --check",
+    "lint": "selene src",
+    "format": "stylua src",
+    "style-check": "stylua src --check",
     "test:roblox": "sh ./scripts/test-roblox.sh",
     "verify-pack": "yarn workspaces foreach -A --no-private pack --dry-run",
     "clean": "rm -rf roblox build node_modules"
