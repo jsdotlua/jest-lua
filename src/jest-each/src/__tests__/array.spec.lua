@@ -135,26 +135,28 @@ local function getGlobalTestMocks()
 end
 
 describe("jest-each", function()
-	for _, keyPath in {
-		{ "test" },
-		-- ROBLOX deviation START: concurrent is not supported
-		-- { "test", "concurrent" },
-		-- { "test", "concurrent", "only" },
-		-- { "test", "concurrent", "skip" },
-		-- ROBLOX deviation END
-		{ "test", "only" },
-		{ "it" },
-		{ "fit" },
-		{ "it", "only" },
-		{ "describe" },
-		{ "fdescribe" },
-		{ "describe", "only" },
-		-- ROBLOX deviation START: support TestEZ methods
-		{ "testFOCUS" },
-		{ "itFOCUS" },
-		{ "describeFOCUS" },
-		-- ROBLOX deviation END
-	} do
+	for _, keyPath in
+		{
+			{ "test" },
+			-- ROBLOX deviation START: concurrent is not supported
+			-- { "test", "concurrent" },
+			-- { "test", "concurrent", "only" },
+			-- { "test", "concurrent", "skip" },
+			-- ROBLOX deviation END
+			{ "test", "only" },
+			{ "it" },
+			{ "fit" },
+			{ "it", "only" },
+			{ "describe" },
+			{ "fdescribe" },
+			{ "describe", "only" },
+			-- ROBLOX deviation START: support TestEZ methods
+			{ "testFOCUS" },
+			{ "itFOCUS" },
+			{ "describeFOCUS" },
+			-- ROBLOX deviation END
+		}
+	do
 		describe((".%s"):format(Array.join(keyPath, ".")), function()
 			it("throws an error when not called with an array", function()
 				local globalTestMocks = getGlobalTestMocks()
@@ -576,19 +578,21 @@ describe("jest-each", function()
 		-- )
 	end)
 
-	for _, keyPath in {
-		{ "xtest" },
-		{ "test", "skip" },
-		-- ROBLOX deviation: concurrent is not available
-		-- { "test", "concurrent", "skip" },
-		{ "xit" },
-		{ "it", "skip" },
-		{ "xdescribe" },
-		{ "describe", "skip" },
-		{ "testSKIP" },
-		{ "itSKIP" },
-		{ "describeSKIP" },
-	} do
+	for _, keyPath in
+		{
+			{ "xtest" },
+			{ "test", "skip" },
+			-- ROBLOX deviation: concurrent is not available
+			-- { "test", "concurrent", "skip" },
+			{ "xit" },
+			{ "it", "skip" },
+			{ "xdescribe" },
+			{ "describe", "skip" },
+			{ "testSKIP" },
+			{ "itSKIP" },
+			{ "describeSKIP" },
+		}
+	do
 		describe((".%s"):format(Array.join(keyPath, ".")), function()
 			it("calls global with given title", function()
 				local globalTestMocks = getGlobalTestMocks()

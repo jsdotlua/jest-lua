@@ -2796,9 +2796,9 @@ function Runtime_private:getGlobalsFromEnvironment(): JestGlobals
 	end
 
 	-- ROBLOX deviation START: additional extracted variables
-	local jestSnapshot = require('@pkg/@jsdotlua/jest-snapshot')
+	local jestSnapshot = require("@pkg/@jsdotlua/jest-snapshot")
 	-- local jestSnapshot = self:requireModuleOrMock(Packages.JestSnapshot)
-	local jestExpect = require('@pkg/@jsdotlua/expect')
+	local jestExpect = require("@pkg/@jsdotlua/expect")
 	-- local jestExpect = self:requireModuleOrMock(Packages.Expect)
 	-- ROBLOX deviation END
 

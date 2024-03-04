@@ -19,7 +19,7 @@ local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local diff = require('../init')
+local diff = require("../init")
 
 -- ROBLOX deviation: lua does not allow string indexing, so we convert string inputs to arrays
 local function stringToArray(s: string): Array<any>

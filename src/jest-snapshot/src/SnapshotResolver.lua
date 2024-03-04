@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
- local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 local Map = LuauPolyfill.Map
 local String = LuauPolyfill.String
