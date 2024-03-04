@@ -126,7 +126,7 @@ Expected constructor: <g>Err2</>
 
 Received value: <r>"nil"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:216
+      ReplicatedStorage.node_modules.@jsdotlua.expect.src.__tests__.toThrowMatchers.spec:223
 ]=]
 
 exports[ [=[toThrow error class threw, but class should not match (error subclass) 1]=] ] = [=[
@@ -200,7 +200,7 @@ exports[ [=[toThrow expected is undefined threw, but should not have (non-error 
 
 Thrown value: <r>"nil"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:556
+      ReplicatedStorage.node_modules.@jsdotlua.expect.src.__tests__.toThrowMatchers.spec:32
 ]=]
 
 exports[ [=[toThrow invalid actual 1]=] ] = [=[
@@ -279,7 +279,7 @@ exports[ [=[toThrow regexp threw, but message did not match (non-error falsey) 1
 Expected pattern: <g>/^[123456789]\d*/</>
 Received value:   <r>"0"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:150
+      ReplicatedStorage.node_modules.@jsdotlua.expect.src.__tests__.toThrowMatchers.spec:157
 ]=]
 
 exports[ [=[toThrow regexp threw, but message should not match (error) 1]=] ] = [=[
@@ -300,7 +300,7 @@ exports[ [=[toThrow regexp threw, but message should not match (non-error truthy
 Expected pattern: never <g>/^[123456789]\d*/</>
 Received value:         <r>"404"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:168
+      ReplicatedStorage.node_modules.@jsdotlua.expect.src.__tests__.toThrowMatchers.spec:175
 ]=]
 
 exports[ [=[toThrow substring did not throw at all 1]=] ] = [=[
@@ -330,7 +330,7 @@ exports[ [=[toThrow substring threw, but message did not match (non-error falsey
 Expected substring: <g>"Server Error"</>
 Received value:     <r>""</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:90
+      ReplicatedStorage.node_modules.@jsdotlua.expect.src.__tests__.toThrowMatchers.spec:97
 ]=]
 
 exports[ [=[toThrow substring threw, but message should not match (error) 1]=] ] = [=[
@@ -350,7 +350,7 @@ exports[ [=[toThrow substring threw, but message should not match (non-error tru
 Expected substring: never <g>"Server Error"</>
 Received value:           <r>"Internal Server Error"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:112
+      ReplicatedStorage.node_modules.@jsdotlua.expect.src.__tests__.toThrowMatchers.spec:119
 ]=]
 
 exports[ [=[toThrowError asymmetric any-Class fail isNot false 1]=] ] = [=[
@@ -468,7 +468,7 @@ Expected constructor: <g>Err2</>
 
 Received value: <r>"nil"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:216
+      ReplicatedStorage.node_modules.@jsdotlua.expect.src.__tests__.toThrowMatchers.spec:223
 ]=]
 
 exports[ [=[toThrowError error class threw, but class should not match (error subclass) 1]=] ] = [=[
@@ -542,7 +542,7 @@ exports[ [=[toThrowError expected is undefined threw, but should not have (non-e
 
 Thrown value: <r>"nil"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:556
+      ReplicatedStorage.node_modules.@jsdotlua.expect.src.__tests__.toThrowMatchers.spec:32
 ]=]
 
 exports[ [=[toThrowError invalid actual 1]=] ] = [=[
@@ -622,7 +622,7 @@ exports[ [=[toThrowError regexp threw, but message did not match (non-error fals
 Expected pattern: <g>/^[123456789]\d*/</>
 Received value:   <r>"0"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:150
+      ReplicatedStorage.node_modules.@jsdotlua.expect.src.__tests__.toThrowMatchers.spec:157
 ]=]
 
 exports[ [=[toThrowError regexp threw, but message should not match (error) 1]=] ] = [=[
@@ -643,7 +643,7 @@ exports[ [=[toThrowError regexp threw, but message should not match (non-error t
 Expected pattern: never <g>/^[123456789]\d*/</>
 Received value:         <r>"404"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:168
+      ReplicatedStorage.node_modules.@jsdotlua.expect.src.__tests__.toThrowMatchers.spec:175
 ]=]
 
 exports[ [=[toThrowError substring did not throw at all 1]=] ] = [=[
@@ -673,7 +673,7 @@ exports[ [=[toThrowError substring threw, but message did not match (non-error f
 Expected substring: <g>"Server Error"</>
 Received value:     <r>""</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:90
+      ReplicatedStorage.node_modules.@jsdotlua.expect.src.__tests__.toThrowMatchers.spec:97
 ]=]
 
 exports[ [=[toThrowError substring threw, but message should not match (error) 1]=] ] = [=[
@@ -693,7 +693,7 @@ exports[ [=[toThrowError substring threw, but message should not match (non-erro
 Expected substring: never <g>"Server Error"</>
 Received value:           <r>"Internal Server Error"</>
 
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.toThrowMatchers.spec:112
+      ReplicatedStorage.node_modules.@jsdotlua.expect.src.__tests__.toThrowMatchers.spec:119
 ]=]
 
 return exports

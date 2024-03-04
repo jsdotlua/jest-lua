@@ -7,7 +7,7 @@ Table {
   "CFrame": CFrame(0, 20, 20, 1, 0, -0, -0, 0.707106829, 0.707106829, 0, -0.707106829, 0.707106829),
   "CameraType": EnumItem(Enum.CameraType.Fixed),
   "ClassName": "Camera",
-  "DiagonalFieldOfView": 88.87651062011719,
+  "DiagonalFieldOfView": NumberCloseTo 88.87651 (3 digits),
   "FieldOfView": 70,
   "FieldOfViewMode": EnumItem(Enum.FieldOfViewMode.Vertical),
   "Focus": CFrame(0, 0, -5, 1, 0, 0, 0, 1, 0, 0, 0, 1),

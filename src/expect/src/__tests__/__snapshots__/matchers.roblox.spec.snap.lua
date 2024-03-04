@@ -131,7 +131,7 @@ ScreenGui {
       BorderSizePixel: 0,
       ClassName: TextButton,
       ClipsDescendants: false,
-      ContentText: Button,
+      ContentText: Binding: examples/binding,
       Font: EnumItem(Enum.Font.SourceSans),
       LayoutOrder: 7,
       LineHeight: 1,
@@ -220,7 +220,7 @@ ScreenGui {
       BorderSizePixel: 0,
       ClassName: TextButton,
       ClipsDescendants: false,
-      ContentText: Button,
+      ContentText: Changed Signal: examples/changed-signal,
       Font: EnumItem(Enum.Font.SourceSans),
       LayoutOrder: 3,
       LineHeight: 1,
@@ -309,7 +309,7 @@ ScreenGui {
       BorderSizePixel: 0,
       ClassName: TextButton,
       ClipsDescendants: false,
-      ContentText: Button,
+      ContentText: Clock: examples/clock,
       Font: EnumItem(Enum.Font.SourceSans),
       LayoutOrder: 2,
       LineHeight: 1,
@@ -398,7 +398,7 @@ ScreenGui {
       BorderSizePixel: 0,
       ClassName: TextButton,
       ClipsDescendants: false,
-      ContentText: Button,
+      ContentText: Event: examples/event,
       Font: EnumItem(Enum.Font.SourceSans),
       LayoutOrder: 5,
       LineHeight: 1,
@@ -487,7 +487,7 @@ ScreenGui {
       BorderSizePixel: 0,
       ClassName: TextButton,
       ClipsDescendants: false,
-      ContentText: Button,
+      ContentText: Hello, Roact!: examples/hello-roact,
       Font: EnumItem(Enum.Font.SourceSans),
       LayoutOrder: 1,
       LineHeight: 1,
@@ -576,7 +576,7 @@ ScreenGui {
       BorderSizePixel: 0,
       ClassName: TextButton,
       ClipsDescendants: false,
-      ContentText: Button,
+      ContentText: Ref: examples/ref,
       Font: EnumItem(Enum.Font.SourceSans),
       LayoutOrder: 6,
       LineHeight: 1,
@@ -665,7 +665,7 @@ ScreenGui {
       BorderSizePixel: 0,
       ClassName: TextButton,
       ClipsDescendants: false,
-      ContentText: Button,
+      ContentText: Stress Test: examples/stress-test,
       Font: EnumItem(Enum.Font.SourceSans),
       LayoutOrder: 4,
       LineHeight: 1,
@@ -766,10 +766,10 @@ Error message: <r>"<d>expect(</><r>received</><r><d>).</>toBe<d>(</><g>expected<
       Error: <d>expect(</><r>received</><d>).</>toBe<d>(</><g>expected</><d>) -- Object.is equality</>
       Expected: <g>2</>
       Received: <r>4</>
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:183
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:172
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:171
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:182
+      ReplicatedStorage.node_modules.@jsdotlua.expect.src.__tests__.matchers.roblox.spec:180
+      ReplicatedStorage.node_modules.@jsdotlua.expect.src.__tests__.matchers.roblox.spec:169
+      ReplicatedStorage.node_modules.@jsdotlua.expect.src.__tests__.matchers.roblox.spec:168
+      ReplicatedStorage.node_modules.@jsdotlua.expect.src.__tests__.matchers.roblox.spec:179
 ]=]
 
 exports[ [=[tests stack traces for calls within pcalls with Error polyfill 1]=] ] = [=[
@@ -778,12 +778,12 @@ exports[ [=[tests stack traces for calls within pcalls with Error polyfill 1]=] 
 
 Thrown value: <r>"attempt to concatenate string with table"</>
 
-      LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.Error.Error.global:81 function __recalculateStacktrace
-      LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.Error.Error.global:73 function __captureStackTrace
-      LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.Error.Error.global:40 function __createError
-      LoadedCode.JestRoblox._Index.LuauPolyfill.LuauPolyfill.Error.Error.global:89 function __call
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:194
-      LoadedCode.JestRoblox._Workspace.Expect.Expect.__tests__.matchers.roblox.spec:201
+      ReplicatedStorage.node_modules.@jsdotlua.luau-polyfill.src.Error.Error.global:64 function __recalculateStacktrace
+      ReplicatedStorage.node_modules.@jsdotlua.luau-polyfill.src.Error.Error.global:56 function __captureStackTrace
+      ReplicatedStorage.node_modules.@jsdotlua.luau-polyfill.src.Error.Error.global:23 function __createError
+      ReplicatedStorage.node_modules.@jsdotlua.luau-polyfill.src.Error.Error.global:72 function __call
+      ReplicatedStorage.node_modules.@jsdotlua.expect.src.__tests__.matchers.roblox.spec:191
+      ReplicatedStorage.node_modules.@jsdotlua.expect.src.__tests__.matchers.roblox.spec:198
 ]=]
 
 return exports
