@@ -6,8 +6,7 @@
 * LICENSE file in the root directory of this source tree.
 ]]
 
-local rootWorkspace = script.Parent.Parent
-local LuauPolyfill = require(rootWorkspace.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Array<T> = LuauPolyfill.Array<T>
 type Error = LuauPolyfill.Error
 type Object = LuauPolyfill.Object
@@ -22,7 +21,7 @@ type TemplateStringsArray = Array<string>
 type void = nil
 
 -- ROBLOX deviation START: Package not available, setting type to object
--- local istanbul_lib_coverageModule = require(rootWorkspace["istanbul-lib-coverage"])
+-- local istanbul_lib_coverageModule = require("../istanbul-lib-coverage")
 type CoverageMapData = Object
 -- ROBLOX deviation END
 

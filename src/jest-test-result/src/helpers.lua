@@ -5,16 +5,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  ]]
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Boolean = LuauPolyfill.Boolean
 
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_Path = typesModule.Config_Path
 
-local types = require(CurrentModule.types)
+local types = require("./types")
 type AggregatedResult = types.AggregatedResult
 type SerializableError = types.SerializableError
 type TestResult = types.TestResult

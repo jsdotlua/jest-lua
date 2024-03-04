@@ -6,10 +6,7 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
 local instanceof = LuauPolyfill.instanceof
@@ -17,11 +14,11 @@ local String = LuauPolyfill.String
 
 type Array<T> = LuauPolyfill.Array<T>
 
-local chalk = (require(Packages.ChalkLua) :: any) :: Chalk
+local chalk = (require("@pkg/@jsdotlua/chalk") :: any) :: Chalk
 
-local getObjectSubset = require(Packages.RobloxShared).expect.getObjectSubset
+local getObjectSubset = require("@pkg/@jsdotlua/jest-roblox-shared").expect.getObjectSubset
 
-local JestDiff = require(Packages.JestDiff)
+local JestDiff = require("@pkg/@jsdotlua/jest-diff")
 local DIFF_DELETE = JestDiff.DIFF_DELETE
 local DIFF_EQUAL = JestDiff.DIFF_EQUAL
 local DIFF_INSERT = JestDiff.DIFF_INSERT
@@ -32,11 +29,11 @@ local diffLinesUnified2 = JestDiff.diffLinesUnified2
 local diffStringsRaw = JestDiff.diffStringsRaw
 local diffStringsUnified = JestDiff.diffStringsUnified
 
-local JestGetType = require(Packages.JestGetType)
+local JestGetType = require("@pkg/@jsdotlua/jest-get-type")
 local getType = JestGetType.getType
 local isPrimitive = JestGetType.isPrimitive
 
-local JestMatcherUtils = require(Packages.JestMatcherUtils)
+local JestMatcherUtils = require("@pkg/@jsdotlua/jest-matcher-utils")
 local BOLD_WEIGHT = JestMatcherUtils.BOLD_WEIGHT
 local EXPECTED_COLOR = JestMatcherUtils.EXPECTED_COLOR
 local INVERTED_COLOR = JestMatcherUtils.INVERTED_COLOR
@@ -45,9 +42,9 @@ local RECEIVED_COLOR = JestMatcherUtils.RECEIVED_COLOR
 local getLabelPrinter = JestMatcherUtils.getLabelPrinter
 local matcherHint = JestMatcherUtils.matcherHint
 
-local prettyFormat = require(Packages.PrettyFormat).format
+local prettyFormat = require("@pkg/@jsdotlua/pretty-format").format
 
-local colors = require(CurrentModule.colors)
+local colors = require("./colors")
 local aBackground2 = colors.aBackground2
 local aBackground3 = colors.aBackground3
 local aForeground2 = colors.aForeground2
@@ -57,11 +54,11 @@ local bBackground3 = colors.bBackground3
 local bForeground2 = colors.bForeground2
 local bForeground3 = colors.bForeground3
 
-local dedentLines = require(CurrentModule.dedentLines)
-local types = require(CurrentModule.types)
+local dedentLines = require("./dedentLines")
+local types = require("./types")
 type MatchSnapshotConfig = types.MatchSnapshotConfig
 
-local utils = require(CurrentModule.utils)
+local utils = require("./utils")
 local deserializeString = utils.deserializeString
 local minify = utils.minify
 local serialize = utils.serialize

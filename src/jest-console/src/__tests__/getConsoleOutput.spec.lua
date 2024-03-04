@@ -9,22 +9,22 @@
 local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent.Parent
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 
-local jestTypesModule = require(Packages.JestTypes)
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 type GlobalConfig = jestTypesModule.Config_GlobalConfig
 
-local getConsoleOutput = require(CurrentModule.Parent.getConsoleOutput).default
+local getConsoleOutput = require("../getConsoleOutput").default
 
-local BufferedConsoleModule = require(CurrentModule.Parent.BufferedConsole)
+local BufferedConsoleModule = require("../BufferedConsole")
 local BufferedConsole = BufferedConsoleModule.default
 type BufferedConsole = BufferedConsoleModule.BufferedConsole
 
-local typesModule = require(CurrentModule.Parent.types)
+local typesModule = require("../types")
 type ConsoleBuffer = typesModule.ConsoleBuffer
 
 describe("getConsoleOutput", function()
@@ -72,19 +72,19 @@ end)
 -- ROBLOX deviation END
 
 -- ROBLOX todo: Uncomment these tests when module mocking is supported
--- local each = require(Packages.JestEach).default({
+-- local each = require("@pkg/@jsdotlua/jest-each").default({
 -- 	it = it,
 -- 	itFOCUS = itFOCUS,
 -- })
--- local makeGlobalConfig = require(Packages.JestUtil).makeGlobalConfig
--- local formatStackTrace = require(Packages.JestMessageUtils).formatStackTrace
--- local BufferedConsole = require(CurrentModule.Parent.BufferedConsole)
--- local getConsoleOutput = require(CurrentModule.Parent.getConsoleOutput)
+-- local makeGlobalConfig = require("@pkg/@jsdotlua/jest-util").makeGlobalConfig
+-- local formatStackTrace = require("@pkg/JestMessageUtils").formatStackTrace
+-- local BufferedConsole = require("../BufferedConsole")
+-- local getConsoleOutput = require("../getConsoleOutput")
 
--- local ModuleMocker = require(Packages.JestMock).ModuleMocker
--- local expect = require(Packages.Dev.JestGlobals).expect
+-- local ModuleMocker = require("@pkg/@jsdotlua/jest-mock").ModuleMocker
+-- local expect = require("@pkg/@jsdotlua/jest-globals").expect
 
--- local typesModule = require(CurrentModule.Parent.types)
+-- local typesModule = require("../types")
 -- type LogType = typesModule.LogType
 
 -- local moduleMocker = ModuleMocker.new()

@@ -1,36 +1,33 @@
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Map = LuauPolyfill.Map
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 
-local Runtime = require(CurrentModule)
+local Runtime = require("../init")
 
 it("should not allow ModuleScripts returning zero values", function()
 	expect(function()
-		local _requireZero = (require(script.Parent["requireZero.roblox"]) :: any)
+		local _requireZero = (require("./requireZero.roblox.lua") :: any)
 	end).toThrow("ModuleScripts must return exactly one value")
 end)
 
 it("should allow ModuleScripts returning nil", function()
 	expect(function()
-		require(script.Parent["requireNil.roblox"])
+		require("./requireNil.roblox.lua")
 	end).never.toThrow()
 end)
 
 it("should allow ModuleScripts returning value", function()
 	expect(function()
-		require(script.Parent["requireOne.roblox"])
+		require("./requireOne.roblox.lua")
 	end).never.toThrow()
 end)
 
 it("should not allow ModuleScripts returning two values", function()
 	expect(function()
-		require(script.Parent["requireTwo.roblox"])
+		require("./requireTwo.roblox.lua")
 	end).toThrow("ModuleScripts must return exactly one value")
 end)
 

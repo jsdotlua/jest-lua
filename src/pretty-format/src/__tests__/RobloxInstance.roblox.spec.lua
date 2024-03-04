@@ -14,16 +14,13 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local PrettyFormat = require(CurrentModule)
+local PrettyFormat = require("../init")
 local prettyFormat = PrettyFormat.default
 local RobloxInstance = PrettyFormat.plugins.RobloxInstance
 
-local InstanceSubset = require(Packages.RobloxShared).RobloxInstance.InstanceSubset
+local InstanceSubset = require("@pkg/@jsdotlua/jest-roblox-shared").RobloxInstance.InstanceSubset
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local afterEach = JestGlobals.afterEach
 local expect = JestGlobals.expect
@@ -50,7 +47,7 @@ describe("Instance", function()
 	end)
 
 	it("serializes Folder", function()
-		expect(prettyFormatResult(CurrentModule)).toMatchSnapshot()
+		expect(prettyFormatResult(script.Parent.Parent)).toMatchSnapshot()
 	end)
 
 	it("serializes Instances in table", function()
@@ -207,7 +204,11 @@ describe("config.printInstanceDefaults", function()
 		created.Name = "ModifiedTextLabel"
 		created.Text = "not default"
 		expect(prettyFormatResult(created)).toEqual(
-			"TextLabel {\n" .. '  "Name": "ModifiedTextLabel",\n' .. '  "Text": "not default",\n' .. "}"
+			"TextLabel {\n"
+				.. '  "ContentText": "not default",\n'
+				.. '  "Name": "ModifiedTextLabel",\n'
+				.. '  "Text": "not default",\n'
+				.. "}"
 		)
 	end)
 

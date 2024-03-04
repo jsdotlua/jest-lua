@@ -7,20 +7,17 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Symbol = LuauPolyfill.Symbol
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local PrettyFormat = require(Packages.PrettyFormat)
+local PrettyFormat = require("@pkg/@jsdotlua/pretty-format")
 local format = PrettyFormat.format
-local dedentLines = require(CurrentModule.dedentLines)
+local dedentLines = require("../dedentLines")
 
 local typeof_ = Symbol.for_("react.test.json")
 local plugins = { PrettyFormat.plugins.ReactTestComponent }

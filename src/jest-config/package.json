@@ -1,0 +1,34 @@
+{
+  "name": "@jsdotlua/jest-config",
+  "version": "3.6.1-rc.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsdotlua/jest-lua.git",
+    "directory": "src/jest-config"
+  },
+  "license": "MIT",
+  "main": "src/init.lua",
+  "scripts": {
+    "prepare": "npmluau"
+  },
+  "dependencies": {
+    "@jsdotlua/chalk": "^0.2.1",
+    "@jsdotlua/jest-each": "workspace:^",
+    "@jsdotlua/jest-environment-roblox": "workspace:^",
+    "@jsdotlua/jest-get-type": "workspace:^",
+    "@jsdotlua/jest-message-util": "workspace:^",
+    "@jsdotlua/jest-roblox-shared": "workspace:^",
+    "@jsdotlua/jest-types": "workspace:^",
+    "@jsdotlua/jest-util": "workspace:^",
+    "@jsdotlua/jest-validate": "workspace:^",
+    "@jsdotlua/luau-polyfill": "^1.2.6",
+    "@jsdotlua/promise": "^3.5.0",
+    "luau-regexp": "^0.2.1"
+  },
+  "devDependencies": {
+    "@jsdotlua/jest-globals": "workspace:^",
+    "@jsdotlua/jest-snapshot-serializer-raw": "workspace:^",
+    "@jsdotlua/pretty-format": "workspace:^",
+    "npmluau": "^0.1.1"
+  }
+}

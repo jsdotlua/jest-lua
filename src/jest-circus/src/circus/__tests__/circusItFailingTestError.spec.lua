@@ -6,16 +6,12 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local SrcModule = CurrentModule.Parent
-local Packages = SrcModule.Parent.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 
 type Global_It = typesModule.Global_It
 local circusIt: Global_It
@@ -25,7 +21,7 @@ local circusTest: Global_It
 -- the two with this alias.
 
 local function aliasCircusIt()
-	local ref = require(script.Parent.Parent)
+	local ref = require("..")
 	local it, test = ref.it, ref.test
 	circusIt = it
 	circusTest = test

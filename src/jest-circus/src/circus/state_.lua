@@ -7,13 +7,10 @@
  ]]
 
 -- ROBLOX deviation: moved implementation from `state.lua` to avoid cyclic dependencies
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent.Parent
-
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Circus_State = typesModule.Circus_State
 
-local STATE_SYM = require(script.Parent.types).STATE_SYM
+local STATE_SYM = require("./types").STATE_SYM
 
 local exports = {}
 

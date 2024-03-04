@@ -6,14 +6,11 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 
-local getSnapshotStatus = require(CurrentModule.getSnapshotStatus).default
+local getSnapshotStatus = require("../getSnapshotStatus").default
 
 it("Retrieves the snapshot status", function()
 	local snapshotResult = {

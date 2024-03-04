@@ -7,15 +7,13 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
 local exports = {}
 
-local chalk = require(Packages.ChalkLua)
-local clearLine = require(script.Parent.clearLine).default
-local isInteractive = require(script.Parent.isInteractive).default
+local chalk = require("@pkg/@jsdotlua/chalk")
+local clearLine = require("./clearLine").default
+local isInteractive = require("./isInteractive").default
 
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 type Writeable = RobloxShared.Writeable
 
 local function print(stream: Writeable): ()

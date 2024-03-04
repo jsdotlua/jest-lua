@@ -6,19 +6,17 @@
  * LICENSE file in the root directory of this source tree.
  *
  ]]
-local Packages = script.Parent.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 local String = LuauPolyfill.String
 type Array<T> = LuauPolyfill.Array<T>
 
-local NIL = require(script.Parent.nilPlaceholder)
+local NIL = require("./nilPlaceholder")
 
 local exports = {}
 
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Global_ConcurrentTestFn = typesModule.Global_ConcurrentTestFn
 type Global_EachTable = typesModule.Global_EachTable
 type Global_EachTestFn<EachCallback> = typesModule.Global_EachTestFn<EachCallback>
@@ -26,13 +24,13 @@ type Global_TemplateData = typesModule.Global_TemplateData
 type Global_ArrayTable = typesModule.Global_ArrayTable
 type Global_DoneFn = typesModule.Global_DoneFn
 
-local jestutilModule = require(Packages.JestUtil)
+local jestutilModule = require("@pkg/@jsdotlua/jest-util")
 local ErrorWithStack = jestutilModule.ErrorWithStack
 local convertDescriptorToString = jestutilModule.convertDescriptorToString
 
-local convertArrayTable = require(script.Parent.table.array).default
-local convertTemplateTable = require(script.Parent.table.template).default
-local validationModule = require(script.Parent.validation)
+local convertArrayTable = require("./table/array").default
+local convertTemplateTable = require("./table/template").default
+local validationModule = require("./validation")
 local extractValidTemplateHeadings = validationModule.extractValidTemplateHeadings
 local validateArrayTable = validationModule.validateArrayTable
 local validateTemplateTableArguments = validationModule.validateTemplateTableArguments

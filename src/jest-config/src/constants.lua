@@ -9,7 +9,7 @@
 local exports = {}
 
 -- ROBLOX deviation START: not needed
--- local path = require(Packages.path)
+-- local path = require("@pkg/@jsdotlua/path")
 -- local NODE_MODULES = tostring(path.sep) .. "node_modules" .. tostring(path.sep)
 -- exports.NODE_MODULES = NODE_MODULES
 -- local DEFAULT_JS_PATTERN = "\\.[jt]sx?$"

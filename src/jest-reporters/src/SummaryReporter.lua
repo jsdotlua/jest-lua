@@ -6,10 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Set = LuauPolyfill.Set
@@ -17,25 +14,25 @@ type Set<T> = LuauPolyfill.Set<T>
 
 local exports = {}
 
-local chalk = require(Packages.ChalkLua)
+local chalk = require("@pkg/@jsdotlua/chalk")
 
-local testResultModule = require(Packages.JestTestResult)
+local testResultModule = require("@pkg/@jsdotlua/jest-test-result")
 type AggregatedResult = testResultModule.AggregatedResult
 type SnapshotSummary = testResultModule.SnapshotSummary
 
-local jestTypesModule = require(Packages.JestTypes)
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_GlobalConfig = jestTypesModule.Config_GlobalConfig
 type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
 type Config_Path = jestTypesModule.Config_Path
 
-local BaseReporter = require(CurrentModule.BaseReporter).default
-local getResultHeader = require(CurrentModule.getResultHeader).default
-local getSnapshotSummary = require(CurrentModule.getSnapshotSummary).default
-local typesModule = require(CurrentModule.types)
+local BaseReporter = require("./BaseReporter").default
+local getResultHeader = require("./getResultHeader").default
+local getSnapshotSummary = require("./getSnapshotSummary").default
+local typesModule = require("./types")
 type Context = typesModule.Context
 type ReporterOnStartOptions = typesModule.ReporterOnStartOptions
 
-local getSummary = require(CurrentModule.utils).getSummary
+local getSummary = require("./utils").getSummary
 
 local TEST_SUMMARY_THRESHOLD = 20
 local NPM_EVENTS = Set.new({

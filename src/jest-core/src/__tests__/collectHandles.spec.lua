@@ -7,23 +7,21 @@
  *
  ]]
 
-local Packages = script.Parent.Parent.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local describe = JestGlobals.describe
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 -- ROBLOX deviation START: collectHandles not ported yet
--- local LuauPolyfill = require(Packages.LuauPolyfill)
+-- local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- local Array = LuauPolyfill.Array
 -- local clearInterval = LuauPolyfill.clearInterval
 -- local setInterval = LuauPolyfill.setInterval
--- local Promise = require(Packages.Promise)
--- local dns = require(Packages.dns).promises
--- local http = require(Packages.http).default
--- local PerformanceObserver = require(Packages.perf_hooks).PerformanceObserver
--- local zlib = require(Packages.zlib).default
--- local collectHandles = require(script.Parent.Parent.collectHandles).default
+-- local Promise = require("@pkg/@jsdotlua/promise")
+-- local dns = require("@pkg/dns").promises
+-- local http = require("@pkg/http").default
+-- local PerformanceObserver = require("@pkg/perf_hooks").PerformanceObserver
+-- local zlib = require("@pkg/zlib").default
+-- local collectHandles = require("../collectHandles").default
 -- describe("collectHandles", function()
 -- 	it("should collect Timeout", function()
 -- 		return Promise.resolve():andThen(function()
@@ -121,7 +119,7 @@ local it = JestGlobals.it
 -- ROBLOX deviation START: checking if collectHandles.lua file loads without errors
 describe("collectHandles - custom tests", function()
 	it("should load collectHandles module", function()
-		local collectHandlesModule = require(script.Parent.Parent.collectHandles)
+		local collectHandlesModule = require("../collectHandles")
 
 		expect(collectHandlesModule).toBeDefined()
 	end)

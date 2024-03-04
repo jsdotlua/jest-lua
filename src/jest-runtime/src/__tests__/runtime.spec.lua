@@ -14,17 +14,14 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
 local afterAll = JestGlobals.afterAll
 
-local JestRuntime = require(CurrentModule)
+local JestRuntime = require("../init")
 -- ROBLOX TODO: using RuntimePrivate type until better approach is found
 type JestRuntime = JestRuntime.Runtime
 type Jest = JestRuntime.Jest

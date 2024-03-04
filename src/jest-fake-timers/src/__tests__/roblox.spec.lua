@@ -15,17 +15,14 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local afterEach = JestGlobals.afterEach
 
-local FakeTimers = require(CurrentModule)
+local FakeTimers = require("../init")
 local timers = FakeTimers.new()
 local FRAME_TIME = 15
 

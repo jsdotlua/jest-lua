@@ -6,15 +6,12 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Object = LuauPolyfill.Object
 
-local types = require(CurrentModule.types)
+local types = require("./types")
 type AggregatedResult = types.AggregatedResult
 type AssertionResult = types.AssertionResult
 type CodeCoverageFormatter = types.CodeCoverageFormatter

@@ -17,7 +17,7 @@
 
 local exports = {}
 
-local reporterModule = require(script.Parent.Reporter)
+local reporterModule = require("./Reporter")
 local initializeReporter = reporterModule.initializeReporter
 type Reporter = reporterModule.Reporter<number>
 

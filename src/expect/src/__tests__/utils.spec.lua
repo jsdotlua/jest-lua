@@ -7,25 +7,22 @@
 --  *
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local test = JestGlobals.test
 local testSKIP = JestGlobals.test.skip
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Set = LuauPolyfill.Set
 
-local stringify = require(Packages.JestMatcherUtils).stringify
+local stringify = require("@pkg/@jsdotlua/jest-matcher-utils").stringify
 
-local emptyObject = require(CurrentModule.utils).emptyObject
-local getObjectSubset = require(CurrentModule.utils).getObjectSubset
-local getPath = require(CurrentModule.utils).getPath
-local iterableEquality = require(CurrentModule.utils).iterableEquality
-local subsetEquality = require(CurrentModule.utils).subsetEquality
+local emptyObject = require("../utils").emptyObject
+local getObjectSubset = require("../utils").getObjectSubset
+local getPath = require("../utils").getPath
+local iterableEquality = require("../utils").iterableEquality
+local subsetEquality = require("../utils").subsetEquality
 
 type Array<T> = LuauPolyfill.Array<T>
 

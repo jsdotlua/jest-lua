@@ -7,21 +7,19 @@
  *
  ]]
 
-local Packages = script.Parent.Parent.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 
 -- ROBLOX deviation START: not used
--- local readFileSync = require(Packages["graceful-fs"]).readFileSync
--- local slash = require(Packages.slash)
--- local tempy = require(Packages.tempy)
+-- local readFileSync = require("@pkg/graceful-fs").readFileSync
+-- local slash = require("@pkg/slash")
+-- local tempy = require("@pkg/tempy")
 -- ROBLOX deviation END
 
-local CurentModule = require(script.Parent.Parent)
+local CurentModule = require("..")
 local formatExecError = CurentModule.formatExecError
 -- ROBLOX deviation START: not used
 -- local formatResultsErrors = CurentModule.formatResultsErrors

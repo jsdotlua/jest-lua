@@ -21,9 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 ]]
 -- ROBLOX comment: mostly ported from https://github.com/browserify/node-util/blob/master/util.js
-local Packages = script.Parent.Parent.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Number = LuauPolyfill.Number
 local NaN = Number.NaN
 

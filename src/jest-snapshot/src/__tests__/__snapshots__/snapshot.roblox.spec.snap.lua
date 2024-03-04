@@ -6,7 +6,7 @@ exports[ [=[custom snapshot matchers: toMatchTrimmedSnapshot 1]=] ] = [=[
 "extra long"]=]
 
 exports[ [=[native lua errors 1]=] ] = [=[
-"LoadedCode.JestRoblox._Workspace.JestSnapshot.JestSnapshot.__tests__.snapshot.roblox.spec:35: oops"]=]
+"ReplicatedStorage.node_modules.@jsdotlua.jest-snapshot.src.__tests__.snapshot.roblox.spec:32: oops"]=]
 
 -- this should not fail the test run
 exports[ [=[obsolete snapshot 1]=] ] = [=[

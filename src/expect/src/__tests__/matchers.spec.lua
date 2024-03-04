@@ -7,30 +7,27 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
 local expect = JestGlobals.expect
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local extends = LuauPolyfill.extends
 local Number = LuauPolyfill.Number
 local Object = LuauPolyfill.Object
 local Set = LuauPolyfill.Set
 local Symbol = LuauPolyfill.Symbol
 
-local RegExp = require(Packages.RegExp)
+local RegExp = require("@pkg/luau-regexp")
 
-local alignedAnsiStyleSerializer = require(Packages.Dev.TestUtils).alignedAnsiStyleSerializer
-local stringify = require(Packages.JestMatcherUtils).stringify
+local alignedAnsiStyleSerializer = require("@pkg/@jsdotlua/test-utils").alignedAnsiStyleSerializer
+local stringify = require("@pkg/@jsdotlua/jest-matcher-utils").stringify
 
 -- ROBLOX deviation: omitted Immutable, chalk imports
 
-local jestExpect = require(CurrentModule)
+local jestExpect = require("../init")
 
 -- ROBLOX deviation: chalk enabled by default
 

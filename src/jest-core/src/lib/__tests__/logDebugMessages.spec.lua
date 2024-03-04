@@ -7,23 +7,22 @@
  *
  ]]
 
-local Packages = script.Parent.Parent.Parent.Parent
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 local nodeUtils = RobloxShared.nodeUtils
 local JSON = nodeUtils.JSON
 type NodeJS_WriteStream = RobloxShared.NodeJS_WriteStream
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
 local expect = JestGlobals.expect
 
-local test_utilsModule = require(Packages.Dev.TestUtils)
+local test_utilsModule = require("@pkg/@jsdotlua/test-utils")
 local makeGlobalConfig = test_utilsModule.makeGlobalConfig
 local makeProjectConfig = test_utilsModule.makeProjectConfig
-local logDebugMessages = require(script.Parent.Parent.logDebugMessages).default
+local logDebugMessages = require("../logDebugMessages").default
 
 -- ROBLOX deviation START: no jest.mock functionality
 -- jest.mock("../../../package.json", function()
@@ -35,7 +34,7 @@ local logDebugMessages = require(script.Parent.Parent.logDebugMessages).default
 -- end, { virtual = true })
 -- ROBLOX deviation END
 
-local JestSnapshotSerializerRaw = require(Packages.Dev.JestSnapshotSerializerRaw)
+local JestSnapshotSerializerRaw = require("@pkg/@jsdotlua/jest-snapshot-serializer-raw")
 
 beforeAll(function()
 	expect.addSnapshotSerializer(JestSnapshotSerializerRaw)

@@ -6,8 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- ROBLOX deviation START: not needed dependencies
 -- local Array = LuauPolyfill.Array
 -- ROBLOX deviation END
@@ -22,10 +21,10 @@ type Error = LuauPolyfill.Error
 
 local exports = {}
 
-local chalk = require(Packages.ChalkLua)
+local chalk = require("@pkg/@jsdotlua/chalk")
 -- ROBLOX deviation START: not ported yet
--- local leven = require(Packages.leven).default
--- local prettyFormat = require(Packages.PrettyFormat).format
+-- local leven = require("@pkg/leven").default
+-- local prettyFormat = require("@pkg/@jsdotlua/pretty-format").format
 -- local BULLET: string = chalk.bold("\u{25cf}")
 -- local DEPRECATION = ("%s Deprecation Warning"):format(BULLET)
 -- exports.DEPRECATION = DEPRECATION

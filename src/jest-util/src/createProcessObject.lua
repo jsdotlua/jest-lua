@@ -27,9 +27,7 @@ return {
 -- }
 -- -- ROBLOX FIXME END
 
--- local CurrentModule = script.Parent
--- local Packages = CurrentModule.Parent
--- local LuauPolyfill = require(Packages.LuauPolyfill)
+-- local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- local Array = LuauPolyfill.Array
 -- local Boolean = LuauPolyfill.Boolean
 -- local Object = LuauPolyfill.Object
@@ -38,7 +36,7 @@ return {
 -- type Record<K, V> = { [K]: V }
 -- local exports = {}
 
--- local deepCyclicCopy = require(script.Parent.deepCyclicCopy).default
+-- local deepCyclicCopy = require("./deepCyclicCopy").default
 
 -- local BLACKLIST = Set.new({ "env", "mainModule", "_events" })
 -- -- ROBLOX FIXME: make proper platform check

@@ -6,20 +6,19 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local rootWorkspace = script.Parent.Parent
-local LuauPolyfill = require(rootWorkspace.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Array<T> = LuauPolyfill.Array<T>
 type Error = LuauPolyfill.Error
 type Object = LuauPolyfill.Object
 type Promise<T> = LuauPolyfill.Promise<T>
 
-local RegExp = require(rootWorkspace.RegExp)
+local RegExp = require("@pkg/luau-regexp")
 type RegExp = RegExp.RegExp
 
 -- ROBLOX FIXME: can't express void when defined outside of a function type
 type void = nil
 
-local GlobalModule = require(script.Parent.Global)
+local GlobalModule = require("./Global")
 
 -- ROBLOX deviation START: NodeJS.Process not available
 -- type Process = NodeJS.Process

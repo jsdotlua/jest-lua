@@ -1,0 +1,22 @@
+{
+  "name": "workspace",
+  "private": true,
+  "workspaces": [
+    "src/*"
+  ],
+  "scripts": {
+    "prepare": "npmluau",
+    "build-assets": "sh ./scripts/build-assets.sh",
+    "lint": "selene src",
+    "format": "stylua src",
+    "style-check": "stylua src --check",
+    "test:roblox": "sh ./scripts/test-roblox.sh",
+    "verify-pack": "yarn workspaces foreach -A --no-private pack --dry-run",
+    "clean": "rm -rf roblox build node_modules"
+  },
+  "devDependencies": {
+    "commander": "^11.1.0",
+    "npmluau": "^0.1.1"
+  },
+  "packageManager": "yarn@4.0.2"
+}

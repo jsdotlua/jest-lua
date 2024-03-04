@@ -1,0 +1,29 @@
+{
+  "name": "@jsdotlua/jest-snapshot",
+  "version": "3.6.1-rc.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsdotlua/jest-lua.git",
+    "directory": "src/jest-snapshot"
+  },
+  "license": "MIT",
+  "main": "src/init.lua",
+  "scripts": {
+    "prepare": "npmluau"
+  },
+  "dependencies": {
+    "@jsdotlua/chalk": "^0.2.1",
+    "@jsdotlua/jest-diff": "workspace:^",
+    "@jsdotlua/jest-get-type": "workspace:^",
+    "@jsdotlua/jest-matcher-utils": "workspace:^",
+    "@jsdotlua/jest-roblox-shared": "workspace:^",
+    "@jsdotlua/jest-types": "workspace:^",
+    "@jsdotlua/luau-polyfill": "^1.2.6",
+    "@jsdotlua/pretty-format": "workspace:^",
+    "@jsdotlua/promise": "^3.5.0"
+  },
+  "devDependencies": {
+    "@jsdotlua/jest-globals": "workspace:^",
+    "npmluau": "^0.1.1"
+  }
+}

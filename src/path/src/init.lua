@@ -1,6 +1,4 @@
-local CurrentModule = script
-
-local pathModule = require(CurrentModule.path)
+local pathModule = require("./path")
 local Path = pathModule.Path
 export type Path = pathModule.Path
 

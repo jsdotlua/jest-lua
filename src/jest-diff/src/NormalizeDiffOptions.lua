@@ -6,18 +6,15 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Number = LuauPolyfill.Number
 local Object = LuauPolyfill.Object
 
-local chalk = require(Packages.ChalkLua)
+local chalk = require("@pkg/@jsdotlua/chalk")
 -- ROBLOX TODO: fix PrettyFormat types imports
 type CompareKeys = ((a: string, b: string) -> number) | nil
 
-local Types = require(CurrentModule.types)
+local Types = require("./types")
 type DiffOptions = Types.DiffOptions
 type DiffOptionsNormalized = Types.DiffOptionsNormalized
 

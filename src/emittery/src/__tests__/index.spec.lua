@@ -6,17 +6,16 @@
 	Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)
 ]]
 
-local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 local setTimeout = LuauPolyfill.setTimeout
 local Symbol = LuauPolyfill.Symbol
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 local setImmediate = setTimeout
 local TypeError = Error
 type Object = LuauPolyfill.Object
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 local itFIXME = function(description: string, ...: any)
@@ -56,10 +55,10 @@ local t = {
 }
 -- ROBLOX deviation END
 
--- local test = require(Packages.ava).default
--- local delay_ = require(Packages.delay).default
--- local pEvent = require(Packages["p-event"]).default
-local Emittery = require(script.Parent.Parent).default
+-- local test = require("@pkg/ava").default
+-- local delay_ = require("@pkg/delay").default
+-- local pEvent = require("@pkg/p-event").default
+local Emittery = require("..").default
 it("on()", function()
 	return Promise.resolve()
 		:andThen(function()

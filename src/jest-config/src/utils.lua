@@ -6,8 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- ROBLOX deviation START: not needed
 -- local Array = LuauPolyfill.Array
 -- local Boolean = LuauPolyfill.Boolean
@@ -23,15 +22,15 @@ type Record<K, T> = { [K]: T }
 local exports = {}
 
 -- ROBLOX deviation START: not needed
--- local path = require(Packages.path)
+-- local path = require("@pkg/@jsdotlua/path")
 -- ROBLOX deviation END
-local chalk = require(Packages.ChalkLua)
-local typesModule = require(Packages.JestTypes)
+local chalk = require("@pkg/@jsdotlua/chalk")
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_Glob = typesModule.Config_Glob
 type Config_Path = typesModule.Config_Path
 -- ROBLOX deviation START: not needed
--- local Resolver = require(Packages["jest-resolve"]).default
--- local ValidationError = require(Packages["jest-validate"]).ValidationError
+-- local Resolver = require("@pkg/jest-resolve").default
+-- local ValidationError = require("@pkg/jest-validate").ValidationError
 -- local ValidationError = Error
 -- ROBLOX deviation END
 

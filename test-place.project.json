@@ -1,0 +1,30 @@
+{
+  "name": "test-place",
+  "tree": {
+    "$className": "DataModel",
+    "HttpService": {
+      "$properties": {
+        "HttpEnabled": true
+      }
+    },
+    "ReplicatedStorage": {
+      "node_modules": {
+        "$path": "./node_modules"
+      },
+      "jest.config": {
+        "$path": "./jest.config.lua"
+      },
+      "jestSetup": {
+        "$path": "./scripts/jest-setup.lua"
+      },
+      "models": {
+        "$path": "./roblox-model"
+      }
+    },
+    "ServerScriptService": {
+      "RunTests": {
+        "$path": "./scripts/run-roblox-tests.lua"
+      }
+    }
+  }
+}

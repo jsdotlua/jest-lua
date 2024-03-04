@@ -6,15 +6,14 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Object = LuauPolyfill.Object
 local console = LuauPolyfill.console
 type Array<T> = LuauPolyfill.Array<T>
 type Promise<T> = LuauPolyfill.Promise<T>
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 
 local exports = {}
 
@@ -23,24 +22,24 @@ local showTestPathPatternError
 -- ROBLOX deviation END
 
 -- ROBLOX deviation START: added missing variables to limit nr deviations
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 local nodeUtils = RobloxShared.nodeUtils
 local process = nodeUtils.process
 local getRelativePath = RobloxShared.getRelativePath
 -- ROBLOX deviation END
 
 -- ROBLOX deviation START: not needed
--- local createHash = require(Packages.crypto).createHash
--- local path = require(Packages.path)
+-- local createHash = require("@pkg/crypto").createHash
+-- local path = require("@pkg/@jsdotlua/path")
 -- ROBLOX deviation END
-local chalk = require(Packages.ChalkLua)
+local chalk = require("@pkg/@jsdotlua/chalk")
 -- ROBLOX deviation START: not needed
--- local merge = require(Packages.deepmerge)
--- local glob = require(Packages.glob).sync
--- local statSync = require(Packages["graceful-fs"]).statSync
--- local micromatch = require(Packages.micromatch)
+-- local merge = require("@pkg/deepmerge")
+-- local glob = require("@pkg/glob").sync
+-- local statSync = require("@pkg/graceful-fs").statSync
+-- local micromatch = require("@pkg/micromatch")
 -- ROBLOX deviation END
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_Argv = typesModule.Config_Argv
 type Config_DisplayName = typesModule.Config_DisplayName
 type Config_Glob = typesModule.Config_Glob
@@ -52,18 +51,18 @@ type Config_ProjectConfig = typesModule.Config_ProjectConfig
 type Config_ReporterConfig = typesModule.Config_ReporterConfig
 -- ROBLOX deviation START: not used
 
--- local replacePathSepForRegex = require(Packages["jest-regex-util"]).replacePathSepForRegex
+-- local replacePathSepForRegex = require("@pkg/jest-regex-util").replacePathSepForRegex
 local function replacePathSepForRegex(value)
 	return value
 end
--- local jest_resolveModule = require(Packages["jest-resolve"])
+-- local jest_resolveModule = require("@pkg/jest-resolve")
 -- local Resolver = jest_resolveModule.default
 -- local resolveRunner = jest_resolveModule.resolveRunner
 -- local resolveSequencer = jest_resolveModule.resolveSequencer
 -- local resolveTestEnvironment = jest_resolveModule.resolveTestEnvironment
 -- local resolveWatchPlugin = jest_resolveModule.resolveWatchPlugin
 -- ROBLOX deviation END
-local jest_utilModule = require(Packages.JestUtil)
+local jest_utilModule = require("@pkg/@jsdotlua/jest-util")
 local clearLine = jest_utilModule.clearLine
 -- ROBLOX deviation START: not used
 
@@ -74,29 +73,29 @@ end
 -- local requireOrImportModule = jest_utilModule.requireOrImportModule
 -- local tryRealpath = jest_utilModule.tryRealpath
 -- ROBLOX deviation END
-local jestValidateModule = require(Packages.JestValidate)
+local jestValidateModule = require("@pkg/@jsdotlua/jest-validate")
 local ValidationError = jestValidateModule.ValidationError
 -- ROBLOX deviation START: not used
 -- local validate = jest_validateModule.validate
 -- ROBLOX deviation END
-local DEFAULT_CONFIG = require(script.Parent.Defaults).default
+local DEFAULT_CONFIG = require("./Defaults").default
 -- ROBLOX deviation START: not used
--- local DEPRECATED_CONFIG = require(script.Parent.Deprecated).default
--- local validateReporters = require(script.Parent.ReporterValidationErrors).validateReporters
--- local VALID_CONFIG = require(script.Parent.ValidConfig).default
+-- local DEPRECATED_CONFIG = require("./Deprecated").default
+-- local validateReporters = require("./ReporterValidationErrors").validateReporters
+-- local VALID_CONFIG = require("./ValidConfig").default
 -- ROBLOX deviation END
-local getDisplayNameColor = require(script.Parent.color).getDisplayNameColor
+local getDisplayNameColor = require("./color").getDisplayNameColor
 -- ROBLOX deviation START: not used
--- local constantsModule = require(script.Parent.constants)
+-- local constantsModule = require("./constants")
 -- local DEFAULT_JS_PATTERN = constantsModule.DEFAULT_JS_PATTERN
 -- local DEFAULT_REPORTER_LABEL = constantsModule.DEFAULT_REPORTER_LABEL
 -- ROBLOX deviation END
-local getMaxWorkers = require(script.Parent.getMaxWorkers).default
+local getMaxWorkers = require("./getMaxWorkers").default
 -- ROBLOX deviation START: not needed now. Will be necessary when we want to implement TestSequencer
--- local parseShardPair = require(script.Parent.parseShardPair).parseShardPair
+-- local parseShardPair = require("./parseShardPair").parseShardPair
 -- ROBLOX deviation END
-local setFromArgv = require(script.Parent.setFromArgv).default
-local utilsModule = require(script.Parent.utils)
+local setFromArgv = require("./setFromArgv").default
+local utilsModule = require("./utils")
 local BULLET = utilsModule.BULLET
 local DOCUMENTATION_NOTE = utilsModule.DOCUMENTATION_NOTE
 -- ROBLOX deviation START: not used
@@ -105,7 +104,7 @@ local DOCUMENTATION_NOTE = utilsModule.DOCUMENTATION_NOTE
 -- local replaceRootDirInPath = utilsModule.replaceRootDirInPath
 -- local resolve = utilsModule.resolve
 -- ROBLOX deviation END
-local validatePattern = require(script.Parent.validatePattern).default
+local validatePattern = require("./validatePattern").default
 
 local ERROR = ("%sValidation Error"):format(BULLET)
 -- ROBLOX deviation START: not used

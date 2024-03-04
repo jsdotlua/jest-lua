@@ -14,16 +14,12 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local CurrentModule = script.Parent
-local SrcModule = CurrentModule.Parent
-local Packages = SrcModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local initModule = require(SrcModule)
+local initModule = require("../init")
 
 describe("jest-util init", function()
 	it("should export all necessary props", function()

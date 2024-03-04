@@ -7,13 +7,10 @@
 --  *
 --  */
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Number = LuauPolyfill.Number
 
-local JestMatcherUtils = require(Packages.JestMatcherUtils)
+local JestMatcherUtils = require("@pkg/@jsdotlua/jest-matcher-utils")
 local EXPECTED_COLOR = JestMatcherUtils.EXPECTED_COLOR
 local INVERTED_COLOR = JestMatcherUtils.INVERTED_COLOR
 local RECEIVED_COLOR = JestMatcherUtils.RECEIVED_COLOR

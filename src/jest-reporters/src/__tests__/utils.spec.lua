@@ -6,26 +6,23 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local path = require(Packages.Path).path
+local path = require("@pkg/@jsdotlua/path").path
 -- ROBLOX deviation START: not needed
--- local chalk = require(Packages.ChalkLua)
+-- local chalk = require("@pkg/@jsdotlua/chalk")
 -- ROBLOX deviation END
 -- ROBLOX deviation START: use inline implementation of stripAnsi
 local stripAnsi = function(text: string)
 	return string.gsub(text, "[\27\155][][()#;?%d]*[A-PRZcf-ntqry=><~]", "")
 end
--- local stripAnsi = require(Packages["strip-ansi"])
+-- local stripAnsi = require("@pkg/strip-ansi")
 -- ROBLOX deviation END
-local makeProjectConfig = require(Packages.TestUtils).makeProjectConfig
-local utilsModule = require(CurrentModule.utils)
+local makeProjectConfig = require("@pkg/@jsdotlua/test-utils").makeProjectConfig
+local utilsModule = require("../utils")
 local printDisplayName = utilsModule.printDisplayName
 local trimAndFormatPath = utilsModule.trimAndFormatPath
 local wrapAnsiString = utilsModule.wrapAnsiString

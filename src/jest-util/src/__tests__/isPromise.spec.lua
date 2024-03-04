@@ -7,14 +7,12 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-local Promise = require(Packages.Promise)
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local Promise = require("@pkg/@jsdotlua/promise")
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Symbol = LuauPolyfill.Symbol
-local isPromise = require(CurrentModule.isPromise).default
+local isPromise = require("../isPromise").default
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it

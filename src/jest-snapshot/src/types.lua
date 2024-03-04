@@ -5,9 +5,7 @@
 --  * This source code is licensed under the MIT license found in the
 --  * LICENSE file in the root directory of this source tree.
 --  */
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Object = LuauPolyfill.Object
 
 -- ROBLOX TODO: upstream is `MatcherState &`, which is from `expect` package, but would result in a circular rotriever dependency

@@ -6,18 +6,15 @@
 	is based off of, jasmine
 ]]
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 
-local createSpy = require(CurrentModule.createSpy)
-local SpyStrategy = require(CurrentModule.SpyStrategy)
-local CallTracker = require(CurrentModule.CallTracker)
+local createSpy = require("../createSpy")
+local SpyStrategy = require("../SpyStrategy")
+local CallTracker = require("../CallTracker")
 
 describe("Spies", function()
 	describe("createSpy", function()

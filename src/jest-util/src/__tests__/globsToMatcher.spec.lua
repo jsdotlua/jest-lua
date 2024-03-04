@@ -7,9 +7,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 
@@ -19,7 +17,7 @@ local it = JestGlobals.it
 		import micromatch = require('micromatch');
 	]]
 
-local globsToMatcher = require(CurrentModule.globsToMatcher).default
+local globsToMatcher = require("../globsToMatcher").default
 
 it("works like micromatch with only positive globs", function()
 	local globs = { "**/*.test.js", "**/*.test.jsx" }

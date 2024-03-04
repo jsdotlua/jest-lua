@@ -6,9 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script
-local Packages = CurrentModule.Parent.Parent
-
 -- ROBLOX FIXME
 type FIXME_ANALYZE = any
 
@@ -21,7 +18,7 @@ local _dispatchDescribe: (
 ) -> ()
 -- ROBLOX deviation END
 local exports = {}
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Circus_HookFn = typesModule.Circus_HookFn
 type Circus_HookType = typesModule.Circus_HookType
 type Circus_BlockFn = typesModule.Circus_BlockFn
@@ -34,24 +31,24 @@ type Circus_TestMode = typesModule.Circus_TestMode
 type Circus_Event = typesModule.Circus_Event
 type Circus_State = typesModule.Circus_State
 type Global_It = typesModule.Global_It
-local bindEach = require(Packages.JestEach).bind
-local jest_utilModule = require(Packages.JestUtil)
+local bindEach = require("@pkg/@jsdotlua/jest-each").bind
+local jest_utilModule = require("@pkg/@jsdotlua/jest-util")
 local ErrorWithStack = jest_utilModule.ErrorWithStack
 local convertDescriptorToString = jest_utilModule.convertDescriptorToString
 local isPromise = jest_utilModule.isPromise
-local dispatchSync = require(script.state).dispatchSync
-local stateModule = require(script.state)
+local dispatchSync = require("./state").dispatchSync
+local stateModule = require("./state")
 exports.setState = stateModule.setState
 exports.getState = stateModule.getState
 exports.resetState = stateModule.resetState
-exports.run = require(script.run).default
+exports.run = require("./run").default
 
 type THook = (fn: Circus_HookFn, timeout: number?) -> ()
 type DescribeFn = typeof(setmetatable({}, {
 	__call = (nil :: any) :: (_self: any, blockName: Circus_BlockNameLike, blockFn: Circus_BlockFn) -> (),
 }))
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Error = LuauPolyfill.Error
 
 local describe = (function()

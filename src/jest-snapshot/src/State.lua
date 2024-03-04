@@ -8,17 +8,14 @@
 
 -- ROBLOX deviation: omitting fs and types file import and defining in line instead
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
 type Error = LuauPolyfill.Error
 local Object = LuauPolyfill.Object
 local Set = LuauPolyfill.Set
 
-local JestTypes = require(Packages.JestTypes)
+local JestTypes = require("@pkg/@jsdotlua/jest-types")
 -- ROBLOX deviation: custom type
 type ConfigPath = {
 	getInstance: () -> ModuleScript?,
@@ -27,16 +24,16 @@ type ConfigPath = {
 -- ROBLOX deviation END
 type ConfigSnapshotUpdateState = JestTypes.Config_SnapshotUpdateState
 
--- local JestMessageUtil = require(Packages.JestMessageUtil)
+-- local JestMessageUtil = require("@pkg/@jsdotlua/jest-message-util")
 -- local getStackTraceLines = JestMessageUtil.getStackTraceLines
 -- local getTopFrame = JestMessageUtil.getTopFrame
 
 -- ROBLOX TODO: fix PrettyFormat types imports
--- local PrettyFormat = require(Packages.PrettyFormat)
-local PrettyFormat = require(CurrentModule.PrettyFormat)
+-- local PrettyFormat = require("@pkg/@jsdotlua/pretty-format")
+local PrettyFormat = require("./PrettyFormat")
 type PrettyFormatOptions = PrettyFormat.OptionsReceived
 
-local utils = require(CurrentModule.utils)
+local utils = require("./utils")
 local addExtraLineBreaks = utils.addExtraLineBreaks
 local getSnapshotData = utils.getSnapshotData
 local keyToTestName = utils.keyToTestName
@@ -50,7 +47,7 @@ local testNameToKey = utils.testNameToKey
 -- ROBLOX TODO: ADO-1552 add inline_snapshots imports when we support this
 -- functionality
 
-local types = require(CurrentModule.types)
+local types = require("./types")
 -- ROBLOX deviation: we do not have the BabelTraverse or Prettier types defined in the
 -- types file
 type SnapshotData = types.SnapshotData

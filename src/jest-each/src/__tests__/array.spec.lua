@@ -7,8 +7,7 @@
  *
  ]]
 
-local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Number = LuauPolyfill.Number
 local NaN = Number.NaN
@@ -16,18 +15,18 @@ type Array<T> = LuauPolyfill.Array<T>
 type Object = LuauPolyfill.Object
 type Function = (...any) -> ...any
 
-local NIL = require(script.Parent.Parent.nilPlaceholder)
+local NIL = require("../nilPlaceholder")
 
 local HttpService = game:GetService("HttpService")
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local pretty = require(Packages.PrettyFormat).default
-local each = require(script.Parent.Parent).default()
+local pretty = require("@pkg/@jsdotlua/pretty-format").default
+local each = require("..").default()
 
 local function noop() end
 local expectFunction = expect.any("function")
@@ -136,26 +135,28 @@ local function getGlobalTestMocks()
 end
 
 describe("jest-each", function()
-	Array.forEach({
-		{ "test" },
-		-- ROBLOX deviation START: concurrent is not supported
-		-- { "test", "concurrent" },
-		-- { "test", "concurrent", "only" },
-		-- { "test", "concurrent", "skip" },
-		-- ROBLOX deviation END
-		{ "test", "only" },
-		{ "it" },
-		{ "fit" },
-		{ "it", "only" },
-		{ "describe" },
-		{ "fdescribe" },
-		{ "describe", "only" },
-		-- ROBLOX deviation START: support TestEZ methods
-		{ "testFOCUS" },
-		{ "itFOCUS" },
-		{ "describeFOCUS" },
-		-- ROBLOX deviation END
-	}, function(keyPath)
+	for _, keyPath in
+		{
+			{ "test" },
+			-- ROBLOX deviation START: concurrent is not supported
+			-- { "test", "concurrent" },
+			-- { "test", "concurrent", "only" },
+			-- { "test", "concurrent", "skip" },
+			-- ROBLOX deviation END
+			{ "test", "only" },
+			{ "it" },
+			{ "fit" },
+			{ "it", "only" },
+			{ "describe" },
+			{ "fdescribe" },
+			{ "describe", "only" },
+			-- ROBLOX deviation START: support TestEZ methods
+			{ "testFOCUS" },
+			{ "itFOCUS" },
+			{ "describeFOCUS" },
+			-- ROBLOX deviation END
+		}
+	do
 		describe((".%s"):format(Array.join(keyPath, ".")), function()
 			it("throws an error when not called with an array", function()
 				local globalTestMocks = getGlobalTestMocks()
@@ -536,7 +537,7 @@ describe("jest-each", function()
 				-- ROBLOX deviation END
 			end)
 		end)
-	end)
+	end
 
 	describe("done callback", function()
 		-- ROBLOX TODO: should be bound in jestCircus (itEACH?)
@@ -577,19 +578,21 @@ describe("jest-each", function()
 		-- )
 	end)
 
-	Array.forEach({
-		{ "xtest" },
-		{ "test", "skip" },
-		-- ROBLOX deviation: concurrent is not available
-		-- { "test", "concurrent", "skip" },
-		{ "xit" },
-		{ "it", "skip" },
-		{ "xdescribe" },
-		{ "describe", "skip" },
-		{ "testSKIP" },
-		{ "itSKIP" },
-		{ "describeSKIP" },
-	}, function(keyPath)
+	for _, keyPath in
+		{
+			{ "xtest" },
+			{ "test", "skip" },
+			-- ROBLOX deviation: concurrent is not available
+			-- { "test", "concurrent", "skip" },
+			{ "xit" },
+			{ "it", "skip" },
+			{ "xdescribe" },
+			{ "describe", "skip" },
+			{ "testSKIP" },
+			{ "itSKIP" },
+			{ "describeSKIP" },
+		}
+	do
 		describe((".%s"):format(Array.join(keyPath, ".")), function()
 			it("calls global with given title", function()
 				local globalTestMocks = getGlobalTestMocks()
@@ -673,5 +676,5 @@ describe("jest-each", function()
 				)
 			end)
 		end)
-	end)
+	end
 end)

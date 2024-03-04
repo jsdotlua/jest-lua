@@ -16,8 +16,7 @@
 -- ROBLOX NOTE: no upstream
 
 -- Re-export JestGlobals.test so that it can be easily mocked in tests
-local Packages = script:FindFirstAncestor("JestBenchmark").Parent
-local JestGlobals = require(Packages.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local test = JestGlobals.test
 
 return test

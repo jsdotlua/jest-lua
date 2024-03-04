@@ -7,17 +7,15 @@
  * LICENSE file in the root directory of this source tree.
  *
  ]]
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 -- ROBLOX deviation START: not used
 -- local Object = LuauPolyfill.Object
 -- local Symbol = LuauPolyfill.Symbol
--- local Promise = require(Packages.Promise)
+-- local Promise = require("@pkg/@jsdotlua/promise")
 -- ROBLOX deviation END
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local describe = JestGlobals.describe
 local expect = JestGlobals.expect
 -- ROBLOX deviation START: not used
@@ -26,13 +24,13 @@ local expect = JestGlobals.expect
 local test = JestGlobals.test
 
 -- ROBLOX deviation START: add RegExp
-local RegExp = require(Packages.RegExp)
+local RegExp = require("@pkg/luau-regexp")
 -- ROBLOX deviation END
 -- ROBLOX deviation START: jestExpect
--- local jestExpect = require(script.Parent.Parent).default
-local jestExpect = require(script.Parent.Parent)
+-- local jestExpect = require("..").default
+local jestExpect = require("..")
 -- ROBLOX deviation END
-local asymmetricMatchersModule = require(script.Parent.Parent.asymmetricMatchers)
+local asymmetricMatchersModule = require("../asymmetricMatchers")
 local any = asymmetricMatchersModule.any
 local anything = asymmetricMatchersModule.anything
 local arrayContaining = asymmetricMatchersModule.arrayContaining
@@ -48,7 +46,7 @@ local stringMatching = asymmetricMatchersModule.stringMatching
 local stringNotMatching = asymmetricMatchersModule.stringNotMatching
 
 -- ROBLOX deviation START: additional dependencies
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 local JSON = RobloxShared.nodeUtils.JSON
 -- ROBLOX deviation END
 test("Any.asymmetricMatch()", function()

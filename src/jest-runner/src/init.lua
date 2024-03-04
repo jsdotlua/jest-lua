@@ -7,8 +7,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Error = LuauPolyfill.Error
@@ -19,40 +18,40 @@ type Error = LuauPolyfill.Error
 type Map<T, U> = LuauPolyfill.Map<T, U>
 type Promise<T> = LuauPolyfill.Promise<T>
 
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 
 local exports = {}
 
 -- ROBLOX deviation: chalk used only in parallel tests
--- local chalk = require(Packages.ChalkLua)
-local emitteryModule = require(Packages.Emittery)
+-- local chalk = require("@pkg/@jsdotlua/chalk")
+local emitteryModule = require("@pkg/@jsdotlua/emittery")
 local Emittery = emitteryModule.default
 type Emittery = emitteryModule.Emittery
 type Emittery_UnsubscribeFn = emitteryModule.Emittery_UnsubscribeFn
 
 -- ROBLOX deviation: exit used only in parallel tests
--- local exit = require(Packages.exit)
-local throatModule = require(Packages.Throat)
+-- local exit = require("@pkg/exit")
+local throatModule = require("@pkg/@jsdotlua/throat")
 local throat = throatModule.default
 type ThroatLateBound<TResult, TArgs> = throatModule.ThroatLateBound<TResult, TArgs>
-local test_resultModule = require(Packages.JestTestResult)
+local test_resultModule = require("@pkg/@jsdotlua/jest-test-result")
 type SerializableError = test_resultModule.SerializableError
 type Context = test_resultModule.Context
 export type Test = test_resultModule.Test
 export type TestEvents = test_resultModule.TestEvents
 export type TestFileEvent = test_resultModule.TestFileEvent
 type TestResult = test_resultModule.TestResult
-local jestTypesModule = require(Packages.JestTypes)
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_GlobalConfig = jestTypesModule.Config_GlobalConfig
-local deepCyclicCopy = require(Packages.JestUtil).deepCyclicCopy
+local deepCyclicCopy = require("@pkg/@jsdotlua/jest-util").deepCyclicCopy
 -- ROBLOX deviation START: Worker not used yet
--- local jest_workerModule = require(Packages.JestWorker)
+-- local jest_workerModule = require("@pkg/JestWorker")
 -- local PromiseWithCustomMessage = jest_workerModule.PromiseWithCustomMessage
 -- local Worker = jest_workerModule.Worker
 -- ROBLOX deviation END
-local runTest = require(script.runTest).default
+local runTest = require("./runTest").default
 -- ROBLOX deviation START: Worker not used yet
--- local testWorkerModule = require(script.testWorker)
+-- local testWorkerModule = require("./testWorker")
 -- type SerializableResolver = testWorkerModule.SerializableResolver
 -- type worker = testWorkerModule.worker
 -- ROBLOX deviation END
@@ -70,7 +69,7 @@ local runTest = require(script.runTest).default
 -- type WorkerInterface = Worker & { worker: typeof(worker) }
 -- ROBLOX deviation END
 
-local typesModule = require(script.types)
+local typesModule = require("./types")
 export type OnTestFailure = typesModule.OnTestFailure
 export type OnTestStart = typesModule.OnTestStart
 export type OnTestSuccess = typesModule.OnTestSuccess

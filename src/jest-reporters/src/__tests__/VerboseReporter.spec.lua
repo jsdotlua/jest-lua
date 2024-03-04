@@ -6,10 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
@@ -22,7 +19,7 @@ end
 local groupTestsBySuites
 
 beforeEach(function()
-	local VerboseReporter = require(CurrentModule.VerboseReporter).default
+	local VerboseReporter = require("../VerboseReporter").default
 	groupTestsBySuites = VerboseReporter.groupTestsBySuites
 end)
 

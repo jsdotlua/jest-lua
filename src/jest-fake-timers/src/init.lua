@@ -19,12 +19,9 @@
 	major implementation deviation, refer to README for more info
 ]]
 
-local CurrentModule = script
-local Packages = CurrentModule.Parent
+local getType = require("@pkg/@jsdotlua/jest-get-type").getType
 
-local getType = require(Packages.JestGetType).getType
-
-local jestMock = require(Packages.JestMock).ModuleMocker
+local jestMock = require("@pkg/@jsdotlua/jest-mock").ModuleMocker
 
 local realDelay = delay
 local realTick = tick

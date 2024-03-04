@@ -14,17 +14,15 @@
 ]]
 -- ROBLOX note: no upstream
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 
-local Writeable = require(Packages.RobloxShared).Writeable
+local Writeable = require("@pkg/@jsdotlua/jest-roblox-shared").Writeable
 
-local ConsoleModule = require(CurrentModule.Parent.Console)
+local ConsoleModule = require("../Console")
 local Console = ConsoleModule.default
 type Console = ConsoleModule.Console
 

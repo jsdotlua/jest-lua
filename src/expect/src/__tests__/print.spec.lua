@@ -14,20 +14,17 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 
-local Print = require(CurrentModule.print)
+local Print = require("../print")
 
-local JestMatcherUtils = require(Packages.JestMatcherUtils)
+local JestMatcherUtils = require("@pkg/@jsdotlua/jest-matcher-utils")
 local EXPECTED_COLOR = JestMatcherUtils.EXPECTED_COLOR
 
-local expect = require(CurrentModule)
+local expect = require("../init")
 
 describe("printing constructor", function()
 	local Dog

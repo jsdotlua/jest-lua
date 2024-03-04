@@ -7,19 +7,16 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 type Array<T> = LuauPolyfill.Array<T>
 local Error = LuauPolyfill.Error
 local Number = LuauPolyfill.Number
 local Symbol = LuauPolyfill.Symbol
 
-local chalk = require(Packages.ChalkLua)
+local chalk = require("@pkg/@jsdotlua/chalk")
 
-local JestDiff = require(Packages.JestDiff)
+local JestDiff = require("@pkg/@jsdotlua/jest-diff")
 local DIFF_DELETE = JestDiff.DIFF_DELETE
 local DIFF_EQUAL = JestDiff.DIFF_EQUAL
 local DIFF_INSERT = JestDiff.DIFF_INSERT
@@ -29,15 +26,15 @@ local diffDefault = JestDiff.diff
 local diffStringsRaw = JestDiff.diffStringsRaw
 local diffStringsUnified = JestDiff.diffStringsUnified
 
-local JestGetType = require(Packages.JestGetType)
+local JestGetType = require("@pkg/@jsdotlua/jest-get-type")
 local getType = JestGetType.getType
 local isPrimitive = JestGetType.isPrimitive
 
-local PrettyFormat = require(Packages.PrettyFormat)
+local PrettyFormat = require("@pkg/@jsdotlua/pretty-format")
 local prettyFormat = PrettyFormat.format
 
-local Replaceable = require(CurrentModule.Replaceable)
-local deepCyclicCopyReplaceable = require(CurrentModule.deepCyclicCopyReplaceable)
+local Replaceable = require("./Replaceable")
+local deepCyclicCopyReplaceable = require("./deepCyclicCopyReplaceable")
 
 -- ROBLOX TODO: continue to implement prettyFormat plugins
 local prettyFormatPlugins = PrettyFormat.plugins

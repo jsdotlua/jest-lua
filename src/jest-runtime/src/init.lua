@@ -8,8 +8,7 @@
 -- ROBLOX deviation START: skipped
 -- type void = nil --[[ ROBLOX FIXME: adding `void` type alias to make it easier to use Luau `void` equivalent when supported ]]
 -- ROBLOX deviation END
-local Packages = script.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- ROBLOX deviation START: skipped
 -- local Array = LuauPolyfill.Array
 -- ROBLOX deviation END
@@ -36,15 +35,15 @@ type Promise<T> = LuauPolyfill.Promise<T>
 type Omit<T, K> = T --[[ ROBLOX TODO: TS 'Omit' built-in type is not available in Luau ]]
 -- ROBLOX deviation START: skipped
 -- type Parameters<T> = any --[[ ROBLOX TODO: TS 'Parameters' built-in type is not available in Luau ]]
--- local Promise = require(Packages.Promise)
+-- local Promise = require("@pkg/@jsdotlua/promise")
 -- local exports = {}
--- local nativeModule = require(Packages.module)
--- local path = require(Packages.path)
--- local urlModule = require(Packages.url)
+-- local nativeModule = require("@pkg/module")
+-- local path = require("@pkg/@jsdotlua/path")
+-- local urlModule = require("@pkg/url")
 -- local URL = urlModule.URL
 -- local fileURLToPath = urlModule.fileURLToPath
 -- local pathToFileURL = urlModule.pathToFileURL
--- local vmModule = require(Packages.vm)
+-- local vmModule = require("@pkg/vm")
 -- local Script = vmModule.Script
 -- -- @ts-expect-error: experimental, not added to the types
 -- local SourceTextModule = vmModule.SourceTextModule
@@ -53,27 +52,27 @@ type Omit<T, K> = T --[[ ROBLOX TODO: TS 'Omit' built-in type is not available i
 -- local VMContext = vmModule.Context
 -- -- @ts-expect-error: experimental, not added to the types
 -- local VMModule = vmModule.Module
--- local parseCjs = require(Packages["cjs-module-lexer"]).parse
--- local collectV8CoverageModule = require(Packages["collect-v8-coverage"])
+-- local parseCjs = require("@pkg/cjs-module-lexer").parse
+-- local collectV8CoverageModule = require("@pkg/collect-v8-coverage")
 -- local CoverageInstrumenter = collectV8CoverageModule.CoverageInstrumenter
 -- local V8Coverage = collectV8CoverageModule.V8Coverage
--- local execa = require(Packages.execa)
--- local fs = require(Packages["graceful-fs"])
--- local slash = require(Packages.slash)
--- local stripBOM = require(Packages["strip-bom"])
--- local jestEnvironmentModule = require(Packages.JestEnvironment)
+-- local execa = require("@pkg/execa")
+-- local fs = require("@pkg/graceful-fs")
+-- local slash = require("@pkg/slash")
+-- local stripBOM = require("@pkg/strip-bom")
+-- local jestEnvironmentModule = require("@pkg/@jsdotlua/jest-environment")
 -- type Jest = jestEnvironmentModule.Jest
 -- type JestEnvironment = jestEnvironmentModule.JestEnvironment
 -- type Module = jestEnvironmentModule.Module
 -- type ModuleWrapper = jestEnvironmentModule.ModuleWrapper
--- local jestFakeTimersModule = require(Packages.JestFakeTimers)
+-- local jestFakeTimersModule = require("@pkg/@jsdotlua/jest-fake-timers")
 -- type LegacyFakeTimers = jestFakeTimersModule.LegacyFakeTimers
 -- type ModernFakeTimers = jestFakeTimersModule.ModernFakeTimers
--- local jestGlobalsModule = require(Packages.Dev.JestGlobals)
+-- local jestGlobalsModule = require("@pkg/@jsdotlua/jest-globals")
 -- local JestGlobals = jestGlobalsModule
 -- local jestSourceMapModule = require(Packages["@jest"]["source-map"])
 -- type SourceMapRegistry = jestSourceMapModule.SourceMapRegistry
--- local jestTestResultModule = require(Packages.JestTestResult)
+-- local jestTestResultModule = require("@pkg/@jsdotlua/jest-test-result")
 -- type RuntimeTransformResult = jestTestResultModule.RuntimeTransformResult
 -- type V8CoverageResult = jestTestResultModule.V8CoverageResult
 -- local jestTransformModule = require(Packages["@jest"].transform)
@@ -84,20 +83,20 @@ type Omit<T, K> = T --[[ ROBLOX TODO: TS 'Omit' built-in type is not available i
 -- local TransformationOptions = jestTransformModule.TransformationOptions
 -- local handlePotentialSyntaxError = jestTransformModule.handlePotentialSyntaxError
 -- local shouldInstrument = jestTransformModule.shouldInstrument
--- local jestTypesModule = require(Packages.JestTypes)
+-- local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 -- type Config = jestTypesModule.Config
 -- type Config_Path = jestTypesModule.Config_Path
 -- type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
 -- type Global = jestTypesModule.Global
 -- type Global_TestFrameworkGlobals = jestTypesModule.Global_TestFrameworkGlobals
--- local jestHasteMapModule = require(Packages["jest-haste-map"])
+-- local jestHasteMapModule = require("@pkg/jest-haste-map")
 -- type IModuleMap = jestHasteMapModule.IModuleMap
--- local HasteMap = require(Packages["jest-haste-map"]).default
--- local jestMessageUtilModule = require(Packages.JestMessageUtil)
+-- local HasteMap = require("@pkg/jest-haste-map").default
+-- local jestMessageUtilModule = require("@pkg/@jsdotlua/jest-message-util")
 -- local formatStackTrace = jestMessageUtilModule.formatStackTrace
 -- local separateMessageFromStack = jestMessageUtilModule.separateMessageFromStack
 -- ROBLOX deviation END
-local jestMockModule = require(Packages.JestMock)
+local jestMockModule = require("@pkg/@jsdotlua/jest-mock")
 -- ROBLOX deviation: not implemented yet
 -- type MockFunctionMetadata = jestMockModule.MockFunctionMetadata
 -- ROBLOX deviation END
@@ -107,23 +106,23 @@ type ModuleMocker = jestMockModule.ModuleMocker
 local ModuleMocker = jestMockModule.ModuleMocker
 -- ROBLOX deviation END
 -- ROBLOX deviation START: skipped
--- local escapePathForRegex = require(Packages["jest-regex-util"]).escapePathForRegex
--- local jestResolveModule = require(Packages["jest-resolve"])
+-- local escapePathForRegex = require("@pkg/jest-regex-util").escapePathForRegex
+-- local jestResolveModule = require("@pkg/jest-resolve")
 -- local Resolver = jestResolveModule.default
 -- local ResolveModuleConfig = jestResolveModule.ResolveModuleConfig
--- local Snapshot = require(Packages.JestSnapshot)
--- local jestUtilModule = require(Packages.JestUtil)
+-- local Snapshot = require("@pkg/@jsdotlua/jest-snapshot")
+-- local jestUtilModule = require("@pkg/@jsdotlua/jest-util")
 -- local createDirectory = jestUtilModule.createDirectory
 -- local deepCyclicCopy = jestUtilModule.deepCyclicCopy
--- local helpersModule = require(script.helpers)
+-- local helpersModule = require("./helpers")
 -- local createOutsideJestVmPath = helpersModule.createOutsideJestVmPath
 -- local decodePossibleOutsideJestVmPath = helpersModule.decodePossibleOutsideJestVmPath
 -- local findSiblingsWithFileExtension = helpersModule.findSiblingsWithFileExtension
 -- ROBLOX deviation END
-local typesModule = require(script.types)
+local typesModule = require("./types")
 export type Context = typesModule.Context
 -- ROBLOX deviation START: skipped
--- local typesModule = require(script.types)
+-- local typesModule = require("./types")
 -- exports.Context = typesModule.Context
 
 -- ROBLOX deviation START: adding mocked ResolveModuleConfig type until implemented
@@ -132,13 +131,13 @@ type ResolveModuleConfig = any
 
 -- ROBLOX deviation START: additional dependencies
 local TypeError = Error
-local _typesModule = require(script._types)
+local _typesModule = require("./_types")
 export type Jest = _typesModule.Jest
 type MockFactory = _typesModule.MockFactory
 
-local jestExpectModule = require(Packages.Expect)
+local jestExpectModule = require("@pkg/@jsdotlua/expect")
 type Expect = jestExpectModule.Expect
-local JestFakeTimers = require(Packages.JestFakeTimers)
+local JestFakeTimers = require("@pkg/@jsdotlua/jest-fake-timers")
 type FakeTimers = JestFakeTimers.FakeTimers
 -- ROBLOX deviation END
 -- local esmIsAvailable = typeof(SourceTextModule) == "function"
@@ -1470,7 +1469,7 @@ function Runtime_private:requireModuleOrMock<T>(moduleName: ModuleScript): T
 	-- 	-- @ts-expect-error: we don't care that it's not assignable to T
 	-- 	return self:getGlobalsForCjs(from)
 	-- end
-	if moduleName.Name == "JestGlobals" then
+	if moduleName.Name == "JestGlobals" or moduleName.Name == "jest-globals" then
 		local globals = self:getGlobalsFromEnvironment()
 		return Object.assign({}, globals, {
 			jest = self._jestObject,
@@ -2797,8 +2796,10 @@ function Runtime_private:getGlobalsFromEnvironment(): JestGlobals
 	end
 
 	-- ROBLOX deviation START: additional extracted variables
-	local jestSnapshot = self:requireModuleOrMock(Packages.JestSnapshot)
-	local jestExpect = self:requireModuleOrMock(Packages.Expect)
+	local jestSnapshot = require("@pkg/@jsdotlua/jest-snapshot")
+	-- local jestSnapshot = self:requireModuleOrMock(Packages.JestSnapshot)
+	local jestExpect = require("@pkg/@jsdotlua/expect")
+	-- local jestExpect = self:requireModuleOrMock(Packages.Expect)
 	-- ROBLOX deviation END
 
 	return {

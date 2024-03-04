@@ -6,48 +6,45 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 local String = LuauPolyfill.String
 local Symbol = LuauPolyfill.Symbol
 
 type Record<T, V> = { [T]: V }
 
-local PrettyFormat = require(Packages.PrettyFormat)
+local PrettyFormat = require("@pkg/@jsdotlua/pretty-format")
 local prettyFormat = PrettyFormat.format
-local PrettyFormat_ = require(CurrentModule.PrettyFormat)
+local PrettyFormat_ = require("./PrettyFormat")
 -- ROBLOX TODO: fix PrettyFormat types imports
 type PrettyFormatOptions = PrettyFormat_.PrettyFormatOptions
 
-local chalk = require(Packages.ChalkLua)
+local chalk = require("@pkg/@jsdotlua/chalk")
 
-local getType = require(Packages.JestGetType).getType
+local getType = require("@pkg/@jsdotlua/jest-get-type").getType
 
-local cleanupSemanticModule = require(CurrentModule.CleanupSemantic)
+local cleanupSemanticModule = require("./CleanupSemantic")
 local DIFF_DELETE = cleanupSemanticModule.DIFF_DELETE
 local DIFF_EQUAL = cleanupSemanticModule.DIFF_EQUAL
 local DIFF_INSERT = cleanupSemanticModule.DIFF_INSERT
 local Diff = cleanupSemanticModule.Diff
 export type Diff = cleanupSemanticModule.Diff
 
-local normalizeDiffOptions = require(CurrentModule.NormalizeDiffOptions).normalizeDiffOptions
+local normalizeDiffOptions = require("./NormalizeDiffOptions").normalizeDiffOptions
 
-local diffLinesRaw = require(CurrentModule.DiffLines).diffLinesRaw
-local diffLinesUnified = require(CurrentModule.DiffLines).diffLinesUnified
-local diffLinesUnified2 = require(CurrentModule.DiffLines).diffLinesUnified2
+local diffLinesRaw = require("./DiffLines").diffLinesRaw
+local diffLinesUnified = require("./DiffLines").diffLinesUnified
+local diffLinesUnified2 = require("./DiffLines").diffLinesUnified2
 
-local diffStringsRaw = require(CurrentModule.PrintDiffs).diffStringsRaw
-local diffStringsUnified = require(CurrentModule.PrintDiffs).diffStringsUnified
+local diffStringsRaw = require("./PrintDiffs").diffStringsRaw
+local diffStringsUnified = require("./PrintDiffs").diffStringsUnified
 
-local typesModule = require(CurrentModule.types)
+local typesModule = require("./types")
 export type DiffOptions = typesModule.DiffOptions
 export type DiffOptionsColor = typesModule.DiffOptionsColor
 
-local NO_DIFF_MESSAGE = require(CurrentModule.Constants).NO_DIFF_MESSAGE
-local SIMILAR_MESSAGE = require(CurrentModule.Constants).SIMILAR_MESSAGE
+local NO_DIFF_MESSAGE = require("./Constants").NO_DIFF_MESSAGE
+local SIMILAR_MESSAGE = require("./Constants").SIMILAR_MESSAGE
 
 -- ROBLOX deviation start: predefine functions
 local comparePrimitive

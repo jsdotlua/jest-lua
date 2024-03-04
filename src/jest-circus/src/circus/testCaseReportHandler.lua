@@ -6,14 +6,12 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent.Parent
 local exports = {}
-local testResultModule = require(Packages.JestTestResult)
+local testResultModule = require("@pkg/@jsdotlua/jest-test-result")
 type TestFileEvent = testResultModule.TestFileEvent
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Circus_Event = typesModule.Circus_Event
-local utilsModule = require(script.Parent.utils)
+local utilsModule = require("./utils")
 local makeSingleTestResult = utilsModule.makeSingleTestResult
 local parseSingleTestResult = utilsModule.parseSingleTestResult
 

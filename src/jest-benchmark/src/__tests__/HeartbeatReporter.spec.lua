@@ -15,14 +15,13 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local Packages = script:FindFirstAncestor("JestBenchmark").Parent
-local JestGlobals = require(Packages.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local it = JestGlobals.it
 local expect = JestGlobals.expect
 local jest = JestGlobals.jest
 local beforeEach = JestGlobals.beforeEach
 
-local utils = require(script.Parent.utils)
+local utils = require("./utils")
 local average = utils.average
 
 local capturedConnectFn
@@ -41,7 +40,7 @@ beforeEach(function()
 			end,
 		}
 	end)
-	local HeartbeatReporterModule = require(script.Parent.Parent.reporters.HeartbeatReporter)
+	local HeartbeatReporterModule = require("../reporters/HeartbeatReporter")
 	initializeHeartbeatReporter = HeartbeatReporterModule.initializeHeartbeatReporter
 end)
 

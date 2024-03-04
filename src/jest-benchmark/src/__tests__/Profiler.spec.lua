@@ -15,19 +15,18 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local Packages = script:FindFirstAncestor("JestBenchmark").Parent
-local JestGlobals = require(Packages.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local it = JestGlobals.it
 local expect = JestGlobals.expect
 local jest = JestGlobals.jest
 
-local profilerModule = require(script.Parent.Parent.Profiler)
+local profilerModule = require("../Profiler")
 local initializeProfiler = profilerModule.initializeProfiler
 
-local reporterModule = require(script.Parent.Parent.reporters.Reporter)
+local reporterModule = require("../reporters/Reporter")
 local initializeReporter = reporterModule.initializeReporter
 
-local utils = require(script.Parent.utils)
+local utils = require("./utils")
 local sum = utils.sum
 local average = utils.average
 

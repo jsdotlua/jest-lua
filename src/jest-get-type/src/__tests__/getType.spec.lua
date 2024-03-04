@@ -7,23 +7,20 @@
 --  *
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
-local Error = require(Packages.LuauPolyfill).Error
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
+local Error = require("@pkg/@jsdotlua/luau-polyfill").Error
 local Map = LuauPolyfill.Map
 local Set = LuauPolyfill.Set
 local Symbol = LuauPolyfill.Symbol
 
-local RegExp = require(Packages.RegExp)
+local RegExp = require("@pkg/luau-regexp")
 
-local getType = require(CurrentModule).getType
+local getType = require("../init").getType
 
 describe(".getType()", function()
 	it("nil", function()

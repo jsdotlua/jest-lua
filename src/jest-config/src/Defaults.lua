@@ -6,20 +6,19 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent
 local exports = {}
 
 -- ROBLOX deviation START: hardcode values
--- local sep = require(Packages.path).sep
--- local isCI = require(Packages["ci-info"]).isCI
+-- local sep = require("@pkg/@jsdotlua/path").sep
+-- local isCI = require("@pkg/ci-info").isCI
 local isCI = false
 -- ROBLOX deviation END
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_DefaultOptions = typesModule.Config_DefaultOptions
 -- ROBLOX deviation START: not needed
--- local replacePathSepForRegex = require(Packages["jest-regex-util"]).replacePathSepForRegex
--- local NODE_MODULES = require(script.Parent.constants).NODE_MODULES
--- local getCacheDirectory = require(script.Parent.getCacheDirectory).default
+-- local replacePathSepForRegex = require("@pkg/jest-regex-util").replacePathSepForRegex
+-- local NODE_MODULES = require("./constants").NODE_MODULES
+-- local getCacheDirectory = require("./getCacheDirectory").default
 -- local NODE_MODULES_REGEXP = replacePathSepForRegex(NODE_MODULES)
 -- ROBLOX deviation END
 local defaultOptions: Config_DefaultOptions = {
@@ -91,7 +90,7 @@ local defaultOptions: Config_DefaultOptions = {
 	skipFilter = false,
 	slowTestThreshold = 5,
 	snapshotSerializers = {},
-	testEnvironment = Packages.JestEnvironmentLuau,
+	testEnvironment = "jest-environment-roblox", -- Packages.JestEnvironmentLuau,
 	testEnvironmentOptions = {},
 	testFailureExitCode = 1,
 	testLocationInResults = false,

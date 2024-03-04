@@ -1,8 +1,6 @@
 -- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/jest-runtime/src/__tests__/runtime_mock.test.js
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-local Promise = require(Packages.Promise)
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local Promise = require("@pkg/@jsdotlua/promise")
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local describe = JestGlobals.describe
 local expect = JestGlobals.expect
@@ -20,7 +18,7 @@ local mockMeScript = script.Parent.mock_me
 
 describe("Runtime", function()
 	beforeEach(function()
-		createRuntime = require(CurrentModule.__mocks__.createRuntime)
+		createRuntime = require("../__mocks__/createRuntime")
 		jest.mock(mockMeScript, function()
 			return { mocked = true }
 		end)

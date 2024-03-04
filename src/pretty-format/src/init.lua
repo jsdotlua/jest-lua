@@ -8,31 +8,28 @@
 
 -- ROBLOX deviation: ansi-styles not ported
 
-local CurrentModule = script
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 local Object = LuauPolyfill.Object
 local extends = LuauPolyfill.extends
 local isNaN = LuauPolyfill.Number.isNaN
 
-local Collections = require(CurrentModule.Collections)
+local Collections = require("./Collections")
 local printTableEntries = Collections.printTableEntries
 local printMapEntries = Collections.printMapEntries
 local printListItems = Collections.printListItems
 
-local AsymmetricMatcher = require(CurrentModule.plugins.AsymmetricMatcher)
-local ConvertAnsi = require(CurrentModule.plugins.ConvertAnsi)
-local RobloxInstance = require(CurrentModule.plugins.RobloxInstance)
-local ReactElement = require(CurrentModule.plugins.ReactElement)
-local ReactTestComponent = require(CurrentModule.plugins.ReactTestComponent)
+local AsymmetricMatcher = require("./plugins/AsymmetricMatcher")
+local ConvertAnsi = require("./plugins/ConvertAnsi")
+local RobloxInstance = require("./plugins/RobloxInstance")
+local ReactElement = require("./plugins/ReactElement")
+local ReactTestComponent = require("./plugins/ReactTestComponent")
 
-local JestGetType = require(Packages.JestGetType)
+local JestGetType = require("@pkg/@jsdotlua/jest-get-type")
 local getType = JestGetType.getType
 local isRobloxBuiltin = JestGetType.isRobloxBuiltin
 
-local Types = require(CurrentModule.Types)
+local Types = require("./Types")
 export type Colors = Types.Colors
 export type CompareKeys = Types.CompareKeys
 export type Config = Types.Config

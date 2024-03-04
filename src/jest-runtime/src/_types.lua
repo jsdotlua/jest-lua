@@ -6,13 +6,10 @@
  ]]
 -- ROBLOX NOTE: Not paired with upstream. Just using for the "Jest Object" type
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local JestFakeTimers = require(Packages.JestFakeTimers)
+local JestFakeTimers = require("@pkg/@jsdotlua/jest-fake-timers")
 type FakeTimers = JestFakeTimers.FakeTimers
 
-local moduleMockerModule = require(Packages.JestMock)
+local moduleMockerModule = require("@pkg/@jsdotlua/jest-mock")
 type ModuleMocker = moduleMockerModule.ModuleMocker
 
 export type MockFactory = () -> ...unknown

@@ -6,9 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Error = LuauPolyfill.Error
@@ -16,7 +14,7 @@ type Array<T> = LuauPolyfill.Array<T>
 type Error = LuauPolyfill.Error
 type Promise<T> = LuauPolyfill.Promise<T>
 
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 
 -- ROBLOX deviation START: predefine variables
 local makeTestResults
@@ -27,7 +25,7 @@ local invariant
 -- ROBLOX deviation END
 
 -- ROBLOX deviation START: add additional imports
-local RegExp = require(Packages.RegExp)
+local RegExp = require("@pkg/luau-regexp")
 -- ROBLOX deviation END
 
 -- ROBLOX deviation START: add function to extract bare string message from stacktrace line
@@ -37,7 +35,7 @@ local function separateMessageFromStack(content: string): { message: string, sta
 	end
 	local message = content
 	local stack = ""
-	local re = RegExp([=[^(\s*LoadedCode.*:\d+)?(: )?(.*)$]=])
+	local re = RegExp([=[^(\s*.*:\d+)?(: )?(.*)$]=])
 	local messageMatch = re:exec(content)
 	if messageMatch then
 		message = messageMatch[4]
@@ -54,13 +52,13 @@ type NodeJS_Timeout = LuauPolyfill.Timeout
 local exports = {}
 
 -- ROBLOX deviation START: not using path and co dependencies
--- local path = require(Packages.path)
--- local co = require(Packages.co).default
+-- local path = require("@pkg/@jsdotlua/path")
+-- local co = require("@pkg/co").default
 -- ROBLOX deviation END
 -- ROBLOX deviation: use dedent implementation from graphql-lua
-local dedent = require(Packages.RobloxShared).dedent
+local dedent = require("@pkg/@jsdotlua/jest-roblox-shared").dedent
 -- ROBLOX deviation: generator functions are not supported in Lua
--- local isGeneratorFn = require(Packages["is-generator-fn"]).default
+-- local isGeneratorFn = require("@pkg/is-generator-fn").default
 --[[
 	ROBLOX deviation:
 	not using slash and stack-utils dependencies
@@ -68,10 +66,10 @@ local dedent = require(Packages.RobloxShared).dedent
 	import slash = require('slash');
 	import StackUtils = require('stack-utils');
 ]]
-local testResultModule = require(Packages.JestTestResult)
+local testResultModule = require("@pkg/@jsdotlua/jest-test-result")
 type AssertionResult = testResultModule.AssertionResult
 type Status = testResultModule.Status
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Circus_BlockName = typesModule.Circus_BlockName
 type Circus_DescribeBlock = typesModule.Circus_DescribeBlock
 type Circus_BlockMode = typesModule.Circus_BlockMode
@@ -90,13 +88,13 @@ type Circus_RunResult = typesModule.Circus_RunResult
 type Global_PromiseReturningTestFn = typesModule.Global_PromiseReturningTestFn
 type Global_TestReturnValue = typesModule.Global_TestReturnValue
 type Global_GeneratorReturningTestFn = typesModule.Global_GeneratorReturningTestFn
-local jestUtilModule = require(Packages.JestUtil)
+local jestUtilModule = require("@pkg/@jsdotlua/jest-util")
 local ErrorWithStack = jestUtilModule.ErrorWithStack
 local convertDescriptorToString = jestUtilModule.convertDescriptorToString
 local formatTime = jestUtilModule.formatTime
-local prettyFormat = require(Packages.PrettyFormat).format
+local prettyFormat = require("@pkg/@jsdotlua/pretty-format").format
 -- ROBLOX deviation: move to `state_.lua` to avoid cyclic dependency
-local stateModule = require(script.Parent.state_)
+local stateModule = require("./state_")
 local ROOT_DESCRIBE_BLOCK_NAME = stateModule.ROOT_DESCRIBE_BLOCK_NAME
 local getState = stateModule.getState
 

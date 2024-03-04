@@ -8,26 +8,23 @@
 
 local exports = {}
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local String = LuauPolyfill.String
 type Error = LuauPolyfill.Error
 type Array<T> = LuauPolyfill.Array<T>
 
-local chalk = require(Packages.ChalkLua)
+local chalk = require("@pkg/@jsdotlua/chalk")
 
-local jestTypesModule = require(Packages.JestTypes)
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 type GlobalConfig = jestTypesModule.Config_GlobalConfig
 
-local messageUtilsModule = require(Packages.JestMessageUtil)
+local messageUtilsModule = require("@pkg/@jsdotlua/jest-message-util")
 local formatStackTrace = messageUtilsModule.formatStackTrace
 type StackTraceConfig = messageUtilsModule.StackTraceConfig
 type StackTraceOptions = messageUtilsModule.StackTraceOptions
 
-local typesModule = require(CurrentModule.types)
+local typesModule = require("./types")
 type ConsoleBuffer = typesModule.ConsoleBuffer
 
 local getConsoleOutput = function(buffer: ConsoleBuffer, config: StackTraceConfig, globalConfig: GlobalConfig): string

@@ -17,7 +17,7 @@
 
 local exports = {}
 
-local initializeHeartbeatReporter = require(script.Parent.HeartbeatReporter).initializeHeartbeatReporter
+local initializeHeartbeatReporter = require("./HeartbeatReporter").initializeHeartbeatReporter
 
 local function averageFps(deltaTimeList: { number })
 	if #deltaTimeList == 0 then

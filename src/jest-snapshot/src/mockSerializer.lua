@@ -7,10 +7,8 @@
 -- *
 -- */
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
 -- ROBLOX deviation: omitted external type NewPlugin
-local PrettyFormat = require(Packages.PrettyFormat)
+local PrettyFormat = require("@pkg/@jsdotlua/pretty-format")
 type Config = PrettyFormat.Config
 type Printer = PrettyFormat.Printer
 type Refs = PrettyFormat.Refs

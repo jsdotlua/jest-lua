@@ -1,0 +1,23 @@
+{
+  "name": "@jsdotlua/jest-fake-timers",
+  "version": "3.6.1-rc.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsdotlua/jest-lua.git",
+    "directory": "src/jest-fake-timers"
+  },
+  "license": "MIT",
+  "main": "src/init.lua",
+  "scripts": {
+    "prepare": "npmluau"
+  },
+  "dependencies": {
+    "@jsdotlua/jest-get-type": "workspace:^",
+    "@jsdotlua/jest-mock": "workspace:^",
+    "@jsdotlua/luau-polyfill": "^1.2.6"
+  },
+  "devDependencies": {
+    "@jsdotlua/jest-globals": "workspace:^",
+    "npmluau": "^0.1.1"
+  }
+}

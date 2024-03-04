@@ -8,13 +8,10 @@
 --  *
 --  */
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Symbol = LuauPolyfill.Symbol
 
-local Types = require(CurrentModule.types)
+local Types = require("./types")
 type MatcherState = Types.MatcherState
 
 -- Global matchers object holds the list of available matchers and

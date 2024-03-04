@@ -6,13 +6,12 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Array<T> = LuauPolyfill.Array<T>
 local exports = {}
--- local createHash = require(Packages.crypto).createHash
+-- local createHash = require("@pkg/crypto").createHash
 -- ROBLOX deviation START: inline as ChalkLua doesn't export this type
--- local chalkModule = require(Packages.chalk)
+-- local chalkModule = require("@pkg/chalk")
 type ForegroundColor =
 	"black"
 	| "red"

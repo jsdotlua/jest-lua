@@ -7,24 +7,21 @@
 --  *
 --  */
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
 local Number = LuauPolyfill.Number
 local Object = LuauPolyfill.Object
 local instanceof = LuauPolyfill.instanceof
 
-local RegExp = require(Packages.RegExp)
+local RegExp = require("@pkg/luau-regexp")
 type RegExp = RegExp.RegExp
 
-local JestGetType = require(Packages.JestGetType)
+local JestGetType = require("@pkg/@jsdotlua/jest-get-type")
 local getType = JestGetType.getType
 local isPrimitive = JestGetType.isPrimitive
 
-local JestMatcherUtils = require(Packages.JestMatcherUtils)
+local JestMatcherUtils = require("@pkg/@jsdotlua/jest-matcher-utils")
 local DIM_COLOR = JestMatcherUtils.DIM_COLOR
 local EXPECTED_COLOR = JestMatcherUtils.EXPECTED_COLOR
 type MatcherHintOptions = JestMatcherUtils.MatcherHintOptions
@@ -42,9 +39,9 @@ local printReceived = JestMatcherUtils.printReceived
 local printWithType = JestMatcherUtils.printWithType
 local stringify = JestMatcherUtils.stringify
 
-local equals = require(CurrentModule.jasmineUtils).equals
+local equals = require("./jasmineUtils").equals
 
-local Print = require(CurrentModule.print)
+local Print = require("./print")
 local printCloseTo = Print.printCloseTo
 local printExpectedConstructorName = Print.printExpectedConstructorName
 local printExpectedConstructorNameNot = Print.printExpectedConstructorNameNot
@@ -54,11 +51,11 @@ local printReceivedConstructorNameNot = Print.printReceivedConstructorNameNot
 local printReceivedStringContainExpectedResult = Print.printReceivedStringContainExpectedResult
 local printReceivedStringContainExpectedSubstring = Print.printReceivedStringContainExpectedSubstring
 
-local Types = require(CurrentModule.types)
+local Types = require("./types")
 type MatcherState = Types.MatcherState
 type MatchersObject = Types.MatchersObject
 
-local Utils = require(CurrentModule.utils)
+local Utils = require("./utils")
 -- ROBLOX deviation: skipped as Lua doesn't support ArrayBuffer
 -- local arrayBufferEquality = Utils.arrayBufferEquality
 local getObjectSubset = Utils.getObjectSubset
@@ -70,7 +67,7 @@ local subsetEquality = Utils.subsetEquality
 local typeEquality = Utils.typeEquality
 
 -- ROBLOX deviation: Roblox Instance matchers
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 local instanceSubsetEquality = RobloxShared.RobloxInstance.instanceSubsetEquality
 local getInstanceSubset = RobloxShared.RobloxInstance.getInstanceSubset
 

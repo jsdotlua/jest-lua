@@ -10,9 +10,6 @@
 -- corresponds to the functions needed by the other translated files. We plan
 -- on filling the rest of utils out as we continue with the jest-snapshot file.
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
 local function getFileSystemService()
 	local success, result = pcall(function()
 		return game:GetService("FileSystemService")
@@ -22,7 +19,7 @@ local function getFileSystemService()
 end
 local FileSystemService = nil
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
 local Object = LuauPolyfill.Object
@@ -30,22 +27,22 @@ local String = LuauPolyfill.String
 
 type Array<T> = LuauPolyfill.Array<T>
 
--- local chalk = require(Packages.ChalkLua)
+-- local chalk = require("@pkg/@jsdotlua/chalk")
 
 -- ROBLOX TODO: ADO-1633 fix Jest Types imports
--- local Config = require(Packages.JestTypes).Config
+-- local Config = require("@pkg/@jsdotlua/jest-types").Config
 type ConfigPath = string
 type ConfigSnapshotUpdateState = string
 
-local PrettyFormat = require(Packages.PrettyFormat)
-local PrettyFormat_ = require(CurrentModule.PrettyFormat)
+local PrettyFormat = require("@pkg/@jsdotlua/pretty-format")
+local PrettyFormat_ = require("./PrettyFormat")
 
 -- ROBLOX TODO: fix PrettyFormat types imports
 type PrettyFormatOptions = PrettyFormat_.OptionsReceived
 local prettyFormat = PrettyFormat.format
-local getSerializers = require(CurrentModule.plugins).getSerializers
+local getSerializers = require("./plugins").getSerializers
 
-local types = require(CurrentModule.types)
+local types = require("./types")
 type SnapshotData = types.SnapshotData
 
 local SNAPSHOT_VERSION = "1"

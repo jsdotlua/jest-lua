@@ -8,10 +8,7 @@
 
 local exports = {}
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local String = LuauPolyfill.String
@@ -19,23 +16,23 @@ local Error = LuauPolyfill.Error
 local inspect = LuauPolyfill.util.inspect
 type Error = LuauPolyfill.Error
 
-local ConsoleModule = require(CurrentModule.Console)
+local ConsoleModule = require("./Console")
 local Console = ConsoleModule.default
 type Console = ConsoleModule.Console
 
 -- ROBLOX deviation START: use custom implementations instead of unavailable node API
-local helpers = require(CurrentModule.helpers)
+local helpers = require("./helpers")
 local format = helpers.format
 local formatWithOptions = helpers.formatWithOptions
 -- ROBLOX deviation END
 
-local chalk = require(Packages.ChalkLua)
+local chalk = require("@pkg/@jsdotlua/chalk")
 
-local JestUtil = require(Packages.JestUtil)
+local JestUtil = require("@pkg/@jsdotlua/jest-util")
 local ErrorWithStack = JestUtil.ErrorWithStack
 local formatTime = JestUtil.formatTime
 
-local typesModule = require(CurrentModule.types)
+local typesModule = require("./types")
 type ConsoleBuffer = typesModule.ConsoleBuffer
 type LogCounters = typesModule.LogCounters
 type LogMessage = typesModule.LogMessage
@@ -43,7 +40,7 @@ type LogTimers = typesModule.LogTimers
 type LogType = typesModule.LogType
 type InspectOptions = typesModule.InspectOptions
 
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 type Writeable = RobloxShared.Writeable
 
 export type BufferedConsole = {

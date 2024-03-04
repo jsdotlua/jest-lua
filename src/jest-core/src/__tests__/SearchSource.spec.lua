@@ -6,8 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  ]]
-local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 -- ROBLOX deviation START: not used
 -- local Boolean = LuauPolyfill.Boolean
@@ -16,19 +15,19 @@ local Array = LuauPolyfill.Array
 -- ROBLOX deviation END
 type Array<T> = LuauPolyfill.Array<T>
 type Promise<T> = LuauPolyfill.Promise<T>
-local Promise = require(Packages.Promise)
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local Promise = require("@pkg/@jsdotlua/promise")
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local describe = JestGlobals.describe
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 -- ROBLOX deviation START: not used
 -- local jest = JestGlobals.jest
--- local path = require(Packages.path)
+-- local path = require("@pkg/@jsdotlua/path")
 -- ROBLOX deviation END
-local jestTestResultModule = require(Packages.JestTestResult)
+local jestTestResultModule = require("@pkg/@jsdotlua/jest-test-result")
 type Test = jestTestResultModule.Test
-local jestTypesModule = require(Packages.JestTypes)
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 -- ROBLOX deviation START: not used
 -- type Config = jestTypesModule.Config
 -- ROBLOX deviation END
@@ -36,11 +35,11 @@ type Config_Argv = jestTypesModule.Config_Argv
 type Config_Path = jestTypesModule.Config_Path
 type Config_InitialOptions = jestTypesModule.Config_InitialOptions
 type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
-local normalize = require(Packages.JestConfig).normalize
+local normalize = require("@pkg/@jsdotlua/jest-config").normalize
 -- ROBLOX deviation START: not used
--- local Runtime = require(Packages.JestRuntime).default
+-- local Runtime = require("@pkg/@jsdotlua/jest-runtime").default
 -- ROBLOX deviation END
-local SearchSourceModule = require(script.Parent.Parent.SearchSource)
+local SearchSourceModule = require("../SearchSource")
 local SearchSource = SearchSourceModule.default
 -- ROBLOX deviation START: add SearchSource type
 type SearchSource = SearchSourceModule.SearchSource

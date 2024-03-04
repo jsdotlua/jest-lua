@@ -14,15 +14,11 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local CurrentModule = script.Parent
-local SrcModule = CurrentModule.Parent
-local Packages = SrcModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
-local requireOrImportModule = require(SrcModule.requireOrImportModule)
+local requireOrImportModule = require("../requireOrImportModule")
 
 describe("requireOrImportModule", function()
 	it("should execute without error", function()

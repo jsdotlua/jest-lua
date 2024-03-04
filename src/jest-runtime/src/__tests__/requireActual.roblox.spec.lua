@@ -1,8 +1,6 @@
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local describe = JestGlobals.describe
 local expect = JestGlobals.expect
 local it = JestGlobals.it
@@ -15,7 +13,7 @@ local createRuntime
 
 describe("Roblox requireActual", function()
 	beforeEach(function()
-		createRuntime = require(CurrentModule.__mocks__.createRuntime)
+		createRuntime = require("../__mocks__/createRuntime")
 	end)
 
 	it("should mock module and then require the actual module", function()

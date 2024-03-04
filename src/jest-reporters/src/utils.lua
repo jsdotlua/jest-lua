@@ -6,10 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local String = LuauPolyfill.String
@@ -17,30 +14,30 @@ type Array<T> = LuauPolyfill.Array<T>
 
 local exports = {}
 
-local path = require(Packages.Path).path
-local chalk = require(Packages.ChalkLua)
+local path = require("@pkg/@jsdotlua/path").path
+local chalk = require("@pkg/@jsdotlua/chalk")
 
 -- ROBLOX deviation START: not supporting windows path separator
--- local slash = require(Packages.slash)
+-- local slash = require("@pkg/slash")
 local slash = function(path_: string): string
 	return path_:gsub("\\", "/")
 end
 -- ROBLOX deviation END
 
-local testResultModule = require(Packages.JestTestResult)
+local testResultModule = require("@pkg/@jsdotlua/jest-test-result")
 type AggregatedResult = testResultModule.AggregatedResult
 type TestCaseResult = testResultModule.TestCaseResult
 
-local jestTypesModule = require(Packages.JestTypes)
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
 type Config_GlobalConfig = jestTypesModule.Config_GlobalConfig
 type Config_Path = jestTypesModule.Config_Path
 
-local jestUtilModule = require(Packages.JestUtil)
+local jestUtilModule = require("@pkg/@jsdotlua/jest-util")
 local formatTime = jestUtilModule.formatTime
 local pluralize = jestUtilModule.pluralize
 
-local typesModule = require(CurrentModule.types)
+local typesModule = require("./types")
 type SummaryOptions = typesModule.SummaryOptions
 type Test = typesModule.Test
 

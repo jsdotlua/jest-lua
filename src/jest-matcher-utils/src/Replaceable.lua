@@ -6,9 +6,7 @@
 -- * LICENSE file in the root directory of this source tree.
 -- */
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-local getType = require(Packages.JestGetType).getType
+local getType = require("@pkg/@jsdotlua/jest-get-type").getType
 
 type ReplaceableForEachCallBack = (any, any, any) -> nil
 

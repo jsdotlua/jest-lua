@@ -17,13 +17,13 @@
 return (function()
 	type Function = (...any) -> ...any
 
-	local JestGlobals = require(script.Parent.Parent)
+	local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 	local expect = JestGlobals.expect
 	local test = JestGlobals.test
 
 	test("throw when directly imported", function()
 		expect(function()
-			require(script.Parent.Parent.index)
+			require("../index")
 		end).toThrowError(
 			-- ROBLOX deviation START: aligned message to make sense for jest-roblox
 			"Do not import `JestGlobals` outside of the Jest test environment"

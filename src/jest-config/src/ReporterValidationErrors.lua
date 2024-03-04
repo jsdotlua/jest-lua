@@ -6,8 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local String = LuauPolyfill.String
@@ -16,19 +15,19 @@ type Record<K, T> = { [K]: T }
 
 local exports = {}
 
-local chalk = require(Packages.ChalkLua)
-local typesModule = require(Packages.JestTypes)
+local chalk = require("@pkg/@jsdotlua/chalk")
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_ReporterConfig = typesModule.Config_ReporterConfig
-local getType = require(Packages.JestGetType).getType
-local jestValidateModule = require(Packages.JestValidate)
+local getType = require("@pkg/@jsdotlua/jest-get-type").getType
+local jestValidateModule = require("@pkg/@jsdotlua/jest-validate")
 local ValidationError = jestValidateModule.ValidationError
 type ValidationError = jestValidateModule.ValidationError
-local utilsModule = require(script.Parent.utils)
+local utilsModule = require("./utils")
 local BULLET = utilsModule.BULLET
 local DOCUMENTATION_NOTE = utilsModule.DOCUMENTATION_NOTE
 
 -- ROBLOX deviation START: added missing variables to limit nr deviations
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 local nodeUtils = RobloxShared.nodeUtils
 local JSON = nodeUtils.JSON
 -- ROBLOX deviation END

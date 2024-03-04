@@ -1,0 +1,27 @@
+{
+  "name": "@jsdotlua/jest-diff",
+  "version": "3.6.1-rc.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsdotlua/jest-lua.git",
+    "directory": "src/jest-diff"
+  },
+  "license": "MIT",
+  "main": "src/init.lua",
+  "scripts": {
+    "prepare": "npmluau"
+  },
+  "dependencies": {
+    "@jsdotlua/chalk": "^0.2.1",
+    "@jsdotlua/diff-sequences": "workspace:^",
+    "@jsdotlua/jest-get-type": "workspace:^",
+    "@jsdotlua/jest-types": "workspace:^",
+    "@jsdotlua/luau-polyfill": "^1.2.6",
+    "@jsdotlua/pretty-format": "workspace:^"
+  },
+  "devDependencies": {
+    "@jsdotlua/jest-globals": "workspace:^",
+    "@jsdotlua/test-utils": "workspace:^",
+    "npmluau": "^0.1.1"
+  }
+}

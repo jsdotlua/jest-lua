@@ -6,26 +6,24 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Array<T> = LuauPolyfill.Array<T>
 
-local diff = require(Packages.DiffSequences)
+local diff = require("@pkg/@jsdotlua/diff-sequences")
 
-local CleanupSemantic = require(CurrentModule.CleanupSemantic)
+local CleanupSemantic = require("./CleanupSemantic")
 local DIFF_DELETE = CleanupSemantic.DIFF_DELETE
 local DIFF_EQUAL = CleanupSemantic.DIFF_EQUAL
 local DIFF_INSERT = CleanupSemantic.DIFF_INSERT
 local Diff = CleanupSemantic.Diff
 type Diff = CleanupSemantic.Diff
 
-local joinAlignedDiffsExpand = require(CurrentModule.JoinAlignedDiffs).joinAlignedDiffsExpand
-local joinAlignedDiffsNoExpand = require(CurrentModule.JoinAlignedDiffs).joinAlignedDiffsNoExpand
+local joinAlignedDiffsExpand = require("./JoinAlignedDiffs").joinAlignedDiffsExpand
+local joinAlignedDiffsNoExpand = require("./JoinAlignedDiffs").joinAlignedDiffsNoExpand
 
-local normalizeDiffOptions = require(CurrentModule.NormalizeDiffOptions).normalizeDiffOptions
+local normalizeDiffOptions = require("./NormalizeDiffOptions").normalizeDiffOptions
 
-local Types = require(CurrentModule.types)
+local Types = require("./types")
 type DiffOptions = Types.DiffOptions
 type DiffOptionsNormalized = Types.DiffOptionsNormalized
 

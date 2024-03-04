@@ -7,13 +7,12 @@
  *
  ]]
 
-local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local validatePattern = require(script.Parent.Parent.validatePattern).default
+local validatePattern = require("../validatePattern").default
 
 describe("validate pattern function", function()
 	it("without passed args returns true", function()

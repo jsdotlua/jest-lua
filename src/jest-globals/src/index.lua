@@ -7,19 +7,18 @@
 --  *
 --  */
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 
-local JestEnvironment = require(Packages.JestEnvironment)
+local JestEnvironment = require("@pkg/@jsdotlua/jest-environment")
 type Jest = JestEnvironment.Jest
-local importedExpect = require(Packages.Expect)
+local importedExpect = require("@pkg/@jsdotlua/expect")
 
 -- ROBLOX deviation START: additional imports
-local jestTypesModule = require(Packages.JestTypes)
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 type TestFrameworkGlobals = jestTypesModule.Global_TestFrameworkGlobals
 
-local ExpectModule = require(Packages.Expect)
+local ExpectModule = require("@pkg/@jsdotlua/expect")
 type MatcherState = ExpectModule.MatcherState
 type ExpectExtended<E, State = MatcherState> = ExpectModule.ExpectExtended<E, State>
 -- ROBLOX deviation END

@@ -7,9 +7,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Map = LuauPolyfill.Map
@@ -18,11 +16,11 @@ type Map<K, V> = LuauPolyfill.Map<K, V>
 
 local exports = {}
 
-local picomatch = require(Packages.Picomatch)
-local typesModule = require(Packages.JestTypes)
+local picomatch = require("@pkg/@jsdotlua/picomatch")
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_Path = typesModule.Config_Path
 type Config_Glob = typesModule.Config_Glob
--- local replacePathSepForGlob = require(script.Parent.replacePathSepForGlob).default
+-- local replacePathSepForGlob = require("./replacePathSepForGlob").default
 
 -- ROBLOX deviation START using Callable table to allow for properties on a function alternative
 type CallableMatcher = typeof(setmetatable({

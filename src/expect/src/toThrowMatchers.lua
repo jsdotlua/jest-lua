@@ -7,21 +7,18 @@
 --  *
 --  */
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
+local getType = require("@pkg/@jsdotlua/jest-get-type").getType
 
-local getType = require(Packages.JestGetType).getType
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local instanceof = LuauPolyfill.instanceof
 local Error = LuauPolyfill.Error
 type Function = (...any) -> any?
-local RegExp = require(Packages.RegExp)
+local RegExp = require("@pkg/luau-regexp")
 type RegExp = RegExp.RegExp
 type Object = LuauPolyfill.Object
 type Error = LuauPolyfill.Error
 
-local JestMatcherUtils = require(Packages.JestMatcherUtils)
+local JestMatcherUtils = require("@pkg/@jsdotlua/jest-matcher-utils")
 local EXPECTED_COLOR = JestMatcherUtils.EXPECTED_COLOR
 local RECEIVED_COLOR = JestMatcherUtils.RECEIVED_COLOR
 local matcherErrorMessage = JestMatcherUtils.matcherErrorMessage
@@ -33,10 +30,10 @@ local printWithType = JestMatcherUtils.printWithType
 local stringify = JestMatcherUtils.stringify
 type MatcherHintOptions = JestMatcherUtils.MatcherHintOptions
 
-local JestMessageUtil = require(Packages.JestMessageUtil)
+local JestMessageUtil = require("@pkg/@jsdotlua/jest-message-util")
 local formatStackTrace = JestMessageUtil.formatStackTrace
 
-local Print = require(CurrentModule.print)
+local Print = require("./print")
 local printExpectedConstructorName = Print.printExpectedConstructorName
 local printExpectedConstructorNameNot = Print.printExpectedConstructorNameNot
 local printReceivedConstructorName = Print.printReceivedConstructorName
@@ -44,14 +41,14 @@ local printReceivedConstructorNameNot = Print.printReceivedConstructorNameNot
 local printReceivedStringContainExpectedResult = Print.printReceivedStringContainExpectedResult
 local printReceivedStringContainExpectedSubstring = Print.printReceivedStringContainExpectedSubstring
 
-local Types = require(CurrentModule.types)
+local Types = require("./types")
 type ExpectationResult = Types.ExpectationResult
 type MatcherState = Types.MatcherState
 type MatchersObject = Types.MatchersObject
 type RawMatcherFn = Types.RawMatcherFn_
 type SyncExpectationResult = Types.SyncExpectationResult
 
-local isError = require(CurrentModule.utils).isError
+local isError = require("./utils").isError
 
 local DID_NOT_THROW = "Received function never threw"
 

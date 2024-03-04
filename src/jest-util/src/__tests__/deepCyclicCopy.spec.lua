@@ -8,20 +8,18 @@
  *
  ]]
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Number = LuauPolyfill.Number
 local Set = LuauPolyfill.Set
 local Symbol = LuauPolyfill.Symbol
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 
-local deepCyclicCopy = require(script.Parent.Parent.deepCyclicCopy).default
+local deepCyclicCopy = require("../deepCyclicCopy").default
 it("returns the same value for primitive or function values", function()
 	local function fn() end
 	expect(deepCyclicCopy(nil)).toBe(nil)

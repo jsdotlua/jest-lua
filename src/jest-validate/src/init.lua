@@ -8,17 +8,17 @@
 
 local exports = {}
 
-local utilsModule = require(script.utils)
+local utilsModule = require("./utils")
 exports.ValidationError = utilsModule.ValidationError
 export type ValidationError = utilsModule.ValidationError
 -- ROBLOX deviation START: not ported yet
 -- exports.createDidYouMeanMessage = utilsModule.createDidYouMeanMessage
 -- exports.format = utilsModule.format
 -- exports.logValidationWarning = utilsModule.logValidationWarning
--- local typesModule = require(script.types)
+-- local typesModule = require("./types")
 -- exports.DeprecatedOptions = typesModule.DeprecatedOptions
--- exports.validate = require(script.validate).default
--- exports.validateCLIOptions = require(script.validateCLIOptions).default
--- exports.multipleValidOptions = require(script.condition).multipleValidOptions
+-- exports.validate = require("./validate").default
+-- exports.validateCLIOptions = require("./validateCLIOptions").default
+-- exports.multipleValidOptions = require("./condition").multipleValidOptions
 -- ROBLOX deviation END
 return exports

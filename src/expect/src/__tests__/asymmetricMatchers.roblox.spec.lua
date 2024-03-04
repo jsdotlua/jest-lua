@@ -14,17 +14,14 @@
 	* limitations under the License.
 ]]
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
+local chalk = require("@pkg/@jsdotlua/chalk")
 
-local chalk = require(Packages.Dev.ChalkLua)
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local AsymmetricMatchers = require(CurrentModule.asymmetricMatchers)
+local AsymmetricMatchers = require("../asymmetricMatchers")
 local stringContaining = AsymmetricMatchers.stringContaining
 local stringNotContaining = AsymmetricMatchers.stringNotContaining
 local stringMatching = AsymmetricMatchers.stringMatching

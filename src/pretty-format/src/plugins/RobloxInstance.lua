@@ -16,24 +16,21 @@
 -- this plugin serializes Roblox Instance objects
 -- https://developer.roblox.com/en-us/api-reference/class/Instance
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGetType = require(Packages.JestGetType)
+local JestGetType = require("@pkg/@jsdotlua/jest-get-type")
 local getType = JestGetType.getType
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local instanceof = LuauPolyfill.instanceof
 
-local RobloxInstance = require(Packages.RobloxShared).RobloxInstance
+local RobloxInstance = require("@pkg/@jsdotlua/jest-roblox-shared").RobloxInstance
 local getRobloxProperties = RobloxInstance.getRobloxProperties
 local getRobloxDefaults = RobloxInstance.getRobloxDefaults
 local InstanceSubset = RobloxInstance.InstanceSubset
 
-local printTableEntries = require(CurrentModule.Collections).printTableEntries
+local printTableEntries = require("../Collections").printTableEntries
 
-local Types = require(CurrentModule.Types)
+local Types = require("../Types")
 type Config = Types.Config
 type Refs = Types.Refs
 type Printer = Types.Printer

@@ -6,8 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 -- ROBLOX deviation START: not needed
@@ -18,49 +17,49 @@ local Boolean = LuauPolyfill.Boolean
 type Array<T> = LuauPolyfill.Array<T>
 type Promise<T> = LuauPolyfill.Promise<T>
 type Set<T> = LuauPolyfill.Set<T>
-local Promise = require(Packages.Promise)
-local RegExp = require(Packages.RegExp)
+local Promise = require("@pkg/@jsdotlua/promise")
+local RegExp = require("@pkg/luau-regexp")
 
 local exports = {}
 
 -- ROBLOX deviation START: not needed
--- local os_ = require(Packages.os)
--- local path = require(Packages.path)
--- local micromatch = require(Packages.micromatch)
+-- local os_ = require("@pkg/os")
+-- local path = require("@pkg/@jsdotlua/path")
+-- local micromatch = require("@pkg/micromatch")
 -- ROBLOX deviation END
-local test_resultModule = require(Packages.JestTestResult)
+local test_resultModule = require("@pkg/@jsdotlua/jest-test-result")
 type Test = test_resultModule.Test
-local jestTypesModule = require(Packages.JestTypes)
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_GlobalConfig = jestTypesModule.Config_GlobalConfig
 type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
 -- ROBLOX deviation START: not needed
--- local jest_changed_filesModule = require(Packages["jest-changed-files"])
+-- local jest_changed_filesModule = require("@pkg/jest-changed-files")
 -- type ChangedFiles = jest_changed_filesModule.ChangedFiles
 type ChangedFiles = nil
--- local replaceRootDirInPath = require(Packages["jest-config"]).replaceRootDirInPath
--- local escapePathForRegex = require(Packages["jest-regex-util"]).escapePathForRegex
--- local DependencyResolver = require(Packages["jest-resolve-dependencies"]).DependencyResolver
+-- local replaceRootDirInPath = require("@pkg/jest-config").replaceRootDirInPath
+-- local escapePathForRegex = require("@pkg/jest-regex-util").escapePathForRegex
+-- local DependencyResolver = require("@pkg/jest-resolve-dependencies").DependencyResolver
 -- ROBLOX deviation END
-local jest_runtimeModule = require(Packages.JestRuntime)
+local jest_runtimeModule = require("@pkg/@jsdotlua/jest-runtime")
 type Context = jest_runtimeModule.Context
 -- ROBLOX deviation START: not needed
--- local buildSnapshotResolver = require(Packages.JestSnapshot).buildSnapshotResolver
+-- local buildSnapshotResolver = require("@pkg/@jsdotlua/jest-snapshot").buildSnapshotResolver
 -- ROBLOX deviation END
-local jest_utilModule = require(Packages.JestUtil)
+local jest_utilModule = require("@pkg/@jsdotlua/jest-util")
 local globsToMatcher = jest_utilModule.globsToMatcher
 local testPathPatternToRegExp = jest_utilModule.testPathPatternToRegExp
-local typesModule = require(script.Parent.types)
+local typesModule = require("./types")
 type Filter = typesModule.Filter
 type Stats = typesModule.Stats
 type TestPathCases = typesModule.TestPathCases
 
-local globalTypesModule = require(Packages.JestTypes)
+local globalTypesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_Path = globalTypesModule.Config_Path
 
 -- ROBLOX deviation START: custom implementation for getting all files
 type FileInfo = { path: Config_Path, script: ModuleScript }
 
-local getRelativePath = require(Packages.RobloxShared).getRelativePath
+local getRelativePath = require("@pkg/@jsdotlua/jest-roblox-shared").getRelativePath
 
 local function getAllFiles(context: Context): Array<FileInfo>
 	local descendants = context.config.rootDir:GetDescendants()

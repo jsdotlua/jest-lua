@@ -6,27 +6,24 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
 local exports = {}
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 
-local chalk = require(Packages.ChalkLua)
+local chalk = require("@pkg/@jsdotlua/chalk")
 
-local testResultModule = require(Packages.JestTestResult)
+local testResultModule = require("@pkg/@jsdotlua/jest-test-result")
 type SnapshotSummary = testResultModule.SnapshotSummary
 
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_GlobalConfig = typesModule.Config_GlobalConfig
 type Config_ProjectConfig = typesModule.Config_ProjectConfig
 type Config_Path = typesModule.Config_Path
 
-local pluralize = require(Packages.JestUtil).pluralize
-local formatTestPath = require(CurrentModule.utils).formatTestPath
+local pluralize = require("@pkg/@jsdotlua/jest-util").pluralize
+local formatTestPath = require("./utils").formatTestPath
 
 local ARROW = " \u{203A} "
 local DOWN_ARROW = " \u{21B3} "

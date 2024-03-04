@@ -7,14 +7,12 @@
 --  *
 --  */
 
-local Packages = script.Parent.Parent.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local isPrimitive = require(script.Parent.Parent).isPrimitive
+local isPrimitive = require("..").isPrimitive
 
 describe(".isPrimitive()", function()
 	it("returns true when given primitive value of: nil", function()

@@ -66,7 +66,7 @@ local function requireOverride(scriptInstance: ModuleScript): any
 	-- FIXME: an extra special hack that prevents us from frequently reloading
 	-- `jest-roblox`, and therefore dodges the expensive modules found in:
 	-- jest-roblox -> luau-polyfill@0.1.5 -> RegExp
-	if scriptInstance.Name == "RegExp" then
+	if scriptInstance.Name == "RegExp" or scriptInstance.Name == "luau-regexp" then
 		return require(scriptInstance) :: any
 	end
 

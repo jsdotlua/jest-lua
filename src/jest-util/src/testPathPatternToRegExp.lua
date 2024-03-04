@@ -6,13 +6,12 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent
-local RegExp = require(Packages.RegExp)
+local RegExp = require("@pkg/luau-regexp")
 type RegExp = RegExp.RegExp
 
 local exports = {}
 
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_GlobalConfig = typesModule.Config_GlobalConfig
 
 -- Because we serialize/deserialize globalConfig when we spawn workers,

@@ -8,7 +8,7 @@
 
 -- ROBLOX deviation START: moved implementation to `combined.lua` to avoid cyclic dependencies
 
-local combinedModule = require(script.Parent.combined)
+local combinedModule = require("./combined")
 
 local exports = {}
 

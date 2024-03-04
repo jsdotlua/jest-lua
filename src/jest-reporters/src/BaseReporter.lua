@@ -6,31 +6,28 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 type Set<T> = LuauPolyfill.Set<T>
 type Error = LuauPolyfill.Error
 
 local exports = {}
 
-local testResultModule = require(Packages.JestTestResult)
+local testResultModule = require("@pkg/@jsdotlua/jest-test-result")
 type AggregatedResult = testResultModule.AggregatedResult
 type TestCaseResult = testResultModule.TestCaseResult
 type TestResult = testResultModule.TestResult
 
-local preRunMessageRemove = require(Packages.JestUtil).remove
+local preRunMessageRemove = require("@pkg/@jsdotlua/jest-util").remove
 
-local typesModule = require(CurrentModule.types)
+local typesModule = require("./types")
 type Context = typesModule.Context
 type Reporter = typesModule.Reporter
 type ReporterOnStartOptions = typesModule.ReporterOnStartOptions
 type Test = typesModule.Test
 type NodeProcessMock = typesModule.NodeProcessMock
 
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 local Writeable = RobloxShared.Writeable
 type Writeable = RobloxShared.Writeable
 

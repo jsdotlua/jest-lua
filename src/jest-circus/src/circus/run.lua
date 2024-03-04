@@ -7,26 +7,24 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Boolean = LuauPolyfill.Boolean
 type Promise<T> = LuauPolyfill.Promise<T>
 
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 
 local exports = {}
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Circus_RunResult = typesModule.Circus_RunResult
 type Circus_DescribeBlock = typesModule.Circus_DescribeBlock
 type Circus_TestEntry = typesModule.Circus_TestEntry
 type Circus_Hook = typesModule.Circus_Hook
 type Circus_TestContext = typesModule.Circus_TestContext
-local stateModule = require(script.Parent.state)
+local stateModule = require("./state")
 local dispatch = stateModule.dispatch
 local getState = stateModule.getState
-local RETRY_TIMES = require(script.Parent.types).RETRY_TIMES
-local utilsModule = require(script.Parent.utils)
+local RETRY_TIMES = require("./types").RETRY_TIMES
+local utilsModule = require("./utils")
 local callAsyncCircusFn = utilsModule.callAsyncCircusFn
 local getAllHooksForDescribe = utilsModule.getAllHooksForDescribe
 local getEachHooksForTest = utilsModule.getEachHooksForTest

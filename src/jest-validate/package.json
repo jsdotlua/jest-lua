@@ -1,0 +1,21 @@
+{
+  "name": "@jsdotlua/jest-validate",
+  "version": "3.6.1-rc.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsdotlua/jest-lua.git",
+    "directory": "src/jest-validate"
+  },
+  "license": "MIT",
+  "main": "src/init.lua",
+  "scripts": {
+    "prepare": "npmluau"
+  },
+  "dependencies": {
+    "@jsdotlua/chalk": "^0.2.1",
+    "@jsdotlua/luau-polyfill": "^1.2.6"
+  },
+  "devDependencies": {
+    "npmluau": "^0.1.1"
+  }
+}

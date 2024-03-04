@@ -14,10 +14,10 @@ Table {
 Difference:
 
 <dim>Compared values have no visual difference.</>
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:39
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
-LoadedCode.JestRoblox._Index.Promise.Promise:151 function runExecutor
-LoadedCode.JestRoblox._Index.Promise.Promise:262
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.__tests__.formatNodeAssertErrors.roblox.spec:35
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.utils:367
+ReplicatedStorage.node_modules.@jsdotlua.promise.lib:172 function runExecutor
+ReplicatedStorage.node_modules.@jsdotlua.promise.lib:299
 ",
   },
 }
@@ -43,8 +43,8 @@ Difference:
 <green>-   \"foo\": \"foo\",</>
 <red>+   \"foo\": \"fooBar\",</>
 <dim>  }</>
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:117
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.__tests__.formatNodeAssertErrors.roblox.spec:113
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.utils:367
 ",
   },
 }
@@ -70,8 +70,8 @@ Difference:
 <green>-   \"foo\": \"foo\",</>
 <red>+   \"foo\": \"fooBar\",</>
 <dim>  }</>
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:117
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.__tests__.formatNodeAssertErrors.roblox.spec:113
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.utils:367
 ",
   },
 }
@@ -91,8 +91,8 @@ Table {
 Difference:
 
 <dim>Compared values have no visual difference.</>
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:117
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.__tests__.formatNodeAssertErrors.roblox.spec:113
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.utils:367
 ",
   },
 }
@@ -112,8 +112,8 @@ Table {
 Difference:
 
 <dim>Compared values have no visual difference.</>
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:117
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.__tests__.formatNodeAssertErrors.roblox.spec:113
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.utils:367
 ",
   },
 }
@@ -133,8 +133,8 @@ Table {
 Difference:
 
 <dim>Compared values have no visual difference.</>
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:117
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.__tests__.formatNodeAssertErrors.roblox.spec:113
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.utils:367
 ",
   },
 }
@@ -154,8 +154,8 @@ Table {
 Difference:
 
 <dim>Compared values have no visual difference.</>
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:117
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.__tests__.formatNodeAssertErrors.roblox.spec:113
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.utils:367
 ",
   },
 }
@@ -175,8 +175,8 @@ Table {
 Difference:
 
 <dim>Compared values have no visual difference.</>
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:117
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.__tests__.formatNodeAssertErrors.roblox.spec:113
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.utils:367
 ",
   },
 }
@@ -196,8 +196,8 @@ Table {
 Difference:
 
 <dim>Compared values have no visual difference.</>
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:117
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.__tests__.formatNodeAssertErrors.roblox.spec:113
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.utils:367
 ",
   },
 }
@@ -223,8 +223,8 @@ Difference:
 <green>-   \"foo\": \"foo\",</>
 <red>+   \"foo\": \"fooBar\",</>
 <dim>  }</>
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:117
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.__tests__.formatNodeAssertErrors.roblox.spec:113
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.utils:367
 ",
   },
 }
@@ -250,8 +250,8 @@ Difference:
 <green>-   \"foo\": \"foo\",</>
 <red>+   \"foo\": \"fooBar\",</>
 <dim>  }</>
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.formatNodeAssertErrors.roblox.spec:117
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.__tests__.formatNodeAssertErrors.roblox.spec:113
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.utils:367
 ",
   },
 }

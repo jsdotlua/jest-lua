@@ -6,12 +6,9 @@
 -- * LICENSE file in the root directory of this source tree.
 -- */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
+local Replaceable = require("../Replaceable")
 
-local Replaceable = require(CurrentModule.Replaceable)
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe

@@ -11,9 +11,7 @@
 
 local exports = {}
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent.Parent
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Circus_EventHandler = typesModule.Circus_EventHandler
 
 -- ROBLOX deviation START: predefine common variables
@@ -25,12 +23,12 @@ local restoreGlobalErrorHandlers
 
 -- ROBLOX FILE START: eventHandler.ts
 do
-	local LuauPolyfill = require(Packages.LuauPolyfill)
+	local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 	local Array = LuauPolyfill.Array
 	local Boolean = LuauPolyfill.Boolean
 	local Error = LuauPolyfill.Error
 
-	local RegExp = require(Packages.RegExp)
+	local RegExp = require("@pkg/luau-regexp")
 
 	type Circus_EventHandler = typesModule.Circus_EventHandler
 	type Circus_Event = typesModule.Circus_Event
@@ -48,9 +46,9 @@ do
 		} from './globalErrorHandlers';
 	]]
 	-- ROBLOX FIXME: resolve cyclic dep
-	local TEST_TIMEOUT_SYMBOL = require(script.Parent.types).TEST_TIMEOUT_SYMBOL
+	local TEST_TIMEOUT_SYMBOL = require("./types").TEST_TIMEOUT_SYMBOL
 	-- ROBLOX FIXME: resolve cyclic dep
-	local utilsModule = require(script.Parent.utils)
+	local utilsModule = require("./utils")
 	local addErrorToEachTestUnderDescribe = utilsModule.addErrorToEachTestUnderDescribe
 	local describeBlockHasTests = utilsModule.describeBlockHasTests
 	local getTestDuration = utilsModule.getTestDuration
@@ -304,7 +302,7 @@ end
 
 -- ROBLOX FILE START: globalErrorHandlers.ts
 do
-	local LuauPolyfill = require(Packages.LuauPolyfill)
+	local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 	local Array = LuauPolyfill.Array
 
 	-- ROBLOX FIXME START: added types and objects that do not exist in Luau
@@ -359,11 +357,11 @@ end
 
 -- ROBLOX FILE START: state.ts
 do
-	local LuauPolyfill = require(Packages.LuauPolyfill)
+	local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 	type Array<T> = LuauPolyfill.Array<T>
 	type Promise<T> = LuauPolyfill.Promise<T>
 
-	local Promise = require(Packages.Promise)
+	local Promise = require("@pkg/@jsdotlua/promise")
 
 	type Circus_EventHandler = typesModule.Circus_EventHandler
 	type Circus_State = typesModule.Circus_State
@@ -375,13 +373,13 @@ do
 		import eventHandler from './eventHandler';
 	]]
 	-- ROBLOX FIXME: resolve cyclic dep
-	local formatNodeAssertErrors = require(script.Parent.formatNodeAssertErrors).default
+	local formatNodeAssertErrors = require("./formatNodeAssertErrors").default
 	-- ROBLOX FIXME: resolve cyclic dep
-	local STATE_SYM = require(script.Parent.types).STATE_SYM
-	local makeDescribe = require(script.Parent.utils).makeDescribe
+	local STATE_SYM = require("./types").STATE_SYM
+	local makeDescribe = require("./utils").makeDescribe
 	local eventHandlers: Array<Circus_EventHandler> = { eventHandler, formatNodeAssertErrors }
 	-- ROBLOX deviation START: move to `state_.lua` to avoid cyclic dependency
-	local stateCommonModule = require(script.Parent.state_)
+	local stateCommonModule = require("./state_")
 	local ROOT_DESCRIBE_BLOCK_NAME = stateCommonModule.ROOT_DESCRIBE_BLOCK_NAME
 	-- ROBLOX deviation END
 	exports.ROOT_DESCRIBE_BLOCK_NAME = ROOT_DESCRIBE_BLOCK_NAME

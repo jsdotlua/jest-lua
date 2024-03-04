@@ -6,15 +6,14 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 type Promise<T> = LuauPolyfill.Promise<T>
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 
 local exports = {}
 
-local emitteryModule = require(Packages.Emittery)
+local emitteryModule = require("@pkg/@jsdotlua/emittery")
 local emittery = emitteryModule.default
 type emittery<EventData> = emitteryModule.Emittery
 

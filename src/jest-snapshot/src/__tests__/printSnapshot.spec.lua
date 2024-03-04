@@ -6,26 +6,23 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 local Object = LuauPolyfill.Object
 local Symbol = LuauPolyfill.Symbol
 
 -- ROBLOX deviation: omitting imports for styles
-local ansiRegex = require(Packages.PrettyFormat).plugins.ConvertAnsi.ansiRegex
-local chalk = (require(Packages.ChalkLua) :: any) :: Chalk
-local format = require(Packages.PrettyFormat).default
+local ansiRegex = require("@pkg/@jsdotlua/pretty-format").plugins.ConvertAnsi.ansiRegex
+local chalk = (require("@pkg/@jsdotlua/chalk") :: any) :: Chalk
+local format = require("@pkg/@jsdotlua/pretty-format").default
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
 
-local printSnapshot = require(CurrentModule.printSnapshot)
+local printSnapshot = require("../printSnapshot")
 type Chalk = printSnapshot.Chalk
 local getReceivedColorForChalkInstance = printSnapshot.getReceivedColorForChalkInstance
 local getSnapshotColorForChalkInstance = printSnapshot.getSnapshotColorForChalkInstance
@@ -33,9 +30,9 @@ local noColor = printSnapshot.noColor
 local printPropertiesAndReceived = printSnapshot.printPropertiesAndReceived
 local printSnapshotAndReceived = printSnapshot.printSnapshotAndReceived
 
-local serialize = require(CurrentModule.utils).serialize
+local serialize = require("../utils").serialize
 
-local colors = require(CurrentModule.colors)
+local colors = require("../colors")
 -- ROBLOX TODO: ADO-1522 add level 3 support in chalk
 -- ROBLOX deviation: omitted level 3 colors since we don't have level 3 support in chalk
 local aBackground2 = colors.aBackground2
@@ -119,7 +116,7 @@ local function convertAnsi(val: string): string
 	return val
 end
 
-local jestSnapshot = require(CurrentModule)
+local jestSnapshot = require("../init")
 local toMatchSnapshot = jestSnapshot.toMatchSnapshot
 local toThrowErrorMatchingSnapshot = jestSnapshot.toThrowErrorMatchingSnapshot
 

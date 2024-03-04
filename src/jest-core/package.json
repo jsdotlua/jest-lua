@@ -1,0 +1,39 @@
+{
+  "name": "@jsdotlua/jest-core",
+  "version": "3.6.1-rc.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsdotlua/jest-lua.git",
+    "directory": "src/jest-core"
+  },
+  "license": "MIT",
+  "main": "src/init.lua",
+  "scripts": {
+    "prepare": "npmluau"
+  },
+  "dependencies": {
+    "@jsdotlua/chalk": "^0.2.1",
+    "@jsdotlua/emittery": "workspace:^",
+    "@jsdotlua/jest-config": "workspace:^",
+    "@jsdotlua/jest-console": "workspace:^",
+    "@jsdotlua/jest-message-util": "workspace:^",
+    "@jsdotlua/jest-reporters": "workspace:^",
+    "@jsdotlua/jest-roblox-shared": "workspace:^",
+    "@jsdotlua/jest-runner": "workspace:^",
+    "@jsdotlua/jest-runtime": "workspace:^",
+    "@jsdotlua/jest-snapshot": "workspace:^",
+    "@jsdotlua/jest-test-result": "workspace:^",
+    "@jsdotlua/jest-types": "workspace:^",
+    "@jsdotlua/jest-util": "workspace:^",
+    "@jsdotlua/luau-polyfill": "^1.2.6",
+    "@jsdotlua/pretty-format": "workspace:^",
+    "@jsdotlua/promise": "^3.5.0",
+    "luau-regexp": "^0.2.1"
+  },
+  "devDependencies": {
+    "@jsdotlua/jest-globals": "workspace:^",
+    "@jsdotlua/jest-snapshot-serializer-raw": "workspace:^",
+    "@jsdotlua/test-utils": "workspace:^",
+    "npmluau": "^0.1.1"
+  }
+}

@@ -10,11 +10,9 @@
 --[=[
 	ROBLOX deviation: not ported as it doesn't seem necessary in Lua
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
 local exports = {}
 
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_Glob = typesModule.Config_Glob
 type Config_Path = typesModule.Config_Path
 

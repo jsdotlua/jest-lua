@@ -5,11 +5,12 @@ exports[ [=[formats a string error into proper output with message 1]=] ] = [=[
 Table {
   "thrown: \"something went wrong!!\"
 Error
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:555 function _getError
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:443 function makeRunResult
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.errorParsing.roblox.spec:56
-LoadedCode.JestRoblox._Workspace.JestEach.JestEach.bind:170
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.utils:369
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.utils:553 function _getError
+ReplicatedStorage.node_modules.@jsdotlua.collections.src.Array.map:34
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.utils:441 function makeRunResult
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.__tests__.errorParsing.roblox.spec:52
+ReplicatedStorage.node_modules.@jsdotlua.jest-each.src.bind:168
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.utils:367
 ",
 }
 ]=]
@@ -18,12 +19,12 @@ exports[ [=[formats an error object into proper output with message 1]=] ] = [=[
 
 Table {
   "Error
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.errorParsing.roblox.spec:43
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:2039 function _execModule
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1437 function _loadModule
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1279
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1278 function requireModule
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.legacy-code-todo-rewrite.jestAdapter:114
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.__tests__.errorParsing.roblox.spec:39
+ReplicatedStorage.node_modules.@jsdotlua.jest-runtime.src:2038 function _execModule
+ReplicatedStorage.node_modules.@jsdotlua.jest-runtime.src:1436 function _loadModule
+ReplicatedStorage.node_modules.@jsdotlua.jest-runtime.src:1278
+ReplicatedStorage.node_modules.@jsdotlua.jest-runtime.src:1277 function requireModule
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.legacy-code-todo-rewrite.jestAdapter:113
 ",
 }
 ]=]
@@ -32,12 +33,12 @@ exports[ [=[formats an error object with a message into proper output with messa
 
 Table {
   "Error: something went wrong!!
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.errorParsing.roblox.spec:44
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:2039 function _execModule
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1437 function _loadModule
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1279
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1278 function requireModule
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.legacy-code-todo-rewrite.jestAdapter:114
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.__tests__.errorParsing.roblox.spec:40
+ReplicatedStorage.node_modules.@jsdotlua.jest-runtime.src:2038 function _execModule
+ReplicatedStorage.node_modules.@jsdotlua.jest-runtime.src:1436 function _loadModule
+ReplicatedStorage.node_modules.@jsdotlua.jest-runtime.src:1278
+ReplicatedStorage.node_modules.@jsdotlua.jest-runtime.src:1277 function requireModule
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.legacy-code-todo-rewrite.jestAdapter:113
 ",
 }
 ]=]
@@ -46,12 +47,12 @@ exports[ [=[formats an error object with a stack and message into proper output 
 
 Table {
   "something went wrong!!
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.errorParsing.roblox.spec:47
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:2039 function _execModule
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1437 function _loadModule
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1279
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1278 function requireModule
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.legacy-code-todo-rewrite.jestAdapter:114
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.__tests__.errorParsing.roblox.spec:43
+ReplicatedStorage.node_modules.@jsdotlua.jest-runtime.src:2038 function _execModule
+ReplicatedStorage.node_modules.@jsdotlua.jest-runtime.src:1436 function _loadModule
+ReplicatedStorage.node_modules.@jsdotlua.jest-runtime.src:1278
+ReplicatedStorage.node_modules.@jsdotlua.jest-runtime.src:1277 function requireModule
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.legacy-code-todo-rewrite.jestAdapter:113
 ",
 }
 ]=]
@@ -60,12 +61,12 @@ exports[ [=[formats an error object with only a stack into proper output with me
 
 Table {
   "Error: something went wrong!!
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.errorParsing.roblox.spec:51
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:2039 function _execModule
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1437 function _loadModule
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1279
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1278 function requireModule
-LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.legacy-code-todo-rewrite.jestAdapter:114
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.__tests__.errorParsing.roblox.spec:47
+ReplicatedStorage.node_modules.@jsdotlua.jest-runtime.src:2038 function _execModule
+ReplicatedStorage.node_modules.@jsdotlua.jest-runtime.src:1436 function _loadModule
+ReplicatedStorage.node_modules.@jsdotlua.jest-runtime.src:1278
+ReplicatedStorage.node_modules.@jsdotlua.jest-runtime.src:1277 function requireModule
+ReplicatedStorage.node_modules.@jsdotlua.jest-circus.src.circus.legacy-code-todo-rewrite.jestAdapter:113
 ",
 }
 ]=]

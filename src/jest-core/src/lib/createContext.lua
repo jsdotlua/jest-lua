@@ -6,18 +6,16 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local Packages = script.Parent.Parent.Parent
-
 local exports = {}
 
-local typesModule = require(Packages.JestTypes)
+local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_ProjectConfig = typesModule.Config_ProjectConfig
 -- ROBLOX deviation START: no haste maps support
--- local jest_haste_mapModule = require(Packages["jest-haste-map"])
+-- local jest_haste_mapModule = require("@pkg/jest-haste-map")
 -- type HasteMapObject = jest_haste_mapModule.HasteMapObject
 type HasteMapObject = nil
 -- ROBLOX deviation END
-local jest_runtimeModule = require(Packages.JestRuntime)
+local jest_runtimeModule = require("@pkg/@jsdotlua/jest-runtime")
 -- local Runtime = jest_runtimeModule.default
 type Context = jest_runtimeModule.Context
 

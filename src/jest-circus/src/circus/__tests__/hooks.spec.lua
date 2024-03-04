@@ -6,12 +6,9 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent
-local SrcModule = CurrentModule.Parent
-local Packages = SrcModule.Parent.Parent
-local runTest = require(script.Parent.Parent.__mocks__.testUtils).runTest
+local runTest = require("../__mocks__/testUtils").runTest
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 

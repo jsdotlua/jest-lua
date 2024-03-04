@@ -14,21 +14,18 @@
 	ROBLOX TODO: refactor tests once the matchers code has been translated
 ]]
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Symbol = LuauPolyfill.Symbol
 local Set = LuauPolyfill.Set
 
-local RegExp = require(Packages.RegExp)
+local RegExp = require("@pkg/luau-regexp")
 
-local jasmineUtils = require(CurrentModule.jasmineUtils)
+local jasmineUtils = require("../jasmineUtils")
 local equals = jasmineUtils.equals
 local fnNameFor = jasmineUtils.fnNameFor
 local isA = jasmineUtils.isA

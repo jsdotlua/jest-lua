@@ -6,27 +6,25 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
 
-local DIFF_DELETE = require(CurrentModule.CleanupSemantic).DIFF_DELETE
-local DIFF_EQUAL = require(CurrentModule.CleanupSemantic).DIFF_EQUAL
-local DIFF_INSERT = require(CurrentModule.CleanupSemantic).DIFF_INSERT
-local Diff = require(CurrentModule.CleanupSemantic).Diff
+local DIFF_DELETE = require("../CleanupSemantic").DIFF_DELETE
+local DIFF_EQUAL = require("../CleanupSemantic").DIFF_EQUAL
+local DIFF_INSERT = require("../CleanupSemantic").DIFF_INSERT
+local Diff = require("../CleanupSemantic").Diff
 
-local joinAlignedDiffsExpand = require(CurrentModule.JoinAlignedDiffs).joinAlignedDiffsExpand
-local joinAlignedDiffsNoExpand = require(CurrentModule.JoinAlignedDiffs).joinAlignedDiffsNoExpand
+local joinAlignedDiffsExpand = require("../JoinAlignedDiffs").joinAlignedDiffsExpand
+local joinAlignedDiffsNoExpand = require("../JoinAlignedDiffs").joinAlignedDiffsNoExpand
 
-local noColor = require(CurrentModule.NormalizeDiffOptions).noColor
-local normalizeDiffOptions = require(CurrentModule.NormalizeDiffOptions).normalizeDiffOptions
+local noColor = require("../NormalizeDiffOptions").noColor
+local normalizeDiffOptions = require("../NormalizeDiffOptions").normalizeDiffOptions
 
 -- To align columns so people can review snapshots confidently:
 

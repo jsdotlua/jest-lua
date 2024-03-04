@@ -6,8 +6,7 @@
 
 	Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)
 ]]
-local Packages = script.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Error = LuauPolyfill.Error
@@ -22,7 +21,7 @@ type Array<T> = LuauPolyfill.Array<T>
 type Object = LuauPolyfill.Object
 type Symbol = LuauPolyfill.Symbol
 
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 type Promise<T> = LuauPolyfill.Promise<T>
 
 type PropertyKey = string | number | Symbol

@@ -14,14 +14,11 @@
 ]]
 -- ROBLOX NOTE upstream: Added some utilities to support keeping the upstream code consistent
 
-local CurrentModule = script.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local inspect = LuauPolyfill.util.inspect
 type Array<T> = LuauPolyfill.Array<T>
 
-local typesModule = require(CurrentModule.types)
+local typesModule = require("./types")
 type InspectOptions = typesModule.InspectOptions
 
 function concatRestArgs(restArgs: Array<unknown>)

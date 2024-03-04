@@ -6,15 +6,12 @@
  * LICENSE file in the root directory of this source tree.
  ]]
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 local Symbol = LuauPolyfill.Symbol
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
@@ -22,13 +19,13 @@ local itFIXME = function(description: string, ...: any)
 	JestGlobals.it.todo(description)
 end
 
-local React = require(Packages.Dev.React)
+local React = require("@pkg/@jsdotlua/react")
 type ReactElement = React.ReactElement
-local renderer = require(Packages.Dev.ReactTestRenderer)
-local ParentModule = require(script.Parent.Parent)
+local renderer = require("@pkg/@jsdotlua/react-test-renderer")
+local ParentModule = require("..")
 local prettyFormat = ParentModule.default
 local plugins = ParentModule.plugins
-local typesModule = require(script.Parent.Parent.Types)
+local typesModule = require("../Types")
 type OptionsReceived = typesModule.OptionsReceived
 
 -- ROBLOX deviation START: using same numbers as used in roact-alignment until it uses Symbols

@@ -14,18 +14,14 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local CurrentModule = script.Parent
-local SrcModule = CurrentModule.Parent
-local Packages = SrcModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 
-local preRunMessageModule = require(SrcModule.preRunMessage)
+local preRunMessageModule = require("../preRunMessage")
 local print_, remove = preRunMessageModule.print, preRunMessageModule.remove
 
 describe("preRunMessage", function()

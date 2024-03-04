@@ -14,15 +14,12 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local getParent = require(CurrentModule.utils).robloxGetParent
+local getParent = require("../utils").robloxGetParent
 
 describe("getParent", function()
 	it("works on Unix paths", function()

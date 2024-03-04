@@ -1,0 +1,21 @@
+{
+  "name": "@jsdotlua/jest-types",
+  "version": "3.6.1-rc.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsdotlua/jest-lua.git",
+    "directory": "src/jest-types"
+  },
+  "license": "MIT",
+  "main": "src/init.lua",
+  "scripts": {
+    "prepare": "npmluau"
+  },
+  "dependencies": {
+    "@jsdotlua/luau-polyfill": "^1.2.6",
+    "luau-regexp": "^0.2.1"
+  },
+  "devDependencies": {
+    "npmluau": "^0.1.1"
+  }
+}
