@@ -139,7 +139,7 @@ A list of ModuleScripts that run some code to configure or set up the testing fr
 
 In other words, `setupFilesAfterEnv` modules are meant for code which is repeating in each test file. Having the test framework installed makes Jest [globals](api), [`jest` object](jest-object) and [`expect`](expect) accessible in the modules. For example, you can add [extra matchers](expect#expectextendmatchers) or call [setup and teardown](setup-teardown) hooks:
 ```lua title="setupJest.lua"
-local JestGlobals = require(Packages.JestGlobals)
+local JestGlobals = require("@DevPackages/JestGlobals")
 local jest = JestGlobals.jest
 local expect = JestGlobals.expect
 local afterEach = JestGlobals.afterEach

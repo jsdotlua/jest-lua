@@ -7,7 +7,7 @@ The Jest Lua API is similar to [the API used by JavaScript Jest.](https://jestjs
 Jest Lua doesn't inject any global variables. Every jest functionality needs to be imported from `JestGlobals`. For example:
 
 ```lua
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@DevPackages/JestGlobals")
 
 local describe = JestGlobals.describe
 local expect = JestGlobals.expect

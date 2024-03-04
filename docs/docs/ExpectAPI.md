@@ -10,7 +10,7 @@ When you're writing tests, you often need to check that values meet certain cond
 
 It must be imported explicitly from `JestGlobals`.
 ```lua
-local expect = require(Packages.Dev.JestGlobals).expect
+local expect = require("@DevPackages/JestGlobals").expect
 ```
 
 ### RegExp
@@ -22,7 +22,7 @@ RegExp = "github.com/roblox/luau-regexp@0.2.0"
 ```
 
 ```lua
-local RegExp = require(Packages.RegExp)
+local RegExp = require("@Packages/RegExp")
 ```
 
 ### Promise
@@ -39,7 +39,7 @@ Promise = "github.com/evaera/roblox-lua-promise@3.3.0"
 LuauPolyfill also provides an extensible `Error` class that can be used with throwing matchers.
 
 ```lua
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@Packages/LuauPolyfill")
 local Error = LuauPolyfill.Error
 ```
 
@@ -212,7 +212,7 @@ To use snapshot testing inside of your custom matcher you can import `JestSnapsh
 Here's a snapshot matcher that trims a string to store for a given length, `.toMatchTrimmedSnapshot(length)`:
 
 ```lua
-local JestSnapshot = require(Packages.JestSnapshot)
+local JestSnapshot = require("@DevPackages/JestSnapshot")
 local toMatchSnapshot = JestRoblox.JestSnapshot.toMatchSnapshot
 
 expect.extend({

@@ -40,7 +40,12 @@ Table {
 The snapshot artifact should be committed alongside code changes, and reviewed as part of your code review process. Jest Lua uses [pretty-format](https://github.com/Roblox/jest-roblox/tree/master/src/pretty-format) to make snapshots human-readable during code review. On subsequent test runs, Jest Lua will compare the rendered output with the previous snapshot. If they match, the test will pass. If they don't match, either the test runner found a bug in your code that should be fixed, or the implementation has changed and the snapshot needs to be updated.
 
 ### Updating Snapshots
+
 <img alt='deviation' src='img/deviation.svg'/>
+
+:::warning
+It is not currently possible to update snapshot tests. The functionality depends on file system write APIs provided by `roblox-cli`, a tool only available to internal Roblox engineers. See issue [#4](https://github.com/jsdotlua/jest-lua/issues/4) for more.
+:::
 
 It's straightforward to spot when a snapshot test fails after a bug has been introduced. When that happens, go ahead and fix the issue and make sure your snapshot tests are passing again. Now, let's talk about the case when a snapshot test is failing due to an intentional implementation change.
 

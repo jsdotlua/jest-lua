@@ -3,28 +3,26 @@ id: testez-migration
 title: Migrating from TestEZ
 ---
 
-If you are using TestEZ, migrating to Jest Lua v2.4.x should be fairly straightforward. Many parts of Jest Lua v2.x still use the TestEZ API.
+If you are using [TestEZ](https://github.com/Roblox/testez), migrating to Jest Lua v2.4.x should be fairly straightforward. Many parts of Jest Lua v2.x still use the TestEZ API.
 
 To migrate to Jest Lua v3.x, additionally see [upgrading to Jest Lua v3](upgrading-to-jest3).
 
-Replace TestEZ with `JestGlobals` in your `rotriever.toml`.
-```diff title="rotriever.toml"
-[dev_dependencies]
-- TestEZ = "github.com/roblox/testez@0.4.1"
-+ JestGlobals = "github.com/Roblox/jest-roblox@2.4.1"
+:::warning
+The community Jest Lua fork has not published `v2.x`. Migrating straight from TestEZ to Jest Lua `v3.x` requires following this guide and then [upgrading to Jest Lua v3](upgrading-to-jest3).
+:::
+
+Replace `TestEZ` with `JestGlobals` in your `Wally.toml`.
+
+```diff title="wally.toml"
+[dev-dependencies]
+- TestEZ = "roblox/testez@0.4.1"
++ JestGlobals = "jsdotlua/jest-globals@3.6.1-rc.2"
 ```
 
 Unlike TestEZ, which is injected into the global environment, you will need to explicitly require anything you need from `JestGlobals`. For example, to use the new Jest Lua assertion library, add this to the top of your test file.
+
 ```lua
-local JestGlobals = require(Packages.JestGlobals)
-local expect = JestGlobals.expect
-```
-
-Or if you're migrating tests in the `lua-apps` repo, require `JestGlobals` from `CorePackages` at the top of your test file:
-```diff
-local CorePackages = game:GetService("CorePackages")
-
-local JestGlobals = require(CorePackages.JestGlobals)
+local JestGlobals = require("@DevPackages/JestGlobals")
 local expect = JestGlobals.expect
 ```
 
@@ -34,8 +32,6 @@ Globals that are injected make life very difficult for languages with strong typ
 Additionally, upstream Jest also plans to remove injected globals and instead prefers that users import any needed functionality through the `@jest/globals` package.
 
 Jest Lua is staying ahead of that plan and not including support for injected globals. In Jest Lua v3.x, _every_ import will need to be explicitly required, including `describe`, `it`, etc. See [Globals](api) for a list of all exports.
-
-Now that rotriever 0.5.0 allows users to import specific sub-packages, users can now specifically import `JestGlobals` and import any needed functionality from that package.
 
 https://jestjs.io/blog/2020/05/05/jest-26#a-new-way-to-consume-jest---jestglobals
 :::

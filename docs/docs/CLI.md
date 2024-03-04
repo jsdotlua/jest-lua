@@ -5,9 +5,10 @@ title: runCLI Options
 <p><a href='https://jestjs.io/docs/27.x/cli' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a></p> <img alt='Deviation' src='img/deviation.svg'/>
 
 The `Jest` packages exports `runCLI`, which is the main entrypoint to run Jest Lua tests. In your entrypoint script, import `runCLI` from the `Jest` package. A basic entrypoint script can look like the following:
+
 ```lua title="spec.lua"
 local Packages = script.Parent.YourProject.Packages
-local runCLI = require(Packages.Dev.Jest).runCLI
+local runCLI = require("@Packages/Jest").runCLI
 
 local processServiceExists, ProcessService = pcall(function()
 	return game:GetService("ProcessService")

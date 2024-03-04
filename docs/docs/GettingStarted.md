@@ -40,18 +40,16 @@ Create a `run-tests.lua` to point the test runner to the correct directory with 
 ```lua title="run-tests.lua"
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local Packages = ReplicatedStorage.Packages
-local DevPackages = ReplicatedStorage.DevPackages
-local runCLI = require(Packages.Jest).runCLI
+local runCLI = require("@DevPackages/Jest").runCLI
 
 local processServiceExists, ProcessService = pcall(function()
 	return game:GetService("ProcessService")
 end)
 
-local status, result = runCLI(Packages.Project, {
+local status, result = runCLI(ReplicatedStorage.Packages.Project, {
 	verbose = false,
 	ci = false
-}, { Packages.Project }):awaitStatus()
+}, { ReplicatedStorage.Packages.Project }):awaitStatus()
 
 if status == "Rejected" then
 	print(result)
@@ -89,15 +87,12 @@ end
 Then, create a `__tests__` directory under your `src` directory and create a `sum.spec.lua` in it. This will contain our actual test:
 
 ```lua title="sum.spec.lua"
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
-local DevPackages = ReplicatedStorage.DevPackages
-local JestGlobals = require(DevPackages.JestGlobals)
+local JestGlobals = require("@DevPackages/JestGlobals")
 
 local it = JestGlobals.it
 local expect = JestGlobals.expect
 
-local sum = require(...)
+local sum = require("@Project/Sum")
 
 it('adds 1 + 2 to equal 3', function()
 	expect(sum(1, 2)).toBe(3)
@@ -107,6 +102,14 @@ end)
 :::caution
 Any functionality needed _must_ be explicitly required from `JestGlobals`, see [Globals](api).
 :::
+
+Before you can run your tests, you need to enable the `debug.loadmodule` API. To do this, you must enable the `FFlagEnableLoadModule` flag. See issue [#3](https://github.com/jsdotlua/jest-lua/issues/3) for more.
+
+```json title="ClientAppSettings.json"
+{
+	"FFlagEnableLoadModule": true
+}
+```
 
 Finally, run your project using Roblox Studio or `run-in-roblox` to run the tests and your tests should pass!
 

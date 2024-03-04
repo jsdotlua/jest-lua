@@ -9,18 +9,18 @@ Upgrading Jest Lua from v2.x or TestEZ to v3.x? This guide aims to help refactor
 
 ### Setup
 
-First, update your `rotriever.toml` to use Jest Lua v3.0. You'll also need to require the `Jest` package in addition to the `JestGlobals` package. The `Jest` package contains `runCLI`, which is the main entrypoint into Jest Lua in v3.0.
+First, update your `wally.toml` to use Jest Lua v3.0. You'll also need to require the `Jest` package in addition to the `JestGlobals` package. The `Jest` package contains `runCLI`, which is the main entrypoint into Jest Lua in v3.0.
 
 ```yaml title="rotriever.toml"
-[dev_dependencies]
-Jest = "github.com/Roblox/jest-roblox@3.0.0"
-JestGlobals = "github.com/Roblox/jest-roblox@3.0.0"
+[dev-dependencies]
+Jest = "jsdotlua/jest@3.6.1-rc.2"
+JestGlobals = "jsdotlua/jest-globals@3.6.1-rc.2"
 ```
 
 Update your `spec.lua`. Instead of using `TestEZ.TestBootStrap:run`, the main entrypoint is now `Jest.runCLI`. A basic bootstrap script can look like the following:
 ```lua title="spec.lua"
 local YourProject = script.Parent.YourProject
-local runCLI = require(YourProject.Packages.Dev.Jest).runCLI
+local runCLI = require("@DevPackages/Jest").runCLI
 
 local processServiceExists, ProcessService = pcall(function()
 	return game:GetService("ProcessService")
@@ -65,14 +65,13 @@ Currently, Jest Lua will error if no configuration file is found.
 :::
 
 ### Updating Tests
+
 Jest Lua v3.0 no longer relies on test files returning a callback.
 A simple test file in v2.x may look like the following:
+
 ```lua title="test.spec.lua"
 return function()
-	local Workspace = script.Parent.Parent
-	local Packages = Workspace.Parent.Packages
-
-	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local JestGlobals = require("@DevPackages/JestGlobals")
 	local expect = JestGlobals.expect
 
 	it("1 does not equal 2", function()
@@ -84,10 +83,7 @@ end
 This test should now look like this:
 
 ```lua title="test.spec.lua"
-local Workspace = script.Parent.Parent
-local Packages = Workspace.Parent.Packages
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@DevPackages/JestGlobals")
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 
@@ -112,10 +108,13 @@ Any value you need must be explicitly imported from `JestGlobals`, including com
 :::
 
 ### Running Tests
-Jest Lua v3.0 also requires the fast flag `EnableLoadModule`. Add `--fastFlags.overrides EnableLoadModule=true` to your `roblox-cli run` command.
 
-```bash
-roblox-cli run --load.model default.project.json --run spec.lua --fastFlags.allOnLuau  --fastFlags.overrides EnableLoadModule=true
+Jest Lua v3.0 also requires the fast flag `EnableLoadModule`. This must be added to your Roblox Studio `ClientAppSettings.json` file:
+
+```json title="ClientAppSettings.json"
+{
+	"FFlagEnableLoadModule": true
+}
 ```
 
 ## Notable Differences

@@ -11,7 +11,7 @@ At the top of your test files, require `JestGlobals` from the `Packages` directo
 Then, explicitly import any of the following members:
 
 ```lua
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@DevPackages/JestGlobals")
 local describe = JestGlobals.describe
 local expect = JestGlobals.expect
 local test = JestGlobals.test

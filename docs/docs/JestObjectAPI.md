@@ -10,7 +10,7 @@ The methods in the `jest` object help create mocks and let you control Jest Lua'
 
 It must be imported explicitly from `JestGlobals`.
 ```lua
-local jest = require(Packages.Dev.JestGlobals).jest
+local jest = require("@DevPackages/JestGlobals").jest
 ```
 
 ## Methods
