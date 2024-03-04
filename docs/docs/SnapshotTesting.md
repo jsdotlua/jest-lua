@@ -37,10 +37,15 @@ Table {
 ]=]
 ```
 
-The snapshot artifact should be committed alongside code changes, and reviewed as part of your code review process. Jest Roblox uses [pretty-format](https://github.com/Roblox/jest-roblox/tree/master/src/pretty-format) to make snapshots human-readable during code review. On subsequent test runs, Jest Roblox will compare the rendered output with the previous snapshot. If they match, the test will pass. If they don't match, either the test runner found a bug in your code that should be fixed, or the implementation has changed and the snapshot needs to be updated.
+The snapshot artifact should be committed alongside code changes, and reviewed as part of your code review process. Jest Lua uses [pretty-format](https://github.com/Roblox/jest-roblox/tree/master/src/pretty-format) to make snapshots human-readable during code review. On subsequent test runs, Jest Lua will compare the rendered output with the previous snapshot. If they match, the test will pass. If they don't match, either the test runner found a bug in your code that should be fixed, or the implementation has changed and the snapshot needs to be updated.
 
 ### Updating Snapshots
+
 <img alt='deviation' src='img/deviation.svg'/>
+
+:::warning
+It is not currently possible to update snapshot tests. The functionality depends on file system write APIs provided by `roblox-cli`, a tool only available to internal Roblox engineers. See issue [#4](https://github.com/jsdotlua/jest-lua/issues/4) for more.
+:::
 
 It's straightforward to spot when a snapshot test fails after a bug has been introduced. When that happens, go ahead and fix the issue and make sure your snapshot tests are passing again. Now, let's talk about the case when a snapshot test is failing due to an intentional implementation change.
 
@@ -55,7 +60,7 @@ it("table", function()
 end)
 ```
 
-In that case, Jest Roblox will print this output:
+In that case, Jest Lua will print this output:
 ```
 Snapshot name: `describe table 1`
 
@@ -90,7 +95,7 @@ You'll also need to pass the following flags to give `roblox-cli` the proper per
 ```
 
 :::tip
-You can pass in configuration options into Jest Roblox by setting Lua globals in `roblox-cli`.
+You can pass in configuration options into Jest Lua by setting Lua globals in `roblox-cli`.
 
 ```lua
 runCLI(Project, {
@@ -134,7 +139,7 @@ Table {
 ]=]
 ```
 
-For these cases, Jest Roblox allows providing an asymmetric matcher for any property. These matchers are checked before the snapshot is written or tested, and then saved to the snapshot file instead of the received value:
+For these cases, Jest Lua allows providing an asymmetric matcher for any property. These matchers are checked before the snapshot is written or tested, and then saved to the snapshot file instead of the received value:
 
 ```lua
 it("will check the matchers and pass", function()
@@ -243,19 +248,19 @@ nil]=]
 
 ### Are snapshots written automatically on Continuous Integration (CI) systems?
 
-No, snapshots in Jest Roblox are not automatically written when Jest Roblox is run in a CI system without explicitly passing `UPDATESNAPSHOT`. It is expected that all snapshots are part of the code that is run on CI and since new snapshots automatically pass, they should not pass a test run on a CI system. It is recommended to always commit all snapshots and to keep them in version control.
+No, snapshots in Jest Lua are not automatically written when Jest Lua is run in a CI system without explicitly passing `UPDATESNAPSHOT`. It is expected that all snapshots are part of the code that is run on CI and since new snapshots automatically pass, they should not pass a test run on a CI system. It is recommended to always commit all snapshots and to keep them in version control.
 
 ### Should snapshot files be committed?
 
-Yes, all snapshot files should be committed alongside the modules they are covering and their tests. They should be considered part of a test, similar to the value of any other assertion in Jest Roblox. In fact, snapshots represent the state of the source modules at any given point in time. In this way, when the source modules are modified, Jest Roblox can tell what changed from the previous version. It can also provide a lot of additional context during code review in which reviewers can study your changes better.
+Yes, all snapshot files should be committed alongside the modules they are covering and their tests. They should be considered part of a test, similar to the value of any other assertion in Jest Lua. In fact, snapshots represent the state of the source modules at any given point in time. In this way, when the source modules are modified, Jest Lua can tell what changed from the previous version. It can also provide a lot of additional context during code review in which reviewers can study your changes better.
 
 ### Does snapshot testing replace unit testing?
 
-Snapshot testing is only one of more than 20 assertions that ship with Jest Roblox. The aim of snapshot testing is not to replace existing unit tests, but to provide additional value and make testing painless. In some scenarios, snapshot testing can potentially remove the need for unit testing for a particular set of functionalities (e.g. React components), but they can work together as well.
+Snapshot testing is only one of more than 20 assertions that ship with Jest Lua. The aim of snapshot testing is not to replace existing unit tests, but to provide additional value and make testing painless. In some scenarios, snapshot testing can potentially remove the need for unit testing for a particular set of functionalities (e.g. React components), but they can work together as well.
 
 ### How do I resolve conflicts within snapshot files?
 
-Snapshot files must always represent the current state of the modules they are covering. Therefore, if you are merging two branches and encounter a conflict in the snapshot files, you can either resolve the conflict manually or update the snapshot file by running Jest Roblox and inspecting the result.
+Snapshot files must always represent the current state of the modules they are covering. Therefore, if you are merging two branches and encounter a conflict in the snapshot files, you can either resolve the conflict manually or update the snapshot file by running Jest Lua and inspecting the result.
 
 ### Is it possible to apply test-driven development principles with snapshot testing?
 

@@ -7,13 +7,15 @@ title: JestBenchmark
 Benchmarks are useful tools for gating performance in CI, optimizing code, and capturing performance gains. JestBenchmark aims to make it easier to write benchmarks in the Luau language.
 
 JestBenchmark must be imported from the JestBenchmark Package
-```
-local JestBenchmark = require(Packages.Dev.JestBenchmark)
+
+```lua
+local JestBenchmark = require("@DevPackages/JestBenchmark")
 local benchmark = JestBenchmark.benchmark
 local CustomReporters = JestBenchmark.CustomReporters
 ```
 
 ### benchmark
+
 <img alt='Roblox only' src='img/roblox-only.svg'/>
 
 The `benchmark` function is a wrapper around `test` that provides automatic profiling for FPS and benchmark running time. Similar to `test`, it exposes `benchmark.only` and `benchmark.skip` to focus and skip tests, respectively.
