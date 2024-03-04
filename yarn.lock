@@ -44,6 +44,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jsdotlua/diff-sequences@workspace:src/diff-sequences"
   dependencies:
+    "@jsdotlua/jest-globals": "workspace:^"
     "@jsdotlua/luau-polyfill": "npm:^1.2.6"
     npmluau: "npm:^0.1.1"
   languageName: unknown
@@ -370,9 +371,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@jsdotlua/jest-roblox-shared@workspace:^, @jsdotlua/jest-roblox-shared@workspace:src/roblox-shared":
+"@jsdotlua/jest-roblox-shared@workspace:^, @jsdotlua/jest-roblox-shared@workspace:src/jest-roblox-shared":
   version: 0.0.0-use.local
-  resolution: "@jsdotlua/jest-roblox-shared@workspace:src/roblox-shared"
+  resolution: "@jsdotlua/jest-roblox-shared@workspace:src/jest-roblox-shared"
   dependencies:
     "@jsdotlua/jest-get-type": "workspace:^"
     "@jsdotlua/jest-globals": "workspace:^"
@@ -413,6 +414,7 @@ __metadata:
     "@jsdotlua/emittery": "workspace:^"
     "@jsdotlua/expect": "workspace:^"
     "@jsdotlua/jest-fake-timers": "workspace:^"
+    "@jsdotlua/jest-globals": "workspace:^"
     "@jsdotlua/jest-mock": "workspace:^"
     "@jsdotlua/jest-snapshot": "workspace:^"
     "@jsdotlua/jest-types": "workspace:^"
