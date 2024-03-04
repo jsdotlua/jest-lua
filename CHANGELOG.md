@@ -209,7 +209,7 @@
   * Added `toMatchSnapshot` matcher
   * Added `toThrowErrorMatchingSnapshot` matcher
   * Added custom snapshot matchers and property matchers, refer to the "Snapshot Testing" section of the documentation for more info
-  * Added `UPDATESNAPSHOT` flag for updating snapshots, the value can either be `all` (by default), or `new` to only add new snapshots, this can be enabled with an `--updateSnapshot` flag in Jest Roblox CLI
+  * Added `UPDATESNAPSHOT` flag for updating snapshots, the value can either be `all` (by default), or `new` to only add new snapshots, this can be enabled with an `--updateSnapshot` flag in Jest Lua CLI
 * :rotating_light: Removed colon syntax alias for initializing mock functions
 * :hammer_and_wrench: `--fastFlags.overrides "UseDateTimeType3=true"` removed as it is no longer needed
 * :bug: Fix issue with CoreScriptConverter and the Modules directory ([#79](https://github.com/Roblox/jest-roblox-internal/pull/79))
@@ -269,7 +269,7 @@ expect().toReturnWith() also aliased as expect().toHaveReturnedWith()
 * :sparkles: Added `expect().toThrow()` ([#30](https://github.com/Roblox/jest-roblox-internal/pull/30))
 
 ## 0.5.0 (2021-01-29)
-* :sparkles: Initial release of Jest Roblox, TestEZ has been rebranded as of this release.
+* :sparkles: Initial release of Jest Lua, TestEZ has been rebranded as of this release.
 * :sparkles: Added `expect` aligned to [Jest's expect (26.5.3)](https://jestjs.io/docs/en/26.5/expect)
   * Requires an explicit `require` from [`JestRoblox.Globals`](https://jestjs.io/docs/en/26.5/api) to use
   * Refer to the Jest documentation on expect for usage documentation. Refer to the `README.md` in `src/Modules/expect` for details on deviations from upstream

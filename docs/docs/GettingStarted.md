@@ -4,9 +4,9 @@ title: Getting Started
 slug: /
 ---
 
-The Jest Roblox API is similar to [the API used by JavaScript Jest.](https://jestjs.io/docs/27.x/api)
+The Jest Lua API is similar to [the API used by JavaScript Jest.](https://jestjs.io/docs/27.x/api)
 
-Jest Roblox requires `roblox-cli` to run from the command line.
+Jest Lua requires `roblox-cli` to run from the command line.
 
 Add the `JestGlobals` and `Jest` package to your `dev_dependencies` in your `rotriever.toml`.
 ```yaml title="rotriever.toml"
@@ -15,7 +15,7 @@ Jest = "github.com/Roblox/jest-roblox@3.0.0"
 JestGlobals = "github.com/Roblox/jest-roblox@3.0.0"
 ```
 
-Run `rotrieve install` to install Jest Roblox.
+Run `rotrieve install` to install Jest Lua.
 
 Create a `default.project.json` to set up your project structure and include the `Packages` directory created by `rotriever`.
 ```json title="default.project.json"
@@ -33,7 +33,7 @@ Create a `default.project.json` to set up your project structure and include the
 }
 ```
 
-Create a `spec.lua` to point the test runner to the correct directory with your tests. This is the entrypoint for Jest Roblox. For more information, see [runCLI Options](cli).
+Create a `spec.lua` to point the test runner to the correct directory with your tests. This is the entrypoint for Jest Lua. For more information, see [runCLI Options](cli).
 ```lua title="spec.lua"
 local Packages = script.Parent.YourProject.Packages
 local runCLI = require(Packages.Dev.Jest).runCLI
@@ -103,6 +103,6 @@ Finally, run your project using `roblox-cli` to run the tests and your tests sho
 roblox-cli run --load.model default.project.json --run spec.lua --fastFlags.overrides EnableLoadModule=true
 ```
 
-**You just successfully wrote your first test using Jest Roblox!**
+**You just successfully wrote your first test using Jest Lua!**
 
-This test used `expect` and `toBe` to test that two values were exactly identical. To learn about other things that Jest Roblox can test, see [Using Matchers](using-matchers).
+This test used `expect` and `toBe` to test that two values were exactly identical. To learn about other things that Jest Lua can test, see [Using Matchers](using-matchers).

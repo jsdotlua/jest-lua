@@ -3,9 +3,9 @@ id: testez-migration
 title: Migrating from TestEZ
 ---
 
-If you are using TestEZ, migrating to Jest Roblox v2.4.x should be fairly straightforward. Many parts of Jest Roblox v2.x still use the TestEZ API.
+If you are using TestEZ, migrating to Jest Lua v2.4.x should be fairly straightforward. Many parts of Jest Lua v2.x still use the TestEZ API.
 
-To migrate to Jest Roblox v3.x, additionally see [upgrading to Jest Roblox v3](upgrading-to-jest3).
+To migrate to Jest Lua v3.x, additionally see [upgrading to Jest Lua v3](upgrading-to-jest3).
 
 Replace TestEZ with `JestGlobals` in your `rotriever.toml`.
 ```diff title="rotriever.toml"
@@ -14,7 +14,7 @@ Replace TestEZ with `JestGlobals` in your `rotriever.toml`.
 + JestGlobals = "github.com/Roblox/jest-roblox@2.4.1"
 ```
 
-Unlike TestEZ, which is injected into the global environment, you will need to explicitly require anything you need from `JestGlobals`. For example, to use the new Jest Roblox assertion library, add this to the top of your test file.
+Unlike TestEZ, which is injected into the global environment, you will need to explicitly require anything you need from `JestGlobals`. For example, to use the new Jest Lua assertion library, add this to the top of your test file.
 ```lua
 local JestGlobals = require(Packages.JestGlobals)
 local expect = JestGlobals.expect
@@ -33,7 +33,7 @@ Globals that are injected make life very difficult for languages with strong typ
 
 Additionally, upstream Jest also plans to remove injected globals and instead prefers that users import any needed functionality through the `@jest/globals` package.
 
-Jest Roblox is staying ahead of that plan and not including support for injected globals. In Jest Roblox v3.x, _every_ import will need to be explicitly required, including `describe`, `it`, etc. See [Globals](api) for a list of all exports.
+Jest Lua is staying ahead of that plan and not including support for injected globals. In Jest Lua v3.x, _every_ import will need to be explicitly required, including `describe`, `it`, etc. See [Globals](api) for a list of all exports.
 
 Now that rotriever 0.5.0 allows users to import specific sub-packages, users can now specifically import `JestGlobals` and import any needed functionality from that package.
 
@@ -46,42 +46,42 @@ If you were previously overwriting the Luau type for `expect` as a workaround fo
 -local expect: any = expect
 ```
 
-Then, replace the TestEZ `expect` syntax with their equivalents in Jest Roblox. The equivalent matchers for each TestEZ matcher are listed below.
+Then, replace the TestEZ `expect` syntax with their equivalents in Jest Lua. The equivalent matchers for each TestEZ matcher are listed below.
 
-The new Jest Roblox matchers are much more powerful than their TestEZ equivalents so see the [reference doc](expect) for more advanced usage, and also see all the new matchers Jest Roblox has to offer.
+The new Jest Lua matchers are much more powerful than their TestEZ equivalents so see the [reference doc](expect) for more advanced usage, and also see all the new matchers Jest Lua has to offer.
 
 ### `.to.equal(value)`
 
-`.to.equal(value)` method does a strict equality check, which exists in Jest Roblox as `.toBe(value)`.
+`.to.equal(value)` method does a strict equality check, which exists in Jest Lua as `.toBe(value)`.
 ```diff
 - expect(1).to.equal(1)
 + expect(1).toBe(1)
 ```
 
-This is different from the `.toEqual` matcher in Jest Roblox, which does a recursive deep equality check. For example:
+This is different from the `.toEqual` matcher in Jest Lua, which does a recursive deep equality check. For example:
 ```lua
 expect({a = 1}).to.equal({a = 1}) -- fails in TestEZ
-expect({a = 1}).toBe({a = 1})     -- fails in Jest Roblox, but warns you
-expect({a = 1}).toEqual({a = 1})  -- passes in Jest Roblox
+expect({a = 1}).toBe({a = 1})     -- fails in Jest Lua, but warns you
+expect({a = 1}).toEqual({a = 1})  -- passes in Jest Lua
 ```
 
 ### `.to.be.ok()`
 
-`.to.be.ok()` is a `nil` check, which is `.never.toBeNil()` in Jest Roblox.
+`.to.be.ok()` is a `nil` check, which is `.never.toBeNil()` in Jest Lua.
 ```diff
 - expect(1).to.be.ok()
 + expect(1).never.toBeNil()
 ```
 
 ### `.to.be.near(value)`
-`.to.be.near(value)` is used to compare floating point numbers for approximate equality. In Jest Roblox, it is `.toBeCloseTo(number, numDigits?)`.
+`.to.be.near(value)` is used to compare floating point numbers for approximate equality. In Jest Lua, it is `.toBeCloseTo(number, numDigits?)`.
 ```diff
 - expect(0.1 + 0.2).to.be.near(0.3)
 + expect(0.1 + 0.2).toBeCloseTo(0.3)
 ```
 
 ### `.to.be.a(type)`
-`.to.be.a(type)` is used to do type checking. Type checking in Jest Roblox is done using the `.toEqual()` matcher with `expect.any(type)`.
+`.to.be.a(type)` is used to do type checking. Type checking in Jest Lua is done using the `.toEqual()` matcher with `expect.any(type)`.
 ```diff
 - expect(1).to.be.a("number")
 + expect(1).toEqual(expect.any("number"))

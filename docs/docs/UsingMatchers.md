@@ -4,7 +4,7 @@ title: Using Matchers
 ---
 <p><a href='https://jestjs.io/docs/27.x/using-matchers' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a></p>
 
-Jest Roblox uses "matchers" to let you test values in different ways. This document will introduce some commonly used matchers. For the full list, see the [`expect` API doc](expect).
+Jest Lua uses "matchers" to let you test values in different ways. This document will introduce some commonly used matchers. For the full list, see the [`expect` API doc](expect).
 
 ## Common Matchers
 
@@ -16,7 +16,7 @@ it('two plus two is four', function()
 end)
 ```
 
-In this code, `expect(2 + 2)` returns an "expectation" object. You typically won't do much with these expectation objects except call matchers on them. In this code, `.toBe(4)` is the matcher. When Jest Roblox runs, it tracks all the failing matchers so that it can print out nice error messages for you.
+In this code, `expect(2 + 2)` returns an "expectation" object. You typically won't do much with these expectation objects except call matchers on them. In this code, `.toBe(4)` is the matcher. When Jest Lua runs, it tracks all the failing matchers so that it can print out nice error messages for you.
 
 `toBe` tests exact equality. If you want to check the value of an object, use `toEqual` instead:
 
@@ -41,7 +41,7 @@ end)
 ## Truthiness
 <img alt='Deviation' src='img/deviation.svg'/>
 
-In tests, you sometimes need to distinguish between `nil`, and `false`, but you sometimes do not want to treat these differently. Jest Roblox contains helpers that let you be explicit about what you want.
+In tests, you sometimes need to distinguish between `nil`, and `false`, but you sometimes do not want to treat these differently. Jest Lua contains helpers that let you be explicit about what you want.
 
 - `toBeNil` matches only `nil`
 - `toBeTruthy` matches anything that an `if` statement treats as `true` (anything but `false` and `nil`)

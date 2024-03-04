@@ -3,13 +3,13 @@ id: upgrading-to-jest3
 title: From v2.x to v3.x
 ---
 
-Upgrading Jest Roblox from v2.x or TestEZ to v3.x? This guide aims to help refactoring your configuration and tests.
+Upgrading Jest Lua from v2.x or TestEZ to v3.x? This guide aims to help refactoring your configuration and tests.
 
 ## Migration
 
 ### Setup
 
-First, update your `rotriever.toml` to use Jest Roblox v3.0. You'll also need to require the `Jest` package in addition to the `JestGlobals` package. The `Jest` package contains `runCLI`, which is the main entrypoint into Jest Roblox in v3.0.
+First, update your `rotriever.toml` to use Jest Lua v3.0. You'll also need to require the `Jest` package in addition to the `JestGlobals` package. The `Jest` package contains `runCLI`, which is the main entrypoint into Jest Lua in v3.0.
 
 ```yaml title="rotriever.toml"
 [dev_dependencies]
@@ -48,11 +48,11 @@ end
 return nil
 ```
 
-The first argument is the root directory of your project and the third argument is a list of projects (directories with a `jest.config.lua`) with tests for Jest Roblox to discover. For a simple mono-package project, these should just point to your source directory. For detailed information, see [runCLI Options](cli).
+The first argument is the root directory of your project and the third argument is a list of projects (directories with a `jest.config.lua`) with tests for Jest Lua to discover. For a simple mono-package project, these should just point to your source directory. For detailed information, see [runCLI Options](cli).
 
 ### Configuration
 
-Because Jest Roblox now expects that projects have a configuration file, create a `jest.config.lua` in your source directory. A simple configuration file can just specify the paths to tests for Jest Roblox to discover. For more configuration options, see [Configuring Jest](configuration).
+Because Jest Lua now expects that projects have a configuration file, create a `jest.config.lua` in your source directory. A simple configuration file can just specify the paths to tests for Jest Lua to discover. For more configuration options, see [Configuring Jest](configuration).
 
 ```lua title="jest.config.lua"
 return {
@@ -61,11 +61,11 @@ return {
 ```
 
 :::warning
-Currently, Jest Roblox will error if no configuration file is found.
+Currently, Jest Lua will error if no configuration file is found.
 :::
 
 ### Updating Tests
-Jest Roblox v3.0 no longer relies on test files returning a callback.
+Jest Lua v3.0 no longer relies on test files returning a callback.
 A simple test file in v2.x may look like the following:
 ```lua title="test.spec.lua"
 return function()
@@ -97,22 +97,22 @@ end)
 ```
 
 There are a couple interesting differences:
-* Jest Roblox v3.0 no longer relies on test files returning a callback so the test file does not need to be wrapped in a callback function.
+* Jest Lua v3.0 no longer relies on test files returning a callback so the test file does not need to be wrapped in a callback function.
 
 :::tip
-Jest Roblox v2.x required that all test modules return a function with test contents. In Jest Roblox v3.0.0 - v3.1.1, test modules no longer relied on a wrapping function, but still expected a non-nil return.
+Jest Lua v2.x required that all test modules return a function with test contents. In Jest Lua v3.0.0 - v3.1.1, test modules no longer relied on a wrapping function, but still expected a non-nil return.
 
-As of Jest Roblox v3.1.1, test modules are treated specially and are no longer expected to return any value.
+As of Jest Lua v3.1.1, test modules are treated specially and are no longer expected to return any value.
 :::
 
-* In addition to `expect`, `it` is also imported from `JestGlobals`. Unlike TestEZ or Jest Roblox v2.x, no values are magically injected into the environment. 
+* In addition to `expect`, `it` is also imported from `JestGlobals`. Unlike TestEZ or Jest Lua v2.x, no values are magically injected into the environment. 
 
 :::warning
-Any value you need must be explicitly imported from `JestGlobals`, including common ones like `describe` or `it`. Jest Roblox **will** error if these values are not imported. To see a full list of values exported in `JestGlobals`, see [Globals](api).
+Any value you need must be explicitly imported from `JestGlobals`, including common ones like `describe` or `it`. Jest Lua **will** error if these values are not imported. To see a full list of values exported in `JestGlobals`, see [Globals](api).
 :::
 
 ### Running Tests
-Jest Roblox v3.0 also requires the fast flag `EnableLoadModule`. Add `--fastFlags.overrides EnableLoadModule=true` to your `roblox-cli run` command.
+Jest Lua v3.0 also requires the fast flag `EnableLoadModule`. Add `--fastFlags.overrides EnableLoadModule=true` to your `roblox-cli run` command.
 
 ```bash
 roblox-cli run --load.model default.project.json --run spec.lua --fastFlags.allOnLuau  --fastFlags.overrides EnableLoadModule=true

@@ -3,7 +3,7 @@ id: deviations
 title: Deviations
 ---
 
-The Jest Roblox alignment effort aims to map as closely to Jest's API as possible, but there are a few places where language deviations require us to omit functionality or deviate our approach. Deviations are also sometimes made to maintain Lua-nativity. Any user-facing deviations are documented here.
+The Jest Lua alignment effort aims to map as closely to Jest's API as possible, but there are a few places where language deviations require us to omit functionality or deviate our approach. Deviations are also sometimes made to maintain Lua-nativity. Any user-facing deviations are documented here.
 
 ## Globals
 
@@ -26,7 +26,7 @@ An array of arrays can still be passed, see [`.each`](api#describeeachtablename-
 ## Expect
 
 ### `.never`
-Since `not` is a reserved keyword in Lua, Jest Roblox uses `never` to test the opposite of a matcher.
+Since `not` is a reserved keyword in Lua, Jest Lua uses `never` to test the opposite of a matcher.
 
 Some aliases are provided:
 * `.arrayNotContaining`
@@ -80,7 +80,7 @@ When doing `nil` checking, use of `.toBeNil()` and `.never.toBeNil()` is encoura
 `.toMatch` matches a [Lua string pattern](https://developer.roblox.com/en-us/articles/string-patterns-reference) or a [Regexp](expect#regexp).
 
 ### `.toMatchInstance(table)`
-`.toMatchInstance` is custom matcher unique to Jest Roblox that allows for matching a Roblox Instance against a table of properties.
+`.toMatchInstance` is custom matcher unique to Jest Lua that allows for matching a Roblox Instance against a table of properties.
 
 ### `.toStrictEqual()`
 `toStrictEqual()` performs a `toEqual` comparison with an additional type/class check based on metatable inheritance. Our `toStrictEqual` does not check for array sparseness or for `undefined` values like the matcher does in Javascript's Jest.

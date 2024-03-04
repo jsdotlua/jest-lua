@@ -6,7 +6,7 @@ title: Timer Mocks
 
 <img alt='deviation' src='img/deviation.svg'/>
 
-The Lua and Roblox native timer functions (i.e., `delay()`, `tick()`, `os.time()`, `os.clock()`) are less than ideal for a testing environment since they depend on real time to elapse. Jest Roblox can swap out timers with functions that allow you to control the passage of time. [Great Scott!](https://www.youtube.com/watch?v=QZoJ2Pt27BY)
+The Lua and Roblox native timer functions (i.e., `delay()`, `tick()`, `os.time()`, `os.clock()`) are less than ideal for a testing environment since they depend on real time to elapse. Jest Lua can swap out timers with functions that allow you to control the passage of time. [Great Scott!](https://www.youtube.com/watch?v=QZoJ2Pt27BY)
 
 :::info
 
@@ -155,9 +155,9 @@ Lastly, it may occasionally be useful in some tests to be able to clear all of t
 ## Setting Engine Frame Time
 <img alt='Roblox only' src='img/roblox-only.svg'/>
 
-By default, Jest Roblox processes fake timers in continuous time. However, because the Roblox engine processes timers only once per frame, this may not accurately reflect engine behavior.
+By default, Jest Lua processes fake timers in continuous time. However, because the Roblox engine processes timers only once per frame, this may not accurately reflect engine behavior.
 
-To more closely mock engine behavior, Jest Roblox allows you to configure an engine frame time, which ensures that timers are queued and run more similarly to how the engine [task scheduler](https://create.roblox.com/docs/optimization/microprofiler/task-scheduler) queues and runs timers. `jest.advanceTimersByTime()` will behave like an equivalent `task.wait()`, particularly at micro time-scales.
+To more closely mock engine behavior, Jest Lua allows you to configure an engine frame time, which ensures that timers are queued and run more similarly to how the engine [task scheduler](https://create.roblox.com/docs/optimization/microprofiler/task-scheduler) queues and runs timers. `jest.advanceTimersByTime()` will behave like an equivalent `task.wait()`, particularly at micro time-scales.
 
 Roblox currently runs at a 60 frames a second, which can be configured with `jest.setEngineFrameTime(1000/60)`.
 

@@ -4,11 +4,11 @@ title: Testing Asynchronous Code
 ---
 <p><a href='https://jestjs.io/docs/27.x/asynchronous' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a></p>
 
-It's common in Lua for code to run asynchronously. When you have code that runs asynchronously, Jest Roblox needs to know when the code it is testing has completed, before it can move on to another test. Jest Roblox has several ways to handle this.
+It's common in Lua for code to run asynchronously. When you have code that runs asynchronously, Jest Lua needs to know when the code it is testing has completed, before it can move on to another test. Jest Lua has several ways to handle this.
 
 ## Promises
 
-Return a [promise](https://github.com/evaera/roblox-lua-promise) from your test, and Jest Roblox will wait for that promise to resolve. If the promise is rejected, the test will fail.
+Return a [promise](https://github.com/evaera/roblox-lua-promise) from your test, and Jest Lua will wait for that promise to resolve. If the promise is rejected, the test will fail.
 
 For example, let's say that `fetchData` returns a promise that is supposed to resolve to the string `'peanut butter'`. We could test it with:
 
@@ -30,7 +30,7 @@ end)
 
 If you don't use promises, you can use callbacks. For example, let's say that `fetchData`, instead of returning a promise, expects a callback, i.e. fetches some data and calls `callback(error, data)` when it is complete. You want to test that this returned data is the string `'peanut butter'`.
 
-By default, Jest Roblox tests complete once they reach the end of their execution. That means this test will _not_ work as intended:
+By default, Jest Lua tests complete once they reach the end of their execution. That means this test will _not_ work as intended:
 
 ```lua
 -- Don't do this!
@@ -48,7 +48,7 @@ end)
 
 The problem is that the test will complete as soon as `fetchData` completes, before ever calling the callback.
 
-There is an alternate form of `test` that fixes this. Instead of putting the test in a function with an empty argument, use a single argument called `done`, which is passed as a second parameter to the `test` function. Jest Roblox will wait until the `done` callback is called before finishing the test.
+There is an alternate form of `test` that fixes this. Instead of putting the test in a function with an empty argument, use a single argument called `done`, which is passed as a second parameter to the `test` function. Jest Lua will wait until the `done` callback is called before finishing the test.
 
 ```lua
 test('the data is peanut butter', function(_, done)

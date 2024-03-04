@@ -4,7 +4,7 @@ title: The Jest Object
 ---
 <p><a href='https://jestjs.io/docs/27.x/jest-object' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a></p>
 
-The methods in the `jest` object help create mocks and let you control Jest Roblox's overall behavior.
+The methods in the `jest` object help create mocks and let you control Jest Lua's overall behavior.
 
 <img alt='deviation' src='img/deviation.svg'/>
 
@@ -173,14 +173,14 @@ Restores all mocks back to their original value. Equivalent to calling [`.mockRe
 ### `jest.useFakeTimers()`
 <a href='https://jestjs.io/docs/27.x/jest-object#jestusefaketimersimplementation-modern--legacy' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Deviation' src='img/deviation.svg'/>
 
-Instructs Jest Roblox to use fake versions of the standard Lua and Roblox timer functions (`delay`, `tick`, `os.time`, `os.clock`, `task.delay` as well as `DateTime`).
+Instructs Jest Lua to use fake versions of the standard Lua and Roblox timer functions (`delay`, `tick`, `os.time`, `os.clock`, `task.delay` as well as `DateTime`).
 
 Returns the `jest` object for chaining.
 
 ### `jest.useRealTimers()`
 <a href='https://jestjs.io/docs/27.x/jest-object#jestuserealtimers' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
 
-Instructs Jest Roblox to use the real versions of the standard timer functions.
+Instructs Jest Lua to use the real versions of the standard timer functions.
 
 Returns the `jest` object for chaining.
 

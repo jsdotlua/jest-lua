@@ -4,7 +4,7 @@ title: runCLI Options
 ---
 <p><a href='https://jestjs.io/docs/27.x/cli' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a></p> <img alt='Deviation' src='img/deviation.svg'/>
 
-The `Jest` packages exports `runCLI`, which is the main entrypoint to run Jest Roblox tests. In your entrypoint script, import `runCLI` from the `Jest` package. A basic entrypoint script can look like the following:
+The `Jest` packages exports `runCLI`, which is the main entrypoint to run Jest Lua tests. In your entrypoint script, import `runCLI` from the `Jest` package. A basic entrypoint script can look like the following:
 ```lua title="spec.lua"
 local Packages = script.Parent.YourProject.Packages
 local runCLI = require(Packages.Dev.Jest).runCLI
@@ -35,7 +35,7 @@ end
 return nil
 ```
 
-The first argument to `runCLI` is the root directory of your project, the second argument is a list of [options](#options), and the third argument is a list of projects (directories with a `jest.config.lua`) for Jest Roblox to discover.
+The first argument to `runCLI` is the root directory of your project, the second argument is a list of [options](#options), and the third argument is a list of projects (directories with a `jest.config.lua`) for Jest Lua to discover.
 
 ## Options
 
@@ -50,7 +50,7 @@ import TOCInline from "@theme/TOCInline";
 ### `ci` \[boolean]
 <a href='https://jestjs.io/docs/27.x/cli#--ci' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
 
-When this option is provided, Jest Roblox will assume it is running in a CI environment. This changes the behavior when a new snapshot is encountered. Instead of the regular behavior of storing a new snapshot automatically, it will fail the test and require Jest Roblox to be run with `updateSnapshot`.
+When this option is provided, Jest Lua will assume it is running in a CI environment. This changes the behavior when a new snapshot is encountered. Instead of the regular behavior of storing a new snapshot automatically, it will fail the test and require Jest Lua to be run with `updateSnapshot`.
 
 ### `clearMocks` \[boolean]
 <a href='https://jestjs.io/docs/27.x/cli#--clearmocks' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
@@ -75,7 +75,7 @@ Prints the test results in JSON. This mode will send all other test output and u
 ### `listTests` \[boolean]
 <a href='https://jestjs.io/docs/27.x/cli#--listtests' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
 
-Lists all test files that Jest Roblox will run given the arguments, and exits.
+Lists all test files that Jest Lua will run given the arguments, and exits.
 
 ### `noStackTrace` \[boolean]
 <a href='https://jestjs.io/docs/27.x/cli#--nostacktrace' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>

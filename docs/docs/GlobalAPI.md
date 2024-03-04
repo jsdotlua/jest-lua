@@ -32,7 +32,7 @@ import TOCInline from "@theme/TOCInline";
 ### `afterAll(fn, timeout)`
 <a href='https://jestjs.io/docs/27.x/api#afterallfn-timeout' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
 
-Runs a function after all the tests in this file have completed. If the function returns a promise or is a generator, Jest Roblox waits for that promise to resolve before continuing.
+Runs a function after all the tests in this file have completed. If the function returns a promise or is a generator, Jest Lua waits for that promise to resolve before continuing.
 
 Optionally, you can provide a `timeout` (in milliseconds) for specifying how long to wait before aborting. _Note: The default timeout is 5 seconds._
 
@@ -73,7 +73,7 @@ If you want to run some cleanup after every test instead of after all tests, use
 ### `afterEach(fn, timeout)`
 <a href='https://jestjs.io/docs/27.x/api#aftereachfn-timeout' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
 
-Runs a function after each one of the tests in this file completes. If the function returns a promise or is a generator, Jest Roblox waits for that promise to resolve before continuing.
+Runs a function after each one of the tests in this file completes. If the function returns a promise or is a generator, Jest Lua waits for that promise to resolve before continuing.
 
 Optionally, you can provide a `timeout` (in milliseconds) for specifying how long to wait before aborting. _Note: The default timeout is 5 seconds._
 
@@ -114,7 +114,7 @@ If you want to run some cleanup just once, after all of the tests run, use `afte
 ### `beforeAll(fn, timeout)`
 <a href='https://jestjs.io/docs/27.x/api#beforeallfn-timeout' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
 
-Runs a function before any of the tests in this file run. If the function returns a promise or is a generator, Jest Roblox waits for that promise to resolve before running tests.
+Runs a function before any of the tests in this file run. If the function returns a promise or is a generator, Jest Lua waits for that promise to resolve before running tests.
 
 Optionally, you can provide a `timeout` (in milliseconds) for specifying how long to wait before aborting. _Note: The default timeout is 5 seconds._
 
@@ -127,7 +127,7 @@ local globalDatabase = makeGlobalDatabase()
 
 beforeAll(function()
 	-- Clears the database and adds some testing data.
-	-- Jest Roblox will wait for this promise to resolve before running tests.
+	-- Jest Lua will wait for this promise to resolve before running tests.
 	return globalDatabase:clear()
 		:then(function()
 			return globalDatabase:insert({testData = 'foo'})
@@ -152,7 +152,7 @@ If you want to run something before every test instead of before any test runs, 
 ### `beforeEach(fn, timeout)`
 <a href='https://jestjs.io/docs/27.x/api#beforeeachfn-timeout' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
 
-Runs a function before each of the tests in this file runs. If the function returns a promise or is a generator, Jest Roblox waits for that promise to resolve before running the test.
+Runs a function before each of the tests in this file runs. If the function returns a promise or is a generator, Jest Lua waits for that promise to resolve before running the test.
 
 Optionally, you can provide a `timeout` (in milliseconds) for specifying how long to wait before aborting. _Note: The default timeout is 5 seconds._
 
@@ -165,7 +165,7 @@ local globalDatabase = makeGlobalDatabase()
 
 beforeEach(function()
 	-- Clears the database and adds some testing data.
-	-- Jest Roblox will wait for this promise to resolve before running tests.
+	-- Jest Lua will wait for this promise to resolve before running tests.
 	return globalDatabase:clear()
 		:then(function()
 			return globalDatabase:insert({testData = 'foo'})
@@ -493,10 +493,10 @@ end)
 The first argument is the test name; the second argument is a function that contains the expectations to test. The third argument (optional) is `timeout` (in milliseconds) for specifying how long to wait before aborting. _Note: The default timeout is 5 seconds._
 
 :::note
-If a **promise is returned** from `test`, Jest Roblox will wait for the promise to resolve before letting the test complete.
+If a **promise is returned** from `test`, Jest Lua will wait for the promise to resolve before letting the test complete.
 <img alt='API change' src='img/apichange.svg'/>
 
-Jest Roblox will also wait if you **provide a second argument to the test function**, usually called `done`. This could be handy when you want to test callbacks. See how to test async code [here](asynchronous#callbacks).
+Jest Lua will also wait if you **provide a second argument to the test function**, usually called `done`. This could be handy when you want to test callbacks. See how to test async code [here](asynchronous#callbacks).
 :::
 
 For example, let's say `fetchBeverageList()` returns a promise that is supposed to resolve to a list that has `lemon` in it. You can test this with:
