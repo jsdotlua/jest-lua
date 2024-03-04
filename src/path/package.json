@@ -1,6 +1,6 @@
 {
   "name": "@jsdotlua/path",
-  "version": "3.6.1",
+  "version": "3.6.1-rc.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/jsdotlua/jest-lua.git",
