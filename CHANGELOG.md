@@ -1,4 +1,4 @@
-# Jest Roblox Changelog
+# Jest Lua Changelog
 
 ## Unreleased Changes
 

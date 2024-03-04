@@ -1,48 +1,44 @@
-<h1 align="center">Jest Roblox</h1>
-<div align="center">
-	<a href="https://github.com/Roblox/jest-roblox-internal/actions?query=workflow%3ACI">
-		<img src="https://github.com/Roblox/jest-roblox-internal/workflows/CI/badge.svg" alt="GitHub Actions Build Status" />
-	</a>
-	<a href="https://roblox.github.io/jest-roblox-internal/">
-			<img src="https://img.shields.io/badge/docs-website-green.svg" alt="Documentation" />
-	</a>
-	<a href='https://coveralls.io/github/Roblox/jest-roblox-internal'>
-		<img src='https://coveralls.io/repos/github/Roblox/jest-roblox-internal/badge.svg?t=4czPqO&kill_cache=1' alt='Coverage Status' />
-	</a>
-</div>
+<img src="https://raw.githubusercontent.com/jsdotlua/branding/main/Logo.png" align="right" height="128"/>
 
-<div align="center">
-	Lovely Lua Testing
-</div>
+# Jest Lua
 
-<div>&nbsp;</div>
+<h3>Delightful Lua Testing.</h3>
 
-Jest Roblox can run within Roblox itself, as well as inside roblox-cli for testing on CI systems.
-
-We use Jest Roblox at Roblox for testing our apps, in-game core scripts, built-in Roblox Studio plugins, as well as libraries like [Roact Navigation](https://github.com/Roblox/roact-navigation).
+[![Tests](https://github.com/jsdotlua/jest-lua/actions/workflows/test.yml/badge.svg)](https://github.com/jsdotlua/jest-lua/actions/workflows/test.yml)
+<!-- [![Coverage Status](https://coveralls.io/repos/github/Roblox/roact-alignment/badge.svg?branch=master&t=TvTSze)](https://coveralls.io/github/Roblox/roact-alignment?branch=master) -->
+[![Docs](https://img.shields.io/badge/docs-website-green.svg)](https://jsdotlua.github.io/jest-lua/)
 
 ---
 
-Add this package to your `dev_dependencies` in your `rotriever.toml`, for example:
-```
-JestGlobals = "github.com/Roblox/jest-roblox@2.2.0"
+Jest Lua can currently only run inside of Roblox. Help is wanted to get it running in other Lua environments, such as [Lune](https://lune.gitbook.io/lune/) or [Luvit](https://luvit.io/). See issue #1.
+
+Roblox uses Jest Lua internally for testing their apps, in-game core scripts, built-in Roblox Studio plugins, as well as libraries like [Roact Navigation](https://github.com/Roblox/roact-navigation). This library should be considered battle-tested and ready for production use.
+
+---
+
+# Installation
+
+Add this package to your `dev-dependencies` in your `wally.toml`, for example:
+
+```toml
+JestGlobals = "jsdotlua/jest-globals@3.6.1-rc.2"
 ```
 
 Then, require anything you need from `JestGlobals`:
-```
-local JestGlobals = require(Packages.JestGlobals)
+
+```lua
+local JestGlobals = require("@Packages/JestGlobals")
 local expect = JestGlobals.expect
 ```
 
----
-
 ## Inspiration and Prior Work
-Jest Roblox is a Roblox port of the open source JavaScript testing framework [Jest](https://github.com/facebook/jest). Modules in the `modules` directory are  aligned to [v27.4.7](https://github.com/facebook/jest/tree/v27.4.7) of Jest.
 
----
+Jest Lua is a Lua port of the open source JavaScript testing framework [Jest](https://github.com/facebook/jest). Modules in the `modules` directory are aligned to [v27.4.7](https://github.com/facebook/jest/tree/v27.4.7) of Jest.
 
 ## Contributing
+
 Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for information.
 
 ## License
-Jest Roblox is available under the MIT license. See [LICENSE](LICENSE) for details.
+
+Jest Lua is available under the MIT license. See [LICENSE](LICENSE) for details.
