@@ -18,6 +18,9 @@ local Packages = CurrentModule.Parent
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
+local Boolean = LuauPolyfill.Boolean
+local Error = LuauPolyfill.Error
+local Object = LuauPolyfill.Object
 local Set = LuauPolyfill.Set
 local Symbol = LuauPolyfill.Symbol
 
@@ -70,6 +73,8 @@ export type MaybeMocked<T> = T
 	original code lines 81 - 103
 ]]
 
+export type UnknownFunction = (...unknown) -> ...unknown
+export type Mock<T = UnknownFunction> = any
 -- ROBLOX TODO: Uncomment this type and use it once Luau has supported it
 -- ROBLOX TODO: Un in-line the MockInstance type declaration once we have "extends" syntax in Luau
 -- type Mock<T, Y> = {
@@ -116,6 +121,7 @@ export type ModuleMocker = {
 	resetAllMocks: (_self: ModuleMocker) -> (),
 	restoreAllMocks: (_self: ModuleMocker) -> (),
 	mocked: <T>(_self: ModuleMocker, item: T, _deep: boolean?) -> MaybeMocked<T> | MaybeMockedDeep<T>,
+	spyOn: <M>(_self: ModuleMocker, object: { [any]: any }, methodName: M, accessType: ("get" | "set")?) -> Mock<any>,
 }
 
 ModuleMockerClass.__index = ModuleMockerClass
@@ -266,7 +272,7 @@ function ModuleMockerClass:_makeComponent(metadata: any, restore)
 		end
 
 		if typeof(restore) == "function" then
-			mocker._spyState.add(restore)
+			mocker._spyState:add(restore)
 		end
 
 		mocker._mockState[f] = mocker._defaultMockState()
@@ -390,7 +396,7 @@ end
 
 -- ROBLOX TODO: type return type as JestMock.Mock<any, any> when Mock type is implemented properly
 type MockFn = any -- (...any) -> ...any
-function ModuleMockerClass:fn<T..., Y...>(implementation: ((Y...) -> T...)?): (MockFn, (...any) -> ...any)
+function ModuleMockerClass:fn<T..., Y...>(implementation: ((Y...) -> T...)?): (MockFn, (T...) -> Y...)
 	local length = 0
 	local fn = self:_makeComponent({ length = length, type = "function" })
 	if implementation then
@@ -406,6 +412,124 @@ function ModuleMockerClass:fn<T..., Y...>(implementation: ((Y...) -> T...)?): (M
 	return fn, mockFn
 end
 
+function ModuleMockerClass:spyOn<M>(object: { [any]: any }, methodName: M, accessType: ("get" | "set")?): Mock<any>
+	if Boolean.toJSBoolean(accessType) then
+		return self:_spyOnProperty(object, methodName, accessType)
+	end
+	-- ROBLOX deviation: function types cannot have fields in lua
+	if typeof(object) ~= "table" then
+		error(Error.new(("Cannot spyOn on a primitive value; %s given"):format(typeof(object))))
+	end
+	local original = object[methodName]
+	if not Boolean.toJSBoolean(self:isMockFunction(original)) then
+		if typeof(original) ~= "function" then
+			error(
+				Error.new(
+					("Cannot spy the %s property because it is not a function; %s given instead"):format(
+						tostring(methodName),
+						typeof(original)
+					)
+				)
+			)
+		end
+		local isMethodOwner = rawget(object, methodName) ~= nil
+		-- ROBLOX deviation START: ignore prototype and property descriptor logic
+		-- local descriptor = Object.getOwnPropertyDescriptor(object, methodName)
+		-- local proto = Object.getPrototypeOf(object)
+		-- while not Boolean.toJSBoolean(descriptor) and meta ~= nil do
+		-- 	descriptor = Object.getOwnPropertyDescriptor(proto, methodName)
+		-- 	proto = Object.getPrototypeOf(proto)
+		-- end
+		local mock: Mock
+		-- if Boolean.toJSBoolean(if Boolean.toJSBoolean(descriptor) then descriptor.get else descriptor) then
+		-- 	local originalGet = descriptor.get
+		-- 	mock = self:_makeComponent({ type = "function" }, function()
+		-- 		(descriptor :: any).get = originalGet
+		-- 		Object.defineProperty(object, methodName, descriptor :: any)
+		-- 	end)
+		-- 	descriptor.get = function(_self: any)
+		-- 		return mock
+		-- 	end
+		-- 	Object.defineProperty(object, methodName, descriptor)
+		-- else
+		-- ROBLOX deviation END
+		mock = self:_makeComponent({ type = "function" }, function()
+			if Boolean.toJSBoolean(isMethodOwner) then
+				object[methodName] = original
+			else
+				object[methodName] = nil
+			end
+		end) -- @ts-expect-error overriding original method with a Mock
+		object[methodName] = mock
+		-- end
+		mock.mockImplementation(function(...)
+			return original(...)
+		end)
+	end
+	return object[methodName]
+end
+function ModuleMockerClass:_spyOnProperty<T, M>(obj: T, propertyName: M, accessType_: ("get" | "set")?): Mock<() -> T>
+	-- ROBLOX deviation: spyOnProperty not supported
+
+	-- ROBLOX note: even in upstream, spyOnProperty is not intended to be used
+	-- for properties that don't already implement get/set accessors (see error
+	-- line 3 of commented impl). A version of this behavior _could_ be
+	-- implemented using some elaborate metatable shenanigans, but we should
+	-- find a compelling need before pursuing that route
+	error("spyOn with accessors is not currently supported")
+	-- local accessType: "get" | "set" = if accessType_ ~= nil then accessType_ else "get"
+	-- if typeof(obj) ~= "table" and typeof(obj) ~= "function" then
+	-- 	error(Error.new(("Cannot spyOn on a primitive value; %s given"):format(tostring(self:_typeOf(obj)))))
+	-- end
+	-- if not Boolean.toJSBoolean(obj) then
+	-- 	error(Error.new(("spyOn could not find an object to spy upon for %s"):format(tostring(propertyName))))
+	-- end
+	-- if not Boolean.toJSBoolean(propertyName) then
+	-- 	error(Error.new("No property name supplied"))
+	-- end
+	-- local descriptor = Object.getOwnPropertyDescriptor(obj, propertyName)
+	-- local proto = Object.getPrototypeOf(obj)
+	-- while not Boolean.toJSBoolean(descriptor) and proto ~= nil do
+	-- 	descriptor = Object.getOwnPropertyDescriptor(proto, propertyName)
+	-- 	proto = Object.getPrototypeOf(proto)
+	-- end
+	-- if not Boolean.toJSBoolean(descriptor) then
+	-- 	error(Error.new(("%s property does not exist"):format(tostring(propertyName))))
+	-- end
+	-- if not Boolean.toJSBoolean(descriptor.configurable) then
+	-- 	error(Error.new(("%s is not declared configurable"):format(tostring(propertyName))))
+	-- end
+	-- if not Boolean.toJSBoolean(descriptor[tostring(accessType)]) then
+	-- 	error(
+	-- 		Error.new(("Property %s does not have access type %s"):format(tostring(propertyName), tostring(accessType)))
+	-- 	)
+	-- end
+	-- local original = descriptor[tostring(accessType)]
+	-- if not Boolean.toJSBoolean(self:isMockFunction(original)) then
+	-- 	if typeof(original) ~= "function" then
+	-- 		error(
+	-- 			Error.new(
+	-- 				("Cannot spy the %s property because it is not a function; %s given instead"):format(
+	-- 					tostring(propertyName),
+	-- 					tostring(self:_typeOf(original))
+	-- 				)
+	-- 			)
+	-- 		)
+	-- 	end
+	-- 	descriptor[tostring(accessType)] = self:_makeComponent({ type = "function" }, function()
+	-- 		-- @ts-expect-error: mock is assignable
+	-- 		(descriptor :: any)[tostring(accessType)] = original
+	-- 		Object.defineProperty(obj, propertyName, descriptor :: any)
+	-- 	end);
+	-- 	(descriptor[tostring(accessType)] :: Mock<() -> T>):mockImplementation(function(this: unknown)
+	-- 		-- @ts-expect-error
+	-- 		return original(self, table.unpack(arguments))
+	-- 	end)
+	-- end
+	-- Object.defineProperty(obj, propertyName, descriptor)
+	-- return descriptor[tostring(accessType)] :: Mock<() -> T>
+end
+
 function ModuleMockerClass:clearAllMocks()
 	self._mockState = {}
 end
@@ -416,8 +540,8 @@ function ModuleMockerClass:resetAllMocks()
 end
 
 function ModuleMockerClass:restoreAllMocks()
-	for key, value in ipairs(self._spyState) do
-		key()
+	for _, value in self._spyState do
+		value()
 	end
 	self._spyState = Set.new()
 end
@@ -441,10 +565,13 @@ local fn = function<T..., Y...>(implementation: ((Y...) -> T...)?)
 	return JestMock:fn(implementation)
 end
 exports.fn = fn
--- ROBLOX TODO: spyOn is not implemented
--- local spyOn = JestMock.spyOn
--- exports.spyOn = spyOn
-local mocked = JestMock.mocked
+local spyOn = function<M>(object: { [any]: any }, methodName: M, accessType: ("get" | "set")?): Mock<any>
+	return JestMock:spyOn(object, methodName, accessType)
+end
+exports.spyOn = spyOn
+local mocked = function<T>(item: T, _deep: boolean?): MaybeMocked<T> | MaybeMockedDeep<T>
+	return JestMock:mocked(item, _deep)
+end
 exports.mocked = mocked
 
 return exports

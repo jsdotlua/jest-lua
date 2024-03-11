@@ -2539,13 +2539,16 @@ function Runtime_private:_createJestObjectFor(from: ModuleScript): Jest
 		return jestObject
 	end
 	-- ROBLOX deviation START: no built-in bind support in Luau
-	local fn = function(implementation: any)
-		return self._moduleMocker:fn(implementation)
+	local fn = function(...)
+		return self._moduleMocker:fn(...)
+	end
+	local spyOn = function(...)
+		return self._moduleMocker:spyOn(...)
 	end
 
 	-- local fn = self._moduleMocker.fn:bind(self._moduleMocker)
-	-- ROBLOX deviation END
 	-- local spyOn = self._moduleMocker.spyOn:bind(self._moduleMocker)
+	-- ROBLOX deviation END
 	-- ROBLOX deviation START: not implemented yet
 	-- local ref = if typeof(self._moduleMocker.mocked) == "table" then self._moduleMocker.mocked.bind else nil
 	-- local ref = if ref ~= nil then ref(self._moduleMocker) else nil
@@ -2684,12 +2687,12 @@ function Runtime_private:_createJestObjectFor(from: ModuleScript): Jest
 		end,
 		-- ROBLOX TODO START: not implemented yet
 		-- setTimeout = setTimeout,
-		-- spyOn = spyOn,
-		-- ROBOX TODO END
+		-- ROBLOX TODO END
+		spyOn = spyOn,
 		unmock = unmock,
 		-- ROBLOX TODO START: not implemented yet
 		-- unstable_mockModule = mockModule,
-		-- ROBOX TODO END
+		-- ROBLOX TODO END
 		useFakeTimers = useFakeTimers,
 		useRealTimers = useRealTimers,
 	}

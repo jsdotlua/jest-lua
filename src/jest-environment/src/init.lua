@@ -40,8 +40,7 @@ type Global_Global = typesModule.Global_Global
 local jestMockModule = require(Packages.JestMock)
 local JestMockFn = jestMockModule.fn
 local JestMockMocked = jestMockModule.mocked
--- ROBLOX TODO: spyOn is not implemented
--- local JestMockSpyOn = jestMockModule.spyOn
+local JestMockSpyOn = jestMockModule.spyOn
 
 type ModuleMocker = jestMockModule.ModuleMocker
 
@@ -282,8 +281,7 @@ export type Jest = {
 	* Note: By default, jest.spyOn also calls the spied method. This is
 	* different behavior from most other test libraries.
 	]]
-	-- ROBLOX TODO: spyOn is not implemented
-	-- spyOn: typeof(JestMockSpyOn),
+	spyOn: typeof(JestMockSpyOn),
 	--[[*
 	* Indicates that the module system should never return a mocked version of
 	* the specified module from require() (e.g. that it should always return the

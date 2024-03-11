@@ -145,6 +145,45 @@ local returnsTrue = jest.fn(function() return true end)
 print(returnsTrue()) -- true
 ```
 
+### `jest.spyOn(object, methodName)`
+<a href='https://jest-archive-august-2023.netlify.app/docs/28.x/jest-object#jestspyonobject-methodname' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+
+Creates a mock function similar to `jest.fn` but also tracks calls to `object[methodName]`. Returns a Jest [mock function](MockFunctionAPI.md).
+
+_Note: By default, `jest.spyOn` also calls the **spied** method. This is different behavior from most other test libraries. If you want to overwrite the original function, you can use `jest.spyOn(object, methodName):mockImplementation(function() ... end)` or `object[methodName] = jest.fn(function ... end)`_
+
+Example:
+
+```lua
+local video = {
+	play = function()
+		return true
+	end
+}
+
+return video
+```
+
+Example test:
+
+```lua
+local video = require(Workspace.video);
+
+test("plays video", function()
+  local spy = jest.spyOn(video, "play")
+  local isPlaying = video.play()
+
+  expect(spy).toHaveBeenCalled()
+  expect(isPlaying).toBe(true)
+
+  spy:mockRestore()
+end)
+```
+
+:::info
+The `jest.spyOn(object, methodName, accessType?)` variant is not currently supported in jest-roblox.
+:::
+
 ### `jest.clearAllMocks()`
 <a href='https://jestjs.io/docs/27.x/jest-object#jestclearallmocks' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
 
