@@ -471,11 +471,9 @@ end
 function ModuleMockerClass:_spyOnProperty<T, M>(obj: T, propertyName: M, accessType_: ("get" | "set")?): Mock<() -> T>
 	-- ROBLOX deviation: spyOnProperty not supported
 
-	-- ROBLOX note: even in upstream, spyOnProperty is not intended to be used
-	-- for properties that don't already implement get/set accessors (see error
-	-- line 3 of commented impl). A version of this behavior _could_ be
-	-- implemented using some elaborate metatable shenanigans, but we should
-	-- find a compelling need before pursuing that route
+	-- ROBLOX note: A version of this behavior _could_ be implemented using some
+	-- elaborate metatable shenanigans, but we should find a compelling need
+	-- before pursuing that route
 	error("spyOn with accessors is not currently supported")
 	-- local accessType: "get" | "set" = if accessType_ ~= nil then accessType_ else "get"
 	-- if typeof(obj) ~= "table" and typeof(obj) ~= "function" then
