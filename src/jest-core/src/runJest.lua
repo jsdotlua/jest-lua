@@ -318,16 +318,11 @@ local function runJest(ref: {
 		local hasTests = #allTests > 0
 
 		if not hasTests then
-			local noTestsFoundMessage = getNoTestsFoundMessage(testRunData, globalConfig)
+			local noTestsFound = getNoTestsFoundMessage(testRunData, globalConfig)
+			local exitWith0 = noTestsFound.exitWith0
+			local noTestsFoundMessage = noTestsFound.message
 
-			if
-				globalConfig.passWithNoTests
-				-- ROBLOX deviation START: not supported
-				-- or globalConfig.findRelatedTests
-				-- or globalConfig.lastCommit
-				-- or globalConfig.onlyChanged
-				-- ROBLOX deviation END
-			then
+			if exitWith0 then
 				CustomConsole.new(outputStream, outputStream):log(noTestsFoundMessage)
 			else
 				CustomConsole.new(outputStream, outputStream):error(noTestsFoundMessage)
