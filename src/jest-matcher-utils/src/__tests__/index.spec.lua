@@ -442,7 +442,8 @@ end)
 
 describe("printDiffOrStringify", function()
 	test("expected asymmetric matchers should be diffable", function()
-		jest.dontMock("jest-diff")
+		-- ROBLOX deviation: pass in ModuleScript instead of string
+		jest.dontMock(Packages.JestDiff)
 		jest.resetModules()
 
 		-- ROBLOX deviation START: fix incorrect 'require' call
