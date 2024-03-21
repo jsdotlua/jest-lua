@@ -2,6 +2,8 @@
 
 ## Unreleased Changes
 
+* fix error message when no tests are found ([#7](https://github.com/jsdotlua/jest-lua/pull/7))
+
 ## 3.6.1 (2024-01-16)
 * Re-release of 3.6.0 with widened promise dependency that includes older versions for maximum flexibility ([#378](https://github.com/Roblox/jest-roblox-internal/pull/378))
 
