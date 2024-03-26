@@ -19,9 +19,12 @@ local Packages = CurrentModule.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Error = LuauPolyfill.Error
 
+local RobloxShared = require(Packages.RobloxShared)
+local getDataModelService = RobloxShared.getDataModelService
+
 local function getFileSystemService()
 	local success, result = pcall(function()
-		return _G.__MOCK_FILE_SYSTEM__ or game:GetService("FileSystemService")
+		return _G.__MOCK_FILE_SYSTEM__ or getDataModelService("FileSystemService")
 	end)
 
 	if not success then

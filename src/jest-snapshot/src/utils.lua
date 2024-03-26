@@ -13,14 +13,9 @@
 local CurrentModule = script.Parent
 local Packages = CurrentModule.Parent
 
-local function getFileSystemService()
-	local success, result = pcall(function()
-		return game:GetService("FileSystemService")
-	end)
-
-	return success and result or nil
-end
-local FileSystemService = nil
+local RobloxShared = require(Packages.RobloxShared)
+local getDataModelService = RobloxShared.getDataModelService
+local FileSystemService = getDataModelService("FileSystemService")
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
@@ -224,26 +219,8 @@ local function printBacktickString(str: string): string
 	return "[=[\n" .. str .. "]=]"
 end
 
-local function ensureDirectoryExists(filePath: string)
-	-- ROBLOX deviation: gets path of parent directory, GetScriptFilePath can only be called on ModuleScripts
-	local pathComponents = filePath:split("/")
-	pathComponents = table.pack(table.unpack(pathComponents, 1, #pathComponents - 1))
-	local path = table.concat(pathComponents, "/")
-	local ok, err = pcall(function()
-		if not FileSystemService:Exists(path) then
-			FileSystemService:CreateDirectories(path)
-		end
-	end)
-
-	if not ok and err:find("Error%(13%): Access Denied%. Path is outside of sandbox%.") then
-		error(
-			Error.new(
-				"Provided path is invalid: you likely need to provide a different argument to --fs.readwrite.\n"
-					.. "You may need to pass in `--fs.readwrite=$PWD`"
-			)
-		)
-	end
-end
+-- ROBLOX deviation: moved to RobloxShared
+local ensureDirectoryExists = RobloxShared.ensureDirectoryExists
 
 function normalizeNewLines(string_: string)
 	string_ = string.gsub(string_, "\r\n", "\n")
@@ -285,9 +262,6 @@ local function saveSnapshotFile(snapshotData: SnapshotData, snapshotPath: Config
 	end
 	table.insert(snapshots, "return exports")
 
-	if FileSystemService == nil then
-		FileSystemService = getFileSystemService() or false
-	end
 	-- ROBLOX deviation: error when FileSystemService doesn't exist
 	if not FileSystemService then
 		error(Error("Attempting to save snapshots in an environment where FileSystemService is inaccessible."))
@@ -344,27 +318,6 @@ function deepMerge(target: any, source: any): any
 	return target
 end
 
--- ROBLOX deviation: added to handle file paths in snapshot/State
-local function robloxGetParent(path: string, level_: number?): string
-	local level = if level_ then level_ else 0
-
-	local isUnixPath = string.sub(path, 1, 1) == "/"
-	local t = {}
-
-	for p in string.gmatch(path, "[^\\/][^\\/]*") do
-		table.insert(t, p)
-	end
-	if level > 0 then
-		t = { table.unpack(t, 1, #t - level) }
-	end
-
-	if isUnixPath then
-		return "/" .. table.concat(t, "/")
-	end
-
-	return table.concat(t, "\\")
-end
-
 return {
 	testNameToKey = testNameToKey,
 	keyToTestName = keyToTestName,
@@ -377,6 +330,4 @@ return {
 	escapeBacktickString = escapeBacktickString,
 	saveSnapshotFile = saveSnapshotFile,
 	deepMerge = deepMerge,
-	-- ROBLOX deviation: not in upstream
-	robloxGetParent = robloxGetParent,
 }

@@ -22,7 +22,7 @@ end)
 local status, result = runCLI(Workspace, {
 	verbose = if _G.verbose == "true" then true else nil,
 	ci = _G.CI == "true",
-	updateSnapshot = _G.UPDATESNAPSHOT == "true",
+	updateSnapshot = _G.UPDATESNAPSHOT == "true"
 }, { Workspace }):awaitStatus()
 
 if status == "Rejected" then

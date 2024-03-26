@@ -30,17 +30,10 @@ type Config_ProjectConfig = typesModule.Config_ProjectConfig
 -- ROBLOX deviation END
 
 -- ROBLOX deviation START: additinal dependencies
-local utils = require(script.Parent.utils)
-local getParent = utils.robloxGetParent
-
-local function getCoreScriptSyncService()
-	local success, result = pcall(function()
-		return game:GetService("CoreScriptSyncService")
-	end)
-
-	return success and result or nil
-end
-local CoreScriptSyncService = nil
+local RobloxShared = require(Packages.RobloxShared)
+local getParent = RobloxShared.getParent
+local getDataModelService = RobloxShared.getDataModelService
+local CoreScriptSyncService = getDataModelService("CoreScriptSyncService")
 -- ROBLOX deviation END
 
 -- ROBLOX deviation START: predefine functions
@@ -138,9 +131,6 @@ function createDefaultSnapshotResolver(): SnapshotResolver
 					return snapshotPath
 				end,
 				getPath = function()
-					if CoreScriptSyncService == nil then
-						CoreScriptSyncService = getCoreScriptSyncService() or false
-					end
 					if not CoreScriptSyncService then
 						error(
 							Error(

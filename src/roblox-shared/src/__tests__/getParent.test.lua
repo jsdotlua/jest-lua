@@ -22,7 +22,7 @@ local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local getParent = require(CurrentModule.utils).robloxGetParent
+local getParent = require(CurrentModule.getParent)
 
 describe("getParent", function()
 	it("works on Unix paths", function()
