@@ -1,7 +1,8 @@
-# Jest Lua Changelog
+  # Jest Lua Changelog
 
 ## Unreleased Changes
 
+* fix warning when multiple configuration are found ([#8](https://github.com/jsdotlua/jest-lua/pull/8))
 * fix error message when no tests are found ([#7](https://github.com/jsdotlua/jest-lua/pull/7))
 
 ## 3.6.1 (2024-01-16)
