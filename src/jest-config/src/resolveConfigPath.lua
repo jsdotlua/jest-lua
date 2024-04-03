@@ -10,7 +10,6 @@ local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
 local String = LuauPolyfill.String
-local console = LuauPolyfill.console
 type Array<T> = LuauPolyfill.Array<T>
 
 local exports = {}
@@ -23,15 +22,18 @@ local chalk = require("@pkg/@jsdotlua/chalk")
 -- local fs = require("@pkg/graceful-fs")
 -- local slash = require("@pkg/slash")
 -- ROBLOX deviation END
+local jestValidateModule = require("@pkg/@jsdotlua/jest-validate")
+local ValidationError = jestValidateModule.ValidationError
 local typesModule = require("@pkg/@jsdotlua/jest-types")
 type Config_Path = typesModule.Config_Path
 local constantsModule = require("./constants")
 local JEST_CONFIG_BASE_NAME = constantsModule.JEST_CONFIG_BASE_NAME
+local JEST_CONFIG_EXT_ORDER = constantsModule.JEST_CONFIG_EXT_ORDER
 -- ROBLOX deviation START: not needed
--- local JEST_CONFIG_EXT_ORDER = constantsModule.JEST_CONFIG_EXT_ORDER
 -- local PACKAGE_JSON = constantsModule.PACKAGE_JSON
 -- ROBLOX deviation END
 local utilsModule = require("./utils")
+local BULLET = utilsModule.BULLET
 local DOCUMENTATION_NOTE = utilsModule.DOCUMENTATION_NOTE
 
 -- ROBLOX deviation START: predefine functions
@@ -127,7 +129,7 @@ function resolveConfigPathByTraversing(
 		end) :: Array<any>
 	) :: Array<ModuleScript>
 	if not skipMultipleConfigWarning and #configFiles > 1 then
-		console.warn(makeMultipleConfigsWarning(configFiles))
+		error(ValidationError.new(makeMultipleConfigsWarning(configFiles)))
 	end
 	if #configFiles > 0 then
 		return configFiles[1]
@@ -175,26 +177,18 @@ function makeResolutionErrorMessage(
 	cwd: Instance
 ): string
 	return "Could not find a config file based on provided values:\n"
-		.. ('path: "%s"\n'):format(tostring(initialPath))
-		.. ('cwd: "%s"\n'):format(tostring(cwd))
+		.. `path: "{initialPath}"\n`
+		.. `cwd: "{cwd}"\n`
 		-- ROBLOX deviation START: align message to make more sense in Luau context
 		.. "Config paths must be specified by either a direct path to a config script\n"
 		.. "or a path to a directory. If directory is given, Jest will try to\n"
 		-- ROBLOX deviation END
-		.. ("traverse directory tree up, until it finds one of those files in exact order: %s."):format(
-			Array.join(
-				Array.map(
-					-- ROBLOX deviation START: only support Lua config files
-					-- JEST_CONFIG_EXT_ORDER
-					{ ".lua" },
-					-- ROBLOX deviation END
-					function(ext)
-						return ('"%s"'):format((getConfigFilename(ext)))
-					end
-				),
-				" or "
-			)
-		)
+		.. `traverse directory tree up, until it finds one of those files in exact order: {Array.join(
+			Array.map(JEST_CONFIG_EXT_ORDER, function(ext)
+				return `"{getConfigFilename(ext)}"`
+			end),
+			" or "
+		)}.`
 end
 
 local function extraIfPackageJson(configPath: Config_Path)
@@ -206,14 +200,14 @@ local function extraIfPackageJson(configPath: Config_Path)
 	return ""
 end
 
-function makeMultipleConfigsWarning(configPaths: Array<ModuleScript>)
-	return chalk.yellow({
+function makeMultipleConfigsWarning(configPaths: Array<ModuleScript>): (string, string, string)
+	return `{BULLET}{chalk.bold("Multiple configurations found")}`,
 		Array.join(
 			Array.concat(
-				{},
-				{ chalk.bold("\u{25cf} Multiple configurations found:") },
 				Array.map(configPaths, function(configPath)
-					return ("    * %s%s"):format(tostring(extraIfPackageJson(configPath)), tostring(configPath))
+					-- ROBLOX deviation START: replace slash command with GetFullName
+					return `    * {extraIfPackageJson(configPath)}{configPath:GetFullName()}`
+					-- ROBLOX deviation END
 				end),
 				{
 					"",
@@ -223,8 +217,7 @@ function makeMultipleConfigsWarning(configPaths: Array<ModuleScript>)
 			),
 			"\n"
 		),
-		DOCUMENTATION_NOTE,
-	})
+		DOCUMENTATION_NOTE
 end
 
 return exports
