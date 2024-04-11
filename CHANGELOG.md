@@ -2,6 +2,13 @@
 
 ## Unreleased Changes
 
+## 3.7.0 (2024-04-10)
+:sparkles: Resolve DOM paths to FS paths if possible in jest-runner ([#373](https://github.com/Roblox/jest-roblox-internal/pull/373))
+
+## 3.6.2 (2024-03-21)
+:sparkles: Added jest.spyOn ([#382](https://github.com/Roblox/jest-roblox-internal/pull/382))
+:bug: Fixed jest.mock type ([#385](https://github.com/Roblox/jest-roblox-internal/pull/385))
+
 ## 3.6.1 (2024-01-16)
 * Re-release of 3.6.0 with widened promise dependency that includes older versions for maximum flexibility ([#378](https://github.com/Roblox/jest-roblox-internal/pull/378))
 
