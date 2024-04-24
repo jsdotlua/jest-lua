@@ -59,6 +59,10 @@ describe(".getType()", function()
 		expect(getType(true)).toBe("boolean")
 	end)
 
+	it("buffer", function()
+		expect(getType(buffer.fromstring("test"))).toBe("buffer")
+	end)
+
 	-- ROBLOX deviation start: additional symbol tests
 	it("symbol", function()
 		expect(getType(Symbol("test"))).toBe("symbol")

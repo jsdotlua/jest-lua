@@ -139,6 +139,8 @@ local function eq(
 		return a == b
 	elseif className == "regexp" then
 		return tostring(a) == tostring(b)
+	elseif className == "buffer" then
+		return buffer.tostring(a) == buffer.tostring(b)
 	end
 
 	if typeof(a) ~= "table" or typeof(b) ~= "table" then
