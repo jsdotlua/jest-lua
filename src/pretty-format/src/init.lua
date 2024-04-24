@@ -143,6 +143,10 @@ local function printBasicValue(
 		return val
 	end
 
+	if typeOf == "buffer" then
+		return string.format('buffer { size = %s, data = "%s" }', buffer.len(val), buffer.tostring(val))
+	end
+
 	-- ROBLOX deviation: output classname for Instance types
 	if typeOf == "Instance" then
 		return val.ClassName
