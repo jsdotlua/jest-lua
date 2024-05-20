@@ -2,6 +2,9 @@
 
 ## Unreleased Changes
 
+## 3.8.0 (2024-04-20)
+:clock: Mock task.wait ([#388](https://github.com/Roblox/jest-roblox-internal/pull/373))
+
 ## 3.7.0 (2024-04-10)
 :sparkles: Resolve DOM paths to FS paths if possible in jest-runner ([#373](https://github.com/Roblox/jest-roblox-internal/pull/373))
 

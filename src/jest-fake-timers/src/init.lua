@@ -87,6 +87,7 @@ function FakeTimers.new(): FakeTimers
 	local taskOverride = {
 		delay = mock:fn(realTask.delay),
 		cancel = mock:fn(realTask.cancel),
+		wait = mock:fn(realTask.wait),
 	}
 	setmetatable(taskOverride, { __index = realTask })
 
@@ -223,8 +224,13 @@ function FakeTimers:useRealTimers(): ()
 		self.osOverride.clock.mockImplementation(realOs.clock)
 		self.taskOverride.delay.mockImplementation(realTask.delay)
 		self.taskOverride.cancel.mockImplementation(realTask.cancel)
+		self.taskOverride.wait.mockImplementation(realTask.wait)
 		self._fakingTime = false
 	end
+end
+
+local function fakeClock(self): number
+	return self._mockTimeMs / 1000
 end
 
 local function fakeDelay(self, delayTime, callback, ...): Timeout
@@ -260,20 +266,33 @@ local function fakeCancel(self, timeout)
 	end
 end
 
+local function fakeWait(self, timeToWait: number?)
+	local running = coroutine.running()
+	local clock = fakeClock(self)
+	fakeDelay(self, timeToWait or 0, function()
+		task.spawn(running, fakeClock(self) - clock)
+	end)
+	return coroutine.yield()
+end
+
 function FakeTimers:useFakeTimers(): ()
 	if not self._fakingTime then
 		self.delayOverride.mockImplementation(function(delayTime, callback)
 			return fakeDelay(self, delayTime, callback)
 		end)
+
 		self.tickOverride.mockImplementation(function()
 			return self._mockSystemTime
 		end)
+
 		self.timeOverride.mockImplementation(function()
-			return self._mockTimeMs / 1000
+			return fakeClock(self)
 		end)
+
 		self.dateTimeOverride.now.mockImplementation(function()
 			return realDateTime.fromUnixTimestamp(self._mockSystemTime)
 		end)
+
 		self.osOverride.time.mockImplementation(function(time_)
 			if typeof(time_) == "table" then
 				local unixTime = realDateTime.fromUniversalTime(
@@ -288,15 +307,21 @@ function FakeTimers:useFakeTimers(): ()
 			end
 			return self._mockSystemTime
 		end)
+
 		self.osOverride.clock.mockImplementation(function()
-			return self._mockTimeMs / 1000
+			return fakeClock(self)
 		end)
+
 		self.taskOverride.delay.mockImplementation(function(delayTime, callback, ...)
 			return fakeDelay(self, delayTime, callback, ...)
 		end)
 
 		self.taskOverride.cancel.mockImplementation(function(timeout)
 			fakeCancel(self, timeout)
+		end)
+
+		self.taskOverride.wait.mockImplementation(function(timeToWait)
+			return fakeWait(self, timeToWait)
 		end)
 
 		self._fakingTime = true
