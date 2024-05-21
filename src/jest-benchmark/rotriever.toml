@@ -6,6 +6,9 @@ author = "Roblox"
 content_root = "src"
 files = ["*", "!**/__tests__/**"]
 
+[config]
+registry_index = "true"
+
 [dependencies]
 JestGlobals = { path = "../jest-globals" }
 LuauPolyfill = { workspace = true }

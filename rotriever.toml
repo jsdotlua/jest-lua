@@ -3,6 +3,9 @@ members = ["src/*"]
 version = "3.8.0"
 license = "MIT"
 
+[config]
+registry_index = true
+
 [workspace.dependencies]
 ChalkLua = "github.com/roblox/chalk-lua@0.2.0"
 LuauPolyfill = "github.com/roblox/luau-polyfill@1"

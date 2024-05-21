@@ -6,6 +6,9 @@ author = { workspace = true }
 content_root = "src"
 files = ["*", "!**/__tests__/**"]
 
+[config]
+registry_index = "true"
+
 [dependencies]
 LuauPolyfill = { workspace = true }
 ChalkLua = { workspace = true }

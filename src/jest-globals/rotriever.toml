@@ -6,6 +6,9 @@ author = "Roblox"
 content_root = "src"
 files = ["*", "!**/__tests__/**"]
 
+[config]
+registry_index = "true"
+
 [dependencies]
 LuauPolyfill = { workspace = true }
 Expect = { path = "../expect" }

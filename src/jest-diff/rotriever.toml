@@ -6,6 +6,9 @@ author = "Roblox"
 content_root = "src"
 files = ["*", "!**/__tests__/**"]
 
+[config]
+registry_index = "true"
+
 [dependencies]
 DiffSequences = { path = "../diff-sequences" }
 JestGetType = { path = "../jest-get-type" }
