@@ -2,18 +2,21 @@
 
 ## Unreleased Changes
 
-## 3.8.0 (2024-04-20)
-:clock: Mock task.wait ([#388](https://github.com/Roblox/jest-roblox-internal/pull/373))
+## 3.8.1 (2024-06-18)
+* :bug: Fix mismatched test paths between reporter and runner ([#396](https://github.com/Roblox/jest-roblox-internal/pull/395))
+
+## 3.8.0 (2024-05-20)
+* :sparkles: Mock task.wait ([#388](https://github.com/Roblox/jest-roblox-internal/pull/373))
 
 ## 3.7.0 (2024-04-10)
-:sparkles: Resolve DOM paths to FS paths if possible in jest-runner ([#373](https://github.com/Roblox/jest-roblox-internal/pull/373))
+* :sparkles: Resolve DOM paths to FS paths if possible in jest-runner ([#373](https://github.com/Roblox/jest-roblox-internal/pull/373))
 
 ## 3.6.2 (2024-03-21)
-:sparkles: Added jest.spyOn ([#382](https://github.com/Roblox/jest-roblox-internal/pull/382))
-:bug: Fixed jest.mock type ([#385](https://github.com/Roblox/jest-roblox-internal/pull/385))
+* :sparkles: Added jest.spyOn ([#382](https://github.com/Roblox/jest-roblox-internal/pull/382))
+* :bug: Fixed jest.mock type ([#385](https://github.com/Roblox/jest-roblox-internal/pull/385))
 
 ## 3.6.1 (2024-01-16)
-* Re-release of 3.6.0 with widened promise dependency that includes older versions for maximum flexibility ([#378](https://github.com/Roblox/jest-roblox-internal/pull/378))
+* :hammer_and_wrench: Re-release of 3.6.0 with widened promise dependency that includes older versions for maximum flexibility ([#378](https://github.com/Roblox/jest-roblox-internal/pull/378))
 
 ## 3.6.0 (2024-01-09)
 * :hammer_and_wrench: Upgrade promise dependency, but keep constraint wide so that all future 3.x versions are valid ([#374](https://github.com/Roblox/jest-roblox-internal/pull/374))
