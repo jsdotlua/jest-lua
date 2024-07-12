@@ -756,8 +756,14 @@ local function toEqual(
 		end
 	else
 		message = function()
-			return matcherHint(matcherName, nil, nil, options)
-				.. "\n\n"
+			local retval = matcherHint(matcherName, nil, nil, options) .. "\n\n"
+			if type(received) == "buffer" or type(expected) == "buffer" then
+				retval = retval
+					.. DIM_COLOR("If comparing buffers, consider reading their data and comparing that instead")
+					.. "\n\n"
+			end
+
+			return retval
 				.. printDiffOrStringify(expected, received, EXPECTED_LABEL, RECEIVED_LABEL, isExpand(self.expand))
 		end
 	end

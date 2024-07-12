@@ -32,6 +32,9 @@ local function getType(value: any): string
 	if typeof(value) == "boolean" then
 		return "boolean"
 	end
+	if typeof(value) == "buffer" then
+		return "buffer"
+	end
 	if typeof(value) == "function" then
 		return "function"
 	end
