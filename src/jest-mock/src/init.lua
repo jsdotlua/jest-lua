@@ -24,6 +24,13 @@ local Object = LuauPolyfill.Object
 local Set = LuauPolyfill.Set
 local Symbol = LuauPolyfill.Symbol
 
+-- ROBLOX deviation START: mocking globals
+local JestMockGenv = require(Packages.JestMockGenv)
+type GlobalMocker = JestMockGenv.GlobalMocker
+type GlobalAutomocks = JestMockGenv.GlobalAutomocks
+local GlobalMocker = JestMockGenv.GlobalMocker
+-- ROBLOX deviation END
+
 type Array<T> = LuauPolyfill.Array<T>
 type Object = LuauPolyfill.Object
 
@@ -114,6 +121,9 @@ type MockFunctionConfig = {
 	specificMockImpls: Array<any>,
 }
 
+-- ROBLOX deviation START: mocking globals
+-- ROBLOX deviation END
+
 export type ModuleMocker = {
 	isMockFunction: (_self: ModuleMocker, fn: any) -> boolean,
 	fn: <T..., Y...>(_self: ModuleMocker, implementation: ((Y...) -> T...)?) -> (MockFn, (...any) -> ...any),
@@ -122,6 +132,10 @@ export type ModuleMocker = {
 	restoreAllMocks: (_self: ModuleMocker) -> (),
 	mocked: <T>(_self: ModuleMocker, item: T, _deep: boolean?) -> MaybeMocked<T> | MaybeMockedDeep<T>,
 	spyOn: <M>(_self: ModuleMocker, object: { [any]: any }, methodName: M, accessType: ("get" | "set")?) -> Mock<any>,
+	-- ROBLOX deviation START: mocking globals
+	mockGlobals: (_self: ModuleMocker, globals: GlobalMocker, env: Object) -> (),
+	unmockGlobals: (_self: ModuleMocker, globals: GlobalMocker) -> (),
+	-- ROBLOX deviation END
 }
 
 ModuleMockerClass.__index = ModuleMockerClass
@@ -420,7 +434,30 @@ function ModuleMockerClass:spyOn<M>(object: { [any]: any }, methodName: M, acces
 	if typeof(object) ~= "table" then
 		error(Error.new(("Cannot spyOn on a primitive value; %s given"):format(typeof(object))))
 	end
+
+	-- ROBLOX deviation START: mocking globals
+	if GlobalMocker:isMockGlobalLibrary(object) then
+		local automocks = object._automocksRef
+		-- note: indexing non-mockable functions in `globalEnv` will error,
+		-- making this index operation subtly, but expectedly, fallible.
+		local automockFn = automocks[methodName]
+		if typeof(automockFn) ~= "table" or not automockFn._isGlobalAutomockFn then
+			error(
+				Error.new(
+					("Cannot spy the %s property because it is not a function; %s given instead"):format(
+						tostring(methodName),
+						typeof(automockFn)
+					)
+				)
+			)
+		elseif automockFn._maybeMock == nil then
+			error(Error.new("globalEnv has not been initialised by Jest here"))
+		end
+		return automockFn._maybeMock
+	end
+	-- ROBLOX deviation END
 	local original = object[methodName]
+
 	if not Boolean.toJSBoolean(self:isMockFunction(original)) then
 		if typeof(original) ~= "function" then
 			error(
@@ -555,6 +592,50 @@ end
 function ModuleMockerClass:mocked<T>(item: T, _deep: boolean?): MaybeMocked<T> | MaybeMockedDeep<T>
 	return item :: any
 end
+
+-- ROBLOX deviation START: mocking globals
+function ModuleMockerClass:mockGlobals(globalMocker: GlobalMocker, env: Object)
+	assert(not globalMocker.currentlyMocked, "Attempt to mock globals while they're already mocked")
+	globalMocker.currentlyMocked = true
+	local function implement(automocks: GlobalAutomocks, env: Object)
+		for name, automock in automocks do
+			if automock._isGlobalAutomockFn then
+				local original = env[name]
+				local mock
+				local function mockOriginalImplementation()
+					mock.mockImplementation(function(...)
+						return original(...)
+					end)
+				end
+				mock = self:_makeComponent({
+					type = "function",
+				}, mockOriginalImplementation)
+				mockOriginalImplementation()
+				automock._maybeUnmocked = original
+				automock._maybeMock = mock
+			else
+				implement(automock, env[name])
+			end
+		end
+	end
+	implement(globalMocker.automocks, env)
+end
+
+function ModuleMockerClass:unmockGlobals(globalMocker: GlobalMocker)
+	globalMocker.currentlyMocked = false
+	local function unimplement(automocks: GlobalAutomocks)
+		for name, automock in automocks do
+			if automock._isGlobalAutomockFn then
+				automock._maybeUnmocked = nil
+				automock._maybeMock = nil
+			else
+				unimplement(automock)
+			end
+		end
+	end
+	unimplement(globalMocker.automocks)
+end
+-- ROBLOX deviation END
 
 exports.ModuleMocker = ModuleMockerClass
 

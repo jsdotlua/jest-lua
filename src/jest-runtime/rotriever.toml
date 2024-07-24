@@ -17,6 +17,7 @@ JestMock = { path = '../jest-mock' }
 Expect = { path = "../expect" }
 JestFakeTimers = { path = "../jest-fake-timers" }
 JestSnapshot = { path = "../jest-snapshot" }
+JestMockGenv = { path = '../jest-mock-genv' }
 
 [dev_dependencies]
 JestEnvironmentLuau = { path = '../jest-environment-luau' }

@@ -1,7 +1,5 @@
 -- Jest Roblox Snapshot v1, http://roblox.github.io/jest-roblox-internal/snapshot-testing
-
 local exports = {}
-
 exports[ [=[custom snapshot matchers: toMatchTrimmedSnapshot 1]=] ] = [=[
 "extra long"]=]
 

@@ -1,5 +1,5 @@
 [package]
-name = "JestEnvironment"
+name = "JestMockGenv"
 version = { workspace = true }
 license = { workspace = true }
 author = "Roblox"
@@ -11,7 +11,6 @@ registry_index = "true"
 
 [dependencies]
 LuauPolyfill = { workspace = true }
-JestFakeTimers = { path = "../jest-fake-timers" }
-JestMock = { path = "../jest-mock" }
-JestTypes = { path = "../jest-types" }
-JestMockGenv = { path = '../jest-mock-genv' }
+
+[dev_dependencies]
+JestGlobals = { path = "../jest-globals" }

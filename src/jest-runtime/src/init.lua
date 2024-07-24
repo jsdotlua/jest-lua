@@ -1,3 +1,4 @@
+--!nonstrict
 -- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-runtime/src/index.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -102,10 +103,13 @@ local jestMockModule = require(Packages.JestMock)
 -- type MockFunctionMetadata = jestMockModule.MockFunctionMetadata
 -- ROBLOX deviation END
 type ModuleMocker = jestMockModule.ModuleMocker
-
 -- ROBLOX deviation START: (addition) importing ModuleMocker class instead of injecting it via runTests
 local ModuleMocker = jestMockModule.ModuleMocker
 -- ROBLOX deviation END
+-- ROBLOX deviation START: mocking globals
+local jestMockGenvModule = require(Packages.JestMockGenv)
+local GlobalMocker = jestMockGenvModule.GlobalMocker
+type GlobalMocker = jestMockGenvModule.GlobalMocker
 -- ROBLOX deviation START: skipped
 -- local escapePathForRegex = require(Packages["jest-regex-util"]).escapePathForRegex
 -- local jestResolveModule = require(Packages["jest-resolve"])
@@ -185,6 +189,7 @@ type InternalModuleOptions = Object
 -- 	supportsTopLevelAwait = false,
 -- }
 -- ROBLOX deviation END
+
 -- ROBLOX deviation START: custom type implementation
 -- type InitialModule = Omit<Module, "require" | "parent" | "paths">
 type Module = {
@@ -430,6 +435,8 @@ type Runtime_private = { --
 	-- _moduleMockFactories: Map<string, () -> unknown>,
 	-- ROBLOX deviation END
 	_moduleMocker: ModuleMocker,
+	-- ROBLOX deviation: mocking globals
+	_globalMocker: GlobalMocker,
 	_isolatedModuleRegistry: ModuleRegistry | nil,
 	_moduleRegistry: ModuleRegistry,
 	-- ROBLOX deviation START: skipped
@@ -670,6 +677,13 @@ function Runtime.new(loadedModuleFns: Map<ModuleScript, { any }>?): Runtime
 	-- ROBLOX deviation START: instantiate the module mocker here instead of being passed in as an arg from runTest
 	-- self._moduleMocker = self._environment.moduleMocker
 	self._moduleMocker = ModuleMocker.new()
+	-- ROBLOX deviation END
+	-- ROBLOX deviation START: mocking globals
+	self._globalMocker = GlobalMocker.new(jestMockGenvModule.MOCKABLE_GLOBALS)
+	-- TODO: if we want to mock more specific function environment members then
+	-- this will have to be rethought, but for what's being mocked now, it's
+	-- fine to draw from the global function environment.
+	self._moduleMocker:mockGlobals(self._globalMocker, getfenv(0))
 	-- ROBLOX deviation END
 	self._isolatedModuleRegistry = nil
 	self._isolatedMockRegistry = nil
@@ -1696,6 +1710,8 @@ function Runtime_private:clearAllMocks(): ()
 	self._moduleMocker:clearAllMocks()
 end
 function Runtime_private:teardown(): ()
+	-- ROBLOX deviation: mocking globals
+	self._moduleMocker:unmockGlobals(self._globalMocker)
 	self:restoreAllMocks()
 	self:resetAllMocks()
 	self:resetModules()
@@ -1959,44 +1975,76 @@ function Runtime_private:_execModule(
 	-- a new module instance but with the same environment table as `moduleFunction` itself at the
 	-- time of invocation. In order to properly sanbox module instances, we need to ensure that
 	-- each instance has its own distinct environment table containing the specific overrides for it,
-	-- but still inherits from the default parent environment for non-overriden environment goodies.
+	-- but still inherits from the default parent environment for non-overriden
+	-- environment goodies.
 	-- local isInternal = false -- if options ~= nil and options.isInternalModule then options.isInternalModule else false
 	local isInternal = if options ~= nil and options.isInternalModule then options.isInternalModule else false
-	setfenv(
-		moduleFunction,
-		setmetatable(
-			Object.assign(
-				{
-					--[[
-						ROBLOX NOTE:
-						Adding `script` directly into a table so that it is accessible to the debugger
-						It seems to be a similar issue to code inside of __index function not being debuggable
-					]]
-					script = defaultEnvironment.script,
-					require = if isInternal
-						then function(scriptInstance: ModuleScript)
-							return self:requireInternalModule(scriptInstance)
-						end
-						else function(scriptInstance: ModuleScript)
-							return self:requireModuleOrMock(scriptInstance)
-						end,
-				},
-				if isInternal
-					then {}
-					else {
-						delay = self._fakeTimersImplementation.delayOverride,
-						tick = self._fakeTimersImplementation.tickOverride,
-						time = self._fakeTimersImplementation.timeOverride,
-						DateTime = self._fakeTimersImplementation.dateTimeOverride,
-						os = self._fakeTimersImplementation.osOverride,
-						task = self._fakeTimersImplementation.taskOverride,
-					}
-			) :: Object,
-			{ __index = defaultEnvironment }
-		) :: any
-	)
 
+	-- This is the 'least mocked' environment that scripts will be able to see.
+	-- The final function environment inherits from this sandbox.
+	-- This is separate so that, in the future, `globalEnv` could expose these
+	-- 'unmocked' functions instead of the ones in the global environment.
+	local sandboxEnvironment = setmetatable({
+		--[[
+			ROBLOX NOTE:
+			Adding `script` directly into a table so that it is accessible to the debugger
+			It seems to be a similar issue to code inside of __index function not being debuggable
+		]]
+		script = defaultEnvironment.script,
+		require = if isInternal
+			then function(scriptInstance: ModuleScript)
+				return self:requireInternalModule(scriptInstance)
+			end
+			else function(scriptInstance: ModuleScript)
+				return self:requireModuleOrMock(scriptInstance)
+			end,
+	}, {
+		__index = defaultEnvironment,
+	})
+	if not isInternal then
+		Object.assign(sandboxEnvironment, {
+			delay = self._fakeTimersImplementation.delayOverride,
+			tick = self._fakeTimersImplementation.tickOverride,
+			time = self._fakeTimersImplementation.timeOverride,
+			DateTime = self._fakeTimersImplementation.dateTimeOverride,
+			os = self._fakeTimersImplementation.osOverride,
+			task = self._fakeTimersImplementation.taskOverride,
+		})
+	end
+
+	-- This is the environment actually passed to scripts, including all global
+	-- mocks and other customisations the user might choose to apply.
+	local mockedSandboxEnvironment = setmetatable({}, {
+		__index = sandboxEnvironment,
+	})
+	local function setupAutomocks(automocks: Object, sourceEnv: any, saveInto: any)
+		for name, automock in automocks do
+			if automock._isGlobalAutomockFn then
+				local original = sourceEnv[name]
+				-- Disguise the mock callable table as a function on the
+				-- outside, so it retains the same behaviour when observed in
+				-- various ways by almost all code (except debug library stuff)
+				saveInto[name] = function(...)
+					if automock._maybeMock == nil then
+						error(Error.new("Code should not be running when globalEnv is uninitialised"))
+					end
+					return automock._maybeMock(...)
+				end
+			else
+				local subSourceEnv = sourceEnv[name]
+				local subSaveInto = setmetatable({}, {
+					__index = subSourceEnv,
+				})
+				saveInto[name] = subSaveInto
+				setupAutomocks(automock, subSourceEnv, subSaveInto)
+			end
+		end
+	end
+	setupAutomocks(self._globalMocker.automocks, sandboxEnvironment, mockedSandboxEnvironment)
+
+	setfenv(moduleFunction, mockedSandboxEnvironment :: any)
 	local moduleResult = table.pack(moduleFunction())
+
 	if moduleResult.n ~= 1 and noModuleReturnRequired ~= true then
 		error(
 			string.format(
@@ -2362,6 +2410,7 @@ end
 -- 	return moduleRequire
 -- end
 -- ROBLOX deviation END
+
 -- ROBLOX deviation START: using ModuleScript instead of Config_Path
 -- function Runtime_private:_createJestObjectFor(from: Config_Path): Jest
 function Runtime_private:_createJestObjectFor(from: ModuleScript): Jest
@@ -2504,6 +2553,7 @@ function Runtime_private:_createJestObjectFor(from: ModuleScript): Jest
 	-- local fn = self._moduleMocker.fn:bind(self._moduleMocker)
 	-- local spyOn = self._moduleMocker.spyOn:bind(self._moduleMocker)
 	-- ROBLOX deviation END
+
 	-- ROBLOX deviation START: not implemented yet
 	-- local ref = if typeof(self._moduleMocker.mocked) == "table" then self._moduleMocker.mocked.bind else nil
 	-- local ref = if ref ~= nil then ref(self._moduleMocker) else nil
@@ -2582,6 +2632,8 @@ function Runtime_private:_createJestObjectFor(from: ModuleScript): Jest
 		getTimerCount = function()
 			return _getFakeTimers():getTimerCount()
 		end,
+		-- ROBLOX deviation: mocking globals
+		globalEnv = self._globalMocker.envObject,
 		isMockFunction = self._moduleMocker.isMockFunction,
 		isolateModules = isolateModules,
 		mock = mock,

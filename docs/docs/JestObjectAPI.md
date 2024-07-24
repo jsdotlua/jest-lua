@@ -284,3 +284,40 @@ When mocking time, `DateTime.now()` will also be mocked. If you for some reason 
 <img alt='Roblox only' src='img/roblox-only.svg'/>
 
 `jest.getEngineFrameTime` gets the frame time by which timers are processed.
+
+## Mock Globals
+
+### `jest.globalEnv`
+<img alt='Roblox only' src='img/roblox-only.svg'/>
+
+`jest.globalEnv` represents the function environment table of the current test.
+
+You can use it with [`jest.spyOn()`](#jestspyonobject-methodname) in place of an
+object, to mock the implementation of a function such as `print()` which lives
+in the environment table.
+
+You can also index into `globalEnv` to represent global libraries, such as
+`jest.globalEnv.math`, which allows you to mock the implementation of library
+functions such as `math.random()`.
+
+Finally, functions from the original function environment are available as
+members of `globalEnv`, for example, the original implementation of `print()`
+(bypassing any current mocks) can be called via `jest.globalEnv.print()`.
+
+:::warning
+
+Jest Roblox does not support mocking all globals - only a few are whitelisted.
+If you try to mock a global which is not whitelisted, you will see an error
+message that looks similar to this:
+
+```
+Jest does not yet support mocking the require global.
+```
+
+Most notably, Jest Roblox does not support mocking these globals:
+
+- `game:GetService()` and other Instance methods (an API for this is being investigated)
+- the `require()` function (use [`jest.mock()`](jest-object) instead)
+- task scheduling functions (use [Timer Mocks](timer-mocks) instead)
+
+:::

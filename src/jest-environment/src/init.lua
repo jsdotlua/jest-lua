@@ -44,6 +44,9 @@ local JestMockSpyOn = jestMockModule.spyOn
 
 type ModuleMocker = jestMockModule.ModuleMocker
 
+-- ROBLOX deviation: mocking globals
+local jestMockGenvModule = require(Packages.JestMockGenv)
+
 export type EnvironmentContext = {
 	console: Console,
 	-- docblockPragmas: Record<string, string | Array<string>>,
@@ -143,6 +146,13 @@ export type Jest = {
 	* Creates a mock function. Optionally takes a mock implementation.
 	]]
 	fn: typeof(JestMockFn),
+	-- ROBLOX deviation START: mocking globals
+	--[[*
+	* Represents the global environment and its libraries, for use with the
+	* `spyOn()` function. This can be used to spy on Lua globals.
+	]]
+	globalEnv: jestMockGenvModule.GlobalEnv,
+	-- ROBLOX deviation END
 	--[[*
 	* Given the name of a module, use the automatic mocking system to generate a
 	* mocked version of the module for you.
