@@ -15,6 +15,9 @@
 local CurrentModule = script.Parent.Parent
 local Packages = CurrentModule.Parent
 
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Object = LuauPolyfill.Object
+
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
@@ -23,70 +26,88 @@ local it = JestGlobals.it
 local RobloxInstance = require(CurrentModule.RobloxInstance)
 local instanceSubsetEquality = RobloxInstance.instanceSubsetEquality
 local getInstanceSubset = RobloxInstance.getInstanceSubset
-local getRobloxProperties = RobloxInstance.getRobloxProperties
-local getRobloxDefaults = RobloxInstance.getRobloxDefaults
+local listProps = RobloxInstance.listProps
+local listDefaultProps = RobloxInstance.listDefaultProps
 local InstanceSubset = RobloxInstance.InstanceSubset
 
-describe("getRobloxProperties()", function()
-	it("returns properties for Instance", function()
-		expect(getRobloxProperties("Instance")).toEqual({ "Archivable", "ClassName", "Name", "Parent" })
+describe("listDefaultProps()", function()
+	it("doesn't return properties for abstract superclasses", function()
+		expect(function()
+			listDefaultProps("Instance")
+		end).toThrow("abstract or not creatable")
 	end)
 
 	it("doesn't return protected properties", function()
-		expect(getRobloxProperties("ModuleScript")).never.toContain({ "Source" })
+		expect(listDefaultProps("ModuleScript")).never.toHaveProperty("Source")
 	end)
 
 	it("doesn't return hidden properties", function()
-		expect(getRobloxProperties("TextLabel")).never.toContain({ "LocalizedText", "Transparency" })
+		expect(listDefaultProps("TextLabel")).never.toHaveProperty("LocalizedText")
+		expect(listDefaultProps("TextLabel")).never.toHaveProperty("Transparency")
 	end)
 
-	it("returns all properties and inherited properties of Frame", function()
-		expect(getRobloxProperties("Frame")).toEqual({
-			"AbsolutePosition",
-			"AbsoluteRotation",
-			"AbsoluteSize",
-			"Active",
-			"AnchorPoint",
-			"Archivable",
-			"AutoLocalize",
-			"AutomaticSize",
-			"BackgroundColor3",
-			"BackgroundTransparency",
-			"BorderColor3",
-			"BorderMode",
-			"BorderSizePixel",
-			"ClassName",
-			"ClipsDescendants",
-			"LayoutOrder",
-			"Name",
-			"NextSelectionDown",
-			"NextSelectionLeft",
-			"NextSelectionRight",
-			"NextSelectionUp",
-			"Parent",
-			"Position",
-			"RootLocalizationTable",
-			"Rotation",
-			"Selectable",
-			"SelectionImageObject",
-			"Size",
-			"SizeConstraint",
-			"Style",
-			"Visible",
-			"ZIndex",
-		})
+	it("returns inherited properties", function()
+		expect(listDefaultProps("Part")).toHaveProperty("Anchored")
 	end)
-end)
 
-describe("getRobloxDefaults()", function()
+	it("returns nil properties as None", function()
+		expect(listDefaultProps("Part")).toHaveProperty("Parent", Object.None)
+	end)
+
 	it("returns default properties and values for TextLabel", function()
-		local defaults = getRobloxDefaults("TextLabel")
+		local defaults = listDefaultProps("TextLabel")
 		expect(defaults).toMatchSnapshot()
 	end)
 
 	it("returns default properties and values for Camera", function()
-		local defaults = getRobloxDefaults("Camera")
+		local defaults = listDefaultProps("Camera")
 		expect(defaults).toMatchSnapshot()
+	end)
+end)
+
+describe("listProps()", function()
+	it("returns properties for a simple instance", function()
+		local simpleInstance = Instance.new("ObjectValue")
+		simpleInstance.Name = "Bryan"
+		simpleInstance.Value = simpleInstance
+		expect(listProps(simpleInstance)).toEqual({
+			Archivable = true,
+			ClassName = "ObjectValue",
+			Name = "Bryan",
+			Parent = Object.None,
+			Value = simpleInstance,
+		})
+	end)
+
+	it("doesn't return protected properties", function()
+		local moduleScript = Instance.new("ModuleScript")
+		expect(listProps(moduleScript)).never.toHaveProperty("Source")
+	end)
+
+	it("doesn't return hidden properties", function()
+		local textLabel = Instance.new("TextLabel")
+		expect(listProps(textLabel)).never.toHaveProperty("LocalizedText")
+		expect(listProps(textLabel)).never.toHaveProperty("Transparency")
+	end)
+
+	it("returns inherited properties", function()
+		local part = Instance.new("Part")
+		expect(listProps(part)).toHaveProperty("Anchored")
+	end)
+
+	it("returns nil properties as None", function()
+		local part = Instance.new("Part")
+		expect(listProps(part)).toHaveProperty("Parent", Object.None)
+	end)
+
+	it("returns properties and values for TextLabel", function()
+		local props = listProps(Instance.new("TextLabel"))
+		expect(props).toMatchSnapshot()
+	end)
+
+	it("returns properties and values for Camera", function()
+		local props = listProps(Instance.new("Camera"))
+		expect(props).toMatchSnapshot()
 	end)
 end)
 

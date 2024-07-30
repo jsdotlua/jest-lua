@@ -23,12 +23,11 @@ local JestGetType = require(Packages.JestGetType)
 local getType = JestGetType.getType
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
+local Object = LuauPolyfill.Object
 local Array = LuauPolyfill.Array
 local instanceof = LuauPolyfill.instanceof
 
 local RobloxInstance = require(Packages.RobloxShared).RobloxInstance
-local getRobloxProperties = RobloxInstance.getRobloxProperties
-local getRobloxDefaults = RobloxInstance.getRobloxDefaults
 local InstanceSubset = RobloxInstance.InstanceSubset
 
 local printTableEntries = require(CurrentModule.Collections).printTableEntries
@@ -48,44 +47,44 @@ local function printInstance(
 ): string
 	local result = ""
 
-	local children = val:GetChildren()
-	table.sort(children, function(a, b)
+	local printChildrenList = val:GetChildren()
+	table.sort(printChildrenList, function(a, b)
 		return a.Name < b.Name
 	end)
-	local props
-	local defaults
-	if config.printInstanceDefaults then
-		props = getRobloxProperties(val.ClassName)
-	else
-		defaults, props = getRobloxDefaults(val.ClassName)
-	end
 
+	local propertiesMap = RobloxInstance.listProps(val)
+	local printPropsList = Object.keys(propertiesMap)
 	if not config.printInstanceDefaults then
-		props = Array.filter(props, function(propertyName)
-			return defaults[propertyName] ~= val[propertyName]
+		local defaultsMap = RobloxInstance.listDefaultProps(val.ClassName)
+		printPropsList = Array.filter(printPropsList, function(name)
+			return propertiesMap[name] ~= defaultsMap[name]
 		end)
 	end
+	table.sort(printPropsList)
 
-	if #props > 0 or #children > 0 then
+	local willPrintProps = #printPropsList > 0
+	local willPrintChildren = #printChildrenList > 0
+
+	if willPrintProps or willPrintChildren then
 		result = result .. config.spacingOuter
 
 		local indentationNext = indentation .. config.indent
 
 		-- print properties of Instance
-		for i, propertyName in ipairs(props) do
-			local name = printer(propertyName, config, indentationNext, depth, refs)
-			local value = val[propertyName]
-
-			-- collapses output for Instance values to avoid loops
-			if getType(value) == "Instance" then
-				value = printer(value, config, indentationNext, math.huge, refs)
-			else
-				value = printer(value, config, indentationNext, depth, refs)
+		for propOrder, propName in ipairs(printPropsList) do
+			local propValue = propertiesMap[propName]
+			if propValue == Object.None then
+				propValue = nil
 			end
 
-			result = string.format("%s%s%s: %s", result, indentationNext, name, value)
+			-- collapses output for Instance values to avoid loops
+			local valueDepth = if getType(propValue) == "Instance" then math.huge else depth
+			local printName = printer(propName, config, indentationNext, depth, refs)
+			local printValue = printer(propValue, config, indentationNext, valueDepth, refs)
 
-			if i < #props or #children > 0 then
+			result = string.format("%s%s%s: %s", result, indentationNext, printName, printValue)
+
+			if propOrder ~= #printPropsList or willPrintChildren then
 				result = result .. "," .. config.spacingInner
 			elseif not config.min then
 				result = result .. ","
@@ -93,13 +92,13 @@ local function printInstance(
 		end
 
 		-- recursively print children of Instance
-		for i, v in ipairs(children) do
-			local name = printer(v.Name, config, indentationNext, depth, refs)
-			local value = printer(v, config, indentationNext, depth, refs)
+		for childOrder, child in ipairs(printChildrenList) do
+			local printName = printer(child.Name, config, indentationNext, depth, refs)
+			local printValue = printer(child, config, indentationNext, depth, refs)
 
-			result = string.format("%s%s%s: %s", result, indentationNext, name, value)
+			result = string.format("%s%s%s: %s", result, indentationNext, printName, printValue)
 
-			if i < #children then
+			if childOrder ~= #printChildrenList then
 				result = result .. "," .. config.spacingInner
 			elseif not config.min then
 				result = result .. ","
