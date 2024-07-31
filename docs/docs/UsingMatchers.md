@@ -2,7 +2,7 @@
 id: using-matchers
 title: Using Matchers
 ---
-<p><a href='https://jestjs.io/docs/27.x/using-matchers' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a></p>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/using-matchers)
 
 Jest Roblox uses "matchers" to let you test values in different ways. This document will introduce some commonly used matchers. For the full list, see the [`expect` API doc](expect).
 
@@ -39,7 +39,7 @@ end)
 ```
 
 ## Truthiness
-<img alt='Deviation' src='img/deviation.svg'/>
+![Deviation](/img/deviation.svg)
 
 In tests, you sometimes need to distinguish between `nil`, and `false`, but you sometimes do not want to treat these differently. Jest Roblox contains helpers that let you be explicit about what you want.
 
@@ -100,7 +100,7 @@ end)
 ```
 
 ## Strings
-<img alt='API change' src='img/apichange.svg'/>
+![API Change](/img/apichange.svg)
 
 You can check strings against [Lua string patterns](https://developer.roblox.com/en-us/articles/string-patterns-reference) with `toMatch`:
 
@@ -198,7 +198,7 @@ end)
 ```
 
 ## Exceptions
-<img alt='API change' src='img/apichange.svg'/>
+![API Change](/img/apichange.svg)
 
 If you want to test whether a particular function throws an error when it's called, use `toThrow`.
 

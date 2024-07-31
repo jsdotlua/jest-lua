@@ -4,7 +4,7 @@ title: Getting Started
 slug: /
 ---
 
-The Jest Roblox API is similar to [the API used by JavaScript Jest.](https://jestjs.io/docs/27.x/api)
+The Jest Roblox API is similar to [the API used by JavaScript Jest.](https://jest-archive-august-2023.netlify.app/docs/27.x/api)
 
 Jest Roblox requires `roblox-cli` to run from the command line.
 

@@ -12,6 +12,7 @@ module.exports = {
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.svg',
+  staticDirectories: ['static'],
   themeConfig: {
     navbar: {
       title: `Jest Roblox v${VERSION}`,

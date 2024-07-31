@@ -2,11 +2,11 @@
 id: jest-object
 title: The Jest Object
 ---
-<p><a href='https://jestjs.io/docs/27.x/jest-object' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a></p>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/jest-object)
 
 The methods in the `jest` object help create mocks and let you control Jest Roblox's overall behavior.
 
-<img alt='deviation' src='img/deviation.svg'/>
+![Deviation](/img/deviation.svg)
 
 It must be imported explicitly from `JestGlobals`.
 ```lua
@@ -22,7 +22,7 @@ import TOCInline from "@theme/TOCInline";
 ## Mock Modules
 
 ### `jest.mock(module, factory)`
-<a href='https://jestjs.io/docs/jest-object#jestmockmodulename-factory-options' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jestjs.io/docs/jest-object#jestmockmodulename-factory-options)  ![API Change](/img/apichange.svg)
 
 Mocks a module with an mocked version when it is being required.　The second argument must be used to specify the value of the mocked module.
 ```lua title="mockedModule.lua"
@@ -53,7 +53,7 @@ Modules that are mocked with `jest.mock` are mocked only for the file that calls
 Returns the `jest` object for chaining.
 
 ### `jest.unmock(module)`
-<a href='https://jestjs.io/docs/jest-object#jestunmockmodulename' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jestjs.io/docs/jest-object#jestunmockmodulename)  ![API Change](/img/apichange.svg)
 
 Indicates that the module system should never return a mocked version of the specified module from `require()` (e.g. that it should always return the real module).
 
@@ -67,7 +67,7 @@ end)
 ```
 
 ### `jest.requireActual(module)`
-<a href='https://jestjs.io/docs/jest-object#jestrequireactualmodulename' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jestjs.io/docs/jest-object#jestrequireactualmodulename)  ![API Change](/img/apichange.svg)
 
 Returns the actual module instead of a mock, bypassing all checks on whether the module should receive a mock implementation or not.
 
@@ -79,7 +79,7 @@ end)
 ```
 
 ### `jest.isolateModules(fn)`
-<a href='https://jestjs.io/docs/27.x/jest-object#jestisolatemodulesfn' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/jest-object#jestisolatemodulesfn)  ![Aligned](/img/aligned.svg)
 
 `jest.isolateModules(fn)` creates a sandbox registry for the modules that are loaded inside the callback function. This is useful to isolate specific modules for every test so that local module state doesn't conflict between tests.
 
@@ -93,7 +93,7 @@ local otherCopyOfMyModule = require(Workspace.MyModule)
 ```
 
 ### `jest.resetModules()`
-<a href='https://jestjs.io/docs/27.x/jest-object#jestresetmodules' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/jest-object#jestresetmodules)  ![Aligned](/img/aligned.svg)
 
 Resets the module registry - the cache of all required modules. This is useful to isolate modules where local state might conflict between tests.
 
@@ -129,7 +129,7 @@ Returns the `jest` object for chaining.
 ## Mock Functions
 
 ### `jest.fn(implementation)`
-<a href='https://jestjs.io/docs/27.x/jest-object#jestfnimplementation' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Deviation' src='img/deviation.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/jest-object#jestfnimplementation)  ![Deviation](/img/deviation.svg)
 
 Returns a new, unused [mock function](mock-function-api). Optionally takes a mock implementation.
 
@@ -146,7 +146,7 @@ print(returnsTrue()) -- true
 ```
 
 ### `jest.spyOn(object, methodName)`
-<a href='https://jest-archive-august-2023.netlify.app/docs/28.x/jest-object#jestspyonobject-methodname' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/28.x/jest-object#jestspyonobject-methodname)  ![Aligned](/img/aligned.svg)
 
 Creates a mock function similar to `jest.fn` but also tracks calls to `object[methodName]`. Returns a Jest [mock function](MockFunctionAPI.md).
 
@@ -185,7 +185,7 @@ The `jest.spyOn(object, methodName, accessType?)` variant is not currently suppo
 :::
 
 ### `jest.clearAllMocks()`
-<a href='https://jestjs.io/docs/27.x/jest-object#jestclearallmocks' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/jest-object#jestclearallmocks)  ![Aligned](/img/aligned.svg)
 
 Clears the `mock.calls`, `mock.instances` and `mock.results` properties of all mocks. Equivalent to calling [`.mockClear()`](mock-function-api#mockfnmockclear) on every mocked function.
 
@@ -194,14 +194,14 @@ This can be included in a `beforeEach()` block in your text fixture to clear out
 Returns the `jest` object for chaining.
 
 ### `jest.resetAllMocks()`
-<a href='https://jestjs.io/docs/27.x/jest-object#jestresetallmocks' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/jest-object#jestresetallmocks)  ![Aligned](/img/aligned.svg)
 
 Resets the state of all mocks. Equivalent to calling [`.mockReset()`](mock-function-api#mockfnmockreset) on every mocked function.
 
 Returns the `jest` object for chaining.
 
 <!-- ### `jest.restoreAllMocks()`
-<a href='https://jestjs.io/docs/27.x/jest-object#jestrestoreallmocks' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/jest-object#jestrestoreallmocks)  ![Aligned](/img/aligned.svg)
 
 TODO: need spyOn
 
@@ -210,21 +210,21 @@ Restores all mocks back to their original value. Equivalent to calling [`.mockRe
 ## Mock Timers
 
 ### `jest.useFakeTimers()`
-<a href='https://jestjs.io/docs/27.x/jest-object#jestusefaketimersimplementation-modern--legacy' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Deviation' src='img/deviation.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/jest-object#jestusefaketimersimplementation-modern--legacy)  ![Deviation](/img/deviation.svg)
 
 Instructs Jest Roblox to use fake versions of the standard Lua and Roblox timer functions (`delay`, `tick`, `os.time`, `os.clock`, `task.delay` as well as `DateTime`).
 
 Returns the `jest` object for chaining.
 
 ### `jest.useRealTimers()`
-<a href='https://jestjs.io/docs/27.x/jest-object#jestuserealtimers' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/jest-object#jestuserealtimers)  ![Aligned](/img/aligned.svg)
 
 Instructs Jest Roblox to use the real versions of the standard timer functions.
 
 Returns the `jest` object for chaining.
 
 ### `jest.runAllTimers()`
-<a href='https://jestjs.io/docs/27.x/jest-object#jestrunalltimers' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Deviation' src='img/deviation.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/jest-object#jestrunalltimers)  ![Deviation](/img/deviation.svg)
 
 Exhausts the **macro**-task queue (i.e., all tasks queued by `delay`).
 
@@ -233,62 +233,62 @@ When this API is called, all pending macro-tasks will be executed. If those task
 This is often useful for synchronously executing `delay`s during a test in order to synchronously assert about some behavior that would only happen after the `delay` callbacks executed. See the [Timer mocks](timer-mocks) doc for more information.
 
 ### `jest.advanceTimersByTime(msToRun)`
-<a href='https://jestjs.io/docs/27.x/jest-object#jestadvancetimersbytimemstorun' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/jest-object#jestadvancetimersbytimemstorun)  ![Aligned](/img/aligned.svg)
 
 Executes only the macro task queue (i.e., all tasks queued by `delay`).
 
 When this API is called, all timers are advanced by `msToRun` milliseconds. All pending "macro-tasks" that have been queued, and would be executed within this time frame will be executed. Additionally, if those macro-tasks schedule new macro-tasks that would be executed within the same time frame, those will be executed until there are no more macro-tasks remaining in the queue, that should be run within `msToRun` milliseconds.
 
 ### `jest.runOnlyPendingTimers()`
-<a href='https://jestjs.io/docs/27.x/jest-object#jestrunonlypendingtimers' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/jest-object#jestrunonlypendingtimers)  ![Aligned](/img/aligned.svg)
 
 Executes only the macro-tasks that are currently pending (i.e., all tasks queued by `delay`). If any of the currently pending macro-tasks schedule new macro-tasks, those new tasks will not be executed by this call.
 
 This is useful for scenarios such as one where the module being tested schedules a `delay()` whose callback schedules another `delay()` recursively (meaning the scheduling never stops). In these scenarios, it's useful to be able to run forward in time by a single step at a time.
 
 ### `jest.advanceTimersToNextTimer(steps)`
-<a href='https://jestjs.io/docs/27.x/jest-object#jestadvancetimerstonexttimersteps' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/jest-object#jestadvancetimerstonexttimersteps)  ![Aligned](/img/aligned.svg)
 
 Advances all timers by the needed seconds so that only the next timeouts/intervals will run.
 
 Optionally, you can provide `steps`, so it will run `steps` amount of next timeouts/intervals.
 
 ### `jest.clearAllTimers()`
-<a href='https://jestjs.io/docs/27.x/jest-object#jestclearalltimers' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/jest-object#jestclearalltimers)  ![Aligned](/img/aligned.svg)
 
 Removes any pending timers from the timer system.
 
 This means, if any timers have been scheduled (but have not yet executed), they will be cleared and will never have the opportunity to execute in the future.
 
 ### `jest.getTimerCount()`
-<a href='https://jestjs.io/docs/27.x/jest-object#jestgettimercount' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/jest-object#jestgettimercount)  ![Aligned](/img/aligned.svg)
 
 Returns the number of fake timers still left to run.
 
 ### `jest.setSystemTime(now?: number | DateTime)`
-<a href='https://jestjs.io/docs/27.x/jest-object#jestsetsystemtimenow-number--date' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/jest-object#jestsetsystemtimenow-number--date)  ![Aligned](/img/aligned.svg)
 
 Set the current system time used by fake timers. Simulates a user changing the system clock while your program is running. It affects the current time but it does not in itself cause e.g. timers to fire; they will fire exactly as they would have done without the call to `jest.setSystemTime()`.
 
 ### `jest.getRealSystemTime()`
-<a href='https://jestjs.io/docs/27.x/jest-object#jestgetrealsystemtime' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/jest-object#jestgetrealsystemtime)  ![Aligned](/img/aligned.svg)
 
 When mocking time, `DateTime.now()` will also be mocked. If you for some reason need access to the real current time, you can invoke this function.
 
 ### `jest.setEngineFrameTime(frameTimeMs)`
-<img alt='Roblox only' src='img/roblox-only.svg'/>
+![Roblox only](/img/roblox-only.svg)
 
 `jest.setEngineFrameTime` sets the frame time, in milliseconds, by which all advance timer methods process timers. `frameTimeMs` must be a value greater than or equal to 0; by default, `frameTimeMs` is set to `0` (i.e. continuous time).
 
 ### `jest.getEngineFrameTime()`
-<img alt='Roblox only' src='img/roblox-only.svg'/>
+![Roblox only](/img/roblox-only.svg)
 
 `jest.getEngineFrameTime` gets the frame time by which timers are processed.
 
 ## Mock Globals
 
 ### `jest.globalEnv`
-<img alt='Roblox only' src='img/roblox-only.svg'/>
+![Roblox only](/img/roblox-only.svg)
 
 `jest.globalEnv` represents the function environment table of the current test.
 

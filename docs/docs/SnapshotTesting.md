@@ -2,7 +2,7 @@
 id: snapshot-testing
 title: Snapshot Testing
 ---
-<p><a href='https://jestjs.io/docs/27.x/snapshot-testing' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a></p>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/snapshot-testing)
 
 Snapshot tests are a very useful tool whenever you want to make sure your UI does not change unexpectedly.
 
@@ -40,7 +40,7 @@ Table {
 The snapshot artifact should be committed alongside code changes, and reviewed as part of your code review process. Jest Roblox uses [pretty-format](https://github.com/Roblox/jest-roblox/tree/master/src/pretty-format) to make snapshots human-readable during code review. On subsequent test runs, Jest Roblox will compare the rendered output with the previous snapshot. If they match, the test will pass. If they don't match, either the test runner found a bug in your code that should be fixed, or the implementation has changed and the snapshot needs to be updated.
 
 ### Updating Snapshots
-<img alt='deviation' src='img/deviation.svg'/>
+![Deviation](/img/deviation.svg)
 
 It's straightforward to spot when a snapshot test fails after a bug has been introduced. When that happens, go ahead and fix the issue and make sure your snapshot tests are passing again. Now, let's talk about the case when a snapshot test is failing due to an intentional implementation change.
 
