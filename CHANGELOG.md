@@ -2,6 +2,11 @@
 
 ## Unreleased Changes
 
+## 3.9.0 (2024-08-02)
+* :sparkles: Support spying on Lua globals with `spyOn` ([#397](https://github.com/Roblox/jest-roblox-internal/pull/397))
+* :bug: Expose safe APIs to read and write Roblox Instance properties in the `RobloxInstance` library for `PrettyFormat` to serialize Instances safely ([#398](https://github.com/Roblox/jest-roblox-internal/pull/398))
+* :hammer_and_wrench: Clean up package manifests, READMEs and documentation ([#400](https://github.com/Roblox/jest-roblox-internal/pull/400) [#402](https://github.com/Roblox/jest-roblox-internal/pull/402))
+
 ## 3.8.1 (2024-06-18)
 * :bug: Fix mismatched test paths between reporter and runner ([#396](https://github.com/Roblox/jest-roblox-internal/pull/395))
 
@@ -9,7 +14,7 @@
 * :sparkles: Mock task.wait ([#388](https://github.com/Roblox/jest-roblox-internal/pull/373))
 
 ## 3.7.0 (2024-04-10)
-* :sparkles: Resolve DOM paths to FS paths if possible in jest-runner ([#373](https://github.com/Roblox/jest-roblox-internal/pull/373))
+* :sparkles: Resolve DOM paths to FS paths if possible in `JestRunner` ([#373](https://github.com/Roblox/jest-roblox-internal/pull/373))
 
 ## 3.6.2 (2024-03-21)
 * :sparkles: Added jest.spyOn ([#382](https://github.com/Roblox/jest-roblox-internal/pull/382))

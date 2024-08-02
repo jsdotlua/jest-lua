@@ -1,6 +1,6 @@
 # jest-environment-luau
 
-Status: :hammer: In Progress
+*No upstream. Roblox only.*
 
 ---
 

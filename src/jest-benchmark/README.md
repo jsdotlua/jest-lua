@@ -1,7 +1,5 @@
 # jest-benchmark
 
-Status: :hammer: In Progress
+* No upstream. Roblox only.*
 
-Source: no upstream, roblox-only
-
-Version: v0.0.1
+This package exports the benchmarking library used in Jest. You can find its documentation in the [Jest documentation](https://roblox.github.io/jest-roblox-internal).

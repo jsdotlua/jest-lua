@@ -1,8 +1,13 @@
 [package]
 name = "DiffSequences"
+authors = { workspace = true }
+description = "Compare items in two sequences to find a longest common subsequence."
+repository = { workspace = true }
+homepage = { workspace = true }
+documentation = "https://github.com/jestjs/jest/blob/v27.4.7/packages/diff-sequences/README.md"
+keywords = ["diff"]
 version = { workspace = true }
 license = { workspace = true }
-author = "Roblox"
 content_root = "src"
 files = ["*", "!**/__tests__/**"]
 

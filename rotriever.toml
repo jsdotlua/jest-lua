@@ -1,17 +1,23 @@
 [workspace]
 members = ["src/*"]
-version = "3.8.1"
+authors = ["Raymond Ng <rng@roblox.com>", "Daniel Fox <dfox@roblox.com>", "#jest-roblox"]
+description = "A Luau testing framework based on Jest. See JestGlobals for the entry point."
+repository = "https://github.com/Roblox/jest-roblox-internal"
+homepage = "https://roblox.github.io/jest-roblox-internal"
+documentation = "https://roblox.github.io/jest-roblox-internal"
+keywords = ["jest", "unit_testing"]
+version = "3.9.0"
 license = "MIT"
 
 [config]
 registry_index = true
 
 [workspace.dependencies]
-ChalkLua = "github.com/roblox/chalk-lua@0.2.0"
-LuauPolyfill = "github.com/roblox/luau-polyfill@1"
-RegExp = "github.com/roblox/luau-regexp@0.2.1"
-Promise = "github.com/roblox/roblox-lua-promise@3.3.0"
-React = "github.com/roblox/roact-alignment.git@17.0.1"
-ReactIs = "github.com/roblox/roact-alignment.git@17.0.1"
-ReactTestRenderer = "github.com/roblox/roact-alignment.git@17.0.1"
-Picomatch = "github.com/Roblox/picomatch-lua@0.4.0"
+ChalkLua = "0.2.0"
+LuauPolyfill = "1"
+RegExp = "0.2.1"
+Promise = "3.3.0"
+React = "17.0.1"
+ReactIs = "17.0.1"
+ReactTestRenderer = "17.0.1"
+Picomatch = "0.4.0"

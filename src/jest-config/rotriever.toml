@@ -1,10 +1,13 @@
 [package]
 name = "JestConfig"
+authors = { workspace = true }
+description = { workspace = true }
+repository = { workspace = true }
+homepage = { workspace = true }
+documentation = { workspace = true }
+keywords = { workspace = true }
 version = { workspace = true }
 license = { workspace = true }
-authors = [
-	"Chris Trześniewski <k.trzesniewski@gmail.com>",
-]
 content_root = "src"
 files = ["*", "!**/__tests__/**", "!**/__mocks__/**"]
 

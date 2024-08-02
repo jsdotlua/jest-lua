@@ -6,7 +6,7 @@ This module houses the `GlobalMocker` class, the type definitions used for globa
 mocking utilities, and the `MOCKABLE_GLOBALS` constant which determines the global
 environment members that are allowed to be mocked.
 
-## Notes
+## :pencil2: Notes
 
 - **Changing `MOCKABLE_GLOBALS` should be done with care.**
     - By whitelisting a new global to be mocked, you may subtly affect any code

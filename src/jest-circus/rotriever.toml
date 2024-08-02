@@ -1,15 +1,13 @@
 [package]
 name = "JestCircus"
+authors = { workspace = true }
+description = { workspace = true }
+repository = { workspace = true }
+homepage = { workspace = true }
+documentation = { workspace = true }
+keywords = { workspace = true }
 version = { workspace = true }
 license = { workspace = true }
-authors = [
-	"Chris Trześniewski <k.trzesniewski@gmail.com>",
-	"Ignacio Falk <flakolefluk@gmail.com>",
-	"Ishan Mundra <imundra@roblox.com>",
-	"Matt Hargett <plaztiksyke@gmail.com>",
-	"Olivier Trepanier <otrepanier@roblox.com>",
-	"Raymond Ng <raymondng@berkeley.edu>",
-]
 content_root = "src"
 files = ["*", "!**/__tests__/**", "!**/__mocks__/**"]
 

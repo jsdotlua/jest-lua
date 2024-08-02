@@ -1,10 +1,13 @@
 [package]
 name = "Emittery"
+authors = { workspace = true }
+description = "Simple and modern async event emitter."
+repository = { workspace = true }
+homepage = { workspace = true }
+documentation = "https://github.com/sindresorhus/emittery/blob/v0.11.0/readme.md"
+keywords = { workspace = true }
 version = { workspace = true }
 license = { workspace = true }
-authors = [
-	"Chris Trześniewski <k.trzesniewski@gmail.com>",
-]
 content_root = "src"
 files = ["*", "!**/__tests__/**"]
 

@@ -1,8 +1,13 @@
 [package]
 name = "JestDiff"
+authors = { workspace = true }
+description = "Display differences clearly so people can review changes confidently."
+repository = { workspace = true }
+homepage = { workspace = true }
+documentation = "https://github.com/jestjs/jest/blob/v27.4.7/packages/jest-diff/README.md"
+keywords = { workspace = true }
 version = { workspace = true }
 license = { workspace = true }
-author = "Roblox"
 content_root = "src"
 files = ["*", "!**/__tests__/**"]
 

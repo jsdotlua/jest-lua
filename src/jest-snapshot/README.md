@@ -1,10 +1,9 @@
 # jest-snapshot
 
-Status: :hammer: In Progress
+Upstream: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-snapshot
 
-Source: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-snapshot
+This package implements snapshot testing capabilities of Jest. You can find its documentation in the [Jest documentation](https://roblox.github.io/jest-roblox-internal).
 
-Version: v27.4.7
 
 ---
 

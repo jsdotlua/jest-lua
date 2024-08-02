@@ -1,10 +1,8 @@
 # jest-each
 
-Status: :heavy_check_mark: Ported
+Upstream: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-each
 
-Source: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-each
-
-Version: v27.4.7
+A parameterized testing library for Jest. You can find its documentation in the [Jest documentation](https://roblox.github.io/jest-roblox-internal).
 
 ---
 
@@ -34,14 +32,3 @@ Version: v27.4.7
 	)
     ```
     * TestEZ methods are supported (`*FOCUS`, `*SKIP`), however, these may be dropped at some point in favor of jest's callable objects(`it`, `it.only`, `it.skip`), which are supported too
-
-### :x: Excluded
-
-```
-
-```
-
-### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.4.7/packages/jest-each/package.json)
-
-| Package | Version | Status | Notes |
-| ------- | ------- | ------ | ----- |

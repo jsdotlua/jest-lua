@@ -1,10 +1,8 @@
 # jest-matcher-utils
 
-Status: :heavy_check_mark: Ported
+Upstream: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-matcher-utils
 
-Source: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-matcher-utils
-
-Version: v27.4.7
+This package's exports are mainly used by `expect`'s `utils`.
 
 ---
 
@@ -14,15 +12,3 @@ Version: v27.4.7
 * Changed type annotations in upstream that were `unknown` to `any` because Luau doesn't have support for an `unknown` type
 * In many of the tests, there is differentiation between types such as `Array` and `Map`, however in Lua all of these are treated identically as `table`. The tests were translated to use the `table` type and some tests were left out if they became identical to other tests or were highly redundant.
 * Luau does not yet have functionality to use generics in function signatures and functions so those type annotations are left out
-
-### :x: Excluded
-```
-```
-
-### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.4.7/packages/jest-matcher-utils/package.json)
-| Package       | Version | Status                    | Notes                                            |
-| ------------- | ------- | ------------------------- | ------------------------------------------------ |
-| chalk         | 4.0.0   | :heavy_check_mark: Ported | [Lua-Chalk](https://github.com/Roblox/lua-chalk) |
-| jest-diff     | 27.4.6  | :heavy_check_mark: Ported |                                                  |
-| jest-get-type | 27.4.0  | :heavy_check_mark: Ported |                                                  |
-| pretty-format | 27.4.6  | :heavy_check_mark: Ported | Mostly complete, need plugins                    |

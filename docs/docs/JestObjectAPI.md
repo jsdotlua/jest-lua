@@ -212,7 +212,19 @@ Restores all mocks back to their original value. Equivalent to calling [`.mockRe
 ### `jest.useFakeTimers()`
 [![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/jest-object#jestusefaketimersimplementation-modern--legacy)  ![Deviation](/img/deviation.svg)
 
-Instructs Jest Roblox to use fake versions of the standard Lua and Roblox timer functions (`delay`, `tick`, `os.time`, `os.clock`, `task.delay` as well as `DateTime`).
+Instructs Jest Roblox to use fake versions of the standard Lua and Roblox timer functions.
+The following timers are mocked:
+* `delay`
+* `tick`
+* `time`
+* `os`
+    * `os.time`
+	* `os.clock`
+* `task.delay`
+    * `task.delay`
+	* `task.cancel`
+	* `task.wait`
+* `DateTime`
 
 Returns the `jest` object for chaining.
 

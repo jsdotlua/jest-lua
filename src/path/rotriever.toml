@@ -1,8 +1,13 @@
 [package]
 name = "Path"
+authors = { workspace = true }
+description = "A set of path utilities."
+repository = { workspace = true }
+homepage = { workspace = true }
+documentation = { workspace = true }
+keywords = { workspace = true }
 version = { workspace = true }
 license = { workspace = true }
-author = "Roblox"
 content_root = "src"
 files = ["*", "!**/__tests__/**"]
 

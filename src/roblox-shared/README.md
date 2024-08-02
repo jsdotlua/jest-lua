@@ -1,20 +1,7 @@
 # roblox-shared
 
-Status: :hammer: In Progress
-
-Source: N/A
-
-Version: 
+This module primarily contains shared util code moved out from the internals of other Jest modules to avoid cycles.
 
 ---
 
 ### :pencil2: Notes
-* This module contains shared util code moved out from the internals of other modules to avoid cycles.
-
-### :x: Excluded
-```
-```
-
-### :package: [Dependencies]()
-| Package | Version | Status | Notes |
-| ------- | ------- | ------ | ----- |

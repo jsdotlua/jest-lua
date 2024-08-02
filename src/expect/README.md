@@ -1,10 +1,8 @@
 # expect
 
-Status: :hammer: In Progress
+Upstream: https://github.com/facebook/jest/tree/v27.4.7/packages/expect
 
-Source: https://github.com/facebook/jest/tree/v27.4.7/packages/expect
-
-Version: v27.4.7
+This package exports the `expect` function used in Jest. You can find its documentation in the [Jest documentation](https://roblox.github.io/jest-roblox-internal).
 
 ---
 
@@ -41,15 +39,3 @@ Version: v27.4.7
     * tables with a `message` key that has a string value
     * objects with a `__tostring` metamethod
 * :warning: Currently, the spyMatchers have undefined behavior when used with jest-mock and function calls with `nil` arguments, this should be fixed by ADO-1395 (the matchers may work incidentally but there are no guarantees)
-
-### :x: Excluded
-```
-```
-
-### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.4.7/packages/expect/package.json)
-| Package              | Version | Status                    | Notes                                        |
-| -------------------- | ------- | ------------------------- | -------------------------------------------- |
-| `@jest/types`        | 27.4.2  | :heavy_check_mark: Ported |                                              |
-| `jest-get-type`      | 27.4.0  | :heavy_check_mark: Ported |                                              |
-| `jest-matcher-utils` | 27.4.6  | :heavy_check_mark: Ported |                                              |
-| `jest-message-util`  | 27.4.6  | :hammer: In Progress      | Used for filtering stacktraces, low priority |
