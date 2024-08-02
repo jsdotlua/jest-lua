@@ -2,6 +2,9 @@
 
 ## Unreleased Changes
 
+## 3.9.1 (2024-08-02)
+* :bug: Fix a type analysis error in `JestRuntime` ([#403](https://github.com/Roblox/jest-roblox-internal/pull/403))
+
 ## 3.9.0 (2024-08-02)
 * :sparkles: Support spying on Lua globals with `spyOn` ([#397](https://github.com/Roblox/jest-roblox-internal/pull/397))
 * :bug: Expose safe APIs to read and write Roblox Instance properties in the `RobloxInstance` library for `PrettyFormat` to serialize Instances safely ([#398](https://github.com/Roblox/jest-roblox-internal/pull/398))

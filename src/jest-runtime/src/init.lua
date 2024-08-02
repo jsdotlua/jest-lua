@@ -1428,7 +1428,7 @@ function Runtime_private:requireModuleOrMock<T>(moduleName: ModuleScript): T
 	local from = moduleName
 	-- ROBLOX deviation END
 	-- ROBLOX deviation START: additional interception
-	if moduleName == script or moduleName == script.Parent then
+	if moduleName == script or (typeof(script.Parent) == "ModuleScript" and moduleName == script.Parent) then
 		-- ROBLOX NOTE: Need to cast require because analyze cannot figure out scriptInstance path
 		return (require :: any)(moduleName)
 	end

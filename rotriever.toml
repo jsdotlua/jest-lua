@@ -6,7 +6,7 @@ repository = "https://github.com/Roblox/jest-roblox-internal"
 homepage = "https://roblox.github.io/jest-roblox-internal"
 documentation = "https://roblox.github.io/jest-roblox-internal"
 keywords = ["jest", "unit_testing"]
-version = "3.9.0"
+version = "3.9.1"
 license = "MIT"
 
 [config]
