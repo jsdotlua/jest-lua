@@ -18,6 +18,7 @@ local RobloxShared = require(Packages.RobloxShared)
 local escapePatternCharacters = RobloxShared.escapePatternCharacters
 local normalizePromiseError = RobloxShared.normalizePromiseError
 local Error = LuauPolyfill.Error
+local cleanLoadStringStack = RobloxShared.cleanLoadStringStack
 -- ROBLOX deviation END
 
 type Record<K, T> = { [K]: T }

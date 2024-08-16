@@ -19,7 +19,7 @@ exports[ [=[formats an error object into proper output with message 1]=] ] = [=[
 Table {
   "Error
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.errorParsing.roblox.spec:43
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:2046 function _execModule
+LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:2051 function _execModule
 LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1414 function _loadModule
 LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1260
 LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1259 function requireModule
@@ -33,7 +33,7 @@ exports[ [=[formats an error object with a message into proper output with messa
 Table {
   "Error: something went wrong!!
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.errorParsing.roblox.spec:44
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:2046 function _execModule
+LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:2051 function _execModule
 LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1414 function _loadModule
 LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1260
 LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1259 function requireModule
@@ -47,7 +47,7 @@ exports[ [=[formats an error object with a stack and message into proper output 
 Table {
   "something went wrong!!
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.errorParsing.roblox.spec:47
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:2046 function _execModule
+LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:2051 function _execModule
 LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1414 function _loadModule
 LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1260
 LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1259 function requireModule
@@ -61,7 +61,7 @@ exports[ [=[formats an error object with only a stack into proper output with me
 Table {
   "Error: something went wrong!!
 LoadedCode.JestRoblox._Workspace.JestCircus.JestCircus.circus.__tests__.errorParsing.roblox.spec:51
-LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:2046 function _execModule
+LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:2051 function _execModule
 LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1414 function _loadModule
 LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1260
 LoadedCode.JestRoblox._Workspace.JestRuntime.JestRuntime:1259 function requireModule

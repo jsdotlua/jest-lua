@@ -50,6 +50,7 @@ describe("formatNodeAssertErrors", function()
 			parent = {} :: any,
 			seenDone = false,
 		}
+		assertionError.stack = pruneDeps(assertionError.stack)
 		formatNodeAssertErrors(nil, {
 			name = "test_done",
 			test = test,

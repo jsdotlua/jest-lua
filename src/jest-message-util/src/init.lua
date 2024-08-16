@@ -30,7 +30,9 @@ local prettyFormat = require(Packages.PrettyFormat).format
 type Path = Config_Path
 
 -- ROBLOX deviation START: additional dependencies
-local normalizePromiseError = require(Packages.RobloxShared).normalizePromiseError
+local RobloxShared = require(Packages.RobloxShared)
+local normalizePromiseError = RobloxShared.normalizePromiseError
+local cleanLoadStringStack = RobloxShared.cleanLoadStringStack
 -- ROBLOX deviation END
 
 -- ROBLOX deviation: forward declarations
@@ -275,8 +277,8 @@ end
 
 -- ROBLOX deviation: config does not have StackTraceConfig type annotation
 local function formatPaths(config, relativeTestPath, line: string): string
-	-- ROBLOX deviation: we don't do any formatting of paths in Lua to align with upstream
-	return line
+	-- ROBLOX deviation: if loadstring is used, format the loadstring stacktrace to look like a path
+	return cleanLoadStringStack(line)
 end
 
 function getStackTraceLines(stack: string, options: StackTraceOptions): { string }

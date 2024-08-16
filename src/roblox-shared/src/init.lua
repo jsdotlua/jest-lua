@@ -17,6 +17,7 @@ local CurrentModule = script
 local nodeUtilsModule = require(CurrentModule.nodeUtils)
 export type NodeJS_WriteStream = nodeUtilsModule.NodeJS_WriteStream
 local exports = {
+	cleanLoadStringStack = require(CurrentModule.cleanLoadStringStack),
 	dedent = require(CurrentModule.dedent).dedent,
 	escapePatternCharacters = require(CurrentModule.escapePatternCharacters).escapePatternCharacters,
 	ensureDirectoryExists = require(CurrentModule.ensureDirectoryExists),

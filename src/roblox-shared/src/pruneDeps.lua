@@ -12,6 +12,9 @@
 	* See the License for the specific language governing permissions and
 	* limitations under the License.
 ]]
+
+local cleanLoadStringStack = require(script.Parent.cleanLoadStringStack)
+
 local function pruneDeps(str: string?): string?
 	if str == nil then
 		return nil
@@ -22,6 +25,7 @@ local function pruneDeps(str: string?): string?
 		if line:find("LoadedCode.JestRoblox._Index.") then
 			continue
 		end
+		line = cleanLoadStringStack(line)
 		table.insert(newLines, line)
 	end
 	return table.concat(newLines, "\n")

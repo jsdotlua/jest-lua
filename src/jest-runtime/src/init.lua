@@ -1943,6 +1943,7 @@ function Runtime_private:_execModule(
 	local moduleFunction, defaultEnvironment, errorMessage, cleanupFn
 
 	local modulePath = localModule.filename
+	local loadModuleEnabled = pcall((debug :: any).loadmodule, Instance.new("ModuleScript"))
 
 	if self._loadedModuleFns and self._loadedModuleFns:has(modulePath) then
 		local loadedModule = self._loadedModuleFns:get(modulePath) :: { any }
@@ -1951,8 +1952,12 @@ function Runtime_private:_execModule(
 	else
 		-- Narrowing this type here lets us appease the type checker while still
 		-- counting on types for the rest of this file
-		local loadmodule: (ModuleScript) -> (any, string, () -> any) = debug["loadmodule"]
-		moduleFunction, errorMessage, cleanupFn = loadmodule(modulePath)
+		if loadModuleEnabled then
+			local loadmodule: (ModuleScript) -> (any, string, () -> any) = debug["loadmodule"]
+			moduleFunction, errorMessage, cleanupFn = loadmodule(modulePath)
+		else
+			moduleFunction = loadstring(modulePath.Source, modulePath:GetFullName())
+		end
 		-- ROBLOX NOTE: we are not using assert() as it throws a bare string and we need to throw an Error object
 		if moduleFunction == nil then
 			error(Error.new(errorMessage))
@@ -1990,7 +1995,7 @@ function Runtime_private:_execModule(
 			Adding `script` directly into a table so that it is accessible to the debugger
 			It seems to be a similar issue to code inside of __index function not being debuggable
 		]]
-		script = defaultEnvironment.script,
+		script = if loadModuleEnabled then defaultEnvironment.script else modulePath,
 		require = if isInternal
 			then function(scriptInstance: ModuleScript)
 				return self:requireInternalModule(scriptInstance)

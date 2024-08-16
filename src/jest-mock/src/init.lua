@@ -20,7 +20,6 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Error = LuauPolyfill.Error
-local Object = LuauPolyfill.Object
 local Set = LuauPolyfill.Set
 local Symbol = LuauPolyfill.Symbol
 

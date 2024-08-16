@@ -14,4 +14,10 @@ robloxdev-cli run --load.model jest.project.json \
   EnableSignalBehavior=true DebugForceDeferredSignalBehavior=true MaxDeferReentrancyDepth=15 \
   --lua.globals=UPDATESNAPSHOT=false --lua.globals=CI=false --load.asRobloxScript --fs.readwrite="$(pwd)"
 
+echo "Running low privilege tests"
+robloxdev-cli run --load.model jest.project.json \
+  --run bin/spec.lua --testService.errorExitCode=1 \
+  --fastFlags.overrides EnableLoadModule=false --load.asRobloxScript
+
+# Uncomment this to update snapshots
 # robloxdev-cli run --load.model jest.project.json --run bin/spec.lua --testService.errorExitCode=1 --fastFlags.allOnLuau --fastFlags.overrides EnableLoadModule=true DebugDisableOptimizedBytecode=true  --lua.globals=UPDATESNAPSHOT=true --lua.globals=CI=true --load.asRobloxScript --fs.readwrite="$(pwd)"

@@ -15,6 +15,12 @@ local JestGlobals = require(Packages.Dev.JestGlobals)
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 
+-- ROBLOX deviation: these tests require loadmodule
+local loadModuleEnabled = pcall((debug :: any).loadmodule, Instance.new("ModuleScript"))
+if not loadModuleEnabled then
+	it = it.skip :: any
+end
+
 it("tests are not marked done until their parent afterAll runs", function()
 	local stdout = runTest([[
 			describe("describe", function()
