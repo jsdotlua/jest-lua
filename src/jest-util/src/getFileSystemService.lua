@@ -17,7 +17,7 @@
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 
-local RobloxShared = require(Packages.RobloxShared)
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 local getDataModelService = RobloxShared.getDataModelService
 
 local function getFileSystemService()

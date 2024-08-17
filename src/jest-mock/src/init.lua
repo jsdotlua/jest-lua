@@ -21,7 +21,7 @@ local Set = LuauPolyfill.Set
 local Symbol = LuauPolyfill.Symbol
 
 -- ROBLOX deviation START: mocking globals
-local JestMockGenv = require(Packages.JestMockGenv)
+local JestMockGenv = require("@pkg/@jsdotlua/jest-mock-genv")
 type GlobalMocker = JestMockGenv.GlobalMocker
 type GlobalAutomocks = JestMockGenv.GlobalAutomocks
 local GlobalMocker = JestMockGenv.GlobalMocker

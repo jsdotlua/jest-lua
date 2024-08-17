@@ -21,7 +21,7 @@ type Promise<T> = LuauPolyfill.Promise<T>
 local Promise = require("@pkg/@jsdotlua/promise")
 
 -- ROBLOX deviation START: additional function to construct file path from ModuleScript
-local getDataModelService = require(Packages.RobloxShared).getDataModelService
+local getDataModelService = require("@pkg/@jsdotlua/jest-roblox-shared").getDataModelService
 local CoreScriptSyncService = getDataModelService("CoreScriptSyncService")
 -- ROBLOX deviation END
 

@@ -106,7 +106,7 @@ type ModuleMocker = jestMockModule.ModuleMocker
 local ModuleMocker = jestMockModule.ModuleMocker
 -- ROBLOX deviation END
 -- ROBLOX deviation START: mocking globals
-local jestMockGenvModule = require(Packages.JestMockGenv)
+local jestMockGenvModule = require("@pkg/@jsdotlua/jest-mock-genv")
 local GlobalMocker = jestMockGenvModule.GlobalMocker
 type GlobalMocker = jestMockGenvModule.GlobalMocker
 -- ROBLOX deviation START: skipped
