@@ -15,10 +15,7 @@
 	* limitations under the License.
 ]]
 
-local CurrentModule = script
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Object = LuauPolyfill.Object
 
 local exports = {}

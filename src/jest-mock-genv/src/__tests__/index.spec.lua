@@ -15,14 +15,11 @@
 --!strict
 -- ROBLOX NOTE: no upstream
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Object = LuauPolyfill.Object
 
-local exports = require(CurrentModule)
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local exports = require("..")
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local expect = JestGlobals.expect
 local it = JestGlobals.it
