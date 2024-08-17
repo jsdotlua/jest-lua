@@ -1,10 +1,14 @@
 # jest-get-type
 
-Status: :heavy_check_mark: Ported
+Upstream: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-get-type
 
-Source: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-get-type
+A utility function to get the type of a value, including Luau and Roblox types.
 
-Version: v27.4.7
+Types supported:
+
+* Lua Primitives - `nil`, `table`, `number`, `string`, `function`, `boolean`, `userdata`, `thread`
+* [Luau Polyfill](https://github.com/Roblox/luau-polyfill) types - `symbol`, [`regexp`](https://github.com/Roblox/luau-regexp), `error`, `set`
+* Roblox datatypes - `DateTime`, and other [`builtin`](https://developer.roblox.com/en-us/api-reference/data-types) types
 
 ---
 
@@ -14,17 +18,3 @@ Version: v27.4.7
 * Lua lacks the following primitives: `bigint`, `symbol`.
 * Lua lacks the following built-in types: `RegExp`, `Map`, `Set`, `Date`.
 * `JestGetType` deviates and exposes an `isRobloxBuiltin` method to check whether a value is a Roblox builtin type
-
-Types supported:
-
-* Lua Primitives - `nil`, `table`, `number`, `string`, `function`, `boolean`, `userdata`, `thread`
-* [Luau Polyfill](https://github.com/Roblox/luau-polyfill) types - `symbol`, [`regexp`](https://github.com/Roblox/luau-regexp), `error`, `set`
-* Roblox datatypes - `DateTime`, and other [`builtin`](https://developer.roblox.com/en-us/api-reference/data-types) types
-
-### :x: Excluded
-```
-```
-
-### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.4.7/packages/jest-get-type/package.json)
-| Package | Version | Status | Notes |
-| ------- | ------- | ------ | ----- |

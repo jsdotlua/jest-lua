@@ -2,11 +2,11 @@
 id: configuration
 title: Configuring Jest
 ---
-<p><a href='https://jestjs.io/docs/27.x/configuration' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a></p>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/configuration)
 
 The Jest Lua philosophy is to work great by default, but sometimes you just need more configuration power.
 
-<img alt='deviation' src='img/deviation.svg'/>
+![Deviation](/img/deviation.svg)
 
 The configuration should be defined in a `jest.config.lua` file.
 
@@ -37,14 +37,14 @@ import TOCInline from "@theme/TOCInline";
 ## Reference
 
 ### `clearmocks` \[boolean]
-<a href='https://jestjs.io/docs/27.x/configuration#clearmocks-boolean' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/configuration#clearmocks-boolean)  ![Aligned](/img/aligned.svg)
 
 Default: `false`
 
 Automatically clear mock calls, instances, contexts and results before every test. Equivalent to calling [`jest.clearAllMocks()`](jest-object#jestclearallmocks) before each test. This does not remove any mock implementation that may have been provided.
 
 ### `displayName` \[string, table]
-<a href='https://jestjs.io/docs/27.x/configuration#displayname-string-object' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/configuration#displayname-string-object)  ![API Change](/img/apichange.svg)
 
 Default: `nil`
 
@@ -68,7 +68,7 @@ return {
 ```
 
 ### `projects` \[array&lt;Instance&gt;]
-<a href='https://jestjs.io/docs/27.x/configuration#projects-arraystring--projectconfig' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/configuration#projects-arraystring--projectconfig)  ![API Change](/img/apichange.svg)
 
 Default: `nil`
 
@@ -89,14 +89,14 @@ When using multi-project runner, it's recommended to add a `displayName` for eac
 :::
 
 <!-- ### `restoreMocks` \[boolean]
-<a href='https://jestjs.io/docs/27.x/configuration#restoremocks-boolean' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/configuration#restoremocks-boolean)  ![Aligned](/img/aligned.svg)
 
 Default: `false`
 
 Automatically restore mock state and implementation before every test. Equivalent to calling [`jest.restoreAllMocks()`](jest-object#jestrestoreallmocks) before each test. This will lead to any mocks having their fake implementations removed and restores their initial implementation. -->
 
 ### `rootDir` \[Instance]
-<a href='https://jestjs.io/docs/27.x/configuration#rootdir-string' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/configuration#rootdir-string)  ![API Change](/img/apichange.svg)
 
 Default: The root of the directory containing your Jest Lua [config file](#).
 
@@ -115,7 +115,7 @@ Using `'<rootDir>'` as a string token in any other path-based configuration sett
 ::: -->
 
 ### `roots` \[array&lt;Instance&gt;]
-<a href='https://jestjs.io/docs/27.x/configuration#roots-arraystring' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/configuration#roots-arraystring)  ![API Change](/img/apichange.svg)
 
 Default: `{<rootDir>}`
 
@@ -124,14 +124,14 @@ A list of paths to directories that Jest Lua should use to search for files in.
 There are times where you only want Jest Lua to search in a single sub-directory (such as cases where you have a `src/` directory in your repo), but prevent it from accessing the rest of the repo.
 
 ### `setupFiles` \[array&lt;ModuleScript&gt;]
-<a href='https://jestjs.io/docs/27.x/configuration#setupfiles-array' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/configuration#setupfiles-array)  ![API Change](/img/apichange.svg)
 
 Default: `{}`
 
 A list of ModuleScripts that run some code to configure or set up the testing environment. Each setupFile will be run once per test file. Since every test runs in its own environment, these scripts will be executed in the testing environment before executing [`setupFilesAfterEnv`](#setupfilesafterenv-array) and before the test code itself.
 
 ### `setupFilesAfterEnv` \[array&lt;ModuleScript&gt;]
-<a href='https://jestjs.io/docs/27.x/configuration#setupfilesafterenv-array' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/configuration#setupfilesafterenv-array)  ![API Change](/img/apichange.svg)
 
 Default: `{}`
 
@@ -162,20 +162,20 @@ return {
 ```
 
 ### `slowTestThreshold` \[number]
-<a href='https://jestjs.io/docs/27.x/configuration#slowtestthreshold-number' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/configuration#slowtestthreshold-number)  ![Aligned](/img/aligned.svg)
 
 Default: `5`
 
 The number of seconds after which a test is considered as slow and reported as such in the results.
 
 ### `snapshotFormat` \[table]
-<a href='https://jestjs.io/docs/27.x/configuration#snapshotformat-object' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/configuration#snapshotformat-object)  ![Aligned](/img/aligned.svg)
 
 Default: `nil`
 
 Allows overriding specific snapshot formatting options documented in the [pretty-format readme](https://github.com/facebook/jest/blob/main/packages/pretty-format/README.md#usage-with-options), with the exceptions of `compareKeys` and `plugins`.
 
-<img alt='deviation' src='img/deviation.svg'/>
+![Deviation](/img/deviation.svg)
 
 `pretty-format` also supports the formatting option `printInstanceDefaults` (default: `true`) which can be set to `false` to only print properties of a Roblox `Instance` that have been changed.
 
@@ -204,7 +204,7 @@ TextLabel {
 
 
 ### `snapshotSerializers` \[array&lt;serializer&gt;]
-<a href='https://jestjs.io/docs/27.x/configuration#snapshotserializers-arraystring' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/configuration#snapshotserializers-arraystring)  ![API Change](/img/apichange.svg)
 
 Default: `{}`
 
@@ -263,7 +263,7 @@ To make a dependency explicit instead of implicit, you can call [`expect.addSnap
 More about serializers API can be found [here](https://github.com/facebook/jest/tree/main/packages/pretty-format/README.md#serialize).
 
 ### `testFailureExitCode` \[number]
-<a href='https://jestjs.io/docs/27.x/configuration#testfailureexitcode-number' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/configuration#testfailureexitcode-number)  ![Aligned](/img/aligned.svg)
 
 Default: `1`
 
@@ -276,7 +276,7 @@ This does not change the exit code in the case of Jest Lua errors (e.g. invalid 
 :::
 
 ### `testMatch` \[array&lt;string&gt;]
-<a href='https://jestjs.io/docs/27.x/configuration#testmatch-arraystring' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Deviation' src='img/deviation.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/configuration#testmatch-arraystring)  ![Deviation](/img/deviation.svg)
 
 Default: `{ "**/__tests__/**/*", "**/?(*.)+(spec|test)" }`
 
@@ -294,7 +294,7 @@ Each glob pattern is applied in the order they are specified in the config. For 
 :::
 
 ### `testPathIgnorePatterns` \[array&lt;string&gt;]
-<a href='https://jestjs.io/docs/27.x/configuration#testpathignorepatterns-arraystring' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Deviation' src='img/deviation.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/configuration#testpathignorepatterns-arraystring)  ![Deviation](/img/deviation.svg)
 
 Default: `{}`
 
@@ -303,7 +303,7 @@ An array of regexp pattern strings that are matched against all test paths befor
 <!-- These pattern strings match against the full path. Use the `<rootDir>` string token to include the path to your project's root directory to prevent it from accidentally ignoring all of your files in different environments that may have different root directories. Example: `["<rootDir>/build/", "<rootDir>/node_modules/"]`. -->
 
 ### `testRegex` \[string | array&lt;string&gt;]
-<a href='https://jestjs.io/docs/27.x/configuration#testregex-string--arraystring' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Deviation' src='img/deviation.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/configuration#testregex-string--arraystring)  ![Deviation](/img/deviation.svg)
 
 Default: `{}`
 
@@ -316,14 +316,14 @@ The pattern or patterns Jest Lua uses to detect test files. See also [`testMatch
 :::
 
 ### `testTimeout` \[number]
-<a href='https://jestjs.io/docs/27.x/configuration#testtimeout-number' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/configuration#testtimeout-number)  ![Aligned](/img/aligned.svg)
 
 Default: `5000`
 
 Default timeout of a test in milliseconds.
 
 ### `verbose` \[boolean]
-<a href='https://jestjs.io/docs/27.x/configuration#verbose-boolean' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/configuration#verbose-boolean)  ![Aligned](/img/aligned.svg)
 
 Default: `false`
 

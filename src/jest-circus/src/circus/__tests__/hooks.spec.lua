@@ -12,6 +12,12 @@ local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 
+-- ROBLOX deviation: these tests require loadmodule
+local loadModuleEnabled = pcall((debug :: any).loadmodule, Instance.new("ModuleScript"))
+if not loadModuleEnabled then
+	it = it.skip :: any
+end
+
 it("beforeEach is executed before each test in current/child describe blocks", function()
 	local stdout = runTest([[
 			describe("describe", function()

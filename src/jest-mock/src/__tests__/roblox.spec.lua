@@ -12,12 +12,19 @@
 	* See the License for the specific language governing permissions and
 	* limitations under the License.
 ]]
+--!strict
 -- ROBLOX NOTE: no upstream
 
-local ModuleMocker = require("../init").ModuleMocker
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
+type Object = LuauPolyfill.Object
+
+local exports = require("../init")
+local ModuleMocker = exports.ModuleMocker
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
+local jest = JestGlobals.jest
 local expect = JestGlobals.expect
 local it = JestGlobals.it
+local describe = JestGlobals.describe
 local beforeEach = JestGlobals.beforeEach
 
 local moduleMocker
@@ -56,4 +63,72 @@ it("returns a function as the second return value", function()
 
 	expect(mockFn()).toBe(true)
 	expect(mock).toHaveLastReturnedWith(true)
+end)
+
+-- These tests are placed here rather than in JestMockGenv because they require
+-- use of the ModuleMocker functions.
+describe("global mocking & spying", function()
+	it("globalEnv can spy on top-level global functions", function()
+		local mockPrint = moduleMocker:spyOn(jest.globalEnv, "print")
+		mockPrint.mockReturnValueOnce("abcde")
+
+		local print2 = print :: any -- satisfy the type checker
+		local returnValue = print2("This is an intentional print from a unit test")
+		local callsAfter = #mockPrint.mock.calls
+
+		expect(callsAfter).toBe(1)
+		expect(returnValue).toBe("abcde")
+
+		mockPrint.mockReset()
+	end)
+
+	it("globalEnv can spy on nested global functions", function()
+		local mockRand = moduleMocker:spyOn(jest.globalEnv.math, "random")
+		mockRand.mockReturnValueOnce("abcde")
+
+		local random2 = math.random :: any -- satisfy the type checker
+		local returnValue = random2()
+		local callsAfter = #mockRand.mock.calls
+
+		expect(callsAfter).toBe(1)
+		expect(returnValue).toBe("abcde")
+
+		mockRand.mockReset()
+	end)
+
+	it("globalEnv unmocked functions bypass mock impls", function()
+		local mockRand = moduleMocker:spyOn(jest.globalEnv.math, "random")
+		mockRand.mockReturnValueOnce("abcde")
+
+		local returnValue = jest.globalEnv.math.random()
+		local callsAfter = #mockRand.mock.calls
+
+		expect(callsAfter).toBe(0)
+		expect(returnValue).never.toBe("abcde")
+		expect(returnValue).toEqual(expect.any("number"))
+
+		mockRand.mockReset()
+	end)
+
+	it("globalEnv mocks do not persist beyond restoration", function()
+		local mockRand = moduleMocker:spyOn(jest.globalEnv.math, "random")
+		mockRand.mockReturnValueOnce("abcde")
+		mockRand.mockRestore()
+
+		local returnValue = math.random()
+
+		expect(returnValue).never.toBe("abcde")
+		expect(returnValue).toEqual(expect.any("number"))
+	end)
+
+	it("globalEnv can still be mocked after restoration", function()
+		local mockRand = moduleMocker:spyOn(jest.globalEnv.math, "random")
+		mockRand.mockReturnValueOnce("abcde")
+		mockRand.mockRestore()
+		mockRand.mockReturnValueOnce("vwxyz")
+
+		local returnValue = math.random()
+
+		expect(returnValue).toBe("vwxyz")
+	end)
 end)

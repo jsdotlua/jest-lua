@@ -16,6 +16,7 @@ local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 local escapePatternCharacters = RobloxShared.escapePatternCharacters
 local normalizePromiseError = RobloxShared.normalizePromiseError
 local Error = LuauPolyfill.Error
+local cleanLoadStringStack = RobloxShared.cleanLoadStringStack
 -- ROBLOX deviation END
 
 type Record<K, T> = { [K]: T }

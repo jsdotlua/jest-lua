@@ -18,6 +18,8 @@ type Promise<T> = LuauPolyfill.Promise<T>
 
 -- ROBLOX deviation START: additional function to construct file path from ModuleScript
 local getRelativePath = require("@pkg/@jsdotlua/jest-roblox-shared").getRelativePath
+local getDataModelService = require("@pkg/@jsdotlua/jest-roblox-shared").getDataModelService
+local CoreScriptSyncService = getDataModelService("CoreScriptSyncService")
 -- ROBLOX deviation END
 
 local exports = {}
@@ -366,7 +368,12 @@ local function runTestInternal(
 				slow = testRuntime / 1000 > projectConfig.slowTestThreshold,
 				start = start,
 			}
-			result.testFilePath = getRelativePath(path, projectConfig.rootDir)
+			-- ROBLOX deviation: resolve to a FS path if CoreScriptSyncService is available
+			if CoreScriptSyncService then
+				result.testFilePath = CoreScriptSyncService:GetScriptFilePath(path)
+			else
+				result.testFilePath = getRelativePath(path, projectConfig.rootDir)
+			end
 			result.console = testConsole:getBuffer()
 			result.skipped = testCount == result.numPendingTests
 			result.displayName = projectConfig.displayName

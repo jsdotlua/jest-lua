@@ -1,10 +1,8 @@
 # jest-mock
 
-Status: :hammer: In Progress
+Upstream: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-mock
 
-Source: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-mock
-
-Version: v27.4.7
+This package implements the various function and module mocking capabilities used by Jest. You can find its documentation in the [Jest documentation](https://roblox.github.io/jest-roblox-internal).
 
 ---
 
@@ -16,13 +14,3 @@ Version: v27.4.7
 	    * `clearAllMocks()`
 	    * `resetAllMocks()`
 	    * `restoreAllMocks()`
-
-### :x: Excluded
-```
-```
-
-### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.4.7/packages/jest-mock/package.json)
-| Package       | Version | Status                    | Notes |
-| ------------- | ------- | ------------------------- | ----- |
-| `@jest/types` | 27.0.6  | :heavy_check_mark: Ported |       |
-| `@types/node` | *       | :x: Will not port         |       |

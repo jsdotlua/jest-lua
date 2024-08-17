@@ -1,19 +1,7 @@
 # jest-test-result
 
-Status: :heavy_check_mark: Ported
-
-Source: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-test-result
-
-Version: v27.4.7
+Upstream: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-test-result
 
 ---
 
 ### :pencil2: Notes
-
-### :x: Excluded
-```
-```
-
-### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.4.7/packages/jest-test-result/package.json)
-| Package            | Version | Status                    | Notes                                            |
-| ------------------ | ------- | ------------------------- | ------------------------------------------------ |

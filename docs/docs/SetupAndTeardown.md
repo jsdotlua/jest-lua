@@ -2,7 +2,7 @@
 id: setup-teardown
 title: Setup and Teardown
 ---
-<p><a href='https://jestjs.io/docs/27.x/setup-teardown' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a></p>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/setup-teardown)
 
 Often while writing tests you have some setup work that needs to happen before tests run, and you have some finishing work that needs to happen after tests run. Jest Lua provides helper functions to handle this.
 

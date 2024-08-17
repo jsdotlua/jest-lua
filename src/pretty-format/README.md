@@ -1,10 +1,10 @@
 # pretty-format
 
-Status: :hammer: In Progress
+Upstream: https://github.com/facebook/jest/tree/v27.4.7/packages/pretty-format
 
-Source: https://github.com/facebook/jest/tree/v27.4.7/packages/pretty-format
-
-Version: v27.4.7
+Stringify any Luau value
+* Supports Luau builtins and Roblox Instances.
+* Can be extended with user defined plugins.
 
 ---
 
@@ -20,17 +20,3 @@ Version: v27.4.7
 * `getConfig` is rewritten to avoid ternary operators.
 loop is rewritten with a `for` loop instead of an `iterator.next()`.
 * `Collections.lua` deviates from upstream substantially since Lua only has tables. We only have two functions: `printTableEntries` for formatting key, value pairs and `printListItems` for formatting arrays.
-
-### :x: Excluded
-```
-perf
-src/plugins/ConvertAnsi.ts
-src/__tests__/ConvertAnsi.test.ts
-```
-
-### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.4.7/packages/pretty-format/package.json)
-| Package       | Version             | Status                    | Notes                                    |
-| ------------- | ------------------- | ------------------------- | ---------------------------------------- |
-| `ansi-regex`  | 5.0.1               | :x: Will not port         | Console output styling is not a priority |
-| `ansi-styles` | 5.0.0               | :x: Will not port         | See above                                |
-| `react-is`    | see roact-alignment | :heavy_check_mark: Ported | Imported from roact-alignment            |

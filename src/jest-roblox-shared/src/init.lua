@@ -16,8 +16,12 @@
 local nodeUtilsModule = require("./nodeUtils")
 export type NodeJS_WriteStream = nodeUtilsModule.NodeJS_WriteStream
 local exports = {
+	cleanLoadStringStack = require("./cleanLoadStringStack"),
 	dedent = require("./dedent").dedent,
 	escapePatternCharacters = require("./escapePatternCharacters").escapePatternCharacters,
+	ensureDirectoryExists = require("./ensureDirectoryExists"),
+	getDataModelService = require("./getDataModelService"),
+	getParent = require("./getParent"),
 	expect = require("./expect"),
 	getRelativePath = require("./getRelativePath"),
 	RobloxInstance = require("./RobloxInstance"),

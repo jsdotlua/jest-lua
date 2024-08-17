@@ -18,6 +18,8 @@ local pruneMatch = {
 	"@jsdotlua.promise.",
 }
 
+local cleanLoadStringStack = require("./cleanLoadStringStack")
+
 local function pruneDeps(str: string?): string?
 	if str == nil then
 		return nil
@@ -35,6 +37,8 @@ local function pruneDeps(str: string?): string?
 		if not matched then
 			table.insert(newLines, line)
 		end
+		line = cleanLoadStringStack(line)
+		table.insert(newLines, line)
 	end
 	return table.concat(newLines, "\n")
 end

@@ -2,7 +2,7 @@
 id: snapshot-testing
 title: Snapshot Testing
 ---
-<p><a href='https://jestjs.io/docs/27.x/snapshot-testing' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a></p>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/snapshot-testing)
 
 Snapshot tests are a very useful tool whenever you want to make sure your UI does not change unexpectedly.
 
@@ -91,7 +91,7 @@ runCLI(Project, {
 You'll also need to pass the following flags to give `roblox-cli` the proper permissions to update snapshots:
 
 ```
---load.asRobloxScript --fs.readwrite="$(pwd)" 
+--load.asRobloxScript --fs.readwrite="$(pwd)"
 ```
 
 :::tip

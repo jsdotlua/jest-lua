@@ -1,10 +1,21 @@
 # jest-fake-timers
 
-Status: :hammer: In Progress
+Upstream: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-fake-timers
 
-Source: https://github.com/facebook/jest/tree/v27.4.7/packages/jest-fake-timers
+This package contains the fake timers implementation for Jest. It can be activated by calling `jest.useFakeTimers()`. You can find its documentation in the [Jest documentation](https://roblox.github.io/jest-roblox-internal).
 
-Version: v27.4.7
+The following timers are mocked:
+* `delay`
+* `tick`
+* `time`
+* `os`
+    * `os.time`
+	* `os.clock`
+* `task.delay`
+    * `task.delay`
+	* `task.cancel`
+	* `task.wait`
+* `DateTime`
 
 ---
 
@@ -13,20 +24,3 @@ Version: v27.4.7
 
 Similar to how Jest fake timers work by mocking the native timer functions (i.e. `setTimeout`, `setInterval`, `clearTimeout`, `clearInterval`) and `Date`, Jest Lua fake timers work by mocking the native timer functions in Roblox (i.e. `delay`, `tick`), the Roblox `DateTime` and the Lua native timer methods `os.time` and `os.clock`.
 Additionally, Jest Lua fake timers support a configurable engine frame time. By default, the engine frame time is 0 (i.e. continuous time), but if set, Jest Lua fake timers will be processed by multiples of frame time. If engine frame time is set, then timers will be processed in the first frame after they are triggered.
-
-### :x: Excluded
-```
-src/legacyFakeTimers.ts
-__tests__/legacyFakeTimers.test.ts
-__tests__/__snapshots__/legacyFakeTimers.test.ts.snap
-```
-
-### :package: [Dependencies](https://github.com/facebook/jest/blob/v27.4.7/packages/jest-fake-timers/package.json)
-| Package              | Version | Status                    | Notes |
-| -------------------- | ------- | ------------------------- | ----- |
-| @jest/types          | 27.4.2  | :heavy_check_mark: Ported |       |
-| @sinonjs/fake-timers | 8.0.1   | :x: Not needed            |       |
-| @types/node          | *       | :x: Not needed            |       |
-| jest-message-util    | 27.4.6  | :x: Not needed            |       |
-| jest-mock            | 27.4.6  | :x: Not needed            |       |
-| jest-util            | 27.4.2  | :hammer: In Progress      |       |

@@ -12,6 +12,12 @@ local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local test = JestGlobals.test
 
+-- ROBLOX deviation: these tests require loadmodule
+local loadModuleEnabled = pcall((debug :: any).loadmodule, Instance.new("ModuleScript"))
+if not loadModuleEnabled then
+	test = test.skip :: any
+end
+
 test("simple test", function()
 	local stdout = runTest([[
 			describe("describe", function()
@@ -25,15 +31,15 @@ test("simple test", function()
 end)
 -- ROBLOX deviation START: see if we can make this work later
 -- test("function descriptors", function()
-test.skip("function descriptors", function()
-	-- ROBLOX deviation END
-	local stdout = runTest([[
-		describe(function describer() end, function()
-			test(class One {}, function() end);
-		end)
-  	]]).stdout
-	expect(stdout).toMatchSnapshot()
-end)
+-- test.skip("function descriptors", function()
+-- 	-- ROBLOX deviation END
+-- 	local stdout = runTest([[
+-- 		describe(function describer() end, function()
+-- 			test(class One {}, function() end);
+-- 		end)
+--   	]]).stdout
+-- 	expect(stdout).toMatchSnapshot()
+-- end)
 test("failures", function()
 	local stdout = runTest([[
 			describe("describe", function()

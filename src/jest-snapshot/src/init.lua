@@ -13,6 +13,11 @@ local Error = LuauPolyfill.Error
 local instanceof = LuauPolyfill.instanceof
 local AssertionError = LuauPolyfill.AssertionError
 
+-- ROBLOX deviation START: additional dependencies
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
+local cleanLoadStringStack = RobloxShared.cleanLoadStringStack
+-- ROBLOX deviation END
+
 local getType = require("@pkg/@jsdotlua/jest-get-type").getType
 
 -- ROBLOX TODO: ADO-1633 fix Jest Types imports
@@ -406,6 +411,9 @@ function _toThrowErrorMatchingSnapshot(config: types.MatchSnapshotConfig, fromPr
 	elseif typeof(error_) ~= "string" then
 		error_ = tostring(error_)
 	end
+
+	-- ROBLOX deviation: if loadstring is used, format the loadstring stacktrace to look like a path
+	error_ = cleanLoadStringStack(error_)
 
 	return _toMatchSnapshot({
 		context = context,

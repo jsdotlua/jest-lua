@@ -2,7 +2,7 @@
 id: asynchronous
 title: Testing Asynchronous Code
 ---
-<p><a href='https://jestjs.io/docs/27.x/asynchronous' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a></p>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/asynchronous)
 
 It's common in Lua for code to run asynchronously. When you have code that runs asynchronously, Jest Lua needs to know when the code it is testing has completed, before it can move on to another test. Jest Lua has several ways to handle this.
 
