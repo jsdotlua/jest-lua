@@ -48,6 +48,8 @@ export type Options = {
 	printBasicPrototype: boolean,
 	printInstanceDefaults: boolean,
 	printFunctionName: boolean,
+	-- ROBLOX deviation: stable stacktrace snapshots
+	redactStackTracesInStrings: boolean?,
 	theme: Theme,
 }
 
@@ -64,6 +66,8 @@ export type PrettyFormatOptions = {
 	printBasicPrototype: boolean?,
 	printInstanceDefaults: boolean?,
 	printFunctionName: boolean?,
+	-- ROBLOX deviation: stable stacktrace snapshots
+	redactStackTracesInStrings: boolean?,
 	theme: ThemeReceived?,
 }
 
@@ -84,6 +88,8 @@ export type Config = {
 	printBasicPrototype: boolean,
 	printInstanceDefaults: boolean,
 	printFunctionName: boolean,
+	-- ROBLOX deviation: stable stacktrace snapshots
+	redactStackTracesInStrings: boolean,
 	spacingInner: string,
 	spacingOuter: string,
 }

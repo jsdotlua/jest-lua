@@ -29,6 +29,7 @@ local exports = {
 	nodeUtils = nodeUtilsModule,
 	normalizePromiseError = require(CurrentModule.normalizePromiseError),
 	pruneDeps = require(CurrentModule.pruneDeps),
+	redactStackTrace = require(CurrentModule.redactStackTrace),
 }
 
 local WriteableModule = require(CurrentModule.Writeable)

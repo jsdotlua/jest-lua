@@ -99,6 +99,12 @@ exports[ [=[Instance serializes Folder 1]=] ] = [=[
       \"Name\": \"ReactElement.spec\",
       \"Parent\": \"__tests__\" [Folder],
     },
+    \"RedactStackTraces.roblox.spec\": ModuleScript {
+      \"Archivable\": true,
+      \"ClassName\": \"ModuleScript\",
+      \"Name\": \"RedactStackTraces.roblox.spec\",
+      \"Parent\": \"__tests__\" [Folder],
+    },
     \"RobloxInstance.roblox.spec\": ModuleScript {
       \"Archivable\": true,
       \"ClassName\": \"ModuleScript\",
@@ -175,6 +181,12 @@ exports[ [=[Instance serializes Folder 1]=] ] = [=[
       \"Archivable\": true,
       \"ClassName\": \"ModuleScript\",
       \"Name\": \"ReactTestComponent\",
+      \"Parent\": \"plugins\" [Folder],
+    },
+    \"RedactStackTraces\": ModuleScript {
+      \"Archivable\": true,
+      \"ClassName\": \"ModuleScript\",
+      \"Name\": \"RedactStackTraces\",
       \"Parent\": \"plugins\" [Folder],
     },
     \"RobloxInstance\": ModuleScript {

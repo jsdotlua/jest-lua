@@ -202,6 +202,36 @@ TextLabel {
 ]=]
 ```
 
+`pretty-format` further supports redacting stack traces from error logs via the
+`RedactStackTraces` plugin. By default, this only attempts to redact the
+contents of `Error` objects, but can be configured to search through strings
+with the `redactStackTracesInStrings` boolean (default: `false`).
+
+For example, this lets you save snapshots that contain stack traces, without
+those stack traces depending on the actual code structure of the repository.
+This reduces the chance of the snapshot test breaking due to unrelated changes
+in far-away parts of the code.
+
+```lua title="jest.config.lua"
+return {
+	testMatch = { "**/*.spec" },
+	snapshotFormat = { redactStackTracesInStrings = true }
+}
+```
+```lua title="test.spec.lua"
+test('print stack trace', function()
+	expect(debug.traceback()).toMatchSnapshot()
+end)
+```
+```lua title="test.spec.snap.lua"
+exports[ [=[print stack trace 1]=] ] = [=[
+Redacted.Stack.Trace:1337 function epicDuck
+Redacted.Stack.Trace:1337 function epicDuck
+Redacted.Stack.Trace:1337 function epicDuck
+Redacted.Stack.Trace:1337 function epicDuck
+]=]
+```
+
 
 ### `snapshotSerializers` \[array&lt;serializer&gt;]
 [![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/configuration#snapshotserializers-arraystring)  ![API Change](/img/apichange.svg)
