@@ -25,7 +25,7 @@ We use Jest Roblox at Roblox for testing our apps, in-game core scripts, built-i
 
 Add this package to your `dev_dependencies` in your `rotriever.toml`, for example:
 ```
-JestGlobals = "github.com/Roblox/jest-roblox@2.2.0"
+JestGlobals = "3.9.1"
 ```
 
 Then, require anything you need from `JestGlobals`:

@@ -18,7 +18,7 @@ local expect = require(Packages.Dev.JestGlobals).expect
 
 To use regular expressions in matchers that support it, you need to add [LuauRegExp](https://github.com/Roblox/luau-regexp) as a dependency in your `rotriever.toml` and require it in your code.
 ```yaml title="rotriever.toml"
-RegExp = "github.com/roblox/luau-regexp@0.2.0"
+RegExp = "0.2.2"
 ```
 
 ```lua
@@ -30,7 +30,7 @@ local RegExp = require(Packages.RegExp)
 
 To use Promises in your tests, add [roblox-lua-promise](https://github.com/Roblox/roblox-lua-promise) as a dependency in your `rotriever.toml`
 ```yaml
-Promise = "github.com/evaera/roblox-lua-promise@3.3.0"
+Promise = "3.3.0"
 ```
 
 ### Error

@@ -15,7 +15,7 @@ registry_index = true
 [workspace.dependencies]
 ChalkLua = "0.2.0"
 LuauPolyfill = "1"
-RegExp = "0.2.1"
+RegExp = "0.2.2"
 Promise = "3.3.0"
 React = "17.0.1"
 ReactIs = "17.0.1"

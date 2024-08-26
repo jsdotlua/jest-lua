@@ -1,64 +1,71 @@
 ---
 id: jest-benchmark
-title: JestBenchmark
+title: Jest Benchmark
 ---
+
 ![Roblox only](/img/roblox-only.svg)
 
-Benchmarks are useful tools for gating performance in CI, optimizing code, and capturing performance gains. JestBenchmark aims to make it easier to write benchmarks in the Luau language.
+Benchmarks are useful tools for gating performance in CI, optimizing code, and capturing performance gains. `JestBenchmark` aims to make it easier to write benchmarks in the Luau language.
 
-JestBenchmark must be imported from the JestBenchmark Package
+`JestBenchmark` must be added as a dev dependency to your `rotriever.toml` and imported.
+```yaml title="rotriever.toml"
+JestBenchmark = "3.9.1"
 ```
+
+```lua
 local JestBenchmark = require(Packages.Dev.JestBenchmark)
 local benchmark = JestBenchmark.benchmark
 local CustomReporters = JestBenchmark.CustomReporters
 ```
 
-### benchmark
-![Roblox only](/img/roblox-only.svg)
+## Methods
+
+import TOCInline from "@theme/TOCInline";
+
+<TOCInline toc={toc.slice(1)}/>
+
+### `benchmark(name, fn, timeout)`
 
 The `benchmark` function is a wrapper around `test` that provides automatic profiling for FPS and benchmark running time. Similar to `test`, it exposes `benchmark.only` and `benchmark.skip` to focus and skip tests, respectively.
 
 ```lua
 describe("Home Page Benchmarks", function()
-  benchmark("First Render Performance", function(Profiler, reporters)
-    render(React.createElement(HomePage))
+	benchmark("First Render Performance", function(Profiler, reporters)
+		render(React.createElement(HomePage))
 
-    local GameCarousel = screen.getByText("Continue"):expect()
+		local GameCarousel = screen.getByText("Continue"):expect()
 
-    expect(GameCarousel).toBeDefined()
-  end)
+		expect(GameCarousel).toBeDefined()
+	end)
 end)
 ```
 
-### Reporter
-![Roblox only](/img/roblox-only.svg)
+## Reporter
 
 The `Reporter` object collects and aggregates data generated during a benchmark. For example, you may have an FPS reporter that collects the delta time between each frame in a benchmark and calculates the average FPS over the benchmark.
 
-### initializeReporter
-![Roblox only](/img/roblox-only.svg)
+### `initializeReporter(metricName, fn)`
 
-`initializeReporter` accepts a metric name and collector function as arguments and returns a Reporter object. The metric name is the label given to the data collected. The collector function accepts a list of values and reduces them to a single value.
+`initializeReporter` accepts a metric name and collector function as arguments and returns a `Reporter` object. The metric name is the label given to the data collected. The collector function accepts a list of values and reduces them to a single value.
 
 ```lua
 local function average(nums: { number }): num
-  if #nums == 0 then
-    return 0
-  end
+	if #nums == 0 then
+		return 0
+	end
 
-  local sum = 0
-  for _, v in nums do
-    sum += v
-  end
+	local sum = 0
+	for _, v in nums do
+		sum += v
+	end
 
-  return sum / #nums
+	return sum / #nums
 end
 
 local averageReporter = initializeReporter("average", average)
 ```
 
-### Reporter.start()
-![Roblox only](/img/roblox-only.svg)
+### `Reporter.start(sectionName)`
 
 A reporting segment is initialized with `Reporter.start(sectionName: string)`. All values reported within the segment are collected as a group and reduced to a single value in `Reporter.finish`. The segment is labeled with the `sectionName` argument. Reporter segments can be nested or can run sequentially. All Reporter segments must be concluded by calling `Reporter.stop`
 
@@ -82,48 +89,42 @@ local sectionNames, sectionValues = averageReporter.finish()
 -- sectionValues: {2, 6, 4}
 ```
 
-### Reporter.stop()
-![Roblox only](/img/roblox-only.svg)
+### `Reporter.stop()`
 
 When `Reporter.stop` is called, the reporter section at the top of the stack is popped off, and a section of reported values are marked for collection at the end of benchmark. No collection is done during the benchmark runtime, since this could reduce performance.
 
-### Reporter.report
-![Roblox only](/img/roblox-only.svg)
+### `Reporter.report(number)`
 
 When `Reporter.report(value: T)` is called, a value is added to the report queue. The values passed to report are reduced when `reporter.finish` is called.
 
-### Reporter.finish
-![Roblox only](/img/roblox-only.svg)
+### `Reporter.finish()`
 
-`Reporter.finish` should be called at the end of the benchmark runtime. It returns a list of section names and a list of section values generated according to the collectorFn. Values are returned in order of completion.
+`Reporter.finish` should be called at the end of the benchmark runtime. It returns a list of section names and a list of section values generated according to the `collectorFn`. Values are returned in order of completion.
 
-### Profiler
-![Roblox only](/img/roblox-only.svg)
+## Profiler
 
 The `Profiler` object controls a set of reporters and reports data generated during a benchmark. The Profiler is initialized with the `initializeProfiler` function. A profiling segment is started by calling `Profiler.start` and stopped by calling `Profiler.stop`. These segments can be called sequentially or can be nested. Results are generated by calling `Profiler.finish`.
 
-### initializeProfiler
-![Roblox only](/img/roblox-only.svg)
+### `initializeProfiler(reporters, fn, prefix?)`
 
-`intializeProfiler` accepts a list of reporters and an outputFn as arguments and returns a Profiler object.
+`intializeProfiler` accepts a list of reporters and an outputFn as arguments and returns a `Profiler` object. An optional `prefix` string can be appended to all the section names.
 
 ```lua
 local reporters = {
-  initializeReporter("average", average),
-  initializeReporter("sectionTime", sectionTime),
+	initializeReporter("average", average),
+	initializeReporter("sectionTime", sectionTime),
 }
 
 local outputFn = function(metricName: string, value: any)
-  print(`{metricName}, {value}`)
+	print(`{metricName}, {value}`)
 end
 
 local profiler = initializeProfiler(reporters, outputFn)
 ```
 
-### Profiler.start
-![Roblox only](/img/roblox-only.svg)
+### `Profiler.start(sectionName)`
 
-When `Profiler.start(sectionName: string)` is called, reporter.start is called for each reporter in the reporters list. Each Profiler section must be concluded with a `Profiler.stop()` call.
+When `Profiler.start(sectionName: string)` is called, `reporter.start` is called for each reporter in the reporters list. Each Profiler section must be concluded with a `Profiler.stop()` call.
 
 ```lua
 Profiler.start("section1")
@@ -131,60 +132,69 @@ Profiler.start("section1")
 Profiler.stop()
 ```
 
-### Profiler.stop
-![Roblox only](/img/roblox-only.svg)
+### `Profiler.stop()`
 
 When `Profiler.stop()` is called, reporter.stop is called for each reporter in the reporters list. Calling `Profiler.stop` without first calling `Profiler.start` will result in an error.
 
-### Profiler.finish
-![Roblox only](/img/roblox-only.svg)
+### `Profiler.finish()`
 
 When `Profiler.finish` is called, reporter.finish is called for each reporter in the reporters list. The results of each finish call is then printed by the outputFn passed to the Profiler.
 
-### CustomReporters
-![Roblox only](/img/roblox-only.svg)
+## CustomReporters
 
-By default, the `benchmark` function has two reporters attached: FPS and SectionTime. However, you may want to add custom reporters, perhaps to track Rodux action dispatches, time to interactive, or React re-renders. To enable this, the CustomReporters object exports `useCustomReporters`, which allows the user to add additional reporters to the Profiler. These reporters are passed in a key-value table as the second argument in the provided benchmark function. This should be used in combination with `useDefaultReporters`, which removes all custom reporters from the Profiler.
+By default, the `benchmark` function has two reporters attached: `FPSReporter` and `SectionTimeReporter`. However, you may want to add custom reporters, perhaps to track Rodux action dispatches, time to interactive, or React re-renders. To enable this, the CustomReporters object exports `useCustomReporters`, which allows the user to add additional reporters to the Profiler. These reporters are passed in a key-value table as the second argument in the provided benchmark function. This should be used in combination with `useDefaultReporters`, which removes all custom reporters from the Profiler.
 
 ```lua
+local MetricLogger = JestBenchmarks.CustomReporters
+
 beforeEach(function()
-  CustomReporters.useCustomReporters({
-    sum = initializeReporter("sum", function(nums)
-      local sum = 0
-      for _, v in nums do
-        sum += v
-      end
-      return sum
-    end)
-  })
+	CustomReporters.useCustomReporters({
+		sum = initializeReporter("sum", function(nums)
+			local sum = 0
+			for _, v in nums do
+				sum += v
+			end
+			return sum
+		end)
+	})
 end)
 
 benchmark("Total renders", function(Profiler, reporters)
-  local renderCount = getRenderCount()
-  reporters.sum.report(renderCount)
+	local renderCount = getRenderCount()
+	reporters.sum.report(renderCount)
 end)
 
 afterEach(function()
-  CustomReporters.useDefaultReporters()
+	CustomReporters.useDefaultReporters()
 end)
 ```
 
-### MetricLogger
-![Roblox only](/img/roblox-only.svg)
+## MetricLogger
 
 By default, benchmarks output directly to stdout. This may not be desirable in all cases. For example, you may want to output results to a BindableEvent or a file stream. The MetricLogger object exposes a `useCustomMetricLogger` function, which allows the user to override the default output function. This should be used in combination with `useDefaultMetricLogger`, which resets the output function to the default value
 
+For example, to encode the benchmark metrics as a JSON and write the output to a `json` file for each test file, you may configure the following custom metric logger in a [`setupFilesAfterEnv`](configuration#setupfilesafterenv-arraymodulescript):
 ```lua
-beforeEach(function()
-  MetricLogger.useCustomMetricLogger(function(metricName: string, value: any)
-    print(HttpService:JSONEncode({
-      metric = metricName,
-      value = value
-    }))
-  end)
+local MetricLogger = JestBenchmarks.MetricLogger
+
+local benchmarks
+
+beforeAll(function()
+	benchmarks = {}
 end)
 
-afterEach(function()
-  MetricLogger.useDefaultMetricLogger()
+beforeEach(function()
+	MetricLogger.useCustomMetricLogger(function(metricName: string, value: any)
+		table.insert(benchmarks, HttpService:JSONEncode({
+			metric = metricName,
+			value = value
+		}))
+	end)
+end)
+
+afterAll(function()
+	local benchmarkFile = tostring(expect.getState().testPath) .. ".json"
+	FileSystemService:WriteFile(benchmarkFile, benchmarks)
+	MetricLogger.useDefaultMetricLogger()
 end)
 ```

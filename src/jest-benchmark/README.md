@@ -1,5 +1,5 @@
 # jest-benchmark
 
-* No upstream. Roblox only.*
+*No upstream. Roblox only.*
 
-This package exports the benchmarking library used in Jest. You can find its documentation in the [Jest documentation](https://roblox.github.io/jest-roblox-internal).
+This package exports a collection of Luau utilities that can be used alongside Jest to provide structure for writing benchmarks. You can find its documentation in the [Jest documentation](https://roblox.github.io/jest-roblox-internal/jest-benchmark).
