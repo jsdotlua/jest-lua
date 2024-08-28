@@ -68,3 +68,9 @@ describe("bad plugin", function()
 		expect(result.message).toMatch("attempt to index number with 'foo'")
 	end)
 end)
+
+it("errors on nonexistent plugin reads", function()
+	expect(function()
+		local _ = require(CurrentModule).plugins.thisIsNotAPlugin
+	end).toThrowError()
+end)

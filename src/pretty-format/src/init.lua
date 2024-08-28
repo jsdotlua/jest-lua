@@ -485,6 +485,14 @@ local plugins = {
 	RedactStackTraces = RedactStackTraces,
 }
 
+-- ROBLOX deviation start: protect against bad reads
+setmetatable(plugins, {
+	__index = function(self, key)
+		error(Error.new("Can't find pretty-format plugin: " .. key))
+	end,
+})
+-- ROBLOX deviation end
+
 return {
 	format = format,
 	default = format,
