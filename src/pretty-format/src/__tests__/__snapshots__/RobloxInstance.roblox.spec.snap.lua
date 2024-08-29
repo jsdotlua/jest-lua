@@ -1,8 +1,5 @@
--- ROBLOX NOTE: no upstream
 -- Jest Roblox Snapshot v1, http://roblox.github.io/jest-roblox-internal/snapshot-testing
-
 local exports = {}
-
 exports[ [=[Instance collapses circular references in properties 1]=] ] = [=[
 
 "ScrollingFrame {
@@ -59,160 +56,40 @@ exports[ [=[Instance collapses circular references in properties 1]=] ] = [=[
 
 exports[ [=[Instance serializes Folder 1]=] ] = [=[
 
-"ModuleScript {
+"Folder {
   \"Archivable\": true,
-  \"ClassName\": \"ModuleScript\",
-  \"Name\": \"PrettyFormat\",
-  \"Parent\": \"PrettyFormat\" [Folder],
-  \"Collections\": ModuleScript {
+  \"ClassName\": \"Folder\",
+  \"Name\": \"dont_touch_im_used_in_snapshots\",
+  \"Parent\": \"__tests__\" [Folder],
+  \"array\": ModuleScript {
     \"Archivable\": true,
     \"ClassName\": \"ModuleScript\",
-    \"Name\": \"Collections\",
-    \"Parent\": \"PrettyFormat\" [ModuleScript],
+    \"Name\": \"array\",
+    \"Parent\": \"dont_touch_im_used_in_snapshots\" [Folder],
   },
-  \"Types\": ModuleScript {
+  \"format\": ModuleScript {
     \"Archivable\": true,
     \"ClassName\": \"ModuleScript\",
-    \"Name\": \"Types\",
-    \"Parent\": \"PrettyFormat\" [ModuleScript],
+    \"Name\": \"format\",
+    \"Parent\": \"dont_touch_im_used_in_snapshots\" [Folder],
   },
-  \"__tests__\": Folder {
+  \"interpolation\": ModuleScript {
     \"Archivable\": true,
-    \"ClassName\": \"Folder\",
-    \"Name\": \"__tests__\",
-    \"Parent\": \"PrettyFormat\" [ModuleScript],
-    \"AsymmetricMatcher.spec\": ModuleScript {
-      \"Archivable\": true,
-      \"ClassName\": \"ModuleScript\",
-      \"Name\": \"AsymmetricMatcher.spec\",
-      \"Parent\": \"__tests__\" [Folder],
-    },
-    \"ConvertAnsi.spec\": ModuleScript {
-      \"Archivable\": true,
-      \"ClassName\": \"ModuleScript\",
-      \"Name\": \"ConvertAnsi.spec\",
-      \"Parent\": \"__tests__\" [Folder],
-    },
-    \"ReactElement.spec\": ModuleScript {
-      \"Archivable\": true,
-      \"ClassName\": \"ModuleScript\",
-      \"Name\": \"ReactElement.spec\",
-      \"Parent\": \"__tests__\" [Folder],
-    },
-    \"RedactStackTraces.roblox.spec\": ModuleScript {
-      \"Archivable\": true,
-      \"ClassName\": \"ModuleScript\",
-      \"Name\": \"RedactStackTraces.roblox.spec\",
-      \"Parent\": \"__tests__\" [Folder],
-    },
-    \"RobloxInstance.roblox.spec\": ModuleScript {
-      \"Archivable\": true,
-      \"ClassName\": \"ModuleScript\",
-      \"Name\": \"RobloxInstance.roblox.spec\",
-      \"Parent\": \"__tests__\" [Folder],
-    },
-    \"__snapshots__\": Folder {
-      \"Archivable\": true,
-      \"ClassName\": \"Folder\",
-      \"Name\": \"__snapshots__\",
-      \"Parent\": \"__tests__\" [Folder],
-      \"RobloxInstance.roblox.spec.snap\": ModuleScript {
-        \"Archivable\": true,
-        \"ClassName\": \"ModuleScript\",
-        \"Name\": \"RobloxInstance.roblox.spec.snap\",
-        \"Parent\": \"__snapshots__\" [Folder],
-      },
-      \"react.spec.snap\": ModuleScript {
-        \"Archivable\": true,
-        \"ClassName\": \"ModuleScript\",
-        \"Name\": \"react.spec.snap\",
-        \"Parent\": \"__snapshots__\" [Folder],
-      },
-    },
-    \"prettyFormat.spec\": ModuleScript {
-      \"Archivable\": true,
-      \"ClassName\": \"ModuleScript\",
-      \"Name\": \"prettyFormat.spec\",
-      \"Parent\": \"__tests__\" [Folder],
-    },
-    \"react.spec\": ModuleScript {
-      \"Archivable\": true,
-      \"ClassName\": \"ModuleScript\",
-      \"Name\": \"react.spec\",
-      \"Parent\": \"__tests__\" [Folder],
-    },
-    \"roblox.spec\": ModuleScript {
-      \"Archivable\": true,
-      \"ClassName\": \"ModuleScript\",
-      \"Name\": \"roblox.spec\",
-      \"Parent\": \"__tests__\" [Folder],
-    },
-    \"setPrettyPrint\": ModuleScript {
-      \"Archivable\": true,
-      \"ClassName\": \"ModuleScript\",
-      \"Name\": \"setPrettyPrint\",
-      \"Parent\": \"__tests__\" [Folder],
-    },
+    \"ClassName\": \"ModuleScript\",
+    \"Name\": \"interpolation\",
+    \"Parent\": \"dont_touch_im_used_in_snapshots\" [Folder],
   },
-  \"plugins\": Folder {
+  \"please_dont_touch_this\": ModuleScript {
     \"Archivable\": true,
-    \"ClassName\": \"Folder\",
-    \"Name\": \"plugins\",
-    \"Parent\": \"PrettyFormat\" [ModuleScript],
-    \"AsymmetricMatcher\": ModuleScript {
-      \"Archivable\": true,
-      \"ClassName\": \"ModuleScript\",
-      \"Name\": \"AsymmetricMatcher\",
-      \"Parent\": \"plugins\" [Folder],
-    },
-    \"ConvertAnsi\": ModuleScript {
-      \"Archivable\": true,
-      \"ClassName\": \"ModuleScript\",
-      \"Name\": \"ConvertAnsi\",
-      \"Parent\": \"plugins\" [Folder],
-    },
-    \"ReactElement\": ModuleScript {
-      \"Archivable\": true,
-      \"ClassName\": \"ModuleScript\",
-      \"Name\": \"ReactElement\",
-      \"Parent\": \"plugins\" [Folder],
-    },
-    \"ReactTestComponent\": ModuleScript {
-      \"Archivable\": true,
-      \"ClassName\": \"ModuleScript\",
-      \"Name\": \"ReactTestComponent\",
-      \"Parent\": \"plugins\" [Folder],
-    },
-    \"RedactStackTraces\": ModuleScript {
-      \"Archivable\": true,
-      \"ClassName\": \"ModuleScript\",
-      \"Name\": \"RedactStackTraces\",
-      \"Parent\": \"plugins\" [Folder],
-    },
-    \"RobloxInstance\": ModuleScript {
-      \"Archivable\": true,
-      \"ClassName\": \"ModuleScript\",
-      \"Name\": \"RobloxInstance\",
-      \"Parent\": \"plugins\" [Folder],
-    },
-    \"lib\": Folder {
-      \"Archivable\": true,
-      \"ClassName\": \"Folder\",
-      \"Name\": \"lib\",
-      \"Parent\": \"plugins\" [Folder],
-      \"escapeHTML\": ModuleScript {
-        \"Archivable\": true,
-        \"ClassName\": \"ModuleScript\",
-        \"Name\": \"escapeHTML\",
-        \"Parent\": \"lib\" [Folder],
-      },
-      \"markup\": ModuleScript {
-        \"Archivable\": true,
-        \"ClassName\": \"ModuleScript\",
-        \"Name\": \"markup\",
-        \"Parent\": \"lib\" [Folder],
-      },
-    },
+    \"ClassName\": \"ModuleScript\",
+    \"Name\": \"please_dont_touch_this\",
+    \"Parent\": \"dont_touch_im_used_in_snapshots\" [Folder],
+  },
+  \"template\": ModuleScript {
+    \"Archivable\": true,
+    \"ClassName\": \"ModuleScript\",
+    \"Name\": \"template\",
+    \"Parent\": \"dont_touch_im_used_in_snapshots\" [Folder],
   },
 }"
 ]=]

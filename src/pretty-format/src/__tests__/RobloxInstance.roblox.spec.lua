@@ -50,7 +50,8 @@ describe("Instance", function()
 	end)
 
 	it("serializes Folder", function()
-		expect(prettyFormatResult(CurrentModule)).toMatchSnapshot()
+		local stableFolder = CurrentModule.__tests__.dont_touch_im_used_in_snapshots
+		expect(prettyFormatResult(stableFolder)).toMatchSnapshot()
 	end)
 
 	it("serializes Instances in table", function()
