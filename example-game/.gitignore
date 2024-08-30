@@ -1,0 +1,10 @@
+/*.rbxlx.lock
+/*.rbxl.lock
+/*.rbxl
+/*.rbxm
+
+DevPackages/
+dist/
+
+sourcemap.json
+wally.lock

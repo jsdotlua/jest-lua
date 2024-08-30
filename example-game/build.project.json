@@ -1,0 +1,6 @@
+{
+  "name": "JestLuaProject",
+  "tree": {
+    "$path": "dist/src"
+  }
+}

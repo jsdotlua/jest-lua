@@ -1,0 +1,22 @@
+{
+  "name": "JestLuaProject",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "DevPackages": {
+        "$path": "DevPackages"
+      },
+      "Packages": {
+        "$className": "Folder",
+        "Project": {
+          "$path": "src"
+        }
+      }
+    },
+    "ServerScriptService": {
+      "run-tests": {
+        "$path": "scripts/run-tests.server.luau"
+      }
+    }
+  }
+}
