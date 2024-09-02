@@ -8,6 +8,10 @@ The Jest Lua API is similar to [the API used by JavaScript Jest.](https://jestjs
 
 Jest Lua currently requires [`run-in-roblox`](https://github.com/rojo-rbx/run-in-roblox) to run from the command line. It can also be run directly inside of Roblox Studio. See issue [#2](https://github.com/jsdotlua/jest-lua/issues/2) for more.
 
+:::tip
+Checkout the [example game](https://github.com/jsdotlua/jest-lua/tree/main/example-project) to see a full setup of Jest-Lua for a Roblox Library.
+:::
+
 Add the `JestGlobals` and `Jest` packages to your `dev-dependencies` in your `wally.toml`.
 
 ```yaml title="wally.toml"
@@ -18,7 +22,7 @@ JestGlobals = "jsdotlua/jest-globals@3.6.1-rc.2"
 
 Run `wally install` to install Jest Lua.
 
-Create a `default.project.json` to set up your project structure and include the `Packages` directory created by `wally`.
+Create a `default.project.json` to set up your project structure and include the `Packages` and `DevPackages` directories created by `wally`.
 
 ```json title="default.project.json"
 {
@@ -30,6 +34,9 @@ Create a `default.project.json` to set up your project structure and include the
 			"Project": {
 				"$path": "src"
 			}
+		},
+		"DevPackages": {
+			"$path": "DevPackages"
 		}
 	}
 }
@@ -39,31 +46,20 @@ Create a `run-tests.lua` to point the test runner to the correct directory with 
 
 ```lua title="run-tests.lua"
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Packages = ReplicatedStorage.Packages
 
-local runCLI = require("@DevPackages/Jest").runCLI
+local Jest = require("@DevPackages/Jest")
 
-local processServiceExists, ProcessService = pcall(function()
-	return game:GetService("ProcessService")
-end)
-
-local status, result = runCLI(ReplicatedStorage.Packages.Project, {
+local runCLIOptions = {
 	verbose = false,
-	ci = false
-}, { ReplicatedStorage.Packages.Project }):awaitStatus()
+	ci = false,
+}
 
-if status == "Rejected" then
-	print(result)
-end
+local projects = {
+	Packages.Project,
+}
 
-if status == "Resolved" and result.results.numFailedTestSuites == 0 and result.results.numFailedTests == 0 then
-	if processServiceExists then
-		ProcessService:ExitAsync(0)
-	end
-end
-
-if processServiceExists then
-	ProcessService:ExitAsync(1)
-end
+Jest.runCLI(script, runCLIOptions, projects):await()
 
 return nil
 ```
@@ -72,7 +68,13 @@ Inside `src`, create a basic [configuration](configuration) file.
 
 ```lua title="jest.config.lua"
 return {
-	testMatch = { "**/*.spec" }
+	testMatch = {
+		"**/__tests__/*.(spec|test)",
+	},
+	testPathIgnorePatterns = {
+		"Packages",
+		"DevPackages",
+	},
 }
 ```
 
@@ -105,13 +107,15 @@ Any functionality needed _must_ be explicitly required from `JestGlobals`, see [
 
 Before you can run your tests, you need to enable the `debug.loadmodule` API. To do this, you must enable the `FFlagEnableLoadModule` flag. See issue [#3](https://github.com/jsdotlua/jest-lua/issues/3) for more.
 
+To manage FastFlags for Studio, it is recommended that you use [Roblox Studio Mod Manager](https://github.com/MaximumADHD/Roblox-Studio-Mod-Manager) to set the `FFlagEnableLoadModule` FFlag to true. Or, you can edit your `ClientAppSettings.json` yourself.
+
 ```json title="ClientAppSettings.json"
 {
 	"FFlagEnableLoadModule": true
 }
 ```
 
-Finally, run your project using Roblox Studio or `run-in-roblox` to run the tests and your tests should pass!
+Finally, run your project using Roblox Studio or use [run-in-roblox](https://github.com/rojo-rbx/run-in-roblox) to run the tests and your tests should pass!
 
 ```bash
 run-in-roblox --place test-place.rbxl --script scripts/run-tests.lua
