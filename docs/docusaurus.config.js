@@ -1,6 +1,6 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
-const VERSION = '3.9.0';
+const VERSION = '3.10.0';
 
 module.exports = {
   title: 'Jest Roblox',
@@ -13,6 +13,7 @@ module.exports = {
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.svg',
   staticDirectories: ['static'],
+  trailingSlash: false,
   themeConfig: {
     navbar: {
       title: `Jest Roblox v${VERSION}`,

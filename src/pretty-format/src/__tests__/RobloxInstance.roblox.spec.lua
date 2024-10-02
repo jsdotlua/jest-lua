@@ -206,9 +206,9 @@ describe("config.printInstanceDefaults", function()
 
 	it("serializes modified values", function()
 		created.Name = "ModifiedTextLabel"
-		created.Text = "not default"
+		created.TextColor3 = Color3.new(1, 0, 0)
 		expect(prettyFormatResult(created)).toEqual(
-			"TextLabel {\n" .. '  "Name": "ModifiedTextLabel",\n' .. '  "Text": "not default",\n' .. "}"
+			"TextLabel {\n" .. '  "Name": "ModifiedTextLabel",\n' .. '  "TextColor3": Color3(1, 0, 0),\n' .. "}"
 		)
 	end)
 
