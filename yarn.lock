@@ -340,6 +340,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@jsdotlua/jest-mock-genv@workspace:src/jest-mock-genv":
+  version: 0.0.0-use.local
+  resolution: "@jsdotlua/jest-mock-genv@workspace:src/jest-mock-genv"
+  dependencies:
+    "@jsdotlua/jest-globals": "workspace:^"
+    "@jsdotlua/luau-polyfill": "npm:^1.2.6"
+    npmluau: "npm:^0.1.1"
+  languageName: unknown
+  linkType: soft
+
 "@jsdotlua/jest-mock@workspace:^, @jsdotlua/jest-mock@workspace:src/jest-mock":
   version: 0.0.0-use.local
   resolution: "@jsdotlua/jest-mock@workspace:src/jest-mock"
