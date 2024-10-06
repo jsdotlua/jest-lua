@@ -4,7 +4,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/jsdotlua/jest-lua.git",
-    "directory": "src/jest-mock"
+    "directory": "src/jest-mock-genv"
   },
   "license": "MIT",
   "main": "src/init.lua",
