@@ -2,4 +2,4 @@
 rotrieve = { source = "roblox/rotriever", version = "=0.5.13-alpha.5" }
 selene = { source = "Roblox/Kampfkarren-selene", version = "=0.25.0" }
 stylua = { source = "Roblox/JohnnyMorganz-StyLua", version = "=0.18.1" }
-rbx-aged-cli = { source = "roblox/rbx-aged-tool", version = "=5.7.9" }
+rbx-aged-cli = { source = "roblox/rbx-aged-tool", version = "=5.8.1" }
