@@ -30,9 +30,11 @@ local it = JestGlobals.it
 local describe = JestGlobals.describe
 local beforeEach = JestGlobals.beforeEach
 
+local JestConfig = require(Packages.Dev.JestConfig)
+
 local moduleMocker
 beforeEach(function()
-	moduleMocker = ModuleMocker.new()
+	moduleMocker = ModuleMocker.new(JestConfig.projectDefaults)
 end)
 
 it("mock return chaining", function()
@@ -133,5 +135,46 @@ describe("global mocking & spying", function()
 		local returnValue = math.random()
 
 		expect(returnValue).toBe("vwxyz")
+	end)
+
+	it("oldFunctionSpying = true injects mock objects", function()
+		local config = table.clone(JestConfig.projectDefaults)
+		config.oldFunctionSpying = true
+		local configuredMocker = ModuleMocker.new(config)
+
+		local guineaPig = {
+			foo = function() end,
+		}
+		local mockObj = configuredMocker:spyOn(guineaPig, "foo")
+
+		expect(mockObj).toEqual(expect.any("table"))
+		expect(guineaPig.foo).toEqual(expect.any("table"))
+		expect(guineaPig.foo).toEqual(mockObj)
+	end)
+
+	it("oldFunctionSpying = false injects alike types", function()
+		local config = table.clone(JestConfig.projectDefaults)
+		config.oldFunctionSpying = false
+		local configuredMocker = ModuleMocker.new(config)
+
+		local guineaPig = {
+			foo = function() end,
+		}
+		local mockObj = configuredMocker:spyOn(guineaPig, "foo")
+
+		expect(mockObj).toEqual(expect.any("table"))
+		expect(guineaPig.foo).toEqual(expect.any("function"))
+		expect(guineaPig.foo).never.toEqual(mockObj)
+	end)
+
+	it("oldFunctionSpying defaults to backwards compatibile behaviour", function()
+		local guineaPig = {
+			foo = function() end,
+		}
+		local mockObj = moduleMocker:spyOn(guineaPig, "foo")
+
+		expect(mockObj).toEqual(expect.any("table"))
+		expect(guineaPig.foo).toEqual(expect.any("table"))
+		expect(guineaPig.foo).toEqual(mockObj)
 	end)
 end)

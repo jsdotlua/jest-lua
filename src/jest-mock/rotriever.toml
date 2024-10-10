@@ -17,6 +17,8 @@ registry_index = "true"
 [dependencies]
 LuauPolyfill = { workspace = true }
 JestMockGenv = { path = "../jest-mock-genv" }
+JestTypes = { path = "../jest-types" }
 
 [dev_dependencies]
 JestGlobals = { path = "../jest-globals" }
+JestConfig = { path = "../jest-config" }

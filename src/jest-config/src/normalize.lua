@@ -1171,6 +1171,7 @@ local function normalize(
 					or key == "onlyChanged"
 					or key == "onlyFailures"
 					or key == "outputFile"
+					or key == "oldFunctionSpying"
 					or key == "passWithNoTests"
 					or key == "replname"
 					or key == "reporters"

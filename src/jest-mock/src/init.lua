@@ -30,6 +30,11 @@ type GlobalAutomocks = JestMockGenv.GlobalAutomocks
 local GlobalMocker = JestMockGenv.GlobalMocker
 -- ROBLOX deviation END
 
+-- ROBLOX deviation START: inject alike types
+local JestTypes = require(Packages.JestTypes)
+type Config_ProjectConfig = JestTypes.Config_ProjectConfig
+-- ROBLOX deviation END
+
 type Array<T> = LuauPolyfill.Array<T>
 type Object = LuauPolyfill.Object
 
@@ -138,8 +143,20 @@ export type ModuleMocker = {
 }
 
 ModuleMockerClass.__index = ModuleMockerClass
-function ModuleMockerClass.new(): ModuleMocker
+function ModuleMockerClass.new(
+	-- ROBLOX deviation: inject alike types
+	config: Config_ProjectConfig
+): ModuleMocker
 	local self = {
+		-- ROBLOX deviation START: inject alike types
+		_projectConfig = config,
+		_mocksOnObjectsMap = setmetatable({}, {
+			-- we have no use for knowledge about objects that user code has
+			-- discarded, no need to hold our info in memory strongly
+			-- we will have to revisit this for instance references
+			__mode = "k",
+		}),
+		-- ROBLOX deviation END
 		_mockState = {},
 		_mockConfigRegistry = {},
 		_invocationCallCounter = 1,
@@ -387,7 +404,12 @@ function ModuleMockerClass:_makeComponent(metadata: any, restore)
 			f.mockImplementation(metadata.mockImpl)
 		end
 
-		return f
+		-- ROBLOX deviation: fn is a callable table, return a forwarding function
+		return f,
+			function(...)
+				-- Should be identical to getmetatable(f).__call(f, ...)
+				return mockConstructor(f, ...)
+			end
 	else
 		error("Call to _makeComponent with non-function")
 	end
@@ -411,17 +433,12 @@ end
 type MockFn = any -- (...any) -> ...any
 function ModuleMockerClass:fn<T..., Y...>(implementation: ((Y...) -> T...)?): (MockFn, (T...) -> Y...)
 	local length = 0
-	local fn = self:_makeComponent({ length = length, type = "function" })
+	-- ROBLOX deviation: fn is a callable table, return a forwarding function
+	local fn, mockFn = self:_makeComponent({ length = length, type = "function" })
 	if implementation then
 		fn.mockImplementation(implementation)
 	end
-
-	-- ROBLOX deviation: fn is a callable table,
-	-- return a forwarding function as the second return value
-	local function mockFn(...)
-		return getmetatable(fn).__call(fn, ...)
-	end
-
+	-- ROBLOX deviation: fn is a callable table, return a forwarding function
 	return fn, mockFn
 end
 
@@ -433,6 +450,15 @@ function ModuleMockerClass:spyOn<M>(object: { [any]: any }, methodName: M, acces
 	if typeof(object) ~= "table" then
 		error(Error.new(("Cannot spyOn on a primitive value; %s given"):format(typeof(object))))
 	end
+
+	-- ROBLOX deviation START: inject alike types
+	local projectConfig = self._projectConfig :: Config_ProjectConfig
+	local mocksOnObject = self._mocksOnObjectsMap[object]
+	if mocksOnObject == nil then
+		mocksOnObject = {}
+		self._mocksOnObjectsMap[object] = mocksOnObject
+	end
+	-- ROBLOX deviation END
 
 	-- ROBLOX deviation START: mocking globals
 	if GlobalMocker:isMockGlobalLibrary(object) then
@@ -457,7 +483,8 @@ function ModuleMockerClass:spyOn<M>(object: { [any]: any }, methodName: M, acces
 	-- ROBLOX deviation END
 	local original = object[methodName]
 
-	if not Boolean.toJSBoolean(self:isMockFunction(original)) then
+	-- ROBLOX deviation: inject alike types
+	if mocksOnObject[methodName] == nil then
 		if typeof(original) ~= "function" then
 			error(
 				Error.new(
@@ -476,7 +503,7 @@ function ModuleMockerClass:spyOn<M>(object: { [any]: any }, methodName: M, acces
 		-- 	descriptor = Object.getOwnPropertyDescriptor(proto, methodName)
 		-- 	proto = Object.getPrototypeOf(proto)
 		-- end
-		local mock: Mock
+		-- local mock: Mock
 		-- if Boolean.toJSBoolean(if Boolean.toJSBoolean(descriptor) then descriptor.get else descriptor) then
 		-- 	local originalGet = descriptor.get
 		-- 	mock = self:_makeComponent({ type = "function" }, function()
@@ -489,20 +516,25 @@ function ModuleMockerClass:spyOn<M>(object: { [any]: any }, methodName: M, acces
 		-- 	Object.defineProperty(object, methodName, descriptor)
 		-- else
 		-- ROBLOX deviation END
-		mock = self:_makeComponent({ type = "function" }, function()
+		-- ROBLOX deviation: fn is a callable table, return a forwarding function
+		local mock: Mock, mockFn = self:_makeComponent({ type = "function" }, function()
 			if Boolean.toJSBoolean(isMethodOwner) then
 				object[methodName] = original
 			else
 				object[methodName] = nil
 			end
 		end) -- @ts-expect-error overriding original method with a Mock
-		object[methodName] = mock
+		-- ROBLOX deviation START: inject alike types
+		object[methodName] = if projectConfig.oldFunctionSpying then mock else mockFn
+		mocksOnObject[methodName] = mock
+		-- ROBLOX deviation END
 		-- end
 		mock.mockImplementation(function(...)
 			return original(...)
 		end)
 	end
-	return object[methodName]
+	-- ROBLOX deviation: inject alike types
+	return mocksOnObject[methodName]
 end
 function ModuleMockerClass:_spyOnProperty<T, M>(obj: T, propertyName: M, accessType_: ("get" | "set")?): Mock<() -> T>
 	-- ROBLOX deviation: spyOnProperty not supported
@@ -638,18 +670,23 @@ end
 
 exports.ModuleMocker = ModuleMockerClass
 
-local JestMock = ModuleMockerClass.new()
-local fn = function<T..., Y...>(implementation: ((Y...) -> T...)?)
-	return JestMock:fn(implementation)
-end
-exports.fn = fn
-local spyOn = function<M>(object: { [any]: any }, methodName: M, accessType: ("get" | "set")?): Mock<any>
-	return JestMock:spyOn(object, methodName, accessType)
-end
-exports.spyOn = spyOn
-local mocked = function<T>(item: T, _deep: boolean?): MaybeMocked<T> | MaybeMockedDeep<T>
-	return JestMock:mocked(item, _deep)
-end
-exports.mocked = mocked
+-- ROBLOX deviation START: can't provide this globally because it needs a config
+-- local JestMock = ModuleMockerClass.new()
+-- local fn = function<T..., Y...>(implementation: ((Y...) -> T...)?)
+-- 	return JestMock:fn(implementation)
+-- end
+-- exports.fn = fn
+-- local spyOn = function<M>(object: { [any]: any }, methodName: M, accessType: ("get" | "set")?): Mock<any>
+-- 	return JestMock:spyOn(object, methodName, accessType)
+-- end
+-- exports.spyOn = spyOn
+-- local mocked = function<T>(item: T, _deep: boolean?): MaybeMocked<T> | MaybeMockedDeep<T>
+-- 	return JestMock:mocked(item, _deep)
+-- end
+-- exports.mocked = mocked
+export type JestFuncFn = <T..., Y...>(implementation: ((Y...) -> T...)?) -> (MockFn, (T...) -> Y...)
+export type JestFuncMocked = <M>(object: { [any]: any }, methodName: M, accessType: ("get" | "set")?) -> Mock<any>
+export type JestFuncSpyOn = <T>(item: T, _deep: boolean?) -> MaybeMocked<T> | MaybeMockedDeep<T>
+-- ROBLOX deviation END
 
 return exports

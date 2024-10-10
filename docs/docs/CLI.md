@@ -84,6 +84,49 @@ Lists all test files that Jest Roblox will run given the arguments, and exits.
 
 Disables stack trace in test results output.
 
+### `oldFunctionSpying` \[boolean]
+![Roblox only](/img/roblox-only.svg)
+
+Changes how [`jest.spyOn()`](jest-object#jestspyonobject-methodname) overwrites
+methods in the spied object, making it behave like older versions of Jest.
+
+* When `oldFunctionSpying = true`, it will overwrite the spied method with a
+  *mock object*. (old behaviour)
+* When `oldFunctionSpying = false`, it will overwrite the spied method with a
+  *regular Lua function*. (new behaviour)
+
+Regardless of the value of `oldFunctionSpying`, the `spyOn()` function will
+always return a mock object.
+
+```lua
+-- when `oldFunctionSpying = false` (old behaviour)
+
+local guineaPig = {
+	foo = function() end
+}
+
+local mockObj = jest.spyOn(guineaPig, "foo")
+mockObj.mockReturnValue(25)
+
+print(typeof(guineaPig.foo)) --> table
+print(typeof(mockObj)) --> table
+print(guineaPig.foo == mockObj) --> true
+```
+
+```lua
+-- when `oldFunctionSpying = true` (new behaviour)
+
+local guineaPig = {
+	foo = function() end
+}
+
+local mockObj = jest.spyOn(guineaPig, "foo")
+
+print(typeof(guineaPig.foo)) --> function
+print(typeof(mockObj)) --> table
+print(guineaPig.foo == mockObj) --> false
+```
+
 ### `passWithNoTests` \[boolean]
 [![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/cli#--passwithnotests)  ![Aligned](/img/aligned.svg)
 

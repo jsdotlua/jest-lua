@@ -19,13 +19,15 @@ local Packages = CurrentModule.Parent.Parent
 
 local Writeable = require(CurrentModule.Parent.Writeable).Writeable
 
+local JestConfig = require(Packages.Dev.JestConfig)
+
 local ModuleMocker = require(Packages.JestMock).ModuleMocker
 local JestGlobals = require(Packages.Dev.JestGlobals)
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local moduleMocker = ModuleMocker.new()
+local moduleMocker = ModuleMocker.new(JestConfig.projectDefaults)
 local mockWrite = moduleMocker:fn()
 
 describe("Writeable", function()

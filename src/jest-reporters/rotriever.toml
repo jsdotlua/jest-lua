@@ -29,5 +29,6 @@ Path = { path = '../path' }
 
 [dev_dependencies]
 JestGlobals = { path = "../jest-globals" }
+JestConfig = { path = "../jest-config" }
 PrettyFormat = { path = "../pretty-format" }
 JestSnapshotSerializerRaw = { path = "../jest-snapshot-serializer-raw" }

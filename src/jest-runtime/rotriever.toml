@@ -27,3 +27,4 @@ JestMockGenv = { path = '../jest-mock-genv' }
 [dev_dependencies]
 JestEnvironmentLuau = { path = '../jest-environment-luau' }
 JestGlobals = { path = '../jest-globals' }
+JestConfig = { path = '../jest-config' }

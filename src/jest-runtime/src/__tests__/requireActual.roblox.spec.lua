@@ -9,6 +9,8 @@ local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 local mockMeScript = script.Parent.mock_me
 
+local JestConfig = require(Packages.Dev.JestConfig)
+
 local rootJsPath = script.Parent.test_root.root
 local __filename = mockMeScript
 local createRuntime
@@ -20,7 +22,7 @@ describe("Roblox requireActual", function()
 
 	it("should mock module and then require the actual module", function()
 		return Promise.resolve():andThen(function()
-			local runtime = createRuntime(__filename):expect()
+			local runtime = createRuntime(__filename, JestConfig.projectDefaults):expect()
 			local root = runtime:requireModule(runtime.__mockRootPath, rootJsPath) -- Erase module registry because root.js requires most other modules.
 
 			root.jest.mock(mockMeScript, function()
@@ -41,7 +43,7 @@ describe("Roblox requireActual", function()
 
 	it("should mock module using part of the actual module", function()
 		return Promise.resolve():andThen(function()
-			local runtime = createRuntime(__filename):expect()
+			local runtime = createRuntime(__filename, JestConfig.projectDefaults):expect()
 			local root = runtime:requireModule(runtime.__mockRootPath, rootJsPath) -- Erase module registry because root.js requires most other modules.
 
 			-- this should resemble a typical usage of requireActual: i.e. you mock a module, but you also use parts of the actual module in the mock

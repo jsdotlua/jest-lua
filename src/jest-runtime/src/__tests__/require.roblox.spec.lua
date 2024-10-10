@@ -8,11 +8,13 @@ local JestGlobals = require(Packages.Dev.JestGlobals)
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 
+local JestConfig = require(Packages.Dev.JestConfig)
+
 local Runtime = require(CurrentModule)
 
 it("should not allow ModuleScripts returning zero values", function()
 	expect(function()
-		local _requireZero = (require(script.Parent["requireZero.roblox"]) :: any)
+		local _requireZero = require(script.Parent["requireZero.roblox"]) :: any
 	end).toThrow("ModuleScripts must return exactly one value")
 end)
 
@@ -37,10 +39,11 @@ end)
 it("should not override module function environment for another runtime", function()
 	local loadedModuleFns = Map.new()
 
-	local returnRequire = Runtime.new(loadedModuleFns):requireModule(script.Parent["returnRequire.roblox"])
+	local returnRequire = Runtime.new(JestConfig.projectDefaults, loadedModuleFns)
+		:requireModule(script.Parent["returnRequire.roblox"])
 	local requireRefBefore = returnRequire()
 
-	Runtime.new(loadedModuleFns):requireModule(script.Parent["returnRequire.roblox"])
+	Runtime.new(JestConfig.projectDefaults, loadedModuleFns):requireModule(script.Parent["returnRequire.roblox"])
 	local requireRefAfter = returnRequire()
 
 	expect(requireRefBefore).toBe(requireRefAfter)

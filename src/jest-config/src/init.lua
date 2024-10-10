@@ -1,3 +1,4 @@
+--!strict
 -- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-config/src/index.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -285,6 +286,8 @@ function groupOptions(options: Config_ProjectConfig & Config_GlobalConfig): {
 			-- modulePaths = options.modulePaths,
 			-- prettierPath = options.prettierPath,
 			-- ROBLOX deviation END
+			-- ROBLOX deviation: inject alike types
+			oldFunctionSpying = options.oldFunctionSpying,
 			resetMocks = options.resetMocks,
 			resetModules = options.resetModules,
 			-- ROBLOX deviation START: not supported
@@ -462,4 +465,18 @@ local function readConfigs(
 	end)
 end
 exports.readConfigs = readConfigs
+
+-- ROBLOX deviation START: type checked project and global config defaults
+do
+	-- Some configuration such as `displayName` isn't included in this. If this
+	-- is something you depend on knowing, you should be using an actual
+	-- configuration file instead.
+	-- This is only provided here for the convenience of Jest unit tests, which
+	-- need to have a reasonable baseline which they may configure further.
+	local grouped = groupOptions(exports.defaults :: any)
+	exports.globalDefaults = grouped.globalConfig
+	exports.projectDefaults = grouped.projectConfig
+end
+-- ROBLOX deviation END
+
 return exports

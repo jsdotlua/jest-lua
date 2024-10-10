@@ -15,8 +15,11 @@ local expect = JestGlobals.expect
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 
+-- ROBLOX deviation: pass config to module mocker
+local JestConfig = require(Packages.Dev.JestConfig)
 local ModuleMocker = require(Packages.JestMock).ModuleMocker
-local moduleMocker = ModuleMocker.new()
+-- ROBLOX deviation: pass config to module mocker
+local moduleMocker = ModuleMocker.new(JestConfig.projectDefaults)
 
 local DefaultReporter = require(CurrentModule.DefaultReporter).default
 local Writeable = require(Packages.RobloxShared).Writeable

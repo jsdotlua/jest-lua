@@ -21,3 +21,4 @@ JestMock = { path = "../jest-mock" }
 
 [dev_dependencies]
 JestGlobals = { path = "../jest-globals" }
+JestConfig = { path = "../jest-config" }
