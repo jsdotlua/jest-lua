@@ -355,6 +355,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jsdotlua/jest-mock@workspace:src/jest-mock"
   dependencies:
+    "@jsdotlua/jest-config": "workspace:^"
     "@jsdotlua/jest-globals": "workspace:^"
     "@jsdotlua/jest-mock-genv": "workspace:^"
     "@jsdotlua/luau-polyfill": "npm:^1.2.6"
@@ -367,6 +368,7 @@ __metadata:
   resolution: "@jsdotlua/jest-reporters@workspace:src/jest-reporters"
   dependencies:
     "@jsdotlua/chalk": "npm:^0.2.1"
+    "@jsdotlua/jest-config": "workspace:^"
     "@jsdotlua/jest-console": "workspace:^"
     "@jsdotlua/jest-globals": "workspace:^"
     "@jsdotlua/jest-message-util": "workspace:^"
@@ -387,6 +389,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jsdotlua/jest-roblox-shared@workspace:src/jest-roblox-shared"
   dependencies:
+    "@jsdotlua/jest-config": "workspace:^"
     "@jsdotlua/jest-get-type": "workspace:^"
     "@jsdotlua/jest-globals": "workspace:^"
     "@jsdotlua/jest-mock": "workspace:^"
@@ -425,6 +428,7 @@ __metadata:
   dependencies:
     "@jsdotlua/emittery": "workspace:^"
     "@jsdotlua/expect": "workspace:^"
+    "@jsdotlua/jest-config": "workspace:^"
     "@jsdotlua/jest-fake-timers": "workspace:^"
     "@jsdotlua/jest-globals": "workspace:^"
     "@jsdotlua/jest-mock": "workspace:^"
