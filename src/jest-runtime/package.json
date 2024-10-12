@@ -16,6 +16,7 @@
     "@jsdotlua/expect": "workspace:^",
     "@jsdotlua/jest-fake-timers": "workspace:^",
     "@jsdotlua/jest-mock": "workspace:^",
+    "@jsdotlua/jest-mock-genv": "workspace:^",
     "@jsdotlua/jest-snapshot": "workspace:^",
     "@jsdotlua/jest-types": "workspace:^",
     "@jsdotlua/luau-polyfill": "^1.2.6",

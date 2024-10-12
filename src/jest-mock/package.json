@@ -12,6 +12,7 @@
     "prepare": "npmluau"
   },
   "dependencies": {
+    "@jsdotlua/jest-mock-genv": "workspace:^",
     "@jsdotlua/luau-polyfill": "^1.2.6"
   },
   "devDependencies": {
