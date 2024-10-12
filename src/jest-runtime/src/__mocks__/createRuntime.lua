@@ -58,7 +58,7 @@ local Runtime = require("..") -- Copy from jest-config (since we don't want to d
 -- ROBLOX deviation END
 
 -- ROBLOX deviation START: get config types
-local JestTypes = require(Packages.JestTypes)
+local JestTypes = require("@pkg/@jsdotlua/jest-types")
 type Config_ProjectConfig = JestTypes.Config_ProjectConfig
 -- ROBLOX deviation END
 

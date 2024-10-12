@@ -28,7 +28,7 @@ local GlobalMocker = JestMockGenv.GlobalMocker
 -- ROBLOX deviation END
 
 -- ROBLOX deviation START: inject alike types
-local JestTypes = require(Packages.JestTypes)
+local JestTypes = require("@pkg/@jsdotlua/jest-types")
 type Config_ProjectConfig = JestTypes.Config_ProjectConfig
 -- ROBLOX deviation END
 

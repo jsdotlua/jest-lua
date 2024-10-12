@@ -68,6 +68,6 @@ end)
 
 it("errors on nonexistent plugin reads", function()
 	expect(function()
-		local _ = require(CurrentModule).plugins.thisIsNotAPlugin
+		local _ = require(script.Parent).plugins.thisIsNotAPlugin
 	end).toThrowError()
 end)
