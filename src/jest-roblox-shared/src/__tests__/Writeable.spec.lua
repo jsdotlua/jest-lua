@@ -16,13 +16,15 @@
 
 local Writeable = require("../Writeable").Writeable
 
+local JestConfig = require("@pkg/@jsdotlua/jest-config")
+
 local ModuleMocker = require("@pkg/@jsdotlua/jest-mock").ModuleMocker
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local moduleMocker = ModuleMocker.new()
+local moduleMocker = ModuleMocker.new(JestConfig.projectDefaults)
 local mockWrite = moduleMocker:fn()
 
 describe("Writeable", function()

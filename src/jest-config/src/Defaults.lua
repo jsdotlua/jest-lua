@@ -75,6 +75,8 @@ local defaultOptions: Config_DefaultOptions = {
 	-- ROBLOX deviation START: not supported
 	-- notifyMode = "failure-change",
 	-- ROBLOX deviation END
+	-- ROBLOX deviation: inject alike types
+	oldFunctionSpying = true,
 	passWithNoTests = false,
 	-- ROBLOX deviation START: not supported
 	-- prettierPath = "prettier",

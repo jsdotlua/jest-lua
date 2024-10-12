@@ -21,6 +21,8 @@ local it = JestGlobals.it
 local beforeAll = JestGlobals.beforeAll
 local afterAll = JestGlobals.afterAll
 
+local JestConfig = require("@pkg/@jsdotlua/jest-config")
+
 local JestRuntime = require("../init")
 -- ROBLOX TODO: using RuntimePrivate type until better approach is found
 type JestRuntime = JestRuntime.Runtime
@@ -38,7 +40,7 @@ local requireOverride = function(scriptInstance: ModuleScript)
 end
 
 beforeAll(function()
-	_runtime = JestRuntime.new()
+	_runtime = JestRuntime.new(JestConfig.projectDefaults)
 end)
 
 afterAll(function()

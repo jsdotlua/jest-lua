@@ -105,6 +105,8 @@ local DEFAULT_PROJECT_CONFIG: Config_ProjectConfig = {
 	moduleNameMapper = {},
 	modulePathIgnorePatterns = {},
 	modulePaths = {},
+	-- ROBLOX deviation: inject alike types
+	oldFunctionSpying = true,
 	prettierPath = "prettier",
 	resetMocks = false,
 	resetModules = false,

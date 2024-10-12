@@ -213,6 +213,8 @@ export type DefaultOptions = {
 	-- notify: boolean,
 	-- notifyMode: NotifyMode,
 	-- ROBLOX deviation END
+	-- ROBLOX deviation: inject alike types
+	oldFunctionSpying: boolean,
 	passWithNoTests: boolean,
 	-- ROBLOX deviation START: not supported
 	-- prettierPath: string,
@@ -430,6 +432,8 @@ export type InitialOptions = {
 	-- onlyFailures: boolean?,
 	-- ROBLOX deviation END
 	outputFile: Path?,
+	-- ROBLOX deviation: inject alike types
+	oldFunctionSpying: boolean?,
 	passWithNoTests: boolean?,
 	--[[*
 	* @deprecated Use `transformIgnorePatterns` options instead.
@@ -665,6 +669,8 @@ export type ProjectConfig = {
 	-- modulePaths: Array<string>?,
 	-- prettierPath: string,
 	-- ROBLOX deviation END
+	-- ROBLOX deviation: inject alike types
+	oldFunctionSpying: boolean,
 	resetMocks: boolean,
 	resetModules: boolean,
 	-- ROBLOX deviation START: not supported

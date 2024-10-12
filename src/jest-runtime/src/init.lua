@@ -84,10 +84,10 @@ type Omit<T, K> = T --[[ ROBLOX TODO: TS 'Omit' built-in type is not available i
 -- local TransformationOptions = jestTransformModule.TransformationOptions
 -- local handlePotentialSyntaxError = jestTransformModule.handlePotentialSyntaxError
 -- local shouldInstrument = jestTransformModule.shouldInstrument
--- local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 -- type Config = jestTypesModule.Config
 -- type Config_Path = jestTypesModule.Config_Path
--- type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
+type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
 -- type Global = jestTypesModule.Global
 -- type Global_TestFrameworkGlobals = jestTypesModule.Global_TestFrameworkGlobals
 -- local jestHasteMapModule = require("@pkg/jest-haste-map")
@@ -385,7 +385,7 @@ type Runtime_private = { --
 	--
 	-- ROBLOX deviation START: skipped
 	-- _cacheFS: Map<string, string>,
-	-- _config: Config_ProjectConfig,
+	_config: Config_ProjectConfig,
 	-- _coverageOptions: ShouldInstrumentOptions,
 	-- _currentlyExecutingModulePath: string,
 	-- ROBLOX deviation END
@@ -635,7 +635,7 @@ local Runtime_private = Runtime :: Runtime_private & Runtime_statics;
 -- 	coverageOptions: ShouldInstrumentOptions,
 -- 	testPath: Config_Path
 -- ): Runtime
-function Runtime.new(loadedModuleFns: Map<ModuleScript, { any }>?): Runtime
+function Runtime.new(config: Config_ProjectConfig, loadedModuleFns: Map<ModuleScript, { any }>?): Runtime
 	-- ROBLOX deviation START: cast to private type to access methods properly
 	-- local self = setmetatable({}, Runtime)
 	local self = (setmetatable({}, Runtime) :: any) :: Runtime_private
@@ -643,7 +643,7 @@ function Runtime.new(loadedModuleFns: Map<ModuleScript, { any }>?): Runtime
 	self.isTornDown = false
 	-- ROBLOX deviation START: skipped
 	-- self._cacheFS = cacheFS
-	-- self._config = config
+	self._config = config
 	-- self._coverageOptions = coverageOptions
 	-- self._currentlyExecutingModulePath = ""
 	-- ROBLOX deviation END
@@ -675,7 +675,7 @@ function Runtime.new(loadedModuleFns: Map<ModuleScript, { any }>?): Runtime
 	-- ROBLOX deviation END
 	-- ROBLOX deviation START: instantiate the module mocker here instead of being passed in as an arg from runTest
 	-- self._moduleMocker = self._environment.moduleMocker
-	self._moduleMocker = ModuleMocker.new()
+	self._moduleMocker = ModuleMocker.new(config)
 	-- ROBLOX deviation END
 	-- ROBLOX deviation START: mocking globals
 	self._globalMocker = GlobalMocker.new(jestMockGenvModule.MOCKABLE_GLOBALS)

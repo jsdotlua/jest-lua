@@ -4,6 +4,13 @@
 
 * fix warning when multiple configuration are found ([#8](https://github.com/jsdotlua/jest-lua/pull/8))
 * fix error message when no tests are found ([#7](https://github.com/jsdotlua/jest-lua/pull/7))
+*
+## 3.10.0 (2024-10-02)
+* :sparkles: Added a fallback to use `loadstring` instead of `loadmodule` in lower privileged contexts ([#392](https://github.com/Roblox/jest-roblox-internal/pull/392))
+* :sparkles: Added `redactStackTrace` option to improve stability to snapshots that contain stacktraces ([#401](https://github.com/Roblox/jest-roblox-internal/pull/401))
+* :hammer_and_wrench: Add more helpful error message when requiring `JestGlobals` outside test environment ([#405](https://github.com/Roblox/jest-roblox-internal/pull/405))
+* :hammer_and_wrench: Error when trying to load a nonexistant `PrettyFormat` plugin ([#407](https://github.com/Roblox/jest-roblox-internal/pull/407))
+* :hammer_and_wrench: Stabilize `RobloxInstance` serialization tests ([#408](https://github.com/Roblox/jest-roblox-internal/pull/408))
 
 ## 3.9.1 (2024-08-02)
 * :bug: Fix a type analysis error in `JestRuntime` ([#403](https://github.com/Roblox/jest-roblox-internal/pull/403))

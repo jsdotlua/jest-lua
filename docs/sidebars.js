@@ -29,6 +29,7 @@ module.exports = {
     'expect',
     'mock-function-api',
     'jest-object',
+    'jest-benchmark',
     'configuration',
     'cli',
   ]

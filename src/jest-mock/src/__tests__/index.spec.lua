@@ -14,20 +14,30 @@ local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 local jest = JestGlobals.jest
 
+local JestConfig = require("@pkg/@jsdotlua/jest-config")
+
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 
 local parentModule = require("../init")
 local ModuleMocker = parentModule.ModuleMocker
-local fn = parentModule.fn
-local mocked = parentModule.mocked
-local spyOn = parentModule.spyOn
+-- ROBLOX deviation START: can't provide these globally
+-- local fn = parentModule.fn
+-- local mocked = parentModule.mocked
+-- local spyOn = parentModule.spyOn
+local moduleMocker
+beforeEach(function()
+	moduleMocker = ModuleMocker.new(JestConfig.projectDefaults)
+end)
+-- ROBLOX deviation END
 
 describe("moduleMocker", function()
-	local moduleMocker
-	beforeEach(function()
-		moduleMocker = ModuleMocker.new()
-	end)
+	-- ROBLOX deviation START: can't provide these globally
+	-- local moduleMocker
+	-- beforeEach(function()
+	-- 	moduleMocker = ModuleMocker.new()
+	-- end)
+	-- ROBLOX deviation END
 
 	--[[
 		ROBLOX deviation: skipped code:
@@ -92,7 +102,6 @@ describe("moduleMocker", function()
 				expect(fn.mock.contexts[4]).toBe(nil)
 				fn(nil)
 				expect(fn.mock.contexts[5]).toBe(nil);
-
 				(function(...)
 					return fn(nil, ...)
 				end)()
@@ -804,13 +813,14 @@ end)
 describe("mocked", function()
 	it("should return unmodified input", function()
 		local subject = {}
-		expect(mocked(subject)).toBe(subject)
+		-- ROBLOX deviation: can't provide these globally
+		expect(moduleMocker:mocked(subject)).toBe(subject)
 	end)
 end)
 
 it("`fn` and `spyOn` do not throw", function()
 	expect(function()
-		fn()
-		spyOn({ apple = function() end }, "apple")
+		moduleMocker:fn()
+		moduleMocker:spyOn({ apple = function() end }, "apple")
 	end).never.toThrow()
 end)

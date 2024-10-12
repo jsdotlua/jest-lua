@@ -1,3 +1,4 @@
+--!strict
 -- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/jest-runtime/src/__mocks__/createRuntime.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -55,10 +56,16 @@ local Runtime = require("..") -- Copy from jest-config (since we don't want to d
 -- 	return { { "^.+\\.[jt]sx?$", require_:resolve("babel-jest") } }
 -- end
 -- ROBLOX deviation END
+
+-- ROBLOX deviation START: get config types
+local JestTypes = require(Packages.JestTypes)
+type Config_ProjectConfig = JestTypes.Config_ProjectConfig
+-- ROBLOX deviation END
+
 return function( -- ROBLOX deviation START: arguments not needed. filename only kept to preserve this createRuntime's call api
 	-- self: any,
-	filename: ModuleScript
-	-- config
+	filename: ModuleScript,
+	config: Config_ProjectConfig
 	-- ROBLOX deviation END
 )
 	return Promise.resolve():andThen(function()
@@ -127,8 +134,7 @@ return function( -- ROBLOX deviation START: arguments not needed. filename only 
 		-- end
 		-- runtime.__mockRootPath = Array.join(path, config.rootDir, "root.js") --[[ ROBLOX CHECK: check if 'path' is an Array ]]
 		-- runtime.__mockSubdirPath = Array.join(path, config.rootDir, "subdir2", "module_dir", "module_dir_module.js") --[[ ROBLOX CHECK: check if 'path' is an Array ]]
-		local runtime = Runtime.new();
-		-- ROBLOX NOTE: this is JS file upstream so no type checking is performed
+		local runtime = Runtime.new(config); -- ROBLOX NOTE: this is JS file upstream so no type checking is performed
 		(runtime :: any).__mockRootPath = script.Parent.Parent.__tests__.test_root
 		-- ROBLOX deviation END
 		return runtime

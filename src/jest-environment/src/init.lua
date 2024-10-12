@@ -37,9 +37,11 @@ type Global_Global = typesModule.Global_Global
 -- ROBLOX deviation END
 
 local jestMockModule = require("@pkg/@jsdotlua/jest-mock")
-local JestMockFn = jestMockModule.fn
-local JestMockMocked = jestMockModule.mocked
-local JestMockSpyOn = jestMockModule.spyOn
+-- ROBLOX deviation START: can't export globals from jest mock
+type JestFuncFn = jestMockModule.JestFuncFn
+type JestFuncMocked = jestMockModule.JestFuncMocked
+type JestFuncSpyOn = jestMockModule.JestFuncSpyOn
+-- ROBLOX deviation END
 
 type ModuleMocker = jestMockModule.ModuleMocker
 
@@ -144,7 +146,8 @@ export type Jest = {
 	--[[*
 	* Creates a mock function. Optionally takes a mock implementation.
 	]]
-	fn: typeof(JestMockFn),
+	-- ROBLOX deviation: can't export globals from jest mock
+	fn: JestFuncFn,
 	-- ROBLOX deviation START: mocking globals
 	--[[*
 	* Represents the global environment and its libraries, for use with the
@@ -236,7 +239,8 @@ export type Jest = {
 	* jest.spyOn; other mocks will require you to manually restore them.
 	]]
 	restoreAllMocks: () -> Jest,
-	mocked: typeof(JestMockMocked),
+	-- ROBLOX deviation: can't export globals from jest mock
+	mocked: JestFuncMocked,
 	--[[*
 	* Runs failed tests n-times until they pass or until the max number of
 	* retries is exhausted. This only works with `jest-circus`!
@@ -300,7 +304,8 @@ export type Jest = {
 	* Note: By default, jest.spyOn also calls the spied method. This is
 	* different behavior from most other test libraries.
 	]]
-	spyOn: typeof(JestMockSpyOn),
+	-- ROBLOX deviation: can't export globals from jest mock
+	spyOn: JestFuncSpyOn,
 	--[[*
 	* Indicates that the module system should never return a mocked version of
 	* the specified module from require() (e.g. that it should always return the

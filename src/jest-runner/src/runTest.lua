@@ -233,9 +233,10 @@ local function runTestInternal(
 		setGlobal((environment.global :: unknown) :: typeof(_G), "console", testConsole)
 
 		local runtime = Runtime.new(
+			projectConfig,
 			loadedModuleFns
 			-- ROBLOX TODO START: no params to Runtime.new so far
-			-- config, environment, resolver, transformer, cacheFS, {
+			-- environment, resolver, transformer, cacheFS, {
 			-- 	changedFiles = if typeof(context) == "table" then context.changedFiles else nil,
 			-- 	collectCoverage = globalConfig.collectCoverage,
 			-- 	collectCoverageFrom = globalConfig.collectCoverageFrom,
