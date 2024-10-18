@@ -12,6 +12,8 @@ local JestConfig = require(Packages.Dev.JestConfig)
 
 local Runtime = require(CurrentModule)
 
+type FIXME_ANALYZE = any
+
 it("should not allow ModuleScripts returning zero values", function()
 	expect(function()
 		local _requireZero = require(script.Parent["requireZero.roblox"]) :: any
@@ -47,4 +49,21 @@ it("should not override module function environment for another runtime", functi
 	local requireRefAfter = returnRequire()
 
 	expect(requireRefBefore).toBe(requireRefAfter)
+end);
+
+(it.each :: FIXME_ANALYZE)({
+	"",
+	"/",
+	"foo",
+	"/foo",
+	"foo/bar",
+	"/foo/bar",
+	"@alias",
+	"@",
+	"@alias/foo",
+	"@alias/foo/bar",
+})("should explicitly disallow all forms of require by string", function(path)
+	expect(function()
+		(require :: any)(path)
+	end).toThrow("not enabled")
 end)
