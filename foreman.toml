@@ -5,4 +5,4 @@ stylua = { source = "JohnnyMorganz/StyLua", version = "=0.18.1" }
 wally = { github = "UpliftGames/wally", version = "=0.3.2" }
 luau-lsp = { github = "johnnymorganz/luau-lsp", version = "=1.27.1"}
 run-in-roblox = { github = "rojo-rbx/run-in-roblox", version = "=0.3.0" }
-darklua = { github = "seaofvoices/darklua", version = "=0.12.1" }
+darklua = { github = "seaofvoices/darklua", version = "=0.14.0" }
