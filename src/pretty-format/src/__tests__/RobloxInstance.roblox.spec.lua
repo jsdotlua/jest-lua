@@ -47,7 +47,7 @@ describe("Instance", function()
 	end)
 
 	it("serializes Folder", function()
-		local stableFolder = script.Parent.__tests__.dont_touch_im_used_in_snapshots
+		local stableFolder = (script.Parent :: Instance):FindFirstChild("dont_touch_im_used_in_snapshots")
 		expect(prettyFormatResult(stableFolder)).toMatchSnapshot()
 	end)
 

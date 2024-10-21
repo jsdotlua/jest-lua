@@ -14,20 +14,12 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local JestGetType = require(Packages.JestGetType)
+local JestGetType = require("@pkg/@jsdotlua/jest-get-type")
 local getType = JestGetType.getType
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
-local Object = LuauPolyfill.Object
-local Array = LuauPolyfill.Array
-local instanceof = LuauPolyfill.instanceof
+local redactStackTrace = require("@pkg/@jsdotlua/jest-roblox-shared").redactStackTrace
 
-local redactStackTrace = require(Packages.RobloxShared).redactStackTrace
-
-local Types = require(CurrentModule.Types)
+local Types = require("../Types")
 type Config = Types.Config
 type Refs = Types.Refs
 type Printer = Types.Printer

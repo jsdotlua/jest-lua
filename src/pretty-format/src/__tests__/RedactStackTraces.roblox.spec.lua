@@ -14,17 +14,14 @@
 ]]
 -- ROBLOX NOTE: no upstream
 
-local CurrentModule = script.Parent.Parent
-local Packages = CurrentModule.Parent
-
-local PrettyFormat = require(CurrentModule)
+local PrettyFormat = require("..")
 local prettyFormat = PrettyFormat.default
 local RedactStackTraces = PrettyFormat.plugins.RedactStackTraces
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it

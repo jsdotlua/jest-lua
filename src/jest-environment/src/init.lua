@@ -46,7 +46,7 @@ type JestFuncSpyOn = jestMockModule.JestFuncSpyOn
 type ModuleMocker = jestMockModule.ModuleMocker
 
 -- ROBLOX deviation: mocking globals
-local jestMockGenvModule = require("@pkg/@jdsotlua/jest-mock-genv")
+local jestMockGenvModule = require("@pkg/@jsdotlua/jest-mock-genv")
 
 export type EnvironmentContext = {
 	console: Console,
