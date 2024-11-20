@@ -14,16 +14,13 @@
 ]]
 --!strict
 -- ROBLOX NOTE: no upstream
-local CurrentPackage = script.Parent.Parent
-local Packages = CurrentPackage.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
 local test = JestGlobals.test
 local beforeEach = JestGlobals.beforeEach
 
-local InstanceProxy = require(CurrentPackage.InstanceProxy)
+local InstanceProxy = require("./InstanceProxy")
 
 -- An example instance to be proxied by tests below.
 local original

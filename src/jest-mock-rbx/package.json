@@ -1,10 +1,10 @@
 {
-  "name": "@jsdotlua/jest-mock",
+  "name": "@jsdotlua/jest-mock-rbx",
   "version": "3.6.1-rc.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/jsdotlua/jest-lua.git",
-    "directory": "src/jest-mock"
+    "directory": "src/jest-mock-rbx"
   },
   "license": "MIT",
   "main": "src/init.lua",
@@ -12,7 +12,6 @@
     "prepare": "npmluau"
   },
   "dependencies": {
-    "@jsdotlua/jest-mock-genv": "workspace:^",
     "@jsdotlua/jest-types": "workspace:^",
     "@jsdotlua/luau-polyfill": "^1.2.6"
   },

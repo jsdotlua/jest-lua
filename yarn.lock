@@ -351,6 +351,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@jsdotlua/jest-mock-rbx@workspace:src/jest-mock-rbx":
+  version: 0.0.0-use.local
+  resolution: "@jsdotlua/jest-mock-rbx@workspace:src/jest-mock-rbx"
+  dependencies:
+    "@jsdotlua/jest-config": "workspace:^"
+    "@jsdotlua/jest-globals": "workspace:^"
+    "@jsdotlua/jest-types": "workspace:^"
+    "@jsdotlua/luau-polyfill": "npm:^1.2.6"
+    npmluau: "npm:^0.1.1"
+  languageName: unknown
+  linkType: soft
+
 "@jsdotlua/jest-mock@workspace:^, @jsdotlua/jest-mock@workspace:src/jest-mock":
   version: 0.0.0-use.local
   resolution: "@jsdotlua/jest-mock@workspace:src/jest-mock"
@@ -358,6 +370,7 @@ __metadata:
     "@jsdotlua/jest-config": "workspace:^"
     "@jsdotlua/jest-globals": "workspace:^"
     "@jsdotlua/jest-mock-genv": "workspace:^"
+    "@jsdotlua/jest-types": "workspace:^"
     "@jsdotlua/luau-polyfill": "npm:^1.2.6"
     npmluau: "npm:^0.1.1"
   languageName: unknown

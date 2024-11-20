@@ -15,8 +15,7 @@
 --!strict
 -- ROBLOX NOTE: no upstream
 
-local CurrentModule = script.Parent
-local InstanceProxy = require(CurrentModule.InstanceProxy)
+local InstanceProxy = require("./InstanceProxy")
 type InstanceProxy<ClassType = Instance> = InstanceProxy.InstanceProxy<ClassType>
 
 export type DataModelMocker = {
