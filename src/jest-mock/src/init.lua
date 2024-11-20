@@ -482,53 +482,62 @@ function ModuleMockerClass:spyOn<M>(object: { [any]: any }, methodName: M, acces
 
 	-- ROBLOX deviation: inject alike types
 	if mocksOnObject[methodName] == nil then
-		if typeof(original) ~= "function" then
+		-- ROBLOX deviation: multiple mock types supported, skip type check until later
+
+		local isMethodOwner = rawget(object, methodName) ~= nil
+		-- ROBLOX deviation: ignore prototype and property descriptor logic
+
+		-- ROBLOX deviation START: support multiple mock types with custom impl
+		local callableMetatable = nil
+		if typeof(original) == "table" then
+			local meta = getmetatable(original)
+			if typeof(meta) == "table" and meta.__call ~= nil then
+				callableMetatable = meta
+			end
+		end
+
+		local mock, mockFn = self:_makeComponent({ type = "function" }, function()
+			object[methodName] = if isMethodOwner then original else nil
+		end)
+
+		if typeof(original) == "function" then
+			object[methodName] = if projectConfig.oldFunctionSpying then mock else mockFn
+			mocksOnObject[methodName] = mock
+			mock.mockImplementation(function(...)
+				return original(...)
+			end)
+		elseif callableMetatable ~= nil then
+			local ok, mockTable = pcall(table.clone, original)
+			if not ok then
+				error(
+					Error.new(
+						("Cannot spy the %s property because it cannot be cloned. (%s)"):format(
+							tostring(methodName),
+							mockTable:match("protected metatable") or mockTable
+						)
+					)
+				)
+			end
+			local mockMetatable = table.clone(callableMetatable)
+			mockMetatable.__call = mockFn
+			-- It's unclear whether `original` should be deeply cloned here. See
+			-- the APT-1914 ticket on Jira for a discussion of this.
+			object[methodName] = setmetatable(mockTable, mockMetatable)
+			mocksOnObject[methodName] = mock
+			mock.mockImplementation(function(...)
+				return callableMetatable.__call(...)
+			end)
+		else
 			error(
 				Error.new(
-					("Cannot spy the %s property because it is not a function; %s given instead"):format(
+					("Cannot spy the %s property because it is not a function or callable table; %s given instead"):format(
 						tostring(methodName),
 						typeof(original)
 					)
 				)
 			)
 		end
-		local isMethodOwner = rawget(object, methodName) ~= nil
-		-- ROBLOX deviation START: ignore prototype and property descriptor logic
-		-- local descriptor = Object.getOwnPropertyDescriptor(object, methodName)
-		-- local proto = Object.getPrototypeOf(object)
-		-- while not Boolean.toJSBoolean(descriptor) and meta ~= nil do
-		-- 	descriptor = Object.getOwnPropertyDescriptor(proto, methodName)
-		-- 	proto = Object.getPrototypeOf(proto)
-		-- end
-		-- local mock: Mock
-		-- if Boolean.toJSBoolean(if Boolean.toJSBoolean(descriptor) then descriptor.get else descriptor) then
-		-- 	local originalGet = descriptor.get
-		-- 	mock = self:_makeComponent({ type = "function" }, function()
-		-- 		(descriptor :: any).get = originalGet
-		-- 		Object.defineProperty(object, methodName, descriptor :: any)
-		-- 	end)
-		-- 	descriptor.get = function(_self: any)
-		-- 		return mock
-		-- 	end
-		-- 	Object.defineProperty(object, methodName, descriptor)
-		-- else
 		-- ROBLOX deviation END
-		-- ROBLOX deviation: fn is a callable table, return a forwarding function
-		local mock: Mock, mockFn = self:_makeComponent({ type = "function" }, function()
-			if Boolean.toJSBoolean(isMethodOwner) then
-				object[methodName] = original
-			else
-				object[methodName] = nil
-			end
-		end) -- @ts-expect-error overriding original method with a Mock
-		-- ROBLOX deviation START: inject alike types
-		object[methodName] = if projectConfig.oldFunctionSpying then mock else mockFn
-		mocksOnObject[methodName] = mock
-		-- ROBLOX deviation END
-		-- end
-		mock.mockImplementation(function(...)
-			return original(...)
-		end)
 	end
 	-- ROBLOX deviation: inject alike types
 	return mocksOnObject[methodName]

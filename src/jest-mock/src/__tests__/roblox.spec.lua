@@ -133,7 +133,9 @@ describe("global mocking & spying", function()
 
 		expect(returnValue).toBe("vwxyz")
 	end)
+end)
 
+describe("oldFunctionSpying", function()
 	it("oldFunctionSpying = true injects mock objects", function()
 		local config = table.clone(JestConfig.projectDefaults)
 		config.oldFunctionSpying = true
@@ -164,7 +166,7 @@ describe("global mocking & spying", function()
 		expect(guineaPig.foo).never.toEqual(mockObj)
 	end)
 
-	it("oldFunctionSpying defaults to backwards compatibile behaviour", function()
+	it("defaults to backwards compatibile behaviour", function()
 		local guineaPig = {
 			foo = function() end,
 		}
@@ -173,5 +175,119 @@ describe("global mocking & spying", function()
 		expect(mockObj).toEqual(expect.any("table"))
 		expect(guineaPig.foo).toEqual(expect.any("table"))
 		expect(guineaPig.foo).toEqual(mockObj)
+	end)
+end)
+
+describe("spyOn supported types", function()
+	it("allows functions", function()
+		local guineaPig = {
+			foo = function() end,
+		}
+
+		expect(function()
+			moduleMocker:spyOn(guineaPig, "foo")
+		end).never.toThrow()
+	end)
+
+	it("allows callable tables", function()
+		local guineaPig = {
+			foo = setmetatable({}, { __call = function() end }),
+		}
+
+		expect(function()
+			moduleMocker:spyOn(guineaPig, "foo")
+		end).never.toThrow()
+	end)
+
+	it("disallows non-callable tables", function()
+		local guineaPig = {
+			foo = {},
+			bar = setmetatable({}, { __index = function() end }),
+		}
+
+		expect(function()
+			moduleMocker:spyOn(guineaPig, "foo")
+		end).toThrow()
+
+		expect(function()
+			moduleMocker:spyOn(guineaPig, "bar")
+		end).toThrow()
+	end)
+
+	it("does not allow tables with locked callable metatables", function()
+		local guineaPig = {
+			foo = setmetatable({}, { __metatable = { __call = function() end } }),
+		}
+
+		expect(function()
+			moduleMocker:spyOn(guineaPig, "foo")
+		end).toThrowErrorMatchingSnapshot()
+	end)
+
+	it("disallows other kinds of value", function()
+		local guineaPig = {
+			foo = newproxy(true),
+			bar = 25,
+		}
+
+		expect(function()
+			moduleMocker:spyOn(guineaPig, "foo")
+		end).toThrow()
+
+		expect(function()
+			moduleMocker:spyOn(guineaPig, "bar")
+		end).toThrow()
+	end)
+end)
+
+describe("callable table spying", function()
+	local guineaPig
+	local callable
+	local mock: exports.Mock
+	beforeEach(function()
+		callable = setmetatable({
+			red = 1,
+			blue = 2,
+		}, {
+			florb = true,
+			__call = function(self, ...)
+				return {
+					42 :: any,
+					{ if self == callable then "original" else "mock", ... },
+				}
+			end,
+		})
+		guineaPig = {
+			foo = callable,
+		}
+		mock = moduleMocker:spyOn(guineaPig, "foo")
+	end)
+
+	it("does not change default behaviour", function()
+		local result = guineaPig.foo("one", "two", "three")
+		expect(result[1]).toBe(42)
+		expect(result[2]).toEqual({ "mock", "one", "two", "three" })
+	end)
+	it("supports the usual mocking facilities", function()
+		mock.mockReturnValue(25)
+		expect(guineaPig.foo()).toBe(25)
+	end)
+	it("passes correct parameters to mock implementation", function()
+		mock.mockImplementation(function(self: any, ...)
+			return { if self == callable then "original" else "mock", ... }
+		end)
+		expect(guineaPig.foo("foo", "bar", "baz")).toEqual({ "mock", "foo", "bar", "baz" })
+	end)
+	it("uses a cloned metatable", function()
+		local original = getmetatable(callable)
+		local mock = getmetatable(guineaPig.foo)
+		expect(mock).never.toBe(original)
+		expect(mock.florb).toBe(true)
+	end)
+	it("uses a cloned table", function()
+		local original = callable
+		local mock = guineaPig.foo
+		expect(mock).never.toBe(original)
+		expect(mock.red).toBe(original.red)
 	end)
 end)

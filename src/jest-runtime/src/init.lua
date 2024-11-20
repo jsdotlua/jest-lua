@@ -1996,10 +1996,20 @@ function Runtime_private:_execModule(
 		]]
 		script = if loadModuleEnabled then defaultEnvironment.script else modulePath,
 		require = if isInternal
-			then function(scriptInstance: ModuleScript)
+			then function(scriptInstance: ModuleScript | string)
+				if typeof(scriptInstance) == "string" then
+					-- Disabling this at the surface level of the API until we have
+					-- deeper support in Jest.
+					error("Require-by-string is not enabled for use inside Jest at this time.")
+				end
 				return self:requireInternalModule(scriptInstance)
 			end
-			else function(scriptInstance: ModuleScript)
+			else function(scriptInstance: ModuleScript | string)
+				if typeof(scriptInstance) == "string" then
+					-- Disabling this at the surface level of the API until we have
+					-- deeper support in Jest.
+					error("Require-by-string is not enabled for use inside Jest at this time.")
+				end
 				return self:requireModuleOrMock(scriptInstance)
 			end,
 	}, {
@@ -2646,7 +2656,12 @@ function Runtime_private:_createJestObjectFor(from: ModuleScript): Jest
 		-- ROBLOX deviation END
 		-- ROBLOX deviation START: issue roblox/js-to-lua #686 - no built-in bind support in Luau
 		-- requireActual = self.requireActual:bind(self, from),
-		requireActual = function(moduleName)
+		requireActual = function(moduleName: ModuleScript | string)
+			if typeof(moduleName) == "string" then
+				-- Disabling this at the surface level of the API until we have
+				-- deeper support in Jest.
+				error("Require-by-string is not enabled for use inside Jest at this time.")
+			end
 			return self:requireActual(from, moduleName)
 		end,
 		-- ROBLOX deviation END

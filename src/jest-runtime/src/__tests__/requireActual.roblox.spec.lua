@@ -13,6 +13,8 @@ local rootJsPath = script.Parent.test_root.root
 local __filename = mockMeScript
 local createRuntime
 
+type FIXME_ANALYZE = any
+
 describe("Roblox requireActual", function()
 	beforeEach(function()
 		createRuntime = require("../__mocks__/createRuntime")
@@ -55,6 +57,28 @@ describe("Roblox requireActual", function()
 
 			expect(runtime:requireModuleOrMock(mockMeScript).mocked).toEqual(true)
 			expect(runtime:requireModuleOrMock(mockMeScript).actual).toEqual(true)
+		end)
+	end);
+
+	(it.each :: FIXME_ANALYZE)({
+		"",
+		"/",
+		"foo",
+		"/foo",
+		"foo/bar",
+		"/foo/bar",
+		"@alias",
+		"@",
+		"@alias/foo",
+		"@alias/foo/bar",
+	})("should explicitly disallow all forms of require by string", function(path)
+		return Promise.resolve():andThen(function()
+			local runtime = createRuntime(__filename, JestConfig.projectDefaults):expect()
+			local root = runtime:requireModule(runtime.__mockRootPath, rootJsPath) -- Erase module registry because root.js requires most other modules.
+
+			expect(function()
+				root.jest.requireActual(path)
+			end).toThrow("not enabled")
 		end)
 	end)
 end)

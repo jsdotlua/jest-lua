@@ -47,17 +47,37 @@ function exports.writeProp(instance: Instance, propertyName: string, value: unkn
 	return pcall(writePropUnsafe, instance, propertyName, value)
 end
 
-function exports.listProps(instance: Instance): { [string]: unknown }
-	local props = {}
-	local inheritFrom = RobloxApi[instance.ClassName]
+-- Unsafe because no checks are performed that these properties are readable.
+local function listPropsUnsafe(className: string): { [string]: true }
+	local unsafeProps = {}
+	local inheritFrom = RobloxApi[className]
 	while inheritFrom ~= nil do
 		for _, unsafeProp in ipairs(inheritFrom.Properties) do
-			local ok, propValue = exports.readProp(instance, unsafeProp)
-			if ok then
-				props[unsafeProp] = if propValue == nil then Object.None else propValue
-			end
+			unsafeProps[unsafeProp] = true
 		end
 		inheritFrom = RobloxApi[inheritFrom.Superclass]
+	end
+	return unsafeProps
+end
+
+function exports.listProps(instance: Instance, warmRead: boolean?): { [string]: unknown }
+	local props = listPropsUnsafe(instance.ClassName)
+	-- cold read - values may not be stable, but at least we can weed out
+	-- property reads that will result in errors
+	for unsafeProp in props do
+		local ok, propValue = exports.readProp(instance, unsafeProp)
+		if ok then
+			props[unsafeProp] = if propValue == nil then Object.None else propValue
+		else
+			props[unsafeProp] = nil
+		end
+	end
+	if warmRead then
+		-- warm read - quantum UI bugs will no longer affect values here
+		for safeProp in props do
+			local propValue = readPropUnsafe(instance, safeProp)
+			props[safeProp] = if propValue == nil then Object.None else propValue
+		end
 	end
 	return props
 end
