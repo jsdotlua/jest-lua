@@ -20,7 +20,7 @@ local describe = JestGlobals.describe
 local test = JestGlobals.test
 local beforeEach = JestGlobals.beforeEach
 
-local DataModelMocker = require("./DataModelMocker")
+local DataModelMocker = require("../DataModelMocker")
 
 -- An example instance to be proxied by tests below.
 local original

@@ -20,7 +20,7 @@ local describe = JestGlobals.describe
 local test = JestGlobals.test
 local beforeEach = JestGlobals.beforeEach
 
-local InstanceProxy = require("./InstanceProxy")
+local InstanceProxy = require("../InstanceProxy")
 
 -- An example instance to be proxied by tests below.
 local original
