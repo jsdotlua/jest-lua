@@ -12,7 +12,8 @@
     "style-check": "stylua src --check",
     "test:roblox": "sh ./scripts/test-roblox.sh",
     "verify-pack": "yarn workspaces foreach -A --no-private pack --dry-run",
-    "clean": "rm -rf roblox build node_modules"
+    "clean": "rm -rf roblox build node_modules",
+    "test": "sh ./scripts/test-roblox.sh"
   },
   "devDependencies": {
     "commander": "^11.1.0",
