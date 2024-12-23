@@ -1,3 +1,4 @@
+--!nonstrict
 -- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/packages/jest-runtime/src/index.ts
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
@@ -83,10 +84,10 @@ type Omit<T, K> = T --[[ ROBLOX TODO: TS 'Omit' built-in type is not available i
 -- local TransformationOptions = jestTransformModule.TransformationOptions
 -- local handlePotentialSyntaxError = jestTransformModule.handlePotentialSyntaxError
 -- local shouldInstrument = jestTransformModule.shouldInstrument
--- local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
+local jestTypesModule = require("@pkg/@jsdotlua/jest-types")
 -- type Config = jestTypesModule.Config
 -- type Config_Path = jestTypesModule.Config_Path
--- type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
+type Config_ProjectConfig = jestTypesModule.Config_ProjectConfig
 -- type Global = jestTypesModule.Global
 -- type Global_TestFrameworkGlobals = jestTypesModule.Global_TestFrameworkGlobals
 -- local jestHasteMapModule = require("@pkg/jest-haste-map")
@@ -101,10 +102,13 @@ local jestMockModule = require("@pkg/@jsdotlua/jest-mock")
 -- type MockFunctionMetadata = jestMockModule.MockFunctionMetadata
 -- ROBLOX deviation END
 type ModuleMocker = jestMockModule.ModuleMocker
-
 -- ROBLOX deviation START: (addition) importing ModuleMocker class instead of injecting it via runTests
 local ModuleMocker = jestMockModule.ModuleMocker
 -- ROBLOX deviation END
+-- ROBLOX deviation START: mocking globals
+local jestMockGenvModule = require("@pkg/@jsdotlua/jest-mock-genv")
+local GlobalMocker = jestMockGenvModule.GlobalMocker
+type GlobalMocker = jestMockGenvModule.GlobalMocker
 -- ROBLOX deviation START: skipped
 -- local escapePathForRegex = require("@pkg/jest-regex-util").escapePathForRegex
 -- local jestResolveModule = require("@pkg/jest-resolve")
@@ -184,6 +188,7 @@ type InternalModuleOptions = Object
 -- 	supportsTopLevelAwait = false,
 -- }
 -- ROBLOX deviation END
+
 -- ROBLOX deviation START: custom type implementation
 -- type InitialModule = Omit<Module, "require" | "parent" | "paths">
 type Module = {
@@ -283,23 +288,12 @@ export type Runtime = { -- unstable as it should be replaced by https://github.c
 	-- unstable_importModule: (self: Runtime, from: Config_Path, moduleName: string?) -> Promise<void>,
 	-- ROBLOX deviation END
 	-- ROBLOX deviation START: using ModuleScript instead of string
-	-- requireModule: (
-	-- 	self: Runtime,
-	-- 	from: Config_Path,
-	-- 	moduleName: string?,
-	-- 	options: InternalModuleOptions?,
-	-- 	isRequireActual_: boolean?
-	-- ) -> T,
-	-- requireInternalModule: (self: Runtime, from: Config_Path, to: string?) -> T,
-	-- requireActual: (self: Runtime, from: Config_Path, moduleName: string) -> T,
-	-- requireMock: (self: Runtime, from: Config_Path, moduleName: string) -> T,
 	requireModule: <T>(
 		self: Runtime,
 		from: ModuleScript,
 		moduleName: ModuleScript?,
 		options: InternalModuleOptions?,
 		isRequireActual_: boolean?,
-
 		-- ROBLOX NOTE: additional param to not require return from test files
 		noModuleReturnRequired: boolean?
 	) -> T,
@@ -308,7 +302,6 @@ export type Runtime = { -- unstable as it should be replaced by https://github.c
 	requireMock: <T>(self: Runtime, from: ModuleScript, moduleName: ModuleScript) -> T,
 	-- ROBLOX deviation END
 	-- ROBLOX deviation START: modified signature, use ModuleScript instead of string
-	-- requireModuleOrMock: (self: Runtime, from: Config_Path, moduleName: string) -> T,
 	requireModuleOrMock: <T>(self: Runtime, moduleName: ModuleScript) -> T,
 	-- ROBLOX deviation END
 	isolateModules: (self: Runtime, fn: () -> ()) -> (),
@@ -325,8 +318,6 @@ export type Runtime = { -- unstable as it should be replaced by https://github.c
 	setMock: (
 		self: Runtime,
 		-- ROBLOX deviation START: using ModuleScript instead of string
-		-- from: string,
-		-- moduleName: string,
 		from: ModuleScript,
 		moduleName: ModuleScript,
 		-- ROBLOX deviation END
@@ -347,16 +338,6 @@ type Runtime_private = { --
 	-- unstable_importModule: (self: Runtime_private, from: Config_Path, moduleName: string?) -> Promise<void>,
 	-- ROBLOX deviation END
 	-- ROBLOX deviation START: using ModuleScript instead of string
-	-- requireModule: (
-	-- 	self: Runtime_private,
-	-- 	from: Config_Path,
-	-- 	moduleName: string?,
-	-- 	options: InternalModuleOptions?,
-	-- 	isRequireActual_: boolean?
-	-- ) -> T,
-	-- requireInternalModule: (self: Runtime_private, from: Config_Path, to: string?) -> T,
-	-- requireActual: (self: Runtime_private, from: Config_Path, moduleName: string) -> T,
-	-- requireMock: (self: Runtime_private, from: Config_Path, moduleName: string) -> T,
 	requireModule: <T>(
 		self: Runtime_private,
 		from: ModuleScript,
@@ -372,7 +353,6 @@ type Runtime_private = { --
 	requireMock: <T>(self: Runtime_private, from: ModuleScript, moduleName: ModuleScript) -> T,
 	-- ROBLOX deviation END
 	-- ROBLOX deviation START: modified signature, use ModuleScript instead of string
-	-- requireModuleOrMock: (self: Runtime_private, from: Config_Path, moduleName: string) -> T,
 	requireModuleOrMock: <T>(self: Runtime_private, moduleName: ModuleScript) -> T,
 	-- ROBLOX deviation END
 	isolateModules: (self: Runtime_private, fn: () -> ()) -> (),
@@ -389,8 +369,6 @@ type Runtime_private = { --
 	setMock: (
 		self: Runtime_private,
 		-- ROBLOX deviation START: using ModuleScript instead of string
-		-- from: string,
-		-- moduleName: string,
 		from: ModuleScript,
 		moduleName: ModuleScript,
 		-- ROBLOX deviation END
@@ -407,7 +385,7 @@ type Runtime_private = { --
 	--
 	-- ROBLOX deviation START: skipped
 	-- _cacheFS: Map<string, string>,
-	-- _config: Config_ProjectConfig,
+	_config: Config_ProjectConfig,
 	-- _coverageOptions: ShouldInstrumentOptions,
 	-- _currentlyExecutingModulePath: string,
 	-- ROBLOX deviation END
@@ -456,6 +434,8 @@ type Runtime_private = { --
 	-- _moduleMockFactories: Map<string, () -> unknown>,
 	-- ROBLOX deviation END
 	_moduleMocker: ModuleMocker,
+	-- ROBLOX deviation: mocking globals
+	_globalMocker: GlobalMocker,
 	_isolatedModuleRegistry: ModuleRegistry | nil,
 	_moduleRegistry: ModuleRegistry,
 	-- ROBLOX deviation START: skipped
@@ -513,7 +493,7 @@ type Runtime_private = { --
 	-- importMock: (
 	-- 	self: Runtime_private,
 	-- 	from: Config_Path,
-	-- 	moduleName: string,
+	-- 	moduleName: ModuleScript,
 	-- 	context: VMContext
 	-- ) -> Promise<T>,
 	-- getExportsOfCjs: (self: Runtime_private, modulePath: Config_Path) -> any,
@@ -522,9 +502,6 @@ type Runtime_private = { --
 		self: Runtime_private,
 		localModule: InitialModule,
 		-- ROBLOX deviation START: using ModuleScript instead of string
-		-- from: Config_Path,
-		-- moduleName: string | nil,
-		-- modulePath: Config_Path,
 		from: ModuleScript,
 		moduleName: ModuleScript | nil,
 		modulePath: ModuleScript,
@@ -543,8 +520,10 @@ type Runtime_private = { --
 	-- ROBLOX deviation END
 	setModuleMock: (
 		self: Runtime_private,
-		from: string,
-		moduleName: string,
+		-- ROBLOX deviation START: using ModuleScript instead of string
+		from: ModuleScript,
+		moduleName: ModuleScript,
+		-- ROBLOX deviation END
 		mockFactory: () -> Promise<unknown> | unknown,
 		options: { virtual: boolean? }?
 	) -> (),
@@ -558,10 +537,10 @@ type Runtime_private = { --
 	-- _requireResolve: (
 	-- 	self: Runtime_private,
 	-- 	from: Config_Path,
-	-- 	moduleName: string?,
+	-- 	moduleName: ModuleScript?,
 	-- 	options_: ResolveOptions?
 	-- ) -> any,
-	-- _requireResolvePaths: (self: Runtime_private, from: Config_Path, moduleName: string?) -> any,
+	-- _requireResolvePaths: (self: Runtime_private, from: Config_Path, moduleName: ModuleScript?) -> any,
 	-- ROBLOX deviation END
 	_execModule: (
 		self: Runtime_private,
@@ -584,19 +563,16 @@ type Runtime_private = { --
 	-- 	options: InternalModuleOptions?
 	-- ) -> Promise<string>,
 	-- createScriptFromCode: (self: Runtime_private, scriptSource: string, filename: string) -> any,
-	-- _requireCoreModule: (self: Runtime_private, moduleName: string, supportPrefix: boolean) -> any,
-	-- _importCoreModule: (self: Runtime_private, moduleName: string, context: VMContext) -> any,
+	-- _requireCoreModule: (self: Runtime_private, moduleName: ModuleScript, supportPrefix: boolean) -> any,
+	-- _importCoreModule: (self: Runtime_private, moduleName: ModuleScript, context: VMContext) -> any,
 	-- _getMockedNativeModule: (
 	-- 	self: Runtime_private
 	-- ) -> typeof(__unhandledIdentifier__ --[[ ROBLOX TODO: Unhandled node for type: TSQualifiedName ]] --[[ nativeModule.Module ]]),
-	-- _generateMock: (self: Runtime_private, from: Config_Path, moduleName: string) -> any,
+	-- _generateMock: (self: Runtime_private, from: Config_Path, moduleName: ModuleScript) -> any,
 	-- ROBLOX deviation END
 	_shouldMock: (
 		self: Runtime_private,
 		-- ROBLOX deviation: accept ModuleScript instead of string
-		-- from: Config_Path,
-		-- moduleName: string,
-		-- explicitShouldMock: Map<string, boolean>,
 		from: ModuleScript,
 		moduleName: ModuleScript,
 		explicitShouldMock: Map<ModuleScript, boolean>,
@@ -659,7 +635,7 @@ local Runtime_private = Runtime :: Runtime_private & Runtime_statics;
 -- 	coverageOptions: ShouldInstrumentOptions,
 -- 	testPath: Config_Path
 -- ): Runtime
-function Runtime.new(loadedModuleFns: Map<ModuleScript, { any }>?): Runtime
+function Runtime.new(config: Config_ProjectConfig, loadedModuleFns: Map<ModuleScript, { any }>?): Runtime
 	-- ROBLOX deviation START: cast to private type to access methods properly
 	-- local self = setmetatable({}, Runtime)
 	local self = (setmetatable({}, Runtime) :: any) :: Runtime_private
@@ -667,7 +643,7 @@ function Runtime.new(loadedModuleFns: Map<ModuleScript, { any }>?): Runtime
 	self.isTornDown = false
 	-- ROBLOX deviation START: skipped
 	-- self._cacheFS = cacheFS
-	-- self._config = config
+	self._config = config
 	-- self._coverageOptions = coverageOptions
 	-- self._currentlyExecutingModulePath = ""
 	-- ROBLOX deviation END
@@ -699,7 +675,14 @@ function Runtime.new(loadedModuleFns: Map<ModuleScript, { any }>?): Runtime
 	-- ROBLOX deviation END
 	-- ROBLOX deviation START: instantiate the module mocker here instead of being passed in as an arg from runTest
 	-- self._moduleMocker = self._environment.moduleMocker
-	self._moduleMocker = ModuleMocker.new()
+	self._moduleMocker = ModuleMocker.new(config)
+	-- ROBLOX deviation END
+	-- ROBLOX deviation START: mocking globals
+	self._globalMocker = GlobalMocker.new(jestMockGenvModule.MOCKABLE_GLOBALS)
+	-- TODO: if we want to mock more specific function environment members then
+	-- this will have to be rethought, but for what's being mocked now, it's
+	-- fine to draw from the global function environment.
+	self._moduleMocker:mockGlobals(self._globalMocker, getfenv(0))
 	-- ROBLOX deviation END
 	self._isolatedModuleRegistry = nil
 	self._isolatedMockRegistry = nil
@@ -1069,7 +1052,7 @@ end
 -- 		return module
 -- 	end)
 -- end
--- function Runtime_private:unstable_importModule(from: Config_Path, moduleName: string?): Promise<void>
+-- function Runtime_private:unstable_importModule(from: Config_Path, moduleName: ModuleScript?): Promise<void>
 -- 	return Promise.resolve():andThen(function()
 -- 		invariant(
 -- 			runtimeSupportsVmModules,
@@ -1101,7 +1084,7 @@ end
 -- 	end, { context = context, identifier = modulePath })
 -- 	return evaluateSyntheticModule(module)
 -- end
--- function Runtime_private:importMock(from: Config_Path, moduleName: string, context: VMContext): Promise<T>
+-- function Runtime_private:importMock(from: Config_Path, moduleName: ModuleScript, context: VMContext): Promise<T>
 -- 	return Promise.resolve():andThen(function()
 -- 		local moduleID =
 -- 			self._resolver:getModuleID(self._virtualModuleMocks, from, moduleName, { conditions = self.esmConditions })
@@ -1151,8 +1134,6 @@ end
 -- ROBLOX deviation END
 function Runtime_private:requireModule<T>(
 	-- ROBLOX deviation START: using ModuleScript instead of string
-	-- from: Config_Path,
-	-- moduleName: string?,
 	from: ModuleScript,
 	moduleName_: ModuleScript?,
 	-- ROBLOX deviation END
@@ -1313,13 +1294,12 @@ function Runtime_private:requireInternalModule<T>(from: ModuleScript, to: Module
 	})
 end
 -- ROBLOX deviation START: using ModuleScript instead of string
--- function Runtime_private:requireActual(from: Config_Path, moduleName: string): T
+-- function Runtime_private:requireActual(from: Config_Path, moduleName: ModuleScript): T
 function Runtime_private:requireActual<T>(from: ModuleScript, moduleName: ModuleScript): T
 	-- ROBLOX deviation END
 	return self:requireModule(from, moduleName, nil, true)
 end
 -- ROBLOX deviation START: using ModuleScript instead of string
--- function Runtime_private:requireMock(from: Config_Path, moduleName: string): T
 -- 	local moduleID =
 -- 		self._resolver:getModuleID(self._virtualMocks, from, moduleName, { conditions = self.cjsConditions })
 function Runtime_private:requireMock<T>(from: ModuleScript, moduleName: ModuleScript): T
@@ -1405,9 +1385,6 @@ end
 function Runtime_private:_loadModule(
 	localModule: InitialModule,
 	-- ROBLOX deviation START: using ModuleScript instead of string
-	-- from: Config_Path,
-	-- moduleName: string | nil,
-	-- modulePath: Config_Path,
 	from: ModuleScript,
 	moduleName: ModuleScript | nil,
 	modulePath: ModuleScript,
@@ -1446,12 +1423,11 @@ end
 -- end
 -- ROBLOX deviation END
 -- ROBLOX deviation START: modified signature, use ModuleScript instead of string
--- function Runtime_private:requireModuleOrMock(from: Config_Path, moduleName: string): T
 function Runtime_private:requireModuleOrMock<T>(moduleName: ModuleScript): T
 	local from = moduleName
 	-- ROBLOX deviation END
 	-- ROBLOX deviation START: additional interception
-	if moduleName == script or moduleName == script.Parent then
+	if moduleName == script or (typeof(script.Parent) == "ModuleScript" and moduleName == script.Parent) then
 		-- ROBLOX NOTE: Need to cast require because analyze cannot figure out scriptInstance path
 		return (require :: any)(moduleName)
 	end
@@ -1685,8 +1661,6 @@ end
 -- ROBLOX deviation END
 function Runtime_private:setMock(
 	-- ROBLOX deviation START: using module script instead of string moduleName
-	-- from: string,
-	-- moduleName: string,
 	from: ModuleScript,
 	moduleName: ModuleScript,
 	-- ROBLOX deviation END
@@ -1711,7 +1685,7 @@ end
 -- ROBLOX deviation START: skipped
 -- function Runtime_private:setModuleMock(
 -- 	from: string,
--- 	moduleName: string,
+-- 	moduleName: ModuleScript,
 -- 	mockFactory: () -> Promise<unknown> | unknown,
 -- 	options: { virtual: boolean? }?
 -- ): ()
@@ -1735,6 +1709,8 @@ function Runtime_private:clearAllMocks(): ()
 	self._moduleMocker:clearAllMocks()
 end
 function Runtime_private:teardown(): ()
+	-- ROBLOX deviation: mocking globals
+	self._moduleMocker:unmockGlobals(self._globalMocker)
 	self:restoreAllMocks()
 	self:resetAllMocks()
 	self:resetModules()
@@ -1779,7 +1755,7 @@ end
 -- function Runtime_private:_resolveModule(from: Config_Path, to: string | nil, options: ResolveModuleConfig?)
 -- 	return if Boolean.toJSBoolean(to) then self._resolver:resolveModule(from, to, options) else from
 -- end
--- function Runtime_private:_requireResolve(from: Config_Path, moduleName: string?, options_: ResolveOptions?)
+-- function Runtime_private:_requireResolve(from: Config_Path, moduleName: ModuleScript?, options_: ResolveOptions?)
 -- 	local options: ResolveOptions = if options_ ~= nil then options_ else {}
 -- 	if
 -- 		moduleName == nil --[[ ROBLOX CHECK: loose equality used upstream ]]
@@ -1836,7 +1812,7 @@ end
 -- 		end
 -- 	end
 -- end
--- function Runtime_private:_requireResolvePaths(from: Config_Path, moduleName: string?)
+-- function Runtime_private:_requireResolvePaths(from: Config_Path, moduleName: ModuleScript?)
 -- 	if
 -- 		moduleName == nil --[[ ROBLOX CHECK: loose equality used upstream ]]
 -- 	then
@@ -1966,6 +1942,7 @@ function Runtime_private:_execModule(
 	local moduleFunction, defaultEnvironment, errorMessage, cleanupFn
 
 	local modulePath = localModule.filename
+	local loadModuleEnabled = pcall((debug :: any).loadmodule, Instance.new("ModuleScript"))
 
 	if self._loadedModuleFns and self._loadedModuleFns:has(modulePath) then
 		local loadedModule = self._loadedModuleFns:get(modulePath) :: { any }
@@ -1974,8 +1951,12 @@ function Runtime_private:_execModule(
 	else
 		-- Narrowing this type here lets us appease the type checker while still
 		-- counting on types for the rest of this file
-		local loadmodule: (ModuleScript) -> (any, string, () -> any) = debug["loadmodule"]
-		moduleFunction, errorMessage, cleanupFn = loadmodule(modulePath)
+		if loadModuleEnabled then
+			local loadmodule: (ModuleScript) -> (any, string, () -> any) = debug["loadmodule"]
+			moduleFunction, errorMessage, cleanupFn = loadmodule(modulePath)
+		else
+			moduleFunction = loadstring(modulePath.Source, modulePath:GetFullName())
+		end
 		-- ROBLOX NOTE: we are not using assert() as it throws a bare string and we need to throw an Error object
 		if moduleFunction == nil then
 			error(Error.new(errorMessage))
@@ -1998,44 +1979,86 @@ function Runtime_private:_execModule(
 	-- a new module instance but with the same environment table as `moduleFunction` itself at the
 	-- time of invocation. In order to properly sanbox module instances, we need to ensure that
 	-- each instance has its own distinct environment table containing the specific overrides for it,
-	-- but still inherits from the default parent environment for non-overriden environment goodies.
+	-- but still inherits from the default parent environment for non-overriden
+	-- environment goodies.
 	-- local isInternal = false -- if options ~= nil and options.isInternalModule then options.isInternalModule else false
 	local isInternal = if options ~= nil and options.isInternalModule then options.isInternalModule else false
-	setfenv(
-		moduleFunction,
-		setmetatable(
-			Object.assign(
-				{
-					--[[
-						ROBLOX NOTE:
-						Adding `script` directly into a table so that it is accessible to the debugger
-						It seems to be a similar issue to code inside of __index function not being debuggable
-					]]
-					script = defaultEnvironment.script,
-					require = if isInternal
-						then function(scriptInstance: ModuleScript)
-							return self:requireInternalModule(scriptInstance)
-						end
-						else function(scriptInstance: ModuleScript)
-							return self:requireModuleOrMock(scriptInstance)
-						end,
-				},
-				if isInternal
-					then {}
-					else {
-						delay = self._fakeTimersImplementation.delayOverride,
-						tick = self._fakeTimersImplementation.tickOverride,
-						time = self._fakeTimersImplementation.timeOverride,
-						DateTime = self._fakeTimersImplementation.dateTimeOverride,
-						os = self._fakeTimersImplementation.osOverride,
-						task = self._fakeTimersImplementation.taskOverride,
-					}
-			) :: Object,
-			{ __index = defaultEnvironment }
-		) :: any
-	)
 
+	-- This is the 'least mocked' environment that scripts will be able to see.
+	-- The final function environment inherits from this sandbox.
+	-- This is separate so that, in the future, `globalEnv` could expose these
+	-- 'unmocked' functions instead of the ones in the global environment.
+	local sandboxEnvironment = setmetatable({
+		--[[
+			ROBLOX NOTE:
+			Adding `script` directly into a table so that it is accessible to the debugger
+			It seems to be a similar issue to code inside of __index function not being debuggable
+		]]
+		script = if loadModuleEnabled then defaultEnvironment.script else modulePath,
+		require = if isInternal
+			then function(scriptInstance: ModuleScript | string)
+				if typeof(scriptInstance) == "string" then
+					-- Disabling this at the surface level of the API until we have
+					-- deeper support in Jest.
+					error("Require-by-string is not enabled for use inside Jest at this time.")
+				end
+				return self:requireInternalModule(scriptInstance)
+			end
+			else function(scriptInstance: ModuleScript | string)
+				if typeof(scriptInstance) == "string" then
+					-- Disabling this at the surface level of the API until we have
+					-- deeper support in Jest.
+					error("Require-by-string is not enabled for use inside Jest at this time.")
+				end
+				return self:requireModuleOrMock(scriptInstance)
+			end,
+	}, {
+		__index = defaultEnvironment,
+	})
+	if not isInternal then
+		Object.assign(sandboxEnvironment, {
+			delay = self._fakeTimersImplementation.delayOverride,
+			tick = self._fakeTimersImplementation.tickOverride,
+			time = self._fakeTimersImplementation.timeOverride,
+			DateTime = self._fakeTimersImplementation.dateTimeOverride,
+			os = self._fakeTimersImplementation.osOverride,
+			task = self._fakeTimersImplementation.taskOverride,
+		})
+	end
+
+	-- This is the environment actually passed to scripts, including all global
+	-- mocks and other customisations the user might choose to apply.
+	local mockedSandboxEnvironment = setmetatable({}, {
+		__index = sandboxEnvironment,
+	})
+	local function setupAutomocks(automocks: Object, sourceEnv: any, saveInto: any)
+		for name, automock in automocks do
+			if automock._isGlobalAutomockFn then
+				local original = sourceEnv[name]
+				-- Disguise the mock callable table as a function on the
+				-- outside, so it retains the same behaviour when observed in
+				-- various ways by almost all code (except debug library stuff)
+				saveInto[name] = function(...)
+					if automock._maybeMock == nil then
+						error(Error.new("Code should not be running when globalEnv is uninitialised"))
+					end
+					return automock._maybeMock(...)
+				end
+			else
+				local subSourceEnv = sourceEnv[name]
+				local subSaveInto = setmetatable({}, {
+					__index = subSourceEnv,
+				})
+				saveInto[name] = subSaveInto
+				setupAutomocks(automock, subSourceEnv, subSaveInto)
+			end
+		end
+	end
+	setupAutomocks(self._globalMocker.automocks, sandboxEnvironment, mockedSandboxEnvironment)
+
+	setfenv(moduleFunction, mockedSandboxEnvironment :: any)
 	local moduleResult = table.pack(moduleFunction())
+
 	if moduleResult.n ~= 1 and noModuleReturnRequired ~= true then
 		error(
 			string.format(
@@ -2120,7 +2143,7 @@ end
 -- 		end
 -- 	end
 -- end
--- function Runtime_private:_requireCoreModule(moduleName: string, supportPrefix: boolean)
+-- function Runtime_private:_requireCoreModule(moduleName: ModuleScript, supportPrefix: boolean)
 -- 	local moduleWithoutNodePrefix = if Boolean.toJSBoolean(
 -- 			if Boolean.toJSBoolean(supportPrefix) then moduleName:startsWith("node:") else supportPrefix
 -- 		)
@@ -2134,7 +2157,7 @@ end
 -- 	end
 -- 	return require_(moduleWithoutNodePrefix)
 -- end
--- function Runtime_private:_importCoreModule(moduleName: string, context: VMContext)
+-- function Runtime_private:_importCoreModule(moduleName: ModuleScript, context: VMContext)
 -- 	local required = self:_requireCoreModule(moduleName, supportsNodeColonModulePrefixInImport)
 -- 	local module = SyntheticModule.new(
 -- 		Array.concat({}, { "default" }, Array.spread(Object.keys(required))),
@@ -2219,7 +2242,7 @@ end
 -- 	self._moduleImplementation = Module
 -- 	return Module
 -- end
--- function Runtime_private:_generateMock(from: Config_Path, moduleName: string)
+-- function Runtime_private:_generateMock(from: Config_Path, moduleName: ModuleScript)
 -- 	local ref = self._resolver:resolveStubModuleName(from, moduleName)
 -- 	local modulePath = Boolean.toJSBoolean(ref) and ref
 -- 		or self:_resolveModule(from, moduleName, { conditions = self.cjsConditions })
@@ -2259,9 +2282,6 @@ end
 -- ROBLOX deviation END
 function Runtime_private:_shouldMock(
 	-- ROBLOX deviation: accept ModuleScript instead of string
-	-- from: Config_Path,
-	-- moduleName: string,
-	-- explicitShouldMock: Map<string, boolean>,
 	from: ModuleScript,
 	moduleName: ModuleScript,
 	explicitShouldMock: Map<ModuleScript, boolean>,
@@ -2351,7 +2371,7 @@ function Runtime_private:_shouldMock(
 end
 -- ROBLOX deviation START: skipped
 -- function Runtime_private:_createRequireImplementation(from: InitialModule, options: InternalModuleOptions?): NodeRequire
--- 	local function resolve(moduleName: string, resolveOptions: ResolveOptions?)
+-- 	local function resolve(moduleName: ModuleScript, resolveOptions: ResolveOptions?)
 -- 		local resolved = self:_requireResolve(from.filename, moduleName, resolveOptions)
 -- 		if
 -- 			Boolean.toJSBoolean((function()
@@ -2367,11 +2387,11 @@ end
 -- 		end
 -- 		return resolved
 -- 	end
--- 	resolve.paths = function(_self: any, moduleName: string)
+-- 	resolve.paths = function(_self: any, moduleName: ModuleScript)
 -- 		return self:_requireResolvePaths(from.filename, moduleName)
 -- 	end
 -- 	local moduleRequire = if Boolean.toJSBoolean(if typeof(options) == "table" then options.isInternalModule else nil)
--- 		then function(moduleName: string)
+-- 		then function(moduleName: ModuleScript)
 -- 			return self:requireInternalModule(from.filename, moduleName)
 -- 		end
 -- 		else self.requireModuleOrMock:bind(self, from.filename) :: NodeRequire
@@ -2404,6 +2424,7 @@ end
 -- 	return moduleRequire
 -- end
 -- ROBLOX deviation END
+
 -- ROBLOX deviation START: using ModuleScript instead of Config_Path
 -- function Runtime_private:_createJestObjectFor(from: Config_Path): Jest
 function Runtime_private:_createJestObjectFor(from: ModuleScript): Jest
@@ -2423,7 +2444,6 @@ function Runtime_private:_createJestObjectFor(from: ModuleScript): Jest
 	-- end
 	-- ROBLOX deviation END
 	-- ROBLOX deviation START: using ModuleScript instead of string
-	-- local function unmock(moduleName: string)
 	local function unmock(moduleName: ModuleScript)
 		-- ROBLOX deviation END
 		-- ROBLOX deviation START: using module script instead of string moduleName
@@ -2435,7 +2455,7 @@ function Runtime_private:_createJestObjectFor(from: ModuleScript): Jest
 		return jestObject
 	end
 	-- ROBLOX deviation START: not implemented yet
-	-- local function deepUnmock(moduleName: string)
+	-- local function deepUnmock(moduleName: ModuleScript)
 	-- 	local moduleID =
 	-- 		self._resolver:getModuleID(self._virtualMocks, from, moduleName, { conditions = self.cjsConditions })
 	-- 	self._explicitShouldMock:set(moduleID, false)
@@ -2460,7 +2480,6 @@ function Runtime_private:_createJestObjectFor(from: ModuleScript): Jest
 		return jestObject
 	end
 	-- ROBLOX deviation START: using ModuleScript instead of string and predefine function
-	-- local function setMockFactory(moduleName: string, mockFactory: () -> unknown, options: { virtual: boolean? }?)
 	function setMockFactory(moduleName: ModuleScript, mockFactory: () -> unknown, options: { virtual: boolean? }?)
 		-- ROBLOX deviation END
 		self:setMock(from, moduleName, mockFactory, options)
@@ -2538,13 +2557,17 @@ function Runtime_private:_createJestObjectFor(from: ModuleScript): Jest
 		return jestObject
 	end
 	-- ROBLOX deviation START: no built-in bind support in Luau
-	local fn = function(implementation: any)
-		return self._moduleMocker:fn(implementation)
+	local fn = function(...)
+		return self._moduleMocker:fn(...)
+	end
+	local spyOn = function(...)
+		return self._moduleMocker:spyOn(...)
 	end
 
 	-- local fn = self._moduleMocker.fn:bind(self._moduleMocker)
-	-- ROBLOX deviation END
 	-- local spyOn = self._moduleMocker.spyOn:bind(self._moduleMocker)
+	-- ROBLOX deviation END
+
 	-- ROBLOX deviation START: not implemented yet
 	-- local ref = if typeof(self._moduleMocker.mocked) == "table" then self._moduleMocker.mocked.bind else nil
 	-- local ref = if ref ~= nil then ref(self._moduleMocker) else nil
@@ -2595,7 +2618,7 @@ function Runtime_private:_createJestObjectFor(from: ModuleScript): Jest
 			return _getFakeTimers():clearAllTimers()
 		end,
 		-- ROBLOX TODO START: not implemented yet
-		-- createMockFromModule = function(moduleName: string)
+		-- createMockFromModule = function(moduleName: ModuleScript)
 		-- 	return self:_generateMock(from, moduleName)
 		-- end,
 		-- deepUnmock = deepUnmock,
@@ -2608,7 +2631,7 @@ function Runtime_private:_createJestObjectFor(from: ModuleScript): Jest
 		-- ROBLOX TODO END
 		fn = fn,
 		-- ROBLOX TODO START: not implemented yet
-		-- genMockFromModule = function(moduleName: string)
+		-- genMockFromModule = function(moduleName: ModuleScript)
 		-- 	return self:_generateMock(from, moduleName)
 		-- end,
 		-- ROBLOX TODO END
@@ -2623,6 +2646,8 @@ function Runtime_private:_createJestObjectFor(from: ModuleScript): Jest
 		getTimerCount = function()
 			return _getFakeTimers():getTimerCount()
 		end,
+		-- ROBLOX deviation: mocking globals
+		globalEnv = self._globalMocker.envObject,
 		isMockFunction = self._moduleMocker.isMockFunction,
 		isolateModules = isolateModules,
 		mock = mock,
@@ -2631,7 +2656,12 @@ function Runtime_private:_createJestObjectFor(from: ModuleScript): Jest
 		-- ROBLOX deviation END
 		-- ROBLOX deviation START: issue roblox/js-to-lua #686 - no built-in bind support in Luau
 		-- requireActual = self.requireActual:bind(self, from),
-		requireActual = function(moduleName)
+		requireActual = function(moduleName: ModuleScript | string)
+			if typeof(moduleName) == "string" then
+				-- Disabling this at the surface level of the API until we have
+				-- deeper support in Jest.
+				error("Require-by-string is not enabled for use inside Jest at this time.")
+			end
 			return self:requireActual(from, moduleName)
 		end,
 		-- ROBLOX deviation END
@@ -2666,7 +2696,6 @@ function Runtime_private:_createJestObjectFor(from: ModuleScript): Jest
 		jestTimers = _getFakeTimers(),
 		-- ROBLOX deviation END
 		-- ROBLOX deviation START: using ModuleScript instead of string moduleName & virtual mocks not supported
-		-- setMock = function(moduleName: string, mock: unknown)
 		setMock = function(moduleName: ModuleScript, mock: unknown)
 			-- ROBLOX deviation END
 			return setMockFactory(moduleName, function()
@@ -2683,12 +2712,12 @@ function Runtime_private:_createJestObjectFor(from: ModuleScript): Jest
 		end,
 		-- ROBLOX TODO START: not implemented yet
 		-- setTimeout = setTimeout,
-		-- spyOn = spyOn,
-		-- ROBOX TODO END
+		-- ROBLOX TODO END
+		spyOn = spyOn,
 		unmock = unmock,
 		-- ROBLOX TODO START: not implemented yet
 		-- unstable_mockModule = mockModule,
-		-- ROBOX TODO END
+		-- ROBLOX TODO END
 		useFakeTimers = useFakeTimers,
 		useRealTimers = useRealTimers,
 	}

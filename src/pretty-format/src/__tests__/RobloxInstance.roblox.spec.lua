@@ -47,7 +47,8 @@ describe("Instance", function()
 	end)
 
 	it("serializes Folder", function()
-		expect(prettyFormatResult(script.Parent.Parent)).toMatchSnapshot()
+		local stableFolder = (script.Parent :: Instance):FindFirstChild("dont_touch_im_used_in_snapshots")
+		expect(prettyFormatResult(stableFolder)).toMatchSnapshot()
 	end)
 
 	it("serializes Instances in table", function()
@@ -202,13 +203,9 @@ describe("config.printInstanceDefaults", function()
 
 	it("serializes modified values", function()
 		created.Name = "ModifiedTextLabel"
-		created.Text = "not default"
+		created.TextColor3 = Color3.new(1, 0, 0)
 		expect(prettyFormatResult(created)).toEqual(
-			"TextLabel {\n"
-				.. '  "ContentText": "not default",\n'
-				.. '  "Name": "ModifiedTextLabel",\n'
-				.. '  "Text": "not default",\n'
-				.. "}"
+			"TextLabel {\n" .. '  "Name": "ModifiedTextLabel",\n' .. '  "TextColor3": Color3(1, 0, 0),\n' .. "}"
 		)
 	end)
 

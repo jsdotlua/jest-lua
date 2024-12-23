@@ -27,67 +27,93 @@ local isObjectWithKeys = CurrentModuleExpect.isObjectWithKeys
 local hasPropertyInObject = CurrentModuleExpect.hasPropertyInObject
 local isAsymmetric = CurrentModuleExpect.isAsymmetric
 
-local _cachedPropertyValues = {}
+local exports = {}
 
-local function tryPropertyName(instance, propertyName)
+-- Unsafe because no checks are performed that this property is readable.
+local function readPropUnsafe(instance: Instance, propertyName: string): unknown
 	return instance[propertyName]
 end
 
-local function getRobloxProperties(class: string): { string }
-	local instanceClass = RobloxApi[class]
-	local t = {}
-	while instanceClass do
-		for _, property in ipairs(instanceClass.Properties) do
-			table.insert(t, property)
-		end
-		instanceClass = RobloxApi[instanceClass.Superclass]
-	end
-	table.sort(t)
-	return t
+-- Unsafe because no checks are performed that this property is writable.
+local function writePropUnsafe(instance: Instance, propertyName: string, value: unknown): ()
+	instance[propertyName] = value
 end
 
-local function getRobloxDefaults(className: string): ({ [string]: any }, { string })
-	local propertiesList = getRobloxProperties(className)
+function exports.readProp(instance: Instance, propertyName: string)
+	return pcall(readPropUnsafe, instance, propertyName)
+end
 
-	local classCache = _cachedPropertyValues[className]
-	if classCache then
-		return classCache, propertiesList
-	else
-		classCache = {}
-		_cachedPropertyValues[className] = classCache
+function exports.writeProp(instance: Instance, propertyName: string, value: unknown)
+	return pcall(writePropUnsafe, instance, propertyName, value)
+end
+
+-- Unsafe because no checks are performed that these properties are readable.
+local function listPropsUnsafe(className: string): { [string]: true }
+	local unsafeProps = {}
+	local inheritFrom = RobloxApi[className]
+	while inheritFrom ~= nil do
+		for _, unsafeProp in ipairs(inheritFrom.Properties) do
+			unsafeProps[unsafeProp] = true
+		end
+		inheritFrom = RobloxApi[inheritFrom.Superclass]
 	end
+	return unsafeProps
+end
 
-	local created = Instance.new(className)
-
-	for _, propertyName in ipairs(propertiesList) do
-		local ok, defaultValue = pcall(tryPropertyName, created, propertyName)
-
+function exports.listProps(instance: Instance, warmRead: boolean?): { [string]: unknown }
+	local props = listPropsUnsafe(instance.ClassName)
+	-- cold read - values may not be stable, but at least we can weed out
+	-- property reads that will result in errors
+	for unsafeProp in props do
+		local ok, propValue = exports.readProp(instance, unsafeProp)
 		if ok then
-			classCache[propertyName] = defaultValue
+			props[unsafeProp] = if propValue == nil then Object.None else propValue
+		else
+			props[unsafeProp] = nil
 		end
 	end
+	if warmRead then
+		-- warm read - quantum UI bugs will no longer affect values here
+		for safeProp in props do
+			local propValue = readPropUnsafe(instance, safeProp)
+			props[safeProp] = if propValue == nil then Object.None else propValue
+		end
+	end
+	return props
+end
 
-	created:Destroy()
-	return classCache, propertiesList
+do
+	-- Hidden from outside code.
+	local cachedDefaults = {}
+	function exports.listDefaultProps(className: string): { [string]: unknown }
+		local cached = cachedDefaults[className]
+		if cached ~= nil then
+			return cached
+		end
+
+		local ok, instance = pcall(Instance.new, className)
+		if not ok then
+			error("Class type is abstract or not creatable - cannot list defaults")
+		end
+		local defaults = exports.listProps(instance)
+		instance:Destroy()
+
+		cachedDefaults[className] = defaults
+		return defaults
+	end
 end
 
 -- given an Instance and a property-value table subset
 -- returns true if all property-values in the subset table exist in the Instance
 -- and returns false otherwise
 -- returns nil for undefined behavior
-local function instanceSubsetEquality(instance: any, subset: any): boolean | nil
+function exports.instanceSubsetEquality(instance: any, subset: any): boolean | nil
 	local function subsetEqualityWithContext(seenReferences)
 		return function(localInstance, localSubset)
 			seenReferences = seenReferences or {}
 
 			if getType(localInstance) ~= "Instance" or not isObjectWithKeys(localSubset) then
 				return nil
-			end
-
-			local instanceProperties = getRobloxProperties(localInstance.ClassName)
-			local instanceChildren = {}
-			for _, v in ipairs(localInstance:getChildren()) do
-				instanceChildren[v.Name] = true
 			end
 
 			return Array.every(Object.keys(localSubset), function(prop)
@@ -99,9 +125,8 @@ local function instanceSubsetEquality(instance: any, subset: any): boolean | nil
 					end
 					seenReferences[subsetVal] = true
 				end
-				local result = localInstance ~= nil
-					and (table.find(instanceProperties, prop) ~= nil or instanceChildren[prop] ~= nil)
-					and equals(localInstance[prop], subsetVal, { subsetEqualityWithContext(seenReferences) })
+				local ok, value = exports.readProp(localInstance, prop)
+				local result = ok and equals(value, subsetVal, { subsetEqualityWithContext(seenReferences) })
 
 				seenReferences[subsetVal] = nil
 				return result
@@ -118,8 +143,12 @@ local function instanceSubsetEquality(instance: any, subset: any): boolean | nil
 end
 
 -- InstanceSubset object behaves like an Instance when serialized by pretty-format
+
 local InstanceSubset = {}
+exports.InstanceSubset = InstanceSubset
+
 InstanceSubset.__index = InstanceSubset
+
 function InstanceSubset.new(className, subset)
 	table.sort(subset)
 	local self = {
@@ -131,14 +160,14 @@ function InstanceSubset.new(className, subset)
 	return self
 end
 
--- given an Instance and a property-value table subset, returns
--- an InstanceSubset object representing the subset of Instance with values in the subset table
--- and a InstanceSubset object representing the subset table
-local function getInstanceSubset(instance: any, subset: any, seenReferences_: any?): (any, any)
+-- given an Instance and an expected property-value table subset, returns
+-- an InstanceSubset object representing the found subset of Instance with values in the subset table
+-- and a InstanceSubset object representing the expected subset table
+function exports.getInstanceSubset(instance: any, subset: any, seenReferences_: any?): (any, any)
 	local seenReferences = seenReferences_ or {}
 
-	local trimmed: any = {}
-	seenReferences[instance] = trimmed
+	local foundSubset: any = {}
+	seenReferences[instance] = foundSubset
 
 	-- return non-table primitives
 	if equals(instance, subset) then
@@ -148,29 +177,23 @@ local function getInstanceSubset(instance: any, subset: any, seenReferences_: an
 	end
 
 	-- collect non-table primitive values
-	local newSubset = {}
+	local expectedSubset = {}
 	for k, v in pairs(subset) do
 		if typeof(v) ~= "table" then
-			newSubset[k] = v
+			expectedSubset[k] = v
 		end
 	end
 
-	local propsAndChildren = getRobloxProperties(instance.ClassName)
-	for _, v in ipairs(instance:getChildren()) do
-		table.insert(propsAndChildren, v.Name)
-	end
-
-	for i, prop in
-		ipairs(Array.filter(propsAndChildren, function(prop)
-			return hasPropertyInObject(subset, prop)
-		end))
-	do
-		if seenReferences[instance[prop]] ~= nil then
+	for name, subsetPropOrChild in pairs(subset) do
+		local ok, realPropOrChild = exports.readProp(instance, name)
+		if not ok then
+			continue
+		elseif seenReferences[realPropOrChild] ~= nil then
 			error("Circular reference passed into .toMatchInstance(subset)")
 		else
-			local nestedSubset
-			trimmed[prop], nestedSubset = getInstanceSubset(instance[prop], subset[prop], seenReferences)
-			newSubset[prop] = nestedSubset
+			expectedSubset[name] = {}
+			foundSubset[name], expectedSubset[name] =
+				exports.getInstanceSubset(realPropOrChild, subsetPropOrChild, seenReferences)
 		end
 	end
 
@@ -181,13 +204,9 @@ local function getInstanceSubset(instance: any, subset: any, seenReferences_: an
 		subsetClassName = rawget(subset, "ClassName")
 	end
 
-	return InstanceSubset.new(instance.ClassName, trimmed), InstanceSubset.new(subsetClassName, newSubset)
+	local found = InstanceSubset.new(instance.ClassName, foundSubset)
+	local expected = InstanceSubset.new(subsetClassName, expectedSubset)
+	return found, expected
 end
 
-return {
-	getRobloxProperties = getRobloxProperties,
-	getRobloxDefaults = getRobloxDefaults,
-	instanceSubsetEquality = instanceSubsetEquality,
-	InstanceSubset = InstanceSubset,
-	getInstanceSubset = getInstanceSubset,
-}
+return exports

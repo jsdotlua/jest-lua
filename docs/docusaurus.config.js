@@ -1,6 +1,6 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 
-const VERSION = '3.6.1-rc.2';
+const VERSION = '3.10.0';
 
 module.exports = {
   title: 'Jest Lua',
@@ -12,6 +12,8 @@ module.exports = {
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.svg',
+  staticDirectories: ['static'],
+  trailingSlash: false,
   themeConfig: {
     navbar: {
       title: `Jest Lua v${VERSION}`,

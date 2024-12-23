@@ -40,7 +40,7 @@ end)
 ```
 
 ## Truthiness
-<img alt='Deviation' src='img/deviation.svg'/>
+![Deviation](/img/deviation.svg)
 
 In tests, you sometimes need to distinguish between `nil`, and `false`, but you sometimes do not want to treat these differently. Jest Lua contains helpers that let you be explicit about what you want.
 
@@ -101,7 +101,7 @@ end)
 ```
 
 ## Strings
-<img alt='API change' src='img/apichange.svg'/>
+![API Change](/img/apichange.svg)
 
 You can check strings against [Lua string patterns](https://developer.roblox.com/en-us/articles/string-patterns-reference) with `toMatch`:
 
@@ -199,7 +199,7 @@ end)
 ```
 
 ## Exceptions
-<img alt='API change' src='img/apichange.svg'/>
+![API Change](/img/apichange.svg)
 
 If you want to test whether a particular function throws an error when it's called, use `toThrow`.
 

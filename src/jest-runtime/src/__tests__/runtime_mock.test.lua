@@ -1,6 +1,8 @@
 -- ROBLOX upstream: https://github.com/facebook/jest/blob/v28.0.0/jest-runtime/src/__tests__/runtime_mock.test.js
 local Promise = require("@pkg/@jsdotlua/promise")
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
+-- ROBLOX deviation: pass config to runtime new
+local JestConfig = require("@pkg/@jsdotlua/jest-config")
 local beforeEach = JestGlobals.beforeEach
 local describe = JestGlobals.describe
 local expect = JestGlobals.expect
@@ -33,8 +35,9 @@ describe("Runtime", function()
 		-- ROBLOX deviation END
 		it("uses explicitly set mocks instead of automocking", function()
 			return Promise.resolve():andThen(function()
-				-- ROBLOX deviation START: using current ModuleScript instead of __filename
-				local runtime = createRuntime(__filename):expect()
+				-- ROBLOX deviation START: using current ModuleScript instead of
+				-- __filename, also pass in config to runtime
+				local runtime = createRuntime(__filename, JestConfig.projectDefaults):expect()
 				-- ROBLOX deviation END
 				local mockReference = { isMock = true }
 				local root = runtime:requireModule(runtime.__mockRootPath, rootJsPath) -- Erase module registry because root.js requires most other modules.
@@ -69,7 +72,8 @@ describe("Runtime", function()
 		-- ROBLOX deviation START: virtual mocks not supported
 		-- it("sets virtual mock for non-existing module required from same directory", function()
 		-- 	return Promise.resolve():andThen(function()
-		-- 		local runtime = createRuntime(__filename):expect()
+
+		-- 		local runtime = createRuntime(__filename, config):expect()
 		-- 		local mockReference = { isVirtualMock = true }
 		-- 		local virtual = true
 		-- 		local root = runtime:requireModule(runtime.__mockRootPath, rootJsPath) -- Erase module registry because root.js requires most other modules.
@@ -90,7 +94,8 @@ describe("Runtime", function()
 		-- end)
 		-- it("sets virtual mock for non-existing module required from different directory", function()
 		-- 	return Promise.resolve():andThen(function()
-		-- 		local runtime = createRuntime(__filename):expect()
+
+		-- 		local runtime = createRuntime(__filename, config):expect()
 		-- 		local mockReference = { isVirtualMock = true }
 		-- 		local virtual = true
 		-- 		local root = runtime:requireModule(runtime.__mockRootPath, rootJsPath) -- Erase module registry because root.js requires most other modules.
@@ -134,7 +139,8 @@ describe("Runtime", function()
 	describe("jest.setMock", function()
 		it("uses explicitly set mocks instead of automocking", function()
 			return Promise.resolve():andThen(function()
-				local runtime = createRuntime(__filename):expect()
+				-- ROBLOX deviation: pass config to runtime new
+				local runtime = createRuntime(__filename, JestConfig.projectDefaults):expect()
 				local mockReference = { isMock = true }
 				local root = runtime:requireModule(runtime.__mockRootPath, rootJsPath) -- Erase module registry because root.js requires most other modules.
 				root.jest.resetModules()

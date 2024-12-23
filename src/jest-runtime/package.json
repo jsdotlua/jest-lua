@@ -16,12 +16,14 @@
     "@jsdotlua/expect": "workspace:^",
     "@jsdotlua/jest-fake-timers": "workspace:^",
     "@jsdotlua/jest-mock": "workspace:^",
+    "@jsdotlua/jest-mock-genv": "workspace:^",
     "@jsdotlua/jest-snapshot": "workspace:^",
     "@jsdotlua/jest-types": "workspace:^",
     "@jsdotlua/luau-polyfill": "^1.2.6",
     "@jsdotlua/promise": "^3.5.0"
   },
   "devDependencies": {
+    "@jsdotlua/jest-config": "workspace:^",
     "@jsdotlua/jest-globals": "workspace:^",
     "npmluau": "^0.1.1"
   }

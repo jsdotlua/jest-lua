@@ -17,9 +17,12 @@
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 
+local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
+local getDataModelService = RobloxShared.getDataModelService
+
 local function getFileSystemService()
 	local success, result = pcall(function()
-		return _G.__MOCK_FILE_SYSTEM__ or game:GetService("FileSystemService")
+		return _G.__MOCK_FILE_SYSTEM__ or getDataModelService("FileSystemService")
 	end)
 
 	if not success then

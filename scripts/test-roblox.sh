@@ -10,8 +10,8 @@ rm -f $OUTPUT
 
 mkdir -p roblox
 
-cp -rL node_modules/ roblox/
-cp -r roblox-model/ roblox/
+cp -rL node_modules/ roblox/node_modules
+cp -R roblox-model/ roblox/roblox-model
 mkdir roblox/scripts
 cp scripts/run-roblox-tests.lua roblox/scripts/
 cp scripts/jest-setup.lua roblox/scripts/

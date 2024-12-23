@@ -17,6 +17,7 @@ module.exports = {
       items: [
         'snapshot-testing',
         'timer-mocks',
+        'global-mocks',
         'testez-migration',
         'upgrading-to-jest3',
       ]
@@ -28,6 +29,7 @@ module.exports = {
     'expect',
     'mock-function-api',
     'jest-object',
+    'jest-benchmark',
     'configuration',
     'cli',
   ]

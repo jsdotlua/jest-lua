@@ -24,6 +24,7 @@
     "@jsdotlua/path": "workspace:^"
   },
   "devDependencies": {
+    "@jsdotlua/jest-config": "workspace:^",
     "@jsdotlua/jest-globals": "workspace:^",
     "@jsdotlua/jest-snapshot-serializer-raw": "workspace:^",
     "@jsdotlua/pretty-format": "workspace:^",

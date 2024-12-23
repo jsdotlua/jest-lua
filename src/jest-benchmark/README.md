@@ -1,7 +1,5 @@
 # jest-benchmark
 
-Status: :hammer: In Progress
+*No upstream. Roblox only.*
 
-Source: no upstream, roblox-only
-
-Version: v0.0.1
+This package exports a collection of Luau utilities that can be used alongside Jest to provide structure for writing benchmarks. You can find its documentation in the [Jest documentation](https://roblox.github.io/jest-roblox-internal/jest-benchmark).

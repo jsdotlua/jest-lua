@@ -29,7 +29,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: "latest"
+          node-version: 22
           cache: "yarn"
           cache-dependency-path: "yarn.lock"
 
@@ -66,7 +66,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: "latest"
+          node-version: 22
           cache: "yarn"
           cache-dependency-path: "yarn.lock"
 
@@ -108,6 +108,12 @@ jobs:
 
       - name: Publish jest-mock to wally
         run: wally publish --project-path build/wally/jest-mock
+
+      - name: Publish jest-mock-genv to wally
+        run: wally publish --project-path build/wally/jest-mock-genv
+
+      - name: Publish jest-mock-rbx to wally
+        run: wally publish --project-path build/wally/jest-mock-rbx
 
       - name: Publish jest-roblox-shared to wally
         run: wally publish --project-path build/wally/jest-roblox-shared
@@ -178,7 +184,6 @@ jobs:
       - name: Publish jest to wally
         run: wally publish --project-path build/wally/jest
 
-
   create-release:
     needs: publish-package
 
@@ -239,7 +244,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: "latest"
+          node-version: 22
           cache: "yarn"
           cache-dependency-path: "yarn.lock"
 

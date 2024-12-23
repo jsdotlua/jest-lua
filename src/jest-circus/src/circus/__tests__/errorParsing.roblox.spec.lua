@@ -6,6 +6,7 @@ type Circus_DescribeBlock = typesModule.Circus_DescribeBlock
 
 local RobloxShared = require("@pkg/@jsdotlua/jest-roblox-shared")
 local pruneDeps = RobloxShared.pruneDeps
+local redactStackTrace = RobloxShared.redactStackTrace
 
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
@@ -47,12 +48,11 @@ local errors: { { name: string, err: LuauPolyfill.Error } } = {
 		err = errorWithStack("Error: something went wrong!!\n" .. debug.traceback()),
 	},
 };
-
 (it.each :: FIXME_ANALYZE)(errors)("formats $name into proper output with message", function(errorData)
 	local result = utils.makeRunResult(mockDescribeBlock(), { errorData.err })
 	local prunedErrors = {}
 	for _, err in result.unhandledErrors do
-		table.insert(prunedErrors, pruneDeps(err))
+		table.insert(prunedErrors, redactStackTrace(pruneDeps(err)))
 	end
 
 	expect(prunedErrors).toMatchSnapshot()

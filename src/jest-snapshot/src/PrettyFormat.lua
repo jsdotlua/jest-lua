@@ -42,6 +42,7 @@ export type PrettyFormatOptions = {
 	printBasicPrototype: boolean?,
 	printInstanceDefaults: boolean?,
 	printFunctionName: boolean?,
+	redactStackTracesInStrings: boolean?,
 	theme: ThemeReceived?,
 }
 

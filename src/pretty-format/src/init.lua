@@ -24,6 +24,7 @@ local ConvertAnsi = require("./plugins/ConvertAnsi")
 local RobloxInstance = require("./plugins/RobloxInstance")
 local ReactElement = require("./plugins/ReactElement")
 local ReactTestComponent = require("./plugins/ReactTestComponent")
+local RedactStackTraces = require("./plugins/RedactStackTraces")
 
 local JestGetType = require("@pkg/@jsdotlua/jest-get-type")
 local getType = JestGetType.getType
@@ -351,6 +352,8 @@ local DEFAULT_OPTIONS = {
 	-- ROBLOX deviation: option to omit default Roblox Instance values
 	printInstanceDefaults = true,
 	printFunctionName = true,
+	-- ROBLOX deviation: stable stacktrace snapshots
+	redactStackTracesInStrings = false,
 	-- ROBLOX deviation: color formatting omitted
 	theme = nil,
 }
@@ -425,6 +428,8 @@ local function getConfig(options: OptionsReceived?): Config
 			else true,
 		-- ROBLOX deviation: option to omit default Roblox Instance values
 		printInstanceDefaults = getOption(options, "printInstanceDefaults"),
+		-- ROBLOX deviation: stable stack traces in snapshots
+		redactStackTracesInStrings = getOption(options, "redactStackTracesInStrings"),
 		printFunctionName = getOption(options, "printFunctionName"),
 		spacingInner = getSpacingInner(options),
 		spacingOuter = getSpacingOuter(options),
@@ -473,7 +478,17 @@ local plugins = {
 	ReactTestComponent = ReactTestComponent,
 	-- ROBLOX deviation: Roblox Instance matchers
 	RobloxInstance = RobloxInstance,
+	-- ROBLOX deviation: stable stacktrace snapshots
+	RedactStackTraces = RedactStackTraces,
 }
+
+-- ROBLOX deviation start: protect against bad reads
+setmetatable(plugins, {
+	__index = function(self, key)
+		error(Error.new("Can't find pretty-format plugin: " .. key))
+	end,
+})
+-- ROBLOX deviation end
 
 return {
 	format = format,

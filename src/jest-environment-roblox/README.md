@@ -1,6 +1,6 @@
 # jest-environment-roblox
 
-Status: :hammer: In Progress
+*No upstream. Roblox only.*
 
 ---
 

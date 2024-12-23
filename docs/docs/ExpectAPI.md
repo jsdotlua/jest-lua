@@ -2,11 +2,11 @@
 id: expect
 title: Expect
 ---
-<p><a href='https://jestjs.io/docs/27.x/expect' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a></p>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect)
 
 When you're writing tests, you often need to check that values meet certain conditions. `expect` gives you access to a number of "matchers" that let you validate different things.
 
-<img alt='deviation' src='img/deviation.svg'/>
+![Deviation](/img/deviation.svg)
 
 It must be imported explicitly from `JestGlobals`.
 ```lua
@@ -14,11 +14,11 @@ local expect = require("@DevPackages/JestGlobals").expect
 ```
 
 ### RegExp
-<img alt='Roblox only' src='img/roblox-only.svg'/>
+![Roblox only](/img/roblox-only.svg)
 
 To use regular expressions in matchers that support it, you need to add [LuauRegExp](https://github.com/Roblox/luau-regexp) as a dependency in your `rotriever.toml` and require it in your code.
 ```yaml title="rotriever.toml"
-RegExp = "github.com/roblox/luau-regexp@0.2.0"
+RegExp = "0.2.2"
 ```
 
 ```lua
@@ -26,15 +26,15 @@ local RegExp = require("@Packages/RegExp")
 ```
 
 ### Promise
-<img alt='Roblox only' src='img/roblox-only.svg'/>
+![Roblox only](/img/roblox-only.svg)
 
 To use Promises in your tests, add [roblox-lua-promise](https://github.com/Roblox/roblox-lua-promise) as a dependency in your `rotriever.toml`
 ```yaml
-Promise = "github.com/evaera/roblox-lua-promise@3.3.0"
+Promise = "3.3.0"
 ```
 
 ### Error
-<img alt='Roblox only' src='img/roblox-only.svg'/>
+![Roblox only](/img/roblox-only.svg)
 
 LuauPolyfill also provides an extensible `Error` class that can be used with throwing matchers.
 
@@ -70,7 +70,8 @@ import TOCInline from "@theme/TOCInline";
 ## Reference
 
 ### `expect(value)`
-<a href='https://jestjs.io/docs/27.x/expect#expectvalue' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#expectvalue)
+![Aligned](/img/aligned.svg)
 
 The `expect` function is used every time you want to test a value. You will rarely call `expect` by itself. Instead, you will use `expect` along with a "matcher" function to assert something about value.
 
@@ -87,7 +88,8 @@ In this case, `toBe` is the matcher function. There are a lot of different match
 The argument to `expect` should be the value that your code produces, and any argument to the matcher should be the correct value. If you mix them up, your tests will still work, but the error messages on failing tests will look strange.
 
 ### `expect.extend(matchers)`
-<a href='https://jestjs.io/docs/27.x/expect#expectextendmatchers' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#expectextendmatchers)
+![Aligned](/img/aligned.svg)
 
 You can use `expect.extend` to add your own matchers to Jest Lua. For example, let's say that you're testing a number utility library and you're frequently asserting that numbers appear within particular ranges of other numbers. You could abstract that into a `toBeWithinRange` matcher:
 
@@ -127,7 +129,7 @@ end)
 ```
 
 #### Custom Matchers API
-<img alt='API change' src='img/apichange.svg'/>
+![API Change](/img/apichange.svg)
 
 Matchers should return a table with two keys. `pass` indicates whether there was a match or not, and `message` provides a function with no arguments that return an error message in case of failure. Thus, when `pass` is false, `message` should return the error message for when `expect(x).yourMatcher()` fails. And when `pass` is true, `message` should return the error message for when `expect(x).never.yourMatcher()` fails.
 
@@ -205,7 +207,7 @@ Received: "apple"
 When an assertion fails, the error message should give as much signal as necessary to the user so they can resolve their issue quickly. You should craft a precise failure message to make sure users of your custom assertions have a good developer experience.
 
 #### Custom snapshot matchers
-<img alt='API change' src='img/apichange.svg'/>
+![API Change](/img/apichange.svg)
 
 To use snapshot testing inside of your custom matcher you can import `JestSnapshot` and use it from within your matcher.
 
@@ -235,7 +237,7 @@ end)
 ```
 
 ### `expect.anything()`
-<a href='https://jestjs.io/docs/27.x/expect#expectanything' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#expectanything)  ![Aligned](/img/aligned.svg)
 
 `expect.anything()` matches anything but `nil`. You can use it inside `toEqual` or `toBeCalledWith` instead of a literal value. For example, if you want to check that a mock function is called with a non-nil argument:
 
@@ -248,7 +250,7 @@ end)
 ```
 
 ### `expect.any(typename | prototype)`
-<a href='http://localhost:3000/expect#expectanytypename--prototype' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='deviation' src='img/deviation.svg'/>
+[![Jest](/img/jestjs.svg)](http://localhost:3000/expect#expectanytypename--prototype)  ![Deviation](/img/deviation.svg)
 
 `expect.any(typename)` matches anything that has the given type. `expect.any(prototype)` matches anything that is an instance (or a derived instance) of the given prototype class. You can use it inside `toEqual` or `toBeCalledWith` instead of a literal value. For example:
 
@@ -267,7 +269,7 @@ end)
 In addition to Lua prototype classes, it also supports Roblox types like [`DateTime`](https://developer.roblox.com/en-us/api-reference/datatype/DateTime), Luau types like `thread`, `RegExp` from the LuauRegExp library, and LuauPolyfill types like `Symbol`, `Set`, `Error` etc.
 
 ### `expect.nothing()`
-<a href='https://jestjs.io/docs/27.x/expect#expectnothing' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='deviation' src='img/deviation.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#expectnothing)  ![Deviation](/img/deviation.svg)
 
 `expect.nothing()` matches only `nil`. You can use it inside `toEqual`, `toMatchObject`, `toBeCalledWith`, or similar matchers instead of a literal value. For example, if you want to check that a value is left undefined in a table:
 
@@ -283,7 +285,7 @@ end)
 ```
 
 ### `expect.arrayContaining(array)`
-<a href='https://jestjs.io/docs/27.x/expect#expectarraycontainingarray' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#expectarraycontainingarray)  ![Aligned](/img/aligned.svg)
 
 `expect.arrayContaining(array)` matches a received array which contains all of the elements in the expected array. That is, the expected array is a **subset** of the received array. Therefore, it matches a received array which contains elements that are **not** in the expected array.
 
@@ -321,7 +323,7 @@ end)
 ```
 
 ### `expect.assertions(number)`
-<a href='https://jestjs.io/docs/27.x/expect#expectassertionsnumber' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#expectassertionsnumber)  ![Aligned](/img/aligned.svg)
 
 `expect.assertions(number)` verifies that a certain number of assertions are called during a test. This is often useful when testing asynchronous code, in order to make sure that assertions in a callback actually got called.
 
@@ -345,7 +347,7 @@ end)
 The `expect.assertions(2)` call ensures that both callbacks actually get called.
 
 ### `expect.hasAssertions()`
-<a href='https://jestjs.io/docs/27.x/expect#expecthasassertions' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#expecthasassertions)  ![Aligned](/img/aligned.svg)
 
 `expect.hasAssertions()` verifies that at least one assertion is called during a test. This is often useful when testing asynchronous code, in order to make sure that assertions in a callback actually got called.
 
@@ -364,7 +366,7 @@ end)
 The `expect.hasAssertions()` call ensures that the `prepareState` callback actually gets called.
 
 ### `expect.never.arrayContaining(array)`
-<a href='https://jestjs.io/docs/27.x/expect#expectnotarraycontainingarray' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#expectnotarraycontainingarray)  ![Aligned](/img/aligned.svg)
 
 `expect.never.arrayContaining(array)` matches a received array which does not contain all of the elements in the expected array. That is, the expected array **is not a subset** of the received array.
 
@@ -382,12 +384,12 @@ describe('never.arrayContaining', function()
 end)
 ```
 
-<img alt='API change' src='img/apichange.svg'/>
+![API Change](/img/apichange.svg)
 
 Also under the alias: `.arrayNotContaining(array)`
 
 ### `expect.never.objectContaining(table)`
-<a href='https://jestjs.io/docs/27.x/expect#expectnotobjectcontainingobject' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#expectnotobjectcontainingobject)  ![Aligned](/img/aligned.svg)
 
 `expect.never.objectContaining(table)` matches any received table that does not recursively match the expected properties. That is, the expected table **is not a subset** of the received table. Therefore, it matches a received table which contains properties that are **not** in the expected table.
 
@@ -403,12 +405,12 @@ describe('never.objectContaining', function()
 end)
 ```
 
-<img alt='API change' src='img/apichange.svg'/>
+![API Change](/img/apichange.svg)
 
 Also under the alias: `.objectNotContaining(table)`
 
 ### `expect.never.stringContaining(string)`
-<a href='https://jestjs.io/docs/27.x/expect#expectnotstringcontainingstring' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#expectnotstringcontainingstring)  ![Aligned](/img/aligned.svg)
 
 `expect.never.stringContaining(string)` matches the received value if it is not a string or if it is a string that does not contain the exact expected string.
 
@@ -424,12 +426,12 @@ describe('never.stringContaining', function()
 end)
 ```
 
-<img alt='API change' src='img/apichange.svg'/>
+![API Change](/img/apichange.svg)
 
 Also under the alias: `.stringNotContaining(string)`
 
 ### `expect.never.stringMatching(string | regexp)`
-<a href='https://jestjs.io/docs/27.x/expect#expectnotstringmatchingstring--regexp' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#expectnotstringmatchingstring--regexp)  ![API Change](/img/apichange.svg)
 
 `expect.never.stringMatching(string | regexp)` matches the received value if it is not a string or if it is a string that does not match the expected [Lua string pattern](https://developer.roblox.com/en-us/articles/string-patterns-reference) or [regular expression](#regexp).
 
@@ -445,12 +447,12 @@ describe('never.stringMatching', function()
 end)
 ```
 
-<img alt='API change' src='img/apichange.svg'/>
+![API Change](/img/apichange.svg)
 
 Also under the alias: `.stringNotMatching(string | regexp)`
 
 ### `expect.objectContaining(table)`
-<a href='https://jestjs.io/docs/27.x/expect#expectobjectcontainingobject' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#expectobjectcontainingobject)  ![Aligned](/img/aligned.svg)
 
 `expect.objectContaining(table)` matches any received table that recursively matches the expected properties. That is, the expected table is a **subset** of the received table. Therefore, it matches a received table which contains properties that **are present** in the expected table.
 
@@ -471,12 +473,12 @@ end)
 ```
 
 ### `expect.stringContaining(string)`
-<a href='https://jestjs.io/docs/27.x/expect#expectstringcontainingstring' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#expectstringcontainingstring)  ![Aligned](/img/aligned.svg)
 
 `expect.stringContaining(string)` matches the received value if it is a string that contains the exact expected string.
 
 ### `expect.stringMatching(string | regexp)`
-<a href='https://jestjs.io/docs/27.x/expect#expectstringmatchingstring--regexp' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#expectstringmatchingstring--regexp)  ![API Change](/img/apichange.svg)
 
 `expect.stringMatching(string | regexp)` matches the received value if it is a string that matches the expected [Lua string pattern](https://developer.roblox.com/en-us/articles/string-patterns-reference) or [regular expression](#regexp).
 
@@ -508,7 +510,7 @@ end)
 ```
 
 ### `expect.addSnapshotSerializer(serializer)`
-<a href='https://jestjs.io/docs/27.x/expect#expectaddsnapshotserializerserializer' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#expectaddsnapshotserializerserializer)  ![API Change](/img/apichange.svg)
 
 You can call `expect.addSnapshotSerializer` to add a module that formats application-specific data structures.
 
@@ -523,7 +525,7 @@ expect.addSnapshotSerializer(serializer)
 See [configuring Jest Lua](configuration) for more information.
 
 ### `.never`
-<a href='https://jestjs.io/docs/27.x/expect#not' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#not)  ![API Change](/img/apichange.svg)
 
 If you know how to test something, `.never` lets you test its opposite. For example, this code tests that the best La Croix flavor is not coconut:
 
@@ -534,7 +536,7 @@ end)
 ```
 
 ### `.resolves`
-<a href='https://jestjs.io/docs/27.x/expect#resolves' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#resolves)  ![Aligned](/img/aligned.svg)
 
 Use `resolves` to unwrap the value of a fulfilled [promise](#promise) so any other matcher can be chained. If the promise is rejected the assertion fails.
 
@@ -554,7 +556,7 @@ Since you are still testing promises, the test is still asynchronous. Hence, you
 :::
 
 ### `.rejects`
-<a href='https://jestjs.io/docs/27.x/expect#rejects' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#rejects)  ![Aligned](/img/aligned.svg)
 
 Use `.rejects` to unwrap the reason of a rejected [promise](#promise) so any other matcher can be chained. If the promise is fulfilled the assertion fails.
 
@@ -574,7 +576,7 @@ Since you are still testing promises, the test is still asynchronous. Hence, you
 :::
 
 ### `.toBe(value)`
-<a href='https://jestjs.io/docs/27.x/expect#tobevalue' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tobevalue)  ![Aligned](/img/aligned.svg)
 
 Use `.toBe` to compare primitive values or to check referential identity of tables. It calls [Luau Polyfill's `Object.is`](https://github.com/Roblox/luau-polyfill/blob/main/src/Object/is.lua) to compare values, which mostly behaves like the `==` operator.
 
@@ -605,7 +607,7 @@ Although the `.toBe` matcher **checks** referential identity, it **reports** a d
 - rewrite `expect(received).never.toBe(expected)` as `expect(received == expected).toBe(false)`
 
 ### `.toHaveBeenCalled()`
-<a href='https://jestjs.io/docs/27.x/expect#tohavebeencalled' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tohavebeencalled)  ![Aligned](/img/aligned.svg)
 
 Also under the alias: `.toBeCalled()`
 
@@ -636,7 +638,7 @@ end)
 ```
 
 ### `.toHaveBeenCalledTimes(number)`
-<a href='https://jestjs.io/docs/27.x/expect#tohavebeencalledtimesnumber' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tohavebeencalledtimesnumber)  ![Aligned](/img/aligned.svg)
 
 Also under the alias: `.toBeCalledTimes(number)`
 
@@ -653,7 +655,7 @@ end)
 ```
 
 ### `.toHaveBeenCalledWith(arg1, arg2, ...)`
-<a href='https://jestjs.io/docs/27.x/expect#tohavebeencalledwitharg1-arg2-' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tohavebeencalledwitharg1-arg2-)  ![Aligned](/img/aligned.svg)
 
 Also under the alias: `.toBeCalledWith()`
 
@@ -672,7 +674,7 @@ end)
 ```
 
 ### `.toHaveBeenLastCalledWith(arg1, arg2, ...)`
-<a href='https://jestjs.io/docs/27.x/expect#tohavebeenlastcalledwitharg1-arg2-' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tohavebeenlastcalledwitharg1-arg2-)  ![Aligned](/img/aligned.svg)
 
 Also under the alias: `.lastCalledWith(arg1, arg2, ...)`
 
@@ -687,7 +689,7 @@ end)
 ```
 
 ### `.toHaveBeenNthCalledWith(nthCall, arg1, arg2, ....)`
-<a href='https://jestjs.io/docs/27.x/expect#tohavebeennthcalledwithnthcall-arg1-arg2-' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tohavebeennthcalledwithnthcall-arg1-arg2-)  ![Aligned](/img/aligned.svg)
 
 Also under the alias: `.nthCalledWith(nthCall, arg1, arg2, ...)`
 
@@ -705,7 +707,7 @@ end)
 Note: the nth argument must be positive integer starting from 1.
 
 ### `.toHaveReturned()`
-<a href='https://jestjs.io/docs/27.x/expect#tohavereturned' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tohavereturned)  ![Aligned](/img/aligned.svg)
 
 Also under the alias: `.toReturn()`
 
@@ -722,7 +724,7 @@ end
 ```
 
 ### `.toHaveReturnedTimes(number)`
-<a href='https://jestjs.io/docs/27.x/expect#tohavereturnedtimesnumber' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tohavereturnedtimesnumber)  ![Aligned](/img/aligned.svg)
 
 Also under the alias: `.toReturnTimes(number)`
 
@@ -742,7 +744,7 @@ end
 ```
 
 ### `.toHaveReturnedWith(value)`
-<a href='https://jestjs.io/docs/27.x/expect#tohavereturnedwithvalue' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tohavereturnedwithvalue)  ![Aligned](/img/aligned.svg)
 
 Also under the alias: `.toReturnWith(value)`
 
@@ -762,7 +764,7 @@ end)
 ```
 
 ### `.toHaveLastReturnedWith(value)`
-<a href='https://jestjs.io/docs/27.x/expect#tohavelastreturnedwithvalue' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tohavelastreturnedwithvalue)  ![Aligned](/img/aligned.svg)
 
 Also under the alias: `.lastReturnedWith(value)`
 
@@ -784,7 +786,7 @@ end)
 ```
 
 ### `.toHaveNthReturnedWith(nthCall, value)`
-<a href='https://jestjs.io/docs/27.x/expect#tohaventhreturnedwithnthcall-value' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tohaventhreturnedwithnthcall-value)  ![Aligned](/img/aligned.svg)
 
 Also under the alias: `.nthReturnedWith(nthCall, value)`
 
@@ -809,7 +811,7 @@ end
 Note: the nth argument must be positive integer starting from 1.
 
 ### `.toHaveLength(number)`
-<a href='https://jestjs.io/docs/27.x/expect#tohavelengthnumber' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Deviation' src='img/deviation.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tohavelengthnumber)  ![Deviation](/img/deviation.svg)
 
 Use `.toHaveLength` to check that an (array-like) table or string has a certain length. It calls the `#` operator and since `#` is only well defined for non-sparse array-like tables and strings it will return 0 for tables with key-value pairs. It checks the `.length` property of the table instead if it has one.
 
@@ -822,7 +824,7 @@ expect('').never.toHaveLength(5)
 ```
 
 ### `.toHaveProperty(keyPath, value?)`
-<a href='https://jestjs.io/docs/27.x/expect#tohavepropertykeypath-value' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tohavepropertykeypath-value)  ![Aligned](/img/aligned.svg)
 
 Use `.toHaveProperty` to check if property at provided reference `keyPath` exists for an object. For checking deeply nested properties in an object you may use dot notation or an array containing the `keyPath` for deep references.
 
@@ -877,7 +879,7 @@ end)
 ```
 
 ### `.toBeCloseTo(number, numDigits?)`
-<a href='https://jestjs.io/docs/27.x/expect#tobeclosetonumber-numdigits' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tobeclosetonumber-numdigits)  ![Aligned](/img/aligned.svg)
 
 Use `toBeCloseTo` to compare floating point numbers for approximate equality.
 
@@ -902,7 +904,7 @@ end)
 ```
 
 ### `.toBeDefined()`
-<a href='https://jestjs.io/docs/27.x/expect#tobedefined' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Deviation' src='img/deviation.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tobedefined)  ![Deviation](/img/deviation.svg)
 
 Use `.toBeDefined` to check that a variable is not `nil`. For example, if you want to check that a function `fetchNewFlavorIdea()` returns _something_, you can write:
 
@@ -917,7 +919,7 @@ end)
 :::
 
 ### `.toBeFalsy()`
-<a href='https://jestjs.io/docs/27.x/expect#tobefalsy' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Deviation' src='img/deviation.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tobefalsy)  ![Deviation](/img/deviation.svg)
 
 Use `.toBeFalsy` when you don't care what a value is and you want to ensure a value is false in a boolean context. For example, let's say you have some application code that looks like:
 
@@ -940,7 +942,7 @@ end)
 In Lua, there are two falsy values: `false` and `nil`. Everything else is truthy.
 
 ### `.toBeGreaterThan(number)`
-<a href='https://jestjs.io/docs/27.x/expect#tobegreaterthannumber--bigint' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tobegreaterthannumber--bigint)  ![API Change](/img/apichange.svg)
 
 Use `toBeGreaterThan` to compare `received > expected` for number values. For example, test that `ouncesPerCan()` returns a value of more than 10 ounces:
 
@@ -951,7 +953,7 @@ end)
 ```
 
 ### `.toBeGreaterThanOrEqual(number)`
-<a href='https://jestjs.io/docs/27.x/expect#tobegreaterthanorequalnumber--bigint' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tobegreaterthanorequalnumber--bigint)  ![API Change](/img/apichange.svg)
 
 Use `toBeGreaterThanOrEqual` to compare `received >= expected` for number values. For example, test that `ouncesPerCan()` returns a value of at least 12 ounces:
 
@@ -962,7 +964,7 @@ end)
 ```
 
 ### `.toBeLessThan(number)`
-<a href='https://jestjs.io/docs/27.x/expect#tobelessthannumber--bigint' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tobelessthannumber--bigint)  ![API Change](/img/apichange.svg)
 
 Use `toBeLessThan` to compare `received < expected` for number values. For example, test that `ouncesPerCan()` returns a value of less than 20 ounces:
 
@@ -973,7 +975,7 @@ end)
 ```
 
 ### `.toBeLessThanOrEqual(number)`
-<a href='https://jestjs.io/docs/27.x/expect#tobelessthanorequalnumber--bigint' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tobelessthanorequalnumber--bigint)  ![API Change](/img/apichange.svg)
 
 Use `toBeLessThanOrEqual` to compare `received <= expected` for number values. For example, test that `ouncesPerCan()` returns a value of at most 12 ounces:
 
@@ -984,7 +986,7 @@ end)
 ```
 
 ### `.toBeInstanceOf(prototype)`
-<a href='https://jestjs.io/docs/27.x/expect#tobeinstanceofclass' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Deviation' src='img/deviation.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tobeinstanceofclass)  ![Deviation](/img/deviation.svg)
 
 Use `.toBeInstanceOf(prototype)` to check that a value is an instance (or a derived instance) of a prototype class. This matcher uses the [`instanceof` method in LuauPolyfill](https://github.com/Roblox/luau-polyfill/blob/main/src/instanceof.lua) underneath.
 
@@ -1023,7 +1025,7 @@ expect(C.new()).toBeInstanceOf(B)
 ```
 
 ### `.toBeNil()`
-<a href='https://jestjs.io/docs/27.x/expect#tobenull' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tobenull)  ![API Change](/img/apichange.svg)
 
 Also under the alias: `.toBeNull()`
 
@@ -1040,7 +1042,7 @@ end)
 ```
 
 ### `.toBeTruthy()`
-<a href='https://jestjs.io/docs/27.x/expect#tobetruthy' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Deviation' src='img/deviation.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tobetruthy)  ![Deviation](/img/deviation.svg)
 
 Use `.toBeTruthy` when you don't care what a value is and you want to ensure a value is true in a boolean context. For example, let's say you have some application code that looks like:
 
@@ -1063,7 +1065,7 @@ end)
 In Lua, there are two falsy values: `false` and `nil`. Everything else is truthy.
 
 ### `.toBeUndefined()`
-<a href='https://jestjs.io/docs/27.x/expect#tobeundefined' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Deviation' src='img/deviation.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tobeundefined)  ![Deviation](/img/deviation.svg)
 
 Use `.toBeUndefined()` to check that a variable is `nil`.
 
@@ -1072,7 +1074,7 @@ Use `.toBeUndefined()` to check that a variable is `nil`.
 :::
 
 ### `.toBeNan()`
-<a href='https://jestjs.io/docs/27.x/expect#tobenan' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tobenan)  ![API Change](/img/apichange.svg)
 
 Also under the alias: `.toBeNaN()`
 
@@ -1086,7 +1088,7 @@ end)
 ```
 
 ### `.toContain(item)`
-<a href='https://jestjs.io/docs/27.x/expect#tocontainitem' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tocontainitem)  ![Aligned](/img/aligned.svg)
 
 Use `.toContain` when you want to check that an item is in an array. For testing the items in the array, this uses `table.find`, which does a strict equality check. `.toContain` can also check whether a string is a substring of another string. This uses `string.find` with `plain = true` so magic characters are ignored.
 
@@ -1099,7 +1101,7 @@ end)
 ```
 
 ### `.toContainEqual(item)`
-<a href='https://jestjs.io/docs/27.x/expect#tocontainequalitem' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tocontainequalitem)  ![Aligned](/img/aligned.svg)
 
 Use `.toContainEqual` when you want to check that an item with a specific structure and values is contained in an array. For testing the items in the array, this matcher recursively checks the equality of all fields, rather than checking for table identity.
 
@@ -1113,7 +1115,7 @@ end)
 ```
 
 ### `.toEqual(value)`
-<a href='https://jestjs.io/docs/27.x/expect#toequalvalue' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#toequalvalue)  ![Aligned](/img/aligned.svg)
 
 Use `.toEqual` to compare recursively all properties of tables (also known as "deep" equality). It calls [Luau Polyfill's `Object.is`](https://github.com/Roblox/luau-polyfill/blob/main/src/Object/is.lua) to compare primitive values, which mostly behaves like the `==` operator.
 
@@ -1149,7 +1151,7 @@ If differences between properties do not help you to understand why a test fails
 - rewrite `expect(received).never.toEqual(expected)` as `expect(received.equals(expected)).toBe(false)`
 
 ### `.toMatch(string | regexp)`
-<a href='https://jestjs.io/docs/27.x/expect#tomatchregexp--string' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='API change' src='img/apichange.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tomatchregexp--string)  ![API Change](/img/apichange.svg)
 
 Use `.toMatch` to check that a string matches a [Lua string pattern](https://developer.roblox.com/en-us/articles/string-patterns-reference).
 
@@ -1174,7 +1176,7 @@ end)
 ```
 
 ### `.toMatchInstance(table)`
-<img alt='Roblox only' src='img/roblox-only.svg'/>
+![Roblox only](/img/roblox-only.svg)
 
 Use `.toMatchObject` to check that a Roblox Instance and its children matches all the properties defined in an expected table.
 
@@ -1203,7 +1205,7 @@ end)
 ```
 
 ### `.toMatchObject(table)`
-<a href='https://jestjs.io/docs/27.x/expect#tomatchobjectobject' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tomatchobjectobject)  ![Aligned](/img/aligned.svg)
 
 Use `.toMatchObject` to check that a table matches a subset of the properties of an expected table. It will match received tables with properties that are **not** in the expected table.
 
@@ -1250,7 +1252,7 @@ end)
 ```
 
 ### `.toMatchSnapshot(propertyMatchers?, hint?)`
-<a href='https://jestjs.io/docs/27.x/expect#tomatchsnapshotpropertymatchers-hint' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tomatchsnapshotpropertymatchers-hint)  ![Aligned](/img/aligned.svg)
 
 This ensures that a value matches the most recent snapshot. Check out [the Snapshot Testing guide](snapshot-testing) for more information.
 
@@ -1259,7 +1261,7 @@ You can provide an optional `propertyMatchers` table argument, which has asymmet
 You can provide an optional `hint` string argument that is appended to the test name. Although Jest always appends a number at the end of a snapshot name, short descriptive hints might be more useful than numbers to differentiate **multiple** snapshots in a **single** `it` or `test` block. Jest sorts snapshots by name in the corresponding `.snap` file.
 
 ### `.toStrictEqual(value)`
-<a href='https://jestjs.io/docs/27.x/expect#tostrictequalvalue' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Deviation' src='img/deviation.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tostrictequalvalue)  ![Deviation](/img/deviation.svg)
 
 Use `.toStrictEqual` to test that objects have the same types.
 
@@ -1284,7 +1286,7 @@ end)
 ```
 
 ### `.toThrow(error?)`
-<a href='https://jestjs.io/docs/27.x/expect#tothrowerror' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tothrowerror)  ![Aligned](/img/aligned.svg)
 
 Also under the alias: `.toThrowError(error?)`
 
@@ -1307,7 +1309,7 @@ You can provide an optional argument to test that a specific error is thrown:
 - [regular expression](#regexp): error message **matches** the pattern
 - string: error message **includes** the substring
 
-<img alt='API change' src='img/apichange.svg'/>
+![API Change](/img/apichange.svg)
 
 `.toThrow` can also handle custom Error objects provided by LuauPolyfill:
 
@@ -1355,7 +1357,7 @@ end)
 ```
 
 ### `.toThrowErrorMatchingSnapshot(hint?)`
-<a href='https://jestjs.io/docs/27.x/expect#tothrowerrormatchingsnapshothint' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a>  <img alt='Aligned' src='img/aligned.svg'/>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/expect#tothrowerrormatchingsnapshothint)  ![Aligned](/img/aligned.svg)
 
 Use `.toThrowErrorMatchingSnapshot` to test that a function throws an error matching the most recent snapshot when it is called.
 

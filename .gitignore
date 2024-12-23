@@ -40,3 +40,7 @@ roblox.toml
 .vscode/launch.json
 .idea
 .vscode
+
+jest_runner_tmp
+lcov.info
+rbx-aged-tool.log

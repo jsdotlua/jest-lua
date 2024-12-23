@@ -2,9 +2,9 @@
 id: timer-mocks
 title: Timer Mocks
 ---
-<p><a href='https://jestjs.io/docs/27.x/timer-mocks' target="_blank"><img alt='Jest' src='img/jestjs.svg'/></a></p>
+[![Jest](/img/jestjs.svg)](https://jest-archive-august-2023.netlify.app/docs/27.x/timer-mocks)
 
-<img alt='deviation' src='img/deviation.svg'/>
+![Deviation](/img/deviation.svg)
 
 The Lua and Roblox native timer functions (i.e., `delay()`, `tick()`, `os.time()`, `os.clock()`) are less than ideal for a testing environment since they depend on real time to elapse. Jest Lua can swap out timers with functions that allow you to control the passage of time. [Great Scott!](https://www.youtube.com/watch?v=QZoJ2Pt27BY)
 
@@ -113,7 +113,7 @@ end)
 ```
 
 ## Advance Timers by Time
-<img alt='deviation' src='img/deviation.svg'/>
+![Deviation](/img/deviation.svg)
 
 Another possibility is use `jest.advanceTimersByTime(secsToRun)`. When this API is called, all timers are advanced by `secsToRun` seconds. All pending "macro-tasks" that have been queued, and would be executed during this time frame, will be executed. Additionally, if those macro-tasks schedule new macro-tasks that would be executed within the same time frame, those will be executed until there are no more macro-tasks remaining in the queue that should be run within `secsToRun` seconds.
 
@@ -153,7 +153,7 @@ end)
 Lastly, it may occasionally be useful in some tests to be able to clear all of the pending timers. For this, we have `jest.clearAllTimers()`.
 
 ## Setting Engine Frame Time
-<img alt='Roblox only' src='img/roblox-only.svg'/>
+![Roblox only](/img/roblox-only.svg)
 
 By default, Jest Lua processes fake timers in continuous time. However, because the Roblox engine processes timers only once per frame, this may not accurately reflect engine behavior.
 

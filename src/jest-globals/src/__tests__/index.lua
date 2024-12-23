@@ -26,7 +26,8 @@ return (function()
 			require("../index")
 		end).toThrowError(
 			-- ROBLOX deviation START: aligned message to make sense for jest-roblox
-			"Do not import `JestGlobals` outside of the Jest test environment"
+			"Do not import `JestGlobals` outside of the Jest 3 test environment.\n"
+				.. "Tip: Jest 2 uses a different pattern - check your Jest version."
 			-- ROBLOX deviation END
 		)
 	end)
