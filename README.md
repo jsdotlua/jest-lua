@@ -20,7 +20,7 @@ Roblox uses Jest Lua internally for testing their apps, in-game core scripts, bu
 Add this package to your `dev-dependencies` in your `wally.toml`, for example:
 
 ```toml
-JestGlobals = "jsdotlua/jest-globals@3.6.1-rc.2"
+JestGlobals = "jsdotlua/jest-globals@3.10.0"
 ```
 
 Then, require anything you need from `JestGlobals`:

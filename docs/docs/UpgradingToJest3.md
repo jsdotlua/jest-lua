@@ -13,8 +13,8 @@ First, update your `wally.toml` to use Jest Lua v3.0. You'll also need to requir
 
 ```yaml title="rotriever.toml"
 [dev-dependencies]
-Jest = "jsdotlua/jest@3.6.1-rc.2"
-JestGlobals = "jsdotlua/jest-globals@3.6.1-rc.2"
+Jest = "jsdotlua/jest@3.10.0"
+JestGlobals = "jsdotlua/jest-globals@3.10.0"
 ```
 
 Update your `spec.lua`. Instead of using `TestEZ.TestBootStrap:run`, the main entrypoint is now `Jest.runCLI`. A basic bootstrap script can look like the following:

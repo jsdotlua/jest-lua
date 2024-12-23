@@ -12,8 +12,8 @@ Add the `JestGlobals` and `Jest` packages to your `dev-dependencies` in your `wa
 
 ```yaml title="wally.toml"
 [dev-dependencies]
-Jest = "jsdotlua/jest@3.6.1-rc.2"
-JestGlobals = "jsdotlua/jest-globals@3.6.1-rc.2"
+Jest = "jsdotlua/jest@3.10.0"
+JestGlobals = "jsdotlua/jest-globals@3.10.0"
 ```
 
 Run `wally install` to install Jest Lua.

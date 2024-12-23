@@ -16,7 +16,7 @@ Replace `TestEZ` with `JestGlobals` in your `Wally.toml`.
 ```diff title="wally.toml"
 [dev-dependencies]
 - TestEZ = "roblox/testez@0.4.1"
-+ JestGlobals = "jsdotlua/jest-globals@3.6.1-rc.2"
++ JestGlobals = "jsdotlua/jest-globals@3.10.0"
 ```
 
 Unlike TestEZ, which is injected into the global environment, you will need to explicitly require anything you need from `JestGlobals`. For example, to use the new Jest Lua assertion library, add this to the top of your test file.
